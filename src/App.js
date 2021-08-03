@@ -13,6 +13,7 @@ import appPlugin from './plugins'
 import AppRouter from './router'
 import './typography.css'
 import './app.css'
+import './test.css'
 
 function App() {
   // Change this value to set the theme
