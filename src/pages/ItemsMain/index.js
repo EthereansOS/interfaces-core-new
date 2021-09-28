@@ -1,28 +1,26 @@
 import React from 'react'
 import {Typography} from '@ethereansos/interfaces-ui'
 
-import style from './sample1.module.css'
+import style from './items-main.module.css'
+import ExploreCollections  from './Sections/collections-explore'
 
-const SamplePage1 = () => {
+const ItemsMain = (props) => {
   return (
     <>
-      <Typography className={style.title} variant="h3" color="black">
-        Sample page 1
-      </Typography>
-      <Typography className={style.text} variant="body2" color="black">
-        This is a sample page
-      </Typography>
+      <div className={style.Web3PagesRoot}>
+        <ExploreCollections></ExploreCollections>
+      </div>
     </>
   )
 }
 
-SamplePage1.addToPlugin =
+ItemsMain.addToPlugin =
   ({index}) =>
     ({addElement}) => {
       addElement('router', {
         index,
         path: '/',
-        Component: SamplePage1,
+        Component: ItemsMain,
         exact: true,
         requireConnection: false,
         templateProps: {
@@ -32,11 +30,11 @@ SamplePage1.addToPlugin =
       })
 
       addElement('appMenu', {
-        name: 'sample-page-1',
-        label: 'Sample Page 1',
+        name: 'Items',
+        label: 'Items',
         link: '/',
         index,
       })
     }
 
-export default SamplePage1
+export default ItemsMain

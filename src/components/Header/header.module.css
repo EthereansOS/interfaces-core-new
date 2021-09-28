@@ -1,13 +1,15 @@
 .root {
-  display: flex;
-  justify-content: flex-start;
-  padding: calc(var(--unit) * 4);
+  display: inline-block;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 70px;
+  text-align: left;
 }
 
-img {
-  height: 40px;
-  margin-right: calc(var(--unit) * 2);
-}
+.logoMain {height: 50px; width: 60px; margin: 10px; display: inline-block;}
+.logoMain img {height: 50px; width: 60px; display: block;}
 
 h3 {
   align-self: center;

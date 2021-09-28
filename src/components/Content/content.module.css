@@ -1,9 +1,5 @@
 .root {
-  background-color: var(--color-background-light);
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
+  background-color: transparent;
   padding: calc(var(--unit) * 4);
-  min-height: 500px;
-  display: flex;
+  display: block;
 }

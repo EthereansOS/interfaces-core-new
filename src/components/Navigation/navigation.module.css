@@ -1,10 +1,17 @@
 .root {
-  flex-basis: 20%;
+  display: inline-block;
+  position: fixed;
+  top: 70px;
+  left: 20px;
+  border-left: 1px solid #ffffff;
+  padding-top: 20px;
+
 }
 
 .item {
-  display: flex;
-  padding-bottom: calc(var(--unit) * 2);
+  display: block;
+  margin: 10px;
+  text-align: left;
 }
 
 .indicator {

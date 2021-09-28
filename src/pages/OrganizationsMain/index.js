@@ -1,9 +1,9 @@
 import React from 'react'
 import {Typography} from '@ethereansos/interfaces-ui'
 
-import style from './sample2.module.css'
+import style from './organizations-main.module.css'
 
-const SamplePage2 = () => {
+const OrganizationsMain = () => {
   return (
     <>
       <Typography className={style.title} variant="h3" color="black">
@@ -16,13 +16,13 @@ const SamplePage2 = () => {
   )
 }
 
-SamplePage2.addToPlugin =
+OrganizationsMain.addToPlugin =
   ({index}) =>
     ({addElement}) => {
       addElement('router', {
         index,
-        path: '/sample2',
-        Component: SamplePage2,
+        path: '/organizations',
+        Component: OrganizationsMain,
         exact: true,
         requireConnection: false,
         templateProps: {
@@ -32,11 +32,11 @@ SamplePage2.addToPlugin =
       })
 
       addElement('appMenu', {
-        name: 'sample-page-2',
-        label: 'Sample Page 2',
-        link: '/sample2',
+        name: 'Organizations',
+        label: 'Organizations',
+        link: '/organization',
         index,
       })
     }
 
-export default SamplePage2
+export default OrganizationsMain

@@ -29,14 +29,12 @@ const AppRouter = () => {
   }, [routes])
 
   return (
-    <div style={{ width: '100%' }}>
       <Switch>
         {memoedRoutes}
         <Route>
           <NoMatch />
         </Route>
       </Switch>
-    </div>
   )
 }
 

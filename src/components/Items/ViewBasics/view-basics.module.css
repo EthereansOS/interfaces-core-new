@@ -1,0 +1,3 @@
+.ViewBasics {width: 300px; display: inline-block; text-align: left; padding: 15px; margin-top: 45px; background-color: #ffffff; border-radius: 20px; box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
+.ViewBasics a {border: 2px solid #849BBD; color: #849BBD; border-radius: 5px;display: inline-block; width: 80px; margin: 5px; font-size: 12px; padding: 3px 2px; text-align: center; cursor: pointer;}
+.ViewBasics h5 {font-size: 16px; display: inline-block; text-align: center; margin: 5px auto 15px auto; width: 100%; color: #000000;}

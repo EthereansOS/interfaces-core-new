@@ -1,0 +1,26 @@
+.Web3PagesRoot {
+  width: 1050px;
+}
+
+.image {
+  height: 300px;
+}
+
+.ItemsExploreMain {width: 100%; text-align: left;}
+.SingleContentPage {width: 100%; max-width: 990px; text-align: center;}
+.CollectionLeft {width: 300px; display: inline-block; text-align: center; margin-top: 90px; vertical-align: top;}
+.CollectionRight {width: 660px;display: inline-block; text-align: center; margin-top: 90px; margin-left: 30px;vertical-align: top;}
+
+
+.title {
+  margin-bottom: calc(var(--unit) * 3) 0;
+}
+
+.text {
+  padding: 0 calc(var(--unit) * 15);
+  margin: calc(var(--unit) * 3) 0;
+}
+
+.text:last-child {
+  margin-bottom: calc(var(--unit) * 10);
+}

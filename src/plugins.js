@@ -1,11 +1,15 @@
-import SamplePage1 from './pages/SamplePage1'
-import SamplePage2 from './pages/SamplePage2'
-import SamplePage3 from './pages/SamplePage3'
+import ItemsMain from './pages/ItemsMain'
+import CovenantsMain from './pages/CovenantsMain'
+import OrganizationsMain from './pages/OrganizationsMain'
+import FactoriesMain from './pages/FactoriesMain'
+import TradeMain from './pages/TradeMain'
 
 const initPlugin = ({ addElement }) => {
-  SamplePage1.addToPlugin({index: 10})({ addElement })
-  SamplePage2.addToPlugin({index: 20})({ addElement })
-  SamplePage3.addToPlugin({index: 30})({ addElement })
+  ItemsMain.addToPlugin({index: 10})({ addElement })
+  CovenantsMain.addToPlugin({index: 20})({ addElement })
+  OrganizationsMain.addToPlugin({index: 30})({ addElement })
+  FactoriesMain.addToPlugin({index: 40})({ addElement })
+  TradeMain.addToPlugin({index: 50})({ addElement })
 }
 
 const appPlugin = {

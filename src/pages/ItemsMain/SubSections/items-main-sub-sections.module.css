@@ -1,0 +1,7 @@
+.SubCollectionExplore {width: 100%;}
+.SubCollectionInfo {display: inline-block; margin: 5px auto 30px auto; padding: 2%; background-color: #F0F0F0; border-radius: 10px; text-align: center;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32); width: 96%; text-align: left;}
+.SubCollectionInfoCover {width: 150px; display: inline-block;}
+.SubCollectionInfoCover img {width: 100px; display: block; height: 100px;}
+.SubCollectionInfoName {width: 400px; float: right; display: inline-block; text-align: left;}
+.SubCollectionInfoName h5 {font-size: 16px; text-align: left; width: 100%; display: inline-block; margin: 20px auto; vertical-align: middle;}
+.SubCollectionInfoName a {font-size: 14px; ; text-align: left; display: inline-block;background-color: #849BBD; color: #ffffff; border-radius: 5px;padding: 6px 10px; cursor: pointer;}

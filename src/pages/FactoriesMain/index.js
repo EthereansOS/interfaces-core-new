@@ -1,9 +1,9 @@
 import React from 'react'
 import {Typography} from '@ethereansos/interfaces-ui'
 
-import style from './sample3.module.css'
+import style from './factories-main.module.css'
 
-const SamplePage3 = () => {
+const FactoriesMain = () => {
   return (
     <>
       <Typography className={style.title} variant="h3" color="black">
@@ -16,13 +16,13 @@ const SamplePage3 = () => {
   )
 }
 
-SamplePage3.addToPlugin =
+FactoriesMain.addToPlugin =
   ({index}) =>
     ({addElement}) => {
       addElement('router', {
         index,
-        path: '/sample3',
-        Component: SamplePage3,
+        path: '/factories',
+        Component: FactoriesMain,
         exact: true,
         requireConnection: false,
         templateProps: {
@@ -32,11 +32,11 @@ SamplePage3.addToPlugin =
       })
 
       addElement('appMenu', {
-        name: 'sample-page-3',
-        label: 'Sample Page 3',
-        link: '/sample3',
+        name: 'Factories',
+        label: 'Factories',
+        link: '/factories',
         index,
       })
     }
 
-export default SamplePage3
+export default FactoriesMain

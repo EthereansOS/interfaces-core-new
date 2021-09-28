@@ -1,0 +1,9 @@
+.InfoBox {padding: 15px 15px 30px 15px; width: 620px; display: inline-block;border-radius: 20px; background-color: #ffffff; box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32); text-align: left; position: relative;}
+.InfoBox h1 {width: 400px; font-size: 22px; font-weight: bold; color: #000000; text-align: left; display: inline-block;}
+.shareIt {display: inline-block; width: 22px; height: 22px; border: 2px solid #849BBD; float: right; border-radius: 5px;cursor: pointer;}
+.InfoBoxSide {width: 50%; display: inline-block;}
+.InfoBoxSide p {display: block; text-align: left; color: #676666; font-size: 12px; margin-bottom: 10px;}
+.InfoBoxBtns {width: 160px; display: inline-block; float: right;}
+.InfoBoxBtns a {border: 1px solid #849BBD; color: #849BBD; border-radius: 5px;display: inline-block; width: 70px; margin: 5px; font-size: 11px; padding: 3px 2px; text-align: center; cursor: pointer;}
+.InfoBoxaside {position: absolute; width: 100%; left: 0; bottom: 0; background-color: #F0F0F0; text-align: right; padding: 5px;border-radius: 0 0 20px 20px;}
+.InfoBoxaside a {cursor: pointer; color: #414141; font-size: 8px; padding: 0px 15px; display: inline-block;}
