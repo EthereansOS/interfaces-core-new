@@ -2,13 +2,13 @@ import React from 'react'
 import {Typography} from '@ethereansos/interfaces-ui'
 
 import style from './items-main.module.css'
-import ExploreCollections  from './Sections/collections-explore'
+import ItemView  from './Sections/item-view'
 
 const ItemsMain = (props) => {
   return (
     <>
       <div className={style.Web3PagesRoot}>
-        <ExploreCollections></ExploreCollections>
+        <ItemView></ItemView>
       </div>
     </>
   )

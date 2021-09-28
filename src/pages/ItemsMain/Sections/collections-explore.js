@@ -14,5 +14,4 @@ const CollectionsExplore = (props) => {
   )
 }
 
-
 export default CollectionsExplore

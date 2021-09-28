@@ -9,12 +9,14 @@ import ViewDescription from '../../../components/Items/ViewDescription/index.js'
 import ViewProperties from '../../../components/Items/ViewProperties/index.js'
 import ViewBasics from '../../../components/Items/ViewBasics/index.js'
 import SubTrade from '../../../pages/ItemsMain/SubSections/sub-trade.js'
+import ModalStandard from '../../../components/ModalStandard/index.js'
 import MetadataSection from '../../../components/MetadataSection/index.js'
 import SubCollectionExplore from '../../../pages/ItemsMain/SubSections/sub-collection-explore.js'
 
 const CollectionView = (props) => {
   return (
     <>
+    <ModalStandard></ModalStandard>
       <div className={style.SingleContentPage}>
         <div className={style.CollectionLeft}>
           <ViewCover></ViewCover>

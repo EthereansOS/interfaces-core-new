@@ -34,7 +34,7 @@ OrganizationsMain.addToPlugin =
       addElement('appMenu', {
         name: 'Organizations',
         label: 'Organizations',
-        link: '/organization',
+        link: '/organizations',
         index,
       })
     }
