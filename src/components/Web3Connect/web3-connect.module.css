@@ -2,6 +2,6 @@
 .Web3ConnectChain {height: 35px;display: inline-block; padding: 3px 5px; border-radius: 5px; background-color: #E4E4E4;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32); margin: 0 10px 0 0px; vertical-align: middle;}
 .Web3ConnectChain img {width:25px; height:25px; display: inline-block; margin: 3px; vertical-align: middle;}
 .Web3ConnectChain p {display: inline-block; margin: 3px;vertical-align: middle; font-size: 15px;}
-.Web3ConnectWallet {height: 35px;display: inline-block; padding: 3px 5px; border-radius: 12px; background-color: #F0F0F0;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);vertical-align: middle; cursor: pointer; width:150px; text-align: center;}
+.Web3ConnectWallet {height: 35px;display: inline-block; padding: 3px 5px; border-radius: 12px; background-color: #E4E4E4;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);vertical-align: middle; cursor: pointer; width:150px; text-align: center;}
 .Web3ConnectWallet img {width:25px; height:25px; display: inline-block; margin: 3px 3px 3px -7px; vertical-align: middle;}
 .Web3ConnectWallet p {display: inline-block; margin: 3px;vertical-align: middle;font-size: 15px; font-weight: bold;}

@@ -10,8 +10,9 @@
 .container {
   padding: calc(var(--unit) * 3) 10px 0 10px;
   min-height: 300px;
-  width: 1100;
-  margin: 10px auto 20px 10px;
+  width: 80%;
+  min-width: 750px;
+  margin: 20px 0 20px 2%;
   display: inline-block;
 }
 

@@ -9,10 +9,12 @@ import Web3Connect  from '../../components/Web3Connect/index.js'
 const Header = (props) => {
   return (
     <>
-      <header className={style.root}>
-        <a className={style.logoMain}><img src={`${process.env.PUBLIC_URL}/img/logo_main.png`}></img></a>
-        <Navigation menuName={props.menuName} isDapp={props.isDapp} />
-        <Web3Connect></Web3Connect>
+      <header className={style.Header}>
+        <div className={style.FixedHeader}>
+          <a className={style.logoMain}><img src={`${process.env.PUBLIC_URL}/img/logo_main.png`}></img></a>
+          <Navigation menuName={props.menuName} isDapp={props.isDapp} />
+          <Web3Connect></Web3Connect>
+        </div>
       </header>
     </>
   )

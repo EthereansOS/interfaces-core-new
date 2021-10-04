@@ -1,4 +1,4 @@
-.root {
+.Header {
   height: 100%;
   display: inline-block;
   text-align: center;
@@ -6,9 +6,12 @@
   width: 18%;
   vertical-align: top;
   overflow: hidden;
+  position: relative;
 }
 
-.logoMain {height: 90px; width: 110px; margin: 20px 0px 20px 35px; display: block;}
+.Header .FixedHeader {position: fixed; left: 0; top: 0; width: 170px; height: 100%;}
+
+.logoMain {height: 90px; width: 110px; margin: 20px 0px 20px 10px; display: block;}
 .logoMain img {height: 90px; width: 110px; display: block;}
 
 h3 {
