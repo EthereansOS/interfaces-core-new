@@ -12,16 +12,14 @@ const Navigation = ({ menuName, isDapp }) => {
     return (
       <Link key={item.name} to={!isDapp ? item.link : item.dappLink}>
         <div className={style.item}>
-          <Typography variant="body2" color="white">
             {item.label}
-          </Typography>
         </div>
       </Link>
     )
   }
 
   return (
-    <nav className={style.root}>{menuItems.map((item) => navItem(item))}</nav>
+    <nav className={style.Navigation}>{menuItems.map((item) => navItem(item))}</nav>
   )
 }
 

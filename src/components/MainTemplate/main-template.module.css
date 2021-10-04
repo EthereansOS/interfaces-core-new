@@ -2,7 +2,7 @@
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
-  margin: 100px auto 0 auto;
+  margin: 0  auto 0 auto;
   display: block;
   text-align: center;
 }
@@ -11,7 +11,7 @@
   padding: calc(var(--unit) * 3) 10px 0 10px;
   min-height: 300px;
   width: 1100;
-  margin: 10px auto 20px 150px;
+  margin: 10px auto 20px 10px;
   display: inline-block;
 }
 

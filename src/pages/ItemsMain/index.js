@@ -2,13 +2,13 @@ import React from 'react'
 import {Typography} from '@ethereansos/interfaces-ui'
 
 import style from './items-main.module.css'
-import ItemView  from './Sections/item-view'
+import CollectionView  from './Sections/collection-view'
 
 const ItemsMain = (props) => {
   return (
     <>
       <div className={style.Web3PagesRoot}>
-        <ItemView></ItemView>
+        <CollectionView></CollectionView>
       </div>
     </>
   )
@@ -32,6 +32,7 @@ ItemsMain.addToPlugin =
       addElement('appMenu', {
         name: 'Items',
         label: 'Items',
+        icon: '${process.env.PUBLIC_URL}/img/ethereum.png',
         link: '/',
         index,
       })

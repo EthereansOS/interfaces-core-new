@@ -1,17 +1,16 @@
-.root {
-  display: inline-block;
-  position: fixed;
-  top: 70px;
-  left: 20px;
-  border-left: 1px solid #ffffff;
-  padding-top: 20px;
-
+.Navigation {
+  display: block;
+  background-color: #F0F0F0;
+  padding: 10px;
+  width: 150px;
+  margin: 30px 15px;
+  border-radius:12px;
+  box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);vertical-align: middle; cursor: pointer; width:150px; text-align: center;
 }
+.Navigation a {margin: 7px 0;display: inline-block;width: 100%;text-align: left;}
 
 .item {
-  display: block;
-  margin: 10px;
-  text-align: left;
+  font-size: 15px;
 }
 
 .indicator {
