@@ -4,7 +4,7 @@
   background-repeat: no-repeat;
   margin: 0  auto 0 auto;
   display: block;
-  text-align: center;
+  text-align: left;
 }
 
 .container {
@@ -14,8 +14,13 @@
   min-width: 750px;
   margin: 20px 0 20px 2%;
   display: inline-block;
+  text-align: center;
 }
 
 .hideHeader {
   padding-top: 0;
+}
+
+@media only screen and (max-width: 1300px) {
+  .container { width: 98%; margin: 20px 1%;}
 }

@@ -14,6 +14,7 @@ const Header = (props) => {
           <Navigation menuName={props.menuName} isDapp={props.isDapp} />
           <Web3Connect></Web3Connect>
         </div>
+        <div className={style.BlurHeader}></div>
       </header>
   )
 }
