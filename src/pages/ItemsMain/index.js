@@ -6,11 +6,9 @@ import CollectionView  from './Sections/collection-view'
 
 const ItemsMain = (props) => {
   return (
-    <>
       <div className={style.Web3PagesRoot}>
         <CollectionView></CollectionView>
       </div>
-    </>
   )
 }
 

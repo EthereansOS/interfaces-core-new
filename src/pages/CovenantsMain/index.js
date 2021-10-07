@@ -2,17 +2,15 @@ import React from 'react'
 import {Typography} from '@ethereansos/interfaces-ui'
 
 import style from './covenants-main.module.css'
+import FarmMain from './Sections/farm-main.js'
 
 const CovenantsMain = () => {
   return (
-    <>
-      <Typography className={style.title} variant="h3" color="black">
-        Covenantts
-      </Typography>
-      <Typography className={style.text} variant="body2" color="black">
-        This is a sample page
-      </Typography>
-    </>
+    <div className={style.Web3PagesRoot}>
+        <div className={style.CovenantsMainBox}>
+          <FarmMain></FarmMain>
+      </div>
+    </div>
   )
 }
 

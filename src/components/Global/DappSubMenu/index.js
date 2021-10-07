@@ -20,11 +20,14 @@ const DappSubMenu = (props) => {
       /* ---For Items View---
         
       <ul className={style.DappSubMenu}>
+        <li><a>Collection</a></li>
         <li><a>Metadata</a></li>
         <li><a>Code</a></li>
         <li><a>Farm</a></li>
         <li><a>Organizations</a></li>
       </ul> */
+
+      /* ---For Covenants Farm View---
 
       <ul className={style.DappSubMenu}>
         <li><a>Collection</a></li>
@@ -32,6 +35,13 @@ const DappSubMenu = (props) => {
         <li><a>Code</a></li>
         <li><a>Farm</a></li>
         <li><a>Organizations</a></li>
+      </ul> */
+
+      <ul className={style.DappSubMenu}>
+        <li><a>Explore</a></li>
+        <li><a>Positions</a></li>
+        <li><a>Hosted</a></li>
+        <li><a>Create</a></li>
       </ul>
   )
 }

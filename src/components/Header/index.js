@@ -1,10 +1,10 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { Typography } from '@ethereansos/interfaces-ui'
-import Navigation from '../../components/Navigation'
+import Navigation from '../Navigation'
 
 import style from './header.module.css'
-import Web3Connect  from '../../components/Web3Connect/index.js'
+import Web3Connect  from '../Global/Web3Connect'
 
 const Header = (props) => {
   return (
