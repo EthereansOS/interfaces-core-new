@@ -11,9 +11,10 @@ html {
   top: 0;
   left: 0;
 }
+h1,h2,h3,h4,h5,h6,p {margin-block-start: 0em;margin-block-end: 0em;margin-inline-start: 0px;margin-inline-end: 0px;}
 
 body {
-  background: linear-gradient(135deg,#c1befc,#fdf7f5 40%);
+  background: linear-gradient(135deg,#c0b5ff,#fdf7f5 40%);
   font-family: var(--font-family);
   min-height: 100%;
   height: 100%;

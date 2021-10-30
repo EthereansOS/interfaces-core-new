@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { Typography } from '@ethereansos/interfaces-ui'
-import Navigation from '../../Navigation'
+import Navigation from '../Navigation'
 import style from './dapp-menu.module.css'
 
 const DappMenu = (props) => {

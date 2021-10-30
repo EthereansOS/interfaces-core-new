@@ -1,7 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { Typography } from '@ethereansos/interfaces-ui'
-import Navigation from '../../Navigation'
 import style from './objects-lists.module.css'
 
 const ERC20TokenObject = (props) => {

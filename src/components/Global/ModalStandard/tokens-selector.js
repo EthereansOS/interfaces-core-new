@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import { Typography } from '@ethereansos/interfaces-ui'
 
 import style from './modal-standard.module.css'
-import ERC20TokenObject  from './../../components/ObjectsLists/index.js'
+import ERC20TokenObject  from '../../../components/Global/ObjectsLists/index.js'
 
 const TokensSelector  = (props) => {
     return (

@@ -4,7 +4,7 @@ import { Typography } from '@ethereansos/interfaces-ui'
 import Navigation from '../Navigation'
 
 import style from './header.module.css'
-import Web3Connect  from '../Global/Web3Connect'
+import Web3Connect  from '../Web3Connect'
 
 const Header = (props) => {
   return (

@@ -3,7 +3,6 @@
 .shareIt {display: inline-block; width: 22px; height: 22px; border: 2px solid #849BBD; float: right; border-radius: 5px;cursor: pointer;}
 .InfoBoxSide {width: 50%; display: inline-block;}
 .InfoBoxSide p {display: block; text-align: left; color: #676666; font-size: 12px; margin-bottom: 10px;}
-.InfoBoxBtns {width: 160px; display: inline-block; float: right;}
-.InfoBoxBtns a {border: 1px solid #849BBD; color: #849BBD; border-radius: 5px;display: inline-block; width: 70px; margin: 5px; font-size: 11px; padding: 3px 2px; text-align: center; cursor: pointer;}
+.InfoBoxBtns {width: 165px; display: inline-block; float: right;}
 .InfoBoxaside {position: absolute; width: 100%; left: 0; bottom: 0; background-color: #F0F0F0; text-align: right; padding: 5px;border-radius: 0 0 20px 20px;}
 .InfoBoxaside a {cursor: pointer; color: #414141; font-size: 8px; padding: 0px 15px; display: inline-block;}

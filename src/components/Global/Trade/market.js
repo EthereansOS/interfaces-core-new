@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import { Typography } from '@ethereansos/interfaces-ui'
 
 import style from './trade.module.css'
-import TokenInputRegular from './../../components/TokenInputRegular/index.js'
+import TokenInputRegular from './../../Global/TokenInputRegular/index.js'
 import MarketSwap from './market-swap.js'
 
 const Market  = (props) => {

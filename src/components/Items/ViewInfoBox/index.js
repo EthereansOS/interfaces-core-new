@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { Typography } from '@ethereansos/interfaces-ui'
 
 import style from './view-info-box.module.css'
+import ExtLinkButton from '../../Global/ExtLinkButton/index.js'
 
 const ViewInfoBox = (props) => {
   return (
@@ -16,10 +17,10 @@ const ViewInfoBox = (props) => {
         <p>Delegations:  0</p>
       </div>
       <div className={style.InfoBoxBtns}>
-        <a>Contract</a>
-        <a>Website</a>
-        <a>Host</a>
-        <a>Open Sea</a>
+        <ExtLinkButton></ExtLinkButton> {/* Contract - Contract Link */}
+        <ExtLinkButton></ExtLinkButton> {/* Website - Website Link */}
+        <ExtLinkButton></ExtLinkButton> {/* Host - Host Link */}
+        <ExtLinkButton></ExtLinkButton> {/* Open Sea - Open Sea Link */}
       </div>
       <div className={style.InfoBoxaside}>
         <a>Version: Native_1.1.1</a>

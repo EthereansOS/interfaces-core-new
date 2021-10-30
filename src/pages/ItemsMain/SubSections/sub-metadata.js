@@ -2,7 +2,7 @@ import React from 'react'
 import {Typography} from '@ethereansos/interfaces-ui'
 
 import style from './items-main-sub-sections.module.css'
-import MetadataSection from '../../../components/MetadataSection/index.js'
+import MetadataSection from '../../../components/Global/MetadataSection/index.js'
 
 const SubTrade = (props) => {
   return (

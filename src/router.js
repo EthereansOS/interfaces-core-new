@@ -2,8 +2,8 @@ import React, { useMemo } from 'react'
 import { Switch, Route } from 'react-router-dom'
 
 import { usePlaceholder } from '@ethereansos/interfaces-core'
-import Connect from './components/Connect'
-import MainTemplate from './components/MainTemplate'
+import Connect from './components/Global/Connect'
+import MainTemplate from './components/Global/MainTemplate'
 
 const NoMatch = () => <div>No Match</div>
 

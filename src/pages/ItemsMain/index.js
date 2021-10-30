@@ -3,11 +3,15 @@ import {Typography} from '@ethereansos/interfaces-ui'
 
 import style from './items-main.module.css'
 import CollectionView  from './Sections/collection-view'
+import ItemView  from './Sections/item-view'
+import DappMenu from './../../components/Global/DappMenu/index.js'
 
 const ItemsMain = (props) => {
   return (
       <div className={style.Web3PagesRoot}>
-        <CollectionView></CollectionView>
+        
+        <DappMenu></DappMenu>
+        <ItemView></ItemView>
       </div>
   )
 }

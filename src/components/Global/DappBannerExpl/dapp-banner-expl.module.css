@@ -1,0 +1,6 @@
+.DappBannerExpl {display: inline-block; padding: 5px; margin: 10px auto; width: 80%;}
+.DappBannerExpl div {box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-webkit-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);border-radius: 20px; display: inline-block; padding: 20px; height:100px; text-align:left; overflow: hidden; vertical-align: middle;}
+.DappBannerExpl div h2 {font-size: 16px; font-weight: bold; color: #ffffff; width: 100%; margin-bottom: 10px;}
+.DappBannerExpl div p {font-size: 13px; font-weight: normal; color: #ffffff; width: 100%;}
+.DappBannerL {background-color: #aa9cfe; width: 65%; margin-right: 3%;}
+.DappBannerS {background-color: #e1b9be;width: 30%;}

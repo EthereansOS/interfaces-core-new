@@ -4,3 +4,10 @@
 .FarmContentTitle figure img {display: inline-block;width: 70px;max-height: 130px;vertical-align: middle;}
 .FarmContentTitle aside {width: 60%;margin-bottom: 5px;vertical-align: middle;    text-align: center;display: inline-block;}
 .FarmContentTitle aside h6 {font-size: 16px;width: 95%;text-align: center;display: inline-block;font-weight: bolder; margin-bottom: 10px;}
+.FarmContentInfo {width: 55%;margin-left: 4%;display: inline-block;vertical-align: middle;}
+.FarmContentInfo p {display: inline-block;width: 95%;font-size: 14px;margin-bottom: 5px;}
+.FarmActivity {padding: 2px 4px;font-size: 13px;margin-left: 4px;}
+.FarmActivityA {color: rgba(52,177,94,.8784313725490196);border: 2px solid rgba(52,177,94,.8784313725490196);border-radius: 6px;}
+.FarmActivityI {color: #ad0002;border: 2px solid #ad0002;border-radius: 6px;}
+.VersionFarm {color: #bd84fb;font-weight: bolder;padding: 2px 4px;border: 2px solid #bd84fb;border-radius: 5px;font-size: 13px;margin: 0 0 0 10px;}
+.FarmContentInfo p > span {padding: 4px 8px;font-size: 12px;margin: 2px 8px 2px 0px; display: inline-block;}

@@ -2,15 +2,15 @@ import React from 'react'
 import {Typography} from '@ethereansos/interfaces-ui'
 
 import style from './covenants-sections.module.css'
-import FarmExplore from '../SubSections/farm-explore.js'
+import Trade from '../../../components/Global/Trade/index.js'
 
 
 
 
 const FarmMain = (props) => {
   return (
-  <div className={style.CovenantsMainBox}>
-    <FarmExplore></FarmExplore>
+  <div className={style.CovenantsMainBox0}>
+    <Trade></Trade>
   </div>
   )
 }

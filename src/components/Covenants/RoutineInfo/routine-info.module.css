@@ -1,0 +1,5 @@
+.RoutineContent {border-color: #ebebeb;background-color: #f7fafe;width: 100%;display: inline-block;margin: 10px auto;min-width: 600px;border-radius: 12px;padding: 3%;text-align: left;}
+.RoutineContentTitle {width: 55%;display: inline-block;margin-right: 1%;text-align: left;}
+.RoutineContentTitle h6 {font-size: 17px;width: 95%;text-align: left;display: inline-block;font-weight: bolder; margin-bottom: 10px;}
+.RoutineContentInfo {width: 40%;margin-left: 4%;display: inline-block;vertical-align: middle;}
+.RoutineContentInfo p {display: inline-block;width: 95%;font-size: 14px;margin-bottom: 5px;}
