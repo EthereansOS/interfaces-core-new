@@ -1,0 +1,3 @@
+.ActionAWeb3Button {width: 100%; margin: 15px auto; text-align: center;}
+.ActionAWeb3Button button {width: auto; margin: 0 auto; padding: 9px 15px; text-align: center; font-size: 15px; border-radius: 15px; border: none !important; cursor: pointer;background-color: #7474f7; color: #ffffff; font-weight: bold;}
+.ActionAWeb3Button button:disabled {font-weight: normal !important; background-color: #e4e4e4 !important; color: #6e6e6e !important; cursor: default;}

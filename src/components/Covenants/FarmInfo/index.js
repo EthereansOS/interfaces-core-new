@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { Typography } from '@ethereansos/interfaces-ui'
 
-import style from './routine-info.module.css'
+import style from './farm-info.module.css'
 import BackButton from '../../Global/BackButton/index.js'
 import RegularButton from '../../Global/RegularButton/index.js'
 import ExtLinkButton from '../../Global/ExtLinkButton/index.js'
@@ -11,7 +11,7 @@ import RegularSelect from '../../Global/RegularSelect/index.js'
 import RoutinesOperation from '../../Covenants/RoutinesOperation/index.js'
 
 
-const RoutineInfo = (props) => {
+const FarmInfo = (props) => {
   return (
     <div className={style.RutineBox}>
       <div className={style.RutineTitle}>
@@ -33,4 +33,4 @@ const RoutineInfo = (props) => {
   )
 }
 
-export default RoutineInfo
+export default FarmInfo
