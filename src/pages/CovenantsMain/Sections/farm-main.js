@@ -3,6 +3,7 @@ import {Typography} from '@ethereansos/interfaces-ui'
 
 import style from './covenants-sections.module.css'
 import FarmExplore from '../SubSections/farm-explore.js'
+import FarmView from '../SubSections/farm-view.js'
 
 
 
@@ -10,7 +11,7 @@ import FarmExplore from '../SubSections/farm-explore.js'
 const FarmMain = (props) => {
   return (
   <div className={style.CovenantsMainBox}>
-    <FarmExplore></FarmExplore>
+    <FarmView></FarmView>
   </div>
   )
 }

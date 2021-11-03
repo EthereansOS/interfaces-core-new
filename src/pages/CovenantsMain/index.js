@@ -13,7 +13,7 @@ const CovenantsMain = () => {
     <div className={style.Web3PagesRoot}>
           <DappBannerExpl></DappBannerExpl>
           <DoubleDappMenu></DoubleDappMenu>
-          <RoutinesMain></RoutinesMain>
+          <FarmMain></FarmMain>
     </div>
   )
 }
