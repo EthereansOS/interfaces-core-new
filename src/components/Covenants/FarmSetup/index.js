@@ -43,7 +43,11 @@ const FarmSetup = (props) => {
           </div>
           
           <div className={style.farmInfoCurve}>
-          
+            <p className={style.farmInfoCurveL}>
+              <p className={style.MAinTokensel}>
+                <a></a> OS per ETH
+              </p>
+            </p>
           </div>
         </div>
 
