@@ -61,4 +61,6 @@
 .FarmInfoDetailS a {text-decoration: underline; color: #5f5b53;}
 .farmInfoCurveL {width: 45%;display: inline-block;vertical-align: middle; margin-left: 0;font-size: 14px;margin-bottom: 2px;}
 .MAinTokensel {vertical-align: middle;margin: 5px auto;width: 100%;font-size: 12px;font-weight: 700;}
-.MAinTokensel a {width: 30px;height: 30px;display: inline-block;vertical-align: middle;}
+.MAinTokensel a {width: 30px;height: 30px;display: inline-block;vertical-align: middle; margin-right: 5px;}
+.MAinTokensel a img {width: 30px;height: 30px;display: inline-block;}
+.farmInfoCurveR {display: inline-block;font-size: 14px;margin-bottom: 2px;width: 42%;margin-left: 2%;}

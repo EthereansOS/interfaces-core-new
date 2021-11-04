@@ -6,6 +6,7 @@ import style from './farm-setup.module.css'
 import RegularButton from '../../Global/RegularButton/index.js'
 import ExtLinkButton from '../../Global/ExtLinkButton/index.js'
 import ItemLinkButton from '../../Global/ItemLinkButton/index.js'
+import VioletLinkButton from '../../Global/VioletLinkButton/index.js'
 
 const FarmSetup = (props) => {
   return (
@@ -45,7 +46,16 @@ const FarmSetup = (props) => {
           <div className={style.farmInfoCurve}>
             <p className={style.farmInfoCurveL}>
               <p className={style.MAinTokensel}>
-                <a></a> OS per ETH
+                <a>
+                  <img src={`${process.env.PUBLIC_URL}/img/switch.png`}></img>
+                </a> 
+                OS per ETH
+              </p>
+            </p>
+            <p className={style.farmInfoCurveR}>
+              <p className={style.PriceRangeInfoFarm}>
+                <VioletLinkButton></VioletLinkButton>
+                <VioletLinkButton></VioletLinkButton>
               </p>
             </p>
           </div>
