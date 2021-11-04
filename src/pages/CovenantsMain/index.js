@@ -1,19 +1,18 @@
 import React from 'react'
 import {Typography} from '@ethereansos/interfaces-ui'
+import { Link } from 'react-router-dom'
 
 import style from './covenants-main.module.css'
-import FarmMain from './Sections/farm-main.js'
-import RoutinesMain from './Sections/routines-main.js'
-import TradeMain from './Sections/trade-main.js'
-import DoubleDappMenu from './../../components/Global/DoubleDappMenu/index.js'
-import DappBannerExpl from './../../components/Global/DappBannerExpl/index.js'
 
 const CovenantsMain = () => {
   return (
     <div className={style.Web3PagesRoot}>
-          <DappBannerExpl></DappBannerExpl>
-          <DoubleDappMenu></DoubleDappMenu>
-          <FarmMain></FarmMain>
+      <Typography className={style.title} variant="h3" color="black">
+        Qua ci scrivo le zozzerie offiCéin di Covenants
+      </Typography>
+      <Link to="covenants/dapp">
+        Andiamo Onnicéin che è meglio valà
+      </Link>
     </div>
   )
 }

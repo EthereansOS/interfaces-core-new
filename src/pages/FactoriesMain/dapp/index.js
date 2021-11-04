@@ -1,6 +1,5 @@
 import React from 'react'
 import {Typography} from '@ethereansos/interfaces-ui'
-import { Link } from 'react-router-dom'
 
 import style from './factories-main.module.css'
 
@@ -8,11 +7,11 @@ const FactoriesMain = () => {
   return (
     <>
       <Typography className={style.title} variant="h3" color="black">
-        Qua ci scrivo le zozzerie offiCéin di Factories
+        Sample page 3
       </Typography>
-      <Link to="factories/dapp">
-        Andiamo Onnicéin che è meglio valà
-      </Link>
+      <Typography className={style.text} variant="body2" color="black">
+        This is a sample page
+      </Typography>
     </>
   )
 }
@@ -22,21 +21,14 @@ FactoriesMain.addToPlugin =
     ({addElement}) => {
       addElement('router', {
         index,
-        path: '/factories',
+        path: '/factories/dapp',
         Component: FactoriesMain,
         exact: true,
-        requireConnection: false,
+        requireConnection: true,
         templateProps: {
           menuName: 'appMenu',
-          isDapp: false,
+          isDapp: true,
         },
-      })
-
-      addElement('appMenu', {
-        name: 'Factories',
-        label: 'Factories',
-        link: '/factories',
-        index,
       })
     }
 

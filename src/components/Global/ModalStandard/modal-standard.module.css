@@ -1,13 +1,2 @@
 .ModalBack {position: fixed; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; background: linear-gradient(135deg,#c1befcd8,#fdf7f5b6 80%); text-align: center;display: flex;flex-wrap: wrap;flex-direction: row;justify-content: center;align-items: center;align-content: center}
 .ModalBox {width: 600px; height: 80%; display: flex; background-color: #F0F0F0; border-radius: 20px;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
-.TokensSelector {width: 100%; display: block; position: relative;}
-.TokensSelectorList {height: 90%; width: 100%; padding: 10px; display: block; border-radius: 20px 20px 0 0; overflow-y: scroll;}
-.TokensSelectorCategories {height: 60px; background-color: #525252; border-top: 2px solid #E4E4E4; width: 100%; display: block; border-radius: 0 0 20px 20px; position: absolute; left:0; bottom: 0; text-align: center; overflow: hidden;}
-.TokensSelectorCategories input {width: 40%;display: inline-block; vertical-align: top;height: 100%;background-color: #525252;border: none;border-radius: 0 0 0 20px;color: #ffffff;font-size: 16px;padding: 2%;}
-.TokensSelectorCategories input::placeholder {color: #ffffff;opacity: 1;}
-.TokensSelectorCategories input:-ms-input-placeholder {color: #ffffff;}
-.TokensSelectorCategories input::-ms-input-placeholder {color: #ffffff;}
-.TokensSelectorCategoriesList {width: 60%; height:100%; display: inline-block;background-color: #F0F0F0;}
-.TokensSelectorCategoriesList a {width: 33.33%;padding: 20px 1%; display: inline-block; background-color: #F0F0F0; vertical-align: top; cursor: pointer;}
-.TokensSelectorCategoriesList .selected, .TokensSelectorCategoriesList a:hover  { background-color: #ffffff;}
-.TokensSelectorCategoriesList .selected {font-weight: bold;}

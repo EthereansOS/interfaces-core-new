@@ -1,18 +1,18 @@
 import React from 'react'
 import {Typography} from '@ethereansos/interfaces-ui'
+import { Link } from 'react-router-dom'
 
 import style from './items-main.module.css'
-import CollectionView  from './Sections/collection-view'
-import ItemView  from './Sections/item-view'
-import ItemsExplore  from './Sections/items-explore'
-import DappMenu from './../../components/Global/DappMenu/index.js'
 
 const ItemsMain = (props) => {
   return (
       <div className={style.Web3PagesRoot}>
-        
-        <DappMenu></DappMenu>
-        <ItemView></ItemView>
+        <Typography className={style.title} variant="h3" color="black">
+          Qua ci scrivo le zozzerie offiCéin di Items
+        </Typography>
+        <Link to="dapp">
+          Andiamo Onnicéin che è meglio valà
+        </Link>
       </div>
   )
 }

@@ -2,8 +2,8 @@ import React from 'react'
 import {Typography} from '@ethereansos/interfaces-ui'
 
 import style from './items-main-sub-sections.module.css'
-import ExploreItems from '../../../components/Items/ExploreItems/index.js'
-import ViewCover from '../../../components/Items/ViewCover/index.js'
+import ExploreItems from '../../../../components/Items/ExploreItems/index.js'
+import ViewCover from '../../../../components/Items/ViewCover/index.js'
 
 const SubCollectionExplore = (props) => {
   return (

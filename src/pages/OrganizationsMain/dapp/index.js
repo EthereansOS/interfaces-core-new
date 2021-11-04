@@ -2,17 +2,16 @@ import React from 'react'
 import {Typography} from '@ethereansos/interfaces-ui'
 
 import style from './organizations-main.module.css'
-import { Link } from 'react-router-dom'
 
 const OrganizationsMain = () => {
   return (
     <>
       <Typography className={style.title} variant="h3" color="black">
-        Qua ci scrivo le zozzerie offiCéin di Organizations
+        Sample page 2
       </Typography>
-      <Link to="organizations/dapp">
-        Andiamo Onnicéin che è meglio valà
-      </Link>
+      <Typography className={style.text} variant="body2" color="black">
+        This is a sample page
+      </Typography>
     </>
   )
 }
@@ -22,21 +21,14 @@ OrganizationsMain.addToPlugin =
     ({addElement}) => {
       addElement('router', {
         index,
-        path: '/organizations',
+        path: '/organizations/dapp',
         Component: OrganizationsMain,
         exact: true,
-        requireConnection: false,
+        requireConnection: true,
         templateProps: {
           menuName: 'appMenu',
-          isDapp: false,
+          isDapp: true,
         },
-      })
-
-      addElement('appMenu', {
-        name: 'Organizations',
-        label: 'Organizations',
-        link: '/organizations',
-        index
       })
     }
 

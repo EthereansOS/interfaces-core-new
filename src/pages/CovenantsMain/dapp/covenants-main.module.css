@@ -1,0 +1,24 @@
+.Web3PagesRoot {
+  width: 1050px;
+}
+
+.image {
+  height: 300px;
+}
+
+.title {
+  margin-bottom: calc(var(--unit) * 3) 0;
+}
+
+.text {
+  padding: 0 calc(var(--unit) * 15);
+  margin: calc(var(--unit) * 3) 0;
+}
+
+.text:last-child {
+  margin-bottom: calc(var(--unit) * 10);
+}
+
+.CovenantsMainBox {width:800px; position: relative; display:inline-block; min-height:500px; background-color:#ffffff; box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32); margin: 30px auto 10px auto; padding: 50px; border-radius: 20px;}
+.CovenantsMainBox > ul {position: absolute;top: -30px;margin: 0;left: -60px; width: 100px; height: auto;}
+.CovenantsMainBox > ul > li {display: block;}

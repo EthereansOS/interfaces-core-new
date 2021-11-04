@@ -1,13 +1,11 @@
-import ItemsMain from './pages/ItemsMain'
-import CovenantsMain from './pages/CovenantsMain'
-import OrganizationsMain from './pages/OrganizationsMain'
-import FactoriesMain from './pages/FactoriesMain'
-
 const initPlugin = ({ addElement }) => {
-  ItemsMain.addToPlugin({index: 10})({ addElement })
-  CovenantsMain.addToPlugin({index: 20})({ addElement })
-  OrganizationsMain.addToPlugin({index: 30})({ addElement })
-  FactoriesMain.addToPlugin({index: 40})({ addElement })
+  var contextualRequire = require.context('./pages', true, /(index.js$|dapp\/index.js$)/);
+  var elements = contextualRequire.keys();
+  var currentIndex = 0;
+  for(var element of elements) {
+    var Element = contextualRequire(element).default;
+    Element.addToPlugin({index : (Element.index || (currentIndex += 10))})({addElement});
+  }
 }
 
 const appPlugin = {

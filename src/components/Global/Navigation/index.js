@@ -10,7 +10,7 @@ const Navigation = ({ menuName, isDapp }) => {
 
   const navItem = (item) => {
     return (
-      <Link key={item.name} to={!isDapp ? item.link : item.dappLink}>
+      <Link key={item.name} to={item.link}>
         <div className={style.item}>
             {item.label}
         </div>

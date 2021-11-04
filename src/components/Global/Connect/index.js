@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { useWeb3, webs3States, usePrevious } from '@ethereansos/interfaces-core'
 import { ConnectWidget, Container } from '@ethereansos/interfaces-ui'
 import style from './connect.module.css'
+import ModalStandard from '../ModalStandard'
 
 const Connect = ({ children }) => {
   const { connect, connectionStatus } = useWeb3()
@@ -21,13 +22,13 @@ const Connect = ({ children }) => {
   return connectionStatus === webs3States.CONNECTED ? (
     children
   ) : (
-    <Container className={style.root}>
+    <ModalStandard>
       <ConnectWidget
         title="Welcome Etherean"
         onClickConnect={handleConnectFromHomePage}
         connectionStatus={connectionStatus}
       />
-    </Container>
+    </ModalStandard>
   )
 }
 
