@@ -11,19 +11,43 @@ const FarmSetup = (props) => {
   return (
     <>
       {/*Single setup Start*/}
-      <div className={style.RoutineOperation}>
-        <div className={style.RoutineOperationSchedule}>
-        </div>
-        <div className={style.RoutineOperationTB}>
-            <ExtLinkButton></ExtLinkButton>
-            <ExtLinkButton></ExtLinkButton>
-            <ExtLinkButton></ExtLinkButton>
-            <ExtLinkButton></ExtLinkButton>
-            <ExtLinkButton></ExtLinkButton>
-            <ExtLinkButton></ExtLinkButton>
+      <div className={style.FarmSetup}>
+        <div className={style.FarmMain}>
+          <div className={style.FarmInstructions}>
+            <div className={style.FarmToken}>
+              <figure>
+                <a target="_blank" href="https://etherscan.io/token/0x6100dd79fCAA88420750DceE3F735d168aBcB771">
+                  <img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x6100dd79fCAA88420750DceE3F735d168aBcB771/logo.png"></img>
+                </a>     
+              </figure>
+              <span>50%</span>
+            </div>
+            <div className={style.FarmToken}>
+              <figure>
+                <a target="_blank" href="https://etherscan.io/token/0x6100dd79fCAA88420750DceE3F735d168aBcB771">
+                  <img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x6100dd79fCAA88420750DceE3F735d168aBcB771/logo.png"></img>
+                </a>
+              </figure>
+              <span>50%</span>
+            </div>
+            <p className={style.FarmInfoDetail}>
+              <span class={style.FarmActivityA}>Active</span>
+              <b>APR:</b> 500%
+            </p>
+            <p className={style.FarmInfoDetailS}>
+              <b>Daily Rate:</b> 50000 OS
+            </p>
+            <p className={style.FarmInfoDetailS}>
+              <b>End:</b> <a>31467951397</a>
+            </p>
           </div>
-
           
+          <div className={style.farmInfoCurve}>
+          
+          </div>
+        </div>
+
+
       </div>
       {/*Single setup End*/}
     </>
