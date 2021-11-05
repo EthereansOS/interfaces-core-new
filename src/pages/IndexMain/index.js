@@ -2,13 +2,13 @@ import React from 'react'
 import {Typography} from '@ethereansos/interfaces-ui'
 import { Link } from 'react-router-dom'
 
-import style from './items-main.module.css'
+import style from './index.module.css'
 
-const ItemsMain = (props) => {
+const IndexMain = () => {
   return (
       <div className={style.Web3PagesRoot}>
         <Typography className={style.title} variant="h3" color="black">
-          Qua ci scrivo le zozzerie offiCéin di Items
+          Qua ci scrivo le zozzerie offiCéin
         </Typography>
         <Link to="dapp">
           Andiamo Onnicéin che è meglio valà
@@ -17,13 +17,13 @@ const ItemsMain = (props) => {
   )
 }
 
-/*ItemsMain.addToPlugin =
+IndexMain.addToPlugin =
   ({index}) =>
     ({addElement}) => {
       addElement('router', {
         index,
         path: '/',
-        Component: ItemsMain,
+        Component: IndexMain,
         exact: true,
         requireConnection: false,
         templateProps: {
@@ -31,14 +31,6 @@ const ItemsMain = (props) => {
           isDapp: false,
         },
       })
+    }
 
-      addElement('appMenu', {
-        name: 'Items',
-        label: 'Items',
-        icon: '${process.env.PUBLIC_URL}/img/ethereum.png',
-        link: '/',
-        index,
-      })
-    }*/
-
-export default ItemsMain
+export default IndexMain

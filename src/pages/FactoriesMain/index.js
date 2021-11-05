@@ -17,7 +17,7 @@ const FactoriesMain = () => {
   )
 }
 
-FactoriesMain.addToPlugin =
+/*FactoriesMain.addToPlugin =
   ({index}) =>
     ({addElement}) => {
       addElement('router', {
@@ -38,6 +38,6 @@ FactoriesMain.addToPlugin =
         link: '/factories',
         index,
       })
-    }
+    }*/
 
 export default FactoriesMain

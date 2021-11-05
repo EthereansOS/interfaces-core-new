@@ -16,6 +16,7 @@ const OrganizationsMain = () => {
   )
 }
 
+OrganizationsMain.pluginIndex = 20;
 OrganizationsMain.addToPlugin =
   ({index}) =>
     ({addElement}) => {
@@ -29,6 +30,13 @@ OrganizationsMain.addToPlugin =
           menuName: 'appMenu',
           isDapp: true,
         },
+      })
+
+      addElement('appMenu', {
+        name: 'Organizations',
+        label: 'Organizations',
+        link: '/organizations/dapp',
+        index
       })
     }
 

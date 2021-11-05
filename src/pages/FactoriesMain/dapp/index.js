@@ -16,6 +16,7 @@ const FactoriesMain = () => {
   )
 }
 
+FactoriesMain.pluginIndex = 40;
 FactoriesMain.addToPlugin =
   ({index}) =>
     ({addElement}) => {
@@ -29,6 +30,13 @@ FactoriesMain.addToPlugin =
           menuName: 'appMenu',
           isDapp: true,
         },
+      })
+
+      addElement('appMenu', {
+        name: 'Factories',
+        label: 'Factories',
+        link: '/factories/dapp',
+        index,
       })
     }
 

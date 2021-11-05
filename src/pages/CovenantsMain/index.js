@@ -17,7 +17,7 @@ const CovenantsMain = () => {
   )
 }
 
-CovenantsMain.addToPlugin =
+/*CovenantsMain.addToPlugin =
   ({index}) =>
     ({addElement}) => {
       addElement('router', {
@@ -38,6 +38,6 @@ CovenantsMain.addToPlugin =
         link: '/covenants',
         index,
       })
-    }
+    }*/
 
 export default CovenantsMain

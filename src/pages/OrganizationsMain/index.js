@@ -17,7 +17,7 @@ const OrganizationsMain = () => {
   )
 }
 
-OrganizationsMain.addToPlugin =
+/*OrganizationsMain.addToPlugin =
   ({index}) =>
     ({addElement}) => {
       addElement('router', {
@@ -38,6 +38,6 @@ OrganizationsMain.addToPlugin =
         link: '/organizations',
         index
       })
-    }
+    }*/
 
 export default OrganizationsMain

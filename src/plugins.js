@@ -4,7 +4,7 @@ const initPlugin = ({ addElement }) => {
   var currentIndex = 0;
   for(var element of elements) {
     var Element = contextualRequire(element).default;
-    Element.addToPlugin({index : (Element.index || (currentIndex += 10))})({addElement});
+    Element.addToPlugin && Element.addToPlugin({index : (Element.pluginIndex || (currentIndex += 10))})({addElement});
   }
 }
 

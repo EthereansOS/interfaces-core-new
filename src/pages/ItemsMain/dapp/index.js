@@ -17,6 +17,7 @@ const ItemsMain = (props) => {
   )
 }
 
+ItemsMain.pluginIndex = 10;
 ItemsMain.addToPlugin =
   ({index}) =>
     ({addElement}) => {
@@ -30,6 +31,14 @@ ItemsMain.addToPlugin =
           menuName: 'appMenu',
           isDapp: true,
         },
+      })
+
+      addElement('appMenu', {
+        name: 'Items',
+        label: 'Items',
+        icon: '${process.env.PUBLIC_URL}/img/ethereum.png',
+        link: '/dapp',
+        index,
       })
     }
 

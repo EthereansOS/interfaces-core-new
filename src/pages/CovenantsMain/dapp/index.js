@@ -18,6 +18,7 @@ const CovenantsMain = () => {
   )
 }
 
+CovenantsMain.pluginIndex = 30;
 CovenantsMain.addToPlugin =
   ({index}) =>
     ({addElement}) => {
@@ -31,6 +32,13 @@ CovenantsMain.addToPlugin =
           menuName: 'appMenu',
           isDapp: true,
         },
+      })
+
+      addElement('appMenu', {
+        name: 'covenants',
+        label: 'Covenants',
+        link: '/covenants/dapp',
+        index,
       })
     }
 

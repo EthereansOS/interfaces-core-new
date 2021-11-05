@@ -1,8 +1,9 @@
 import React from 'react'
 import style from './web3-connect.module.css'
-import { useWeb3, webs3States } from '@ethereansos/interfaces-core'
+import { useWeb3, webs3States, shortenWords, useEthosContext } from '@ethereansos/interfaces-core'
 
 const Web3Connect = () => {
+  const context = useEthosContext()
   var web3 = useWeb3();
   function triggerConnect() {
     var location = window.location.toString();
@@ -17,7 +18,7 @@ const Web3Connect = () => {
         </a>*/}
         <a href="javascript:;" onClick={triggerConnect} className={style.Web3ConnectWallet}>
           <img src={`${process.env.PUBLIC_URL}/img/ethereum.png`}></img>
-          <p>{web3.connectionStatus === webs3States.NOT_CONNECTED ? "Connect" : web3.walletAddress}</p>
+          <p>{web3.connectionStatus === webs3States.NOT_CONNECTED ? "Connect" : shortenWords({context}, web3.walletAddress, 9)}</p>
         </a>
       </div>
   )
