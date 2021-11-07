@@ -7,16 +7,6 @@ import ModalStandard from '../ModalStandard'
 const Connect = ({ children }) => {
   const context = useEthosContext()
   const { wallet, connectionStatus } = useWeb3();
-  const previousConnectionStatus = usePrevious(connectionStatus)
-
-  useEffect(() => {
-    if (
-      connectionStatus === webs3States.CONNECTED &&
-      previousConnectionStatus === webs3States.CONNECTING
-    ) {
-      console.log('Connected')
-    }
-  }, [connectionStatus, previousConnectionStatus])
 
   return connectionStatus === webs3States.CONNECTED ? (
     children
@@ -26,7 +16,7 @@ const Connect = ({ children }) => {
         title="Welcome Etherean"
         wallet={wallet}
         connectionStatus={connectionStatus}
-        connectors={context.connectors}
+        connectors={context.useWalletSettings}
       />
     </ModalStandard>
   )
