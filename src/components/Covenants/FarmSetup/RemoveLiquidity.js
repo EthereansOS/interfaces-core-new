@@ -11,30 +11,24 @@ import ExtLinkButton from '../../Global/ExtLinkButton/index.js'
 import ItemLinkButton from '../../Global/ItemLinkButton/index.js'
 import VioletLinkButton from '../../Global/VioletLinkButton/index.js'
 import ActionAWeb3ButtonSmall from '../../Global/ActionAWeb3ButtonSmall/index.js'
-import TokenInputSmall from '../../Global/TokenInputSmall/index.js'
+import TokenInputRegular from '../../Global/TokenInputRegular/index.js'
 import ActionAWeb3Buttons from '../../Global/ActionAWeb3Buttons/index.js'
-import ActionInfoSectionS from '../../Global/ActionInfoSectionS/index.js'
 
 const AddLiquidity = (props) => {
   return (
       <div className={style.TimetoFarm}>
         <div className={style.TimetoFarmI}>
-          <TokenInputSmall></TokenInputSmall>
+          <TokenInputRegular></TokenInputRegular>
         </div>
         <div className={style.TimetoFarmI}>
-          <TokenInputSmall></TokenInputSmall>
+          <TokenInputRegular></TokenInputRegular>
+        </div>
+        <div className={style.TimetoFarmOutput}>
+          <p>Estimated reward per day</p>
+          <b>22.098 OS</b>
         </div>
         <div className={style.FarmInputActionBTN}>
           <ActionAWeb3Buttons></ActionAWeb3Buttons>
-        </div>
-        <div className={style.TimetoFarmOutput}>
-          <div className={style.TimetoFarmOutputI}>
-            <p>Estimated reward per day</p>
-            <p><b>22.098 OS</b></p>
-          </div>
-          <div className={style.FarmBoxSettings}>
-            <ActionInfoSectionS></ActionInfoSectionS>
-          </div>
         </div>
       </div>
   )

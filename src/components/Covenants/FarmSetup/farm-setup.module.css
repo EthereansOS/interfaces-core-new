@@ -84,4 +84,11 @@ b {font-weight: bold;}
 .YourFarmingPositionsFarmingFarmingFarmingChiFarmaViveComeUnPAsha {width: 100%; display: inline-block; padding: 10px; margin: 5px auto 0px auto; border-radius: 15px; background-color: #e9effc; margin-top: -20px; background-color: #849BBD; border: 1px solid #849BBD;}
 .FarmingYouInfoPart {width: 50%; display: inline-block; text-align: center;}
 .FarmingYouInfoPart span {color: #ffffff;width: 100%; margin:0px auto 10px auto; text-align: center; font-size: 12px !important; display: inline-block}
-.TimetoFarm {width: 100%; display: inline-block; padding: 10px; margin: 5px auto 0px auto; border-radius: 0; background-color: #e9effc; margin-top: -20px; background-color: #e9effc; border: 1px solid #e9effc;}
+.TimetoFarm {width: 100%; position: relative; display: inline-block; padding: 55px 10px; margin: 5px auto 0px auto; border-radius: 0; background-color:  transparent; margin-top: -20px;}
+.TimetoFarmI {width: 38%; margin: 30px 1%; display: inline-block;}
+.TimetoFarmOutput {width: 500px; padding:15px  2px; margin: 15px auto; border-radius: 15px; background-color: #849BBD; border: 1px solid #849BBD; display: block;}
+.TimetoFarmOutputI {width: 300px; display: inline-block; text-align: left; vertical-align: middle;}
+.TimetoFarmOutput p {width: 100%; margin:0px auto 5px auto; text-align: left; font-size: 12px !important; display: inline-block; color: #ffffff;}
+.TimetoFarmOutput b {font-weight: bold; font-size: 13px; color: #ffffff;}
+.FarmInputActionBTN {width: 580px; display: inline-block; margin: 10px auto;}
+.FarmBoxSettings {width: 100px; display: inline-block;}
