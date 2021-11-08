@@ -13,23 +13,39 @@ import VioletLinkButton from '../../Global/VioletLinkButton/index.js'
 import ActionAWeb3ButtonSmall from '../../Global/ActionAWeb3ButtonSmall/index.js'
 import TokenInputRegular from '../../Global/TokenInputRegular/index.js'
 import ActionAWeb3Buttons from '../../Global/ActionAWeb3Buttons/index.js'
+import ActionAWeb3Button from '../../Global/ActionAWeb3Button/index.js'
+import ActionInfoSectionS from '../../Global/ActionInfoSectionS/index.js'
 
 const AddLiquidity = (props) => {
   return (
       <div className={style.TimetoFarm}>
-        <div className={style.TimetoFarmI}>
-          <TokenInputRegular></TokenInputRegular>
-        </div>
-        <div className={style.TimetoFarmI}>
-          <TokenInputRegular></TokenInputRegular>
-        </div>
-        <div className={style.TimetoFarmOutput}>
-          <p>Estimated reward per day</p>
-          <b>22.098 OS</b>
-        </div>
-        <div className={style.FarmInputActionBTN}>
-          <ActionAWeb3Buttons></ActionAWeb3Buttons>
-        </div>
+        <div className={style.RemoveFarm}>
+            <input type="range" />
+            <div className={style.RemovePerch}>
+              <RegularButton></RegularButton>
+            </div>
+            <div className={style.RemovePerch}>
+              <RegularButton></RegularButton>
+            </div>
+            <div className={style.RemovePerch}>
+              <RegularButton></RegularButton>
+            </div>
+            <div className={style.RemovePerch}>
+              <RegularButton></RegularButton>
+            </div>
+            <div className={style.FarmInputActionBTN}>
+              <ActionAWeb3Button></ActionAWeb3Button>
+            </div>
+              <div className={style.TimetoFarmOutput}>
+                <div className={style.TimetoFarmOutputI}>
+                  <p>Withdraw:</p>
+                  <p><b>22.098 OS - 550 ETH</b></p>
+                </div>
+                <div className={style.FarmBoxSettings}>
+                  <ActionInfoSectionS></ActionInfoSectionS>
+                 </div>
+              </div>
+          </div>
       </div>
   )
 }
