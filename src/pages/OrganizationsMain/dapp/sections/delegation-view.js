@@ -1,14 +1,13 @@
 import React from 'react'
 import {Typography} from '@ethereansos/interfaces-ui'
 
-import style from './items-main-sections.module.css'
-import ExploreItems from '../../../../components/Items/ExploreItems/index.js'
+import style from './organizations-main-sections.module.css'
 
 const ItemsExplore = (props) => {
   return (
     <>
-      <div className={style.ItemsExploreMain}>
-        <ExploreItems></ExploreItems>
+      <div className={style.OrganizationsExploreMain}>
+        
       </div>
     </>
   )
