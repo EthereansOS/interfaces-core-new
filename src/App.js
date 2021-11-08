@@ -9,6 +9,7 @@ import {
   InitContextProvider,
   GlobalContextsProvider,
 } from '@ethereansos/interfaces-core'
+import { ContextualWeb3ContextWeb3Provider } from './logic/frontend/contextualWeb3'
 import appPlugin from './plugins'
 import AppRouter from './router'
 import './typography.css'
@@ -35,11 +36,13 @@ function App() {
         Error={({ error }) => <div>Error on application init: {error}</div>}>
         <PluginsContextProvider plugins={[appPlugin]}>
           <Web3ContextProvider>
-            <GlobalContextsProvider>
-              <HashRouter>
-                <AppRouter />
-              </HashRouter>
-            </GlobalContextsProvider>
+            <ContextualWeb3ContextWeb3Provider>
+              <GlobalContextsProvider>
+                <HashRouter>
+                  <AppRouter />
+                </HashRouter>
+              </GlobalContextsProvider>
+            </ContextualWeb3ContextWeb3Provider>
           </Web3ContextProvider>
         </PluginsContextProvider>
       </InitContextProvider>
