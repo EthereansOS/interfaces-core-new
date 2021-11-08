@@ -2,17 +2,15 @@ import React from 'react'
 import {Typography} from '@ethereansos/interfaces-ui'
 
 import style from './organizations-main.module.css'
+import DappMenu from './../../../components/Global/DappMenu/index.js'
+import OrganizationsExplore  from './sections/organizations-explore'
 
 const OrganizationsMain = () => {
   return (
-    <>
-      <Typography className={style.title} variant="h3" color="black">
-        Sample page 2
-      </Typography>
-      <Typography className={style.text} variant="body2" color="black">
-        This is a sample page
-      </Typography>
-    </>
+    <div className={style.Web3PagesRoot}>
+      <DappMenu></DappMenu>
+      <OrganizationsExplore></OrganizationsExplore>
+    </div>
   )
 }
 
