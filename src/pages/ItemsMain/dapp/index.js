@@ -1,13 +1,16 @@
 import React from 'react'
-import {Typography} from '@ethereansos/interfaces-ui'
+
 import { useLocation } from 'react-router'
-import style from './items-main.module.css'
-import CollectionView  from './Sections/collection-view'
-import CollectionsExplore from './Sections/collections-explore'
-import ItemView  from './Sections/item-view'
-import ItemsExplore  from './Sections/items-explore'
+
 import DappMenu from './../../../components/Global/DappMenu/index.js'
+
+import CollectionsExplore from './Sections/collections-explore'
+import ItemsExplore  from './Sections/items-explore'
+import CollectionView  from './Sections/collection-view'
+import ItemView  from './Sections/item-view'
 import Create from './Sections/create'
+
+import style from './items-main.module.css'
 
 var dappMenuVoices = [{
   path: '/dapp',
@@ -20,7 +23,16 @@ var dappMenuVoices = [{
     isDapp: true,
   }
 }, {
-  path: '/dapp/wrapped',
+  path: '/dapp/items/:id',
+  Component: ItemView,
+  exact: false,
+  requireConnection: true,
+  templateProps: {
+    menuName: 'appMenu',
+    isDapp: true,
+  }
+}, {
+  path: '/dapp/items/wrapped',
   label: 'Wrapped',
   Component: ItemsExplore,
   exact: true,
@@ -30,7 +42,7 @@ var dappMenuVoices = [{
     isDapp: true,
   }
 }, {
-  path: '/dapp/collections',
+  path: '/dapp/items/collections',
   label: 'Collections',
   Component: CollectionsExplore,
   exact: true,
@@ -38,9 +50,19 @@ var dappMenuVoices = [{
   templateProps: {
     menuName: 'appMenu',
     isDapp: true,
+    Component: CollectionsExplore
   }
 }, {
-  path: '/dapp/batch',
+  path: '/dapp/items/collections/:id',
+  Component: CollectionView,
+  exact: false,
+  requireConnection: true,
+  templateProps: {
+    menuName: 'appMenu',
+    isDapp: true,
+  }
+}, {
+  path: '/dapp/items/batch',
   label: 'Batch',
   Component: ItemsExplore,
   exact: true,
@@ -50,7 +72,7 @@ var dappMenuVoices = [{
     isDapp: true,
   }
 }, {
-  path: '/dapp/create',
+  path: '/dapp/items/create',
   label: 'Create',
   Component: Create,
   exact: true,
@@ -60,28 +82,10 @@ var dappMenuVoices = [{
     isDapp: true,
   }
 }, {
-  path: '/dapp/wrap',
+  path: '/dapp/items/wrap',
   label: 'Wrap',
   Component: Create,
   exact: true,
-  requireConnection: true,
-  templateProps: {
-    menuName: 'appMenu',
-    isDapp: true,
-  }
-}, {
-  path: '/dapp/item/:id',
-  Component: ItemView,
-  exact: false,
-  requireConnection: true,
-  templateProps: {
-    menuName: 'appMenu',
-    isDapp: true,
-  }
-}, {
-  path: '/dapp/collection/:id',
-  Component: CollectionView,
-  exact: false,
   requireConnection: true,
   templateProps: {
     menuName: 'appMenu',
@@ -92,14 +96,15 @@ var dappMenuVoices = [{
 const ItemsMain = (props) => {
 
   var location = useLocation()
-  var selectedVoice = location.pathname === '/dapp' ? dappMenuVoices[0] : dappMenuVoices.slice(1).filter(it => location.pathname.indexOf(it.path.split(':')[0]) !== -1)[0]
-  var Component = selectedVoice.Component
+  var selectedVoice = dappMenuVoices.filter(it => it.path === location.pathName || (location.pathname.indexOf(it.path.split(':')[0]) !== -1 && it.path.split('/').length === location.pathname.split('/').length))[0]
+
+  var Component = (selectedVoice || dappMenuVoices[0]).Component
 
   return (
-      <div className={style.Web3PagesRoot}>
-        <DappMenu voices={dappMenuVoices}/>
-        <Component {...props}/>
-      </div>
+    <div className={style.Web3PagesRoot}>
+      <DappMenu voices={dappMenuVoices}/>
+      <Component {...props}/>
+    </div>
   )
 }
 

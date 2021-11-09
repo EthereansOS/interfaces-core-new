@@ -1,11 +1,10 @@
 import React from 'react'
-import {Typography} from '@ethereansos/interfaces-ui'
+import { Link } from 'react-router-dom'
 
 import style from './items-main-sub-sections.module.css'
 import ExploreItems from '../../../../components/Items/ExploreItems/index.js'
-import ViewCover from '../../../../components/Items/ViewCover/index.js'
 
-const SubCollectionExplore = (props) => {
+const SubCollectionExplore = ({item}) => {
   return (
       <div className={style.SubCollectionExplore}>
         <div className={style.SubCollectionInfo}>
@@ -13,11 +12,11 @@ const SubCollectionExplore = (props) => {
           <img src={`${process.env.PUBLIC_URL}/img/test.jpg`}></img>
           </figure>
           <div className={style.SubCollectionInfoName}>
-            <h5>More From Pirulino Collection</h5>
-            <a>View</a>
+            <h5>More From {item.collectionData.name} Collection</h5>
+            <Link to={`/dapp/items/collections/${item.collectionId}`}>View</Link>
           </div>
         </div>
-        <ExploreItems></ExploreItems>
+        <ExploreItems forCollection={item.collectionId} excluding={item.id}/>
       </div>
   )
 }

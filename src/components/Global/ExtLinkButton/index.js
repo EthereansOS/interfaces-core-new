@@ -5,12 +5,15 @@ import { Typography } from '@ethereansos/interfaces-ui'
 
 import style from './ext-link-button.module.css'
 
-const ExtLinkButton  = (props) => {
-    return (
-        
-        <button target="_blank" className={style.ExtLinkButton}>Open</button>
+const ExtLinkButton = (props) => {
 
+    function onClick() {
+        window.open(props.href, '_blank').focus();
+    }
+
+    return (
+        <button onClick={onClick} className={style.ExtLinkButton}>{props.text || "Open"}</button>
     )
 }
 
-    export default ExtLinkButton
+export default ExtLinkButton

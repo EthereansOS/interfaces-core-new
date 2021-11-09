@@ -23,17 +23,16 @@ const ItemView = () => {
   const { web3, account } = useWeb3()
   const [item, setItem] = useState(null)
 
-
   useEffect(async () => {
     var itemId = location.pathname.substring(location.pathname.lastIndexOf('/') + 1)
     setItem(null)
     var item;
     if(itemId.toLowerCase().indexOf('0x') === -1) {
       var itemProjectionFactory = getGlobalContract("itemProjectionFactory")
-      item = newContract(context.ItemABI, await blockchainCall(itemProjectionFactory.methods.mainInterface))
+      item = newContract(context.ItemMainInterfaceABI, await blockchainCall(itemProjectionFactory.methods.mainInterface))
     }
     loadItem({context, web3, account, newContract}, itemId, item).then(setItem).catch(() => setItem(undefined))
-  }, [web3])
+  }, [])
 
   /*
     <ModalStandard>
@@ -46,15 +45,15 @@ const ItemView = () => {
       {item === undefined && <h1>No item found with provided Id or address. Maybe wrong network?</h1>}
       {item && <>
         <div className={style.CollectionLeft}>
-          <ViewCover></ViewCover>
-          <ViewBasics></ViewBasics>
-          <ViewDescription></ViewDescription>
-          <ViewProperties></ViewProperties>
+          <ViewCover item={item}/>
+          <ViewBasics item={item}/>
+          <ViewDescription item={item}/>
+          <ViewProperties item={item}/>
         </div>
         <div className={style.CollectionRight}>
-          <SubTrade></SubTrade>
-          <DappSubMenu></DappSubMenu>
-          <SubCollectionExplore></SubCollectionExplore>
+          <SubTrade item={item}/>
+          <DappSubMenu item={item}/>
+          <SubCollectionExplore item={item}/>
         </div>
       </>}
     </div>

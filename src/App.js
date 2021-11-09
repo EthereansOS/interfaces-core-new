@@ -37,7 +37,7 @@ function App() {
           <Web3ContextProvider>
             <GlobalContextsProvider>
               <HashRouter>
-                <AppRouter />
+                <AppRouter/>
               </HashRouter>
             </GlobalContextsProvider>
           </Web3ContextProvider>

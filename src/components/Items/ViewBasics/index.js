@@ -1,20 +1,21 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
-import { Typography } from '@ethereansos/interfaces-ui'
+import { useWeb3, getNetworkElement, useEthosContext } from '@ethereansos/interfaces-core'
 
 import style from './view-basics.module.css'
 import ExtLinkButton from '../../Global/ExtLinkButton/index.js'
 
-const ViewBasics = (props) => {
+const ViewBasics = ({item}) => {
+  const context = useEthosContext()
+  const { chainId } = useWeb3()
   return (
     <div className={style.ViewBasics}>
-        <h5>Uni Bojack (UNIBJ)</h5>
-        <ExtLinkButton></ExtLinkButton> {/* Contract - Contract Link */}
-        <ExtLinkButton></ExtLinkButton> {/* Host - Host Link */}
-        <ExtLinkButton></ExtLinkButton> {/* Website - Website Link */}
-        <ExtLinkButton></ExtLinkButton> {/* Open Sea - Open Sea Link */}
-        <ExtLinkButton></ExtLinkButton> {/* Uniswap - Uniswap Link */}
-        <ExtLinkButton></ExtLinkButton> {/* Share - Share Link */}
+        <h5>{item.name} ({item.symbol})</h5>
+        <ExtLinkButton href={`${getNetworkElement({context, networkId : chainId}, "etherscanURL")}/token/${item.address}`} text="Contract"/>
+        <ExtLinkButton href={`${getNetworkElement({context, networkId : chainId}, "etherscanURL")}/address/${item.host}`} text="Host"/>
+        <ExtLinkButton href={item.external_url} text="Website"/>
+        <ExtLinkButton href={`https://opensea.io/assets/${item.mainInterface.options.address}/${item.id}`} text="OpenSea"/>
+        <ExtLinkButton href={`https://info.uniswap.org/#/tokens/${item.address}`} text="Uniswap"/>
+        <ExtLinkButton href={item.discord_url} text="Share"/>
     </div>
   )
 }

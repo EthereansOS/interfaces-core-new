@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
-import { Typography } from '@ethereansos/interfaces-ui'
-import Navigation from '../Navigation'
-import style from './objects-lists.module.css'
+
 import { useContextualWeb3 } from '../../../logic/frontend/contextualWeb3'
 import {useWeb3, useEthosContext } from '@ethereansos/interfaces-core'
 import { CircularProgress } from '@ethereansos/interfaces-ui'
@@ -21,10 +18,10 @@ const ItemObject = (props) => {
   const itemProjectionFactory = getGlobalContract("itemProjectionFactory")
 
   useEffect(() => {
+    setItems(null)
     if(!itemProjectionFactory) {
       return
     }
-    setItems(null)
     loadItemsByFactories({context, web3, account, newContract}, itemProjectionFactory).then(setItems)
   }, [itemProjectionFactory])
 

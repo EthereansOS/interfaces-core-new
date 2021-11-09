@@ -15,7 +15,7 @@ export const ContextualWeb3ContextWeb3Provider = ({children}) => {
 
     useEffect(() => {
         setContracts({})
-        web3 && setGlobalContracts(globalContractNames.map(newContractByName))
+        setGlobalContracts(globalContractNames.map(newContractByName))
     }, [chainId])
 
     function newContractByName(contractName) {
@@ -23,9 +23,10 @@ export const ContextualWeb3ContextWeb3Provider = ({children}) => {
     }
 
     function newContract(abi, address) {
+        address = address ? web3Utils.toChecksumAddress(address) : ""
         var key = web3Utils.sha3(JSON.stringify(abi) + address)
         var contract = contracts[key]
-        contract = contract || (web3 && new web3.eth.Contract(abi, address))
+        contract = contract || new web3.eth.Contract(abi, address)
         contract && setContracts(oldValue => ({...oldValue, [key] : contract}))
         return contract
     }
@@ -36,7 +37,7 @@ export const ContextualWeb3ContextWeb3Provider = ({children}) => {
             var contract = newContractByName(contractName)
             contract && setGlobalContracts(oldValue => [...oldValue, contract])
             contract && setGlobalContractNames(oldValue => [...oldValue, contractName])
-            return contract;
+            return contract
         }
         return globalContracts[index]
     }

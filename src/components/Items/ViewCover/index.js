@@ -4,10 +4,10 @@ import { Typography } from '@ethereansos/interfaces-ui'
 
 import style from './view-cover.module.css'
 
-const ViewCover = (props) => {
+const ViewCover = ({item}) => {
   return (
     <figure className={style.ICViewCover}>
-            <img src={`${process.env.PUBLIC_URL}/img/test.jpg`}></img>
+        <img src={item.image}></img>
     </figure>
   )
 }
