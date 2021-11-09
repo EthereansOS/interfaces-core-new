@@ -7,12 +7,32 @@ import ItemView  from './Sections/item-view'
 import ItemsExplore  from './Sections/items-explore'
 import DappMenu from './../../../components/Global/DappMenu/index.js'
 
+var dappMenuVoices = [{
+  label : 'Items',
+  linkTo : '/dapp'
+}, {
+  label : 'Wrapped',
+  linkTo : '/dapp/wrapped'
+}, {
+  label : 'Collections',
+  linkTo : '/dapp/collections'
+}, {
+  label : 'Batch',
+  linkTo : '/dapp/batch'
+}, {
+  label : 'Create',
+  linkTo : '/dapp/create'
+}, {
+  label : 'Wrap',
+  linkTo : '/dapp/wrap'
+}];
+
 const ItemsMain = (props) => {
+
   return (
       <div className={style.Web3PagesRoot}>
-        
-        <DappMenu></DappMenu>
-        <ItemView></ItemView>
+        <DappMenu voices={dappMenuVoices}/>
+        <ItemsExplore/>
       </div>
   )
 }
