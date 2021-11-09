@@ -1,38 +1,104 @@
 import React from 'react'
 import {Typography} from '@ethereansos/interfaces-ui'
-
+import { useLocation } from 'react-router'
 import style from './items-main.module.css'
 import CollectionView  from './Sections/collection-view'
+import CollectionsExplore from './Sections/collections-explore'
 import ItemView  from './Sections/item-view'
 import ItemsExplore  from './Sections/items-explore'
 import DappMenu from './../../../components/Global/DappMenu/index.js'
+import Create from './Sections/create'
 
 var dappMenuVoices = [{
-  label : 'Items',
-  linkTo : '/dapp'
+  path: '/dapp',
+  label: 'Items',
+  Component: ItemsExplore,
+  exact: true,
+  requireConnection: true,
+  templateProps: {
+    menuName: 'appMenu',
+    isDapp: true,
+  }
 }, {
-  label : 'Wrapped',
-  linkTo : '/dapp/wrapped'
+  path: '/dapp/wrapped',
+  label: 'Wrapped',
+  Component: ItemsExplore,
+  exact: true,
+  requireConnection: true,
+  templateProps: {
+    menuName: 'appMenu',
+    isDapp: true,
+  }
 }, {
-  label : 'Collections',
-  linkTo : '/dapp/collections'
+  path: '/dapp/collections',
+  label: 'Collections',
+  Component: CollectionsExplore,
+  exact: true,
+  requireConnection: true,
+  templateProps: {
+    menuName: 'appMenu',
+    isDapp: true,
+  }
 }, {
-  label : 'Batch',
-  linkTo : '/dapp/batch'
+  path: '/dapp/batch',
+  label: 'Batch',
+  Component: ItemsExplore,
+  exact: true,
+  requireConnection: true,
+  templateProps: {
+    menuName: 'appMenu',
+    isDapp: true,
+  }
 }, {
-  label : 'Create',
-  linkTo : '/dapp/create'
+  path: '/dapp/create',
+  label: 'Create',
+  Component: Create,
+  exact: true,
+  requireConnection: true,
+  templateProps: {
+    menuName: 'appMenu',
+    isDapp: true,
+  }
 }, {
-  label : 'Wrap',
-  linkTo : '/dapp/wrap'
+  path: '/dapp/wrap',
+  label: 'Wrap',
+  Component: Create,
+  exact: true,
+  requireConnection: true,
+  templateProps: {
+    menuName: 'appMenu',
+    isDapp: true,
+  }
+}, {
+  path: '/dapp/item/:id',
+  Component: ItemView,
+  exact: false,
+  requireConnection: true,
+  templateProps: {
+    menuName: 'appMenu',
+    isDapp: true,
+  }
+}, {
+  path: '/dapp/collection/:id',
+  Component: CollectionView,
+  exact: false,
+  requireConnection: true,
+  templateProps: {
+    menuName: 'appMenu',
+    isDapp: true,
+  }
 }];
 
 const ItemsMain = (props) => {
 
+  var location = useLocation()
+  var selectedVoice = dappMenuVoices.filter(it => it.path === location.pathname)[0]
+  var Component = selectedVoice.Component
+
   return (
       <div className={style.Web3PagesRoot}>
         <DappMenu voices={dappMenuVoices}/>
-        <ItemsExplore/>
+        <Component {...props}/>
       </div>
   )
 }
@@ -41,24 +107,14 @@ ItemsMain.pluginIndex = 10;
 ItemsMain.addToPlugin =
   ({index}) =>
     ({addElement}) => {
-      addElement('router', {
-        index,
-        path: '/dapp',
-        Component: ItemsMain,
-        exact: true,
-        requireConnection: true,
-        templateProps: {
-          menuName: 'appMenu',
-          isDapp: true,
-        },
-      })
+      dappMenuVoices.map(it => addElement('router', {...it, index, Component: ItemsMain}))
 
       addElement('appMenu', {
         name: 'Items',
         label: 'Items',
         icon: '${process.env.PUBLIC_URL}/img/ethereum.png',
         link: '/dapp',
-        index,
+        index
       })
     }
 

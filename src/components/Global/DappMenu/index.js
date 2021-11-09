@@ -7,8 +7,8 @@ import style from './dapp-menu.module.css'
 const DappMenu = ({voices}) => {
   return (
       <ul className={style.Dapp_Menu}>
-        {voices.map(voice => <li key={voice.linkTo}>
-          <Link to={voice.linkTo}>{voice.label}</Link>
+        {voices.filter(it => it.label).map(voice => <li key={voice.path}>
+          <Link to={voice.path}>{voice.label}</Link>
         </li>)}
         {/* Covenants MENU START}
         <li><a>Farm</a></li>

@@ -18,15 +18,15 @@ export const ContextualWeb3ContextWeb3Provider = ({children}) => {
     }, [chainId])
 
     function createContract(contractName) {
-        return new web3.eth.Contract(context[(contractName[0].toUpperCase() + contractName.substring(1)) + "ABI"], getNetworkElement({context, networkId : chainId},contractName + "Address"))
+        return web3 && new web3.eth.Contract(context[(contractName[0].toUpperCase() + contractName.substring(1)) + "ABI"], getNetworkElement({context, networkId : chainId},contractName + "Address"))
     }
 
     function getGlobalContract(contractName) {
         var index = globalContractNames.indexOf(contractName)
         if(index === -1) {
             var contract = createContract(contractName)
-            setGlobalContracts(oldValue => [...oldValue, contract])
-            setGlobalContractNames(oldValue => [...oldValue, contractName])
+            contract && setGlobalContracts(oldValue => [...oldValue, contract])
+            contract && setGlobalContractNames(oldValue => [...oldValue, contractName])
             return contract;
         }
         return globalContracts[index]
