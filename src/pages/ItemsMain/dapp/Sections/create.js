@@ -2,7 +2,7 @@ import React from 'react'
 import {Typography} from '@ethereansos/interfaces-ui'
 
 import style from './../items-main.module.css'
-import ExploreCollections from '../../../components/Items/ExploreCollections/index.js'
+import ExploreCollections from '../../../../components/Items/ExploreCollections/index.js'
 
 const Create = (props) => {
   return (
