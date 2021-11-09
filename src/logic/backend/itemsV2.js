@@ -1,6 +1,6 @@
-import { web3Utils, sendAsync, blockchainCall, abi } from "@ethereansos/interfaces-core"
+import { web3Utils, sendAsync, blockchainCall, abi, tryRetrieveMetadata } from "@ethereansos/interfaces-core"
 
-export async function loadItemsFromFactories({context, web3, account}, factories) {
+export async function loadItemsByFactories({context, web3, account, newContract}, factories) {
 
     const {toChecksumAddress, sha3} = web3Utils
 
@@ -9,7 +9,7 @@ export async function loadItemsFromFactories({context, web3, account}, factories
     var address = await Promise.all(array.map(it => blockchainCall(it.methods.mainInterface)))
     address = address.filter((it, i) => address.indexOf(it) === i)
 
-    var items = address.map(it => new web3.eth.Contract(context.ItemABI, it))
+    var items = address.map(it => newContract(context.ItemABI, it))
 
     var args = {
         address,
@@ -36,22 +36,33 @@ export async function loadItemsFromFactories({context, web3, account}, factories
 
     itemIds = Object.values(itemIds)
 
-    return await Promise.all(itemIds.map(it => loadItemFromItemId({account}, it.itemId, it.item)))
+    return await Promise.all(itemIds.map(it => loadItem({context, account, newContract}, it.itemId, it.item)))
 }
 
-export async function loadItemFromItemId({account}, itemId, item) {
-    return {
+export async function loadItem({context, account, newContract}, itemId, item) {
+    var address = item ? await blockchainCall(item.methods.interoperableOf, itemId) : itemId
+    var interoperableInterface = newContract(context.ItemInteroperableInterfaceABI, address)
+    itemId = item ? itemId : await blockchainCall(interoperableInterface.methods.itemId)
+    item = item || newContract(context.ItemABI, await blockchainCall(interoperableInterface.methods.mainInterface))
+    return await loadItemDynamicInfo({context, account, newContract}, {
+        id : itemId,
         name : await blockchainCall(item.methods.name, itemId),
         symbol : await blockchainCall(item.methods.symbol, itemId),
         decimals : await blockchainCall(item.methods.decimals, itemId),
-        ...(await loadItemDynamicInfoFromItemId({account}, itemId, item))
-    }
+        mainInterface : item,
+        address,
+        interoperableInterface
+    }, item)
 }
 
-export async function loadItemDynamicInfoFromItemId({account}, itemId, item) {
-    var uri = await blockchainCall(item.methods["uri(uint256)"], itemId)
+export async function loadItemDynamicInfo({context, account, newContract}, itemData, item) {
+    if(typeof itemData === 'string') {
+        return await loadItem({context, account, newContract}, itemData, item)
+    }
     return {
-        uri,
-        balance : await blockchainCall(item.methods.balanceOf, account, itemId)
+        ...itemData,
+        ...(await tryRetrieveMetadata({context}, itemData)),
+        balance : await blockchainCall(itemData.mainInterface.methods.balanceOf, account, itemData.id),
+        totalSupply : await blockchainCall(itemData.mainInterface.methods.totalSupply, itemData.id)
     }
 }

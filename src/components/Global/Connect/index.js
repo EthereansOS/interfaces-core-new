@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { Button, CircularProgress, Typography, Modal } from '@ethereansos/interfaces-ui'
 import { useWeb3, web3States, usePrevious, useEthosContext } from '@ethereansos/interfaces-core'
+import { ContextualWeb3ContextWeb3Provider } from '../../../logic/frontend/contextualWeb3'
+
 import style from './connect.module.css'
 
 const Connect = ({ children }) => {
@@ -12,7 +14,9 @@ const Connect = ({ children }) => {
   }
 
   return connectionStatus === web3States.CONNECTED ? (
-    children
+    <ContextualWeb3ContextWeb3Provider>
+      {children}
+    </ContextualWeb3ContextWeb3Provider>
   ) : (
     <Modal centered visible>
       <Button text="X" onClick={close} style={{"float" : "right"}}/>

@@ -92,7 +92,7 @@ var dappMenuVoices = [{
 const ItemsMain = (props) => {
 
   var location = useLocation()
-  var selectedVoice = dappMenuVoices.filter(it => it.path === location.pathname)[0]
+  var selectedVoice = location.pathname === '/dapp' ? dappMenuVoices[0] : dappMenuVoices.slice(1).filter(it => location.pathname.indexOf(it.path.split(':')[0]) !== -1)[0]
   var Component = selectedVoice.Component
 
   return (
