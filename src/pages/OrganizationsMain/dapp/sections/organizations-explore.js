@@ -7,7 +7,7 @@ import ExploreOrganizations from '../../../../components/Organizations/ExploreOr
 const ItemsExplore = (props) => {
   return (
     <>
-      <div className={style.ItemsExploreMain}>
+      <div className={style.OrganizationsExploreMain}>
         <ExploreOrganizations></ExploreOrganizations>
       </div>
     </>
