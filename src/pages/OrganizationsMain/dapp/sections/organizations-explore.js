@@ -13,6 +13,4 @@ const ItemsExplore = (props) => {
     </>
   )
 }
-
-
 export default ItemsExplore
