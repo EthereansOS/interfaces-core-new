@@ -5,13 +5,13 @@ import { Typography } from '@ethereansos/interfaces-ui'
 import style from './view-info-box.module.css'
 import ExtLinkButton from '../../Global/ExtLinkButton/index.js'
 
-const ViewInfoBox = (props) => {
+const ViewInfoBox = ({collection}) => {
   return (
     <div className={style.InfoBox}>
-      <h1>A fancy Collection (FCL)</h1>
+      <h1>{collection.name + (collection.symbol ? ` (${collection.symbol})` : "")}</h1>
       <a className={style.shareIt}></a>
       <div className={style.InfoBoxSide}>
-        <p>Items: 32</p>
+        <p>Items: {collection.items.length}</p>
         <p>Farmable:  12</p>
         <p>Organizations:  12</p>
         <p>Delegations:  0</p>

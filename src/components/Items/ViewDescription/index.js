@@ -7,7 +7,7 @@ import style from './view-description.module.css'
 const ViewDescription = ({item}) => {
   return (
     <div className={style.ViewDescription}>
-      <p ref={ref => ref && (ref.innerHTML = item.description)}></p>
+      <p ref={ref => ref && (ref.innerHTML = item.description || "No description available")}></p>
     </div>
   )
 }

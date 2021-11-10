@@ -23,15 +23,16 @@ const ItemView = () => {
   const { web3, account } = useWeb3()
   const [item, setItem] = useState(null)
 
-  useEffect(async () => {
-    var itemId = location.pathname.substring(location.pathname.lastIndexOf('/') + 1)
-    setItem(null)
-    var item;
-    if(itemId.toLowerCase().indexOf('0x') === -1) {
-      var itemProjectionFactory = getGlobalContract("itemProjectionFactory")
-      item = newContract(context.ItemMainInterfaceABI, await blockchainCall(itemProjectionFactory.methods.mainInterface))
-    }
-    loadItem({context, web3, account, newContract}, itemId, item).then(setItem).catch(() => setItem(undefined))
+  useEffect(() => {
+    setTimeout(async () => {
+      var itemId = location.pathname.substring(location.pathname.lastIndexOf('/') + 1)
+      setItem(null)
+      var item;
+      if(itemId.toLowerCase().indexOf('0x') === -1) {
+        item = newContract(context.ItemMainInterfaceABI, await blockchainCall(getGlobalContract("itemProjectionFactory").methods.mainInterface))
+      }
+      loadItem({context, web3, account, newContract}, itemId, item).then(setItem).catch(() => setItem(undefined))
+    })
   }, [])
 
   /*

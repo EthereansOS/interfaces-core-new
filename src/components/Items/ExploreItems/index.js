@@ -4,19 +4,19 @@ import { fromDecimals } from '@ethereansos/interfaces-core'
 import style from './explore-items.module.css'
 import ItemObject from '../../Global/ObjectsLists/item-object'
 
-const Item = ({item}) => (
+const Item = ({element}) => (
   <div className={style.ItemSingle}>
-    <Link to={`dapp/items/${item.address}`}>
+    <Link to={`/dapp/items/${element.address}`}>
       <figure>
-        <img src={item.image}></img>
+        <img src={element.image}></img>
       </figure>
       <div className={style.ItemTitle}>
-        <h6>{item.name}</h6>
+        <h6>{element.name}</h6>
       </div>
       <div className={style.ItemInfo}>
         <div className={style.ItemInfoSide}>
           <p>Supply:</p>
-          <p>{fromDecimals(item.totalSupply, item.decimals)}</p>
+          <p>{fromDecimals(element.totalSupply, element.decimals)}</p>
         </div>
         <div className={style.ItemInfoSide2}>
           <p>Price:</p>
@@ -27,10 +27,10 @@ const Item = ({item}) => (
   </div>
 )
 
-export default function ExploreItems() {
+export default function ExploreItems({forCollection, excluding}) {
   return (
     <div className={style.ItemAllSingle}>
-      <ItemObject element={Item}/>
+      <ItemObject {...{forCollection, excluding, element : Item}}/>
     </div>
   )
 }

@@ -4,15 +4,12 @@ import {Typography} from '@ethereansos/interfaces-ui'
 import style from './items-main-sub-sections.module.css'
 import ExploreItems from '../../../../components/Items/ExploreItems/index.js'
 
-const ItemsExplore = (props) => {
+const ItemsExplore = ({collection}) => {
   return (
-    <>
-      <div className={style.ItemsExploreMain}>
-        <ExploreItems></ExploreItems>
-      </div>
-    </>
+    <div className={style.ItemsExploreMain}>
+      <ExploreItems forCollection={collection}/>
+    </div>
   )
 }
-
 
 export default ItemsExplore

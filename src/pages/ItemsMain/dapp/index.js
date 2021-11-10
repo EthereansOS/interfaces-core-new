@@ -50,7 +50,6 @@ var dappMenuVoices = [{
   templateProps: {
     menuName: 'appMenu',
     isDapp: true,
-    Component: CollectionsExplore
   }
 }, {
   path: '/dapp/items/collections/:id',
@@ -96,7 +95,8 @@ var dappMenuVoices = [{
 const ItemsMain = (props) => {
 
   var location = useLocation()
-  var selectedVoice = dappMenuVoices.filter(it => it.path === location.pathName || (location.pathname.indexOf(it.path.split(':')[0]) !== -1 && it.path.split('/').length === location.pathname.split('/').length))[0]
+  var selectedVoice = dappMenuVoices.filter(it => it.path.toLowerCase() === location.pathname.toLowerCase())[0]
+    || dappMenuVoices.filter(it => it.path.toLowerCase() !== location.pathname.toLowerCase() && location.pathname.toLowerCase().indexOf(it.path.split(':')[0].toLowerCase()) !== -1 && it.path.split('/').length === location.pathname.split('/').length)[0]
 
   var Component = (selectedVoice || dappMenuVoices[0]).Component
 

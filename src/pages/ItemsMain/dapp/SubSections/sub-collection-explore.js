@@ -16,10 +16,9 @@ const SubCollectionExplore = ({item}) => {
             <Link to={`/dapp/items/collections/${item.collectionId}`}>View</Link>
           </div>
         </div>
-        <ExploreItems forCollection={item.collectionId} excluding={item.id}/>
+        <ExploreItems forCollection={item.collectionData} excluding={item.id}/>
       </div>
   )
 }
-
 
 export default SubCollectionExplore
