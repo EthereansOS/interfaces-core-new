@@ -4,7 +4,7 @@ import { Typography } from '@ethereansos/interfaces-ui'
 
 import style from './organizations-main-sub-sections.module.css'
 import RegularMiniButton from '../../../../components/Global/RegularMiniButton'
-import OrgThingsCard from '../../../../components/Organizations/OrgThingsCard'
+import OrgThingsCard from '../../../../components/Organizations/OrgMainThingsCard'
 
 const MainSectionView = (props) => {
   return (
