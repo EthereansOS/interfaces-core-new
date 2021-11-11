@@ -4,13 +4,19 @@ import { Typography } from '@ethereansos/interfaces-ui'
 
 import style from './organizations-main-sub-sections.module.css'
 import RegularMiniButton from '../../../../components/Global/RegularMiniButton'
-import OrgThingsCard from '../../../../components/Organizations/OrgMainThingsCard'
+import OrgMainThingsCard from '../../../../components/Organizations/OrgMainThingsCard'
+import OrgThingsCardText from '../../../../components/Organizations/OrgThingsCardText'
+import OrgThingsCardTokens from '../../../../components/Organizations/OrgThingsCardTokens'
 
 const MainSectionView = (props) => {
   return (
     <div className={style.OrgThingsCards}>
       
-     <OrgThingsCard></OrgThingsCard>
+     <OrgMainThingsCard></OrgMainThingsCard>
+     <OrgThingsCardText></OrgThingsCardText>
+     <OrgThingsCardTokens></OrgThingsCardTokens>
+     <OrgThingsCardTokens></OrgThingsCardTokens>
+     <OrgThingsCardTokens></OrgThingsCardTokens>
     </div>
   )
 }

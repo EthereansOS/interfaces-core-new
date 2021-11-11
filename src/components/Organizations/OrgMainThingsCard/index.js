@@ -5,7 +5,7 @@ import { Typography } from '@ethereansos/interfaces-ui'
 import style from './org-main-things-card.module.css'
 import RegularMiniButton from '../../Global/RegularMiniButton/index.js'
 
-const OrgThingsCard = (props) => {
+const OrgMainThingsCard = (props) => {
   return (
     <div className={style.OrgMainThingsCard}>
       <div className={style.OrgThingsTitle}>
@@ -32,22 +32,22 @@ const OrgThingsCard = (props) => {
       </div>
       <div className={style.OrgThingsInfoContent}>
         <b>Dividends</b>
-        <p>20%</p>
+        <p>27%</p>
       </div>
       <div className={style.OrgThingsInfoContent}>
         <b>Investments Fund</b>
-        <p>20%</p>
+        <p>25%</p>
       </div>
       <div className={style.OrgThingsInfoContent}>
         <b>Delegations Grants</b>
-        <p>20%</p>
+        <p>40%</p>
       </div>
       <div className={style.OrgThingsInfoContent}>
         <b>Emergency Fund</b>
-        <p>20%</p>
+        <p>8%</p>
       </div>
     </div>
   )
 }
 
-export default OrgThingsCard
+export default OrgMainThingsCard

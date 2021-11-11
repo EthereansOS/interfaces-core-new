@@ -1,0 +1,7 @@
+.OrgThingsCardPics {width: 440px; margin: 25px; display: inline-block; background-color: #ffffff; border-radius: 20px; box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32); text-align: center; overflow: hidden;position: relative; padding: 15px;}
+.OrgThingsRegularTitle {width: 100%; display: inline-block; padding: 5px 5px; text-align: center;}
+.OrgThingsRegularTitle h6 {font-size: 16px;color: #000000; font-weight: bold; width: 100%; display: inline-block; text-align: left;}
+.OrgThingsRegularInfoPictureCarousel {width: 100%; display: inline-block; margin: 10px 0.5%; padding: 5px 5px; text-align: center;overflow-x: scroll; overflow-y: hidden; scroll-behavior: smooth; padding: 10px 1%; text-align: left; display: grid;grid-gap: 5px;grid-template-columns: repeat(10, calc(50% - 50px));grid-template-rows: minmax(44px, 1fr);}
+.OrgThingsCardPics .OpenBTN {position: absolute; top: 5px; right: 5px; width: 50px; height: 30px;}
+.OrgThingsRegularInfoPictureCarousel::-webkit-scrollbar {display: none;}
+.OrgThingsRegularInfoPictureCarousel a, .OrgThingsRegularInfoPictureCarousel figure {display: inline-block; width: 44px; height: 44px; overflow: hidden; position: relative;border-radius: 8px;}
