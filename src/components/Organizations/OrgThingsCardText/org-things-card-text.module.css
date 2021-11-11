@@ -1,7 +1,7 @@
 .OrgThingsCardText {width: 440px; margin: 25px; display: inline-block; background-color: #ffffff; border-radius: 20px; box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32); text-align: center; overflow: hidden;position: relative; padding: 15px;}
 .OrgThingsRegularTitle {width: 100%; display: inline-block; padding: 5px 5px; text-align: center;}
 .OrgThingsRegularTitle h6 {font-size: 16px;color: #000000; font-weight: bold; width: 100%; display: inline-block; text-align: left;}
-.OrgThingsRegularInfoContent {width: 32%; display: inline-block; margin: 10px 0.5%; padding: 5px 5px; text-align: center;}
+.OrgThingsRegularInfoContent {width: 32%; display: inline-block; margin: 10px 0.5%; padding: 10px 5px; text-align: center;}
 .OrgThingsRegularInfoContent b {font-size: 14px; font-weight: bold; color: #000000; margin: 5px auto; display: inline-block; width: 100%; text-align: center;}
 .OrgThingsRegularInfoContent p {font-size: 13px;display: inline-block; width: 100%; text-align: center;}
 .OrgThingsRegularInfoContent p a {text-decoration: underline;color: #000000;}
