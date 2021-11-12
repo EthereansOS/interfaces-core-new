@@ -3,7 +3,7 @@ import React, {useState, useEffect} from 'react'
 import { useWeb3 } from '@ethereansos/interfaces-core'
 import { CircularProgress } from "@ethereansos/interfaces-ui"
 
-export default ({Renderer, emptyMessage, provider, searchText, onSelection}) => {
+export default ({Renderer, emptyMessage, provider, searchText, renderedProperties}) => {
 
   const { chainId } = useWeb3()
 
@@ -33,5 +33,5 @@ export default ({Renderer, emptyMessage, provider, searchText, onSelection}) => 
     ? <CircularProgress/>
     : error || (outputElements && outputElements.length === 0)
       ? <h2>{error || (emptyMessage !== undefined && emptyMessage !== null ? emptyMessage : "No elements to display")}</h2>
-      : outputElements && outputElements.map((element, i) => <Renderer key={(i + "_" + element)} element={element} onClick={() => onSelection && onSelection(element)}/>)
+      : outputElements && outputElements.map((element, i) => <Renderer {...renderedProperties} key={(i + "_" + element)} element={element}/>)
 }

@@ -6,13 +6,14 @@ import { useWeb3, useEthosContext } from '@ethereansos/interfaces-core'
 
 import { loadTokens } from '../../../logic/erc20'
 
-export default ({alsoETH, searchText}) => {
+export default ({renderedProperties, alsoETH, searchText}) => {
 
   const context = useEthosContext()
   const { web3, account, chainId, newContract } = useWeb3()
 
   return <Web3DependantList
       Renderer={ERC20TokenObjectElement}
+      renderedProperties={renderedProperties}
       provider={() => loadTokens({ context, chainId, web3, account, newContract, alsoETH })}
       searchText={searchText}
       emptyMessage=''

@@ -8,7 +8,7 @@ export default ({element, onClick}) => {
   const context = useEthosContext()
   const { chainId } = useWeb3()
   return (
-    <a className={style.TokenObject} onClick={onClick}>
+    <a className={style.TokenObject} onClick={() => onClick(element)}>
       <figure>
           <img src={element.image}/>
       </figure>
