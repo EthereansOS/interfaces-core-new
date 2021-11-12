@@ -15,7 +15,7 @@ export default ({element, onClick}) => {
       <div className={style.ObjectInfo}>
         <div className={style.ObjectInfoAndLink}>
           <h5>{element.name} ({element.symbol})</h5>
-          {element.address !== VOID_ETHEREUM_ADDRESS && <a href={`${getNetworkElement({context, networkId : chainId}, "etherscanURL")}/token/${element.address}`} target="blank">Etherscan</a>}
+          {element.address !== VOID_ETHEREUM_ADDRESS && <a href={`${getNetworkElement({context, chainId}, "etherscanURL")}/token/${element.address}`} target="blank">Etherscan</a>}
         </div>
         {!element.balance && <CircularProgress/>}
         {element.balance && <div className={style.ObjectInfoBalance}>

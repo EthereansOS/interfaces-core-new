@@ -10,8 +10,8 @@ const ViewBasics = ({item}) => {
   return (
     <div className={style.ViewBasics}>
         <h5>{item.name} ({item.symbol})</h5>
-        <ExtLinkButton href={`${getNetworkElement({context, networkId : chainId}, "etherscanURL")}/token/${item.address}`} text="Contract"/>
-        <ExtLinkButton href={`${getNetworkElement({context, networkId : chainId}, "etherscanURL")}/address/${item.host}`} text="Host"/>
+        <ExtLinkButton href={`${getNetworkElement({context, chainId}, "etherscanURL")}/token/${item.address}`} text="Contract"/>
+        <ExtLinkButton href={`${getNetworkElement({context, chainId}, "etherscanURL")}/address/${item.host}`} text="Host"/>
         <ExtLinkButton href={item.external_url} text="Website"/>
         <ExtLinkButton href={`https://opensea.io/assets/${item.mainInterface.options.address}/${item.id}`} text="OpenSea"/>
         <ExtLinkButton href={`https://info.uniswap.org/#/tokens/${item.address}`} text="Uniswap"/>

@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react'
 
 import { useLocation } from 'react-router'
-import { useContextualWeb3 } from '../../../../logic/frontend/contextualWeb3'
 import { useEthosContext, useWeb3, blockchainCall } from '@ethereansos/interfaces-core'
 import { CircularProgress } from '@ethereansos/interfaces-ui'
 import { loadCollection } from '../../../../logic/backend/itemsV2'
@@ -16,9 +15,8 @@ import style from './items-main-sections.module.css'
 
 const CollectionView = () => {
   const location = useLocation()
-  const { newContract, getGlobalContract } = useContextualWeb3()
   const context = useEthosContext()
-  const { web3, account } = useWeb3()
+  const { web3, account, newContract, getGlobalContract } = useWeb3()
   const [collection, setCollection] = useState(null)
 
   useEffect(() => {

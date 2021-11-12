@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
 import { useLocation } from 'react-router'
-import { useContextualWeb3 } from '../../../../logic/frontend/contextualWeb3'
 import { useEthosContext, useWeb3 } from '@ethereansos/interfaces-core'
 import { loadItem } from '../../../../logic/backend/itemsV2'
 import { CircularProgress } from '@ethereansos/interfaces-ui'
@@ -18,9 +17,8 @@ import SubCollectionExplore from '../SubSections/sub-collection-explore.js'
 
 const ItemView = () => {
   const location = useLocation()
-  const { newContract, getGlobalContract } = useContextualWeb3()
   const context = useEthosContext()
-  const { web3, account } = useWeb3()
+  const { web3, account, newContract, getGlobalContract } = useWeb3()
   const [item, setItem] = useState(null)
 
   useEffect(() => {

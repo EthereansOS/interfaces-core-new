@@ -1,28 +1,25 @@
 import { useState } from 'react'
 import { Button, CircularProgress, Typography, Modal } from '@ethereansos/interfaces-ui'
 import { useWeb3, web3States } from '@ethereansos/interfaces-core'
-import { ContextualWeb3ContextWeb3Provider } from '../../../logic/frontend/contextualWeb3'
-
-import style from './connect.module.css'
 
 const Connect = ({ children }) => {
-  const { setConnector, errorMessage, connectors, connectionStatus } = useWeb3()
+  const { web3, setConnector, errorMessage, connectors, connectionStatus } = useWeb3()
 
   function close() {
     window.location.href = window.location.href.split('/#')[0] + '/#/'
   }
 
-  return connectionStatus === web3States.CONNECTED ? (
-    children
-  ) : (
-    <Modal centered visible>
+  return connectionStatus === web3States.CONNECTED
+     ? web3
+      ? children
+      : <CircularProgress/>
+   : <Modal centered visible>
       <Button text="X" onClick={close} style={{"float" : "right"}}/>
       <ConnectWidget
         title="Welcome Etherean"
         {...{connectionStatus, connectors, setConnector, errorMessage}}
       />
     </Modal>
-  )
 }
 
 export default Connect
@@ -48,7 +45,7 @@ const ConnectWidget = ({
       </Typography>
       <br />
       {connectionStatus === web3States.CONNECTED && <div>Connected</div>}
-      {connectionStatus === web3States.CONNECTING && <div>Connecting</div>}
+      {!errorMessage && connectionStatus === web3States.CONNECTING && <div>Connecting to {activeConnector.buttonText} <CircularProgress/></div>}
       {connectionStatus === web3States.NOT_CONNECTED && <Typography variant="body2" align="center">
           You need a{' '}
           <a target="_blank" href="https://etherscan.io/directory/Wallet">Web3 Enabler</a> to
@@ -76,11 +73,6 @@ const ConnectWidget = ({
           <br/>
           {errorMessage &&
             <Typography variant="body1">{errorMessage}</Typography>
-          }
-          {connectionStatus === web3States.CONNECTING &&
-            <Typography variant="body1">
-              Connecting to {activeConnector.buttonText} <CircularProgress />
-            </Typography>
           }
     </div>
   )

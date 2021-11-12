@@ -14,7 +14,7 @@ export default ({element}) => {
         <div className={style.ObjectInfoAndLink}>
           <h5>{element.name} ({element.symbol})</h5>
           <a>Etherscan</a>
-          <a className={style.LinkCool} target="_blank" href={`${getNetworkElement({context, networkId : chainId}, "etherscanURL")}/token/${element.address}`}>Item</a>
+          <a className={style.LinkCool} target="_blank" href={`${getNetworkElement({context, chainId}, "etherscanURL")}/token/${element.address}`}>Item</a>
         </div>
         <div className={style.ObjectInfoBalance}>
           <p>{0}</p>

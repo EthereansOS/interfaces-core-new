@@ -4,11 +4,11 @@ import { useWeb3, web3States, truncatedWord, useEthosContext } from '@ethereanso
 
 const Web3Connect = () => {
   const context = useEthosContext()
-  const { account, connectionStatus, disconnect } = useWeb3();
+  const { account, connectionStatus, setConnector } = useWeb3();
   function triggerConnect() {
     var location = window.location.href.toString();
     connectionStatus === web3States.NOT_CONNECTED && (window.location.href = (location.lastIndexOf('/') === location.length - 1 ? location.substring(0, location.length - 1) : location) + '/dapp');
-    connectionStatus === web3States.CONNECTED && disconnect();
+    connectionStatus === web3States.CONNECTED && setConnector(null);
   }
 
   return (
