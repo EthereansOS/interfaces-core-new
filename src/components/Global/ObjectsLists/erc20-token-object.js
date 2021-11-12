@@ -1,37 +1,19 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 
 import ERC20TokenObjectElement from './element/erc20-token-object-element'
 import Web3DependantList from '../Web3DependantList'
-import { useWeb3, VOID_ETHEREUM_ADDRESS } from '@ethereansos/interfaces-core'
+import { useWeb3, useEthosContext } from '@ethereansos/interfaces-core'
 
-const defaultEthereumElement = {
-  name: "Ethereum",
-  symbol: "ETH",
-  address: VOID_ETHEREUM_ADDRESS,
-  decimals: 18,
-  image : `${process.env.PUBLIC_URL}/img/eth_logo.png`
-}
+import { loadTokens } from '../../../logic/erc20'
 
 export default ({alsoETH, searchText}) => {
 
-  const { web3, account } = useWeb3()
-
-  const [ethereumElement, setEthereumElement] = useState(defaultEthereumElement)
-
-  alsoETH && useEffect(() => {
-    setTimeout(async () => {
-      var balance = await web3.eth.getBalance(account)
-      setEthereumElement(oldValue => ({...oldValue, balance}))
-    })
-  }, [account])
+  const context = useEthosContext()
+  const { web3, account, chainId, newContract } = useWeb3()
 
   return <Web3DependantList
       Renderer={ERC20TokenObjectElement}
-      provider={() => {
-        var elements = []
-        alsoETH && elements.push(ethereumElement)
-        return elements
-      }}
+      provider={() => loadTokens({ context, chainId, web3, account, newContract, alsoETH })}
       searchText={searchText}
       emptyMessage=''
     />

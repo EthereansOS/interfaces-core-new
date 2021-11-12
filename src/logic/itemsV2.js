@@ -97,9 +97,9 @@ export async function getLogsFromFactories({context, web3, newContract}, factori
 
 export async function loadItem({context, account, newContract, collectionData}, itemId, item) {
     var address = item ? await blockchainCall(item.methods.interoperableOf, itemId) : itemId
-    var interoperableInterface = newContract(context.ItemInteroperableInterfaceABI, address)
-    itemId = item ? itemId : await blockchainCall(interoperableInterface.methods.itemId)
-    item = item || newContract(context.ItemMainInterfaceABI, await blockchainCall(interoperableInterface.methods.mainInterface))
+    var contract = newContract(context.ItemInteroperableInterfaceABI, address)
+    itemId = item ? itemId : await blockchainCall(contract.methods.itemId)
+    item = item || newContract(context.ItemMainInterfaceABI, await blockchainCall(contract.methods.mainInterface))
     var itemData = await blockchainCall(item.methods.item, itemId)
     collectionData = collectionData || await loadCollectionMetadata({context}, itemData.collectionId, item)
     return await loadItemDynamicInfo({context, account, newContract}, {
@@ -111,7 +111,7 @@ export async function loadItem({context, account, newContract, collectionData}, 
         host : collectionData.host,
         collectionData,
         address,
-        interoperableInterface,
+        contract,
         decimals : "18"
     }, item)
 }

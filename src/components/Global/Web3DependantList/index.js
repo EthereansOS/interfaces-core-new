@@ -27,7 +27,7 @@ export default ({Renderer, emptyMessage, provider, searchText, onSelection}) => 
 
   var outputElements = elements
 
-  searchText && outputElements && (outputElements = outputElements.filter(element => element.name?.toLowerCase().indexOf(searchText.toLowerCase()) !== -1 || element.address?.toLowerCase().indexOf(searchText.toLowerCase()) !== -1))
+  searchText && outputElements && (outputElements = outputElements.filter(element => element.name?.toLowerCase().indexOf(searchText.toLowerCase()) !== -1 || element.address?.toLowerCase().indexOf(searchText.toLowerCase()) !== -1 || element.symbol?.toLowerCase().indexOf(searchText.toLowerCase()) !== -1))
 
   return (!error && !outputElements)
     ? <CircularProgress/>

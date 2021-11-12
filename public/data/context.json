@@ -30,6 +30,9 @@
               }
             }
         ],
+        "erc20TokensListURL" : "https://gateway.ipfs.io/ipns/tokens.uniswap.org",
+        "_erc20TokensListURL" : "https://tokens.coingecko.com/uniswap/all.json",
+        "erc20TokensListURLRinkeby" : "https://gateway.ipfs.io/ipns/tokens.uniswap.org",
         "dappVersion": "BETA 0.5",
         "etherscanURL": "https://etherscan.io/",
         "etherscanURLRopsten": "https://ropsten.etherscan.io/",
