@@ -5,7 +5,7 @@ import { CircularProgress } from "@ethereansos/interfaces-ui"
 
 export default ({Renderer, emptyMessage, provider, searchText, onSelection}) => {
 
-  const { web3 } = useWeb3()
+  const { chainId } = useWeb3()
 
   const [elements, setElements] = useState(null)
 
@@ -23,7 +23,7 @@ export default ({Renderer, emptyMessage, provider, searchText, onSelection}) => 
         setError('Error while loading: ' + (e.message || e))
       }
     })
-  }, [web3, provider])
+  }, [chainId])
 
   var outputElements = elements
 

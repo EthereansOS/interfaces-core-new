@@ -16,7 +16,7 @@ import style from './items-main-sections.module.css'
 const CollectionView = () => {
   const location = useLocation()
   const context = useEthosContext()
-  const { web3, account, newContract, getGlobalContract } = useWeb3()
+  const { chainId, web3, account, newContract, getGlobalContract } = useWeb3()
   const [collection, setCollection] = useState(null)
 
   useEffect(() => {
@@ -25,7 +25,7 @@ const CollectionView = () => {
       setCollection(null)
       loadCollection({context, web3, account, newContract}, collectionId, getGlobalContract("itemProjectionFactory")).then(setCollection).catch(() => setCollection(undefined))
     })
-  }, [web3, account])
+  }, [chainId, account])
 
   return (
       <div className={style.SingleContentPage}>

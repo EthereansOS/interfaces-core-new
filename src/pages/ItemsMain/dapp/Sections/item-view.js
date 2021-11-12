@@ -18,7 +18,7 @@ import SubCollectionExplore from '../SubSections/sub-collection-explore.js'
 const ItemView = () => {
   const location = useLocation()
   const context = useEthosContext()
-  const { web3, account, newContract, getGlobalContract } = useWeb3()
+  const { chainId, web3, account, newContract, getGlobalContract } = useWeb3()
   const [item, setItem] = useState(null)
 
   useEffect(() => {
@@ -31,7 +31,7 @@ const ItemView = () => {
       }
       loadItem({context, web3, account, newContract}, itemId, item).then(setItem).catch(() => setItem(undefined))
     })
-  }, [web3, account])
+  }, [chainId, account])
 
   return (
     <div className={style.SingleContentPage}>
