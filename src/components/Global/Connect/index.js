@@ -1,30 +1,25 @@
 import { useState } from 'react'
 import { Button, CircularProgress, Typography, Modal } from '@ethereansos/interfaces-ui'
-import { useWeb3, web3States, usePrevious, useEthosContext } from '@ethereansos/interfaces-core'
+import { useWeb3, web3States } from '@ethereansos/interfaces-core'
 import { ContextualWeb3ContextWeb3Provider } from '../../../logic/frontend/contextualWeb3'
 
 import style from './connect.module.css'
 
 const Connect = ({ children }) => {
-  const context = useEthosContext()
-  const { wallet, connectionStatus } = useWeb3();
+  const { setConnector, errorMessage, connectors, connectionStatus } = useWeb3()
 
   function close() {
     window.location.href = window.location.href.split('/#')[0] + '/#/'
   }
 
   return connectionStatus === web3States.CONNECTED ? (
-    <ContextualWeb3ContextWeb3Provider>
-      {children}
-    </ContextualWeb3ContextWeb3Provider>
+    children
   ) : (
     <Modal centered visible>
       <Button text="X" onClick={close} style={{"float" : "right"}}/>
       <ConnectWidget
         title="Welcome Etherean"
-        wallet={wallet}
-        connectionStatus={connectionStatus}
-        connectors={context.useWalletSettings}
+        {...{connectionStatus, connectors, setConnector, errorMessage}}
       />
     </Modal>
   )
@@ -36,16 +31,14 @@ const ConnectWidget = ({
   title,
   connectionStatus,
   connectors,
-  wallet
+  setConnector,
+  errorMessage
 }) => {
-  const [activeConnector, setActiveConnector] = useState({
-    name: '',
-    label: '',
-  })
+  const [activeConnector, setActiveConnector] = useState(null)
 
-  const onConnectorClicked = async (name, label) => {
-    wallet.connect(name)
-    setActiveConnector({ label, name })
+  const onClick = connector => {
+    setConnector(connector)
+    setActiveConnector(connector)
   }
 
   return (
@@ -68,14 +61,12 @@ const ConnectWidget = ({
           </Typography>
         </div>
         <br/>
-        {(!activeConnector.name || wallet.status === 'error') &&
+        {(!activeConnector || errorMessage) &&
           connectors.map(connector => <>
             <Button
               key={connector.id}
               text={connector.buttonText}
-              onClick={() =>
-                onConnectorClicked(connector.id, connector.buttonText)
-              }
+              onClick={() => onClick(connector)}
             />
             <br/>
             <br/>
@@ -83,12 +74,12 @@ const ConnectWidget = ({
           )}
           <br/>
           <br/>
-          {wallet.status === 'error' &&
-            <Typography variant="body1">{wallet.error?.message}</Typography>
+          {errorMessage &&
+            <Typography variant="body1">{errorMessage}</Typography>
           }
-          {wallet.status === 'connecting' &&
+          {connectionStatus === web3States.CONNECTING &&
             <Typography variant="body1">
-              Connecting to {activeConnector.label} <CircularProgress />
+              Connecting to {activeConnector.buttonText} <CircularProgress />
             </Typography>
           }
     </div>

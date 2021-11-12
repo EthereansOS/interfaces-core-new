@@ -1,32 +1,40 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-import { Typography } from '@ethereansos/interfaces-ui'
-import style from './objects-lists.module.css'
+import React, { useState } from 'react'
 
-const ERC20TokenObject = (props) => {
-  return (
-    <> {/* Single ERC20 start*/}
-    <a className={style.TokenObject}>
-      <figure>
-          <img src={`${process.env.PUBLIC_URL}/img/test.jpg`}></img>
-      </figure>
-      <div className={style.ObjectInfo}>
-        <div className={style.ObjectInfoAndLink}>
-          <h5>BojackSwap (BJK)</h5>
-          <a>Etherscan</a>
-        </div>
-        <div className={style.ObjectInfoBalance}>
-          <p>5403393.42543</p>
-          <span>Balance</span>
-        </div>
-      </div>
-    </a>
-    {/* Single ERC20 end*/}
-    
+import ERC20TokenObjectElement from './element/erc20-token-object-element'
+import Web3DependantList from '../../../logic/frontend/web3DependantList'
+import { useWeb3, VOID_ETHEREUM_ADDRESS } from '@ethereansos/interfaces-core'
 
-    
-    </>
-  )
+const defaultEthereumElement = {
+  name: "Ethereum",
+  symbol: "ETH",
+  address: VOID_ETHEREUM_ADDRESS,
+  decimals: 18,
+  image : `${process.env.PUBLIC_URL}/img/eth_logo.png`
 }
 
-export default ERC20TokenObject
+export default ({alsoETH, searchText}) => {
+
+  const { web3, account } = useWeb3()
+
+  const [ethereumElement, setEthereumElement] = useState(defaultEthereumElement)
+
+  alsoETH && useState(() => {
+    setTimeout(async () => {
+      var balance = await web3.eth.getBalance(account)
+      setEthereumElement(oldValue => ({...oldValue, balance}))
+    })
+  }, [web3, account])
+
+  return <Web3DependantList
+      Renderer={ERC20TokenObjectElement}
+      provider={
+        () => {
+          var elements = []
+          alsoETH && elements.push(ethereumElement)
+          return elements
+        }
+      }
+      searchText={searchText}
+      emptyMessage=''
+    />
+}

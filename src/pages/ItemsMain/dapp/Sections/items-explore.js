@@ -4,8 +4,8 @@ import ExploreItems from '../../../../components/Items/ExploreItems/index.js'
 
 import style from './items-main-sections.module.css'
 
-export default () => (
+export default ({wrappedOnly}) => (
   <div className={style.ItemsExploreMain}>
-    <ExploreItems/>
+    <ExploreItems wrappedOnly={wrappedOnly}/>
   </div>
 )

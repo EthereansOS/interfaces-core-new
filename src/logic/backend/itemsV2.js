@@ -1,6 +1,6 @@
 import { web3Utils, sendAsync, blockchainCall, abi, tryRetrieveMetadata } from "@ethereansos/interfaces-core"
 
-export async function loadItemsByFactories({context, web3, account, newContract, collectionData, excluding}, factories) {
+export async function loadItemsByFactories({context, web3, account, newContract, getGlobalContract, collectionData, excluding, wrappedOnly}, factories) {
 
     var topics = collectionData ? [
         web3Utils.sha3("CollectionItem(bytes32,bytes32,uint256)"),
@@ -10,8 +10,24 @@ export async function loadItemsByFactories({context, web3, account, newContract,
 
     var { items, logs } = await getLogsFromFactories({context, web3, newContract}, factories, topics)
 
+    var exclusiveIncluding = wrappedOnly && [
+        await blockchainCall(getGlobalContract('eRC20Wrapper').methods.collectionId),
+        await blockchainCall(getGlobalContract('eRC721Wrapper').methods.collectionId),
+        await blockchainCall(getGlobalContract('eRC1155Wrapper').methods.collectionId)
+    ]
+
     var itemIds = logs.reduce((acc, log) => {
+        var collectionId = log.topics[2]
         var itemId = abi.decode(["uint256"], log.topics[3])[0].toString()
+        if(context.deployedCollectionsToExclude && context.deployedCollectionsToExclude.indexOf(collectionId) !== - 1) {
+            return acc
+        }
+        if(context.deployedItemsToExclude && context.deployedItemsToExclude.indexOf(itemId) !== - 1) {
+            return acc
+        }
+        if(exclusiveIncluding && exclusiveIncluding.indexOf(collectionId) === -1) {
+            return acc
+        }
         var item = items.filter(it => web3Utils.toChecksumAddress(it.options.address) === web3Utils.toChecksumAddress(log.address))[0]
         return {
             ...acc,
@@ -36,6 +52,9 @@ export async function loadCollectionsByFactories({context, web3, account, newCon
 
     var collectionIds = logs.reduce((acc, log) => {
         var collectionId = log.topics[3]
+        if(context.deployedCollectionsToExclude && context.deployedCollectionsToExclude.indexOf(collectionId) !== - 1) {
+            return acc
+        }
         var item = items.filter(it => web3Utils.toChecksumAddress(it.options.address) === web3Utils.toChecksumAddress(log.address))[0]
         return {
             ...acc,

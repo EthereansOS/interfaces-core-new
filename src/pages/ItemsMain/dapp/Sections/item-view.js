@@ -35,11 +35,6 @@ const ItemView = () => {
     })
   }, [])
 
-  /*
-    <ModalStandard>
-      <ObjectsLists/>
-    </ModalStandard>
-  */
   return (
     <div className={style.SingleContentPage}>
       {item === null && <CircularProgress/>}

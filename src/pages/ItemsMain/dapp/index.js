@@ -8,89 +8,93 @@ import CollectionsExplore from './Sections/collections-explore'
 import ItemsExplore  from './Sections/items-explore'
 import CollectionView  from './Sections/collection-view'
 import ItemView  from './Sections/item-view'
-import Create from './Sections/create'
+import Create from './Sections/create/'
+import Wrap from './Sections/wrap/'
 
 import style from './items-main.module.css'
 
-var dappMenuVoices = [{
-  path: '/dapp',
-  label: 'Items',
-  Component: ItemsExplore,
-  exact: true,
-  requireConnection: true,
-  templateProps: {
-    menuName: 'appMenu',
-    isDapp: true,
+var dappMenuVoices = [
+  {
+    path: '/dapp',
+    label: 'Items',
+    Component: ItemsExplore,
+    exact: true,
+    requireConnection: true,
+    templateProps: {
+      menuName: 'appMenu',
+      isDapp: true,
+    }
+  }, {
+    path: '/dapp/items/:id',
+    Component: ItemView,
+    exact: false,
+    requireConnection: true,
+    templateProps: {
+      menuName: 'appMenu',
+      isDapp: true,
+    }
+  }, {
+    path: '/dapp/items/wrapped',
+    label: 'Wrapped',
+    Component: ItemsExplore,
+    exact: true,
+    requireConnection: true,
+    templateProps: {
+      menuName: 'appMenu',
+      isDapp: true,
+      wrappedOnly : true
+    }
+  }, {
+    path: '/dapp/items/collections',
+    label: 'Collections',
+    Component: CollectionsExplore,
+    exact: true,
+    requireConnection: true,
+    templateProps: {
+      menuName: 'appMenu',
+      isDapp: true,
+    }
+  }, {
+    path: '/dapp/items/collections/:id',
+    Component: CollectionView,
+    exact: false,
+    requireConnection: true,
+    templateProps: {
+      menuName: 'appMenu',
+      isDapp: true,
+    }
+  }, {
+    path: '/dapp/items/batch',
+    label: 'Batch',
+    Component: ItemsExplore,
+    exact: true,
+    requireConnection: true,
+    templateProps: {
+      menuName: 'appMenu',
+      isDapp: true,
+    }
+  }, {
+    path: '/dapp/items/create',
+    label: 'Create',
+    Component: Create,
+    exact: true,
+    requireConnection: true,
+    templateProps: {
+      menuName: 'appMenu',
+      isDapp: true,
+    }
+  }, {
+    path: '/dapp/items/wrap',
+    label: 'Wrap',
+    Component: Wrap,
+    exact: true,
+    requireConnection: true,
+    templateProps: {
+      menuName: 'appMenu',
+      isDapp: true,
+    }
   }
-}, {
-  path: '/dapp/items/:id',
-  Component: ItemView,
-  exact: false,
-  requireConnection: true,
-  templateProps: {
-    menuName: 'appMenu',
-    isDapp: true,
-  }
-}, {
-  path: '/dapp/items/wrapped',
-  label: 'Wrapped',
-  Component: ItemsExplore,
-  exact: true,
-  requireConnection: true,
-  templateProps: {
-    menuName: 'appMenu',
-    isDapp: true,
-  }
-}, {
-  path: '/dapp/items/collections',
-  label: 'Collections',
-  Component: CollectionsExplore,
-  exact: true,
-  requireConnection: true,
-  templateProps: {
-    menuName: 'appMenu',
-    isDapp: true,
-  }
-}, {
-  path: '/dapp/items/collections/:id',
-  Component: CollectionView,
-  exact: false,
-  requireConnection: true,
-  templateProps: {
-    menuName: 'appMenu',
-    isDapp: true,
-  }
-}, {
-  path: '/dapp/items/batch',
-  label: 'Batch',
-  Component: ItemsExplore,
-  exact: true,
-  requireConnection: true,
-  templateProps: {
-    menuName: 'appMenu',
-    isDapp: true,
-  }
-}, {
-  path: '/dapp/items/create',
-  label: 'Create',
-  Component: Create,
-  exact: true,
-  requireConnection: true,
-  templateProps: {
-    menuName: 'appMenu',
-    isDapp: true,
-  }
-}, {
-  path: '/dapp/items/wrap',
-  label: 'Wrap',
-  Component: Create,
-  exact: true,
-  requireConnection: true,
-  templateProps: {
-    menuName: 'appMenu',
-    isDapp: true,
-  }
-}];
+];
 
 const ItemsMain = (props) => {
 

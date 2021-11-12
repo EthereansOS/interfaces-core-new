@@ -27,10 +27,10 @@ const Item = ({element}) => (
   </div>
 )
 
-export default function ExploreItems({forCollection, excluding}) {
+export default function ExploreItems({forCollection, excluding, wrappedOnly}) {
   return (
     <div className={style.ItemAllSingle}>
-      <ItemObject {...{forCollection, excluding, element : Item}}/>
+      <ItemObject {...{forCollection, excluding, element : Item, wrappedOnly}}/>
     </div>
   )
 }

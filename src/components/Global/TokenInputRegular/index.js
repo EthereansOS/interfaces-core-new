@@ -1,28 +1,56 @@
-import React from 'react'
-import { usePlaceholder } from '@ethereansos/interfaces-core'
-import { Link } from 'react-router-dom'
-import { Typography } from '@ethereansos/interfaces-ui'
+import React, { useState, useEffect } from 'react'
 
 import style from './token-input-regular.module.css'
+import { CircularProgress } from '@ethereansos/interfaces-ui'
+import { fromDecimals } from '@ethereansos/interfaces-core'
+import ModalStandard from '../ModalStandard'
+import ObjectsLists from '../ObjectsLists'
 
-const TokenInputRegular  = (props) => {
+const defaultImage = `${process.env.PUBLIC_URL}/img/test.jpg`
+
+const TokenInputRegular = (props) => {
+
+    const [element, setElement] = useState(null)
+
+    const [balance, setBalance] = useState(null)
+
+    const [modalIsOpen, setModalIsOpen] = useState(false)
+
+    useEffect(() => {
+        setBalance(null)
+        var currentElement = element
+        currentElement && setTimeout(() => {
+
+        })
+    }, [element])
+
+    if(modalIsOpen) {
+        return (
+            <ModalStandard>
+                <ObjectsLists onlySelections={'ERC-20'} selectionProperties={{'ERC-20' : {alsoETH : true}}}/>
+            </ModalStandard>
+        )
+    }
+
     return (
         <div className={style.TradeMarketTokenAll}>
             <div className={style.TradeMarketToken}>
-                <a className={style.TradeMarketTokenSelector}>
+                <a onClick={() => setModalIsOpen(true)} className={style.TradeMarketTokenSelector}>
                     <figure>
-                        <img src={`${process.env.PUBLIC_URL}/img/test.jpg`}></img>
+                        <img src={element?.image || defaultImage}/>
                     </figure>
-                    <span>BJK ▼</span>
+                    <span>{element?.symbol || ''} ▼</span>
                 </a>
                 <div className={style.TradeMarketTokenAmount}>
                     <input type="number" placeholder="0.0"></input>
                 </div>
             </div>
-            <a className={style.TradeMarketTokenBalance}>Balance: 19453453.354345</a>
+            {element && balance === null && <CircularProgress/>}
+            {element && balance !== null && <a className={style.TradeMarketTokenBalance}>
+                Balance: {fromDecimals(balance, element.decimals)}
+            </a>}
         </div>
-
-        )
-    }
+    )
+}
 
 export default TokenInputRegular

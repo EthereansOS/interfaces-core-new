@@ -3,7 +3,7 @@ import React, {useState, useEffect} from 'react'
 import { useWeb3 } from '@ethereansos/interfaces-core'
 import { CircularProgress } from "@ethereansos/interfaces-ui"
 
-export default ({Renderer, emptyMessage, provider}) => {
+export default ({Renderer, emptyMessage, provider, searchText, onSelection}) => {
 
   const { web3 } = useWeb3()
 
@@ -25,9 +25,13 @@ export default ({Renderer, emptyMessage, provider}) => {
     })
   }, [web3])
 
-  return (!error && !elements)
+  var outputElements = elements
+
+  searchText && outputElements && (outputElements = outputElements.filter(element => element.name?.toLowerCase().indexOf(searchText.toLowerCase()) !== -1 || element.address?.toLowerCase().indexOf(searchText.toLowerCase()) !== -1))
+
+  return (!error && !outputElements)
     ? <CircularProgress/>
-    : error || (elements && elements.length === 0)
-      ? <h2>{error || emptyMessage || "No elements to display"}</h2>
-      : elements && elements.map((element, i) => <Renderer key={(i + "_" + element)} element={element}/>)
+    : error || (outputElements && outputElements.length === 0)
+      ? <h2>{error || (emptyMessage !== undefined && emptyMessage !== null ? emptyMessage : "No elements to display")}</h2>
+      : outputElements && outputElements.map((element, i) => <Renderer key={(i + "_" + element)} element={element} onClick={() => onSelection && onSelection(element)}/>)
 }
