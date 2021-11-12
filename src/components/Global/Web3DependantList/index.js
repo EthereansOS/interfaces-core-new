@@ -23,7 +23,7 @@ export default ({Renderer, emptyMessage, provider, searchText, onSelection}) => 
         setError('Error while loading: ' + (e.message || e))
       }
     })
-  }, [web3])
+  }, [web3, provider])
 
   var outputElements = elements
 

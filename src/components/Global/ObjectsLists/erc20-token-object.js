@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 
 import ERC20TokenObjectElement from './element/erc20-token-object-element'
-import Web3DependantList from '../../../logic/frontend/web3DependantList'
+import Web3DependantList from '../Web3DependantList'
 import { useWeb3, VOID_ETHEREUM_ADDRESS } from '@ethereansos/interfaces-core'
 
 const defaultEthereumElement = {

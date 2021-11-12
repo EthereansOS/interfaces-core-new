@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, Fragment } from 'react'
 import { Button, CircularProgress, Typography, Modal } from '@ethereansos/interfaces-ui'
 import { useWeb3, web3States } from '@ethereansos/interfaces-core'
 
@@ -59,16 +59,16 @@ const ConnectWidget = ({
         </div>
         <br/>
         {(!activeConnector || errorMessage) &&
-          connectors.map(connector => <>
-            <Button
-              key={connector.id}
-              text={connector.buttonText}
-              onClick={() => onClick(connector)}
-            />
-            <br/>
-            <br/>
-            </>
-          )}
+          connectors.map(connector => (
+            <Fragment key={connector.id}>
+              <Button
+                text={connector.buttonText}
+                onClick={() => onClick(connector)}
+              />
+              <br/>
+              <br/>
+            </Fragment>
+          ))}
           <br/>
           <br/>
           {errorMessage &&

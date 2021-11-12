@@ -3,7 +3,7 @@ import React, {useState, useEffect} from 'react'
 import { useLocation } from 'react-router'
 import { useEthosContext, useWeb3, blockchainCall } from '@ethereansos/interfaces-core'
 import { CircularProgress } from '@ethereansos/interfaces-ui'
-import { loadCollection } from '../../../../logic/backend/itemsV2'
+import { loadCollection } from '../../../../logic/itemsV2'
 
 import DappSubMenu from '../../../../components/Global/DappSubMenu/index.js'
 import ViewCover from '../../../../components/Items/ViewCover/index.js'
@@ -25,7 +25,7 @@ const CollectionView = () => {
       setCollection(null)
       loadCollection({context, web3, account, newContract}, collectionId, getGlobalContract("itemProjectionFactory")).then(setCollection).catch(() => setCollection(undefined))
     })
-  }, [])
+  }, [web3, account])
 
   return (
       <div className={style.SingleContentPage}>

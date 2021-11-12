@@ -1,10 +1,10 @@
 import React from 'react'
 
 import {useWeb3, useEthosContext } from '@ethereansos/interfaces-core'
-import {loadItemsByFactories} from '../../../logic/backend/itemsV2'
+import {loadItemsByFactories} from '../../../logic/itemsV2'
 
 import ItemObjectElement from './element/item-object-element'
-import Web3DependantList from '../../../logic/frontend/web3DependantList'
+import Web3DependantList from '../Web3DependantList'
 
 export default ({forCollection, excluding, element = ItemObjectElement, wrappedOnly}) => {
 

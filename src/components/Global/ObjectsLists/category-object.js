@@ -1,10 +1,10 @@
 import React from 'react'
 
 import {useWeb3, useEthosContext } from '@ethereansos/interfaces-core'
-import {loadCollectionsByFactories} from '../../../logic/backend/itemsV2'
+import {loadCollectionsByFactories} from '../../../logic/itemsV2'
 
 import CategoryObjectElement from './element/category-object-element'
-import Web3DependantList from '../../../logic/frontend/web3DependantList'
+import Web3DependantList from '../Web3DependantList'
 
 export default ({element = CategoryObjectElement}) => {
 

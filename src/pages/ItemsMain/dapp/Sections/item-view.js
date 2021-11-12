@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 import { useLocation } from 'react-router'
 import { useEthosContext, useWeb3 } from '@ethereansos/interfaces-core'
-import { loadItem } from '../../../../logic/backend/itemsV2'
+import { loadItem } from '../../../../logic/itemsV2'
 import { CircularProgress } from '@ethereansos/interfaces-ui'
 import { blockchainCall } from '@ethereansos/interfaces-core'
 
@@ -31,7 +31,7 @@ const ItemView = () => {
       }
       loadItem({context, web3, account, newContract}, itemId, item).then(setItem).catch(() => setItem(undefined))
     })
-  }, [])
+  }, [web3, account])
 
   return (
     <div className={style.SingleContentPage}>
