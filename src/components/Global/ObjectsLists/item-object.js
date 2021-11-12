@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react'
+import React from 'react'
 
 import {useWeb3, useEthosContext } from '@ethereansos/interfaces-core'
 import {loadItemsByFactories} from '../../../logic/itemsV2'
@@ -11,12 +11,8 @@ export default ({forCollection, excluding, element = ItemObjectElement, wrappedO
   const context = useEthosContext()
   const { web3, account, getGlobalContract, newContract } = useWeb3()
 
-  var provider = useCallback(() => {
-    return loadItemsByFactories({context, web3, account, newContract, getGlobalContract, collectionData : forCollection, excluding, wrappedOnly}, getGlobalContract("itemProjectionFactory"))
-  }, [account])
-
   return <Web3DependantList 
     Renderer={element}
-    provider={provider}
+    provider={() => loadItemsByFactories({context, web3, account, newContract, getGlobalContract, collectionData : forCollection, excluding, wrappedOnly}, getGlobalContract("itemProjectionFactory")) }
   />
 }

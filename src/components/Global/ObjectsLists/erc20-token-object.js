@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import ERC20TokenObjectElement from './element/erc20-token-object-element'
 import Web3DependantList from '../Web3DependantList'
@@ -25,15 +25,13 @@ export default ({alsoETH, searchText}) => {
     })
   }, [account])
 
-  var provider = useCallback(() => {
-    var elements = []
-    alsoETH && elements.push(ethereumElement)
-    return elements
-  }, [account])
-
   return <Web3DependantList
       Renderer={ERC20TokenObjectElement}
-      provider={provider}
+      provider={() => {
+        var elements = []
+        alsoETH && elements.push(ethereumElement)
+        return elements
+      }}
       searchText={searchText}
       emptyMessage=''
     />
