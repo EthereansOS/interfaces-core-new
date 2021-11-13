@@ -10,49 +10,39 @@ import ActionAWeb3ButtonExtraSmall from '../../Global/ActionAWeb3ButtonExtraSmal
 
 const NotSupportedGeneralGovernanceOpenCard = (props) => {
   return (
-    <div className={style.SurveylessOpenCard}>
-      <div className={style.SurveylessOpenCardTokens}>
+    <div className={style.NotSupportedOpenCard}>
+      <div className={style.NotSupportedOpenCardTokens}>
         <p><b>Voting Powers:</b></p>
-        <div className={style.SurveylessOpenCardTokensList}>
+        <div className={style.NotSupportedOpenCardTokensList}>
           <a>
             <img src={`${process.env.PUBLIC_URL}/img/test.jpg`}></img>
-            <div className={style.SurveylessOpenCardTokensVotingPower}>
+            <div className={style.NotSupportedOpenCardTokensVotingPower}>
              <span>+1</span>
             </div>
           </a>
           <a>
             <img src={`${process.env.PUBLIC_URL}/img/test.jpg`}></img>
-            <div className={style.SurveylessOpenCardTokensVotingPower}>
+            <div className={style.NotSupportedOpenCardTokensVotingPower}>
              <span>+10</span>
             </div>
           </a>
           <a>
             <img src={`${process.env.PUBLIC_URL}/img/test.jpg`}></img>
-            <div className={style.SurveylessOpenCardTokensVotingPower}>
+            <div className={style.NotSupportedOpenCardTokensVotingPower}>
              <span>+3</span>
             </div>
           </a>
         </div>
       </div> 
-      <div className={style.SurveylessOpenCardSelection}>
-        <p><b>Active Proposals:</b></p>
-
-
-
-        <div className={style.SurveylessOpenCardSelectionCont}>
-          
-          <div className={style.SurveylessOpenCardSelectionSingleQuantity}>
-          <TokenInputRegular></TokenInputRegular>
-          </div>
-          <div>
-            <ActionAWeb3Buttons></ActionAWeb3Buttons>
-          </div>
-          <div className={style.SurveylessOpenCardSelectionSingleOpenStaked}>
-              <p>0.01% - 2000 OS staked</p>
-              <ActionAWeb3ButtonExtraSmall></ActionAWeb3ButtonExtraSmall>
-          </div>
+      <div className={style.NotSupportedOpenCardSelectionAll}>
+        <div className={style.NotSupportedOpenCardSelection}>
+          <p><b>Active Proposals:</b></p>
+        </div>
+        <div className={style.NotSupportedOpenCardSelection}>
+          <p><b>Old Proposals:</b></p>
         </div>
       </div>
+      
     </div>
   )
 }

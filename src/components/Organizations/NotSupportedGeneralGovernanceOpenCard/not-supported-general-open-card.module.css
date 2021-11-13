@@ -1,19 +1,20 @@
-.SurveylessOpenCard {width: 100%; display: block; border-top:1px solid #EEEEEE; padding: 20px;  text-align: left; overflow: hidden;position: relative; margin: 10px auto;}
-.SurveylessOpenCardTokens {width: 340px; vertical-align: top; display: inline-block; margin: 10px auto;}
-.SurveylessOpenCardTokens > p {font-size: 16px; font-weight: bold; color: #000000;}
-.SurveylessOpenCardTokensList {width: 100%; display: inline-block; margin: 10px auto; text-align: left;}
-.SurveylessOpenCardTokensList a {width: 160px; min-height: 160px; max-height: 300px; display: inline-block; margin: 5px; overflow: hidden; border-radius: 20px;}
-.SurveylessOpenCardTokensList a img {width: 100%; height: 100%; display: inline-block; margin: 0;}
-.SurveylessOpenCardTokensVotingPower {padding: 10px; background-color: #EEEEEE; text-align: center;}
-.SurveylessOpenCardSelection {width: 450px; margin: 10px 40px; display: inline-block; background-color: #e9effc; border-radius: 16px; padding: 20px; vertical-align: top;}
-.SurveylessOpenCardSelection > p {font-size: 16px; font-weight: bold; color: #000000;}
-.SurveylessOpenCardSelectionCont {width: 100%;margin: 20px auto; text-align: left;}
-.SurveylessOpenCardSelectionSingle {width: 45%; background-color: #ffffff; padding: 10px; text-align: center; display: inline-block; border-radius: 18px; margin: 10px 2.5%;}
-.SurveylessOpenCardSelectionSingle p, .SurveylessOpenCardSelectionSingleCurrent p {font-weight: bold; font-size: 17px; width: 100%; text-align: center; display: inline-block; margin: 5px auto; color: #000000;}
-.SurveylessOpenCardSelectionSingle:selected {border-color: green;}
-.SurveylessOpenCardSelectionSingleCurrent {width: 45%; background-color: #ffffff; padding: 10px; text-align: center; display: inline-block; border-radius: 18px; margin: 10px 2.5%;}
-.SurveylessOpenCardSelectionSingle span {width: 100%; display: inline-block; font-size: 11px;}
-.SurveylessOpenCardSelectionSingle input {margin: 10px auto;}
-.SurveylessOpenCardSelectionSingleQuantity {margin: 20px auto 0px auto; text-align: center; width: 100%; display: inline-block;}
-.SurveylessOpenCardSelectionSingleOpenStaked {width: 100%; display: inline-block; text-align: center; border-radius: 12px; background-color: #ffffff; margin: 20px auto 0px auto; padding: 10px;}
-.SurveylessOpenCardSelectionSingleOpenStaked p {display: inline-block; margin: 5px 10px; font-size: 13px; color: #000000;}
+.NotSupportedOpenCard {width: 100%; display: block; border-top:1px solid #EEEEEE; padding: 20px;  text-align: left; overflow: hidden;position: relative; margin: 10px auto;}
+.NotSupportedOpenCardTokens {width: 340px; vertical-align: top; display: inline-block; margin: 10px auto;}
+.NotSupportedOpenCardTokens > p {font-size: 16px; font-weight: bold; color: #000000;}
+.NotSupportedOpenCardTokensList {width: 100%; display: inline-block; margin: 10px auto; text-align: left;}
+.NotSupportedOpenCardTokensList a {width: 160px; min-height: 160px; max-height: 300px; display: inline-block; margin: 5px; overflow: hidden; border-radius: 20px;}
+.NotSupportedOpenCardTokensList a img {width: 100%; height: 100%; display: inline-block; margin: 0;}
+.NotSupportedOpenCardTokensVotingPower {padding: 10px; background-color: #EEEEEE; text-align: center;}
+.NotSupportedOpenCardSelectionAll {width: 450px; margin: 10px 40px; display: inline-block;vertical-align: top;}
+.NotSupportedOpenCardSelection {width: 100%; margin: 0px 0px 10px 0px; display:  inline-block; background-color: #e9effc; border-radius: 16px; padding: 20px; vertical-align: top;}
+.NotSupportedOpenCardSelection > p {font-size: 16px; font-weight: bold; color: #000000;}
+.NotSupportedOpenCardSelectionCont {width: 100%;margin: 20px auto; text-align: left;}
+.NotSupportedOpenCardSelectionSingle {width: 45%; background-color: #ffffff; padding: 10px; text-align: center; display: inline-block; border-radius: 18px; margin: 10px 2.5%;}
+.NotSupportedOpenCardSelectionSingle p, .NotSupportedOpenCardSelectionSingleCurrent p {font-weight: bold; font-size: 17px; width: 100%; text-align: center; display: inline-block; margin: 5px auto; color: #000000;}
+.NotSupportedOpenCardSelectionSingle:selected {border-color: green;}
+.NotSupportedOpenCardSelectionSingleCurrent {width: 45%; background-color: #ffffff; padding: 10px; text-align: center; display: inline-block; border-radius: 18px; margin: 10px 2.5%;}
+.NotSupportedOpenCardSelectionSingle span {width: 100%; display: inline-block; font-size: 11px;}
+.NotSupportedOpenCardSelectionSingle input {margin: 10px auto;}
+.NotSupportedOpenCardSelectionSingleQuantity {margin: 20px auto 0px auto; text-align: center; width: 100%; display: inline-block;}
+.NotSupportedOpenCardSelectionSingleOpenStaked {width: 100%; display: inline-block; text-align: center; border-radius: 12px; background-color: #ffffff; margin: 20px auto 0px auto; padding: 10px;}
+.NotSupportedOpenCardSelectionSingleOpenStaked p {display: inline-block; margin: 5px 10px; font-size: 13px; color: #000000;}
