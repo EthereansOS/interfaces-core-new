@@ -33,7 +33,7 @@ const MenuCapableComponent = ({className, contextualRequire, defaultComponentLab
       const chosenPath = selectedVoices[selectedVoices.length - 1]
       const selectedVoice = menuVoices.filter(it => it.path && it.path.toLowerCase() === chosenPath)[0]
       setComponentIndex(menuVoices.indexOf(selectedVoice))
-    }, [location.pathname])
+    }, [location.pathname, menuVoices])
 
     var menuVoice = componentIndex !== undefined && componentIndex !== null && menuVoices[componentIndex]
 
