@@ -1,6 +1,6 @@
 .SurveylessOpenCard {width: 100%; display: block; border-top:1px solid #EEEEEE; padding: 20px;  text-align: left; overflow: hidden;position: relative; margin: 10px auto;}
 .SurveylessOpenCardTokens {width: 340px; vertical-align: top; display: inline-block; margin: 10px auto;}
-.SurveylessOpenCardTokens > p {font-size: 16px; font-weight: bold; color: #000000;}
+.SurveylessOpenCardTokens > p {font-size: 17px; font-weight: bold; color: #000000; margin: 15px auto 5px auto;}
 .SurveylessOpenCardTokensList {width: 100%; display: inline-block; margin: 10px auto; text-align: left;}
 .SurveylessOpenCardTokensList a {width: 160px; min-height: 160px; max-height: 300px; display: inline-block; margin: 5px; overflow: hidden; border-radius: 20px;}
 .SurveylessOpenCardTokensList a img {width: 100%; height: 100%; display: inline-block; margin: 0;}
@@ -17,3 +17,6 @@
 .SurveylessOpenCardSelectionSingleQuantity {margin: 20px auto 0px auto; text-align: center; width: 100%; display: inline-block;}
 .SurveylessOpenCardSelectionSingleOpenStaked {width: 100%; display: inline-block; text-align: center; border-radius: 12px; background-color: #ffffff; margin: 20px auto 0px auto; padding: 10px;}
 .SurveylessOpenCardSelectionSingleOpenStaked p {display: inline-block; margin: 5px 10px; font-size: 13px; color: #000000;}
+.OpenCardGovernanceRules {width: 100%; display: inline-block; margin: 10px auto; text-align: left;}
+.OpenCardGovernanceRules p {width: 45%; margin: 5px 2%; font-size: 13px; color: #000000; display: inline-block; line-height: 1.5;}
+.OpenCardGovernanceRules p b {font-weight: bold;}

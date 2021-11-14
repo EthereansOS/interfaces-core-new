@@ -8,6 +8,7 @@ import TokenInputRegular from '../../Global/TokenInputRegular/index.js'
 import ActionAWeb3Buttons from '../../Global/ActionAWeb3Buttons/index.js'
 import ActionAWeb3ButtonExtraSmall from '../../Global/ActionAWeb3ButtonExtraSmall/index.js'
 import RegularVoteBox from '../RegularVoteBox/index.js'
+import TokenProposalCard from '../TokenProposalCard/index.js'
 
 
 const FundOpenCard = (props) => {
@@ -36,41 +37,19 @@ const FundOpenCard = (props) => {
           </a>
         </div>
         <p><b>Rules:</b></p>
+        <div className={style.OpenCardGovernanceRules}>
+          <p><b>Quorum:</b><br></br>3,000,000 Votes</p>
+          <p><b>Duration:</b><br></br>a Weeks</p>
+          <p><b>Quorum:</b><br></br>3,000,000 Votes</p>
+          <p><b>Quorum:</b><br></br>3,000,000 Votes</p>
+        </div>
       </div> 
       <div className={style.SurveylessOpenCardSelection}>
-        <p><b>Choose from:</b></p>
+        <p><b>Active Proposals:</b></p>
         <div className={style.SurveylessOpenCardSelectionCont}>
-          <label className={style.SurveylessOpenCardSelectionSingle}>
-            <p>0.0001%</p>
-            <span>Staked: 20000 OS</span>
-            <input type="radio"></input>
-          </label>
-          <label className={style.SurveylessOpenCardSelectionSingle}>
-            <p>0.03%</p>
-            <span>Staked: 20000 OS</span>
-            <input type="radio"></input>
-          </label>
-          <label className={style.SurveylessOpenCardSelectionSingle}>
-            <p>1%</p>
-            <span>Staked: 20000 OS</span>
-            <input type="radio"></input>
-          </label>
-          <label className={style.SurveylessOpenCardSelectionSingle}>
-            <p>1%</p>
-            <span>Staked: 20000 OS</span>
-            <input type="radio"></input>
-          </label>
-          <label className={style.SurveylessOpenCardSelectionSingle}>
-            <p>0.004%</p>
-            <span>Staked: 20000 OS</span>
-            <input type="radio"></input>
-          </label>
-          <label className={style.SurveylessOpenCardSelectionSingle}>
-            <p>1%</p>
-            <span>Staked: 20000 OS</span>
-            <input type="radio"></input>
-          </label>
-          <RegularVoteBox></RegularVoteBox>
+          <div className={style.ProposalCardClosed}>
+            <TokenProposalCard></TokenProposalCard>
+          </div>
         </div>
       </div>
     </div>
