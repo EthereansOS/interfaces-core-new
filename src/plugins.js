@@ -1,12 +1,11 @@
+import {retrieveComponentsByReflection} from './logic/pluginUtils'
 export default {
     name: 'app-plugin',
     init({ addElement }) {
-        var contextualRequire = require.context('./pages', true, /.js$/)
-        var elements = contextualRequire.keys()
+        const Elements = retrieveComponentsByReflection(require.context('./pages', true, /.js$/), 'addToPlugin', true)
         var currentIndex = 0
-        for (var element of elements) {
-            var Element = contextualRequire(element).default
-            Element.addToPlugin && Element.addToPlugin({ index: (Element.pluginIndex || (currentIndex += 10)) })({ addElement })
+        for (const Element of Elements) {
+          Element.addToPlugin({ index: (Element.pluginIndex || (currentIndex += 10)) })({ addElement })
         }
     }
 }
