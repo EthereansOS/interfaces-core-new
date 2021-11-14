@@ -31,7 +31,7 @@ const ItemView = () => {
       }
       loadItem({context, web3, account, newContract}, itemId, item).then(setItem).catch(() => setItem(undefined))
     })
-  }, [chainId, account])
+  }, [chainId, account, location.pathname])
 
   return (
     <div className={style.SingleContentPage}>
