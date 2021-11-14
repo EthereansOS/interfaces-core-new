@@ -11,7 +11,9 @@ const DelegationsList = ({}) => {
 DelegationsList.menuVoice = {
   label : 'Delegations',
   path : '/organizations/dapp',
-  contextualRequire : () => require.context('./', false, /.js$/)
+  subMenuLabel : 'All',
+  contextualRequire : () => require.context('./', false, /.js$/),
+  index : 0
 }
 
 export default DelegationsList

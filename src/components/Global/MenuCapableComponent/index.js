@@ -11,7 +11,10 @@ const MenuCapableComponent = ({className, contextualRequire, defaultComponentLab
 
     const location = useLocation()
 
-    const menuVoices = contextualRequire && retrieveComponentsByReflection(contextualRequire.keys ? contextualRequire : contextualRequire(), "menuVoice", true).map((it, i) => ({...it.menuVoice, Component : it, onClick : !it.menuVoice.path && (() => setComponentIndex(i))}))
+    var menuVoices = contextualRequire && retrieveComponentsByReflection(contextualRequire.keys ? contextualRequire : contextualRequire(), "menuVoice", true).map(it => ({...it.menuVoice, Component : it}))
+    menuVoices = menuVoices.filter(it => it.contextualRequire === contextualRequire)[0] ? menuVoices.map(it => ({...it, label : it.subMenuLabel || it.label})) : menuVoices
+    menuVoices = menuVoices.sort((a, b) => (isNaN(a.index) ? menuVoices.length : a.index) - (isNaN(b.index) ? menuVoices.length : b.index))
+    menuVoices = menuVoices.map((it, i) => ({...it, onClick : !it.path && (() => setComponentIndex(i))}))
 
     useEffect(() => {
       if(!menuVoices) {

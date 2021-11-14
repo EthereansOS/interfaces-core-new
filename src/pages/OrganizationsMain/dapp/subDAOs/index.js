@@ -11,7 +11,9 @@ const SubDAOsList = ({}) => {
 SubDAOsList.menuVoice = {
   label : 'SubDAOs',
   path : '/organizations/dapp/subdaos',
-  contextualRequire : () => require.context('./', false, /.js$/)
+  subMenuLabel : 'All',
+  contextualRequire : () => require.context('./', false, /.js$/),
+  index : 0
 }
 
 export default SubDAOsList
