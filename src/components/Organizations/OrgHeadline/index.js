@@ -7,7 +7,8 @@ import ExtLinkButton from '../../Global/ExtLinkButton/index.js'
 
 const OrgHeadline = (props) => {
   return (
-    <div className={style.OrgHeadline}>
+   
+   <div className={style.OrgHeadline}>
       <figure>
         <img src={`${process.env.PUBLIC_URL}/img/test.jpg`}></img>
       </figure>

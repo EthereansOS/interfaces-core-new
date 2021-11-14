@@ -37,8 +37,12 @@ const NotSupportedGeneralGovernanceOpenCard = (props) => {
       <div className={style.NotSupportedOpenCardSelectionAll}>
         <div className={style.NotSupportedOpenCardSelection}>
           <p><b>Active Proposals:</b></p>
+          <div className={style.NotSupportedOpenCardSelection}>
+            
+          </div>
+
         </div>
-        <div className={style.NotSupportedOpenCardSelection}>
+        <div className={style.ProposalRaw}>
           <p><b>Old Proposals:</b></p>
         </div>
       </div>
