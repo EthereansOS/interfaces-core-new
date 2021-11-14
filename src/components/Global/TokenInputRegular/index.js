@@ -5,8 +5,7 @@ import { CircularProgress } from '@ethereansos/interfaces-ui'
 import { blockchainCall, useWeb3, fromDecimals, toDecimals } from '@ethereansos/interfaces-core'
 import ModalStandard from '../ModalStandard'
 import ObjectsLists from '../ObjectsLists'
-
-const defaultImage = `${process.env.PUBLIC_URL}/img/test.jpg`
+import TokenLogo from '../TokenLogo'
 
 const TokenInputRegular = ({onElement}) => {
 
@@ -49,7 +48,7 @@ const TokenInputRegular = ({onElement}) => {
             <div className={style.TradeMarketToken}>
                 <a onClick={() => setModalIsOpen(true)} className={style.TradeMarketTokenSelector}>
                     <figure>
-                        <img src={element?.image || defaultImage}/>
+                        <TokenLogo input={element}/>
                     </figure>
                     <span>{element?.symbol || ''} ▼</span>
                 </a>

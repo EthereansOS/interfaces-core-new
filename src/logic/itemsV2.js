@@ -1,4 +1,4 @@
-import { web3Utils, sendAsync, blockchainCall, abi, tryRetrieveMetadata } from "@ethereansos/interfaces-core"
+import { VOID_ETHEREUM_ADDRESS, web3Utils, sendAsync, blockchainCall, abi, tryRetrieveMetadata } from "@ethereansos/interfaces-core"
 
 export async function loadItemsByFactories({context, web3, account, newContract, getGlobalContract, collectionData, excluding, wrappedOnly}, factories) {
 
@@ -141,4 +141,20 @@ export async function loadCollection({context, web3, newContract, account}, coll
         ...collectionData,
         items : await loadItemsByFactories({context, web3, account, newContract, collectionData}, factory)
     }
+}
+
+export function wrapERC20({web3}, token, _, value, w20) {
+    var items = [{
+        header : {
+          host : VOID_ETHEREUM_ADDRESS,
+          name : "",
+          symbol : "",
+          uri : ""
+        },
+        collectionId : web3.eth.abi.encodeParameter("address", token.address),
+        id : "0",
+        accounts : [],
+        amounts : [value]
+    }]
+    return blockchainCall(w20.methods.mintItemsWithPermit, items, [], {value : token.address === VOID_ETHEREUM_ADDRESS ? value : '0'})
 }

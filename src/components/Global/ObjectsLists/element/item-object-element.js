@@ -1,6 +1,7 @@
 import style from '../objects-lists.module.css'
 
 import { getNetworkElement, useEthosContext, useWeb3 } from '@ethereansos/interfaces-core'
+import TokenLogo from '../../TokenLogo'
 
 export default ({element}) => {
   const context = useEthosContext()
@@ -8,7 +9,7 @@ export default ({element}) => {
   return (
     <a className={style.TokenObject}>
       <figure>
-          <img src={element}></img>
+        <TokenLogo input={element}/>
       </figure>
       <div className={style.ObjectInfo}>
         <div className={style.ObjectInfoAndLink}>

@@ -3,6 +3,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 
 import CategoryObject from '../../Global/ObjectsLists/category-object'
+import TokenLogo from '../../Global/TokenLogo'
 
 import style from './explore-collections.module.css'
 
@@ -10,7 +11,7 @@ const ExploreCollections = ({element}) => (
   <Link to={"/dapp/items/collections/" + element.id}>
    <div className={style.CollectionSingle}>
       <figure>
-        <img src={element.image}/>
+        <TokenLogo input={element}/>
       </figure>
       <div className={style.CollectionTitle}>
         <h6>{element.name}</h6>
@@ -18,7 +19,7 @@ const ExploreCollections = ({element}) => (
       <div className={style.CollectionFolder}>
         {element.items.map(item => <a key={item.id}>
           <figure className={style.CollectionFolderItem}>
-            <img src={item.image}/>
+            <TokenLogo input={item}/>
           </figure>
         </a>)}
       </div>

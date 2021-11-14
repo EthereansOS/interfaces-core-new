@@ -1,13 +1,14 @@
 import style from '../objects-lists.module.css'
 
 import { shortenWord, useEthosContext } from '@ethereansos/interfaces-core'
+import TokenLogo from '../../TokenLogo'
 
 export default ({element}) => {
     var context = useEthosContext()
     return (
         <a className={style.TokenObject}>
             <figure>
-                <img src={element.image}></img>
+                <TokenLogo input={element}/>
             </figure>
             <div className={style.ObjectInfo}>
                 <div className={style.ObjectInfoCategory}>

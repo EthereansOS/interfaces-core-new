@@ -3,12 +3,13 @@ import { Link } from 'react-router-dom'
 import { fromDecimals } from '@ethereansos/interfaces-core'
 import style from './explore-items.module.css'
 import ItemObject from '../../Global/ObjectsLists/item-object'
+import TokenLogo from '../../Global/TokenLogo'
 
 const Item = ({element}) => (
   <div className={style.ItemSingle}>
     <Link to={`/dapp/items/${element.address}`}>
       <figure>
-        <img src={element.image}></img>
+        <TokenLogo input={element}/>
       </figure>
       <div className={style.ItemTitle}>
         <h6>{element.name}</h6>
