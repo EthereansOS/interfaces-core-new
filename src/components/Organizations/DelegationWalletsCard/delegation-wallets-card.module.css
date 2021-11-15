@@ -1,0 +1,8 @@
+.OrgMainThingsCard {width: 940px; margin: 25px; display: inline-block; background-color: #EEEEEE; border-radius: 20px; box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32); text-align: center; overflow: hidden;position: relative; padding: 15px;}
+.OrgThingsTitle {width: 100%; display: inline-block; padding: 20px 5px; text-align: center;}
+.OrgThingsTitle h6 {font-size: 20px;color: #000000; font-weight: bold; width: 100%; display: inline-block; text-align: center;}
+.OrgThingsInfoContent {width: 19%; display: inline-block; margin: 10px 0.5%; padding: 5px 5px; text-align: center;}
+.OrgThingsInfoContent b {font-size: 14px; font-weight: bold; color: #000000; margin: 5px auto; display: inline-block; width: 100%; text-align: center;}
+.OrgThingsInfoContent p {font-size: 13px;display: inline-block; width: 100%; text-align: center;}
+.OrgThingsInfoContent p a {text-decoration: underline;color: #000000;}
+.OrgMainThingsCard .OpenBTN {position: absolute; top: 5px; right: 5px; width: 50px; height: 30px;}

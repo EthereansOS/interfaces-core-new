@@ -12,7 +12,7 @@ const OrganizationsMain = () => {
   return (
     <div className={style.Web3PagesRoot}>
       <DappMenu></DappMenu>
-      <OrganizationView></OrganizationView>
+      <DelegationView></DelegationView>
     </div>
   )
 }
