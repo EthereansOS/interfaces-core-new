@@ -6,14 +6,15 @@ import { loadItem } from '../../../../logic/itemsV2'
 import { CircularProgress } from '@ethereansos/interfaces-ui'
 import { blockchainCall } from '@ethereansos/interfaces-core'
 
-import style from './items-main-sections.module.css'
-import DappSubMenu from '../../../../components/Global/DappSubMenu/index.js'
-import ViewCover from '../../../../components/Items/ViewCover/index.js'
-import ViewDescription from '../../../../components/Items/ViewDescription/index.js'
-import ViewProperties from '../../../../components/Items/ViewProperties/index.js'
-import ViewBasics from '../../../../components/Items/ViewBasics/index.js'
+import DappSubMenu from '../../../../components/Global/DappSubMenu'
+import ViewCover from '../../../../components/Items/ViewCover'
+import ViewDescription from '../../../../components/Items/ViewDescription'
+import ViewProperties from '../../../../components/Items/ViewProperties'
+import ViewBasics from '../../../../components/Items/ViewBasics'
 import SubTrade from '../SubSections/sub-trade.js'
 import SubCollectionExplore from '../SubSections/sub-collection-explore.js'
+
+import style from '../items-main-sections.module.css'
 
 const ItemView = () => {
   const location = useLocation()
@@ -52,6 +53,11 @@ const ItemView = () => {
       </>}
     </div>
   )
+}
+
+ItemView.menuVoice = {
+  path : '/items/dapp/:id',
+  exact: false
 }
 
 export default ItemView

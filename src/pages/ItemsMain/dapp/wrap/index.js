@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import W20 from "./w20"
 import W721 from "./w721"
 import W1155 from "./w1155"
-import DappMenu from '../../../../../components/Global/DappMenu'
+import DappMenu from '../../../../components/Global/DappMenu'
 
 var wrapVoices = [
   {
@@ -21,7 +21,7 @@ var wrapVoices = [
   }
 ];
 
-export default () => {
+var Wrap = () => {
   const [currentVoice, setCurrentVoice] = useState(wrapVoices[0])
   var Component = currentVoice.Component
   return (
@@ -31,3 +31,10 @@ export default () => {
     </div>
   )
 }
+
+Wrap.menuVoice = {
+  label : 'Wrap',
+  path : '/items/dapp/wrap',
+}
+
+export default Wrap

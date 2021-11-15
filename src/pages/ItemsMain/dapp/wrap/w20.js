@@ -1,10 +1,9 @@
 import React, { useState } from 'react'
 
-import TokenInputRegular from '../../../../../components/Global/TokenInputRegular'
+import TokenInputRegular from '../../../../components/Global/TokenInputRegular'
 import { useWeb3 } from '@ethereansos/interfaces-core'
-import ActionAWeb3Buttons from '../../../../../components/Global/ActionAWeb3Buttons'
-import { wrapERC20 } from '../../../../../logic/itemsV2' 
-
+import ActionAWeb3Buttons from '../../../../components/Global/ActionAWeb3Buttons'
+import { wrapERC20 } from '../../../../logic/itemsV2'
 
 export default () => {
 

@@ -1,17 +1,17 @@
 import React, {useState, useEffect} from 'react'
 
 import { useLocation } from 'react-router'
-import { useEthosContext, useWeb3, blockchainCall } from '@ethereansos/interfaces-core'
+import { useEthosContext, useWeb3 } from '@ethereansos/interfaces-core'
 import { CircularProgress } from '@ethereansos/interfaces-ui'
 import { loadCollection } from '../../../../logic/itemsV2'
 
-import DappSubMenu from '../../../../components/Global/DappSubMenu/index.js'
-import ViewCover from '../../../../components/Items/ViewCover/index.js'
-import ViewDescription from '../../../../components/Items/ViewDescription/index.js'
-import ViewInfoBox from '../../../../components/Items/ViewInfoBox/index.js'
+import DappSubMenu from '../../../../components/Global/DappSubMenu/'
+import ViewCover from '../../../../components/Items/ViewCover/'
+import ViewDescription from '../../../../components/Items/ViewDescription/'
+import ViewInfoBox from '../../../../components/Items/ViewInfoBox/'
 import SubItemsExplore from '../SubSections/sub-items-explore.js'
 
-import style from './items-main-sections.module.css'
+import style from '../items-main-sections.module.css'
 
 const CollectionView = () => {
   const location = useLocation()
@@ -44,6 +44,11 @@ const CollectionView = () => {
         </>}
       </div>
   )
+}
+
+CollectionView.menuVoice = {
+  path : '/items/dapp/collections/:id',
+  exact: false
 }
 
 export default CollectionView

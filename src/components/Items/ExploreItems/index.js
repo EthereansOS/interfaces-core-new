@@ -7,7 +7,7 @@ import TokenLogo from '../../Global/TokenLogo'
 
 const Item = ({element}) => (
   <div className={style.ItemSingle}>
-    <Link to={`/dapp/items/${element.address}`}>
+    <Link to={`/items/dapp/${element.address}`}>
       <figure>
         <TokenLogo input={element}/>
       </figure>

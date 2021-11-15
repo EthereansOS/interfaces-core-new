@@ -8,7 +8,7 @@ import TokenLogo from '../../Global/TokenLogo'
 import style from './explore-collections.module.css'
 
 const ExploreCollections = ({element}) => (
-  <Link to={"/dapp/items/collections/" + element.id}>
+  <Link to={"/items/dapp/collections/" + element.id}>
    <div className={style.CollectionSingle}>
       <figure>
         <TokenLogo input={element}/>

@@ -13,7 +13,7 @@ const SubCollectionExplore = ({item}) => {
           </figure>
           <div className={style.SubCollectionInfoName}>
             <h5>More From {item.collectionData.name} Collection</h5>
-            <Link to={`/dapp/items/collections/${item.collectionId}`}>View</Link>
+            <Link to={`/items/dapp/collections/${item.collectionId}`}>View</Link>
           </div>
         </div>
         <ExploreItems forCollection={item.collectionData} excluding={item.id}/>

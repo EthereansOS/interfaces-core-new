@@ -1,4 +1,4 @@
-import {retrieveComponentsByReflection} from './logic/pluginUtils'
+import {retrieveComponentsByReflection} from './logic/uiUtilities'
 export default {
     name: 'app-plugin',
     init({ addElement }) {
