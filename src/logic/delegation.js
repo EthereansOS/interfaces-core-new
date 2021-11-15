@@ -1,14 +1,14 @@
-import { abi, VOID_ETHEREUM_ADDRESS, getNetworkElement, blockchainCall, web3Utils, sendAsync } from "@ethereansos/interfaces-core"
+import { abi, VOID_ETHEREUM_ADDRESS, uploadMetadata, getNetworkElement, blockchainCall, web3Utils, sendAsync } from "@ethereansos/interfaces-core"
 
 import { encodeHeader } from "./itemsV2";
 
-export async function create({context, newContract, chainId, factoryOfFactories}, metadata, organization) {
-    var uri = "";
+export async function create({context, ipfsHttpClient, newContract, chainId, factoryOfFactories}, metadata, organization) {
+    var uri = await uploadMetadata({context, ipfsHttpClient}, metadata)
     var header = {
         host :VOID_ETHEREUM_ADDRESS,
         name : metadata.name,
         symbol : metadata.symbol,
-        uri : uri || "myUri"
+        uri
     }
     var headerBytecode = encodeHeader(header)
     var mandatoryComponentsDeployData = [

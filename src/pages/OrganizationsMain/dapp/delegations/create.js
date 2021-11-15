@@ -6,7 +6,7 @@ import {create} from '../../../../logic/delegation'
 const DelegationsCreate = ({}) => {
 
   const context = useEthosContext()
-  const {getGlobalContract, newContract, chainId} = useWeb3()
+  const {getGlobalContract, newContract, chainId, ipfsHttpClient} = useWeb3()
 
   const [name, setName] = useState("")
   const [symbol, setSymbol] = useState("")
@@ -15,7 +15,7 @@ const DelegationsCreate = ({}) => {
 
   async function deploy() {
     await create({
-      context, newContract, chainId, factoryOfFactories : getGlobalContract("factoryOfFactories")
+      context, newContract, chainId, ipfsHttpClient, factoryOfFactories : getGlobalContract("factoryOfFactories")
     }, {
       name : name || "",
       symbol : symbol || "",
