@@ -158,3 +158,19 @@ export function wrapERC20({web3}, token, _, value, w20) {
     }]
     return blockchainCall(w20.methods.mintItemsWithPermit, items, [], {value : token.address === VOID_ETHEREUM_ADDRESS ? value : '0'})
 }
+
+export function encodeHeader(header) {
+    var headerType = [
+        "address",
+        "string",
+        "string",
+        "string"
+    ]
+    var headerVal = [
+        header.host,
+        header.name,
+        header.symbol,
+        header.uri
+    ]
+    return abi.encode([`tuple(${headerType.join(',')})`], [headerVal])
+}
