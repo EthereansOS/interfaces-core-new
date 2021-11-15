@@ -1,3 +1,5 @@
+import MenuCapableComponent from "../components/Global/MenuCapableComponent"
+
 export function retrieveComponentsByReflection(contextualRequire, key, returnElement) {
     return contextualRequire.keys().map(element => {
         var Element = contextualRequire(element).default
@@ -17,4 +19,32 @@ export function retrieveSavedPath(menuVoices, currentLocationInput) {
     selectedVoices = selectedVoices.length > 0 ? selectedVoices : database
 
     return selectedVoices[selectedVoices.length - 1]
+}
+
+export function prepareAddToPlugin(contextualRequire, all, name, link, className, pluginIndex) {
+    return {
+        pluginIndex,
+        addToPlugin: ({ index }) =>
+            ({ addElement }) => {
+                retrieveComponentsByReflection(all, "menuVoice").forEach((it, i) => it.path && addElement('router', {
+                    ...it,
+                    index: index + i,
+                    Component: MenuCapableComponent,
+                    requireConnection: true,
+                    templateProps: {
+                        ...it.templateProps,
+                        contextualRequire,
+                        menuName: 'appMenu',
+                        isDapp: true,
+                        className
+                    },
+                }))
+                addElement('appMenu', {
+                    name,
+                    label: name,
+                    link,
+                    index
+                })
+            }
+    }
 }
