@@ -8,12 +8,12 @@ const Web3Connect = () => {
   function triggerConnect() {
     var location = window.location.href.toString();
     connectionStatus === web3States.NOT_CONNECTED && (window.location.href = (location.lastIndexOf('/') === location.length - 1 ? location.substring(0, location.length - 1) : location) + '/dapp');
-    connectionStatus === web3States.CONNECTED && setConnector(null);
+    connectionStatus === web3States.CONNECTED && void((window.location.href = window.location.href.split('/#')[0] + '/#/'), setTimeout(() => setConnector(null)));
   }
 
   return (
       <div className={style.Web3Connect}>
-        {/* Ready for Layer 2 selection 
+        {/* Ready for Layer 2 selection
         <a className={style.Web3ConnectChain}>
           <img src={`${process.env.PUBLIC_URL}/img/ethereum.png`}></img>
           <p>Ethereum <span>▼</span></p>
