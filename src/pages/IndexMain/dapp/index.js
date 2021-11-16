@@ -27,7 +27,6 @@ IndexMain.addToPlugin =
         templateProps: {
           menuName: 'appMenu',
           isDapp: false,
-          componentOnly: true,
         },
       })
     }
