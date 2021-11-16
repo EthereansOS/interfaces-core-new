@@ -1,5 +1,10 @@
-.IndexHeader {width: 100%; display: inline-block; position: absolute; top: 0; left: 0;}
-.IndexHeaderLogo {width: 144px; height: 123px; display: inline-block;}
-.IndexHeaderLogo img {width: 144px; height: 123px; display: inline-block;}
-.IndexHeaderMenu {display: inline-block;}
-.IndexHeaderDapp {}
+a {cursor: pointer; text-decoration: none;}
+.IndexHeader {width: 100%; display: inline-block;  text-align: center;}
+.IndexHeaderLogo {width: 90px; height: 70px; display: inline-block; margin: 20px 0px 20px 10px;vertical-align: middle}
+.IndexHeaderLogo img {width: 90px; height: 70px; display: inline-block;}
+.IndexHeaderMenu {display: inline-block; vertical-align: middle;margin: 20px 0px 20px 10px;}
+.IndexHeaderDapp {display: inline-block;}
+.IndexPage {width: 100%; height: 100%; display: inline-block; min-width: 100%; min-height: 100%; background-color: #ffffff;}
+.IndexHeaderMenu {width: 90%; text-align: right;}
+.IndexHeaderMenu a {font-size: 18px;  padding: 20px; margin: 5px; color: #000000;}
+.IndexHeaderDapp {font-weight: bold; color: #ffffff !important; background-color: #786FFF; border-radius: 16px;}

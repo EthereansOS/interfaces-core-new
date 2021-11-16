@@ -6,7 +6,7 @@ import style from './index.module.css'
 
 const IndexMain = () => {
   return (
-    <>
+    <div className={style.IndexPage}>
       <div className={style.IndexHeader}>
         <a className={style.IndexHeaderLogo}>
           <img src={`${process.env.PUBLIC_URL}/img/logo_main_v.png`}></img>
@@ -16,12 +16,10 @@ const IndexMain = () => {
           <a target="_blank">Documentation</a>
           <a target="_blank">Governance</a>
           <a target="_blank">Community</a>
-        </div>
-        <div className={style.IndexHeaderDapp}>
-          <a target="_blank">Launch App</a>
+          <a className={style.IndexHeaderDapp} target="_blank">Launch App</a>
         </div>
       </div>
-    </>
+    </div>
   )
 }
 
@@ -37,6 +35,7 @@ IndexMain.addToPlugin =
         templateProps: {
           menuName: 'appMenu',
           isDapp: false,
+          componentOnly: true,
         },
       })
     }

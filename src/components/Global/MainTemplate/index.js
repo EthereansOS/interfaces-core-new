@@ -8,7 +8,7 @@ import Content from '../Content'
 const MainTemplate = ({ Component, ...props }) => {
   const [, setState] = useState({})
 
-  return (
+  return props.componentOnly ? <Component setTemplateState={setState} {...props} /> : (
     <main
       className={style.root}>
       <Header {...props} />
