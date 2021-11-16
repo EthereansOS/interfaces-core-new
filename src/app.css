@@ -14,7 +14,7 @@ html {
 h1,h2,h3,h4,h5,h6,p {margin-block-start: 0em;margin-block-end: 0em;margin-inline-start: 0px;margin-inline-end: 0px;}
 
 body {
-  background: linear-gradient(135deg,#c0b5ff,#fdf7f5 40%);
+  background: rgb(255,255,255);background: linear-gradient(300deg, #fdf7f5 70%, rgba(120,111,255,1) 100%);
   font-family: var(--font-family);
   min-height: 100%;
   height: 100%;

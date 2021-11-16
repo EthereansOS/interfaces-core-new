@@ -1,10 +1,33 @@
 a {cursor: pointer; text-decoration: none;}
-.IndexHeader {width: 100%; display: inline-block;  text-align: center;}
-.IndexHeaderLogo {width: 90px; height: 70px; display: inline-block; margin: 20px 0px 20px 10px;vertical-align: middle}
+.IndexHeader {width: 100%; display: inline-block;  text-align: center; position: relative; z-index: 5;}
+.IndexHeaderLogo {width: 90px; height: 70px; display: inline-block; margin: 20px 0px 20px 25px;vertical-align: middle; float: left;}
 .IndexHeaderLogo img {width: 90px; height: 70px; display: inline-block;}
-.IndexHeaderMenu {display: inline-block; vertical-align: middle;margin: 20px 0px 20px 10px;}
+.IndexHeaderMenu {display: inline-block; vertical-align: middle;margin: 20px 25px 20px 0px;}
 .IndexHeaderDapp {display: inline-block;}
-.IndexPage {width: 100%; height: 100%; display: inline-block; min-width: 100%; min-height: 100%; background-color: #ffffff;}
-.IndexHeaderMenu {width: 90%; text-align: right;}
-.IndexHeaderMenu a {font-size: 18px;  padding: 20px; margin: 5px; color: #000000;}
-.IndexHeaderDapp {font-weight: bold; color: #ffffff !important; background-color: #786FFF; border-radius: 16px;}
+.IndexPage {width: 100%; height: 100%; display: inline-block; min-width: 100%; min-height: 100%; background: rgb(255,255,255);}
+.IndexHeaderMenu {width: 700px; text-align: right; float: right;}
+.IndexHeaderMenu a {font-size: 18px;  padding: 10px; margin: 5px; color: #000000;}
+.IndexHeaderDapp {font-weight: bold; color: #ffffff !important; background-color: #786FFF; border-radius: 16px; padding: 20px !important; margin: 5px 10px !important; min-width: 148px;display: inline-block; text-align: center;}
+.IndexHeaderDappL {font-weight: bold; color: #ffffff !important; background-color: #5776A5; border-radius: 16px; padding: 20px !important; margin: 5px 10px !important;  min-width: 148px; display: inline-block; text-align: center;}
+.IndexHeaderDappS {font-weight: bold; color: #ffffff !important; background-color: #F6C7A9; border-radius: 16px; padding: 20px !important; margin: 5px 10px !important;  min-width: 148px; display: inline-block; text-align: center;}
+.BackgrowndFancy {width: 100%; max-width: 990px; position: absolute; top: 0; right: 0; }
+.BackgrowndFancy img {width: 100%;  display: inline-block;max-height: 800px; opacity: 0.6; z-index: 1;}
+.SuperTitle {width: 100%; display: inline-block;  text-align: center; position: relative; z-index: 5; margin-top: 120px;}
+.SuperTitle h1 {width: 990px; display: inline-block; font-size: 100px; font-weight: 300; color: #000000;}
+.SuperTitle h1 span {font-weight: normal; color: #786FFF;}
+.Graphic {width: 100%; display: inline-block;  text-align: center; position: relative; z-index: 5; margin: 120px auto 30px auto;}
+.Graphic figure {width: 920px; display: inline-block;}
+.Graphic figure img {width: 920px; display: inline-block; border-radius: 20px;}
+.TextPart {width: 750px; display: block;  text-align: center; position: relative; z-index: 5; margin: 10px auto 30px auto;}
+.TextPart h5 {width: 750px; display: inline-block; font-size: 35px; font-weight: 500; color: #000000; margin: 10px auto; line-height: 1.2; text-align: left;}
+.TextPart h6 {width: 750px; text-align: left; display: inline-block; font-size: 20px; font-weight: 400; color: #000000; margin: 10px auto; line-height: 1.3;}
+.Footer {width: 100%; margin-top: 100px; background-color: #5776A5; display: inline-block; padding: 40px; text-align: center;}
+.FooterLinks {width: 990px; margin: 10px auto; display: block;}
+.CardsLayer {width: 100%;margin: 100px auto 10px auto; display: block; text-align: center;}
+.CardsLayer a {background: rgba(173, 163, 236, 0.3);box-shadow: inset 2px -2px 4px rgba(173, 163, 236, 0.9);border-radius: 30px;width: 200px;height: 290px; display: inline-block; margin: 10px; text-align: center; vertical-align: middle;}
+.CardsLayer figure {width: 90px; display: inline-block; margin: 50px auto;}
+.CardsLayer figure img {width: 90px; display: inline-block;}
+.CardsLayer p {font-size: 20px; color: #786FFF; font-weight: bold;}
+.TextPartBTN {width: 100%; text-align: left; margin: 10px auto;}
+.FooterLinks {width: 990px; display: inline-block; padding: 10px; margin: 10px;}
+.FooterLinks a {width:180px; display: inline-block; color: #ffffff; font-size: 15px; padding: 10px; text-align: left;}
