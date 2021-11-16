@@ -3,49 +3,24 @@ import { Link } from 'react-router-dom'
 import { Typography } from '@ethereansos/interfaces-ui'
 
 import style from './delegation-wallets-card.module.css'
-import RegularMiniButton from '../../Global/RegularMiniButton/index.js'
+import RegularButtonDuo from '../../Global/RegularButtonDuo/index.js'
+import DelegationWalletOpenedCard from './../DelegationWalletOpenedCard'
 
 const DelegationWalletsCard = (props) => {
   return (
-    <div className={style.OrgMainThingsCard}>
-      <div className={style.OrgThingsTitle}>
-        <h6>Earnings</h6>
-        <div className={style.OpenBTN}>
-          <RegularMiniButton></RegularMiniButton>
+    <div className={style.DelegationWalletsCard}>
+      <div className={style.DelegationWalletsCardORG}>
+        <figure>
+          <img src={`${process.env.PUBLIC_URL}/img/test.jpg`}></img>
+        </figure>
+        <span>EthOS Organization</span>
+        <p><b>Grant size:</b><br></br> 40 ETH</p>
+        <p><b>Supporters stake:</b><br></br> 100,000 OS</p>
+        <div className={style.DelegationWalletsCardBTN}>
+          <RegularButtonDuo></RegularButtonDuo>
         </div>
       </div>
-      <div className={style.OrgThingsInfoContent}>
-        <b>Current Period</b>
-        <p>35 ETH</p>
-      </div>
-      <div className={style.OrgThingsInfoContent}>
-        <b>Rebalance</b>
-        <p>3 Months</p>
-      </div>
-      <div className={style.OrgThingsInfoContent}>
-        <b>Next</b>
-        <p><a>252345312</a></p>
-      </div>
-      
-      <div className={style.OrgThingsTitle}>
-        <h6>Distribution</h6>
-      </div>
-      <div className={style.OrgThingsInfoContent}>
-        <b>Dividends</b>
-        <p>27%</p>
-      </div>
-      <div className={style.OrgThingsInfoContent}>
-        <b>Investments Fund</b>
-        <p>25%</p>
-      </div>
-      <div className={style.OrgThingsInfoContent}>
-        <b>Delegations Grants</b>
-        <p>40%</p>
-      </div>
-      <div className={style.OrgThingsInfoContent}>
-        <b>Emergency Fund</b>
-        <p>8%</p>
-      </div>
+      <DelegationWalletOpenedCard></DelegationWalletOpenedCard>
     </div>
   )
 }

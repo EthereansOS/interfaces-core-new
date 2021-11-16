@@ -13,7 +13,6 @@ const ItemsExplore = (props) => {
     <>
       <div className={style.SingleContentPage}>
         <DelegationHeadline></DelegationHeadline>
-        <DappSubMenu></DappSubMenu>
         <DelegationsMainSectionView></DelegationsMainSectionView>
         
       </div>

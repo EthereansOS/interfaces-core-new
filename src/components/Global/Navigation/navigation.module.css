@@ -49,7 +49,7 @@ p {
     vertical-align: top;
   }
   .item {
-    font-size: 14px;
+    font-size: 15px;
     color: #000000;
     width:100%;
     text-align: center;
@@ -60,7 +60,5 @@ p {
     text-align: left; 
     width: 120px; 
     text-align: center;
-    background-color: #F0F0F0;
-    box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);
     border-radius: 8px;}
 }
