@@ -37,7 +37,7 @@ export async function create({context, ipfsHttpClient, newContract, chainId, fac
 
     var deployOrganizationData = abi.encode([`tuple(${deployOrganizationDataType.join(',')})`], [deployOrganizationDataValue])
 
-    var factoryData = await blockchainCall(factoryOfFactories.methods.get, getNetworkElement({context, chainId}, "delegationFactoryPosition"))
+    var factoryData = await blockchainCall(factoryOfFactories.methods.get, getNetworkElement({context, chainId}, "organizationFactoryPosition"))
 
     var factoryAddress = factoryData.factoryList[factoryData.factoryList.length - 1]
     var factory = newContract(context.IFactoryABI, factoryAddress)
@@ -46,7 +46,7 @@ export async function create({context, ipfsHttpClient, newContract, chainId, fac
 }
 
 export async function all({context, newContract, chainId, factoryOfFactories}, metadata, organization) {
-    var factoryData = await blockchainCall(factoryOfFactories.methods.get, getNetworkElement({context, chainId}, "delegationFactoryPosition"))
+    var factoryData = await blockchainCall(factoryOfFactories.methods.get, getNetworkElement({context, chainId}, "organizationFactoryPosition"))
 
     var args = {
         address : factoryData.factoryList,

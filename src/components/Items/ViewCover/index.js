@@ -1,13 +1,13 @@
 import React from 'react'
 
-import TokenLogo from '../../Global/TokenLogo'
+import LogoRenderer from '../../Global/LogoRenderer'
 
 import style from './view-cover.module.css'
 
 const ViewCover = ({item}) => {
   return (
     <figure className={style.ICViewCover}>
-      <TokenLogo input={item}/>
+      <LogoRenderer input={item}/>
     </figure>
   )
 }

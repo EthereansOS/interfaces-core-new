@@ -33,6 +33,7 @@
         "delegationsFactoryPositionRinkeby" : 0,
         "subDaoFactoryPositionRinkeby" : 0,
         "delegationFactoryPositionRinkeby" : 4,
+        "organizationFactoryPositionRinkeby" : 4,
         "factoryOfFactoriesAddressRinkeby" : "0xB4940e17dBb9410311b76191899dCA26f6054748",
         "erc20TokensListURL" : "https://gateway.ipfs.io/ipns/tokens.uniswap.org",
         "_erc20TokensListURL" : "https://tokens.coingecko.com/uniswap/all.json",

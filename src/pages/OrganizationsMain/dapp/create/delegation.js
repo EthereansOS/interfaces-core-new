@@ -25,6 +25,8 @@ const DelegationsCreate = ({}) => {
 
   return (
     <div>
+      <h2>Create Delegation</h2>
+      <br/>
       Name: <input type="text" value={name} onChange={e => setName(e.currentTarget.value)}/>
       <br/>
       Symbol: <input type="text" value={symbol} onChange={e => setSymbol(e.currentTarget.value)}/>
@@ -38,9 +40,8 @@ const DelegationsCreate = ({}) => {
   )
 }
 
-DelegationsCreate.menuVoice = {
-  label : 'Create',
-  path : '/organizations/dapp/delegations/create',
-}
+/*DelegationsCreate.menuVoice = {
+  label : 'Delegation',
+}*/
 
 export default DelegationsCreate

@@ -5,7 +5,7 @@ import { CircularProgress } from '@ethereansos/interfaces-ui'
 import { blockchainCall, useWeb3, fromDecimals, toDecimals } from '@ethereansos/interfaces-core'
 import ModalStandard from '../ModalStandard'
 import ObjectsLists from '../ObjectsLists'
-import TokenLogo from '../TokenLogo'
+import LogoRenderer from '../LogoRenderer'
 
 const TokenInputRegular = ({onElement}) => {
 
@@ -48,7 +48,7 @@ const TokenInputRegular = ({onElement}) => {
             <div className={style.TradeMarketToken}>
                 <a onClick={() => setModalIsOpen(true)} className={style.TradeMarketTokenSelector}>
                     <figure>
-                        <TokenLogo input={element}/>
+                        <LogoRenderer input={element}/>
                     </figure>
                     <span>{element?.symbol || ''} ▼</span>
                 </a>

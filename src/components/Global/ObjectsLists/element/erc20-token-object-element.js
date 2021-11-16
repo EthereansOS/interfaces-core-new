@@ -3,7 +3,7 @@ import style from '../objects-lists.module.css'
 import { fromDecimals, getNetworkElement, useEthosContext, useWeb3, VOID_ETHEREUM_ADDRESS } from '@ethereansos/interfaces-core'
 
 import { CircularProgress } from '@ethereansos/interfaces-ui'
-import TokenLogo from '../../TokenLogo'
+import LogoRenderer from '../../LogoRenderer'
 
 export default ({element, onClick}) => {
   const context = useEthosContext()
@@ -11,7 +11,7 @@ export default ({element, onClick}) => {
   return (
     <a className={style.TokenObject} onClick={() => onClick(element)}>
       <figure>
-        <TokenLogo input={element}/>
+        <LogoRenderer input={element}/>
       </figure>
       <div className={style.ObjectInfo}>
         <div className={style.ObjectInfoAndLink}>
