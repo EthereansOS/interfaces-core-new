@@ -7,13 +7,14 @@
 .DelegationWalletOpenedCardWrapBox {padding: 15px; background-color: #e9effc; display: inline-block; width: 100%; border-radius: 18px; margin: 10px auto; text-align: center;}
 .DelegationWalletOpenedCardProposals {width: 600px; margin-left: 100px; display: inline-block; vertical-align: top;}
 .DelegationWalletOpenedCardProposalBox {margin: 10px auto; width: 100%; display: inline-block; padding: 20px; background-color: #e9effc; border-radius: 20px; text-align: left;}
-.DelegationWalletOpenedCardProposalBoxTitle {width: 400px; display: inline-block;}
+.DelegationWalletOpenedCardProposalBoxTitle {width: 100%; display: inline-block;}
 .DelegationWalletOpenedCardProposals p {width: 100%; display: inline-block; margin: 10px auto; font-size: 18px; color: #000000;}
 .DelegationWalletOpenedCardProposalBoxTitle h6 {font-size: 16px; color: #000000; display: inline-block; width: 100%;}
 .DelegationWalletOpenedCardProposalBoxTitle p {font-size: 11px; line-height: 1.2; display: inline-block; width: 100%;}
 .TokenProposalVotesCount {width: 100%; display: inline-block; text-align: left;}
 .TokenProposalVotesCount span {font-size: 11px;}
 .TokenProposalVotesCount span a {text-decoration: underline;}
+.TokenProposalOpenClose {display: inline-block;}
 
 
 .TokenProposalCardX {width: 100%; background-color: #ffffff;padding: 10px; border-radius: 16px;}
