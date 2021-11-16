@@ -5,7 +5,7 @@ import {all} from '../../../../logic/delegation'
 import { CircularProgress } from '@ethereansos/interfaces-ui'
 import ExploreOrganizations from '../../../../components/Organizations/ExploreOrganizations'
 
-import style from '../sections/organizations-main-sections.module.css'
+import style from '../organizations-main-sections.module.css'
 
 const DelegationsList = ({}) => {
 

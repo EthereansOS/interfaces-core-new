@@ -1,6 +1,6 @@
 import React from 'react'
 
-import style from '../sections/organizations-main-sections.module.css'
+import style from '../organizations-main-sections.module.css'
 import OrgHeadline from '../../../../components/Organizations/OrgHeadline'
 import MainSectionView from '../SubSections/main-section-view.js'
 import GovernanceSectionView from '../SubSections/governance-section-view.js'

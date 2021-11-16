@@ -1,7 +1,7 @@
 import React from 'react'
 import {Typography} from '@ethereansos/interfaces-ui'
 
-import style from '../sections/organizations-main-sections.module.css'
+import style from '../organizations-main-sections.module.css'
 import OrgHeadline from '../../../../components/Organizations/OrgHeadline'
 import DelegationHeadline from '../../../../components/Organizations/DelegationHeadline'
 import DelegationsMainSectionView from '../SubSections/delegations-main-section-view.js'
