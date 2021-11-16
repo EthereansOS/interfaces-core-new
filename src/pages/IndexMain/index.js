@@ -6,14 +6,22 @@ import style from './index.module.css'
 
 const IndexMain = () => {
   return (
-      <div className={style.Web3PagesRoot}>
-        <Typography className={style.title} variant="h3" color="black">
-          Qua ci scrivo le zozzerie offiCéin
-        </Typography>
-        <Link to="dapp">
-          Andiamo Onnicéin che è meglio valà
-        </Link>
+    <>
+      <div className={style.IndexHeader}>
+        <a className={style.IndexHeaderLogo}>
+          <img src={`${process.env.PUBLIC_URL}/img/logo_main_v.png`}></img>
+        </a>
+        <div className={style.IndexHeaderMenu}>
+          <a target="_blank">Products</a>
+          <a target="_blank">Documentation</a>
+          <a target="_blank">Governance</a>
+          <a target="_blank">Community</a>
+        </div>
+        <div className={style.IndexHeaderDapp}>
+          <a target="_blank">Launch App</a>
+        </div>
       </div>
+    </>
   )
 }
 

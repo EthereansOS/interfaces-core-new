@@ -1,22 +1,5 @@
-.Web3PagesRoot {
-  width: 1050px;
-}
-
-.image {
-  height: 300px;
-}
-
-
-
-.title {
-  margin-bottom: calc(var(--unit) * 3) 0;
-}
-
-.text {
-  padding: 0 calc(var(--unit) * 15);
-  margin: calc(var(--unit) * 3) 0;
-}
-
-.text:last-child {
-  margin-bottom: calc(var(--unit) * 10);
-}
+.IndexHeader {width: 100%; display: inline-block; position: absolute; top: 0; left: 0;}
+.IndexHeaderLogo {width: 144px; height: 123px; display: inline-block;}
+.IndexHeaderLogo img {width: 144px; height: 123px; display: inline-block;}
+.IndexHeaderMenu {display: inline-block;}
+.IndexHeaderDapp {}
