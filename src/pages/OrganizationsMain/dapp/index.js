@@ -8,5 +8,5 @@ export default prepareAddToPlugin(
   "Organizations",
   "/organizations/dapp",
   style.Web3PagesRoot,
-  10
+  20
 )
