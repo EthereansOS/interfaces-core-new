@@ -1,5 +1,4 @@
 import React from 'react'
-import {Typography} from '@ethereansos/interfaces-ui'
 import { Link } from 'react-router-dom'
 
 import style from './index.module.css'
@@ -16,7 +15,7 @@ const IndexMain = () => {
           <a target="_blank">Documentation</a>
           <a target="_blank">Governance</a>
           <a target="_blank">Community</a>
-          <a className={style.IndexHeaderDapp} target="_blank">Launch App</a>
+          <Link className={style.IndexHeaderDapp} to="/dapp">Launch App</Link>
         </div>
       </div>
     </div>

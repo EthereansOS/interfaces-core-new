@@ -1,44 +1,12 @@
-import React from 'react'
-import {Typography} from '@ethereansos/interfaces-ui'
+import { prepareAddToPlugin } from '../../../logic/uiUtilities'
 
 import style from './organizations-main.module.css'
-import DappMenu from './../../../components/Global/DappMenu/index.js'
-import OrganizationsExplore  from './sections/organizations-explore'
-import DelegationsExplore  from './sections/delegations-explore'
-import OrganizationView  from './sections/organization-view'
-import DelegationView  from './sections/delegation-view'
 
-const OrganizationsMain = () => {
-  return (
-    <div className={style.Web3PagesRoot}>
-      <DappMenu></DappMenu>
-      <OrganizationView></OrganizationView>
-    </div>
-  )
-}
-
-OrganizationsMain.pluginIndex = 20;
-OrganizationsMain.addToPlugin =
-  ({index}) =>
-    ({addElement}) => {
-      addElement('router', {
-        index,
-        path: '/organizations/dapp',
-        Component: OrganizationsMain,
-        exact: true,
-        requireConnection: true,
-        templateProps: {
-          menuName: 'appMenu',
-          isDapp: true,
-        },
-      })
-
-      addElement('appMenu', {
-        name: 'Organizations',
-        label: 'Organizations',
-        link: '/organizations/dapp',
-        index
-      })
-    }
-
-export default OrganizationsMain
+export default prepareAddToPlugin(
+  require.context('./', true, /index.js$/),
+  require.context('./', true, /.js$/),
+  "Organizations",
+  "/organizations/dapp",
+  style.Web3PagesRoot,
+  10
+)
