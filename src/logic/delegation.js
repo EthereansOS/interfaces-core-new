@@ -61,7 +61,7 @@ export async function all({context, newContract, chainId, factoryOfFactories}, m
 
     var delegations = logs.map(it => newContract(context.IFactoryABI, abi.decode(["address"], it.topics[2])[0]))
 
-    delegations = await Promise.all(delegations.map(contract => (tryRetrieveMetadata({context}, {contract, address : contract.options.address}))))
+    delegations = await Promise.all(delegations.map(contract => (tryRetrieveMetadata({context}, {contract, address : contract.options.address, type: 'delegations'}))))
 
     return delegations
 }

@@ -21,7 +21,7 @@ const DelegationView = (props) => {
 }
 
 DelegationView.menuVoice = {
-  path : '/organizations/dapp/delegations/:id'
+  path : '/governances/dapp/delegations/:id'
 }
 
 export default DelegationView

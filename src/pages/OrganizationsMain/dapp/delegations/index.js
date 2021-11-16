@@ -1,8 +1,8 @@
-import React, {useEffect, useState} from 'react'
+import React from 'react'
 
 import { useEthosContext, useWeb3 } from '@ethereansos/interfaces-core'
 import {all} from '../../../../logic/delegation'
-import { CircularProgress } from '@ethereansos/interfaces-ui'
+import Web3DependantList from '../../../../components/Global/Web3DependantList'
 import ExploreOrganizations from '../../../../components/Organizations/ExploreOrganizations'
 
 import style from '../organizations-main-sections.module.css'
@@ -12,22 +12,18 @@ const DelegationsList = ({}) => {
   const context = useEthosContext()
   const {getGlobalContract, newContract, chainId} = useWeb3()
 
-  const [elements, setElements] = useState(null)
-
-  useEffect(() => {
-    setElements(null)
-    all({context, getGlobalContract, newContract, chainId, factoryOfFactories : getGlobalContract('factoryOfFactories')}).then(setElements)
-  }, [chainId])
-
   return (<div className={style.OrganizationsExploreMain}>
-    {elements === null ? <CircularProgress/>
-    : <ExploreOrganizations elements={elements} type='delegations'/>}
+    <Web3DependantList
+      Renderer={ExploreOrganizations}
+      rendererIsContainer
+      provider={() => all({context, getGlobalContract, newContract, chainId, factoryOfFactories : getGlobalContract('factoryOfFactories')}) }
+    />
   </div>)
 }
 
 DelegationsList.menuVoice = {
   label : 'Delegations',
-  path : '/organizations/dapp/delegations',
+  path : '/governances/dapp/delegations',
   contextualRequire : () => require.context('./', false, /.js$/),
   index : 1
 }

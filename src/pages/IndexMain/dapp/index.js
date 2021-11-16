@@ -8,7 +8,7 @@ const IndexMain = () => {
     <div className={style.IndexPage}>
       <h1>CUATTRO Robi</h1>
       <Link to="/items/dapp">Robo 1 (Items)</Link>
-      <Link to="/organizations/dapp">Robo 2 (Organizations)</Link>
+      <Link to="/governances/dapp">Robo 2 (Organizations)</Link>
       <Link to="/covenants/dapp">Robo 3 (Convenants)</Link>
       <Link to="/factories/dapp">Robo 4 (Factories)</Link>
     </div>

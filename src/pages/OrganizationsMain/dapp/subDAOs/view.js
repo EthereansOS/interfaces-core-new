@@ -20,7 +20,7 @@ const SubDAOView = (props) => {
 }
 
 SubDAOView.menuVoice = {
-  path : '/organizations/dapp/organizations/:id'
+  path : '/governances/dapp/organizations/:id'
 }
 
 export default SubDAOView

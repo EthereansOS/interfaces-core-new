@@ -5,11 +5,11 @@ import LogoRenderer from '../../Global/LogoRenderer'
 
 import style from './explore-organizations.module.css'
 
-const ExploreOrganizations = ({elements, type}) => {
+const ExploreOrganizations = ({elements}) => {
   return (
     <div className={style.OrgAllSingle}>
       {elements.map(element => (
-        <Link key={element.address} className={style.OrgSingle} to={`/organizations/dapp/${type}/${element.address}`}>
+        <Link key={element.address} className={style.OrgSingle} to={`/governances/dapp/${element.type}/${element.address}`}>
           <figure>
             <LogoRenderer input={element}/>
           </figure>
