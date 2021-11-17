@@ -101,10 +101,12 @@ const IndexMain = () => {
       </div>
       <div className={style.Footer}>
         <div className={style.FooterLinks}>
+          <p> EthOS Platform is an R&D project in it's early days, use it at your own risk!</p> 
           <a>Github</a>
           <a>Discord</a>
           <a>Twitter</a>
           <a>Medium</a>
+          <a>Press Kit</a>
         </div>
       </div>
     </div>
