@@ -8,5 +8,6 @@ export default prepareAddToPlugin(
   "Items",
   "/items/dapp",
   style.Web3PagesRoot,
-  10
+  10,
+  `${process.env.PUBLIC_URL}/img/is2.png`,
 )

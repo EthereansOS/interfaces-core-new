@@ -10,10 +10,10 @@ const Navigation = ({ menuName, isDapp }) => {
 
   const navItem = (item) => {
     return (
-      <Link key={item.name} to={item.link}>
-        <div className={style.item}>
-            {item.label}
-        </div>
+      <Link  className={style.item} key={item.name} to={item.link}>
+        <span>
+           <img src={item.image}></img> <p>{item.label}</p>
+        </span>
       </Link>
     )
   }

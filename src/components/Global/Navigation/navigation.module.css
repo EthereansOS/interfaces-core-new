@@ -1,7 +1,5 @@
 .Navigation {
   display: block;
-  border-left: 2px solid #F0F0F0;
-  padding: 10px;
   width: 148px;
   margin: 30px 15px;
   cursor: pointer; 
@@ -13,12 +11,23 @@
   display: inline-block;
   width: 100%;
   text-align: left;
-  padding: 2px 8px;
+  padding: 8px 15px;
+  background-color: #ffffff;
+  border-radius: 2px;
 }
 
-.item {
-  font-size: 15px;
-  color: #ffffff;
+.item p {
+  font-size: 13px;
+  font-weight: 500;
+  color: #000000;
+  vertical-align: middle;
+  display: inline-block;
+}
+.item img {
+  width: 25px;
+  height: 25px;
+  margin-right: 5px;
+  color: #000000;
   vertical-align: middle;
   display: inline-block;
 }

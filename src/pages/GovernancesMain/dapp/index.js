@@ -8,5 +8,6 @@ export default prepareAddToPlugin(
   "Governances",
   "/governances/dapp",
   style.Web3PagesRoot,
-  20
+  20,
+  `${process.env.PUBLIC_URL}/img/is1.png`,
 )
