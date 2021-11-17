@@ -1,12 +1,8 @@
 import { blockchainCall, web3Utils, sendAsync, getNetworkElement, numberToString, VOID_ETHEREUM_ADDRESS, formatLink } from "@ethereansos/interfaces-core"
 import peach from 'parallel-each'
 
-export async function loadTokens({ context, chainId, web3, account, newContract, alsoETH }) {
-    var all = (await (await fetch(getNetworkElement({ context, chainId }, "erc20TokensListURL"))).json()).tokens
-
-    var tokens = []
-
-    alsoETH && tokens.push({
+export async function getEthereum({account, web3}) {
+    return {
         name: "Ethereum",
         symbol: "ETH",
         address: VOID_ETHEREUM_ADDRESS,
@@ -58,7 +54,15 @@ export async function loadTokens({ context, chainId, web3, account, newContract,
             }
         },
         balance : await web3.eth.getBalance(account)
-    })
+    }
+}
+
+export async function loadTokens({ context, chainId, web3, account, newContract, alsoETH }) {
+    var all = (await (await fetch(getNetworkElement({ context, chainId }, "erc20TokensListURL"))).json()).tokens
+
+    var tokens = []
+
+    alsoETH && tokens.push(getEthereum())
 
     var chunkSize = 750
     await peach(all, async it => {

@@ -17,7 +17,9 @@ export default ({Renderer, emptyMessage, provider, searchText, renderedPropertie
     setTimeout(async () => {
       try {
         var els = provider()
-        setElements(els.then ? await els : els)
+        els = els.then ? await els : els
+        els = els instanceof Array ? els : [els]
+        setElements(els)
       } catch(e) {
         console.error(e)
         setError('Error while loading: ' + (e.message || e))
