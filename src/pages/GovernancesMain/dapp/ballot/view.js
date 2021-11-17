@@ -11,7 +11,7 @@ const BallotViewElement = ({element}) => {
 
     async function terminate() {
         try {
-            await blockchainCall(element.proposalsManager.methods.terminate, [element.id])
+            await blockchainCall(element.proposalsManager.methods.terminate, element.proposalIds)
         } catch(e) {
             alert(e.message || e)
         }
@@ -32,6 +32,9 @@ const Prop = ({proposal, proposalsManager}) => {
     return (
         <div>
             <h4>{proposal.value}</h4>
+            <br/>
+            Termination Block: {proposal.terminationBlock}
+            <br/>
             VotingTokens:
             {proposal.votingTokens.map(it => <VotingToken key={it.address} element={it} proposalId={proposal.id} proposalsManager={proposalsManager}/>)}
         </div>
@@ -116,7 +119,7 @@ const VotingToken = ({proposalId, proposalsManager, element}) => {
 
     async function withdraw() {
         try {
-            await blockchainCall(proposalsManager.methods.withdrawAll, proposalId, address || VOID_ETHEREUM_ADDRESS)
+            await blockchainCall(proposalsManager.methods.withdrawAll, [proposalId], address || VOID_ETHEREUM_ADDRESS)
         } catch(e) {
             alert(e.message || e)
         }

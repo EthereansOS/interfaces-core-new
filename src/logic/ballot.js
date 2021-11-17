@@ -105,7 +105,7 @@ export async function decodeProposalVotingToken({ account, web3, context, newCon
 }
 
 export async function decodeToken({ account, web3, context, newContract }, addr, objectId) {
-    var address = addr === VOID_ETHEREUM_ADDRESS ? web3Utils.toHex(objectId) : addr
+    var address = addr === VOID_ETHEREUM_ADDRESS ? objectId ? VOID_ETHEREUM_ADDRESS : web3Utils.toHex(objectId) : addr
     if (address === VOID_ETHEREUM_ADDRESS) {
         return await getEthereum({ account, web3 })
     }
