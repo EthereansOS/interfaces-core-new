@@ -106,7 +106,7 @@ const VotingToken = ({proposalId, proposalsManager, element}) => {
         }
         try {
             if(element.passedAsERC20 || element.address === VOID_ETHEREUM_ADDRESS) {
-                await blockchainCall(proposalsManager.methods.vote, element.address, permitSignatureData, proposalId, acc, ref, address || VOID_ETHEREUM_ADDRESS, false, {value : element === VOID_ETHEREUM_ADDRESS ? value : '0'})
+                await blockchainCall(proposalsManager.methods.vote, element.address, permitSignatureData, proposalId, acc, ref, address || VOID_ETHEREUM_ADDRESS, false, {value : element.address === VOID_ETHEREUM_ADDRESS ? value : '0'})
             } else {
                 var data = abi.encode(["bytes32", "uint256", "uint256", "address", "bool"], [proposalId, acc, ref, address || VOID_ETHEREUM_ADDRESS, false])
                 await blockchainCall(element.mainInterface.methods.safeTransferFrom, account, proposalsManager.options.address, element.id, value, data)
