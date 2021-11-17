@@ -49,6 +49,7 @@ const VotingToken = ({proposalId, proposalsManager, element}) => {
 
     const [accepts, setAccepts] = useState(0)
     const [refuses, setRefuses] = useState(0)
+    const [toWithdraw, setToWithdraw] = useState(0)
 
     var contract = element.interoperableInterface || element.contract
 
@@ -60,6 +61,7 @@ const VotingToken = ({proposalId, proposalsManager, element}) => {
             var x = await blockchainCall(proposalsManager.methods.votes, [proposalId], [account], [[element.itemKey]])
             setAccepts(fromDecimals(x[0][0], element.decimals, true))
             setRefuses(fromDecimals(x[1][0], element.decimals, true))
+            setToWithdraw(fromDecimals(x[2][0], element.decimals, true))
         }
         setIntervalId(setInterval(ask, 4000))
     }, [account, chainId])
@@ -114,17 +116,7 @@ const VotingToken = ({proposalId, proposalsManager, element}) => {
 
     async function withdraw() {
         try {
-            var votes = {
-                proposalId,
-                collections: [element.passedAsERC20 ? VOID_ETHEREUM_ADDRESS : element.address],
-                objectIds: [element.id],
-                accepts: [toDecimals(acceptsInput, element.decimals)],
-                refuses: [toDecimals(refusesInput, element.decimals)],
-                receivers : []
-            }
-            address && (votes.receivers = [address])
-            votes = [votes]
-            await blockchainCall(proposalsManager.methods.withdraw, votes)
+            await blockchainCall(proposalsManager.methods.withdrawAll, proposalId, address || VOID_ETHEREUM_ADDRESS)
         } catch(e) {
             alert(e.message || e)
         }
@@ -151,7 +143,10 @@ const VotingToken = ({proposalId, proposalsManager, element}) => {
             </div>
             <div>
                 Accepts: {accepts}
+                <br/>
                 Refuses: {refuses}
+                <br/>
+                To Withdraw: {toWithdraw}
             </div>
             {element.passedAsERC20 && <a onClick={approve}>Approve</a>}
             {element.passedAsERC20 && <a onClick={permit}>Permit</a>}

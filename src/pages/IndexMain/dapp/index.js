@@ -23,7 +23,7 @@ IndexMain.addToPlugin =
         path: '/dapp',
         Component: IndexMain,
         exact: true,
-        requireConnection: false,
+        requireConnection: true,
         templateProps: {
           menuName: 'appMenu',
           isDapp: false,

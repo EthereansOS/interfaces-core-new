@@ -56,7 +56,7 @@ export async function get({ context, ballotMaker, newContract, account, web3 }, 
             if (toString === '[object Object]') {
                 toString = decoded
             }
-            return decoded
+            return toString
         })
     } catch (e) {}
 
@@ -138,7 +138,7 @@ export async function decodeToken({ account, web3, context, newContract }, addr,
     }
 
     if (addr === VOID_ETHEREUM_ADDRESS && !mainInterface) {
-        token = {...token, ...(await getERC20ClassicMetadata()) }
+        token = {...token, ...(await getERC20ClassicMetadata(token.contract)) }
     } else {
         token = {...token, ...(await getERC20ClassicMetadata(token.interoperableInterface)), ...(await tryRetrieveMetadata({ context }, token)) }
     }
