@@ -13,8 +13,6 @@ const DelegationsMainSectionView = (props) => {
     <div className={style.OrgThingsCards}>
       <DelegationMainThingsCard></DelegationMainThingsCard>
       <DelegationWalletsCard></DelegationWalletsCard>
-
-     
     </div>
   )
 }

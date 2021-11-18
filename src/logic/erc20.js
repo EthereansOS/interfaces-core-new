@@ -62,7 +62,7 @@ export async function loadTokens({ context, chainId, web3, account, newContract,
 
     var tokens = []
 
-    alsoETH && tokens.push(getEthereum())
+    alsoETH && tokens.push(await getEthereum({account, web3}))
 
     var chunkSize = 750
     await peach(all, async it => {

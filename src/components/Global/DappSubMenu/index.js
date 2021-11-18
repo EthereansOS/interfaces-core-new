@@ -3,10 +3,10 @@ import { Link } from 'react-router-dom'
 import { Typography } from '@ethereansos/interfaces-ui'
 import style from './dapp-sub-menu.module.css'
 
-const DappSubMenu = (props) => {
+const DappSubMenu = ({voices}) => {
   return (
       /* ---For Items Collections View---
-        
+
       <ul className={style.DappSubMenu}>
         <li><a>Items</a></li>
         <li><a>Metadata</a></li>
@@ -15,9 +15,9 @@ const DappSubMenu = (props) => {
         <li><a>Farm</a></li>
         <li><a>Organizations</a></li>
       </ul> */
-      
+
       /* ---For Items View---
-        
+
       <ul className={style.DappSubMenu}>
         <li><a>Collection</a></li>
         <li><a>Metadata</a></li>
@@ -37,10 +37,16 @@ const DappSubMenu = (props) => {
       </ul> */
 
       <ul className={style.DappSubMenu}>
-        <li><a>Explore</a></li>
-        <li><a>Positions</a></li>
-        <li><a>Hosted</a></li>
-        <li><a>Create</a></li>
+        {voices && voices.map(it => <li key={it.label}>
+          <a onClick={it.onClick}>{it.label}</a>
+        </li>)}
+        {!voices && <>
+          <li><a>Collection</a></li>
+          <li><a>Metadata</a></li>
+          <li><a>Code</a></li>
+          <li><a>Farm</a></li>
+          <li><a>Organizations</a></li>
+        </>}
       </ul>
   )
 }
