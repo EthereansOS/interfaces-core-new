@@ -1,0 +1,4 @@
+{proposalType === 'poll' && <>Poll</>}
+{proposalType === 'surveyless' && <>surveyless</>}
+{proposalType === 'unsupported' && <>unsupported</>}
+{proposalType === 'tokens' && <>tokens</>}

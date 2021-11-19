@@ -1,8 +1,0 @@
-.TokenProposalCardX {width: 100%; background-color: #ffffff;padding: 10px; border-radius: 16px;}
-.TokenProposalCardX p {width: auto; font-size: 15px; display: inline-block; margin: 5px; color: #000000;}
-.TokenProposalCardX p > a {width: 20px; height: 20px; display: inline-block; vertical-align: middle;} 
-.TokenProposalCardX p > a img {width: 20px; height: 20px; display: inline-block;} 
-.TokenProposalOpenClose { margin: 5px; float: right; display: inline-block;}
-.TokenProposalVotesCount {width: 100%; display: inline-block; text-align: left;}
-.TokenProposalVotesCount span {font-size: 11px;}
-.TokenProposalVotesCount span a {text-decoration: underline;}

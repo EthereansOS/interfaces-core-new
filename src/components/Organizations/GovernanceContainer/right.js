@@ -32,13 +32,6 @@ export default ({element, proposalType}) => {
           </div>
         </div>
         </>}
-        
-        {proposalType === 'poll' && <>Poll</>}
-        {proposalType === 'surveyless' && <>surveyless</>}
-        {proposalType === 'unsupported' && <>unsupported</>}
-        {proposalType === 'paoli' && <>C</>}
-        {proposalType === 'gigi' && <>D</>}
-
     </div>
   )
 }
