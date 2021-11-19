@@ -43,3 +43,6 @@
 .SurveylessOpenCardSelectionSingleQuantity {margin: 20px auto 0px auto; text-align: center; width: 100%; display: inline-block;}
 .SurveylessOpenCardSelectionSingleOpenStaked {width: 100%; display: inline-block; text-align: center; border-radius: 12px; background-color: #ffffff; margin: 20px auto 0px auto; padding: 10px;}
 .SurveylessOpenCardSelectionSingleOpenStaked p {display: inline-block; margin: 5px 10px; font-size: 13px; color: #000000;}
+
+.ProposalTitle > h6 > a {width: 20px; height: 20px; display: inline-block; vertical-align: middle;} 
+.ProposalTitle > h6 > a img {width: 20px; height: 20px; display: inline-block;} 

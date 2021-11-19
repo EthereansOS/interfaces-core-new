@@ -1,0 +1,4 @@
+.Rule {width: 100%; display: inline-block; padding: 10px; margin: 5px auto; text-align: center; background-color: #e9effc; border-radius: 18px;}
+.Rule p {font-size: 12px; color: #000000; line-height: 2;}
+.Rule p b {font-size: 13px; font-weight: bold; color: #000000;}
+
