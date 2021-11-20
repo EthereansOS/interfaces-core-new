@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { Typography } from '@ethereansos/interfaces-ui'
 
-import style from './org-things-card-tokens.module.css'
+import style from './org-things-card-connected.module.css'
 import RegularMiniButton from '../../Global/RegularMiniButton/index.js'
 
 const OrgThingsCardTokens = (props) => {
@@ -10,9 +10,6 @@ const OrgThingsCardTokens = (props) => {
     <div className={style.OrgThingsCardPics}>
       <div className={style.OrgThingsRegularTitle}>
         <h6>Governance Items</h6>
-        <div className={style.OpenBTN}>
-          <RegularMiniButton></RegularMiniButton>
-        </div>
       </div>
       <div className={style.OrgThingsRegularInfoPictureCarousel}>
         <a>

@@ -9,10 +9,7 @@ const OrgMainThingsCard = (props) => {
   return (
     <div className={style.OrgMainThingsCard}>
       <div className={style.OrgThingsTitle}>
-        <h6>Earnings</h6>
-        <div className={style.OpenBTN}>
-          <RegularMiniButton></RegularMiniButton>
-        </div>
+        <h6>Earnings Splitter</h6>
       </div>
       <div className={style.OrgThingsInfoContent}>
         <b>Current Period</b>

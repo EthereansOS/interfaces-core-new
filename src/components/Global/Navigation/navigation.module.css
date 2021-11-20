@@ -18,11 +18,11 @@
   border-radius: 8px;
 }
 .NavigationItem:hover {
-  margin: 7px 0 7px 50px;
+  margin: 7px 0 7px 25px;
 }
 
 .Navigation .selected {
-  margin: 7px 0 7px 40px;
+  margin: 7px 0 7px 20px;
 }
 
 
@@ -43,7 +43,7 @@
 }
 
 
-.NavigationItem .Hand {position: absolute; left: -50px; top: 10px; width:25px; height: 20px; display: none;}
+.NavigationItem .Hand {position: absolute; left: -30px; top: 10px; width:25px; height: 20px; display: none;}
 
 .NavigationItem:hover .Hand {display: inline-block;}
 
