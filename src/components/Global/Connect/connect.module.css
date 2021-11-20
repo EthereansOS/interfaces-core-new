@@ -3,3 +3,7 @@
   background-color: var(--color-background-light);
   padding: calc(var(--unit) * 4);
 }
+
+.Web3Issues {font-size: 11px; color: #000000;}
+
+.connect {background-color: #ffffff;}
