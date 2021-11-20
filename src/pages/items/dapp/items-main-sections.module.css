@@ -1,5 +1,5 @@
 .Web3PagesRoot {
-  width: 1050px;
+  width: 950px;
 }
 
 .image {
@@ -10,7 +10,7 @@
 .ItemsCreateMain {width: 100%; text-align: center;}
 .SingleContentPage {width: 100%; max-width: 990px; text-align: center;}
 .CollectionLeft {width: 300px; display: inline-block; text-align: center;  vertical-align: top;}
-.CollectionRight {width: 660px;display: inline-block; text-align: center;  margin-left: 30px;vertical-align: top;}
+.CollectionRight {width: 575px;display: inline-block; text-align: center;  margin-left: 30px;vertical-align: top;}
 
 
 .title {

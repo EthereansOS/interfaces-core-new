@@ -11,7 +11,7 @@ import FarmView from '../SubSections/farm-view.js'
 const FarmMain = (props) => {
   return (
   <div className={style.CovenantsMainBox}>
-    <FarmView></FarmView>
+    <FarmExplore/>
   </div>
   )
 }

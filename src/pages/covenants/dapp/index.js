@@ -11,9 +11,9 @@ import DappBannerExpl from './../../../components/Global/DappBannerExpl/index.js
 const CovenantsMain = () => {
   return (
     <div className={style.Web3PagesRoot}>
-          <DappBannerExpl></DappBannerExpl>
+         {/*} <DappBannerExpl></DappBannerExpl>*/}
           <DoubleDappMenu></DoubleDappMenu>
-          <FarmMain></FarmMain>
+          <TradeMain></TradeMain>
     </div>
   )
 }

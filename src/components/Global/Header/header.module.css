@@ -2,14 +2,14 @@
   height: 100%;
   display: inline-block;
   text-align: center;
-  width:170px;
+  width:200px;
   min-height: 500px;
   vertical-align: top;
   overflow: hidden;
   position: relative;
 }
 
-.Header .FixedHeader {position: fixed; left: 0; top: 0; width: 170px; height: 100%;z-index: 1000000;}
+.Header .FixedHeader {position: fixed; left: 0; top: 0; width: 200px; height: 100%;z-index: 1000000;}
 .Header .BlurHeader {display: none; z-index: 10; }
 
 .logoMain {height: 90px; width: 110px; margin: 20px 0px 20px 10px; display: block;}
@@ -19,7 +19,7 @@ h3 {
   align-self: center;
 }
 
-@media only screen and (max-width: 1300px) {
+@media only screen and (max-width: 1200px) {
   .Header {
     height: 60px;
     display: block;

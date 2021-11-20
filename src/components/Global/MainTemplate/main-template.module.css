@@ -11,7 +11,7 @@
   padding: calc(var(--unit) * 3) 10px 0 10px;
   min-height: 300px;
   width: 80%;
-  min-width: 750px;
+  min-width: 950px;
   margin: 0 0 20px 2%;
   display: inline-block;
   text-align: center;
@@ -21,6 +21,6 @@
   padding-top: 0;
 }
 
-@media only screen and (max-width: 1300px) {
-  .container { width: 98%; margin: 20px 1%;}
+@media only screen and (max-width: 1200px) {
+  .container { width: 98%; margin: 20px auto;}
 }

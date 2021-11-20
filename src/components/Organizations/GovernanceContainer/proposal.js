@@ -11,9 +11,11 @@ export default ({element, proposalType}) => {
   return (
     <div className={style.Proposal}>
       <div className={style.ProposalTitle}>
-      {/*<h6>Proposal Title</h6>*/}
+      {proposalType !== 'tokens' ?  <>
+        <h6>Proposal Title</h6>
+      </> : <>
       <h6>New selection: <a><img src={`${process.env.PUBLIC_URL}/img/tokentest/cro.png`}></img></a> <a><img src={`${process.env.PUBLIC_URL}/img/tokentest/cro.png`}></img></a> <a><img src={`${process.env.PUBLIC_URL}/img/tokentest/cro.png`}></img></a> <a><img src={`${process.env.PUBLIC_URL}/img/tokentest/cro.png`}></img></a></h6>
-      {/* <h6>New selection: <a><img src={`${process.env.PUBLIC_URL}/img/tokentest/cro.png`}></img></a> <a><img src={`${process.env.PUBLIC_URL}/img/tokentest/cro.png`}></img></a> <a><img src={`${process.env.PUBLIC_URL}/img/tokentest/cro.png`}></img></a> <a><img src={`${process.env.PUBLIC_URL}/img/tokentest/cro.png`}></img></a></h6> */}
+      </>}
         <ExtLinkButton/>
         <ExtLinkButton/>
         <div className={style.ProposalResult}>
@@ -31,8 +33,15 @@ export default ({element, proposalType}) => {
         <RegularButtonDuo/>
       </div>
       <div className={style.ProposalOpen}>
+        <h6>Summary</h6>
         <p className={style.DescriptionSmall}>Welcome to the Buidlerberg Event 2020! Tucked away deep inside the Ethereum network, a community of researchers study and experiment with DFO technology, a community of researchers study and experiment with DFO technology, a community of researchers study and experiment with DFO technology.</p>
-      <div className={style.Upshots}>
+        <h6>Rationale and motivations</h6>
+        <p className={style.DescriptionSmall}>Welcome to the Buidlerberg Event 2020! Tucked away deep inside the Ethereum network, a community of researchers study and experiment with DFO technology, a community of researchers study and experiment with DFO technology, a community of researchers study and experiment with DFO technology.</p>
+        <h6>Specification</h6>
+        <p className={style.DescriptionSmall}>Welcome to the Buidlerberg Event 2020! Tucked away deep inside the Ethereum network, a community of researchers study and experiment with DFO technology, a community of researchers study and experiment with DFO technology, a community of researchers study and experiment with DFO technology.</p>
+        <h6>Risks</h6>
+        <p className={style.DescriptionSmall}>Welcome to the Buidlerberg Event 2020! Tucked away deep inside the Ethereum network, a community of researchers study and experiment with DFO technology, a community of researchers study and experiment with DFO technology, a community of researchers study and experiment with DFO technology.</p>
+        <div className={style.Upshots}>
         <p>upshot</p>
         <Upshots/>
         <Upshots/>
@@ -40,7 +49,6 @@ export default ({element, proposalType}) => {
       <div className={style.Vote}>
     <p><b>Choose from:</b></p>
     <div className={style.VoteList}>
-      <VoteSelections/>
       <VoteSelections/>
       <VoteSelections/>
       <RegularVoteBox/>

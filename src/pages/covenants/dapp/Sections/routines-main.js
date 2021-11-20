@@ -11,7 +11,7 @@ import RoutineView from '../SubSections/routine-view.js'
 const RoutinesMain = (props) => {
   return (
   <div className={style.CovenantsMainBox}>
-    <RoutineView></RoutineView>
+    <RoutinesExplore></RoutinesExplore>
   </div>
   )
 }
