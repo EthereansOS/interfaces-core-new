@@ -26,26 +26,13 @@ const IndexMain = () => {
       </div>
       <div className={style.Graphic}>
         <figure>
-          <img src={`${process.env.PUBLIC_URL}/img/i-1.gif`}></img>
-        </figure>
-      </div>
-      <div className={style.TextPart}>
-        <h5>Security and decentralization without compromise for a New Ethereum Order</h5>
-        <h6>The Ethereans Operating System is a layer for building any Ethereum applications powered by secure factories. Every EthOS application is built on top of cloned codes from factories, this ensures users that builders cannot make bugs or hide things in the code, basically every function is one audit to rule them all.</h6>
-        <div className={style.TextPartBTN}>
-          <Link className={style.IndexHeaderDapp} to="/dapp">Launch App</Link>
-          <a className={style.IndexHeaderDappL}>Learn</a>
-        </div>
-      </div>
-      <div className={style.Graphic}>
-        <figure>
           <img src={`${process.env.PUBLIC_URL}/img/i-2.gif`}></img>
         </figure>
       </div>
       <div className={style.TextPart}>
       
-        <h5>All in one dapp</h5>
-        <h6>Ethereans Operating System enables devs to build their applications by using interoperable and secure tokens (Items), general-purpose DeFi contracts and granular governance structures. Using EthOS devs can focus only on their unique application case!</h6>
+        <h5>Everything In One Place</h5>
+        <h6>EthOS is a universal platform for doing everything on Ethereum. It features four protocols, all on-chain, all decentralized, all customizable, all interwoven. Factories offer a safe new way to code and earn revenue for developers. Items are dynamic tokens that work with all applications. Organizations are granular governance vehicles. Covenants are DeFi tools, built on an AMM Aggregator. Builders can mix-and-match from these as they see fit.</h6>
       </div>
       <div className={style.CardsLayer}>
         <a>
@@ -75,12 +62,25 @@ const IndexMain = () => {
       </div>
       <div className={style.Graphic}>
         <figure>
+          <img src={`${process.env.PUBLIC_URL}/img/i-1.gif`}></img>
+        </figure>
+      </div>
+      <div className={style.TextPart}>
+        <h5>A Codebase of Contracts, Secure to the Core</h5>
+        <h6>Everything on EthOS—and EthOS itself—is powered by Factories, and the model contracts they deploy. With tamper-proof cores, these contracts can be cloned and customized by anyone to meet any variety of needs. Any developer can make a Factory, and even code it to earn them revenue. All Factories are part of a shared codebase and listed in a public marketplace here on the platform.</h6>
+        <div className={style.TextPartBTN}>
+          <Link className={style.IndexHeaderDapp} to="/dapp">Launch App</Link>
+          <a className={style.IndexHeaderDappL}>Learn</a>
+        </div>
+      </div>
+      <div className={style.Graphic}>
+        <figure>
           <img src={`${process.env.PUBLIC_URL}/img/i-3.gif`}></img>
         </figure>
       </div>
       <div className={style.TextPart}>
-        <h5>Powerful tools for buidlers</h5>
-        <h6>EthOS offers devs all the tools to easily implement secure dapps for any kind of need, helping them to integrate easily and securely all of the features needed for their project. Devs can use and build factories developed by anyone in the world. Reducing skills needed, repetitive building and audits like crazy!</h6>
+        <h5>Powerful Tools For Buidlers</h5>
+        <h6>We provide all the parts you need to build state-of-the-art applications, and a secure environment in which to do so. For guidance, you have access to our full suite of documentation—over a hundred pages that will teach you how to use Factories, Items, Organizations and Covenants.</h6>
         <div className={style.TextPartBTN}>
           <a className={style.IndexHeaderDappS}>Documentation</a>
           <a className={style.IndexHeaderDappL}>Github</a>
@@ -100,6 +100,7 @@ const IndexMain = () => {
         </div>
       </div>
       <div className={style.Footer}>
+        <img src={`${process.env.PUBLIC_URL}/img/footer.gif`}></img>
         <div className={style.FooterLinks}>
           <p> EthOS Platform is an R&D project in it's early days, use it at your own risk!</p> 
           <a>Github</a>
