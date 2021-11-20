@@ -1,10 +1,10 @@
-.OrgHeadline {width: 990px; display: block; background-color: #ffffff; height: 200px; border-radius: 20px;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32); text-align: left; overflow: hidden;position: relative;}
+.OrgHeadline {width: 920px; display: block; background-color: #ffffff; height: 200px; border-radius: 20px;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32); text-align: left; overflow: hidden;position: relative; margin: 5px auto;}
 .OrgHeadline figure { width: 200px; height: 200px; display: inline-block; z-index: 10; position: relative; vertical-align: top; overflow: hidden; border-radius: 20px 0 0 20px;}
 .OrgHeadline figure img {width: 100%; height: 100%;}
-.OrgHeadlineSide {height: 40px; display: inline-block; position: absolute; left: 0; bottom: 0; width: 990px; z-index:5 ; background-color: #EEEEEE; padding: 15px; text-align: right; border-radius: 0 0 20px 20px;}
+.OrgHeadlineSide {height: 40px; display: inline-block; position: absolute; left: 0; bottom: 0; width: 920px; z-index:5 ; background-color: #EEEEEE; padding: 15px; text-align: right; border-radius: 0 0 20px 20px;}
 .OrgHeadlineSide p {font-size: 10px;}
 .OrgHeadlineSide p {text-decoration: none;}
-.OrgTitle {width: 500px; height: 160px; overflow: hidden; display: inline-block; padding: 10px 15px; text-align: left; vertical-align: top;}
+.OrgTitle {width: 450px; height: 160px; overflow: hidden; display: inline-block; padding: 10px 15px; text-align: left; vertical-align: top;}
 .OrgTitle h6 {width: 100%; font-size: 20px; color: #000000; font-weight: bold; margin: 20px auto;}
 .OrgTitle p {width: 100%; font-size: 12px; line-height: 1.3;}
-.OrgLinks {width: 290px; display: inline-block; text-align: center; height: 160px; vertical-align: top; padding: 50px 30px;}
+.OrgLinks {width: 250px; display: inline-block; text-align: center; height: 160px; vertical-align: top; padding: 50px 30px;}

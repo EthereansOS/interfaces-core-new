@@ -16,7 +16,6 @@ export default ({element, headProperties, leftProperties, rightProperties}) => {
         <Left {...leftProperties} element={element}/>
         <Right {...rightProperties} element={element}/>
       </div>
-      <NewProposal/>
     </div>
   )
 }

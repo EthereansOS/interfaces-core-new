@@ -18,32 +18,38 @@ export default ({element, proposalType}) => {
             <h5>New Proposal</h5>
           </>}
           {proposalType !== 'tokens' &&  <>
-            <label>
+            <label className={style.RegularLabel}>
               <h6>Title</h6>
               <input type="text"></input>
             </label>
           </>}
-            <label>
+            <label className={style.RegularLabel}>
               <h6>Summary</h6>
               <textarea></textarea>
             </label>
-            <label>
+            <label className={style.RegularLabel}>
               <h6>Rationale and motivations</h6>
               <textarea></textarea>
             </label>
-            <label>
+            <label className={style.RegularLabel}>
               <h6>Specification</h6>
               <textarea></textarea>
             </label>
-            <label>
+            <label className={style.RegularLabel}>
               <h6>Risks</h6>
               <textarea></textarea>
             </label>
-            <label>
+            <label className={style.RegularLabel}>
               <h6>Discussion link</h6>
               <input type="link"></input>
             </label>
-            {proposalType === 'poll' &&  <>
+            <label className={style.RegularLabel}>
+              <h6>Lenght</h6>
+              <select></select>
+            </label>
+            
+            
+            {/*proposalType === 'poll' && */}  
             <div className={style.ContextualPool}>
               <h6>Context</h6>
               <label>
@@ -67,17 +73,18 @@ export default ({element, proposalType}) => {
               </label>
             </div>
             <div className={style.ContextualPool}>
-              <h6>Voting powers</h6>
-            </div>
+              <h6>Tokens</h6>
             <label>
-              <h6>Token:</h6>
               <a className={style.TradeMarketTokenSelector}>
                   <figure>
                       <img src={`${process.env.PUBLIC_URL}/img/test.jpg`}></img>
                   </figure>
               </a>
+              <input type="number"></input>
+
             </label>
-            </> }
+            </div>
+            {/* End Only poll */}
         </div>
 
       </div>
