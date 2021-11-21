@@ -45,8 +45,8 @@ export async function all({ context, ballotMaker }) {
     return proposals
 }
 
-export async function get({ context, ballotMaker, newContract, account, web3 }, id) {
-    var proposalData = {...(await blockchainCall(ballotMaker.methods.execute, id)), id }
+export async function getProposal({ context, contract, newContract, account, web3 }, id) {
+    var proposalData = {...(await blockchainCall(contract.methods.execute, id)), id }
     proposalData = {...proposalData, ...(await (await fetch(formatLink({ context }, proposalData.uri))).json()) }
 
     try {
@@ -60,7 +60,7 @@ export async function get({ context, ballotMaker, newContract, account, web3 }, 
         })
     } catch (e) {}
 
-    var proposalsManager = newContract(context.ProposalsManagerABI, await blockchainCall(ballotMaker.methods.get, "0xa504406933af7ca120d20b97dfc79ea9788beb3c4d3ac1ff9a2c292b2c28e0cc"))
+    var proposalsManager = contract.contract ? contract.proposalsManager : newContract(context.ProposalsManagerABI, await blockchainCall(contract.methods.get, context.grimoire.COMPONENT_KEY_PROPOSALS_MANAGER))
     proposalData.proposalsManager = proposalsManager
     proposalData.proposals = await blockchainCall(proposalsManager.methods.list, proposalData.proposalIds)
     proposalData.endBlock = proposalData.ballotDuration.ethereansosAdd(proposalData.proposals[0].creationBlock)

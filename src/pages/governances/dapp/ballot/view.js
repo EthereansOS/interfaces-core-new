@@ -5,7 +5,7 @@ import { abi, useEthosContext, useWeb3, shortenWord, toDecimals, fromDecimals, b
 import { useLocation } from 'react-router'
 import LogoRenderer from '../../../../components/Global/LogoRenderer'
 
-import {get, preparePermit} from '../../../../logic/ballot'
+import {getProposal, preparePermit} from '../../../../logic/ballot'
 
 const BallotViewElement = ({element}) => {
 
@@ -171,7 +171,7 @@ const BallotView = () => {
 
     return <Web3DependantList
         Renderer={BallotViewElement}
-        provider={() => get({ web3, account, context, newContract, ballotMaker : getGlobalContract('ballotMaker')}, id)}
+        provider={() => getProposal({ web3, account, context, newContract, contract : getGlobalContract('ballotMaker')}, id)}
     />
 }
 
