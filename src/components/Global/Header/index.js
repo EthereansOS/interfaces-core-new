@@ -10,8 +10,8 @@ const Header = (props) => {
       <header className={style.Header}>
         <div className={style.FixedHeader}>
           <Link to="/dapp" className={style.logoMain}><img src={`${process.env.PUBLIC_URL}/img/logo_main.png`}/></Link>
-          <Navigation menuName={props.menuName} isDapp={props.isDapp}/>
           <Web3Connect/>
+          <Navigation menuName={props.menuName} isDapp={props.isDapp}/>
         </div>
         <div className={style.BlurHeader}></div>
       </header>

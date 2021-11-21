@@ -4,7 +4,7 @@ import style from './beta-banner.module.css'
 
 const BetaBanner = ({close}) => {
     return (
-        <div className={style.ModalBack}>
+        <div onClick={close} className={style.ModalBack}>
             <div className={style.ModalBoxBanner}>
                 <h5><b>The EthOS interface is in BETA, and has limited features.</b></h5>
                 <h6>We'll introduce these over the next few weeks. Currently missing are:</h6>
