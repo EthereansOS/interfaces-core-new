@@ -35,9 +35,10 @@ FactoriesMain.addToPlugin =
         label: 'Factories',
         link: '/factories/dapp',
         index,
+        image : `${process.env.PUBLIC_URL}/img/is1.png`,
       })
     }
 
-    
+
 
 export default FactoriesMain

@@ -39,6 +39,7 @@ CovenantsMain.addToPlugin =
         label: 'Covenants',
         link: '/covenants/dapp',
         index,
+        image : `${process.env.PUBLIC_URL}/img/is1.png`,
       })
     }
 
