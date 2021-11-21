@@ -6,3 +6,19 @@
 .OrgThingsInfoContent p {font-size: 13px;display: inline-block; width: 100%; text-align: center;}
 .OrgThingsInfoContent p a {text-decoration: underline;color: #000000;}
 .OrgMainThingsCard .OpenBTN {position: absolute; top: 5px; right: 5px; width: 50px; height: 30px;}
+.OrgPartView {width: 940px; margin: 25px auto; display: inline-block; background-color: #ffffff; border-radius: 20px; box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32); text-align: center; overflow: hidden;position: relative; padding: 25px 15px;}
+.OrgPartTitle {width: 200px; display: inline-block; margin: 5px 30px 15px 5px; padding: 10px; vertical-align: middle; text-align: left;}
+.OrgPartTitle h6 {font-size: 18px; color: #000000; text-align: left; margin: 5px auto;}
+.OrgPartInfo {width: 200px; display: inline-block; background-color: #e9effc; padding: 10px; margin: 5px; border-radius: 12px;} 
+.OrgPartInfo p {font-size: 12px; line-height: 1.5;}
+.OrgPartInfo b {font-size: 13px; line-height: 1.5;}
+.DelegationsSection {border-top: 1px solid #e9effc; padding: 20px 20px 20px 20px; margin: 10px auto; width: 100%; display: inline-block; text-align: center;}
+
+
+.InvestmentsSection {border-top: 1px solid #e9effc; padding: 20px 20px 20px 20px; margin: 10px auto; width: 100%; display: inline-block; text-align: center;}
+.InvestmentsSectionBuySell {width: 415px; display: inline-block; text-align: left; background-color: #e9effc; padding: 20px; border-radius: 12px; margin: 10px; vertical-align: middle;}
+.InvestmentsSectionBuySell p {line-height: 1.3; font-size: 15px; color: #000000; margin: 5px;}
+.InvestmentsSectionBuySell p > a {width: 20px; height: 20px; display: inline-block; vertical-align: middle; margin: 5px; position: relative;} 
+.InvestmentsSectionBuySell p > a img {width: 20px; height: 20px; display: inline-block;} 
+.InvestmentsSectionBuySell p > a span {position: absolute; right: 0px; top: 10px; font-size: 12px;}
+.InvestmentsSectionD {}
