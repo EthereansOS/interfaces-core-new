@@ -5,7 +5,7 @@ import style from './../index.module.css'
 
 const IndexMain = () => {
   return (
-      <div className={style.CardsLayer}>
+      <div className={style.CardsLayerS}>
         <a className={style.CardsFancy}>
           <figure>
             <img src={`${process.env.PUBLIC_URL}/img/c-2.png`}></img>

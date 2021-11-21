@@ -6,12 +6,10 @@ import style from './factories-main.module.css'
 const FactoriesMain = () => {
   return (
     <>
-      <Typography className={style.title} variant="h3" color="black">
-        Sample page 3
-      </Typography>
-      <Typography className={style.text} variant="body2" color="black">
-        This is a sample page
-      </Typography>
+      <div className={style.ComingSoon}>
+        <img src={`${process.env.PUBLIC_URL}/img/fact.png`}></img>
+        <h6>Coming Soon</h6>
+      </div>
     </>
   )
 }
