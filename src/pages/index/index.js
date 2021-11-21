@@ -35,25 +35,25 @@ const IndexMain = () => {
         <h6>EthOS is a universal platform for doing everything on Ethereum. It features four protocols, all on-chain, all decentralized, all customizable, all interwoven. Factories offer a safe new way to code and earn revenue for developers. Items are dynamic tokens that work with all applications. Organizations are granular governance vehicles. Covenants are DeFi tools, built on an AMM Aggregator. Builders can mix-and-match from these as they see fit.</h6>
       </div>
       <div className={style.CardsLayer}>
-        <a>
+        <a className={style.CardsFancy}>
           <figure>
             <img src={`${process.env.PUBLIC_URL}/img/c-2.png`}></img>
           </figure>
           <p>Factories</p>
         </a>
-        <a>
+          <a className={style.CardsFancy}>
           <figure>
             <img src={`${process.env.PUBLIC_URL}/img/c-1.png`}></img>
           </figure>
           <p>Items</p>
         </a>
-        <a>
+          <a className={style.CardsFancy}>
           <figure>
             <img src={`${process.env.PUBLIC_URL}/img/c-3.png`}></img>
           </figure>
           <p>Organizations</p>
         </a>
-        <a>
+          <a className={style.CardsFancy}>
           <figure>
             <img src={`${process.env.PUBLIC_URL}/img/c-4.png`}></img>
           </figure>

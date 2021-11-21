@@ -5,16 +5,33 @@ import style from '../index.module.css'
 
 const IndexMain = () => {
   return (
-    <div className={style.IndexPage}>
-      <h1>CUATTRO Robi</h1>
-      <Link to="/items/dapp">Robo 1 (Items)</Link>
-      <br/><br/>
-      <Link to="/governances/dapp">Robo 2 (Governances)</Link>
-      <br/><br/>
-      <Link to="/covenants/dapp">Robo 3 (Convenants)</Link>
-      <br/><br/>
-      <Link to="/factories/dapp">Robo 4 (Factories)</Link>
-    </div>
+      <div className={style.CardsLayer}>
+        <a className={style.CardsFancy}>
+          <figure>
+            <img src={`${process.env.PUBLIC_URL}/img/c-2.png`}></img>
+          </figure>
+          <Link to="/factories/dapp">Factories</Link>
+        </a>
+        <a className={style.CardsFancy}>
+          <figure>
+            <img src={`${process.env.PUBLIC_URL}/img/c-1.png`}></img>
+          </figure>
+          <Link to="/items/dapp">Items</Link>
+        </a>
+        <br></br>
+        <a className={style.CardsFancy}>
+          <figure>
+            <img src={`${process.env.PUBLIC_URL}/img/c-3.png`}></img>
+          </figure>
+          <Link to="/governances/dapp">Governance</Link>
+        </a>
+        <a className={style.CardsFancy}>
+          <figure>
+            <img src={`${process.env.PUBLIC_URL}/img/c-4.png`}></img>
+          </figure>
+          <Link to="/covenants/dapp">Convenants</Link>
+        </a>
+      </div>
   )
 }
 
