@@ -7,7 +7,7 @@ import ExploreOrganizations from '../../../../components/Organizations/ExploreOr
 
 import style from '../organizations-main-sections.module.css'
 
-import RegularModal from '../../../../components/Global/ReguarModal'
+import RegularModal from '../../../../components/Global/RegularModal'
 
 const SubDAOsList = ({}) => {
 
@@ -17,7 +17,7 @@ const SubDAOsList = ({}) => {
   const [modal, setModal] = useState(true)
 
   return (<div className={style.OrganizationsExploreMain}>
-    {modal && <RegularModal type="medium" onClose={() => setModal(false)}>I'm a modal</RegularModal>}
+    
     <Web3DependantList
       Renderer={ExploreOrganizations}
       rendererIsContainer

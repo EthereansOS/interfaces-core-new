@@ -1,6 +1,8 @@
 import { useState, Fragment } from 'react'
-import { Button, CircularProgress, Typography, Modal } from '@ethereansos/interfaces-ui'
+import { Button, CircularProgress, Typography } from '@ethereansos/interfaces-ui'
 import { useWeb3, web3States } from '@ethereansos/interfaces-core'
+
+import RegularModal from '../../Global/RegularModal'
 
 const Connect = ({ children }) => {
   const { web3, setConnector, errorMessage, connectors, connectionStatus } = useWeb3()
@@ -13,13 +15,12 @@ const Connect = ({ children }) => {
      ? web3
       ? children
       : <CircularProgress/>
-   : <Modal centered visible>
-      <Button text="X" onClick={close} style={{"float" : "right"}}/>
+   : <RegularModal type="medium">
       <ConnectWidget
         title="Welcome Etherean"
         {...{connectionStatus, connectors, setConnector, errorMessage}}
       />
-    </Modal>
+    </RegularModal>
 }
 
 export default Connect
@@ -46,17 +47,8 @@ const ConnectWidget = ({
       <br />
       {connectionStatus === web3States.CONNECTED && <div>Connected</div>}
       {!errorMessage && connectionStatus === web3States.CONNECTING && <div>Connecting to {activeConnector.buttonText} <CircularProgress/></div>}
-      {connectionStatus === web3States.NOT_CONNECTED && <Typography variant="body2" align="center">
-          You need a{' '}
-          <a target="_blank" href="https://etherscan.io/directory/Wallet">Web3 Enabler</a> to
-          use this Dapp - If you have problems connecting, refresh the page.
-        </Typography>}
-        <br/>
-        <div>
-          <Typography variant="h5">
-            Connect to a wallet
-          </Typography>
-        </div>
+      {connectionStatus === web3States.NOT_CONNECTED && 
+        <p> Connect to Ethereum to use this Dapp</p>}
         <br/>
         {(!activeConnector || errorMessage) &&
           connectors.map(connector => (

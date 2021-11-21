@@ -5,11 +5,12 @@ import { Typography } from '@ethereansos/interfaces-ui'
 
 import style from './action-a-web3-button.module.css'
 
-const ActionAWeb3Button  = (props) => {
+const ActionAWeb3Button  = (props, text) => {
     return (
         
         <div className={style.ActionAWeb3Button}>
-            <button className={style.ActionAMain}>Execute</button>
+            <button className={style.ActionAMain}>
+            </button>
         </div>
 
     )
