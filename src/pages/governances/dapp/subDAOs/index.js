@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 
 import { useEthosContext, useWeb3 } from '@ethereansos/interfaces-core'
 import {all} from '../../../../logic/organization'
@@ -7,12 +7,17 @@ import ExploreOrganizations from '../../../../components/Organizations/ExploreOr
 
 import style from '../organizations-main-sections.module.css'
 
+import RegularModal from '../../../../components/Global/ReguarModal'
+
 const SubDAOsList = ({}) => {
 
   const context = useEthosContext()
   const {getGlobalContract, newContract, chainId} = useWeb3()
 
+  const [modal, setModal] = useState(true)
+
   return (<div className={style.OrganizationsExploreMain}>
+    {modal && <RegularModal type="medium" onClose={() => setModal(false)}>I'm a modal</RegularModal>}
     <Web3DependantList
       Renderer={ExploreOrganizations}
       rendererIsContainer
