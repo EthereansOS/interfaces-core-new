@@ -1,6 +1,8 @@
-import { abi, VOID_ETHEREUM_ADDRESS, uploadMetadata, getNetworkElement, blockchainCall, web3Utils, sendAsync, tryRetrieveMetadata } from "@ethereansos/interfaces-core"
+import { abi, VOID_ETHEREUM_ADDRESS, uploadMetadata, formatLink, getNetworkElement, blockchainCall, web3Utils, sendAsync, tryRetrieveMetadata } from "@ethereansos/interfaces-core"
 
 import { encodeHeader } from "./itemsV2";
+
+import { decodeProposal, decodeProposalVotingToken } from "./ballot";
 
 export async function create({context, ipfsHttpClient, newContract, chainId, factoryOfFactories}, metadata, organization) {
     var uri = await uploadMetadata({context, ipfsHttpClient}, metadata)
@@ -66,16 +68,49 @@ export async function all({context, newContract, chainId, factoryOfFactories}, m
     return delegations
 }
 
+export async function tryExtractHost({context, web3, account, getGlobalContract, newContract}, contract) {
+    var hostAddress = await blockchainCall(contract.methods.host)
+    var host;
+    if(hostAddress && hostAddress !== VOID_ETHEREUM_ADDRESS) {
+        try {
+            var subDAOsManager = newContract(context.SubDAOsManagerABI, hostAddress)
+            hostAddress = await blockchainCall(subDAOsManager.methods.host)
+            host = await getOrganization({context, web3, account, getGlobalContract, newContract}, hostAddress)
+        } catch(e) {}
+    }
+    return {hostAddress, host};
+}
+
+export async function getOrganizationMetadata({context}, contract) {
+    try {
+        var uri = await blockchainCall(contract.methods.uri)
+        var link = formatLink({ context }, uri)
+        var metadata = await (await fetch(link)).json()
+        return metadata
+    } catch(e) {
+    }
+    return {}
+}
+
 export async function getOrganization({context, web3, account, getGlobalContract, newContract}, organizationAddress) {
     var contract = newContract(context.SubDAOABI, organizationAddress)
+    var {hostAddress, host} = await tryExtractHost({context, web3, account, getGlobalContract, newContract}, contract)
     var organization = {
         contract,
+        hostAddress,
+        host,
+        ...(await getOrganizationMetadata({context}, contract)),
         components : await getOrganizationComponents({newContract, context}, contract)
     }
-    try {
-        organization.stateVars = await getStateVars({}, organization.components.stateManager.contract)
-    } catch (e) {
-    }
+    organization.stateVars = await getStateVars({context}, organization.components.stateManager.contract)
+
+    organization.proposalModels = await getProposalModels({context}, contract)
+    organization.type = organization.proposalModels.length === 0 ? 'root' : 'organization'
+
+    organization.host && (organization.proposalModels = [...organization.proposalModels, ...host.proposalModels])
+
+    organization.proposalConfiguration = await getProposalConfiguration({context, web3, account, getGlobalContract, newContract}, organization.components.proposalsManager)
+
     return organization
 }
 
@@ -99,30 +134,56 @@ export async function getOrganizationComponents({newContract, context}, contract
     return components
 }
 
-async function getStateVars({}, stateManager) {
+async function getProposalModels({context}, contract) {
+    try {
+        var proposalModels = [...(await blockchainCall(contract.methods.proposalModels))]
+        proposalModels = proposalModels.map(it => ({...it, proposalType : it.preset ? 'surveyless' : 'normal'}))
+        proposalModels = await Promise.all(proposalModels.map(async it => {
+            var link = formatLink({ context }, it.uri)
+            var metadata = await (await fetch(link)).json()
+            return {...it, ...metadata }
+        }))
+        return proposalModels
+    } catch(e) {
+        console.log(e)
+    }
+    return []
+}
+
+async function getStateVars({context}, stateManager) {
+    if(!stateManager) {
+        return []
+    }
     var names = await blockchainCall(stateManager.methods.all)
     var vars = names.map(it => {
-        var entryType = toEntryType(it.entryType)
+        var entryType = toEntryType({context}, it.entryType)
         return {
-            name : it.name,
+            key : it.key,
+            name : context.componentNames[it.key] || it.key,
             entryType,
             value : convertValue(entryType, it.value)
         }
     })
-    return names
+    return vars
 }
 
 function convertValue(entryType, value) {
     try {
-        return abi.decode([entryType.type], [value])[0]
+        var decoded = abi.decode([entryType.type], value)[0]
+        var toString = decoded.toString()
+        if(toString === '[object Object]') {
+            return decoded
+        }
+        return toString
     } catch(e) {
     }
     return value
 }
 
 function toEntryType({context}, key) {
-    var name = context.grimoire.values.filter(it => it === key)[0]
+    var name = Object.entries(context.componentNames).filter(it => it[1] === key)[0]
     if(name) {
+        name = name[0]
         name = name.split('ENTRY_TYPE_')
         name = name[name.length - 1]
         var dictionary = {
@@ -168,4 +229,39 @@ async function retrieveComponent({newContract, context}, contract, key, componen
         }
     } catch(e) {
     }
+}
+
+export async function allProposals({ account, web3, context, newContract }, proposalsManager) {
+
+    var topics = [
+        web3Utils.sha3('ProposalCreated(address,address,bytes32)')
+    ]
+
+    var logs = await sendAsync(proposalsManager.currentProvider, 'eth_getLogs', {
+        address : proposalsManager.options.address,
+        topics,
+        fromBlock : '0x0',
+        toBlock : 'latest'
+    })
+
+    var proposalIds = {}
+    logs.forEach(it => {
+        var proposalId = it.topics[3]
+        proposalIds[proposalId] = true
+    })
+    proposalIds = Object.values(proposalIds)
+    var proposals = await blockchainCall(proposalsManager.methods.list, proposalIds)
+    var currentBlock = await sendAsync(proposalsManager.currentProvider, 'eth_getBlockByNumber', 'latest', false)
+    proposals = await Promise.all(proposals.map((prop, i) => decodeProposal({ account, web3, context, newContract }, prop)))
+    return proposals
+}
+
+async function getProposalConfiguration({ account, web3, context, newContract }, proposalsManager) {
+    var configuration = await blockchainCall(proposalsManager.contract.methods.configuration)
+    console.log(configuration);
+    var collectionAddresses = configuration.collections;
+    var objectIds = configuration.objectIds;
+    var weights = configuration.weights;
+    var votingTokens = await Promise.all(objectIds.map((_, i) => decodeProposalVotingToken({ account, web3, context, newContract }, "0", collectionAddresses[i], objectIds[i], weights[i])))
+    return votingTokens;
 }

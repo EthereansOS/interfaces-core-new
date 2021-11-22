@@ -25,11 +25,8 @@ const SubDAOView = (props) => {
     setOrganization(null)
     var organizationAddress= location.pathname.split('/')
     organizationAddress = organizationAddress[organizationAddress.length -1]
-    getOrganization({context, account, newContract, blockchainCall, web3}, organizationAddress).then(setOrganization)
-  }, [ location.pathname])
-
-  const type = 'organization'
-  const proposalType = 'gigi'
+    organizationAddress.indexOf("0x") === 0 && getOrganization({context, account, newContract, blockchainCall, web3}, organizationAddress).then(setOrganization)
+  }, [location.pathname])
 
   const [currentView, setCurrentView] = useState('overview')
 
@@ -56,14 +53,10 @@ const SubDAOView = (props) => {
   return (
     <>
       <div className={style.SingleContentPage}>
-        <OrgHeadline/>
+        <OrgHeadline element={organization}/>
         <DappSubMenu voices={menuVoices}/>
         {currentView === 'overview' && <MainSectionView/>}
-        {currentView === 'governance' && <GovernanceContainer
-          headProperties={{type, proposalType}}
-          leftProperties={{type, proposalType}}
-          rightProperties={{type, proposalType}}
-        />}
+        {currentView === 'governance' && <GovernanceContainer element={organization}/>}
       </div>
     </>
   )

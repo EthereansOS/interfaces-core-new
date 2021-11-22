@@ -3,10 +3,8 @@ import style from './governance-container.module.css'
 import RegularButtonDuo from '../../Global/RegularButtonDuo/index.js'
 import ExtLinkButton from '../../Global/ExtLinkButton/index.js'
 
-
-
-
-export default ({element, type, proposalType}) => {
+export default ({element}) => {
+  var type = element.type
   return (
     <div className={style.GovCardHead}>
       {type === 'delegation' ? <>
@@ -22,8 +20,6 @@ export default ({element, type, proposalType}) => {
             </div>
         </div>
       </> : <>
-      
-      
       <div className={style.GovCardHeadOrganization}>
         <div className={style.GovCardHeadOrganizationTitle}>
           <h6>Factories OF Factories (FOF) Protocol Fees</h6>
@@ -39,10 +35,6 @@ export default ({element, type, proposalType}) => {
               <RegularButtonDuo></RegularButtonDuo>
         </div>
       </div>
-      
-      
-      
-      
       </>}
    </div>
   )
