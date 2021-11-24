@@ -39,3 +39,4 @@ a {cursor: pointer; text-decoration: none;}
 .CardsLayerS figure {width: 60px; height: 60px; display: inline-block; margin: 50px auto 30px auto;}
 .CardsLayerS figure img {width: 60px; display: inline-block;}
 .CardsLayerS p {font-size: 15px; color: #786FFF; font-weight: bold;}
+.CardsLayerS {margin-top: 100px;}
