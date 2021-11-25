@@ -373,7 +373,6 @@ export async function createPresetProposals({}, proposal) {
 }
 
 export async function vote({account}, proposal, token, accept, refuse, proposalId, permitSignature, voter) {
-    console.log(proposalId)
     if(token.mainInterface) {
         var data = abi.encode(["bytes32", "uint256", "uint256", "address", "bool"], [proposalId, accept, refuse, VOID_ETHEREUM_ADDRESS, false])
         await blockchainCall(token.mainInterface.methods.safeTransferFrom, account, proposal.proposalsManager.contract.options.address, token.id, accept.ethereansosAdd(refuse), data)
@@ -382,6 +381,6 @@ export async function vote({account}, proposal, token, accept, refuse, proposalI
     }
 }
 
-export async function withdrawProposal({account}, proposal, proposalId) {
-    await blockchainCall(proposal.proposalsManager.contract.methods.withdrawAll, [proposalId], account, false)
+export async function withdrawProposal({account}, proposal, proposalId, address, voteOrWithdraw) {
+    await blockchainCall(proposal.proposalsManager.contract.methods.withdrawAll, [proposalId], address || account, voteOrWithdraw || false)
 }

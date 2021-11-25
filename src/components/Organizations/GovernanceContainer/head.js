@@ -1,11 +1,16 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import style from './governance-container.module.css'
 import RegularButtonDuo from '../../Global/RegularButtonDuo/index.js'
 import ExtLinkButton from '../../Global/ExtLinkButton/index.js'
 import LogoRenderer from '../../Global/LogoRenderer'
 
-export default ({element, proposal, metadata}) => {
+export default ({element, proposal, metadata, onToggle}) => {
   var type = element.type
+
+  var [opened, setOpened] = useState(proposal.isPreset)
+
+  useEffect(() => onToggle && onToggle(opened), [opened])
+
   return (
     <div className={style.GovCardHead}>
       {type === 'delegation' ? <>
@@ -31,7 +36,7 @@ export default ({element, proposal, metadata}) => {
             <p><b>Active Selection:</b><br></br> 0.04%</p>
         </div>
         <div className={style.GovernanceCardInfoOpen}>
-          <RegularButtonDuo></RegularButtonDuo>
+          <RegularButtonDuo onClick={() => setOpened(!opened)}>{opened ? 'Close' : 'Open'}</RegularButtonDuo>
         </div>
       </div>
       </>}

@@ -12,6 +12,7 @@ import style from './governance-container.module.css'
 
 var SingleProposal = ({element, proposal}) => {
   const [metadata, setMetadata] = useState(null)
+  const [opened, setOpened] = useState(false)
 
   const context = useEthosContext()
 
@@ -27,11 +28,11 @@ var SingleProposal = ({element, proposal}) => {
 
   return (
     <div className={style.GovCard}>
-      <Head element={proposal.organization} proposal={proposal} metadata={metadata}/>
-        <div className={style.GovCardOpened}>
+      <Head element={proposal.organization} proposal={proposal} metadata={metadata} onToggle={setOpened}/>
+        {opened && <div className={style.GovCardOpened}>
           <Left element={proposal.organization} proposal={proposal} metadata={metadata}/>
           <Right element={proposal.organization} proposal={proposal} metadata={metadata}/>
-        </div>
+        </div>}
     </div>
   )
 }

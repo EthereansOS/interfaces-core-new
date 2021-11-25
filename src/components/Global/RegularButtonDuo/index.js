@@ -5,12 +5,10 @@ import { Typography } from '@ethereansos/interfaces-ui'
 
 import style from './regular-button-duo.module.css'
 
-const RegularButtonDuo  = (props) => {
+const RegularButtonDuo  = ({children, onClick}) => {
     return (
-        
-        <button className={style.RegularButtonDuo}>Farm</button>
-
+        <button className={style.RegularButtonDuo} onClick={onClick}>{children}</button>
     )
 }
 
-    export default RegularButtonDuo
+export default RegularButtonDuo
