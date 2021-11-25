@@ -41,7 +41,7 @@ body {
   --color-light: #9c9c9c;
   --color-primary: #8653f6;
   --color-secondary: rgb(255, 0, 122);
-  --color-text: #6e6e6e;
+  --color-text: #000000;
   --background-body: linear-gradient(135deg,#d2d0f7,#fdf7f5 41%);
   --color-background-light: #ffff;
   --color-background: #333333;
