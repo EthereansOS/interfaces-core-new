@@ -16,7 +16,7 @@ export default ({token, balance, value, other, buttonText, onClick, onPermitSign
 
     const [loading, setLoading] = useState(false)
 
-    useEffect(() => onPermitSignature(permitSignature), [permitSignature])
+    useEffect(() => onPermitSignature && onPermitSignature(permitSignature), [permitSignature])
 
     var otherAddress = (other && other.options && other.options.address) || other || VOID_ETHEREUM_ADDRESS
 
@@ -76,10 +76,10 @@ export default ({token, balance, value, other, buttonText, onClick, onPermitSign
 
     return (
         <div className={style.ActionAWeb3Buttons}>
-            {!token.mainInterface && approved !== null && <button disabled={parseInt(balance) === 0 || approved} className={style.ActionASide} onClick={performApprove}>Approve</button>}
-            {token.mainInterface && token.passedAsERC20 && approved !== null && <button disabled={parseInt(balance) === 0 || approved} className={style.ActionASide} onClick={performApprove}>Approve</button>}
+            {!token?.mainInterface && approved !== null && <button disabled={parseInt(balance) === 0 || approved} className={style.ActionASide} onClick={performApprove}>Approve</button>}
+            {token?.mainInterface && token?.passedAsERC20 && approved !== null && <button disabled={parseInt(balance) === 0 || approved} className={style.ActionASide} onClick={performApprove}>Approve</button>}
             {(approved === null || loading) && <CircularProgress/>}
-            {!loading && <button disabled={parseInt(balance) === 0 || parseInt(value) === 0 || parseInt(value) > parseInt(balance) || (!approved && !token.mainInterface)} onClick={performAction} className={style.ActionAMain}>{buttonText || 'Swap'}</button>}
+            {!loading && <button disabled={parseInt(balance) === 0 || parseInt(value) === 0 || parseInt(value) > parseInt(balance) || (!approved && !token?.mainInterface)} onClick={performAction} className={style.ActionAMain}>{buttonText || 'Swap'}</button>}
         </div>
     )
 }

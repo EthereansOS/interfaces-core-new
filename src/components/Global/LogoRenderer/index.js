@@ -22,7 +22,10 @@ export default ({input, figureClassName, noFigure}) => {
     var img = <img style={ (finalImage === null || loading) ? {"display" : "none"} : {}} src={finalImage} onLoad={() => setLoading(false)} onError={() => void(setLoading(false), setFinalImage(DEFAULT_IMAGE))}/>
 
     if(!noFigure) {
-        img = <figure className={figureClassName}>
+        var figureProperties = {}
+        figureClassName && (figureProperties.className = figureClassName)
+        input && input.background_color && (figureProperties.style={'background-color' : input.background_color})
+        img = <figure {...figureProperties}>
             {img}
         </figure>
     }
