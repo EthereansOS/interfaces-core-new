@@ -10,8 +10,9 @@
 .OrgPartTitle {width: 200px; display: inline-block; margin: 5px 30px 15px 5px; padding: 10px; vertical-align: middle; text-align: left;}
 .OrgPartTitle h6 {font-size: 18px; color: #000000; text-align: left; margin: 5px auto;}
 .OrgPartInfo {width: 200px; display: inline-block; background-color: #e9effc; padding: 10px; margin: 5px; border-radius: 12px;} 
-.OrgPartInfo p {font-size: 12px; line-height: 1.5;}
-.OrgPartInfo b {font-size: 13px; line-height: 1.5;}
+.OrgPartInfo p,.OrgPartInfoB p {font-size: 12px; line-height: 1.5;}
+.OrgPartInfo b, .OrgPartInfoB b {font-size: 13px; line-height: 1.5;}
+.OrgPartInfoB {width: 200px; display: inline-block;vertical-align: middle; padding: 10px 30px; margin: 5px; border-radius: 12px; vertical-align: super;}
 .DelegationsSection {border-top: 1px solid #e9effc; padding: 20px 20px 20px 20px; margin: 10px auto; width: 100%; display: inline-block; text-align: left;}
 .DelegationsSectionOne {width: 280px; display: inline-block; margin: 5px; border-radius: 16px;  border: 1px solid #e9effc; text-align: left; overflow: hidden;}
 .DelegationsSectionOne > figure {display: inline-block; width: 70px; height: 70px; vertical-align: top;}

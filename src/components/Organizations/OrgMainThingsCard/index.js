@@ -4,6 +4,7 @@ import { Typography } from '@ethereansos/interfaces-ui'
 
 import style from './org-main-things-card.module.css'
 import ExtLinkButton from '../../Global/ExtLinkButton/index.js'
+import RegularButtonDuo from '../../Global/RegularButtonDuo/index.js'
 import Upshots from '../../Organizations/Upshots/index.js'
 
 const OrgMainThingsCard = (props) => {
@@ -69,8 +70,8 @@ const OrgMainThingsCard = (props) => {
         <div className={style.OrgPartInfo}>
           <p><b>Fund Size</b><br></br>$400,000,000</p>
         </div>
-        <div className={style.OrgPartInfo}>
-          <p><b>Routines</b><br></br>2</p>
+        <div className={style.OrgPartInfoB}>
+          <RegularButtonDuo/>
         </div>
         <div className={style.InvestmentsSection}>
           <div className={style.InvestmentsSectionBuySell}>
@@ -99,8 +100,8 @@ const OrgMainThingsCard = (props) => {
         <div className={style.OrgPartInfo}>
           <p><b>Active Delegations</b><br></br>5</p>
         </div>
-        <div className={style.OrgPartInfo}>
-          <p><b>Supporters stake</b><br></br>500,000</p>
+        <div className={style.OrgPartInfoB}>
+          <RegularButtonDuo/>
         </div>
         <div className={style.DelegationsSection}>
          <h6>Grant chart</h6>
@@ -120,6 +121,22 @@ const OrgMainThingsCard = (props) => {
             <figure><img src={`${process.env.PUBLIC_URL}/img/test.jpg`}></img></figure>
             <Upshots/>
           </div>
+        </div>
+      </div>
+      <div className={style.OrgPartView}>
+        <div className={style.OrgPartTitle}>
+          <h6>Ethereans (OS) Inflation</h6>
+          <ExtLinkButton/>
+          <ExtLinkButton/>
+        </div>
+        <div className={style.OrgPartInfo}>
+          <p><b>Annual Inflation Rate</b><br></br>8%</p>
+        </div>
+        <div className={style.OrgPartInfo}>
+          <p><b>Routines</b><br></br>1</p>
+        </div>
+        <div className={style.OrgPartInfoB}>
+          <RegularButtonDuo/>
         </div>
       </div>
     </>
