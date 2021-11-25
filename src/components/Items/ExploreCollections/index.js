@@ -10,17 +10,13 @@ import style from './explore-collections.module.css'
 const ExploreCollections = ({element}) => (
   <Link to={"/items/dapp/collections/" + element.id}>
    <div className={style.CollectionSingle}>
-      <figure>
-        <LogoRenderer input={element}/>
-      </figure>
+      <LogoRenderer input={element}/>
       <div className={style.CollectionTitle}>
         <h6>{element.name}</h6>
       </div>
       <div className={style.CollectionFolder}>
         {element.items.map(item => <a key={item.id}>
-          <figure className={style.CollectionFolderItem}>
-            <LogoRenderer input={item}/>
-          </figure>
+          <LogoRenderer input={item} figureClassName={style.CollectionFolderItem}/>
         </a>)}
       </div>
    </div>

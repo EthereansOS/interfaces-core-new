@@ -48,9 +48,7 @@ const TokenInputRegular = ({onElement, tokens}) => {
         <div className={style.TradeMarketTokenAll}>
             <div className={style.TradeMarketToken}>
                 <a onClick={() => setModalIsOpen(true)} className={style.TradeMarketTokenSelector}>
-                    <figure>
-                        <LogoRenderer input={element}/>
-                    </figure>
+                    <LogoRenderer input={element}/>
                     <span>{element?.symbol || ''} ▼</span>
                 </a>
                 <div className={style.TradeMarketTokenAmount}>

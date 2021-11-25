@@ -10,9 +10,7 @@ export default ({element, proposal, metadata}) => {
     <div className={style.GovCardHead}>
       {type === 'delegation' ? <>
         <div className={style.GovCardHeadDelegation}>
-            <figure>
-              <LogoRenderer input={element}/>
-            </figure>
+            <LogoRenderer input={element}/>
             <span>EthOS Organization</span>
             <p><b>Grant size:</b><br></br> 40 ETH</p>
             <p><b>Supporters stake:</b><br></br> 100,000 OS</p>

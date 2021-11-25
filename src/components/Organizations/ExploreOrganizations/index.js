@@ -10,9 +10,7 @@ const ExploreOrganizations = ({elements}) => {
     <div className={style.OrgAllSingle}>
       {elements.map(element => (
         <Link key={element.address} className={style.OrgSingle} to={`/governances/dapp/${element.type}/${element.address}`}>
-          <figure>
-            <LogoRenderer input={element}/>
-          </figure>
+          <LogoRenderer input={element}/>
           <div className={style.OrgTitle}>
             <h6>{element.name}</h6>
             <div className={style.OrgTitleAside}>

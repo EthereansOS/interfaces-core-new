@@ -10,9 +10,7 @@ export default ({element, onClick}) => {
   const { chainId } = useWeb3()
   return (
     <a className={style.TokenObject} onClick={() => onClick(element)}>
-      <figure>
-        <LogoRenderer input={element}/>
-      </figure>
+      <LogoRenderer input={element}/>
       <div className={style.ObjectInfo}>
         <div className={style.ObjectInfoAndLink}>
           <h5>{element.name} ({element.symbol})</h5>

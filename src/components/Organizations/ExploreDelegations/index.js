@@ -7,9 +7,7 @@ const ExploreDelegations = ({element}) => {
   return (
     <div className={style.OrgAllSingle}>
      <div className={style.OrgSingle}>
-        <figure>
-          <LogoRenderer input={element} />
-        </figure>
+        <LogoRenderer input={element} />
         <div className={style.OrgTitle}>
           <h6>{element.name}</h6>
           <div className={style.OrgTitleAside}>

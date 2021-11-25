@@ -8,9 +8,7 @@ import LogoRenderer from '../../Global/LogoRenderer'
 const Item = ({element}) => (
   <div className={style.ItemSingle}>
     <Link to={`/items/dapp/${element.address}`}>
-      <figure>
-        <LogoRenderer input={element}/>
-      </figure>
+      <LogoRenderer input={element}/>
       <div className={style.ItemTitle}>
         <h6>{element.name}</h6>
       </div>

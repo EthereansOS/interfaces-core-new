@@ -7,9 +7,7 @@ export default ({element}) => {
     var context = useEthosContext()
     return (
         <a className={style.TokenObject}>
-            <figure>
-                <LogoRenderer input={element}/>
-            </figure>
+            <LogoRenderer input={element}/>
             <div className={style.ObjectInfo}>
                 <div className={style.ObjectInfoCategory}>
                     <h5>{element.name}</h5>

@@ -13,9 +13,7 @@ const BallotItem = ({element}) => {
     const context = useEthosContext()
     return (
         <Link to={`/governances/dapp/ballots/${element.id}`} className={style.TokenObject}>
-            <figure>
-                <LogoRenderer input={element}/>
-            </figure>
+            <LogoRenderer input={element}/>
             <div className={style.ObjectInfo}>
                 <div className={style.ObjectInfoCategory}>
                     <h5>{element.name}</h5>

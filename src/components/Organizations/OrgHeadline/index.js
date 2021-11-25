@@ -9,9 +9,7 @@ const OrgHeadline = ({element}) => {
   return (
 
    <div className={style.OrgHeadline}>
-      <figure>
-        <LogoRenderer input={element}/>
-      </figure>
+      <LogoRenderer input={element}/>
       <div className={style.OrgTitle}>
         <h6>{element.name}</h6>
         {element.description && <p ref={ref => ref && (ref.innerHTML = element.description)}/>}

@@ -8,9 +8,7 @@ export default ({element}) => {
   const { chainId } = useWeb3()
   return (
     <a className={style.TokenObject}>
-      <figure>
-        <LogoRenderer input={element}/>
-      </figure>
+      <LogoRenderer input={element}/>
       <div className={style.ObjectInfo}>
         <div className={style.ObjectInfoAndLink}>
           <h5>{element.name} ({element.symbol})</h5>
