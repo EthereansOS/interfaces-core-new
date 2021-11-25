@@ -17,8 +17,8 @@ const MainTemplate = ({ Component, ...props }) => {
   return props.componentOnly ? <Component setTemplateState={setState} {...props} /> : (
     <main
       className={style.root}>
-      <div>
-        Block: <a href={getNetworkElement({context}, 'etherscanURL') + '/block/' + block} target="_blank">#{block}</a>
+      <div className={style.BlockNews}>
+        <p>&#10212; <a href={getNetworkElement({context}, 'etherscanURL') + '/block/' + block} target="_blank">#{block}</a></p>
       </div>
       <Header {...props} />
       <Container className={classnames(style.container)}>

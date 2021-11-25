@@ -27,3 +27,4 @@ yarn-error.log*
 
 vasa.bat
 ale.sh
+package-lock.json
