@@ -28,7 +28,7 @@ const SubDAOView = (props) => {
     organizationAddress.indexOf("0x") === 0 && getOrganization({context, account, newContract, blockchainCall, web3}, organizationAddress).then(setOrganization)
   }, [location.pathname])
 
-  const [currentView, setCurrentView] = useState('overview')
+  const [currentView, setCurrentView] = useState('governance')
 
   const menuVoices = [{
     label : 'Overview',
@@ -55,7 +55,7 @@ const SubDAOView = (props) => {
       <div className={style.SingleContentPage}>
         <OrgHeadline element={organization}/>
         <DappSubMenu voices={menuVoices}/>
-        {currentView === 'overview' && <MainSectionView/>}
+        {currentView === 'overview' && <MainSectionView element={organization}/>}
         {currentView === 'governance' && <GovernanceContainer element={organization}/>}
       </div>
     </>

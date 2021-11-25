@@ -7,7 +7,7 @@ import ModalStandard from '../ModalStandard'
 import ObjectsLists from '../ObjectsLists'
 import LogoRenderer from '../LogoRenderer'
 
-const TokenInputRegular = ({onElement}) => {
+const TokenInputRegular = ({onElement, tokens}) => {
 
     const { chainId, account } = useWeb3()
 
@@ -27,7 +27,8 @@ const TokenInputRegular = ({onElement}) => {
 
     useEffect(() => {
         setBalance(null)
-        element && blockchainCall(element.contract.methods.balanceOf, account).then(setBalance)
+        element && !element.mainInterface && blockchainCall(element.contract.methods.balanceOf, account).then(setBalance)
+        element && element.mainInterface && blockchainCall(element.contract.methods.balanceOf, account, element.id).then(setBalance)
     }, [account, element])
 
     useEffect(() => {
@@ -41,7 +42,7 @@ const TokenInputRegular = ({onElement}) => {
 
     return modalIsOpen ? (
         <ModalStandard>
-            <ObjectsLists onlySelections={'ERC-20'} selectionProperties={{'ERC-20' : {alsoETH : true, renderedProperties:{onClick}}}}/>
+            <ObjectsLists list={tokens} onlySelections={'ERC-20'} selectionProperties={{'ERC-20' : {alsoETH : true, renderedProperties:{onClick}}}}/>
         </ModalStandard>
     ) : (
         <div className={style.TradeMarketTokenAll}>

@@ -7,7 +7,7 @@ import VoteSelections from '../../Organizations/VoteSelections/index.js'
 import RegularVoteBox from '../../Organizations/RegularVoteBox/index.js'
 
 
-export default ({element, proposalType}) => {
+export default ({element, proposal, metadata, proposalType}) => {
   return (
     <div className={style.Proposal}>
       <div className={style.ProposalTitle}>
@@ -24,8 +24,8 @@ export default ({element, proposalType}) => {
           <p className={style.PendingTagBlue}>Pending</p>
           <p className={style.PendingTagGreen}>Succed</p>
           <p className={style.PendingTagGreen}>Executed</p>
-          <p className={style.PendingTagRed}>Defeated</p> 
-          */} 
+          <p className={style.PendingTagRed}>Defeated</p>
+          */}
         </div>
       </div>
       <div className={style.ProposalVotesCount}>
@@ -51,7 +51,7 @@ export default ({element, proposalType}) => {
     <div className={style.VoteList}>
       <VoteSelections/>
       <VoteSelections/>
-      <RegularVoteBox/>
+      <RegularVoteBox element={element} proposal={proposal} metadata={metadata}/>
     </div>
 
       </div>

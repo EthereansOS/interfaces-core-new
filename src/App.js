@@ -37,7 +37,7 @@ function App() {
         Loading={() => <div>Loading...</div>}
         Error={({ error }) => <div>Error on application init: {error}</div>}>
         <PluginsContextProvider plugins={[appPlugin]}>
-          <Web3ContextProvider>
+          <Web3ContextProvider blockInterval={1} blockIntervalTimeout={4000}>
             <GlobalContextsProvider>
               <HashRouter>
                 <AppRouter/>

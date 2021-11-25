@@ -91,17 +91,21 @@ export async function decodeProposalVotingToken({ account, web3, context, newCon
 
     var token = await decodeToken({ account, web3, context, newContract }, addr, objectId)
     token.weight = weight
-    token.itemKey = web3Utils.soliditySha3({
+    token.itemKey = generateItemKey(token, proposalId)
+    return token
+}
+
+export function generateItemKey(token, proposalId) {
+    return web3Utils.soliditySha3({
         type: 'bytes32',
         value: proposalId
     }, {
         type: 'address',
-        value: addr
+        value: token.originalAddress
     }, {
         type: 'uint256',
-        value: objectId
+        value: token.originalObjectId
     })
-    return token
 }
 
 export async function decodeToken({ account, web3, context, newContract }, addr, objectId) {
@@ -128,6 +132,8 @@ export async function decodeToken({ account, web3, context, newContract }, addr,
         }
     } catch (e) {}
     var token = {
+        originalAddress : addr,
+        originalObjectId : objectId,
         address,
         contract: mainInterface || contract,
         mainInterface,

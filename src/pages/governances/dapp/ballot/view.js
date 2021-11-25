@@ -42,7 +42,7 @@ const Prop = ({proposal, proposalsManager}) => {
 }
 
 const VotingToken = ({proposalId, proposalsManager, element}) => {
-    const {getGlobalContract, newContract, chainId, account} = useWeb3()
+    const {getGlobalContract, newContract, chainId, account, block} = useWeb3()
 
     const [acceptsInput, setAcceptsInput] = useState(0)
     const [refusesInput, setRefusesInput] = useState(0)
@@ -56,18 +56,14 @@ const VotingToken = ({proposalId, proposalsManager, element}) => {
 
     var contract = element.interoperableInterface || element.contract
 
-    const [intervalId, setIntervalId] = useState()
-
     useEffect(() => {
-        intervalId && clearInterval(intervalId)
         async function ask() {
             var x = await blockchainCall(proposalsManager.methods.votes, [proposalId], [account], [[element.itemKey]])
             setAccepts(fromDecimals(x[0][0], element.decimals, true))
             setRefuses(fromDecimals(x[1][0], element.decimals, true))
             setToWithdraw(fromDecimals(x[2][0], element.decimals, true))
         }
-        setIntervalId(setInterval(ask, 4000))
-    }, [account, chainId])
+    }, [account, chainId, block])
 
     async function approve() {
         setPermitSignature(null)
@@ -151,7 +147,7 @@ const VotingToken = ({proposalId, proposalsManager, element}) => {
                 <br/>
                 To Withdraw: {toWithdraw}
             </div>
-            {element.passedAsERC20 && <a onClick={approve}>Approve</a>}
+            {!element.mainInterface && <a onClick={approve}>Approve</a>}
             {element.passedAsERC20 && <a onClick={permit}>Permit</a>}
             <a onClick={vote}>Vote</a>
             <a onClick={withdraw}>Withdraw</a>
