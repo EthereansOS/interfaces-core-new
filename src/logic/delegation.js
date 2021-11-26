@@ -1,20 +1,12 @@
 import { abi, VOID_ETHEREUM_ADDRESS, uploadMetadata, getNetworkElement, blockchainCall, web3Utils, sendAsync, tryRetrieveMetadata } from "@ethereansos/interfaces-core"
 
-import { encodeHeader } from "./itemsV2";
-
-export async function create({context, ipfsHttpClient, newContract, chainId, factoryOfFactories}, metadata, organization) {
+export async function createDelegation({context, ipfsHttpClient, newContract, chainId, factoryOfFactories}, metadata) {
     var uri = await uploadMetadata({context, ipfsHttpClient}, metadata)
-    var header = {
-        host :VOID_ETHEREUM_ADDRESS,
-        name : metadata.name,
-        symbol : metadata.symbol,
-        uri
-    }
-    var headerBytecode = encodeHeader(header)
+
     var mandatoryComponentsDeployData = [
         "0x",
         "0x",
-        headerBytecode
+        abi.encode(["string"], [metadata.tick])
     ]
 
     var deployOrganizationDataType = [
@@ -32,7 +24,7 @@ export async function create({context, ipfsHttpClient, newContract, chainId, fac
         mandatoryComponentsDeployData,
         [],
         [],
-        organization ? abi.encode(["address"], [organization]) : "0x"
+        VOID_ETHEREUM_ADDRESS
     ]
 
     var deployOrganizationData = abi.encode([`tuple(${deployOrganizationDataType.join(',')})`], [deployOrganizationDataValue])
@@ -42,7 +34,36 @@ export async function create({context, ipfsHttpClient, newContract, chainId, fac
     var factoryAddress = factoryData.factoryList[factoryData.factoryList.length - 1]
     var factory = newContract(context.IFactoryABI, factoryAddress)
 
-    await blockchainCall(factory.methods.deploy, deployOrganizationData)
+    var transaction = await blockchainCall(factory.methods.deploy, deployOrganizationData)
+    var transactionReceipt = await sendAsync(factory.currentProvider, "eth_getTransactionReceipt", transaction.transactionHash)
+    var logs = transactionReceipt.logs
+    logs = logs.filter(it => it.topics[0] === web3Utils.sha3("Deployed(address,address,address,bytes)"))[0]
+    var address = logs.topics[2]
+    address = abi.decode(["address"], address)
+    return address
+}
+
+export async function finalizeDelegation({context, chainId, newContract, factoryOfFactories},
+        delegationAddress,
+        host,
+        quorum,
+        validationBomb,
+        blockLength,
+        hardCap
+    ) {
+
+    var factoryData = await blockchainCall(factoryOfFactories.methods.get, getNetworkElement({context, chainId}, "factoryIndices").delegation)
+    var factoryAddress = factoryData.factoryList[factoryData.factoryList.length - 1]
+    var factory = newContract(context.DelegationFactoryABI, factoryAddress)
+
+    await blockchainCall(factory.methods.initializeProposalModels,
+        delegationAddress,
+        host,
+        quorum,
+        validationBomb,
+        blockLength,
+        hardCap
+    )
 }
 
 export async function all({context, newContract, chainId, factoryOfFactories}, metadata, organization) {
