@@ -9,7 +9,7 @@ const Init = ({onSelection}) => {
     <div>
       <h4>Choose</h4>
       <a onClick={() => onSelection("deploy")}>Create New</a>
-      <a onClick={() => onSelection("finalize")}>Finalize an existing one</a>
+      <a onClick={() => onSelection("finalize")}>Finalize previously created one</a>
     </div>
   )
 }
