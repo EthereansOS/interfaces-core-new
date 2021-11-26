@@ -6,9 +6,9 @@ import style from "./modal.module.css"
 const RegularModal = ({children, type, close}) => {
 
     return (
-        <div className={style.ModalBack}>
+        <div onClick={close} className={style.ModalBack}>
             <div className={style[type]}>
-                {close && <a onClick={close}>X</a>}
+                {close && <a className={style.BackButton} onClick={close}>X</a>}
                 {children}
             </div>
         </div>

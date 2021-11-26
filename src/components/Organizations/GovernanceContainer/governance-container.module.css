@@ -90,3 +90,4 @@
 .OptionOpen {width: 100%; display: inline-block; padding: 10px 30px; text-align: left; background-color: #ffffff; border-radius: 20px; margin: 10px auto;}
 .OptionOpen p {display: inline-block; font-size: 12px; text-align: left; vertical-align: middle; font-weight: bold;}
 .OptionOpen input {display: inline-block; font-size: 12px; text-align: left; vertical-align: middle; height: 30px; width: 260px; background-color: #e4e4e4; border-radius: 12px; border: none; margin: 5px 20px; padding: 5px 8px;}
+.TokenSelectorListProposal {width: 45%; display: inline-block; margin: 10px 2.5%; text-align: center; background-color: #e9effc; padding: 10px; border-radius: 20px;}

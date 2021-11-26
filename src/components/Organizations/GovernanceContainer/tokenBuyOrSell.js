@@ -6,6 +6,7 @@ import RegularModal from '../../Global/RegularModal'
 
 import { proposeBuy, proposeSell } from "../../../logic/organization"
 import ActionAWeb3Buttons from '../../Global/ActionAWeb3Buttons'
+import style from './governance-container.module.css'
 
 export default ({buyOrSell, close, proposal}) => {
 
@@ -59,23 +60,23 @@ export default ({buyOrSell, close, proposal}) => {
 
     return (
         <RegularModal close={close} type="medium">
-            <div>
+            <div className={style.TokenSelectorListProposal}>
                 <TokenInputRegular tokenOnly onElement={token => setToken0(token)}/>
                 {!buyOrSell && <input type="number" min="0.001" max="10" value={percentage0} onChange={e => setPercentage0(parseFloat(e.currentTarget.value))}/>}
             </div>
-            <div>
+            <div className={style.TokenSelectorListProposal}>
                 <TokenInputRegular tokenOnly onElement={token => setToken1(token)}/>
                 {!buyOrSell && <input type="number" min="0.001" max="10" value={percentage1} onChange={e => setPercentage1(parseFloat(e.currentTarget.value))}/>}
             </div>
-            <div>
+            <div className={style.TokenSelectorListProposal}>
                 <TokenInputRegular tokenOnly onElement={token => setToken2(token)}/>
                 {!buyOrSell && <input type="number" min="0.001" max="10" value={percentage2} onChange={e => setPercentage2(parseFloat(e.currentTarget.value))}/>}
             </div>
-            <div>
+            <div className={style.TokenSelectorListProposal}>
                 <TokenInputRegular tokenOnly onElement={token => setToken3(token)}/>
                 {!buyOrSell && <input type="number" min="0.001" max="10" value={percentage3} onChange={e => setPercentage3(parseFloat(e.currentTarget.value))}/>}
             </div>
-            {!buyOrSell && <div>
+            {!buyOrSell && <div className={style.TokenSelectorListProposal}>
                 <TokenInputRegular tokenOnly onElement={token => setToken4(token)}/>
                 <input type="number" min="0.001" max="10" value={percentage4} onChange={e => setPercentage4(parseFloat(e.currentTarget.value))}/>
             </div>}
