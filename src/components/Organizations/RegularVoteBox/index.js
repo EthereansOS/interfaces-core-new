@@ -10,6 +10,7 @@ import { vote, createPresetProposals, withdrawProposal } from '../../../logic/or
 import { generateItemKey } from '../../../logic/ballot'
 
 import style from './regular-vote-box.module.css'
+import ActionInfoSection from '../../Global/ActionInfoSection/index.js'
 
 const RegularVoteBox = ({element, proposal, proposalId, printedValue}) => {
   const { account, block } = useWeb3()
@@ -41,18 +42,15 @@ const RegularVoteBox = ({element, proposal, proposalId, printedValue}) => {
       setToWithdraw(tw)
     }
     ask()
-  }, [proposalId, block])
+  }, [proposalId, block, account])
 
   async function onTokenData(token, balance, value) {
     setTokenData({token, balance, value})
   }
 
-  if(proposal && proposal.isPreset && proposal.presetProposals.indexOf(VOID_BYTES32) === 0) {
-    return <ActionAWeb3Button onClick={() => createPresetProposals({}, proposal)}>Create</ActionAWeb3Button>
-  }
-
   return (
    <>
+   <ActionInfoSection hideAmmStuff onSettingsToggle={settings => setAddress(settings ? '' : null)}/>
     <div className={style.RegularVoteBoxQuantity}>
       <TokenInputRegular onElement={onTokenData} tokens={element?.proposalsConfiguration.votingTokens}/>
     </div>
@@ -66,9 +64,16 @@ const RegularVoteBox = ({element, proposal, proposalId, printedValue}) => {
         onPermitSignature={setPermitSignature}
         onClick={() => vote({account}, proposal, tokenData.token, tokenData.value, 0, proposalId, permitSignature, address)}/>}
     </div>
+    {address !== null &&
+      <div>
+        <label>
+          Address:
+          <input type="text" value={address} onChange={e => setAddress(e.currentTarget.value)}/>
+        </label>
+      </div>}
     {toWithdraw && toWithdraw.length > 0 && toWithdraw.filter(it => it.value !== '0').map(it => <div key={it.address} className={style.RegularVoteBoxStaked}>
       <p>{printedValue} - {it.value} {it.symbol} staked</p>
-      <ActionAWeb3Button type="ExtraSmall" onClick={() => withdrawProposal({account}, proposal, proposalId)}>Withdraw</ActionAWeb3Button>
+      <ActionAWeb3Button type="ExtraSmall" onClick={() => withdrawProposal({account}, proposal, proposalId, address, false)}>Withdraw</ActionAWeb3Button>
     </div>)}
    </>
   )

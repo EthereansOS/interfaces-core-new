@@ -10,6 +10,8 @@ import { formatLink, useEthosContext } from '@ethereansos/interfaces-core'
 
 import style from './governance-container.module.css'
 
+import { retrieveProposalModelMetadata } from '../../../logic/organization'
+
 var SingleProposal = ({element, proposal}) => {
   const [metadata, setMetadata] = useState(null)
   const [opened, setOpened] = useState(false)
@@ -18,8 +20,7 @@ var SingleProposal = ({element, proposal}) => {
 
   useEffect(() => {
     setMetadata(null)
-    var uri = formatLink({context}, proposal.uri)
-    fetch(uri).then(it => it.json()).then(setMetadata)
+    retrieveProposalModelMetadata({context}, proposal).then(setMetadata)
   }, [proposal])
 
   if(!metadata) {

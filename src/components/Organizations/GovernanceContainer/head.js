@@ -7,7 +7,7 @@ import LogoRenderer from '../../Global/LogoRenderer'
 export default ({element, proposal, metadata, onToggle}) => {
   var type = element.type
 
-  var [opened, setOpened] = useState(proposal.isPreset)
+  var [opened, setOpened] = useState(false)
 
   useEffect(() => onToggle && onToggle(opened), [opened])
 
