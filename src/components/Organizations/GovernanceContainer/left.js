@@ -4,19 +4,28 @@ import RegularButtonDuo from '../../Global/RegularButtonDuo/index.js'
 import Upshots from '../../Organizations/Upshots/index.js'
 import VotingPowersList from '../../Organizations/VotingPowersList/index.js'
 import GovernanceRules from '../../Organizations/GovernanceRules/index.js'
+import ActionAWeb3Button from '../../Global/ActionAWeb3Button'
+import TokenBuyOrSell from "./tokenBuyOrSell"
 
-export default ({element, proposal, metadata}) => {
+export default ({element, proposal, metadata, }) => {
+
+  const [create, setCreate] = useState(false)
+
   var proposalType = proposal.isPreset ? 'surveyless' : 'poll'
   var type = element.type
 
+  var buyOrSell = metadata.name === 'Investment Fund Routine Buy' ? true : metadata.name === 'Investment Fund Routine Sell' ? false : null
+
   return (
     <div className={style.GovLeft}>
-      {proposalType === 'surveyless' || proposalType  === 'poll' && <>
+      {buyOrSell !== null && <ActionAWeb3Button onClick={() => setCreate(true)}>Create</ActionAWeb3Button>}
+      {create && <TokenBuyOrSell {...{proposal, buyOrSell, close : () => setCreate(false)}}/>}
+      {proposalType === 'surveyless' || proposalType  === 'poll' &&
         <div className={style.Upshots}>
           <p>upshot</p>
           <Upshots/>
         </div>
-      </>}
+      }
 
       {type === 'delegation' && <>
         <div className={style.DelegationWrap}>

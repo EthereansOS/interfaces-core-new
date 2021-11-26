@@ -1,4 +1,4 @@
-import { abi, VOID_ETHEREUM_ADDRESS, uploadMetadata, formatLink, fromDecimals, getNetworkElement, blockchainCall, web3Utils, sendAsync, tryRetrieveMetadata, VOID_BYTES32 } from "@ethereansos/interfaces-core"
+import { abi, VOID_ETHEREUM_ADDRESS, uploadMetadata, formatLink, fromDecimals, getNetworkElement, blockchainCall, web3Utils, sendAsync, tryRetrieveMetadata, VOID_BYTES32, numberToString } from "@ethereansos/interfaces-core"
 
 import { encodeHeader } from "./itemsV2";
 
@@ -554,4 +554,46 @@ var wellKnownLinks = {
     'QmR3S8cPGb4Tm9dr7sVx5meUPMsptV6vBbCCP96e2cZeAL' : uint256EntryTypePercentage,
     'QmesA2MjYEjdsC2wFRSfqDmThDASftNZThwWMuhZ7vKQaV' : uint256EntryType,
     'QmVGor81bynT1GLQoWURiTSdPmPEDbe8eC5znNDHfTfkfT' : uint256EntryTypePercentage,
+}
+
+export async function proposeBuy({}, proposal, tokens) {
+
+    var addresses = []
+    try {
+        addresses = tokens.map(it => it && it.address).filter(it => it !== undefined && it !== null).filter((it, i, array) => array.indexOf(it) === i)
+    } catch(e) {
+    }
+
+    if(addresses.length !== 4 || addresses.filter(it => it === VOID_ETHEREUM_ADDRESS).length > 0) {
+        throw "You must choose 4 different ERC20 tokens"
+    }
+
+    var create = [{
+        codes : [{
+            location : abi.decode(["address"], abi.encode(["uint256"], [proposal.index]))[0],
+            bytecode : abi.encode(["address[]"], [addresses])
+        }],
+        alsoTerminate : false
+    }]
+
+    console.log(JSON.stringify(create))
+
+    await blockchainCall(proposal.proposalsManager.contract.methods.batchCreate, create)
+}
+
+export async function proposeSell({}, proposal, tokens, percentages) {
+    var addresses = []
+    try {
+        addresses = tokens.map(it => it && it.address).filter(it => it !== undefined && it !== null).filter((it, i, array) => array.indexOf(it) === i)
+    } catch(e) {
+    }
+
+    if(addresses.length !== 5 || addresses.filter(it => it === VOID_ETHEREUM_ADDRESS).length > 0) {
+        throw "You must choose 5 different ERC20 tokens"
+    }
+
+    var realPercentages = percentages.filter(it => it > 0 && it <= 5).map(it => numberToString(it * 1e16))
+    if(realPercentages.length !== 0) {
+        throw "Percentages must be 5 numbers greater than zero and less than or equal to 5%"
+    }
 }

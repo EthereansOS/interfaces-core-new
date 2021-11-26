@@ -16,7 +16,7 @@ const ActionAWeb3Button  = ({children, onClick, type}) => {
         var errorMessage;
         try {
             var elem = onClick()
-            elem = !elem.then ? elem : (await elem)
+            elem && (elem = !elem.then ? elem : (await elem))
         } catch(e) {
             errorMessage = e.message || e
         }

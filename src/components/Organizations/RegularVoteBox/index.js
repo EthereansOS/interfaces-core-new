@@ -1,27 +1,21 @@
 import React, { useState, useEffect } from 'react'
 
-import { useWeb3, VOID_BYTES32, VOID_ETHEREUM_ADDRESS, blockchainCall, fromDecimals } from '@ethereansos/interfaces-core'
+import { useWeb3, blockchainCall, fromDecimals } from '@ethereansos/interfaces-core'
 
 import TokenInputRegular from '../../Global/TokenInputRegular/index.js'
 import ActionAWeb3Buttons from '../../Global/ActionAWeb3Buttons/index.js'
-import ActionAWeb3Button from '../../Global/ActionAWeb3Button'
 
-import { vote, createPresetProposals, withdrawProposal } from '../../../logic/organization'
+import { vote } from '../../../logic/organization'
 import { generateItemKey } from '../../../logic/ballot'
 
 import style from './regular-vote-box.module.css'
-import ActionInfoSection from '../../Global/ActionInfoSection/index.js'
 
-const RegularVoteBox = ({element, proposal, proposalId, printedValue}) => {
+const RegularVoteBox = ({element, proposal, proposalId, address}) => {
   const { account, block } = useWeb3()
   const [tokenData, setTokenData] = useState(null)
 
   const [permitSignature, setPermitSignature] = useState(null)
 
-  const [address, setAddress] = useState(null)
-
-  const [accepts, setAccepts] = useState(null)
-  const [refuses, setRefuses] = useState(null)
   const [toWithdraw, setToWithdraw] = useState(null)
 
   useEffect(() => {
@@ -50,7 +44,6 @@ const RegularVoteBox = ({element, proposal, proposalId, printedValue}) => {
 
   return (
    <>
-   <ActionInfoSection hideAmmStuff onSettingsToggle={settings => setAddress(settings ? '' : null)}/>
     <div className={style.RegularVoteBoxQuantity}>
       <TokenInputRegular onElement={onTokenData} tokens={element?.proposalsConfiguration.votingTokens}/>
     </div>
@@ -64,17 +57,6 @@ const RegularVoteBox = ({element, proposal, proposalId, printedValue}) => {
         onPermitSignature={setPermitSignature}
         onClick={() => vote({account}, proposal, tokenData.token, tokenData.value, 0, proposalId, permitSignature, address)}/>}
     </div>
-    {address !== null &&
-      <div>
-        <label>
-          Address:
-          <input type="text" value={address} onChange={e => setAddress(e.currentTarget.value)}/>
-        </label>
-      </div>}
-    {toWithdraw && toWithdraw.length > 0 && toWithdraw.filter(it => it.value !== '0').map(it => <div key={it.address} className={style.RegularVoteBoxStaked}>
-      <p>{printedValue} - {it.value} {it.symbol} staked</p>
-      <ActionAWeb3Button type="ExtraSmall" onClick={() => withdrawProposal({account}, proposal, proposalId, address, false)}>Withdraw</ActionAWeb3Button>
-    </div>)}
    </>
   )
 }

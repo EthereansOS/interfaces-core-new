@@ -7,14 +7,13 @@ import VoteSelections from '../../Organizations/VoteSelections/index.js'
 import RegularVoteBox from '../../Organizations/RegularVoteBox/index.js'
 import RegularModal from '../../Global/RegularModal/index.js'
 
-
 export default ({element, proposalType, close}) => {
   return (
       <RegularModal close={close} type="medium">
           <div className={style.ProposeContents}>
             {proposalType === 'poll' ?  <>
               <h5>New Poll</h5>
-            </> : <> 
+            </> : <>
               <h5>New Proposal</h5>
             </>}
             {proposalType !== 'tokens' &&  <>
@@ -47,9 +46,9 @@ export default ({element, proposalType, close}) => {
                 <h6>Lenght</h6>
                 <select></select>
               </label>
-              
-              
-              {/*proposalType === 'poll' && */}  
+
+
+              {/*proposalType === 'poll' && */}
               <div className={style.ContextualPool}>
                 <h6>Context</h6>
                 <label>
@@ -88,6 +87,6 @@ export default ({element, proposalType, close}) => {
           </div>
         </RegularModal>
 
-      
+
   )
 }

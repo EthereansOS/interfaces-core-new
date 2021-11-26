@@ -7,7 +7,7 @@ import LogoRenderer from '../../Global/LogoRenderer'
 export default ({element, proposal, metadata, onToggle}) => {
   var type = element.type
 
-  var [opened, setOpened] = useState(false)
+  const [opened, setOpened] = useState(false)
 
   useEffect(() => onToggle && onToggle(opened), [opened])
 
@@ -32,11 +32,11 @@ export default ({element, proposal, metadata, onToggle}) => {
           <ExtLinkButton></ExtLinkButton>
         </div>
         <div className={style.GovCardHeadOrganizationInfo}>
-            <p><b>Type:</b><br></br> {proposal.isPreset ? "Surveyless" : type === 'organization' ? "Proposal" : "Poll"}</p>
-            <p><b>Active Selection:</b><br></br> 0.04%</p>
+            <p><b>Type:</b><br></br> {proposal.isPreset ? "Surveyless" : type === 'organization' ? "Survey" : "Poll"}</p>
+            {!proposal.isPreset && <p><b>Active Selection:</b><br></br> 0.04%</p>}
         </div>
         <div className={style.GovernanceCardInfoOpen}>
-          <RegularButtonDuo onClick={() => setOpened(!opened)}>{opened ? 'Close' : 'Open'}</RegularButtonDuo>
+            <RegularButtonDuo onClick={() => setOpened(!opened)}>{opened ? 'Close' : 'Open'}</RegularButtonDuo>
         </div>
       </div>
       </>}

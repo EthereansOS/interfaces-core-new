@@ -7,7 +7,7 @@ import ModalStandard from '../ModalStandard'
 import ObjectsLists from '../ObjectsLists'
 import LogoRenderer from '../LogoRenderer'
 
-const TokenInputRegular = ({onElement, tokens}) => {
+const TokenInputRegular = ({onElement, tokens, tokenOnly}) => {
 
     const { chainId, account } = useWeb3()
 
@@ -51,12 +51,12 @@ const TokenInputRegular = ({onElement, tokens}) => {
                     <LogoRenderer input={element}/>
                     <span>{element?.symbol || ''} ▼</span>
                 </a>
-                <div className={style.TradeMarketTokenAmount}>
+                {!tokenOnly && <div className={style.TradeMarketTokenAmount}>
                     <input type="number" placeholder="0.0" value={element && max ? fromDecimals(balance, element.decimals, true) : value} onChange={e => setValue(e.currentTarget.value)}/>
-                </div>
+                </div>}
             </div>
-            {element && balance === null && <CircularProgress/>}
-            {element && balance !== null && <a onClick={() => setMax(true)} className={style.TradeMarketTokenBalance}>
+            {!tokenOnly && element && balance === null && <CircularProgress/>}
+            {!tokenOnly && element && balance !== null && <a onClick={() => setMax(true)} className={style.TradeMarketTokenBalance}>
                 Balance: {fromDecimals(balance, element.decimals)} {element.symbol}
             </a>}
         </div>

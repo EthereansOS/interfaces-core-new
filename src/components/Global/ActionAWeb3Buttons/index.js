@@ -24,10 +24,17 @@ export default ({token, balance, value, other, buttonText, onClick, onPermitSign
         setApproved(null)
         setLoading(false)
         var appr = false
-        try {
-            var allowance = await blockchainCall(token.contract.methods.allowance, account, otherAddress)
-            appr = parseInt(balance) > 0 && parseInt(allowance) >= parseInt(balance)
-        } catch(e) {
+        if(!token.mainInterface || token.passedAsERC20) {
+            try {
+                var allowance = await blockchainCall(token.contract.methods.allowance, account, otherAddress)
+                appr = parseInt(balance) > 0 && parseInt(allowance) >= parseInt(balance)
+            } catch(e) {
+            }
+        } else {
+            try {
+                appr = await blockchainCall(token.mainInterface.methods.isApprovedForAll, account, otherAddress)
+            } catch(e) {
+            }
         }
         setApproved(appr)
     }
@@ -41,7 +48,7 @@ export default ({token, balance, value, other, buttonText, onClick, onPermitSign
         var errorMessage;
         try {
             var res = onClick(token, account, balance, value, other)
-            res.then && await res
+            res && res.then && await res
         } catch(e) {
             errorMessage = e.message || e
             console.error(e)
@@ -55,7 +62,11 @@ export default ({token, balance, value, other, buttonText, onClick, onPermitSign
         setApproved(null)
         var errorMessage;
         try {
-            await blockchainCall(token.contract.methods.approve, otherAddress, "0xffffffffffffffffffffff")
+            if(!token.mainInterface || token.passedAsERC20) {
+                await blockchainCall(token.contract.methods.approve, otherAddress, "0xffffffffffffffffffffff")
+            } else {
+                await blockchainCall(token.mainInterface.methods.setApprovalForAll, otherAddress, true)
+            }
         } catch(e) {
             errorMessage = e.message || e
             console.error(e)
@@ -76,10 +87,10 @@ export default ({token, balance, value, other, buttonText, onClick, onPermitSign
 
     return (
         <div className={style.ActionAWeb3Buttons}>
-            {!token?.mainInterface && approved !== null && <button disabled={parseInt(balance) === 0 || approved} className={style.ActionASide} onClick={performApprove}>Approve</button>}
-            {token?.mainInterface && token?.passedAsERC20 && approved !== null && <button disabled={parseInt(balance) === 0 || approved} className={style.ActionASide} onClick={performApprove}>Approve</button>}
+            {approved !== null && <button disabled={parseInt(balance) === 0 || approved} className={style.ActionASide} onClick={performApprove}>Approve</button>}
+            {token?.passedAsERC20 && approved !== null && <button disabled={parseInt(balance) === 0 || approved} className={style.ActionASide} onClick={performApprove}>Approve</button>}
             {(approved === null || loading) && <CircularProgress/>}
-            {!loading && <button disabled={parseInt(balance) === 0 || parseInt(value) === 0 || parseInt(value) > parseInt(balance) || (!approved && !token?.mainInterface)} onClick={performAction} className={style.ActionAMain}>{buttonText || 'Swap'}</button>}
+            {!loading && <button disabled={parseInt(balance) === 0 || parseInt(value) === 0 || parseInt(value) > parseInt(balance) || !approved} onClick={performAction} className={style.ActionAMain}>{buttonText || 'Swap'}</button>}
         </div>
     )
 }
