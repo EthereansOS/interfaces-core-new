@@ -94,12 +94,14 @@ const MultiVoteBox = ({element, proposal, metadata}) => {
                   decimals : 18,
                   isPercentage : true
                 }}/>)}
-              <ActionInfoSection hideAmmStuff onSettingsToggle={settings => setAddress(settings ? '' : null)}/>
+              <div className={style.Options}>
+                <ActionInfoSection hideAmmStuff onSettingsToggle={settings => setAddress(settings ? '' : null)}/>
+              </div>
               {value && <RegularVoteBox {...{element, proposal, metadata, proposalId}}/>}
               {address !== null &&
-                <div>
+                <div className={style.OptionOpen}>
                   <label>
-                    Address:
+                    <p>Owner:</p>
                     <input type="text" value={address} onChange={e => setAddress(e.currentTarget.value)}/>
                   </label>
                 </div>
