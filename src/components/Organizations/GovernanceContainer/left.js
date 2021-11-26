@@ -42,12 +42,12 @@ export default ({element, proposal, metadata, }) => {
 
       <div className={style.VotingPowersList}>
         <p><b>Voting Powers:</b></p>
-        <VotingPowersList/>
+        <VotingPowersList votingTokens={proposal.organization.proposalsConfiguration.votingTokens}/>
       </div>
       {proposalType !== 'poll' && <>
         <div className={style.Rules}>
           <p><b>Governance Rules:</b></p>
-          <GovernanceRules/>
+          <GovernanceRules proposal={proposal}/>
         </div>
       </>}
     </div>

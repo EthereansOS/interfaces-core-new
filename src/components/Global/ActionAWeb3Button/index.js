@@ -13,6 +13,7 @@ const ActionAWeb3Button  = ({children, onClick, type}) => {
         if(!onClick) {
             return
         }
+        setLoading(true)
         var errorMessage;
         try {
             var elem = onClick()

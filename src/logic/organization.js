@@ -2,7 +2,7 @@ import { abi, VOID_ETHEREUM_ADDRESS, uploadMetadata, formatLink, fromDecimals, g
 
 import { encodeHeader } from "./itemsV2";
 
-import { decodeProposal, decodeProposalVotingToken } from "./ballot";
+import { decodeProposal, decodeProposalVotingToken, generateItemKey } from "./ballot";
 
 export async function create({ context, ipfsHttpClient, newContract, chainId, factoryOfFactories }, metadata, organization) {
     var uri = await uploadMetadata({ context, ipfsHttpClient }, metadata)
@@ -127,14 +127,14 @@ export async function getOrganization({ context, web3, account, getGlobalContrac
         ...(await getOrganizationMetadata({ context }, organization)),
         components: await getOrganizationComponents({ newContract, context }, contract)
     }
-    organization.stateVars = await getStateVars({ context }, organization)
+    //organization.stateVars = await getStateVars({ context }, organization)
     organization.proposalModels = await getProposalModels({ context }, contract)
     organization.type = organization.proposalModels.length === 0 ? 'root' : 'organization'
     organization.proposalsConfiguration = await getProposalsConfiguration({ context, web3, account, getGlobalContract, newContract }, organization.components.proposalsManager)
 
     organization.organizations = await getAllOrganizations({ context, web3, account, getGlobalContract, newContract }, organization)
 
-    organization.proposals = await getProposals({ context, newContract }, organization)
+    //organization.proposals = await getProposals({ context, newContract }, organization)
 
     organization.allProposals = organization.proposals || []
     try {
@@ -144,24 +144,66 @@ export async function getOrganization({ context, web3, account, getGlobalContrac
     return organization
 }
 
+export async function retrieveAllProposals({ context, newContract }, organization) {
+    var organizations = await getProposals({ context, newContract }, organization)
+    await Promise.all((organization.organizations || []).map(async org => organizations.push(...(await getProposals({context, newContract}, org)))))
+    return organizations
+}
+
 export async function getOrganizationComponents({ newContract, context }, contract) {
 
-    var components = {}
-    components.treasuryManager = await retrieveComponent({ newContract, context }, contract, context.grimoire.COMPONENT_KEY_TREASURY_MANAGER, "TreasuryManager")
-    components.microservicesManager = await retrieveComponent({ newContract, context }, contract, context.grimoire.COMPONENT_KEY_MICROSERVICES_MANAGER, "MicroservicesManager")
-    components.proposalsManager = await retrieveComponent({ newContract, context }, contract, context.grimoire.COMPONENT_KEY_PROPOSALS_MANAGER, "ProposalsManager")
-    components.stateManager = await retrieveComponent({ newContract, context }, contract, context.grimoire.COMPONENT_KEY_STATE_MANAGER, "StateManager")
-    components.investmentsManager = await retrieveComponent({ newContract, context }, contract, context.grimoire.COMPONENT_KEY_INVESTMENTS_MANAGER, "InvestmentsManager")
-    components.treasurySplitterManager = await retrieveComponent({ newContract, context }, contract, context.grimoire.COMPONENT_KEY_TREASURY_SPLITTER_MANAGER, "TreasurySplitterManager")
-    components.delegationsManager = await retrieveComponent({ newContract, context }, contract, context.grimoire.COMPONENT_KEY_DELEGATIONS_MANAGER, "DelegationsManager")
-    components.subDAOsManager = await retrieveComponent({ newContract, context }, contract, context.grimoire.COMPONENT_KEY_SUBDAOS_MANAGER, "SubDAOsManager")
-    components.delegationsManager = await retrieveComponent({ newContract, context }, contract, context.grimoire.COMPONENT_KEY_DELEGATIONS_MANAGER, "DelegationsManager")
-    components.tokensManager = await retrieveComponent({ newContract, context }, contract, context.grimoire.COMPONENT_KEY_TOKENS_MANAGER, "TokensManager")
-    components.osFarming = await retrieveComponent({ newContract, context }, contract, context.grimoire.COMPONENT_KEY_OS_FARMING, "TokensManager")
-    components.dividendsFarming = await retrieveComponent({ newContract, context }, contract, context.grimoire.COMPONENT_KEY_DIVIDENDS_FARMING, "TokensManager")
-    components.tokenMinterAuth = await retrieveComponent({ newContract, context }, contract, context.grimoire.COMPONENT_KEY_TOKEN_MINTER_AUTH, "OSFixedInflationManager")
-    components.tokenMinter = await retrieveComponent({ newContract, context }, contract, context.grimoire.COMPONENT_KEY_TOKEN_MINTER, "OSMinter")
-    return components
+    var componentsKey = [
+        context.grimoire.COMPONENT_KEY_TREASURY_MANAGER,
+        context.grimoire.COMPONENT_KEY_MICROSERVICES_MANAGER,
+        context.grimoire.COMPONENT_KEY_PROPOSALS_MANAGER,
+        context.grimoire.COMPONENT_KEY_STATE_MANAGER,
+        context.grimoire.COMPONENT_KEY_INVESTMENTS_MANAGER,
+        context.grimoire.COMPONENT_KEY_TREASURY_SPLITTER_MANAGER,
+        context.grimoire.COMPONENT_KEY_DELEGATIONS_MANAGER,
+        context.grimoire.COMPONENT_KEY_SUBDAOS_MANAGER,
+        context.grimoire.COMPONENT_KEY_DELEGATIONS_MANAGER,
+        context.grimoire.COMPONENT_KEY_TOKENS_MANAGER,
+        context.grimoire.COMPONENT_KEY_OS_FARMING,
+        context.grimoire.COMPONENT_KEY_DIVIDENDS_FARMING,
+        context.grimoire.COMPONENT_KEY_TOKEN_MINTER_AUTH,
+        context.grimoire.COMPONENT_KEY_TOKEN_MINTER
+    ]
+
+    var componentNames = [
+        "TreasuryManager",
+        "MicroservicesManager",
+        "ProposalsManager",
+        "StateManager",
+        "InvestmentsManager",
+        "TreasurySplitterManager",
+        "DelegationsManager",
+        "SubDAOsManager",
+        "DelegationsManager",
+        "TokensManager",
+        "OSFarming",
+        "DividendsFarming",
+        "OSFixedInflationManager",
+        "OSMinter"
+    ]
+
+    var componentsAddress = await blockchainCall(contract.methods.list, componentsKey)
+
+    return componentsKey.reduce((acc, key, i) => {
+        var item
+        var addr = componentsAddress[i]
+        var componentName = componentNames[i]
+        if (addr != VOID_ETHEREUM_ADDRESS) {
+            item = {
+                address: addr,
+                key,
+                name: Object.values(context.componentNames).filter(it => it === key)[0] || ("unknown (" + key + ")"),
+                contract: newContract(context[componentName + "ABI"], addr)
+            }
+        }
+        var newObject = {...acc}
+        item && (newObject[(componentName[0].toLowerCase() + componentName.substring(1))] = item)
+        return newObject
+    }, {})
 }
 
 async function getProposalModels({ context }, contract) {
@@ -244,20 +286,6 @@ function toEntryType({ context }, key) {
     }
 }
 
-async function retrieveComponent({ newContract, context }, contract, key, componentName) {
-    try {
-        var addr = await blockchainCall(contract.methods.get, key)
-        if (addr != VOID_ETHEREUM_ADDRESS) {
-            return {
-                address: addr,
-                key,
-                name: Object.values(context.componentNames).filter(it => it === key)[0] || ("unknown (" + key + ")"),
-                contract: newContract(context[componentName + "ABI"], addr)
-            }
-        }
-    } catch (e) {}
-}
-
 export async function allProposals({ account, web3, context, newContract }, proposalsManager) {
 
     var topics = [
@@ -317,7 +345,7 @@ async function getAllOrganizations({ account, web3, context, newContract }, orga
     return []
 }
 
-async function getProposals({ context, newContract }, organization) {
+async function getProposals({}, organization) {
     var proposals = []
     try {
         if (organization.proposalModels && organization.proposalModels.length > 0) {
@@ -431,6 +459,48 @@ export async function surveylessIsTerminable({ account, newContract, context}, p
     }))
 
     return results.filter(it => !it).length === 0
+}
+
+export async function surveyIsTerminable({ account, newContract, context}, proposal, proposalId) {
+    var proposalData = (await blockchainCall(proposal.proposalsManager.contract.methods.list, [proposalId]))[0]
+
+    var values = [
+        proposalData.proposer,
+        proposalData.codeSequence,
+        proposalData.creationBlock,
+        proposalData.accept,
+        proposalData.refuse,
+        proposalData.triggeringRules,
+        proposalData.canTerminateAddresses,
+        proposalData.validatorsAddresses,
+        proposalData.validationPassed,
+        proposalData.terminationBlock,
+        proposalData.votingTokens
+    ]
+
+    var types = [
+        "address",
+        "address[]",
+        "uint256",
+        "uint256",
+        "uint256",
+        "address",
+        "address[]",
+        "address[]",
+        "bool",
+        "uint256",
+        "bytes"
+    ]
+
+    var data = abi.encode([`tuple(${types.join(',')})`], [values])
+
+    var results = await Promise.all(proposalData.canTerminateAddresses.map(async validator => {
+        var checker = newContract(context.IProposalCheckerABI, validator)
+        var result = await blockchainCall(checker.methods.check, proposal.proposalsManager.contract.options.address, proposalId, data, account, account, {from : proposal.proposalsManager.address})
+        return result
+    }))
+
+    return results.filter(it => it).length > 0
 }
 
 export async function retrieveProposalModelMetadata({context}, proposal) {
@@ -596,4 +666,63 @@ export async function proposeSell({}, proposal, tokens, percentages) {
     if(realPercentages.length !== 0) {
         throw "Percentages must be 5 numbers greater than zero and less than or equal to 5%"
     }
+}
+
+export async function retrieveSurveyByModel({}, proposal) {
+    var index = proposal.index
+
+    var args = {
+        address: proposal.organization.address,
+        fromBlock : '0x0',
+        toBlock : 'latest',
+        topics : [
+            web3Utils.sha3('Proposed(uint256,uint256,bytes32)'),
+            abi.encode(["uint256"], [index])
+        ]
+    }
+
+    var logs = await sendAsync(proposal.organization.contract.currentProvider, 'eth_getLogs', args)
+    var proposalIds = logs.map(it => it.topics[3])
+
+    var proposals = await blockchainCall(proposal.proposalsManager.contract.methods.list, proposalIds)
+
+    proposals = proposals.map((it, i) => ({...it, id : proposalIds[i], proposalsManager : proposal.organization.components.proposalsManager, proposalsConfiguration : proposal.organization.proposalsConfiguration}))
+
+    return proposals
+}
+
+export async function tokensToWithdraw({account}, proposal, proposalIds) {
+    var tk = proposal.proposalsConfiguration.votingTokens
+    var proposalIds = proposalIds instanceof Array ? proposalIds : [proposalIds]
+    var tokens = proposalIds.map(() => tk)
+    var itemKeys = proposalIds.map(proposalId => tk.map(it => generateItemKey(it, proposalId)))
+    var accounts = proposalIds.map(() => account)
+    var x = await blockchainCall(proposal.proposalsManager.contract.methods.votes, proposalIds, accounts, itemKeys)
+    var tw = []
+    x[0].forEach((it, i) => {
+        var values = x[2][i]
+        var accepts = x[0][i]
+        var refuses = x[1][i]
+        var id = proposalIds[i]
+        var prettifiedValue = "Staked"
+        var tokensArray = tokens[i]
+
+        for(var z in tokensArray) {
+            var token = tokensArray[z]
+            var value = fromDecimals(values[z], token.decimals, true)
+            if(value == 0) {
+                return
+            }
+            tw.push({
+                proposalId : id,
+                prettifiedValue,
+                accept : fromDecimals(accepts, token.decimals, true),
+                refuse : fromDecimals(refuses, token.decimals, true),
+                value,
+                address : token.address,
+                symbol : token.symbol
+            })
+        }
+    })
+    return tw
 }

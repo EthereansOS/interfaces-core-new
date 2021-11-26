@@ -80,7 +80,7 @@ export default ({buyOrSell, close, proposal}) => {
                 <TokenInputRegular tokenOnly onElement={token => setToken4(token)}/>
                 <input type="number" min="0.001" max="10" value={percentage4} onChange={e => setPercentage4(parseFloat(e.currentTarget.value))}/>
             </div>}
-            <ActionAWeb3Buttons value="1000" token={proposal.organization.proposalsConfiguration.votingTokens[0]} other={proposal.proposalsManager.address} buttonText="Propose" onClick={propose}/>
+            <ActionAWeb3Button onClick={propose}>Propose</ActionAWeb3Button>
         </RegularModal>
     )
 }

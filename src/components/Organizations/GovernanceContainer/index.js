@@ -6,13 +6,14 @@ import Right from './right'
 import NewProposal from './new-proposal'
 import { CircularProgress } from '@ethereansos/interfaces-ui'
 
-import { formatLink, useEthosContext } from '@ethereansos/interfaces-core'
+import { useWeb3, useEthosContext } from '@ethereansos/interfaces-core'
 
 import style from './governance-container.module.css'
 
-import { retrieveProposalModelMetadata } from '../../../logic/organization'
+import { retrieveAllProposals, retrieveProposalModelMetadata } from '../../../logic/organization'
+import Web3DependantList from '../../Global/Web3DependantList'
 
-var SingleProposal = ({element, proposal}) => {
+var SingleProposal = ({element}) => {
   const [metadata, setMetadata] = useState(null)
   const [opened, setOpened] = useState(false)
 
@@ -20,8 +21,8 @@ var SingleProposal = ({element, proposal}) => {
 
   useEffect(() => {
     setMetadata(null)
-    retrieveProposalModelMetadata({context}, proposal).then(setMetadata)
-  }, [proposal])
+    retrieveProposalModelMetadata({context}, element).then(setMetadata)
+  }, [element])
 
   if(!metadata) {
     return <><br/><br/><br/><CircularProgress/></>
@@ -29,17 +30,19 @@ var SingleProposal = ({element, proposal}) => {
 
   return (
     <div className={style.GovCard}>
-      <Head element={proposal.organization} proposal={proposal} metadata={metadata} onToggle={setOpened}/>
+      <Head element={element.organization} proposal={element} metadata={metadata} onToggle={setOpened}/>
         {opened && <div className={style.GovCardOpened}>
-          <Left element={proposal.organization} proposal={proposal} metadata={metadata}/>
-          <Right element={proposal.organization} proposal={proposal} metadata={metadata}/>
+          <Left element={element.organization} proposal={element} metadata={metadata}/>
+          <Right element={element.organization} proposal={element} metadata={metadata}/>
         </div>}
     </div>
   )
 }
 
 export default ({element}) => {
-  return element.allProposals.map(it => (
-    <SingleProposal key={it.proposalId} element={element} proposal={it}/>
-  ))
+
+  return <Web3DependantList
+    Renderer={SingleProposal}
+    provider={() => retrieveAllProposals({}, element)}
+  />
 }

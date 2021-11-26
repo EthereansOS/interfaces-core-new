@@ -1,21 +1,22 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
-import { Typography } from '@ethereansos/interfaces-ui'
+
+import { formatMoney } from '@ethereansos/interfaces-core'
 
 import style from './upshots.module.css'
 
+export default ({title, value, total}) => {
 
+  var percentage = parseInt(value) / parseInt(total)
+  percentage = percentage * 100
+  percentage = formatMoney(percentage, 4)
+  percentage += "%"
 
-const Upshots = (props) => {
   return (
-    
       <div className={style.Upshot}>
-        <span>selection 1</span>
+        <span>{title}</span>
         <div className={style.UpshotBar}>
-          <figure>99%</figure>
+          <figure>{percentage}</figure>
         </div>
       </div>
   )
 }
-
-export default Upshots

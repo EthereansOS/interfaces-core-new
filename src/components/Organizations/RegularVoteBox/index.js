@@ -10,7 +10,7 @@ import { generateItemKey } from '../../../logic/ballot'
 
 import style from './regular-vote-box.module.css'
 
-const RegularVoteBox = ({element, proposal, proposalId, address}) => {
+const RegularVoteBox = ({element, proposal, proposalId, address, forRefuse, refresh}) => {
   const { account, block } = useWeb3()
   const [tokenData, setTokenData] = useState(null)
 
@@ -42,6 +42,11 @@ const RegularVoteBox = ({element, proposal, proposalId, address}) => {
     setTokenData({token, balance, value})
   }
 
+  async function onClick() {
+    await vote({account}, proposal, tokenData.token, forRefuse ? 0 : tokenData.value, forRefuse ? tokenData.value : 0, proposalId, permitSignature, address)
+    refresh && refresh()
+  }
+
   return (
    <>
     <div className={style.RegularVoteBoxQuantity}>
@@ -55,7 +60,7 @@ const RegularVoteBox = ({element, proposal, proposalId, address}) => {
         value={tokenData.value}
         buttonText={"Vote"}
         onPermitSignature={setPermitSignature}
-        onClick={() => vote({account}, proposal, tokenData.token, tokenData.value, 0, proposalId, permitSignature, address)}/>}
+        onClick={onClick}/>}
     </div>
    </>
   )
