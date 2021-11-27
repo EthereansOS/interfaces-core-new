@@ -85,12 +85,12 @@
             "0xdac17f958d2ee523a2206206994597c13d831ec7",
             "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
         ],
-        "factoryOfFactoriesAddressRinkeby": "0xab8bFb6dB59beF857D27c4F5Eb7E1Ff2ED2De5a1",
+        "factoryOfFactoriesAddressRinkeby": "0xa9a6a78C970a17b4FABdEf163A62e81d26D1b69B",
         "factoryIndicesRinkeby": {
             "dfo": 0,
             "subdao": 1,
             "farming": 2,
-            "delegation": 3
+            "delegation": 4
         },
         "grimoire": {
             "COMPONENT_KEY_TREASURY_MANAGER": "0xcfe1633df53a0649d88d788961f26058c5e7a0b5644675f19f67bb2975827ba2",

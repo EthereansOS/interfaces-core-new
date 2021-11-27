@@ -11,20 +11,20 @@ export async function createDelegation({context, ipfsHttpClient, newContract, ch
 
     var deployOrganizationDataType = [
         "string",
-        "bytes",
         "bytes[]",
         "uint256[]",
+        "bytes[]",
         "bytes[]",
         "bytes"
     ]
 
     var deployOrganizationDataValue = [
         uri,
-        "0x",
         mandatoryComponentsDeployData,
         [],
         [],
-        VOID_ETHEREUM_ADDRESS
+        [],
+        "0x"
     ]
 
     var deployOrganizationData = abi.encode([`tuple(${deployOrganizationDataType.join(',')})`], [deployOrganizationDataValue])
