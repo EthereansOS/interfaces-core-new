@@ -9,7 +9,7 @@ import { useWeb3, VOID_BYTES32, VOID_ETHEREUM_ADDRESS, blockchainCall, fromDecim
 import { createPresetProposals, withdrawProposal } from '../../../logic/organization'
 import { generateItemKey } from '../../../logic/ballot'
 
-import style from './governance-container.module.css'
+import style from '../../../all.module.css'
 
 const MultiVoteBox = ({element, proposal, metadata}) => {
 

@@ -8,7 +8,7 @@ import ActionAWeb3Buttons from '../../Global/ActionAWeb3Buttons/index.js'
 import { vote } from '../../../logic/organization'
 import { generateItemKey } from '../../../logic/ballot'
 
-import style from './regular-vote-box.module.css'
+import style from '../../../all.module.css'
 
 const RegularVoteBox = ({element, proposal, proposalId, address, forRefuse, refresh}) => {
   const { account, block } = useWeb3()

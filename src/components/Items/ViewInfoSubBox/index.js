@@ -2,7 +2,8 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { Typography } from '@ethereansos/interfaces-ui'
 
-import style from './view-info-box.module.css'
+
+import style from '../../../all.module.css'
 
 const ViewInfoSubBox = (props) => {
   return (

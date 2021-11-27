@@ -2,7 +2,7 @@ import React from 'react'
 
 import LogoRenderer from '../../Global/LogoRenderer'
 
-import style from './org-headline.module.css'
+import style from '../../../all.module.css'
 import ExtLinkButton from '../../Global/ExtLinkButton/index.js'
 
 const OrgHeadline = ({element}) => {

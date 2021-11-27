@@ -3,7 +3,7 @@ import React from 'react'
 import SurveyLess from './survey-less'
 import Survey from './survey'
 
-import style from './governance-container.module.css'
+import style from '../../../all.module.css'
 
 export default ({element, proposal, metadata}) => {
 

@@ -2,7 +2,7 @@ import React from 'react'
 
 import LogoRenderer from '../../Global/LogoRenderer'
 
-import style from './view-cover.module.css'
+import style from '../../../all.module.css'
 
 const ViewCover = ({item}) => {
   return (

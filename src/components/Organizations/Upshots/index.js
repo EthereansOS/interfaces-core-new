@@ -2,7 +2,7 @@ import React from 'react'
 
 import { formatMoney } from '@ethereansos/interfaces-core'
 
-import style from './upshots.module.css'
+import style from '../../../all.module.css'
 
 export default ({title, value, total}) => {
 

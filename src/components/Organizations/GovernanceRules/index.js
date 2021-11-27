@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { CircularProgress } from '@ethereansos/interfaces-ui'
 import { useWeb3, fromDecimals, blockchainCall, useEthosContext, abi } from '@ethereansos/interfaces-core'
 
-import style from './governance-rules.module.css'
+import style from '../../../all.module.css'
 
 const GovernanceRules = ({proposal}) => {
 

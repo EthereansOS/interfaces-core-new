@@ -1,6 +1,0 @@
-.CardSelectionSingle {width: 45%; background-color: #ffffff; padding: 10px; text-align: center; display: inline-block; border-radius: 18px; margin: 10px 2.5%;}
-.CardSelectionSingle p, .SurveylessOpenCardSelectionSingleCurrent p {font-weight: bold; font-size: 17px; width: 100%; text-align: center; display: inline-block; margin: 5px auto; color: #000000;}
-.CardSelectionSingle:selected {border-color: green;}
-.CardSelectionSingleCurrent {width: 45%; background-color: #ffffff; padding: 10px; text-align: center; display: inline-block; border-radius: 18px; margin: 10px 2.5%;}
-.CardSelectionSingle span {width: 100%; display: inline-block; font-size: 11px;}
-.CardSelectionSingle input {margin: 10px auto;}

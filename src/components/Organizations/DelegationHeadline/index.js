@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { Typography } from '@ethereansos/interfaces-ui'
 
-import style from './delegation-headline.module.css'
+import style from '../../../all.module.css'
 import ExtLinkButton from '../../Global/ExtLinkButton/index.js'
 
 const DelegationHeadline = (props) => {

@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { Typography } from '@ethereansos/interfaces-ui'
 
-import style from './org-things-card-connected.module.css'
+import style from '../../../all.module.css'
 import RegularMiniButton from '../../Global/RegularMiniButton/index.js'
 
 const OrgThingsCardTokens = (props) => {

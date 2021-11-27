@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { Typography } from '@ethereansos/interfaces-ui'
 
-import style from './view-properties.module.css'
+import style from '../../../all.module.css'
 
 const ViewProperties = (props) => {
   return (

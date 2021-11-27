@@ -1,6 +1,6 @@
 import React from 'react'
 
-import style from './delegation-main-things-card.module.css'
+import style from '../../../all.module.css'
 
 const DelegationMainThingsCard = () => {
   return (

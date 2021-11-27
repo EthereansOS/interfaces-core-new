@@ -3,7 +3,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import LogoRenderer from '../../Global/LogoRenderer'
 
-import style from './explore-organizations.module.css'
+import style from '../../../all.module.css'
 
 const ExploreOrganizations = ({elements}) => {
   return (

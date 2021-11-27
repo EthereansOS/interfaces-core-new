@@ -6,7 +6,7 @@ import RegularModal from '../../Global/RegularModal'
 
 import { proposeBuy, proposeSell } from "../../../logic/organization"
 import ActionAWeb3Buttons from '../../Global/ActionAWeb3Buttons'
-import style from './governance-container.module.css'
+import style from '../../../all.module.css'
 
 export default ({buyOrSell, close, proposal}) => {
 

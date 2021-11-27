@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 import CategoryObject from '../../Global/ObjectsLists/category-object'
 import LogoRenderer from '../../Global/LogoRenderer'
 
-import style from './explore-collections.module.css'
+import style from '../../../all.module.css'
 
 const ExploreCollections = ({element}) => (
   <Link to={"/items/dapp/collections/" + element.id}>

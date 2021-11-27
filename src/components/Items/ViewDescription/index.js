@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { Typography } from '@ethereansos/interfaces-ui'
 
-import style from './view-description.module.css'
+import style from '../../../all.module.css'
 
 const ViewDescription = ({item}) => {
   return (

@@ -1,7 +1,7 @@
 import React from 'react'
 import { useWeb3, getNetworkElement, useEthosContext } from '@ethereansos/interfaces-core'
 
-import style from './view-basics.module.css'
+import style from '../../../all.module.css'
 import ExtLinkButton from '../../Global/ExtLinkButton/index.js'
 
 const ViewBasics = ({item}) => {

@@ -1,7 +1,0 @@
-.RoutineOperation {width: 100%; padding: 10px; text-align: left; border: 2px solid rgb(132, 155, 189); border-radius: 20px; position: relative; margin: 30px auto;}
-.RoutineOperationT {width: 100%; text-align: left;}
-.RoutineOperationTB { display: inline-block; text-align: left; width: 100%;vertical-align: middle; padding:10px  30px;}
-.RoutineOperationSchedule {width: 100%; padding:10px  30px; text-align: left; display: block;}
-.RoutineOperationSchedule p {font-size: 18px; display: inline-block; width: 100%; text-align: left;}
-.RoutineOperationSchedule p b {font-weight: bold;}
-.RoutineOperationSchedule p img {width: 30px; height: 30px; vertical-align: middle; margin: 0 5px;}

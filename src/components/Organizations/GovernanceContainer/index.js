@@ -8,7 +8,7 @@ import { CircularProgress } from '@ethereansos/interfaces-ui'
 
 import { useWeb3, useEthosContext } from '@ethereansos/interfaces-core'
 
-import style from './governance-container.module.css'
+import style from '../../../all.module.css'
 
 import { retrieveAllProposals, retrieveProposalModelMetadata } from '../../../logic/organization'
 import Web3DependantList from '../../Global/Web3DependantList'

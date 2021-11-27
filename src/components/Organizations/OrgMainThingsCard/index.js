@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { Typography } from '@ethereansos/interfaces-ui'
 
-import style from './org-main-things-card.module.css'
+import style from '../../../all.module.css'
 import ExtLinkButton from '../../Global/ExtLinkButton/index.js'
 import RegularButtonDuo from '../../Global/RegularButtonDuo/index.js'
 import Upshots from '../../Organizations/Upshots/index.js'

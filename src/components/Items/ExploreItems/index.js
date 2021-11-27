@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { fromDecimals } from '@ethereansos/interfaces-core'
-import style from './explore-items.module.css'
+import style from '../../../all.module.css'
 import ItemObject from '../../Global/ObjectsLists/item-object'
 import LogoRenderer from '../../Global/LogoRenderer'
 

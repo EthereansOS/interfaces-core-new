@@ -2,7 +2,7 @@ import React from 'react'
 
 import LogoRenderer from '../../Global/LogoRenderer'
 
-import style from './voting-powers-list.module.css'
+import style from '../../../all.module.css'
 
 const VotingPowersList = ({votingTokens}) => {
   return votingTokens.map(it =>

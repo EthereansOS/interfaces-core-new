@@ -5,7 +5,7 @@ import { CircularProgress } from '@ethereansos/interfaces-ui'
 
 import { surveylessIsTerminable, terminateProposal } from '../../../logic/organization'
 
-import style from './vote-selections.module.css'
+import style from '../../../all.module.css'
 import ActionAWeb3Button from '../../Global/ActionAWeb3Button'
 
 const VoteSelections = ({proposal, discriminator, value, metadata, checked, onSelect}) => {

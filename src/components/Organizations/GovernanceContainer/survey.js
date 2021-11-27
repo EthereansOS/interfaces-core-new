@@ -5,7 +5,7 @@ import { CircularProgress } from '@ethereansos/interfaces-ui'
 
 import { retrieveSurveyByModel } from '../../../logic/organization.js'
 
-import style from './governance-container.module.css'
+import style from '../../../all.module.css'
 
 export default ({proposal, metadata}) => {
 

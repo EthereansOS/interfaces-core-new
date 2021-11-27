@@ -1,6 +1,6 @@
 import React from 'react'
 
-import style from './explore-delegations.module.css'
+import style from '../../../all.module.css'
 import LogoRenderer from '../../Global/LogoRenderer'
 
 const ExploreDelegations = ({element}) => {

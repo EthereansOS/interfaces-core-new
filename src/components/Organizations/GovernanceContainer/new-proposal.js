@@ -1,5 +1,5 @@
 import React from 'react'
-import style from './governance-container.module.css'
+import style from '../../../all.module.css'
 import RegularButtonDuo from '../../Global/RegularButtonDuo/index.js'
 import ExtLinkButton from '../../Global/ExtLinkButton/index.js'
 import Upshots from '../../Organizations/Upshots/index.js'

@@ -11,7 +11,7 @@ import { useWeb3, useEthosContext, blockchainCall, fromDecimals } from '@etherea
 
 import { surveyIsTerminable, terminateProposal, withdrawProposal, tokensToWithdraw } from '../../../logic/organization.js'
 
-import style from './governance-container.module.css'
+import style from '../../../all.module.css'
 
 export default ({element, proposal, metadata, checkAll}) => {
 
