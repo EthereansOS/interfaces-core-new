@@ -8,7 +8,7 @@ const ExploreDelegations = ({element}) => {
     <div className={style.OrgAllSingle}>
      <div className={style.OrgSingle}>
         <LogoRenderer input={element} />
-        <div className={style.OrgTitle}>
+        <div className={style.OrgTitleEx}>
           <h6>{element.name}</h6>
           <div className={style.OrgTitleAside}>
             <p>Functions:</p>

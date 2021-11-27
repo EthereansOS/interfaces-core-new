@@ -6,7 +6,7 @@ import style from '../../../all.module.css'
 
 const ViewDescription = ({item}) => {
   return (
-    <div className={style.ViewDescription}>
+    <div className={style.ViewDescriptionL}>
       <p ref={ref => ref && (ref.innerHTML = item.description || "No description available")}></p>
     </div>
   )
