@@ -69,6 +69,9 @@ const Deploy = ({back, finalize}) => {
 
   return (
     <div className={style.CreationPageLabel}>
+      <div className={style.stepTitle}>
+        <h6>Step 1/2 - Bio</h6>
+      </div>
       <label className={style.CreationPageLabelF}>
         <h6>Name</h6> 
         <input type="text" value={name} onChange={e => setName(e.currentTarget.value)}/>
@@ -104,8 +107,8 @@ const Deploy = ({back, finalize}) => {
       </label>
       <div className={style.ActionDeploy}>
         {loading && <CircularProgress/>}
-        {!loading && <a className={style.Web3CustomBTN} onClick={back}>Back</a>}
-        {!loading && <a onClick={deploy}>Deploy</a>}
+        {!loading && <a className={style.Web3BackBTN} onClick={back}>Back</a>}
+        {!loading && <a className={style.Web3CustomBTN} onClick={deploy}>Deploy</a>}
       </div>
     </div>
   )
@@ -145,16 +148,45 @@ const Finalize = ({back, success, cumulativeData}) => {
   }
 
   return (
-    <div>
-      Delegation address: <input type="text" value={delegationAddress} onChange={e => setDelegationAddress(e.currentTarget.value)}/>
-      Host: <input type="text" value={host} onChange={e => setHost(e.currentTarget.value)}/>
-      Quorum percentage: <input type="number" min="0" max="100" value={quorumPercentage} onChange={e => setQuorumPercentage(e.currentTarget.value)}/>
-      HarcCap percentage: <input type="number" min="0" max="100" value={hardCapPercentage} onChange={e => setHardcapPercentage(e.currentTarget.value)}/>
-      Block Length: <input type="number" value={blockLength} onChange={e => setBlockLength(e.currentTarget.value)}/>
-      Validation Bomb: <input type="number" value={validationBomb} onChange={e => setValidationBomb(e.currentTarget.value)}/>
-      {loading && <CircularProgress/>}
-      {!loading && <a onClick={back}>Back</a>}
-      {!loading && <a onClick={finalize}>Finalize</a>}
+    <div className={style.CreationPageLabel}>
+      <div className={style.stepTitle}>
+        <h6>Step 2/2 - Governance Rules</h6>
+      </div>
+      <label className={style.CreationPageLabelF}>
+        <h6>Delegation address</h6> 
+        <input type="text" value={delegationAddress} onChange={e => setDelegationAddress(e.currentTarget.value)}/>
+        <p>Select a symbol for your Delegation. This will effect the name and symbol that your sustenitor will receive by wrapping their tokens</p>
+      </label>
+      <label className={style.CreationPageLabelF}>
+        <h6>Host</h6> 
+        <input type="text" value={host} onChange={e => setHost(e.currentTarget.value)}/>
+        <p>Select a symbol for your Delegation. This will effect the name and symbol that your sustenitor will receive by wrapping their tokens</p>
+      </label>
+      <label className={style.CreationPageLabelF}>
+        <h6>Survey Duration</h6> 
+        <input type="number" value={blockLength} onChange={e => setBlockLength(e.currentTarget.value)}/>
+        <p>Select a symbol for your Delegation. This will effect the name and symbol that your sustenitor will receive by wrapping their tokens</p>
+      </label>
+      <label className={style.CreationPageLabelF}>
+        <h6>Validation Bomb</h6> 
+        <input type="number" value={validationBomb} onChange={e => setValidationBomb(e.currentTarget.value)}/>
+        <p>Select a symbol for your Delegation. This will effect the name and symbol that your sustenitor will receive by wrapping their tokens</p>
+      </label>
+      <label className={style.CreationPageLabelF}>
+        <h6>Quorum</h6> 
+        <input className={style.perchentageThing} type="number" min="0" max="100" value={quorumPercentage} onChange={e => setQuorumPercentage(e.currentTarget.value)}/>
+        <p>Select a symbol for your Delegation. This will effect the name and symbol that your sustenitor will receive by wrapping their tokens</p>
+      </label>
+      <label className={style.CreationPageLabelF}>
+        <h6>Hard Cap</h6> 
+        <input className={style.perchentageThing} type="number" min="0" max="100" value={hardCapPercentage} onChange={e => setHardcapPercentage(e.currentTarget.value)}/>
+        <p>Select a symbol for your Delegation. This will effect the name and symbol that your sustenitor will receive by wrapping their tokens</p>
+      </label>
+      <div className={style.ActionDeploy}>
+        {loading && <CircularProgress/>}
+        {!loading && <a className={style.Web3BackBTN} onClick={back}>Back</a>}
+        {!loading && <a className={style.Web3CustomBTN} onClick={finalize}>Finalize</a>}
+      </div>
     </div>
   )
 }

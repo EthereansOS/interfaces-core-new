@@ -26,7 +26,12 @@
 .CreationPageLabelF input[type="color"] {width: 90px; height: 40px;}
 .CreationPageLabelF textarea {width: 350px; display: inline-block; background-color: #fff; border: none; text-align: left; padding: 10px; font-size: 12px; border-radius: 12px; margin: 10px auto; min-height: 100px;}
 .CreationPageLabelF p {width: 100%; display: inline-block; text-align: center; font-size: 12px; line-height: 1.3;}
-.Web3CustomBTN {}
+.ActionDeploy {width: 100%; display: inline-block; margin: 20px auto;}
+.Web3CustomBTN {width: 200px; margin: 0 auto; padding: 5px 12px; text-align: center; font-size: 13px; border-radius: 15px; border: none !important; cursor: pointer;background-color: #7474f7; color: #ffffff; font-weight: bold; margin: 5px;}
+.Web3BackBTN {width: 200px; margin: 0 auto; padding: 5px 12px; text-align: center; font-size: 13px; border-radius: 15px; border: none !important; cursor: pointer;background-color: #7474f7; color: #ffffff; font-weight: bold;font-weight: normal !important; background-color: #e4e4e4 !important; color: #6e6e6e !important; margin: 5px;}
+.stepTitle {width: 100%; display: inline-block; margin: 20px auto;}
+.stepTitle h6 {font-size: 22px;}
+
 
 .title {
   margin-bottom: calc(var(--unit) * 3) 0;
