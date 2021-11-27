@@ -1,4 +1,6 @@
-import { abi, VOID_ETHEREUM_ADDRESS, uploadMetadata, getNetworkElement, blockchainCall, web3Utils, sendAsync, tryRetrieveMetadata } from "@ethereansos/interfaces-core"
+import { abi, VOID_ETHEREUM_ADDRESS, uploadMetadata, getNetworkElement, blockchainCall, web3Utils, sendAsync, tryRetrieveMetadata, toDecimals } from "@ethereansos/interfaces-core"
+
+import { getOrganizationComponents, retrieveAllProposals, getOrganization } from "./organization"
 
 export async function createDelegation({context, ipfsHttpClient, newContract, chainId, factoryOfFactories}, metadata) {
     var uri = await uploadMetadata({context, ipfsHttpClient}, metadata)
@@ -56,13 +58,16 @@ export async function finalizeDelegation({context, chainId, newContract, factory
     var factoryAddress = factoryData.factoryList[factoryData.factoryList.length - 1]
     var factory = newContract(context.DelegationFactoryABI, factoryAddress)
 
+    var quorumPercentage = toDecimals(quorum, 16)
+    var hardCapPercentage = toDecimals(hardCap, 16)
+
     await blockchainCall(factory.methods.initializeProposalModels,
         delegationAddress,
         host,
-        quorum,
+        quorumPercentage,
         validationBomb,
         blockLength,
-        hardCap
+        hardCapPercentage
     )
 }
 
@@ -82,7 +87,18 @@ export async function all({context, newContract, chainId, factoryOfFactories}, m
 
     var delegations = logs.map(it => newContract(context.IFactoryABI, abi.decode(["address"], it.topics[2])[0]))
 
+    console.log({delegations})
+
     delegations = await Promise.all(delegations.map(contract => (tryRetrieveMetadata({context}, {contract, address : contract.options.address, type: 'delegations'}))))
 
     return delegations
+}
+
+export async function getDelegation({context, web3, account, getGlobalContract, newContract}, delegationAddress) {
+
+    var delegation = await getOrganization({context, web3, account, getGlobalContract, newContract}, delegationAddress)
+
+    
+
+    return delegation
 }

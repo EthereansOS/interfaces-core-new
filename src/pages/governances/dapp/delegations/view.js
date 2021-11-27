@@ -1,28 +1,43 @@
-import React from 'react'
-import {Typography} from '@ethereansos/interfaces-ui'
+import React, { useEffect, useState } from 'react'
+
+import DelegationHeadline from '../../../../components/Organizations/DelegationHeadline'
+import { CircularProgress } from '@ethereansos/interfaces-ui'
+import GovernanceContainer from '../../../../components/Organizations/GovernanceContainer'
+
+import { useLocation } from 'react-router'
+
+import { getDelegation } from '../../../../logic/delegation'
+
+import { useWeb3, useEthosContext } from '@ethereansos/interfaces-core'
 
 import style from '../organizations-main-sections.module.css'
-import OrgHeadline from '../../../../components/Organizations/OrgHeadline'
-import DelegationHeadline from '../../../../components/Organizations/DelegationHeadline'
-import DelegationsMainSectionView from '../SubSections/delegations-main-section-view.js'
-import GovernanceSectionView from '../SubSections/governance-section-view.js'
-import DappSubMenu from '../../../../components/Global/DappSubMenu/index.js'
-import GovernanceContainer from '../../../../components/Organizations/GovernanceContainer'
 
 
 const DelegationView = (props) => {
-  const type = 'delegation'
-  const proposalType = 'gigi'
+
+  const [element, setElement] = useState(null)
+
+  const { pathname } = useLocation()
+  const { newContract } = useWeb3()
+
+  const context = useEthosContext()
+
+  useEffect(() => {
+    setElement(null)
+    var delegationAddress = pathname.split('/')
+    delegationAddress = delegationAddress[delegationAddress.length - 1]
+    getDelegation({ context, newContract }, delegationAddress).then(setElement)
+  }, [pathname])
+
+  if(!element) {
+    return <CircularProgress/>
+  }
+
   return (
     <>
       <div className={style.SingleContentPage}>
-        <DelegationHeadline></DelegationHeadline>
-        {<GovernanceContainer
-          headProperties={{type, proposalType}}
-          leftProperties={{type, proposalType}}
-          rightProperties={{type, proposalType}}
-        />}
-
+        <DelegationHeadline element={element}/>
+        {<GovernanceContainer element={element}/>}
       </div>
     </>
   )

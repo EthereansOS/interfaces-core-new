@@ -1,19 +1,17 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
-import { Typography } from '@ethereansos/interfaces-ui'
+
+import LogoRenderer from '../../Global/LogoRenderer'
 
 import style from '../../../all.module.css'
 import ExtLinkButton from '../../Global/ExtLinkButton/index.js'
 
-const DelegationHeadline = (props) => {
+const DelegationHeadline = ({element}) => {
   return (
     <div className={style.DelegationHeadlineCardUP}>
       <div className={style.DelegationHeadlineCard}>
-          <figure>
-            <img src={`${process.env.PUBLIC_URL}/img/test.jpg`}></img>
-          </figure>
+          <LogoRenderer input={element}/>
           <div className={style.OrgTitle}>
-            <h6>BojackSwap DAO</h6>
+            <h6>{element.name}</h6>
             <ExtLinkButton></ExtLinkButton>
             <ExtLinkButton></ExtLinkButton>
             <ExtLinkButton></ExtLinkButton>

@@ -179,7 +179,7 @@ export async function getOrganizationComponents({ newContract, context }, contra
         "DelegationsManager",
         "SubDAOsManager",
         "DelegationsManager",
-        "TokensManager",
+        "DelegationTokensManager",
         "OSFarming",
         "DividendsFarming",
         "OSFixedInflationManager",
@@ -193,6 +193,7 @@ export async function getOrganizationComponents({ newContract, context }, contra
         var addr = componentsAddress[i]
         var componentName = componentNames[i]
         if (addr != VOID_ETHEREUM_ADDRESS) {
+            console.log(componentName)
             item = {
                 address: addr,
                 key,
@@ -505,7 +506,12 @@ export async function surveyIsTerminable({ account, newContract, context}, propo
 
 export async function retrieveProposalModelMetadata({context}, proposal) {
 
-    var metadata = await (await fetch(proposal.formattedLink = formatLink({context}, proposal.uri))).json()
+    var metadata;
+
+    try {
+        metadata = await (await fetch(proposal.formattedLink = formatLink({context}, proposal.uri))).json()
+    } catch(e) {
+    }
 
     try {
         metadata = instrumentMetadata(metadata, proposal.uri.split('ipfs://ipfs/').join('').split('ipfs://').join(''))
