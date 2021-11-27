@@ -10,11 +10,12 @@ import DappBannerExpl from './../../../components/Global/DappBannerExpl/index.js
 
 const CovenantsMain = () => {
   return (
-    <div className={style.Web3PagesRoot}>
-         {/*} <DappBannerExpl></DappBannerExpl>*/}
-          <DoubleDappMenu></DoubleDappMenu>
-          <FarmMain/>
-    </div>
+    <>
+      <div className={style.ComingSoon}>
+        <img src={`${process.env.PUBLIC_URL}/img/cov.png`}></img>
+        <h6>Covenants will be implemented soon! In the meantime, you can use it via the <a target="_blank" href="https://covenants.eth.link">Covenants Interface</a></h6>
+      </div>
+    </>
   )
 }
 
