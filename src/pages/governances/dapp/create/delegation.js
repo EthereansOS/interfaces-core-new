@@ -34,8 +34,13 @@ const Deploy = ({back, finalize}) => {
 
   const [name, setName] = useState("")
   const [description, setDescription] = useState("")
-  const [tick, setTick] = useState("")
+  const [symbol, setSymbol] = useState("")
   const [logo, setLogo] = useState("")
+  const [background_color, setBackground_color] = useState("")
+  const [external_url, setExternal_url] = useState("")
+  const [discussion_url, setDiscussion_url] = useState("")
+
+
 
   const [loading, setLoading] = useState(false)
 
@@ -48,8 +53,12 @@ const Deploy = ({back, finalize}) => {
         }, {
           name,
           description,
-          tick,
-          logo
+          symbol,
+          logo,
+          background_color,
+          external_url,
+          discussion_url
+
         }))
     } catch(e) {
       errorMessage = e.message || e
@@ -59,18 +68,45 @@ const Deploy = ({back, finalize}) => {
   }
 
   return (
-    <div>
-      <br/>
-      Name: <input type="text" value={name} onChange={e => setName(e.currentTarget.value)}/>
-      <br/>
-      Description: <input type="text" value={description} onChange={e => setDescription(e.currentTarget.value)}/>
-      <br/>
-      Tick: <input type="text" value={tick} onChange={e => setTick(e.currentTarget.value)}/>
-      <br/>
-      Logo: <input type="text" value={logo} onChange={e => setLogo(e.currentTarget.value)}/>
-      {loading && <CircularProgress/>}
-      {!loading && <a onClick={back}>Back</a>}
-      {!loading && <a onClick={deploy}>Deploy</a>}
+    <div className={style.CreationPageLabel}>
+      <label className={style.CreationPageLabelF}>
+        <h6>Name</h6> 
+        <input type="text" value={name} onChange={e => setName(e.currentTarget.value)}/>
+      </label>
+      <label className={style.CreationPageLabelF}>
+        <h6>Description</h6> 
+        <textarea value={description} onChange={e => setDescription(e.currentTarget.value)}/>
+      </label>
+      <label className={style.CreationPageLabelF}>
+        <h6>Website</h6> 
+        <input type="link" value={external_url} onChange={e => setExternal_url(e.currentTarget.value)}/>
+        <p>The official website</p>
+      </label>
+      <label className={style.CreationPageLabelF}>
+        <h6>Discussion link</h6> 
+        <input type="link" value={external_url} onChange={e => setDiscussion_url(e.currentTarget.value)}/>
+        <p>A link where delegation discussions happens</p>
+      </label>
+      <label className={style.CreationPageLabelF}>
+        <h6>Symbol</h6> 
+        <input type="text" value={symbol} onChange={e => setSymbol(e.currentTarget.value)}/>
+        <p>Select a symbol for your Delegation. This will effect the name and symbol that your sustenitor will receive by wrapping their tokens</p>
+      </label>
+      <label className={style.CreationPageLabelF}>
+        <h6>Logo link</h6> 
+        <input placeholder="ipfs//..." type="link" value={logo} onChange={e => setLogo(e.currentTarget.value)}/>
+        <p>Input a valid IPFS link for the logo of your Delegation. Please upload a square picture (.png, .jpg) to perfectly match the delegation logo with the EthereansOS interface style.</p>
+      </label>
+      <label className={style.CreationPageLabelF}>
+        <h6>Logo Background</h6> 
+        <input type="color" value="#ffffff" onChange={e => setBackground_color(e.currentTarget.value)}/>
+        <p>The background color of your logo. This is used to fill the space if the logo don't match standard boxes in every interface.</p>
+      </label>
+      <div className={style.ActionDeploy}>
+        {loading && <CircularProgress/>}
+        {!loading && <a className={style.Web3CustomBTN} onClick={back}>Back</a>}
+        {!loading && <a onClick={deploy}>Deploy</a>}
+      </div>
     </div>
   )
 }

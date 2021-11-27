@@ -11,7 +11,7 @@
 .CollectionLeft {width: 300px; display: inline-block; text-align: center;  vertical-align: top;}
 .CollectionRight {width: 660px;display: inline-block; text-align: center;  margin-left: 30px;vertical-align: top;}
 .CreatePage {width: 800px; padding: 50px; background-color: #ffffff; margin: 50px auto; border-radius: 20px; display: block;}
-.CreateBoxDesc {width: 330px;display: inline-block;margin: 10px 10px;padding: 30px;background-color: #f7fafe;border: 1px solid #e0e2e6;border-radius: 12px;}
+.CreateBoxDesc {width: 330px;display: inline-block;margin: 10px 10px;padding: 30px;background-color: #e9effc;border: 1px solid #e0e2e6;border-radius: 12px;}
 .CreateBoxDesc h6 {font-size: 16px;font-weight: 700;}
 .CreateBoxDesc p {font-size: 13px;}
 .CreateBoxDesc p {width: 250px; margin: 5px auto; line-height: 1.3;}
@@ -19,6 +19,14 @@
 .NextStep {width: auto; margin: 5px; padding: 5px 12px; text-align: center; font-size: 11px; border-radius: 5px; border: none !important; cursor: pointer;background-color: #849bbd;color: #fff; box-shadow: none;  margin: 0 auto;}
 .AdvancedLinks {width: 100%; display: inline-block; margin: 50px auto 0px auto; text-align: center;}
 .AdvancedLinks a {font-size: 11px; color: #535353; text-decoration: underline;}
+.CreationPageLabel {width: 100%; display: inline-block; padding: 10px 50px}
+.CreationPageLabelF {width: 100%; display: inline-block; background-color: #e9effc;border: 1px solid #e0e2e6;border-radius: 12px; padding: 20px 50px; margin: 15px auto;}
+.CreationPageLabelF h6 {width: 100%; display: inline-block; text-align: center; font-size: 16px;}
+.CreationPageLabelF input {width: 350px; display: inline-block; background-color: #fff; border: none; text-align: left; padding: 10px; font-size: 14px; border-radius: 12px; margin: 10px auto;}
+.CreationPageLabelF input[type="color"] {width: 90px; height: 40px;}
+.CreationPageLabelF textarea {width: 350px; display: inline-block; background-color: #fff; border: none; text-align: left; padding: 10px; font-size: 12px; border-radius: 12px; margin: 10px auto; min-height: 100px;}
+.CreationPageLabelF p {width: 100%; display: inline-block; text-align: center; font-size: 12px; line-height: 1.3;}
+.Web3CustomBTN {}
 
 .title {
   margin-bottom: calc(var(--unit) * 3) 0;
