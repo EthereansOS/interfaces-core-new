@@ -1,15 +1,28 @@
 import React, {useState} from 'react'
 
-import { useEthosContext, useWeb3 } from '@ethereansos/interfaces-core'
+import { Style, useEthosContext, useWeb3 } from '@ethereansos/interfaces-core'
 import {createDelegation, finalizeDelegation} from '../../../../logic/delegation'
 import { CircularProgress } from '@ethereansos/interfaces-ui'
+import style from './../organizations-main-sections.module.css'
 
 const Init = ({onSelection}) => {
   return (
     <div>
-      <h4>Choose</h4>
-      <a onClick={() => onSelection("deploy")}>Create New</a>
-      <a onClick={() => onSelection("finalize")}>Finalize previously created one</a>
+      <div className={style.CreateBoxDesc}>
+        <h6>Organization</h6>
+        <p>Start a  are fully on-chain governance system with composable granular permissions levels.</p>
+        <b className={style.ExtLinkButtonAlpha}>Coming Soon</b>
+        <a target="_blank" href="https://docs.ethos.wiki/ethereansos-docs/organizations/organizations" className={style.ExtLinkButtonAlpha}>Learn</a>
+      </div>
+      <div className={style.CreateBoxDesc}>
+        <h6>Delegation</h6>
+        <p>Start a delegation, to manage grants and become an active party in the journey of one or more organizations.</p>
+        <a className={style.NextStep}  onClick={() => onSelection("deploy")}>Start</a>
+        <a target="_blank" className={style.ExtLinkButtonAlpha} href="https://docs.ethos.wiki/ethereansos-docs/organizations/delegations">Learn</a>
+      </div>
+      <div className={style.AdvancedLinks}>
+        <a onClick={() => onSelection("finalize")}>Finalize</a>
+      </div>
     </div>
   )
 }
@@ -144,8 +157,7 @@ const DelegationsCreate = ({}) => {
   }
 
   return (
-    <div>
-      <h2>Create Delegation</h2>
+    <div className={style.CreatePage}>
       {steps[cumulativeData.step]()}
     </div>
   )
