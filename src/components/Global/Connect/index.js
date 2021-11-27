@@ -2,6 +2,8 @@ import { useState, Fragment } from 'react'
 import { Button, CircularProgress, Typography } from '@ethereansos/interfaces-ui'
 import { useWeb3, web3States } from '@ethereansos/interfaces-core'
 
+import style from '../../../all.module.css'
+
 import RegularModal from '../../Global/RegularModal'
 
 const Connect = ({ children }) => {

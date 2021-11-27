@@ -3,7 +3,7 @@ import { usePlaceholder } from '@ethereansos/interfaces-core'
 import { Link } from 'react-router-dom'
 import { Typography } from '@ethereansos/interfaces-ui'
 
-import style from './trade.module.css'
+import style from '../../../all.module.css'
 import TokenInputRegular from '../TokenInputRegular/index.js'
 import ActionAWeb3Buttons from '../ActionAWeb3Buttons/index.js'
 import ActionInfoSection from '../ActionInfoSection/index.js'

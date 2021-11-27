@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { CircularProgress } from '@ethereansos/interfaces-ui'
 
-import style from './action-a-web3-button.module.css'
+import style from '../../../all.module.css'
 
 const ActionAWeb3Button  = ({children, onClick, type}) => {
 

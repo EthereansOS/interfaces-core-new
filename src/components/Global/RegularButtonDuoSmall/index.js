@@ -3,7 +3,7 @@ import { usePlaceholder } from '@ethereansos/interfaces-core'
 import { Link } from 'react-router-dom'
 import { Typography } from '@ethereansos/interfaces-ui'
 
-import style from './regular-button-duo-small.module.css'
+import style from '../../../all.module.css'
 
 const RegularButtonDuoSmall  = (props) => {
     return (

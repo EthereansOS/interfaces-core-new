@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 
-import style from './token-input-regular.module.css'
+import style from '../../../all.module.css'
 import { CircularProgress } from '@ethereansos/interfaces-ui'
 import { blockchainCall, useWeb3, fromDecimals, toDecimals } from '@ethereansos/interfaces-core'
 import ModalStandard from '../ModalStandard'

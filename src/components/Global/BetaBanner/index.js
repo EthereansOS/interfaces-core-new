@@ -1,6 +1,6 @@
 import React from 'react'
 
-import style from './beta-banner.module.css'
+import style from '../../../all.module.css'
 
 const BetaBanner = ({close}) => {
     return (

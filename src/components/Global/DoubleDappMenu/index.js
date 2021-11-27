@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { Typography } from '@ethereansos/interfaces-ui'
 import Navigation from '../Navigation'
-import style from './double-dapp-menu.module.css'
+import style from '../../../all.module.css'
 
 const DoubleDappMenu = (props) => {
   return (

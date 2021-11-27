@@ -1,7 +1,0 @@
-.DDapp_Menu {display: inline-block; margin: 50px auto 30px auto; }
-.DDapp_Menu1 {position: relative; z-index:12; padding: 0 10px;background-color: #ffffff; width: auto; height: 40px;border-radius: 24px;box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-webkit-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32); border: 2px solid #aa9cfe;}
-.DDapp_Menu1 > li {display: inline-block;}
-.DDapp_Menu1 > li > a {display: inline-block; padding: 11px 15px;font-size: 17px;display: inline-block; text-decoration: none; cursor: pointer;}
-.DDapp_Menu2 {display: inline-block; position: relative; z-index:10; padding: 15px 8px 0px 8px; margin: -17px auto 0px auto; background-color: #E4E4E4; width: auto; height: auto;border-radius: 20px;box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-webkit-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32); border: 2px solid #e1b9be;}
-.DDapp_Menu2 > li {display: inline-block;}
-.DDapp_Menu2 > li > a {display: inline-block;padding: 8px 10px;font-size: 12px;display: inline-block; text-decoration: none; cursor: pointer;}

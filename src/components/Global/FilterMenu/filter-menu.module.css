@@ -1,6 +1,0 @@
-.FilterMenu {width: 99%;display: block;margin: 5px auto;text-align: center;}
-.FilterMenuSearch {border-color: #849bbd;color: #849bbd;width: 200px;display: inline-block;margin: auto 5px auto auto;font-size: 12px;font-weight: 700;padding: 7px 2%;border: 1px solid;border-radius: 12px;background-color: transparent;max-width: 370px;}
-.FilterSelect {border-color: #849bbd;color: #849bbd;width: 150px;display: inline-block;font-size: 12px;font-weight: 700;padding: 7px 2%;border: 1px solid;border-radius: 12px;background-color: transparent;margin: 0 0 0 17px;}
-.FilterOnly {display: inline-block;text-align: right; padding: 8px 12px;width: auto;margin: 0 17px;    background-color: #e9effc;border-radius: 12px;font-size: 12px;}
-.FilterOnly p {display: inline-block;vertical-align: middle;-webkit-margin-before: 0;margin-block-start: 0;-webkit-margin-after: 0;margin-block-end: 0;margin-bottom: 0;margin-left: 10px;font-size: 12px;}
-.FilterOnly input {display: inline-block;width: auto;vertical-align: middle;position: relative;margin-top: -2px;margin-left: 0;margin-right: 5px;}

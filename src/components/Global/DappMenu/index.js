@@ -2,7 +2,7 @@ import React from 'react'
 
 import { Link } from 'react-router-dom'
 
-import style from './dapp-menu.module.css'
+import style from '../../../all.module.css'
 
 export default ({voices}) => (
   <ul className={style.Dapp_Menu}>

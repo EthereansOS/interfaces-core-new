@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { Typography } from '@ethereansos/interfaces-ui'
-import style from './dapp-sub-menu.module.css'
+import style from '../../../all.module.css'
 
 const DappSubMenu = ({voices}) => {
   return (

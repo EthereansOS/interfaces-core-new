@@ -1,5 +1,181 @@
 b {font-weight: bold;}
 
+/* Global Components */
+
+.ActionAWeb3Button {width: 100%; margin: 15px auto; text-align: center;}
+.ActionAWeb3Button button {width: auto; margin: 0 auto; padding: 9px 15px; text-align: center; font-size: 15px; border-radius: 15px; border: none !important; cursor: pointer;background-color: #7474f7; color: #ffffff; font-weight: bold;}
+.ActionAWeb3Button button:disabled {font-weight: normal !important; background-color: #e4e4e4 !important; color: #6e6e6e !important; cursor: default;}
+
+.ActionAWeb3ButtonExtraSmall {width: auto; display: inline-block;}
+.ActionAWeb3ButtonExtraSmall button {width: auto; margin: 5px auto; padding: 4px 8px; text-align: center; font-size: 10px; border-radius: 12px; border: none !important; cursor: pointer;background-color: #7474f7; color: #ffffff; font-weight: bold;}
+.ActionAWeb3ButtonExtraSmall button:disabled {font-weight: normal !important; background-color: #e4e4e4 !important; color: #6e6e6e !important; cursor: default;}
+.ActionAWeb3ButtonExtraSmall {width: auto; display: inline-block;}
+.ActionAWeb3ButtonExtraSmall button {width: auto; margin: 5px auto; padding: 4px 8px; text-align: center; font-size: 10px; border-radius: 12px; border: none !important; cursor: pointer;background-color: #7474f7; color: #ffffff; font-weight: bold;}
+.ActionAWeb3ButtonExtraSmall button:disabled {font-weight: normal !important; background-color: #e4e4e4 !important; color: #6e6e6e !important; cursor: default;}
+
+.ActionAWeb3Buttons {width: 100%; margin: 15px auto; text-align: center;}
+.ActionAWeb3Buttons button {width: 40%; margin: 0 3%; padding: 20px 0px; text-align: center; font-size: 15px; border-radius: 20px; border: none !important; cursor: pointer;}
+.ActionAWeb3Buttons .ActionASide, .ActionAWeb3Buttons .ActionAMain {background-color: #7474f7; color: #ffffff; font-weight: bold;}
+.ActionAWeb3Buttons button:disabled {font-weight: normal !important; background-color: #e4e4e4 !important; color: #6e6e6e !important; cursor: default;}
+
+.ActionAWeb3ButtonSmall {width: 100%; display: inline-block;}
+.ActionAWeb3ButtonSmall button {width: 200px; margin: 0 auto; padding: 5px 12px; text-align: center; font-size: 11px; border-radius: 15px; border: none !important; cursor: pointer;background-color: #7474f7; color: #ffffff; font-weight: bold;}
+.ActionAWeb3ButtonSmall button:disabled {font-weight: normal !important; background-color: #e4e4e4 !important; color: #6e6e6e !important; cursor: default;}
+
+.ActionInfoSection {width: 100%; display: inline-block; border-radius: 20px; padding: 5px; background-color: #e4e4e4;}
+.ActionInfoSection .ActionInfoSectionAMM {width: 40px; height: 40px; padding: 5px; display: inline-block; text-align: center; cursor: pointer; background-color: #F0F0F0;border-radius: 14px; overflow: hidden; vertical-align: middle;}
+.ActionInfoSection .ActionInfoSectionAMM figure {width: 25px; height: 25px; display: inline-block;}
+.ActionInfoSection .ActionInfoSectionAMM figure img {width: 100%; height: 100%; display: block;}
+.ActionInfoSection .ActionInfoSectionAMM span {font-size: 13px; font-weight: bold;margin-top: -5px;display: block;}
+.ActionInfoSection .ActionInfoSectionSettings {width: 40px; height: 40px;padding: 5px; display: inline-block; text-align: center; cursor: pointer; background-color: #F0F0F0;border-radius: 14px; overflow: hidden; vertical-align: middle; margin-left: 5px;}
+.ActionInfoSection .ActionInfoSectionSettings figure {width: 30px; height: 30px; display: inline-block;}
+.ActionInfoSection .ActionInfoSectionSettings figure img {width: 100%; height: 100%; display: block;}
+.ActionInfoSectionText {width: 60%; margin-left: 2%;  margin-right: 1%; display: inline-block; vertical-align: middle; text-align: left;}
+.ActionInfoSectionText p {font-size: 11px; line-height: 1.2;}
+
+.ActionInfoSectionS {width: 100%; display: inline-block; border-radius: 20px; padding: 5px; background-color: #e4e4e4;}
+.ActionInfoSectionS .ActionInfoSectionAMM {width: 40px; height: 40px; padding: 5px; display: inline-block; text-align: center; cursor: pointer; background-color: #F0F0F0;border-radius: 14px; overflow: hidden; vertical-align: middle;}
+.ActionInfoSectionS .ActionInfoSectionAMM figure {width: 25px; height: 25px; display: inline-block;}
+.ActionInfoSectionS .ActionInfoSectionAMM figure img {width: 100%; height: 100%; display: block;}
+.ActionInfoSectionS .ActionInfoSectionAMM span {font-size: 13px; font-weight: bold;margin-top: -5px;display: block;}
+.ActionInfoSectionS .ActionInfoSectionSettings {width: 40px; height: 40px;padding: 5px; display: inline-block; text-align: center; cursor: pointer; background-color: #F0F0F0;border-radius: 14px; overflow: hidden; vertical-align: middle; margin-left: 5px;}
+.ActionInfoSectionS .ActionInfoSectionSettings figure {width: 30px; height: 30px; display: inline-block;}
+.ActionInfoSectionS .ActionInfoSectionSettings figure img {width: 100%; height: 100%; display: block;}
+
+.BackButton {display: inline-block;padding: 4px 13px;background-color: #e4e4e4;color: #6e6e6e;border-radius: 20px;font-size: 14px;font-weight: 700;cursor: pointer; box-shadow: none; border:none;}
+
+.ModalBack {position: fixed; z-index: 10000000000000; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; background: linear-gradient(135deg,#655dfff5,#a0a0a0ea 80%); text-align: center;display: flex;flex-wrap: wrap;flex-direction: row;justify-content: center;align-items: center;align-content: center}
+.ModalBoxBanner {width: 500px; overflow: scroll; max-height: 70%;  z-index: 100000000000000;background-color: #ffffff; border-radius: 20px;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32); padding: 40px;}
+.ModalBoxBanner h6 {font-size: 13px; width: 100%; display: inline-block; padding: 10px 20px; margin: 10px auto; text-align: left; font-weight: normal; line-height: 1.3;}
+.ModalBoxBanner p {font-size: 13px; width: 100%; display: inline-block; padding: 5px 30px; text-align: left;}
+.ModalBoxBanner h5 {padding: 20px; font-size: 20px;}
+.Enter {background-color: #00F2C2; padding: 12px 18px; text-align: center; color: #ffffff; font-weight: bold; margin: 20px auto; font-size: 14px; display: inline-block; border-radius: 16px;}
+
+.DappBannerExpl {display: inline-block; padding: 5px; margin: 10px auto; width: 80%;}
+.DappBannerExpl div {box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-webkit-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);border-radius: 20px; display: inline-block; padding: 20px; height:100px; text-align:left; overflow: hidden; vertical-align: middle;}
+.DappBannerExpl div h2 {font-size: 16px; font-weight: bold; color: #ffffff; width: 100%; margin-bottom: 10px;}
+.DappBannerExpl div p {font-size: 13px; font-weight: normal; color: #ffffff; width: 100%;}
+.DappBannerL {background-color: #aa9cfe; width: 65%; margin-right: 3%;}
+.DappBannerS {background-color: #e1b9be;width: 30%;}
+
+.ExtLinkButton {border: 1px solid #849BBD;color: #849BBD;border-radius: 5px;display: inline-block;width: 70px;margin: 5px;font-size: 11px;padding: 3px 2px;text-align: center;cursor: pointer;box-shadow: none;background-color: transparent;}
+.ItemLinkButton {border: 2px solid #59b0fb;color: #59b0fb;border-radius: 5px;display: inline-block;width: 70px;margin: 5px;font-size: 11px;padding: 3px 2px;text-align: center;cursor: pointer;box-shadow: none;background-color: transparent; font-weight: bold;}
+.RegularButton {display: inline-block;padding: 4px 13px;background-color: #849bbd;color: #fff;border-radius: 20px;font-size: 14px;font-weight: 700;cursor: pointer; box-shadow: none; border:none;}
+.RegularButtonDuo {display: inline-block;padding: 7px 13px;background-color: #849bbd;color: #fff;border-radius: 8px;font-size: 14px;font-weight: 700;cursor: pointer; box-shadow: none; border:none; width: 90%; margin: 0 auto;}
+.RegularButtonDuoSmall {width: 200px; margin: 0 auto; padding: 5px 12px; text-align: center; font-size: 11px; border-radius: 15px; border: none !important; cursor: pointer;background-color: #849bbd;color: #fff; box-shadow: none;  margin: 0 auto;}
+.RegularButtonDuoSmallWhite {width: 200px; margin: 0 auto; padding: 5px 12px; text-align: center; font-size: 11px; border-radius: 15px; border: none !important; cursor: pointer;background-color: #f7fafe;color: #849BBD; box-shadow: none;  margin: 0 auto; font-weight: bold;}
+.RegularButtonDuoXSmall {width: auto; margin: 5px; padding: 5px 12px; text-align: center; font-size: 11px; border-radius: 15px; border: none !important; cursor: pointer;background-color: #849bbd;color: #fff; box-shadow: none;  margin: 0 auto;}
+.RegularButtonDuoSmallWhite {width: 40%; margin: 0 auto; padding: 5px 12px; text-align: center; font-size: 11px; border-radius: 15px; border: none !important; cursor: pointer;background-color: #ffffff;color: #849BBD; box-shadow: none;  font-weight: bold;}
+.RegularButtonDuoSmallGray {width: 40%; margin: 0 4%; padding: 5px 5px; text-align: center; font-size: 11px; border-radius: 15px; border: none !important; cursor: pointer;background-color: #e2e0e0;color: #849BBD; box-shadow: none;  font-weight: bold;}
+.RegularMiniButton {display: inline-block;padding: 2px 5px;background-color: #849bbd;color: #fff;border-radius: 20px;font-size: 12px;font-weight: bold;cursor: pointer; box-shadow: none; border:none;}
+
+.RegularSelect {position: relative;display: inline-block;margin-bottom: 15px;width: auto;}    
+.RegularSelect select {display: inline-block;width: 100%;cursor: pointer;padding: 10px 16px;outline: 0;border: 1px solid #849bbd;border-radius: 8px;background: transparent;color: #849bbd;appearance: none;-webkit-appearance: none;-moz-appearance: none;padding-right: 40px;font-size: 14px;font-weight: bold;}
+.RegularSelect select::-ms-expand {display: none;}
+.RegularSelect select:hover,.RegularSelect select:focus {color: #849bbd;background: #ffffff;}
+.RegularSelect select:disabled {opacity: 0.5;pointer-events: none;}
+.select_arrow {position: absolute;top: 16px;right: 18px;width: 0px;height: 0px;border: solid #849bbd;border-width: 0 2px 2px 0;display: inline-block;padding: 3px;transform: rotate(45deg);-webkit-transform: rotate(45deg);}
+.RegularSelect select:hover ~ .select_arrow,.RegularSelect select:focus ~ .select_arrow {border-color: #849bbd;}
+.RegularSelect select:disabled ~ .select_arrow {border-top-color: #849bbd;}
+.VioletLinkButton {border: 1px solid #7472fc;color: #7472fc;border-radius: 5px;display: inline-block;width: auto;margin: 2px;font-size: 11px;padding: 2px 6px;text-align: center;cursor: pointer;box-shadow: none;background-color: transparent; font-weight: normal;}
+
+
+.FilterMenu {width: 99%;display: block;margin: 5px auto;text-align: center;}
+.FilterMenuSearch {border-color: #849bbd;color: #849bbd;width: 200px;display: inline-block;margin: auto 5px auto auto;font-size: 12px;font-weight: 700;padding: 7px 2%;border: 1px solid;border-radius: 12px;background-color: transparent;max-width: 370px;}
+.FilterSelect {border-color: #849bbd;color: #849bbd;width: 150px;display: inline-block;font-size: 12px;font-weight: 700;padding: 7px 2%;border: 1px solid;border-radius: 12px;background-color: transparent;margin: 0 0 0 17px;}
+.FilterOnly {display: inline-block;text-align: right; padding: 8px 12px;width: auto;margin: 0 17px;    background-color: #e9effc;border-radius: 12px;font-size: 12px;}
+.FilterOnly p {display: inline-block;vertical-align: middle;-webkit-margin-before: 0;margin-block-start: 0;-webkit-margin-after: 0;margin-block-end: 0;margin-bottom: 0;margin-left: 10px;font-size: 12px;}
+.FilterOnly input {display: inline-block;width: auto;vertical-align: middle;position: relative;margin-top: -2px;margin-left: 0;margin-right: 5px;}
+
+.MetadataSection {width: 100%; display: inline-block; text-align: left;padding: 2%;}
+.MetadataSingle {width: 200px; display: inline-block; margin: 5px; padding: 2%; background-color: #F0F0F0; border-radius: 10px; text-align: center;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
+.MetadataSingle h6 {font-size: 13px;}
+.MetadataSingle .MetadataSingleToogle {border: 1px solid #849BBD; color: #849BBD; border-radius: 5px;display: inline-block; margin: 10px; font-size: 11px; padding: 5px 8px; text-align: center; cursor: pointer;}
+.MetadataSingleOpened {width: 100%; margin: 5px auto; padding: 5px 0; border-top: 1px solid #ffffff; max-height: 100px; overflow-y: scroll;}
+.MetadataSingleOpened p {font-size: 11px; padding: 2%; line-height: 1.2;text-align: left; display: inline-block; width: 100%;}
+.MetadataSingleOpened a {background-color: #849BBD; color: #ffffff; border-radius: 5px;display: inline-block; margin: 10px auto; font-size: 12px; padding: 6px 10px; text-align: center; cursor: pointer;}
+
+.TradeMarketTokenAll {display: inline-block;border-radius: 16px; text-align: left; margin: 5px auto; background-color: #e4e4e4;}
+.TradeMarketToken {width: 100%; background-color: #ffffff; padding: 5px; border-radius: 16px; text-align: left; }
+.TradeMarketToken .TradeMarketTokenSelector {width: 75px; height: 70px; display: inline-block; text-align: center; cursor: pointer; background-color: #F0F0F0;border-radius: 14px; overflow: hidden; vertical-align: top;}
+.TradeMarketToken .TradeMarketTokenSelector figure {width: 100%; height: 50px; display: inline-block;}
+.TradeMarketToken .TradeMarketTokenSelector figure img {width: 100%; height: 100%; display: block;}
+.TradeMarketToken .TradeMarketTokenSelector span {font-size: 13px; font-weight: bold;}
+.TradeMarketTokenAmount {width: 170px;display: inline-block; text-align: right;}
+.TradeMarketTokenAmount input {width: 90%; height: 70px; font-size: 30px; color: #000000; background-color: transparent; border: none; text-align: right;}
+.TradeMarketTokenAmount input:focus{outline: none;}
+.TradeMarketTokenBalance {font-size: 10px; cursor: pointer; color: #000000; margin: 5px; font-weight: bold; width: 100%; display: inline-block; text-align: center;}
+
+.TradeMarketTokenAllS {display: inline-block;border-radius: 16px; text-align: left; margin: 5px auto; background-color: #e4e4e4;}
+.TradeMarketTokenS {width: 100%; background-color: #ffffff; padding: 5px; border-radius: 16px; text-align: left; }
+.TradeMarketTokenS .TradeMarketTokenSelector {width: 40px; height: 40px; display: inline-block; text-align: center; cursor: pointer; background-color: #F0F0F0;border-radius: 14px; overflow: hidden; vertical-align: top;}
+.TradeMarketTokenS .TradeMarketTokenSelector figure {width: 100%; height: 40px; display: inline-block;}
+.TradeMarketTokenS .TradeMarketTokenSelector figure img {width: 100%; height: 100%; display: block;}
+.TradeMarketTokenAmountS {width: 180px;display: inline-block; text-align: right;}
+.TradeMarketTokenAmountS input {width: 90%; height: 40px; font-size: 30px; color: #000000; background-color: transparent; border: none; text-align: right;}
+.TradeMarketTokenAmountS input:focus{outline: none;}
+.TradeMarketTokenBalanceS {font-size: 10px; cursor: pointer; color: #000000; margin: 5px; font-weight: bold; width: 100%; display: inline-block; text-align: center;}
+
+.ModalBack {position: fixed; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; background: linear-gradient(135deg,#c1befcd8,#fdf7f5b6 80%); text-align: center;display: flex;flex-wrap: wrap;flex-direction: row;justify-content: center;align-items: center;align-content: center}
+.ModalBox {width: 600px; height: 80%; display: flex; background-color: #F0F0F0; border-radius: 20px;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
+.TokensSelector {width: 100%; display: block; position: relative;}
+.TokensSelectorList {height: 90%; width: 100%; padding: 10px; display: block; border-radius: 20px 20px 0 0; overflow-y: scroll;}
+.TokensSelectorCategories {height: 60px; background-color: #525252; border-top: 2px solid #E4E4E4; width: 100%; display: block; border-radius: 0 0 20px 20px; position: absolute; left:0; bottom: 0; text-align: center; overflow: hidden;}
+.TokensSelectorCategories input {width: 40%;display: inline-block; vertical-align: top;height: 100%;background-color: #525252;border: none;border-radius: 0 0 0 20px;color: #ffffff;font-size: 16px;padding: 2%;}
+.TokensSelectorCategories input::placeholder {color: #ffffff;opacity: 1;}
+.TokensSelectorCategories input:-ms-input-placeholder {color: #ffffff;}
+.TokensSelectorCategories input::-ms-input-placeholder {color: #ffffff;}
+.TokensSelectorCategoriesList {width: 60%; height:100%; display: inline-block;background-color: #F0F0F0;}
+.TokensSelectorCategoriesList a {width: 33.33%;padding: 20px 1%; display: inline-block; background-color: #F0F0F0; vertical-align: top; cursor: pointer;}
+.TokensSelectorCategoriesList .selected, .TokensSelectorCategoriesList a:hover  { background-color: #ffffff;}
+.TokensSelectorCategoriesList .selected {font-weight: bold;}
+
+.TradeMain {width: 550px;  margin-bottom: 30px; display: inline-block; text-align: center; padding: 20px; border-radius: 20px; background-color: #F0F0F0;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
+.TradeMarketBox {width: 53%; vertical-align: top; display: inline-block; padding-right: 2%; margin-right: 1%; border-right: 1px solid #ffffff;}
+.TradeMarketBox h4 {width: 100%; text-align: center; display: inline-block; margin: 15px auto;}
+.TradeMarketBoxSwitch { width:20px; height: 20px;  background-color: #e4e4e4; display: inline-block; margin: -5px auto -5px auto; font-size: 17px; font-weight: bold; border-radius: 100%; cursor: pointer;}
+.TradeMarketType {width: 90%; display: inline-block; margin: 20px auto 15px auto; border: 1px solid #ffffff; border-radius: 30px; overflow: hidden;}
+.TradeMarketType a{display: inline-block; width: 50%; margin: 0; padding: 2%; font-size: 15px; font-weight: normal; text-align: center;background-color: #e4e4e4; cursor: pointer;}
+.TradeMarketType .selected, .TradeMarketType a:hover  {color: #000000; background-color: #ffffff;}
+.TradeMarketType .selected {font-weight: bold;}
+.TradeOTCBox {width: 46%; display: inline-block;padding-left: 2%; text-align: center;}
+.TradeOTCBoxOrders {overflow-y: scroll; height: 150px; display: inline-block;}
+.TradeOTCBoxOrder {width: 100%; display: inline-block; margin: 2px auto; text-align: left; padding: 2px 1%; border-top: 1px solid #e4e4e4;}
+.TradeOTCBoxOrder p {display: inline-block; width: 40%; padding: 1%;}
+.TradeOTCBoxOrder .TradeOTCBoxOrderQ {font-size: 11px; text-align: left;width: 28%; font-weight: bold; vertical-align: middle; border-right: 1px solid #e4e4e4; margin-right: 2%;}
+.TradeOTCBoxOrder .TradeOTCBoxOrderP {font-size: 10px; text-align: left;width: 45%;vertical-align: middle;}
+.TradeOTCBoxOrder button {vertical-align: middle; margin-left: 2%; width: 20%; text-align: center; border:none; padding: 3px 5px; border-radius: 15px; font-size: 11px; font-weight: bold; color: #ffffff;}
+.TradeOTCBoxOrdersBuy, .TradeOTCBoxOrdersSell {width: 95%; display: inline-block; padding: 1% 2% 2% 2%; margin: 15px auto 5px auto; background-color: #ffffff; border-radius: 20px;}
+.TradeOTCBoxOrdersBuy h6, .TradeOTCBoxOrdersSell h6 {font-size: 13px; width: 100%; text-align: center; padding: 10px 0;}
+.TradeOTCBoxOrdersSell h6 {color: rgb(252, 98, 111);}
+.TradeOTCBoxOrdersBuy h6 {color: rgb(106, 234, 200);}
+.TradeOTCBoxOrdersBuy .TradeOTCBoxOrder  button {background-color: rgb(106, 234, 200);}
+.TradeOTCBoxOrdersSell .TradeOTCBoxOrder  button {background-color: rgb(252, 98, 111);}
+
+
+.Dapp_Menu {display: inline-block; padding: 0 10px; margin: 50px auto 30px auto; background-color: #ffffff; width: auto; height: 40px;border-radius: 24px;box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-webkit-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);border: 2px solid #aa9cfe;}
+.Dapp_Menu > li {display: inline-block;}
+.Dapp_Menu > li > a {display: inline-block; padding: 11px 15px;font-size: 17px;display: inline-block; text-decoration: none; cursor: pointer;}
+
+.DappSubMenu {display: inline-block; padding: 0 8px; margin: 50px auto; background-color: #E4E4E4; width: auto; height: 30px;border-radius: 20px;box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-webkit-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);border: 2px solid #e1b9be;}
+.DappSubMenu > li {display: inline-block;}
+.DappSubMenu > li > a {display: inline-block; padding: 7px 15px;font-size: 13px;display: inline-block; text-decoration: none; cursor: pointer;}
+
+.DDapp_Menu {display: inline-block; margin: 50px auto 30px auto; }
+.DDapp_Menu1 {position: relative; z-index:12; padding: 0 10px;background-color: #ffffff; width: auto; height: 40px;border-radius: 24px;box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-webkit-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32); border: 2px solid #aa9cfe;}
+.DDapp_Menu1 > li {display: inline-block;}
+.DDapp_Menu1 > li > a {display: inline-block; padding: 11px 15px;font-size: 17px;display: inline-block; text-decoration: none; cursor: pointer;}
+.DDapp_Menu2 {display: inline-block; position: relative; z-index:10; padding: 15px 8px 0px 8px; margin: -17px auto 0px auto; background-color: #E4E4E4; width: auto; height: auto;border-radius: 20px;box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-webkit-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32); border: 2px solid #e1b9be;}
+.DDapp_Menu2 > li {display: inline-block;}
+.DDapp_Menu2 > li > a {display: inline-block;padding: 8px 10px;font-size: 12px;display: inline-block; text-decoration: none; cursor: pointer;}
+
+.Header {height: 100%;display: inline-block;text-align: center;width:200px;min-height: 500px;vertical-align: top;overflow: hidden;position: relative;}
+.Header .FixedHeader {position: fixed; left: 0; top: 0; width: 200px; height: 100%;z-index: 1000000;}
+.Header .BlurHeader {display: none; z-index: 10; }
+
+.logoMain {height: 90px; width: 110px; margin: 20px 0px 20px 10px; display: block;}
+.logoMain img {height: 90px; width: 110px; display: block;}
+
 
 /* Covenants Components */
 .FarmInfoBox {}
@@ -394,3 +570,22 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 .VotingPowersObject img {width: 100%; height: 100%; display: inline-block; margin: 0;}
 .VotingPowersAmount {padding: 10px; background-color: #EEEEEE; text-align: center;}
 .VotingPowersAmount span {font-size: 13px;}
+
+
+
+
+@media only screen and (max-width: 1200px) {
+  .Header {
+    height: 60px;
+    display: block;
+    text-align: left;
+    width:100%;
+    position: relative;
+    margin-bottom: 20px;
+    min-height: auto;
+  }
+  .Header .FixedHeader {position: fixed; left: 0; top: 0; width: 100%; height: 60px;backdrop-filter: blur(6px);}
+  .Header .BlurHeader {display: block; position: fixed; left: 0%; top: 0%; width: 100%; height: 60px;border-radius: 0;  border: 0; background: linear-gradient(-130deg,#c1befc4d,#fdf7f515 80%); box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-webkit-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
+  .logoMain {height: 40px; width: 50px; margin: 10px 0px 0px 10px; display: inline-block;vertical-align: top;}
+  .logoMain img {height: 40px; width: 50px; display: block;}
+}

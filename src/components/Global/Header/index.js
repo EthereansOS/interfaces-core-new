@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import Navigation from '../Navigation'
 
-import style from './header.module.css'
+import style from '../../../all.module.css'
 import Web3Connect  from '../Web3Connect'
 
 const Header = (props) => {

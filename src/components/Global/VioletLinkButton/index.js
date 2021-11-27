@@ -3,14 +3,14 @@ import { usePlaceholder } from '@ethereansos/interfaces-core'
 import { Link } from 'react-router-dom'
 import { Typography } from '@ethereansos/interfaces-ui'
 
-import style from './violet-link-button.module.css'
+import style from '../../../all.module.css'
 
-const ItemLinkButton  = (props) => {
+const VioletLinkButton  = (props) => {
     return (
         
-        <button target="_blank" className={style.ItemLinkButton}>Item</button>
+        <button target="_blank" className={style.VioletLinkButton}>Item</button>
 
     )
 }
 
-    export default ItemLinkButton
+    export default VioletLinkButton

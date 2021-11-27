@@ -5,7 +5,7 @@ import { abi, useEthosContext, useWeb3, shortenWord, toDecimals, fromDecimals, b
 
 import {preparePermit} from '../../../logic/ballot'
 
-import style from './action-a-web3-buttons.module.css'
+import style from '../../../all.module.css'
 
 export default ({token, balance, value, other, buttonText, onClick, onPermitSignature}) => {
 
