@@ -39,6 +39,8 @@ const Deploy = ({back, finalize}) => {
   const [background_color, setBackground_color] = useState("")
   const [external_url, setExternal_url] = useState("")
   const [discussion_url, setDiscussion_url] = useState("")
+  const [public_polls, setPublic_polls] = useState("")
+
 
 
 
@@ -57,7 +59,8 @@ const Deploy = ({back, finalize}) => {
           logo,
           background_color,
           external_url,
-          discussion_url
+          discussion_url,
+          public_polls
 
         }))
     } catch(e) {
@@ -104,6 +107,11 @@ const Deploy = ({back, finalize}) => {
         <h6>Logo Background</h6> 
         <input type="color" value="#ffffff" onChange={e => setBackground_color(e.currentTarget.value)}/>
         <p>The background color of your logo. This is used to fill the space if the logo don't match standard boxes in every interface.</p>
+      </label>
+      <label className={style.CreationPageLabelF}>
+        <h6>Public polls</h6> 
+        <input type="checkbox" onChange={e => setPublic_polls(e.currentTarget.value)}/>
+        <p>If active, anyone can create a poll connected to this Delegation and all of the polls compares in the Delegation page. If deactivate, only polls created by the host will compare in the Delegation page.</p>
       </label>
       <div className={style.ActionDeploy}>
         {loading && <CircularProgress/>}
@@ -194,7 +202,13 @@ const Finalize = ({back, success, cumulativeData}) => {
 const Success = ({back}) => {
   return (
     <div>
-      YAY!!!! Successssooooooooo
+      <h6>&#127881; &#127881; Delegation Created! &#127881; &#127881;</h6>
+      <p><b>And Now?</b></p>
+      <label className={style.CreationPageLabelF}>
+        <h6>Select an Organization</h6> 
+        <select/>
+        <p>Connect your delegation to an Organization to be elegible for grants!</p>
+      </label>
       <a onClick={back}>Back Che serve solo per navigare in produzione va tolto</a>
     </div>
   )

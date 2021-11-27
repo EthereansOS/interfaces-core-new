@@ -6,7 +6,7 @@ export async function createDelegation({context, ipfsHttpClient, newContract, ch
     var mandatoryComponentsDeployData = [
         "0x",
         "0x",
-        abi.encode(["string"], [metadata.tick])
+        abi.encode(["string"], [metadata.symbol])
     ]
 
     var deployOrganizationDataType = [
