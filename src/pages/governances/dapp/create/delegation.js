@@ -84,7 +84,7 @@ const Deploy = ({back, finalize}) => {
       </label>
       <label className={style.CreationPageLabelF}>
         <h6>Discussion link</h6> 
-        <input type="link" value={external_url} onChange={e => setDiscussion_url(e.currentTarget.value)}/>
+        <input type="link" value={discussion_url} onChange={e => setDiscussion_url(e.currentTarget.value)}/>
         <p>A link where delegation discussions happens</p>
       </label>
       <label className={style.CreationPageLabelF}>
