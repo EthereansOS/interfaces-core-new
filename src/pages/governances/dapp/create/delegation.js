@@ -41,9 +41,6 @@ const Deploy = ({back, finalize}) => {
   const [discussion_url, setDiscussion_url] = useState("")
   const [public_polls, setPublic_polls] = useState("")
 
-
-
-
   const [loading, setLoading] = useState(false)
 
   async function deploy() {
@@ -76,40 +73,40 @@ const Deploy = ({back, finalize}) => {
         <h6>Step 1/2 - Bio</h6>
       </div>
       <label className={style.CreationPageLabelF}>
-        <h6>Name</h6> 
+        <h6>Name</h6>
         <input type="text" value={name} onChange={e => setName(e.currentTarget.value)}/>
       </label>
       <label className={style.CreationPageLabelF}>
-        <h6>Description</h6> 
+        <h6>Description</h6>
         <textarea value={description} onChange={e => setDescription(e.currentTarget.value)}/>
       </label>
       <label className={style.CreationPageLabelF}>
-        <h6>Website</h6> 
+        <h6>Website</h6>
         <input type="link" value={external_url} onChange={e => setExternal_url(e.currentTarget.value)}/>
         <p>The official website</p>
       </label>
       <label className={style.CreationPageLabelF}>
-        <h6>Discussion link</h6> 
+        <h6>Discussion link</h6>
         <input type="link" value={discussion_url} onChange={e => setDiscussion_url(e.currentTarget.value)}/>
         <p>A link where delegation discussions happens</p>
       </label>
       <label className={style.CreationPageLabelF}>
-        <h6>Symbol</h6> 
+        <h6>Symbol</h6>
         <input type="text" value={symbol} onChange={e => setSymbol(e.currentTarget.value)}/>
         <p>Select a symbol for your Delegation. This will effect the name and symbol that your sustenitor will receive by wrapping their tokens</p>
       </label>
       <label className={style.CreationPageLabelF}>
-        <h6>Logo link</h6> 
+        <h6>Logo link</h6>
         <input placeholder="ipfs//..." type="link" value={logo} onChange={e => setLogo(e.currentTarget.value)}/>
         <p>Input a valid IPFS link for the logo of your Delegation. Please upload a square picture (.png, .jpg) to perfectly match the delegation logo with the EthereansOS interface style.</p>
       </label>
       <label className={style.CreationPageLabelF}>
-        <h6>Logo Background</h6> 
+        <h6>Logo Background</h6>
         <input type="color" value="#ffffff" onChange={e => setBackground_color(e.currentTarget.value)}/>
         <p>The background color of your logo. This is used to fill the space if the logo don't match standard boxes in every interface.</p>
       </label>
       <label className={style.CreationPageLabelF}>
-        <h6>Public polls</h6> 
+        <h6>Public polls</h6>
         <input type="checkbox" onChange={e => setPublic_polls(e.currentTarget.value)}/>
         <p>If active, anyone can create a poll connected to this Delegation and all of the polls compares in the Delegation page. If deactivate, only polls created by the host will compare in the Delegation page.</p>
       </label>
@@ -127,7 +124,7 @@ const Finalize = ({back, success, cumulativeData}) => {
   const context = useEthosContext()
   const { getGlobalContract, newContract, chainId } = useWeb3()
 
-  const [delegationAddress, setDelegationAddress] = useState(cumulativeData.delegationAddress)
+  const [delegationAddress, setDelegationAddress] = useState(cumulativeData?.delegationAddress)
   const [quorumPercentage, setQuorumPercentage] = useState(0)
   const [hardCapPercentage, setHardcapPercentage] = useState(0)
   const [blockLength, setBlockLength] = useState(0)
@@ -161,32 +158,32 @@ const Finalize = ({back, success, cumulativeData}) => {
         <h6>Step 2/2 - Governance Rules</h6>
       </div>
       <label className={style.CreationPageLabelF}>
-        <h6>Delegation address</h6> 
+        <h6>Delegation address</h6>
         <input type="text" value={delegationAddress} onChange={e => setDelegationAddress(e.currentTarget.value)}/>
         <p>Select a symbol for your Delegation. This will effect the name and symbol that your sustenitor will receive by wrapping their tokens</p>
       </label>
       <label className={style.CreationPageLabelF}>
-        <h6>Host</h6> 
+        <h6>Host</h6>
         <input type="text" value={host} onChange={e => setHost(e.currentTarget.value)}/>
         <p>Select a symbol for your Delegation. This will effect the name and symbol that your sustenitor will receive by wrapping their tokens</p>
       </label>
       <label className={style.CreationPageLabelF}>
-        <h6>Survey Duration</h6> 
+        <h6>Survey Duration</h6>
         <input type="number" value={blockLength} onChange={e => setBlockLength(e.currentTarget.value)}/>
         <p>Select a symbol for your Delegation. This will effect the name and symbol that your sustenitor will receive by wrapping their tokens</p>
       </label>
       <label className={style.CreationPageLabelF}>
-        <h6>Validation Bomb</h6> 
+        <h6>Validation Bomb</h6>
         <input type="number" value={validationBomb} onChange={e => setValidationBomb(e.currentTarget.value)}/>
         <p>Select a symbol for your Delegation. This will effect the name and symbol that your sustenitor will receive by wrapping their tokens</p>
       </label>
       <label className={style.CreationPageLabelF}>
-        <h6>Quorum</h6> 
+        <h6>Quorum</h6>
         <input className={style.perchentageThing} type="number" min="0" max="100" value={quorumPercentage} onChange={e => setQuorumPercentage(e.currentTarget.value)}/>
         <p>Select a symbol for your Delegation. This will effect the name and symbol that your sustenitor will receive by wrapping their tokens</p>
       </label>
       <label className={style.CreationPageLabelF}>
-        <h6>Hard Cap</h6> 
+        <h6>Hard Cap</h6>
         <input className={style.perchentageThing} type="number" min="0" max="100" value={hardCapPercentage} onChange={e => setHardcapPercentage(e.currentTarget.value)}/>
         <p>Select a symbol for your Delegation. This will effect the name and symbol that your sustenitor will receive by wrapping their tokens</p>
       </label>
@@ -205,7 +202,7 @@ const Success = ({back}) => {
       <h6>&#127881; &#127881; Delegation Created! &#127881; &#127881;</h6>
       <p><b>And Now?</b></p>
       <label className={style.CreationPageLabelF}>
-        <h6>Select an Organization</h6> 
+        <h6>Select an Organization</h6>
         <select/>
         <p>Connect your delegation to an Organization to be elegible for grants!</p>
       </label>

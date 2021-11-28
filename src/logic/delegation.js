@@ -1,6 +1,8 @@
 import { abi, VOID_ETHEREUM_ADDRESS, uploadMetadata, getNetworkElement, blockchainCall, web3Utils, sendAsync, tryRetrieveMetadata, toDecimals } from "@ethereansos/interfaces-core"
 
-import { getOrganizationComponents, retrieveAllProposals, getOrganization } from "./organization"
+import { getOrganizationComponents, retrieveAllProposals, getOrganization, getProposalModels } from "./organization"
+
+import { getData } from "./generalReader"
 
 export async function createDelegation({context, ipfsHttpClient, newContract, chainId, factoryOfFactories}, metadata) {
     var uri = await uploadMetadata({context, ipfsHttpClient}, metadata)
@@ -62,7 +64,7 @@ export async function finalizeDelegation({context, chainId, newContract, factory
     var hardCapPercentage = toDecimals(hardCap, 16)
 
     await blockchainCall(factory.methods.initializeProposalModels,
-        delegationAddress,
+        delegationAddress instanceof Array ? delegationAddress[0] : delegationAddress,
         host,
         quorumPercentage,
         validationBomb,
@@ -97,8 +99,29 @@ export async function all({context, newContract, chainId, factoryOfFactories}, m
 export async function getDelegation({context, web3, account, getGlobalContract, newContract}, delegationAddress) {
 
     var delegation = await getOrganization({context, web3, account, getGlobalContract, newContract}, delegationAddress)
+    delegation.type = 'delegation'
+    delegation.proposalModels = instrumentProposalModels(delegation.proposalModels)
 
-    
+    var data = await getData({provider: delegation.contract.currentProvider}, delegation.proposalModels[0].creationRules)
+
+    delegation.host = data.valueAddress
+
+    console.log('delegation host', delegation.host)
 
     return delegation
+}
+
+function instrumentProposalModels(proposalModels) {
+    proposalModels[0].name = "Attach To Proposal";
+    proposalModels[1].name = "Change URI";
+    proposalModels[2].name = "Change Rules";
+    proposalModels[3].name = "Transfer Funds";
+    proposalModels[4].name = "Vote For a Proposal";
+    return proposalModels
+}
+
+export async function setDelegationMetadata({context, ipfsHttpClient}, organization, metadata) {
+    var uri = await uploadMetadata({context, ipfsHttpClient}, metadata)
+
+
 }

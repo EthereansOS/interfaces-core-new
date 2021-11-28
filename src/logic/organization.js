@@ -141,6 +141,8 @@ export async function getOrganization({ context, web3, account, getGlobalContrac
         organization.organizations.forEach(it => organization.allProposals.push(...it.allProposals))
     } catch(e) {}
 
+    console.log("Delegations Managers", organization.address, organization.host?.address, organization.components.delegationsManager?.address)
+
     return organization
 }
 
@@ -207,13 +209,17 @@ export async function getOrganizationComponents({ newContract, context }, contra
     }, {})
 }
 
-async function getProposalModels({ context }, contract) {
+export async function getProposalModels({ context }, contract) {
     try {
         var proposalModels = [...(await blockchainCall(contract.methods.proposalModels))]
         proposalModels = proposalModels.map(it => ({...it, proposalType: it.preset ? 'surveyless' : 'normal' }))
         proposalModels = await Promise.all(proposalModels.map(async it => {
             var link = formatLink({ context }, it.uri)
-            var metadata = await (await fetch(link)).json()
+            var metadata = {}
+            try {
+                metadata = await (await fetch(link)).json()
+            } catch(e) {
+            }
             return {...it, ...metadata }
         }))
         return proposalModels
@@ -506,7 +512,7 @@ export async function surveyIsTerminable({ account, newContract, context}, propo
 
 export async function retrieveProposalModelMetadata({context}, proposal) {
 
-    var metadata;
+    var metadata = {...proposal};
 
     try {
         metadata = await (await fetch(proposal.formattedLink = formatLink({context}, proposal.uri))).json()

@@ -32,7 +32,7 @@ export default ({element, proposal, metadata, onToggle}) => {
             <p><b>Grant size:</b><br></br> 40 ETH</p>
             <p><b>Supporters stake:</b><br></br> 100,000 OS</p>
             <div className={style.DelegationWalletsCardBTN}>
-              <RegularButtonDuo></RegularButtonDuo>
+              <RegularButtonDuo onClick={() => setOpened(!opened)}>{opened ? 'Close' : 'Open'}</RegularButtonDuo>
             </div>
         </div>
       </> : <>

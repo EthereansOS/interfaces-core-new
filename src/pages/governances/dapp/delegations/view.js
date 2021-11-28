@@ -10,15 +10,16 @@ import { getDelegation } from '../../../../logic/delegation'
 
 import { useWeb3, useEthosContext } from '@ethereansos/interfaces-core'
 
-import style from '../organizations-main-sections.module.css'
+import HostOptions from './hostOptions'
 
+import style from '../organizations-main-sections.module.css'
 
 const DelegationView = (props) => {
 
   const [element, setElement] = useState(null)
 
   const { pathname } = useLocation()
-  const { newContract } = useWeb3()
+  const { newContract, account } = useWeb3()
 
   const context = useEthosContext()
 
@@ -34,12 +35,11 @@ const DelegationView = (props) => {
   }
 
   return (
-    <>
-      <div className={style.SingleContentPage}>
-        <DelegationHeadline element={element}/>
-        {<GovernanceContainer element={element}/>}
-      </div>
-    </>
+    <div className={style.SingleContentPage}>
+      <DelegationHeadline element={element}/>
+      {element.host === account && <HostOptions element={element}/>}
+      <GovernanceContainer element={element}/>
+    </div>
   )
 }
 

@@ -1,6 +1,6 @@
 import { web3Utils, sendAsync, abi } from '@ethereansos/interfaces-core'
 
-export function getData({ provider }, address) {
+export async function getData({ provider }, address) {
 
     var label = await getRawField({provider}, address, 'LABEL')
     var value = await getRawField({provider}, address, 'value')
@@ -14,7 +14,7 @@ export function getData({ provider }, address) {
     }
 
     try {
-        data.discriminant = abi.decode(["bool"], discriminant)
+        data.discriminant = abi.decode(["bool"], discriminant)[0]
     } catch(e) {}
 
     return data
@@ -23,10 +23,11 @@ export function getData({ provider }, address) {
 export async function getRawField({provider}, to, fieldName) {
     var response = '0x'
     try {
-        response = sendAsync(provider, 'eth_call', {
+        response = await sendAsync(provider, 'eth_call', {
             to,
-            data : web3Utils(fieldName + '()')
+            data : web3Utils.sha3(fieldName + '()').substring(0, 10)
         })
-    } catch(e) {}
+    } catch(e) {
+    }
     return response
 }

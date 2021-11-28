@@ -39,10 +39,14 @@ var SingleProposal = ({element}) => {
   )
 }
 
-export default ({element}) => {
+export default ({element, list}) => {
+
+  const context = useEthosContext()
+
+  const { newContract } = useWeb3()
 
   return <Web3DependantList
     Renderer={SingleProposal}
-    provider={() => retrieveAllProposals({}, element)}
+    provider={() => list || retrieveAllProposals({context, newContract}, element)}
   />
 }

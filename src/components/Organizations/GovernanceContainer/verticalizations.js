@@ -37,7 +37,6 @@ export function HeaderStateManagerVariable({proposal, name, decimals, suffix}) {
             suffix && (value += suffix)
             setValue(value)
         } catch(e) {
-            setValue("0.08 %")
         }
     }
 
