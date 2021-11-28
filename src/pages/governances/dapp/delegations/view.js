@@ -37,7 +37,7 @@ const DelegationView = (props) => {
   return (
     <div className={style.SingleContentPage}>
       <DelegationHeadline element={element}/>
-      {element.host === account && <HostOptions element={element}/>}
+      {<HostOptions element={element}/>}
       <GovernanceContainer element={element}/>
     </div>
   )
