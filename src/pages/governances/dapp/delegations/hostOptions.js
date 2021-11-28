@@ -9,7 +9,7 @@ import { CircularProgress } from '@ethereansos/interfaces-ui'
 
 import { setDelegationMetadata } from '../../../../logic/delegation'
 
-import style from '../organizations-main-sections.module.css'
+import style from '../../../../all.module.css'
 
 const ChangeMetadata =  ({back, finalize}) => {
 
@@ -143,15 +143,21 @@ export default ({element}) => {
 
     const Component = modal === "changeMetadata" ? ChangeMetadata : modal === 'attachToOrganization' ? AttachToOrganization : modal === 'changeRules' ? ChangeRules : null
 
-    return <div>
-        <h6>Host Options</h6>
+    return <div className={style.HostToolsDelegations}>
+        <h6>Host Only Tools</h6>
         {modal && <RegularModal type="medium" close={() => setModal(null)}>
             <div>
               <Component element={element} close={() => setModal(null)}/>
             </div>
         </RegularModal>}
-        <RegularButtonDuo onClick={() => setModal("changeMetadata")}>Change Metadata</RegularButtonDuo>
-        <RegularButtonDuo onClick={() => setModal("attachToOrganization")}>Attach to organization</RegularButtonDuo>
-        <RegularButtonDuo onClick={() => setModal("changeRules")}>Change voting Rules</RegularButtonDuo>
+        <div className={style.HostToolsDelegationsBTN}>
+          <RegularButtonDuo onClick={() => setModal("changeMetadata")}>Edit Metadata</RegularButtonDuo>
+        </div>
+        <div className={style.HostToolsDelegationsBTN}>
+          <RegularButtonDuo onClick={() => setModal("attachToOrganization")}>Connect to an organization</RegularButtonDuo>
+        </div>
+        <div className={style.HostToolsDelegationsBTN}>
+          <RegularButtonDuo onClick={() => setModal("changeRules")}>Edit voting Rules</RegularButtonDuo>
+        </div>
     </div>
 }

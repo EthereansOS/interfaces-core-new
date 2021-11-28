@@ -366,7 +366,7 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 .DelegationHeadlineCardConnectedBox a {display: inline-block; width: 120px; height: 120px; overflow: hidden; position: relative;border-radius: 8px;}
 .DelegationHeadlineCardConnectedBox a img {width: 100%; height: 100%; display: inline-block;}
 
-.DelegationHeadlineCardUPD {width: 920px; display: block;}
+.DelegationHeadlineCardUPD {width: 920px; display: inline-block;}
 .DelegationMainThingsCardD {width: 480px; display: inline-block; position: relative; background-color: #ffffff; text-align: left; border-radius: 20px; overflow: hidden; margin-right: 20px;}
 .DelegationMainThingsCardD figure { width: 170px; height: 170px; display: inline-block; z-index: 10; position: relative; vertical-align: top; overflow: hidden; border-radius: 20px 0 0 20px; z-index: 20;}
 .DelegationMainThingsCardD figure img {width: 100%; height: 100%;}
@@ -428,6 +428,9 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 .DescriptionBig {width: 100%; padding: 20px; font-size: 13px; line-height: 1.2; color: #000000;text-align: left;}
 .DescriptionSmall {width: 450px; font-size: 12px; line-height: 1.2; color: #000000; text-align: left; margin: 20px auto;}
 
+.HostToolsDelegations {width: 900px; display: inline-block; padding: 60px; text-align: center; background-color: #f7fafe; margin: 20px auto; border-radius: 20px; border: 10px solid #e1b9be;}
+.HostToolsDelegations h6 {width: 100%; display: inline-block; font-size: 20px; color: #000000; font-weight: bold; margin: 20px auto;}
+.HostToolsDelegationsBTN {width: 240px; display: inline-block; margin: 5px;}
 
 
 .Riles {width: 100%; display: inline-block; margin: 10px auto; padding: 5px;}
