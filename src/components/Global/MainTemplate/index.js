@@ -15,18 +15,23 @@ const MainTemplate = ({ Component, ...props }) => {
   const {block} = useWeb3()
 
   return props.componentOnly ? <Component setTemplateState={setState} {...props} /> : (
-    <main
-      className={style.root}>
-      <div className={style.BlockNews}>
-        <p>&#10212; <a href={getNetworkElement({context}, 'etherscanURL') + '/block/' + block} target="_blank">#{block}</a></p>
+    <>
+      <main
+        className={style.root}>
+        <div className={style.BlockNews}>
+          <p>&#10212; <a href={getNetworkElement({context}, 'etherscanURL') + '/block/' + block} target="_blank">#{block}</a></p>
+        </div>
+        <Header {...props} />
+        <Container className={classnames(style.container)}>
+          <Content>
+            <Component setTemplateState={setState} {...props} />
+          </Content>
+        </Container>
+      </main>
+      <div className={style.OnlyMobile}>
+        <p>This interface is not mobile ready at the moment.</p>
       </div>
-      <Header {...props} />
-      <Container className={classnames(style.container)}>
-        <Content>
-          <Component setTemplateState={setState} {...props} />
-        </Content>
-      </Container>
-    </main>
+    </>
   )
 }
 
