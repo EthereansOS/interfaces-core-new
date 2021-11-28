@@ -40,3 +40,21 @@ a {cursor: pointer; text-decoration: none;}
 .CardsLayerS figure img {width: 60px; display: inline-block;}
 .CardsLayerS p {font-size: 15px; color: #786FFF; font-weight: bold;}
 .CardsLayerS {margin-top: 100px;}
+.OnlyMobileIndexBanner {display: none;}
+
+@media only screen and (max-device-width: 990px) {
+    .IndexHeaderMenu {display: none;}
+    .OnlyMobileIndexBanner {display: block; width: 90%; margin: 30px auto; text-align: center; background-color: #aa9cfe; color: #ffffff; border-radius: 20px; padding: 30px;}
+    .OnlyMobileIndexBanner p {font-size: 12px; display: inline-block; color: #ffffff;}
+    .IndexHeaderLogo {display: none;}
+    .SuperTitle h1 {font-size: 70px; width: 100%;}
+    .SuperTitle {margin-top: 30px;}
+    .Graphic {margin-top: 20px;}
+    .Graphic figure, .Graphic figure img {width: 100%;}
+    .TextPart, .TextPart h5, .TextPart h6 {width: 100%; padding: 10px;}
+    .TextPart h5 {font-size: 22px; font-weight: bold;}
+    .TextPart h6 {font-size: 16px; font-weight: normal;}
+    .CardsLayer {display: none;}
+    .Footer {margin-top: 100px;}
+    .FooterLinks {width: 100%; position: absolute; left: 0; right: 0; margin: 0;top: -100px;}
+}
