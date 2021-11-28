@@ -63,32 +63,32 @@ const ChangeMetadata =  ({back, finalize}) => {
         <label className={style.CreationPageLabelFS}>
           <h6>Website</h6>
           <input type="link" value={external_url} onChange={e => setExternal_url(e.currentTarget.value)}/>
-          <p>The official website</p>
+          <p>The official website of your Delegation.</p>
         </label>
         <label className={style.CreationPageLabelFS}>
           <h6>Discussion link</h6>
           <input type="link" value={discussion_url} onChange={e => setDiscussion_url(e.currentTarget.value)}/>
-          <p>A link where delegation discussions happens</p>
+          <p>A place to discuss your Delegation.</p>
         </label>
         <label className={style.CreationPageLabelFS}>
           <h6>Symbol</h6>
           <input type="text" value={symbol} onChange={e => setSymbol(e.currentTarget.value)}/>
-          <p>Select a symbol for your Delegation. This will effect the name and symbol that your sustenitor will receive by wrapping their tokens</p>
+          <p>The symbol / ticker of your Delegation.</p>
         </label>
         <label className={style.CreationPageLabelFS}>
           <h6>Logo link</h6>
           <input placeholder="ipfs//..." type="link" value={logo} onChange={e => setLogo(e.currentTarget.value)}/>
-          <p>Input a valid IPFS link for the logo of your Delegation. Please upload a square picture (.png, .jpg) to perfectly match the delegation logo with the EthereansOS interface style.</p>
+          <p>A valid IPFS link for your Delegation’s logo. Please upload a square picture (.png, .gif or .jpg, max size 1mb) so that it fits perfectly with the EthereansOS interface style.</p>
         </label>
         <label className={style.CreationPageLabelFS}>
           <h6>Logo Background</h6>
           <input type="color" value="#ffffff" onChange={e => setBackground_color(e.currentTarget.value)}/>
-          <p>The background color of your logo. This is used to fill the space if the logo don't match standard boxes in every interface.</p>
+          <p>The background color of your Delegation’s logo. This color will fill any empty space that the logo leaves if it doesn’t match any standard box in the interface.</p>
         </label>
         <label className={style.CreationPageLabelFS}>
           <h6>Public polls</h6>
           <input type="checkbox" onChange={e => setPublic_polls(e.currentTarget.value)}/>
-          <p>If active, anyone can create a poll connected to this Delegation and all of the polls compares in the Delegation page. If deactivate, only polls created by the host will compare in the Delegation page.</p>
+          <p>If active, all polls created regarding this Delegation will appear on the Delegation’s page. If not active, only polls created by the Delegation host will appear on the Delegation’s page.</p>
         </label>
         <div className={style.ActionDeploy}>
           {loading && <CircularProgress/>}

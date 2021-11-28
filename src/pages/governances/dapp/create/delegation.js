@@ -10,13 +10,13 @@ const Init = ({onSelection}) => {
     <div>
       <div className={style.CreateBoxDesc}>
         <h6>Organization</h6>
-        <p>Start a  are fully on-chain governance system with composable granular permissions levels.</p>
+        <p>Start a completely on-chain governance organization with deeply composable permission levels.</p>
         <b className={style.ExtLinkButtonAlpha}>Coming Soon</b>
         <a target="_blank" href="https://docs.ethos.wiki/ethereansos-docs/organizations/organizations" className={style.ExtLinkButtonAlpha}>Learn</a>
       </div>
       <div className={style.CreateBoxDesc}>
         <h6>Delegation</h6>
-        <p>Start a delegation, to manage grants and become an active party in the journey of one or more organizations.</p>
+        <p>Start a delegation, an independent governance party that can compete for grant funding from one or more Organizations.</p>
         <a className={style.NextStep}  onClick={() => onSelection("deploy")}>Start</a>
         <a target="_blank" className={style.ExtLinkButtonAlpha} href="https://docs.ethos.wiki/ethereansos-docs/organizations/delegations">Learn</a>
       </div>
@@ -83,32 +83,32 @@ const Deploy = ({back, finalize}) => {
       <label className={style.CreationPageLabelF}>
         <h6>Website</h6>
         <input type="link" value={external_url} onChange={e => setExternal_url(e.currentTarget.value)}/>
-        <p>The official website</p>
+        <p>The official website of your Delegation.</p>
       </label>
       <label className={style.CreationPageLabelF}>
         <h6>Discussion link</h6>
         <input type="link" value={discussion_url} onChange={e => setDiscussion_url(e.currentTarget.value)}/>
-        <p>A link where delegation discussions happens</p>
+        <p>A place to discuss your Delegation.</p>
       </label>
       <label className={style.CreationPageLabelF}>
         <h6>Symbol</h6>
         <input type="text" value={symbol} onChange={e => setSymbol(e.currentTarget.value)}/>
-        <p>Select a symbol for your Delegation. This will effect the name and symbol that your sustenitor will receive by wrapping their tokens</p>
+        <p>The symbol / ticker of your Delegation.</p>
       </label>
       <label className={style.CreationPageLabelF}>
         <h6>Logo link</h6>
         <input placeholder="ipfs//..." type="link" value={logo} onChange={e => setLogo(e.currentTarget.value)}/>
-        <p>Input a valid IPFS link for the logo of your Delegation. Please upload a square picture (.png, .jpg) to perfectly match the delegation logo with the EthereansOS interface style.</p>
+        <p>A valid IPFS link for your Delegation’s logo. Please upload a square picture (.png, .gif or .jpg, max size 1mb) so that it fits perfectly with the EthereansOS interface style.</p>
       </label>
       <label className={style.CreationPageLabelF}>
         <h6>Logo Background</h6>
         <input type="color" value="#ffffff" onChange={e => setBackground_color(e.currentTarget.value)}/>
-        <p>The background color of your logo. This is used to fill the space if the logo don't match standard boxes in every interface.</p>
+        <p>The background color of your Delegation’s logo. This color will fill any empty space that the logo leaves if it doesn’t match any standard box in the interface.</p>
       </label>
       <label className={style.CreationPageLabelF}>
         <h6>Public polls</h6>
         <input type="checkbox" onChange={e => setPublic_polls(e.currentTarget.value)}/>
-        <p>If active, anyone can create a poll connected to this Delegation and all of the polls compares in the Delegation page. If deactivate, only polls created by the host will compare in the Delegation page.</p>
+        <p>If active, all polls created regarding this Delegation will appear on the Delegation’s page. If not active, only polls created by the Delegation host will appear on the Delegation’s page.</p>
       </label>
       <div className={style.ActionDeploy}>
         {loading && <CircularProgress/>}
@@ -160,32 +160,31 @@ const Finalize = ({back, success, cumulativeData}) => {
       <label className={style.CreationPageLabelF}>
         <h6>Delegation address</h6>
         <input type="text" value={delegationAddress} onChange={e => setDelegationAddress(e.currentTarget.value)}/>
-        <p>Select a symbol for your Delegation. This will effect the name and symbol that your sustenitor will receive by wrapping their tokens</p>
       </label>
       <label className={style.CreationPageLabelF}>
         <h6>Host</h6>
         <input type="text" value={host} onChange={e => setHost(e.currentTarget.value)}/>
-        <p>Select a symbol for your Delegation. This will effect the name and symbol that your sustenitor will receive by wrapping their tokens</p>
+        <p>This is the address (wallet, MultiSig, Organization or contract) that manages this Delegation. The host is able to create proposals to spend funds, change metadata and change governance rules.</p>
       </label>
       <label className={style.CreationPageLabelF}>
         <h6>Survey Duration</h6>
         <input type="number" value={blockLength} onChange={e => setBlockLength(e.currentTarget.value)}/>
-        <p>Select a symbol for your Delegation. This will effect the name and symbol that your sustenitor will receive by wrapping their tokens</p>
+        <p>The duration (in blocks) that Proposals will be open for.</p>
       </label>
       <label className={style.CreationPageLabelF}>
         <h6>Validation Bomb</h6>
         <input type="number" value={validationBomb} onChange={e => setValidationBomb(e.currentTarget.value)}/>
-        <p>Select a symbol for your Delegation. This will effect the name and symbol that your sustenitor will receive by wrapping their tokens</p>
+        <p>This is an optional amount of blocks after which a passed Proposal can never be executed. If set as zero, there is no time limit by which a Proposal must be executed.</p>
       </label>
       <label className={style.CreationPageLabelF}>
         <h6>Quorum</h6>
         <input className={style.perchentageThing} type="number" min="0" max="100" value={quorumPercentage} onChange={e => setQuorumPercentage(e.currentTarget.value)}/>
-        <p>Select a symbol for your Delegation. This will effect the name and symbol that your sustenitor will receive by wrapping their tokens</p>
+        <p>An minimum number of votes required for a proposal to pass.</p>
       </label>
       <label className={style.CreationPageLabelF}>
         <h6>Hard Cap</h6>
         <input className={style.perchentageThing} type="number" min="0" max="100" value={hardCapPercentage} onChange={e => setHardcapPercentage(e.currentTarget.value)}/>
-        <p>Select a symbol for your Delegation. This will effect the name and symbol that your sustenitor will receive by wrapping their tokens</p>
+        <p>An optional minimum number of votes required to end a proposal, regardless of how long it is still set to remain open.</p>
       </label>
       <div className={style.ActionDeploy}>
         {loading && <CircularProgress/>}
