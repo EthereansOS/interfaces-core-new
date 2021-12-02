@@ -15,7 +15,7 @@ export default ({title, value, total}) => {
       <div className={style.Upshot}>
         <span>{title}</span>
         <div className={style.UpshotBar}>
-          <figure>{percentage}</figure>
+          <figure style={{width : percentage}}>{percentage}</figure>
         </div>
       </div>
   )

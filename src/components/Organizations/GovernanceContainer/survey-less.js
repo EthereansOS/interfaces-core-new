@@ -111,8 +111,7 @@ const MultiVoteBox = ({element}) => {
                     <p>Owner:</p>
                     <input type="text" value={address} onChange={e => setAddress(e.currentTarget.value)}/>
                   </label>
-                </div>
-              }
+                </div>}
               {toWithdraw && toWithdraw.length > 0 && toWithdraw.filter(it => it.value !== '0').map(it => <div key={it.address} className={style.RegularVoteBoxStaked}>
                 <p>{it.prettifiedValue} - {it.value} {it.symbol} staked</p>
                 <ActionAWeb3Button type="ExtraSmall" onSuccess={refreshData} onClick={() => withdrawProposal({account}, element, it.proposalId, address, false)}>Withdraw</ActionAWeb3Button>

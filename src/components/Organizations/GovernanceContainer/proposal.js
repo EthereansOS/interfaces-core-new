@@ -6,6 +6,7 @@ import RegularVoteBox from '../../Organizations/RegularVoteBox/index.js'
 import LogoRenderer from "../../Global/LogoRenderer"
 import ActionAWeb3Button from '../../Global/ActionAWeb3Button'
 import ActionInfoSection from '../../Global/ActionInfoSection/index.js'
+import VoteSelections from '../VoteSelections/index.js'
 
 import { useWeb3, useEthosContext, blockchainCall, fromDecimals } from '@ethereansos/interfaces-core'
 
@@ -15,13 +16,17 @@ import Description from './description'
 
 import style from '../../../all.module.css'
 
-export default ({element, proposal, metadata, checkAll}) => {
+export default ({element, checkAll}) => {
 
   const context = useEthosContext()
 
-  const { newContract, block, account } = useWeb3()
+  const { newContract, block, account, web3 } = useWeb3()
 
-  const buyOrSell = metadata.name === 'Investment Fund Routine Buy' ? true : metadata.name === 'Investment Fund Routine Sell' ? false : null
+  const [value, setValue] = useState(null)
+  const [accepts, setAccepts] = useState(null)
+  const [refuses, setRefuses] = useState(null)
+
+  const buyOrSell = element.name === 'Investment Fund Routine Buy' ? true : element.name === 'Investment Fund Routine Sell' ? false : null
 
   const [tokens, setTokens] = useState(null)
   const [open, setOpen] = useState(false)
@@ -29,33 +34,41 @@ export default ({element, proposal, metadata, checkAll}) => {
   const [terminable, setTerminable] = useState(false)
   const [address, setAddress] = useState(null)
 
+  const [proposalData, setProposalData] = useState(null)
+
   const [toWithdraw, setToWithdraw] = useState(null)
 
   useEffect(() => {
-    if(buyOrSell === null) {
+    if(buyOrSell === null || proposalData === null) {
       return
     }
     setTimeout(async () => {
-      var contract = newContract(context[buyOrSell ? "ChangeInvestmentsManagerFourTokensFromETHListABI" : "ChangeInvestmentsManagerFiveTokensToETHListABI"], element[1][0])
+      var contract = newContract(context[buyOrSell ? "ChangeInvestmentsManagerFourTokensFromETHListABI" : "ChangeInvestmentsManagerFiveTokensToETHListABI"], proposalData[1][0])
       var t = [null, null, null, null]
       !buyOrSell && t.push(null)
       t = await Promise.all(t.map((_, i) => blockchainCall(contract.methods.tokens, i)))
       setTokens(t)
     })
-  }, [buyOrSell])
+  }, [element, buyOrSell, proposalData])
 
   useEffect(() => {
-    setTimeout(async () => {
-      setToWithdraw(await tokensToWithdraw({account}, element, element.id))
-      setTerminable(await surveyIsTerminable({account, newContract, context}, element, element.id))
-    })
-  }, [block, proposal, account])
+    refreshData()
+  }, [block, element, account])
+
+  async function refreshData() {
+    var data = await tokensToWithdraw({account, web3, context, newContract}, element, element.proposalId)
+    setToWithdraw(data.tw)
+    setAccepts(data.accs)
+    setRefuses(data.refs)
+    setTerminable(await surveyIsTerminable({account, newContract, context}, element, element.proposalId))
+    setProposalData((await blockchainCall(element.proposalsManager.methods.list, [element.proposalId]))[0])
+  }
 
   return (
     <div className={style.Proposal}>
       <div className={style.ProposalTitle}>
       {buyOrSell === null ? <>
-        <h6>{metadata.name}</h6>
+        <h6>{element.name}</h6>
       </> : <>
       {tokens && <h6>
         New selection:
@@ -75,48 +88,70 @@ export default ({element, proposal, metadata, checkAll}) => {
         </div>
       </div>
       <div className={style.ProposalVotesCount}>
-        <span>Votes: {fromDecimals(element.accept.ethereansosAdd(element.refuse), 18)}</span>
+        <span>Votes: {fromDecimals(proposalData?.accept?.ethereansosAdd(proposalData.refuse), 18)}</span>
         <RegularButtonDuo onClick={() => setOpen(!open)}>{open ? "Close" : "Open"}</RegularButtonDuo>
       </div>
       {open && <>
         <div className={style.ProposalOpen}>
-        <Description description={metadata.summary} title="Summary" className={style.DescriptionBig}/>
-        <Description description={metadata.rationale} title="Rationale and Motivations" className={style.DescriptionBig}/>
-        <Description description={metadata.specification} title="Specification" className={style.DescriptionBig}/>
-        <Description description={metadata.risks} title="Risks" className={style.DescriptionBig}/>
+        <Description description={element.summary} title="Summary" className={style.DescriptionBig}/>
+        <Description description={element.rationale} title="Rationale and Motivations" className={style.DescriptionBig}/>
+        <Description description={element.specification} title="Specification" className={style.DescriptionBig}/>
+        <Description description={element.risks} title="Risks" className={style.DescriptionBig}/>
         <div className={style.Upshots}>
             <p>Upshot</p>
-            <Upshots title="Yes" value={element.accept} total={element.accept.ethereansosAdd(element.refuse)}/>
-            <Upshots title="No" value={element.refuse} total={element.accept.ethereansosAdd(element.refuse)}/>
+            <Upshots title="Yes" value={proposalData?.accept} total={proposalData?.accept?.ethereansosAdd(proposalData?.refuse)}/>
+            <Upshots title="No" value={proposalData?.refuse} total={proposalData?.accept?.ethereansosAdd(proposalData?.refuse)}/>
           </div>
-          <ActionInfoSection hideAmmStuff onSettingsToggle={settings => setAddress(settings ? '' : null)}/>
-          {terminable && <ActionAWeb3Button onClick={() => terminateProposal({}, element, element.id).then(checkAll)}>Terminate</ActionAWeb3Button>}
-          {!terminable && <div className={style.Vote}>
+          {terminable && <ActionAWeb3Button onClick={() => terminateProposal({}, element, element.proposalId).then(refreshData)}>Terminate</ActionAWeb3Button>}
+          <div className={style.Vote}>
+            {proposalData?.terminationBlock === '0' && (terminable ? <></> : <>
             <p><b>Choose from:</b></p>
             <div className={style.VoteList}>
-              <label>
-                Yes:
-                <input type='radio' name={`${element.id}_accept`} checked={type === 'accept'} onClick={() => setType("accept")}/>
-              </label>
-              <label>
-                No:
-                <input type='radio' name={`${element.id}_refuse`} checked={type === 'refuse'} onClick={() => setType("refuse")}/>
-              </label>
-              <RegularVoteBox proposalId={element.id} element={proposal.organization} forRefuse={type === 'refuse'} proposal={{...proposal, ...element}} metadata={metadata}/>
+              <VoteSelections
+                {...{
+                  checked: value === "Yes",
+                  onSelect : setValue,
+                  discriminator : 'survey_' + element.proposalId,
+                  element,
+                  value : "Yes",
+                  label : "Yes",
+                  votes : accepts && accepts[0],
+                  proposalId : element.proposalId
+                }}/>
+                <VoteSelections
+                {...{
+                  checked: value === "No",
+                  onSelect : setValue,
+                  discriminator : 'survey_' + element.proposalId,
+                  element,
+                  value : "No",
+                  label : "No",
+                  votes : refuses && refuses[0],
+                  proposalId : element.proposalId
+                }}/>
+              {(value || (toWithdraw && toWithdraw.length > 0)) && <div className={style.Options}>
+                <ActionInfoSection hideAmmStuff onSettingsToggle={settings => setAddress(settings ? '' : null)}/>
+              </div>}
+              {value && <RegularVoteBox
+                element={element}
+                address={address}
+                proposalId={element.proposalId}
+                forRefuse={value === 'No'}
+                refresh={refreshData}
+                />}
             </div>
+          </>)}
+          </div>
+          {address !== null && <div className={style.OptionOpen}>
+            <label>
+              <p>Owner:</p>
+              <input type="text" value={address} onChange={e => setAddress(e.currentTarget.value)}/>
+            </label>
           </div>}
-          {address !== null &&
-                <div>
-                  <label>
-                    Address:
-                    <input type="text" value={address} onChange={e => setAddress(e.currentTarget.value)}/>
-                  </label>
-                </div>
-              }
-              {toWithdraw && toWithdraw.length > 0 && toWithdraw.filter(it => it.value !== '0').map(it => <div key={it.address} className={style.RegularVoteBoxStaked}>
-                <p>{it.prettifiedValue} - {it.value} {it.symbol} staked</p>
-                <ActionAWeb3Button type="ExtraSmall" onClick={() => withdrawProposal({account}, proposal, it.proposalId, address, false)}>Withdraw</ActionAWeb3Button>
-              </div>)}
+          {toWithdraw && toWithdraw.length > 0 && toWithdraw.filter(it => it.value !== '0').map(it => <div key={it.address} className={style.RegularVoteBoxStaked}>
+            <p>{it.prettifiedValue} - {it.value} {it.symbol} staked</p>
+            <ActionAWeb3Button type="ExtraSmall" onSuccess={refreshData} onClick={() => withdrawProposal({account}, element, it.proposalId, address, proposalData?.terminationBlock !== '0')}>Withdraw</ActionAWeb3Button>
+          </div>)}
         </div>
       </>}
     </div>

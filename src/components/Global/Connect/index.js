@@ -1,4 +1,4 @@
-import { useState, Fragment } from 'react'
+import { useState, Fragment, useEffect } from 'react'
 import { Button, CircularProgress, Typography } from '@ethereansos/interfaces-ui'
 import { useWeb3, web3States } from '@ethereansos/interfaces-core'
 
@@ -34,12 +34,24 @@ const ConnectWidget = ({
   setConnector,
   errorMessage
 }) => {
-  const [activeConnector, setActiveConnector] = useState(null)
 
-  const onClick = connector => {
-    setConnector(connector)
-    setActiveConnector(connector)
+  var previousConnector = null;
+
+  try {
+    var connectorId = window.localStorage.connector
+    previousConnector = connectors.filter(it => it.id === connectorId)[0]
+  } catch(e) {
   }
+
+  const [activeConnector, setActiveConnector] = useState(previousConnector)
+
+  useEffect(() => {
+    setConnector(activeConnector)
+    try {
+      window.localStorage.setItem("connector", null)
+      window.localStorage.setItem("connector", activeConnector.id)
+    } catch(e) {}
+  }, [activeConnector])
 
   return (
     <div>
@@ -49,7 +61,7 @@ const ConnectWidget = ({
       <br />
       {connectionStatus === web3States.CONNECTED && <div>Connected</div>}
       {!errorMessage && connectionStatus === web3States.CONNECTING && <div>Connecting to {activeConnector.buttonText} <CircularProgress/></div>}
-      {connectionStatus === web3States.NOT_CONNECTED && 
+      {connectionStatus === web3States.NOT_CONNECTED &&
         <p> Connect to Ethereum to use this Dapp</p>}
         <br/>
         {(!activeConnector || errorMessage) &&
@@ -57,7 +69,7 @@ const ConnectWidget = ({
             <Fragment key={connector.id}>
               <Button
                 text={connector.buttonText}
-                onClick={() => onClick(connector)}
+                onClick={() => setActiveConnector(connector)}
               />
               <br/>
               <br/>

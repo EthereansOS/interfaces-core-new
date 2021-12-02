@@ -44,12 +44,10 @@ export default ({element}) => {
         <p><b>Voting Powers:</b></p>
         <VotingPowersList votingTokens={element.organization.proposalsConfiguration.votingTokens}/>
       </div>}
-      {proposalType !== 'poll' && <>
-        <div className={style.Rules}>
-          <p><b>Governance Rules:</b></p>
-          <GovernanceRules element={element} validators={element.isSurveyless && element.validatorsAddresses[element.votingRulesIndex]}  terminates={element.isSurveyless && element.canTerminateAddresses[element.votingRulesIndex]}/>
-        </div>
-      </>}
+      {proposalType !== 'poll' && <div className={style.Rules}>
+        <p><b>Governance Rules:</b></p>
+        <GovernanceRules element={element}/>
+      </div>}
     </div>
   )
 }

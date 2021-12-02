@@ -88,10 +88,10 @@ export async function decodeProposal({ account, web3, context, newContract }, pr
 }
 
 export async function extractProposalVotingTokens({account, web3, context, newContract}, proposalData, proposalId) {
-    var votingTokens = abi.decode(["address[]", "uint256", "uint256"], proposalData.votingTokens);
+    var votingTokens = abi.decode(["address[]", "uint256[]", "uint256[]"], proposalData.votingTokens);
     var addresses = votingTokens[0];
-    var objectIds = votingTokens[1];
-    var weights = votingTokens[2];
+    var objectIds = votingTokens[1].map(it => it.toString());
+    var weights = votingTokens[2].map(it => it.toString());
 
     votingTokens = await Promise.all(addresses.map((it, i) => decodeProposalVotingToken({ account, web3, context, newContract }, proposalId, it, objectIds[i], weights[i])))
     return votingTokens

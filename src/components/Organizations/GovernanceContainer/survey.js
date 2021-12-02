@@ -4,35 +4,25 @@ import Proposal from './proposal'
 import { CircularProgress } from '@ethereansos/interfaces-ui'
 
 import { retrieveSurveyByModel } from '../../../logic/organization.js'
+import Description from './description'
 
 import style from '../../../all.module.css'
 
-export default ({proposal, metadata}) => {
+export default ({element}) => {
 
-  const [values, setValues] = useState(null)
-
-  async function checkAll() {
-    setValues(await retrieveSurveyByModel({}, proposal))
-  }
-
-  useEffect(() => {
-    checkAll()
-  }, [])
-
-  var actives = values && values.filter(it => it.terminationBlock === '0')
-  var ended = values && values.filter(it => it.terminationBlock !== '0')
+  var actives = element.subProposals.filter(it => it.terminationBlock === '0')
+  var ended = element.subProposals.filter(it => it.terminationBlock !== '0')
 
   return (<>
-    <p className={style.DescriptionBig} ref={ref => ref && (ref.innerHTML = metadata.description)}/>
+    <Description className={style.DescriptionBig} description={element.description} title="Summary"/>
     <div className={style.Proposals}>
-      {!values && <CircularProgress/>}
       {actives && actives.length > 0 && <>
         <p><b>Active:</b></p>
-        {actives.map(it => <Proposal key={it.id} element={it} checkAll={checkAll} proposal={proposal} metadata={metadata}/>)}
+        {actives.map(it => <Proposal key={it.id} element={it}/>)}
       </>}
       {ended && ended.length > 0 && <>
         <p><b>Ended:</b></p>
-        {ended.map(it => <Proposal key={it.id} element={it} proposal={proposal} metadata={metadata}/>)}
+        {ended.map(it => <Proposal key={it.id} element={it}/>)}
       </>}
     </div>
   </>)
