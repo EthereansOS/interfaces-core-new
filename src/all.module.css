@@ -3,41 +3,35 @@ a {cursor: pointer;}
 
 /* Global Components */
 
-.dark {background-color: #000000 !important;}
-.dark .OrgTitle p { color:rgb(75, 203, 201) !important}
-
 .ActionAWeb3Button {width: 100%; margin: 15px auto; text-align: center;}
 .ActionAWeb3Button button {width: auto; margin: 0 auto; padding: 9px 15px; text-align: center; font-size: 15px; border-radius: 15px; border: none !important; cursor: pointer;background-color: #7474f7; color: #ffffff; font-weight: bold;}
-.ActionAWeb3Button button:disabled {font-weight: normal !important; background-color: #e4e4e4 !important; color: #6e6e6e !important; cursor: default;}
+.ActionAWeb3Button button:disabled {font-weight: normal !important;  color: #6e6e6e !important; cursor: default;}
 
 .ActionAWeb3ButtonExtraSmall {width: auto; display: inline-block;}
 .ActionAWeb3ButtonExtraSmall button {width: auto; margin: 5px auto; padding: 4px 8px; text-align: center; font-size: 10px; border-radius: 12px; border: none !important; cursor: pointer;background-color: #7474f7; color: #ffffff; font-weight: bold;}
-.ActionAWeb3ButtonExtraSmall button:disabled {font-weight: normal !important; background-color: #e4e4e4 !important; color: #6e6e6e !important; cursor: default;}
-.ActionAWeb3ButtonExtraSmall {width: auto; display: inline-block;}
-.ActionAWeb3ButtonExtraSmall button {width: auto; margin: 5px auto; padding: 4px 8px; text-align: center; font-size: 10px; border-radius: 12px; border: none !important; cursor: pointer;background-color: #7474f7; color: #ffffff; font-weight: bold;}
-.ActionAWeb3ButtonExtraSmall button:disabled {font-weight: normal !important; background-color: #e4e4e4 !important; color: #6e6e6e !important; cursor: default;}
+.ActionAWeb3ButtonExtraSmall button:disabled {font-weight: normal !important;color: #6e6e6e !important; cursor: default;}
 
 .ActionAWeb3Buttons {width: 100%; margin: 15px auto; text-align: center;}
 .ActionAWeb3Buttons button {width: 40%; margin: 0 3%; padding: 20px 0px; text-align: center; font-size: 15px; border-radius: 20px; border: none !important; cursor: pointer;}
 .ActionAWeb3Buttons .ActionASide, .ActionAWeb3Buttons .ActionAMain {background-color: #7474f7; color: #ffffff; font-weight: bold;}
-.ActionAWeb3Buttons button:disabled {font-weight: normal !important; background-color: #e4e4e4 !important; color: #6e6e6e !important; cursor: default;}
+.ActionAWeb3Buttons button:disabled {font-weight: normal !important; color: #6e6e6e !important; cursor: default;}
 
 .ActionAWeb3ButtonSmall {width: 100%; display: inline-block;}
 .ActionAWeb3ButtonSmall button {width: 200px; margin: 0 auto; padding: 5px 12px; text-align: center; font-size: 11px; border-radius: 15px; border: none !important; cursor: pointer;background-color: #7474f7; color: #ffffff; font-weight: bold;}
-.ActionAWeb3ButtonSmall button:disabled {font-weight: normal !important; background-color: #e4e4e4 !important; color: #6e6e6e !important; cursor: default;}
+.ActionAWeb3ButtonSmall button:disabled {font-weight: normal !important; color: #6e6e6e !important; cursor: default;}
 
-.ActionInfoSection {width: 100%; display: inline-block; border-radius: 20px; padding: 5px; background-color: #e4e4e4;}
+.ActionInfoSection {width: 100%; display: inline-block; border-radius: 20px; padding: 5px;}
 .ActionInfoSection .ActionInfoSectionAMM {width: 40px; height: 40px; padding: 5px; display: inline-block; text-align: center; cursor: pointer; background-color: #F0F0F0;border-radius: 14px; overflow: hidden; vertical-align: middle;}
 .ActionInfoSection .ActionInfoSectionAMM figure {width: 25px; height: 25px; display: inline-block;}
 .ActionInfoSection .ActionInfoSectionAMM figure img {width: 100%; height: 100%; display: block;}
 .ActionInfoSection .ActionInfoSectionAMM span {font-size: 13px; font-weight: bold;margin-top: -5px;display: block;}
-.ActionInfoSection .ActionInfoSectionSettings {width: 40px; height: 40px;padding: 5px; display: inline-block; text-align: center; cursor: pointer; background-color: #F0F0F0;border-radius: 14px; overflow: hidden; vertical-align: middle; margin-left: 5px;}
+.ActionInfoSection .ActionInfoSectionSettings {width: 40px; height: 40px;padding: 5px; display: inline-block; text-align: center; cursor: pointer; border-radius: 14px; overflow: hidden; vertical-align: middle; margin-left: 5px;}
 .ActionInfoSection .ActionInfoSectionSettings figure {width: 30px; height: 30px; display: inline-block;}
 .ActionInfoSection .ActionInfoSectionSettings figure img {width: 100%; height: 100%; display: block;}
 .ActionInfoSectionText {width: 60%; margin-left: 2%;  margin-right: 1%; display: inline-block; vertical-align: middle; text-align: left;}
 .ActionInfoSectionText p {font-size: 11px; line-height: 1.2;}
 
-.ActionInfoSectionS {width: 100%; display: inline-block; border-radius: 20px; padding: 5px; background-color: #e4e4e4;}
+.ActionInfoSectionS {width: 100%; display: inline-block; border-radius: 20px; padding: 5px; }
 .ActionInfoSectionS .ActionInfoSectionAMM {width: 40px; height: 40px; padding: 5px; display: inline-block; text-align: center; cursor: pointer; background-color: #F0F0F0;border-radius: 14px; overflow: hidden; vertical-align: middle;}
 .ActionInfoSectionS .ActionInfoSectionAMM figure {width: 25px; height: 25px; display: inline-block;}
 .ActionInfoSectionS .ActionInfoSectionAMM figure img {width: 100%; height: 100%; display: block;}
@@ -46,10 +40,10 @@ a {cursor: pointer;}
 .ActionInfoSectionS .ActionInfoSectionSettings figure {width: 30px; height: 30px; display: inline-block;}
 .ActionInfoSectionS .ActionInfoSectionSettings figure img {width: 100%; height: 100%; display: block;}
 
-.BackButton {display: inline-block;padding: 4px 13px;background-color: #e4e4e4;color: #6e6e6e;border-radius: 20px;font-size: 14px;font-weight: 700;cursor: pointer; box-shadow: none; border:none;}
+.BackButton {display: inline-block;padding: 4px 13px;border-radius: 20px;font-size: 14px;font-weight: 700;cursor: pointer; box-shadow: none; border:none;}
 
-.ModalBack {position: fixed; z-index: 10000000000000; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; background: linear-gradient(135deg,#655dfff5,#a0a0a0ea 80%); text-align: center;display: flex;flex-wrap: wrap;flex-direction: row;justify-content: center;align-items: center;align-content: center}
-.ModalBoxBanner {width: 500px; overflow: scroll; max-height: 70%;  z-index: 100000000000000;background-color: #ffffff; border-radius: 20px;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32); padding: 40px;}
+.ModalBack {position: fixed; z-index: 10000000000000; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden;  text-align: center;display: flex;flex-wrap: wrap;flex-direction: row;justify-content: center;align-items: center;align-content: center}
+.ModalBoxBanner {width: 500px; overflow: scroll; max-height: 70%;  z-index: 100000000000000;border-radius: 20px;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32); padding: 40px;}
 .ModalBoxBanner h6 {font-size: 13px; width: 100%; display: inline-block; padding: 10px 20px; margin: 10px auto; text-align: left; font-weight: normal; line-height: 1.3;}
 .ModalBoxBanner p {font-size: 13px; width: 100%; display: inline-block; padding: 5px 30px; text-align: left;}
 .ModalBoxBanner h5 {padding: 20px; font-size: 20px;}
@@ -598,3 +592,46 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 @media only screen and (max-device-width: 990px) {
 
 }
+
+/* themes */
+
+.light p,span,a,h6,h5,h4,h3,h2,h1,aside {color: #000000;}
+.dark p,span,a,h6,h5,h4,h3,h2,h1,aside {color: #ffffff;}
+
+.light, .dark, .biz {min-height: 100vh; overflow: scroll;}
+
+.dark {background-color: #000000; background: linear-gradient(300deg, #000000 70%, rgba(120,111,255,1) 100%);}
+.light {background: rgb(255,255,255);background: linear-gradient(300deg, #fdf7f5 70%, rgba(120,111,255,1) 100%);}
+
+.light .ActionInfoSection {background-color: #e4e4e4;}
+.dark .ActionInfoSection {background-color: #313131;}
+
+.light .ActionInfoSection .ActionInfoSectionAMM {background-color: #F0F0F0;}
+.dark .ActionInfoSection .ActionInfoSectionAMM {background-color: #1b1b1b;}
+
+.light .ActionInfoSection .ActionInfoSectionSettings {background-color: #F0F0F0;}
+.dark .ActionInfoSection .ActionInfoSectionSettings {background-color: #1b1b1b;}
+
+.light .ActionInfoSectionS .ActionInfoSectionAMM {background-color: #F0F0F0;}
+.dark .ActionInfoSectionS .ActionInfoSectionAMM {background-color: #1b1b1b;}
+
+.light .ActionInfoSectionS .ActionInfoSectionSettings {background-color: #F0F0F0;}
+.dark .ActionInfoSectionS .ActionInfoSectionSettings {background-color: #1b1b1b;}
+
+.light .ActionInfoSectionText p {color: #000000;}
+.dark .ActionInfoSectionText p {color: #ffffff;}
+
+.light .ActionInfoSectionS {background-color: #e4e4e4;}
+.dark .ActionInfoSectionS {background-color: #313131;}
+
+.light .ActionAWeb3Button button:disabled, .ActionAWeb3ButtonExtraSmall button:disabled, .ActionAWeb3Buttons button:disabled, .ActionAWeb3ButtonSmall button:disabled {background-color: #e4e4e4 !important;}
+.dark .ActionAWeb3Button button:disabled, .ActionAWeb3ButtonExtraSmall button:disabled, .ActionAWeb3Buttons button:disabled, .ActionAWeb3ButtonSmall button:disabled {background-color: #444444 !important;}
+
+.light .BackButton  {background-color: #e4e4e4; color: #6e6e6e;}
+.dark .BackButton  {background-color: #313131; color: #6e6e6e;}
+
+.light .ModalBack  {background: linear-gradient(135deg,#655dfff5,#a0a0a0ea 80%);}
+.dark .ModalBack  {background: linear-gradient(135deg,#655dfff5,#1b1b1bea 80%);}
+
+.light .ModalBoxBanner  {background-color: #ffffff; }
+.dark .ModalBoxBanner  {background-color: #161616; }

@@ -14,7 +14,7 @@ html {
 h1,h2,h3,h4,h5,h6,p {margin-block-start: 0em;margin-block-end: 0em;margin-inline-start: 0px;margin-inline-end: 0px;}
 
 body {
-  background: rgb(255,255,255);background: linear-gradient(300deg, #fdf7f5 70%, rgba(120,111,255,1) 100%);
+  background-color: transparent;
   font-family: var(--font-family);
   min-height: 100%;
   height: 100%;
@@ -29,90 +29,4 @@ body {
   left: 0;
 }
 
-.theme-selector {
-  --container-width: 100%;
-  --header-height: 80px;
-  --unit: 4px;
 
-  --font-family: ITEMregular, sans-serif;
-  --font-family-secondary: ITEMGig, sans-serif;
-
-  --color-default: #212121;
-  --color-light: #9c9c9c;
-  --color-primary: #8653f6;
-  --color-secondary: rgb(255, 0, 122);
-  --color-text: #000000;
-  --background-body: linear-gradient(135deg,#d2d0f7,#fdf7f5 41%);
-  --color-background-light: #ffff;
-  --color-background: #333333;
-  --color-background-dark: #292929;
-  --color-background-extra-dark: #212121;
-  --color-background-black: #191919;
-
-  --tooltip-background-color: #383838;
-  --tooltip-color: #888888;
-
-  --button-border-radius: 8px;
-  --button-color: var(--color-text);
-  --button-color-primary: #fff;
-  --button-color-secondary: var(--color-text);
-  --button-background-color: var(--color-default);
-  --button-background-color-primary: var(--color-primary);
-  --button-background-color-secondary: var(--color-secondary);
-  --button-background-image-primary: linear-gradient(
-    to right,
-    rgb(144, 72, 253) 30%,
-    rgb(75, 203, 201) 90%
-  );
-
-  --text-input-background-color: #ffffff;
-  --text-input-border-color: #191919;
-  --text-input-border-width: 2px;
-  --text-input-border-radius: 5px;
-
-  --card-background-primary: #6fbefd;
-}
-
-.theme-selector.light {
-  --container-width: 100%;
-  --header-height: 80px;
-  --unit: 4px;
-
-  --font-family: ITEMregular, sans-serif;
-  --font-family-secondary: ITEMGig, sans-serif;
-
-  --color-default: #212121;
-  --color-light: #9c9c9c;
-  --color-primary: #8653f6;
-  --color-secondary: rgb(255, 0, 122);
-  --color-text: #6e6e6e;
-  --background-body: linear-gradient(135deg,#d2d0f7,#fdf7f5 41%);
-  --color-background-light: #ffff;
-  --color-background: #b42323;
-  --color-background-dark: #7b1515;
-  --color-background-extra-dark: #4d0d0d;
-  --color-background-black: #630000;
-
-  --tooltip-background-color: #383838;
-  --tooltip-color: #888888;
-
-  --button-border-radius: 8px;
-  --button-color: var(--color-text);
-  --button-color-primary: #fff;
-  --button-color-secondary: var(--color-text);
-  --button-background-color: var(--color-default);
-  --button-background-color-primary: var(--color-primary);
-  --button-background-color-secondary: var(--color-secondary);
-  --button-background-image-primary: linear-gradient(
-          to right,
-          rgb(144, 72, 253) 30%,
-          rgb(75, 203, 201) 90%
-  );
-
-  --text-input-background-color: #ffffff;
-  --text-input-border-color: #191919;
-  --text-input-border-width: 2px;
-  --text-input-border-radius: 5px;
-
-  --card-background-primary: #6fbefd;
-}
