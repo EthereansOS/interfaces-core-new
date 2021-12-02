@@ -16,7 +16,7 @@ import Description from './description'
 
 import style from '../../../all.module.css'
 
-export default ({element, checkAll}) => {
+export default ({element, refreshElements}) => {
 
   const context = useEthosContext()
 
@@ -102,7 +102,7 @@ export default ({element, checkAll}) => {
             <Upshots title="Yes" value={proposalData?.accept} total={proposalData?.accept?.ethereansosAdd(proposalData?.refuse)}/>
             <Upshots title="No" value={proposalData?.refuse} total={proposalData?.accept?.ethereansosAdd(proposalData?.refuse)}/>
           </div>
-          {terminable && <ActionAWeb3Button onClick={() => terminateProposal({}, element, element.proposalId).then(refreshData)}>Terminate</ActionAWeb3Button>}
+          {terminable && <ActionAWeb3Button onSuccess={() => refreshData().then(refreshElements)} onClick={() => terminateProposal({}, element, element.proposalId)}>Terminate</ActionAWeb3Button>}
           <div className={style.Vote}>
             {proposalData?.terminationBlock === '0' && (terminable ? <></> : <>
             <p><b>Choose from:</b></p>

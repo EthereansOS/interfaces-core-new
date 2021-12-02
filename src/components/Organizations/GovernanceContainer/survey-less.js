@@ -12,7 +12,7 @@ import Description from './description.js'
 
 import style from '../../../all.module.css'
 
-const MultiVoteBox = ({element}) => {
+const MultiVoteBox = ({element, refreshElements}) => {
 
     const context = useEthosContext()
     const {block, account, web3, newContract} = useWeb3()
@@ -82,7 +82,7 @@ const MultiVoteBox = ({element}) => {
       <div className={style.MultiVoteBox}>
         <div className={style.VoteList}>
         {element.presetProposals.filter(it => it !== VOID_BYTES32).length === 0
-            ? <ActionAWeb3Button onClick={() => createPresetProposals({}, element)}>Initialize</ActionAWeb3Button>
+            ? <ActionAWeb3Button onSuccess={refreshElements} onClick={() => createPresetProposals({}, element)}>Initialize</ActionAWeb3Button>
             : <>
               {element.subProposals.map((it, i) => <VoteSelections
                 key={it.proposalId}
@@ -122,13 +122,13 @@ const MultiVoteBox = ({element}) => {
     )
   }
 
-var SurveyLess = ({element}) => {
+var SurveyLess = ({element, refreshElements}) => {
   return (<>
       <Description description={element.description} title="Summary" className={style.DescriptionBig}/>
       <Description description={element.rationale} title="Rationale and Motivations" className={style.DescriptionBig}/>
       <Description description={element.specification} title="Specification" className={style.DescriptionBig}/>
       <Description description={element.risks} title="Risks" className={style.DescriptionBig}/>
-      <MultiVoteBox element={element}/>
+      <MultiVoteBox element={element, refreshElements}/>
   </>)
 }
 

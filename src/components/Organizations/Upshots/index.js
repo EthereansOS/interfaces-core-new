@@ -8,7 +8,7 @@ export default ({title, value, total}) => {
 
   var percentage = parseInt(value) / parseInt(total)
   percentage = percentage * 100
-  percentage = formatMoney(percentage, 4)
+  percentage = formatMoney(percentage, 2)
   percentage += "%"
 
   return (

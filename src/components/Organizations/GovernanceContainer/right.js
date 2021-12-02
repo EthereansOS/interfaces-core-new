@@ -5,13 +5,13 @@ import Survey from './survey'
 
 import style from '../../../all.module.css'
 
-export default ({element}) => {
+export default ({element, refreshElements}) => {
 
   return (
     <div className={style.Govright}>
       {element.isSurveyless ?
-        <SurveyLess {...{element}}/> :
-        <Survey {...{element}}/>
+        <SurveyLess {...{element, refreshElements}}/> :
+        <Survey {...{element, refreshElements}}/>
       }
     </div>
   )

@@ -12,15 +12,15 @@ import style from '../../../all.module.css'
 import { retrieveAllProposals, retrieveProposalModelMetadata } from '../../../logic/organization'
 import Web3DependantList from '../../Global/Web3DependantList'
 
-var SingleProposal = ({element}) => {
+var SingleProposal = ({element, refreshElements}) => {
   const [opened, setOpened] = useState(false)
 
   return (
     <div className={style.GovCard}>
-      <Head element={element} onToggle={setOpened}/>
+      <Head element={element} onToggle={setOpened} refreshElements={refreshElements}/>
         {opened && <div className={style.GovCardOpened}>
-          <Left element={element}/>
-          <Right element={element}/>
+          <Left element={element} refreshElements={refreshElements}/>
+          <Right element={element} refreshElements={refreshElements}/>
         </div>}
     </div>
   )

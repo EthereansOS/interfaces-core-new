@@ -363,7 +363,6 @@ async function getSurveylessProposals({context}, organization) {
     }
     organization.proposalModels.forEach((it, i) => it.modelIndex = i)
     var surveyless = organization.proposalModels.filter(it => it.isPreset)
-    var proposalIds = surveyless.reduce((acc, it) => [...acc, ...it.presetProposals.filter(it => it !== VOID_BYTES32)], [])
     var metadatas = await Promise.all(surveyless.map(async it => {
         var metadata = {}
         try {
