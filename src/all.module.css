@@ -56,46 +56,43 @@ a {cursor: pointer;}
 .DappBannerL {background-color: #aa9cfe; width: 65%; margin-right: 3%;}
 .DappBannerS {background-color: #e1b9be;width: 30%;}
 
-.ExtLinkButton {border: 1px solid #849BBD;color: #849BBD;border-radius: 5px;display: inline-block;width: 70px;margin: 5px;font-size: 11px;padding: 3px 2px;text-align: center;cursor: pointer;box-shadow: none;background-color: transparent;}
-.ItemLinkButton {border: 2px solid #59b0fb;color: #59b0fb;border-radius: 5px;display: inline-block;width: 70px;margin: 5px;font-size: 11px;padding: 3px 2px;text-align: center;cursor: pointer;box-shadow: none;background-color: transparent; font-weight: bold;}
-.RegularButton {display: inline-block;padding: 4px 13px;background-color: #849bbd;color: #fff;border-radius: 20px;font-size: 14px;font-weight: 700;cursor: pointer; box-shadow: none; border:none;}
-.RegularButtonDuo {display: inline-block;padding: 7px 13px;background-color: #849bbd;color: #fff;border-radius: 8px;font-size: 14px;font-weight: 700;cursor: pointer; box-shadow: none; border:none; width: 90%; margin: 0 auto;}
-.RegularButtonDuoSmall {width: 200px; margin: 0 auto; padding: 5px 12px; text-align: center; font-size: 11px; border-radius: 15px; border: none !important; cursor: pointer;background-color: #849bbd;color: #fff; box-shadow: none;  margin: 0 auto;}
-.RegularButtonDuoSmallWhite {width: 200px; margin: 0 auto; padding: 5px 12px; text-align: center; font-size: 11px; border-radius: 15px; border: none !important; cursor: pointer;background-color: #f7fafe;color: #849BBD; box-shadow: none;  margin: 0 auto; font-weight: bold;}
-.RegularButtonDuoXSmall {width: auto; margin: 5px; padding: 5px 12px; text-align: center; font-size: 11px; border-radius: 15px; border: none !important; cursor: pointer;background-color: #849bbd;color: #fff; box-shadow: none;  margin: 0 auto;}
-.RegularButtonDuoSmallWhite {width: 40%; margin: 0 auto; padding: 5px 12px; text-align: center; font-size: 11px; border-radius: 15px; border: none !important; cursor: pointer;background-color: #ffffff;color: #849BBD; box-shadow: none;  font-weight: bold;}
-.RegularButtonDuoSmallGray {width: 40%; margin: 0 4%; padding: 5px 5px; text-align: center; font-size: 11px; border-radius: 15px; border: none !important; cursor: pointer;background-color: #e2e0e0;color: #849BBD; box-shadow: none;  font-weight: bold;}
-.RegularMiniButton {display: inline-block;padding: 2px 5px;background-color: #849bbd;color: #fff;border-radius: 20px;font-size: 12px;font-weight: bold;cursor: pointer; box-shadow: none; border:none;}
+.ExtLinkButton {border: 1px solid; border-radius: 5px;display: inline-block;width: 70px;margin: 5px;font-size: 11px;padding: 3px 2px;text-align: center;cursor: pointer;box-shadow: none;}
+.ItemLinkButton {border: 2px solid;border-radius: 5px;display: inline-block;width: 70px;margin: 5px;font-size: 11px;padding: 3px 2px;text-align: center;cursor: pointer;box-shadow: none;font-weight: bold;}
+.RegularButton {display: inline-block;padding: 4px 13px;border-radius: 20px;font-size: 14px;font-weight: 700;cursor: pointer; box-shadow: none; border:none;}
+.RegularButtonDuo {display: inline-block;padding: 7px 13px;border-radius: 8px;font-size: 14px;font-weight: 700;cursor: pointer; box-shadow: none; border:none; width: 90%; margin: 0 auto;}
+.RegularButtonDuoSmall {width: 200px; margin: 0 auto; padding: 5px 12px; text-align: center; font-size: 11px; border-radius: 15px; border: none !important; cursor: pointer;box-shadow: none;  margin: 0 auto;}
+.RegularButtonDuoSmallWhite {width: 200px; margin: 0 auto; padding: 5px 12px; text-align: center; font-size: 11px; border-radius: 15px; border: none !important; cursor: pointer;box-shadow: none;  margin: 0 auto; font-weight: bold;}
+.RegularButtonDuoXSmall {width: auto; margin: 5px; padding: 5px 12px; text-align: center; font-size: 11px; border-radius: 15px; border: none !important; cursor: pointer; box-shadow: none;  margin: 0 auto;}
+.RegularButtonDuoSmallWhite {width: 40%; margin: 0 auto; padding: 5px 12px; text-align: center; font-size: 11px; border-radius: 15px; border: none !important; cursor: pointer;box-shadow: none;  font-weight: bold;}
+.RegularButtonDuoSmallGray {width: 40%; margin: 0 4%; padding: 5px 5px; text-align: center; font-size: 11px; border-radius: 15px; border: none !important; cursor: pointer; box-shadow: none;  font-weight: bold;}
+.RegularMiniButton {display: inline-block;padding: 2px 5px;border-radius: 20px;font-size: 12px;font-weight: bold;cursor: pointer; box-shadow: none; border:none;}
 
 .RegularSelect {position: relative;display: inline-block;margin-bottom: 15px;width: auto;}
-.RegularSelect select {display: inline-block;width: 100%;cursor: pointer;padding: 10px 16px;outline: 0;border: 1px solid #849bbd;border-radius: 8px;background: transparent;color: #849bbd;appearance: none;-webkit-appearance: none;-moz-appearance: none;padding-right: 40px;font-size: 14px;font-weight: bold;}
+.RegularSelect select {display: inline-block;width: 100%;cursor: pointer;padding: 10px 16px;outline: 0;border: 1px solid; border-radius: 8px;appearance: none;-webkit-appearance: none;-moz-appearance: none;padding-right: 40px;font-size: 14px;font-weight: bold;}
 .RegularSelect select::-ms-expand {display: none;}
-.RegularSelect select:hover,.RegularSelect select:focus {color: #849bbd;background: #ffffff;}
 .RegularSelect select:disabled {opacity: 0.5;pointer-events: none;}
-.select_arrow {position: absolute;top: 16px;right: 18px;width: 0px;height: 0px;border: solid #849bbd;border-width: 0 2px 2px 0;display: inline-block;padding: 3px;transform: rotate(45deg);-webkit-transform: rotate(45deg);}
-.RegularSelect select:hover ~ .select_arrow,.RegularSelect select:focus ~ .select_arrow {border-color: #849bbd;}
-.RegularSelect select:disabled ~ .select_arrow {border-top-color: #849bbd;}
-.VioletLinkButton {border: 1px solid #7472fc;color: #7472fc;border-radius: 5px;display: inline-block;width: auto;margin: 2px;font-size: 11px;padding: 2px 6px;text-align: center;cursor: pointer;box-shadow: none;background-color: transparent; font-weight: normal;}
+.select_arrow {position: absolute;top: 16px;right: 18px;width: 0px;height: 0px;border: solid;border-width: 0 2px 2px 0;display: inline-block;padding: 3px;transform: rotate(45deg);-webkit-transform: rotate(45deg);}
+.VioletLinkButton {border: 1px solid;border-radius: 5px;display: inline-block;width: auto;margin: 2px;font-size: 11px;padding: 2px 6px;text-align: center;cursor: pointer;box-shadow: none;font-weight: normal;}
 
 
 .FilterMenu {width: 99%;display: block;margin: 5px auto;text-align: center;}
-.FilterMenuSearch {border-color: #849bbd;color: #849bbd;width: 200px;display: inline-block;margin: auto 5px auto auto;font-size: 12px;font-weight: 700;padding: 7px 2%;border: 1px solid;border-radius: 12px;background-color: transparent;max-width: 370px;}
-.FilterSelect {border-color: #849bbd;color: #849bbd;width: 150px;display: inline-block;font-size: 12px;font-weight: 700;padding: 7px 2%;border: 1px solid;border-radius: 12px;background-color: transparent;margin: 0 0 0 17px;}
-.FilterOnly {display: inline-block;text-align: right; padding: 8px 12px;width: auto;margin: 0 17px;    background-color: #e9effc;border-radius: 12px;font-size: 12px;}
+.FilterMenuSearch {width: 200px;display: inline-block;margin: auto 5px auto auto;font-size: 12px;font-weight: 700;padding: 7px 2%;border: 1px solid;border-radius: 12px;max-width: 370px;}
+.FilterSelect {width: 150px;display: inline-block;font-size: 12px;font-weight: 700;padding: 7px 2%;border: 1px solid;border-radius: 12px;margin: 0 0 0 17px;}
+.FilterOnly {display: inline-block;text-align: right; padding: 8px 12px;width: auto;margin: 0 17px; border-radius: 12px;font-size: 12px;}
 .FilterOnly p {display: inline-block;vertical-align: middle;-webkit-margin-before: 0;margin-block-start: 0;-webkit-margin-after: 0;margin-block-end: 0;margin-bottom: 0;margin-left: 10px;font-size: 12px;}
 .FilterOnly input {display: inline-block;width: auto;vertical-align: middle;position: relative;margin-top: -2px;margin-left: 0;margin-right: 5px;}
 
 .MetadataSection {width: 100%; display: inline-block; text-align: left;padding: 2%;}
 .MetadataSingle {width: 200px; display: inline-block; margin: 5px; padding: 2%; background-color: #F0F0F0; border-radius: 10px; text-align: center;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
 .MetadataSingle h6 {font-size: 13px;}
-.MetadataSingle .MetadataSingleToogle {border: 1px solid #849BBD; color: #849BBD; border-radius: 5px;display: inline-block; margin: 10px; font-size: 11px; padding: 5px 8px; text-align: center; cursor: pointer;}
-.MetadataSingleOpened {width: 100%; margin: 5px auto; padding: 5px 0; border-top: 1px solid #ffffff; max-height: 100px; overflow-y: scroll;}
+.MetadataSingle .MetadataSingleToogle {border: 1px solid; border-radius: 5px;display: inline-block; margin: 10px; font-size: 11px; padding: 5px 8px; text-align: center; cursor: pointer;}
+.MetadataSingleOpened {width: 100%; margin: 5px auto; padding: 5px 0; border-top: 1px solid; max-height: 100px; overflow-y: scroll;}
 .MetadataSingleOpened p {font-size: 11px; padding: 2%; line-height: 1.2;text-align: left; display: inline-block; width: 100%;}
-.MetadataSingleOpened a {background-color: #849BBD; color: #ffffff; border-radius: 5px;display: inline-block; margin: 10px auto; font-size: 12px; padding: 6px 10px; text-align: center; cursor: pointer;}
+.MetadataSingleOpened a { border-radius: 5px;display: inline-block; margin: 10px auto; font-size: 12px; padding: 6px 10px; text-align: center; cursor: pointer;}
 
-.TradeMarketTokenAll {display: inline-block;border-radius: 16px; text-align: left; margin: 5px auto; background-color: #e4e4e4;}
-.TradeMarketToken {width: 100%; background-color: #ffffff; padding: 5px; border-radius: 16px; text-align: left; }
-.TradeMarketToken .TradeMarketTokenSelector {width: 75px; height: 70px; display: inline-block; text-align: center; cursor: pointer; background-color: #F0F0F0;border-radius: 14px; overflow: hidden; vertical-align: top;}
+.TradeMarketTokenAll {display: inline-block;border-radius: 16px; text-align: left; margin: 5px auto;}
+.TradeMarketToken {width: 100%; padding: 5px; border-radius: 16px; text-align: left; }
+.TradeMarketToken .TradeMarketTokenSelector {width: 75px; height: 70px; display: inline-block; text-align: center; cursor: pointer; border-radius: 14px; overflow: hidden; vertical-align: top;}
 .TradeMarketToken .TradeMarketTokenSelector figure {width: 100%; height: 50px; display: inline-block;}
 .TradeMarketToken .TradeMarketTokenSelector figure img {width: 100%; height: 100%; display: block;}
 .TradeMarketToken .TradeMarketTokenSelector span {font-size: 13px; font-weight: bold;}
@@ -595,8 +592,9 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 
 /* themes */
 
-.light p,span,a,h6,h5,h4,h3,h2,h1,aside {color: #000000;}
-.dark p,span,a,h6,h5,h4,h3,h2,h1,aside {color: #ffffff;}
+.light p,.light span,.light a,.light h6,.light h5,.light h4,.light h3,.light h2,.light h1,.light aside {color: #000000;}
+.biz p,.biz span,.biz a,.biz h6,.biz h5,.biz h4,.biz h3,.biz h2,.biz h1,.biz aside {color: #000000;}
+.dark p,.dark span,.dark a,.dark h6,.dark h5,.dark h4,.dark h3,.dark h2,.dark h1,.dark aside {color: #ffffff;}
 
 .light, .dark, .biz {min-height: 100vh; overflow: scroll;}
 
@@ -635,3 +633,66 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 
 .light .ModalBoxBanner  {background-color: #ffffff; }
 .dark .ModalBoxBanner  {background-color: #161616; }
+
+.light .ExtLinkButton  {border-color:#849BBD;color: #849BBD; background-color: transparent;}
+.dark .ExtLinkButton  {border-color:#849BBD;color: #849BBD; background-color: transparent;}
+
+.light .ItemLinkButton  {border-color: #59b0fb; color: #59b0fb; background-color: transparent;}
+.dark .ItemLinkButton  {border-color: #59b0fb; color: #59b0fb; background-color: transparent;}
+
+.light .RegularButton, .light .RegularButtonDuo, .light .RegularButtonDuoSmall, .light .RegularButtonDuoXSmall, .light .RegularMiniButton  {background-color: #849bbd;color: #fff;}
+.dark .RegularButton .dark .RegularButtonDuo, .dark .RegularButtonDuoSmall, .dark .RegularButtonDuoXSmall, .dark .RegularMiniButton  {background-color: #849bbd;color: #fff;}
+
+.light .RegularButtonDuoSmallWhite {background-color: #ffffff;color: #849BBD;}
+.dark .RegularButtonDuoSmallWhite {background-color: #ffffff;color: #849BBD;}
+
+.light .RegularButtonDuoSmallGray {background-color: #e2e0e0;color: #849BBD;}
+.dark .RegularButtonDuoSmallGray {background-color: #e2e0e0;color: #849BBD;}
+
+.light .RegularSelect select {border-color: #849bbd; background: transparent;color: #849bbd;}
+.dark .RegularSelect select {border-color: #849bbd; background: transparent;color: #849bbd;}
+
+.light .RegularSelect select:hover, .light .RegularSelect select:focus {color: #849bbd;background: #ffffff;}
+.dark .RegularSelect select:hover, .dark .RegularSelect select:focus {color: #849bbd;background: #ffffff;}
+
+.light .select_arrow {border-color: #849BBD;}
+.dark .select_arrow {border-color: #849BBD;}
+
+.light .RegularSelect select:hover ~ .select_arrow,.light .RegularSelect select:focus ~ .select_arrow {border-color: #849bbd;}
+.dark .RegularSelect select:hover ~ .select_arrow,.dark .RegularSelect select:focus ~ .select_arrow {border-color: #849bbd;}
+
+.light .RegularSelect select:disabled ~ .select_arrow {border-top-color: #849bbd;}
+.dark .RegularSelect select:disabled ~ .select_arrow {border-top-color: #849bbd;}
+
+.light .VioletLinkButton {color: #7472fc; border-color: #7472fc;background-color: transparent; }
+.dark .VioletLinkButton {color: #7472fc; border-color: #7472fc;background-color: transparent; }
+
+.light .FilterMenuSearch {border-color: #849bbd;color: #849bbd;background-color: transparent;}
+.dark .FilterMenuSearch {border-color: #849bbd;color: #849bbd;background-color: transparent;}
+
+.light .FilterSelect {border-color: #849bbd;color: #849bbd;background-color: transparent;}
+.dark .FilterSelect {border-color: #849bbd;color: #849bbd;background-color: transparent;}
+
+.light .FilterOnly {background-color: #e9effc;}
+.dark .FilterOnly {background-color: #383c42;}
+
+.light .MetadataSingle .MetadataSingleToogle {color: #849BBD; border-color: #849BBD;}
+.dark .MetadataSingle .MetadataSingleToogle {color: #849BBD; border-color: #849BBD;}
+
+.light .MetadataSingleOpened {border-color: #ffffff;}
+.dark .MetadataSingleOpened {border-color: #000000;}
+
+.light .MetadataSingleOpened a {background-color: #849BBD; color: #ffffff;}
+.dark .MetadataSingleOpened a {background-color: #849BBD; color: #ffffff;}
+
+.light .TradeMarketTokenAll {background-color: #e4e4e4;}
+.dark .TradeMarketTokenAll {background-color: #313131;}
+
+.light .TradeMarketToken {background-color: #ffffff;}
+.dark .TradeMarketToken {background-color: #000000;}
+
+.light .TradeMarketToken .TradeMarketTokenSelector {background-color: #F0F0F0;}
+.dark .TradeMarketToken .TradeMarketTokenSelector {background-color: #1b1b1b;}
+
+
+
