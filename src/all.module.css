@@ -617,14 +617,14 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 
 /* Global Components */
 
-.light p,.light b,.light span,.light a,.light h6,.light h5,.light h4,.light h3,.light h2,.light h1,.light aside,.light input {color: #000000;}
-.biz p,.biz b,.biz span,.biz a,.biz h6,.biz h5,.biz h4,.biz h3,.biz h2,.biz h1,.biz aside, .biz input {color: #000000;}
-.dark p,.dark b,.dark span,.dark a,.dark h6,.dark h5,.dark h4,.dark h3,.dark h2,.dark h1,.dark aside, .dark input {color: #ffffff;}
+.light p,.light b,.light figure,.light span,.light a,.light h6,.light h5,.light h4,.light h3,.light h2,.light h1,.light aside,.light input {color: #000000;}
+.biz p,.biz b,.biz figure,.biz span,.biz a,.biz h6,.biz h5,.biz h4,.biz h3,.biz h2,.biz h1,.biz aside, .biz input {color: #000000;}
+.dark p,.dark b,.dark figure,.dark span,.dark a,.dark h6,.dark h5,.dark h4,.dark h3,.dark h2,.dark h1,.dark aside, .dark input {color: #ffffff;}
 
 .light, .dark, .biz {height: 100vh; overflow: scroll;}
 
 .light {background: rgb(255,255,255);background: linear-gradient(300deg, #fdf7f5 70%, rgba(120,111,255,1) 100%);}
-.biz {background: rgb(255,255,255);background: linear-gradient(300deg, #fdf7f5 90%, rgba(120,111,255,1) 100%);}
+.biz {background: rgb(255,255,255);background: linear-gradient(0deg, #fdf7f5 80%, #fed6af 100%);}
 .dark {background-color: #000000; background: linear-gradient(300deg, #1a1a1a 70%, rgba(120,111,255,1) 100%);}
 
 
