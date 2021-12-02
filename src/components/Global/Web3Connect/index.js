@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import style from './web3-connect.module.css'
+import style from '../../../all.module.css'
 import { useWeb3, web3States, truncatedWord, useEthosContext } from '@ethereansos/interfaces-core'
 
 const Web3Connect = () => {

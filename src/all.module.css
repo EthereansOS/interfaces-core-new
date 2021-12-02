@@ -42,8 +42,8 @@ a {cursor: pointer;}
 
 .BackButton {display: inline-block;padding: 4px 13px;border-radius: 20px;font-size: 14px;font-weight: 700;cursor: pointer; box-shadow: none; border:none;}
 
-.ModalBack {position: fixed; z-index: 100000; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; text-align: center;display: flex;flex-wrap: wrap;flex-direction: row;justify-content: center;align-items: center;align-content: center}
-.ModalBoxBanner {width: 500px; overflow: scroll; max-height: 70%;  z-index: 100000000000000;border-radius: 20px;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32); padding: 40px;}
+.ModalBack {position: fixed; z-index: 100000000000; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; text-align: center;display: flex;flex-wrap: wrap;flex-direction: row;justify-content: center;align-items: center;align-content: center}
+.ModalBoxBanner {width: 500px; overflow: scroll; max-height: 70%;  z-index: 100000000000000;border-radius: 20px; padding: 40px;}
 .ModalBoxBanner h6 {font-size: 13px; width: 100%; display: inline-block; padding: 10px 20px; margin: 10px auto; text-align: left; font-weight: normal; line-height: 1.3;}
 .ModalBoxBanner p {font-size: 13px; width: 100%; display: inline-block; padding: 5px 30px; text-align: left;}
 .ModalBoxBanner h5 {padding: 20px; font-size: 20px;}
@@ -83,7 +83,7 @@ a {cursor: pointer;}
 .FilterOnly input {display: inline-block;width: auto;vertical-align: middle;position: relative;margin-top: -2px;margin-left: 0;margin-right: 5px;}
 
 .MetadataSection {width: 100%; display: inline-block; text-align: left;padding: 2%;}
-.MetadataSingle {width: 200px; display: inline-block; margin: 5px; padding: 2%; background-color: #F0F0F0; border-radius: 10px; text-align: center;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
+.MetadataSingle {width: 200px; display: inline-block; margin: 5px; padding: 2%; border-radius: 10px; text-align: center;}
 .MetadataSingle h6 {font-size: 13px;}
 .MetadataSingle .MetadataSingleToogle {border: 1px solid; border-radius: 5px;display: inline-block; margin: 10px; font-size: 11px; padding: 5px 8px; text-align: center; cursor: pointer;}
 .MetadataSingleOpened {width: 100%; margin: 5px auto; padding: 5px 0; border-top: 1px solid; max-height: 100px; overflow-y: scroll;}
@@ -513,7 +513,7 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 .OrgPartInfo p,.OrgPartInfoB p {font-size: 12px; line-height: 1.5;}
 .OrgPartInfo b, .OrgPartInfoB b {font-size: 13px; line-height: 1.5;}
 .OrgPartInfoB {width: 200px; display: inline-block;vertical-align: middle; padding: 10px 30px; margin: 5px; border-radius: 12px; vertical-align: super;}
-.DelegationsSection {border-top: 1px solid #e9effc; padding: 20px 20px 20px 20px; margin: 10px auto; width: 100%; display: inline-block; text-align: left;}
+.DelegationsSection {border-top: 1px solid; padding: 20px 20px 20px 20px; margin: 10px auto; width: 100%; display: inline-block; text-align: left;}
 .DelegationsSectionOne {width: 280px; display: inline-block; margin: 5px; border-radius: 16px;  border: 1px solid; text-align: left; overflow: hidden;}
 .DelegationsSectionOne > figure {display: inline-block; width: 70px; height: 70px; vertical-align: top;}
 .DelegationsSectionOne > figure img {width: 100%; height: 100%;}
@@ -562,16 +562,26 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 .VotingPowersAmount {padding: 10px;text-align: center;}
 .VotingPowersAmount span {font-size: 13px;}
 
-.Navigation {display: block;width: 148px;margin: 20px 15px;cursor: pointer; text-align: center;min-height: 100%;}
-.NavigationItem {position: relative;margin: 7px 0;display: inline-block;width:150px;text-align: left;padding: 8px 15px;background-color: #ffffff;border-radius: 8px;}
+.Navigation {display: block;width: 148px;margin: 20px 15px;cursor: pointer; text-align: center;}
+.NavigationItem {position: relative;margin: 7px 0;display: inline-block;width:150px;text-align: left;padding: 8px 15px;border-radius: 8px;}
 .NavigationItem:hover {margin: 7px 0 7px 25px;}
 .Navigation .selected {margin: 7px 0 7px 20px;}
 .NavigationItem p {font-size: 13px;font-weight: 500;vertical-align: middle;display: inline-block;}
 .NavigationItem img {width: 25px;height: 25px;margin-right: 5px;vertical-align: middle;display: inline-block;}
 .NavigationItem .Hand {position: absolute; left: -30px; top: 10px; width:25px; height: 20px; display: none;}
 .NavigationItem:hover .Hand {display: inline-block;}
-.selected {font-weight: bold;color: #6e6e6e;background-color: #c1befc;}
+.selected {font-weight: bold;}
 .indicator {height: 30px;}
+.ThemeSelect {width: 150px; display: block; text-align: left; margin: 20px auto 0px auto;}
+.ThemeSelect select {padding: 5px 40px; border-radius: 12px; text-align: center; border: none;}
+
+.Web3Connect {display: block; text-align:left; margin:40px auto 0px auto; padding-left: 15px;}
+.Web3ConnectChain {height: 35px;display: inline-block; padding: 3px 5px; border-radius: 5px; box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32); margin: 0 10px 0 0px; vertical-align: middle;}
+.Web3ConnectChain img {width:25px; height:25px; display: inline-block; margin: 3px; vertical-align: middle;}
+.Web3ConnectChain p {display: inline-block; margin: 3px;vertical-align: middle; font-size: 15px;}
+.Web3ConnectWallet {height: 35px;display: inline-block; padding: 3px 5px; border-radius: 12px;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);vertical-align: middle; cursor: pointer; width:150px; text-align: center;}
+.Web3ConnectWallet img {width:25px; height:25px; display: inline-block; margin: 3px 3px 3px -7px; vertical-align: middle;}
+.Web3ConnectWallet p {display: inline-block; margin: 3px;vertical-align: middle;font-size: 13px; font-weight: bold;}
 
 @media only screen and (max-width: 990px) {
   .NavigationItem {font-size: 11px;width: 20%;overflow: hidden; }
@@ -582,18 +592,18 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 @media only screen and (max-width: 1200px) {
   .Header {height: 60px;display: block;text-align: left;width:100%;position: relative;margin-bottom: 20px;min-height: auto;}
   .Header .FixedHeader {position: fixed; left: 0; top: 0; width: 100%; height: 60px;backdrop-filter: blur(6px);}
-  .Header .BlurHeader {display: block; position: fixed; left: 0%; top: 0%; width: 100%; height: 60px;border-radius: 0;  border: 0; background: linear-gradient(-130deg,#c1befc4d,#fdf7f515 80%); box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-webkit-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
+  .Header .BlurHeader {display: block; position: fixed; left: 0%; top: 0%; width: 100%; height: 60px;border-radius: 0;  border: 0;  box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-webkit-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
   .logoMain {height: 40px; width: 50px; margin: 10px 0px 0px 10px; display: inline-block;vertical-align: top;}
   .logoMain img {height: 40px; width: 50px; display: block;}
   .Navigation {display: inline-block;border-left: none;padding: 8px;width: auto;cursor: pointer; text-align: center;margin: 0px 0px 0px 50px;vertical-align: top;}
   .NavigationItem:hover {margin: 7px 10px;}
-  .NavigationItem {font-size: 15px;text-align: center;margin: 7px 10px;display: inline-block;text-align: left; width: 150px; text-align: center;border-radius: 8px;background-color: transparent;}
+  .NavigationItem {font-size: 15px;text-align: center;margin: 7px 10px;display: inline-block;text-align: left; width: 150px; text-align: center;border-radius: 8px;}
   .NavigationItem img {display: none;}
   .NavigationItem img {width: 10px; height: 10px;}
   .NavigationItem:hover img {display: inline-block;}
   .Navigation .Selected img {display: inline-block;}
-  .NavigationItem:hover, .Navigation .Selected {background-color: #ffffff;}
   .NavigationItem:hover .Hand {display: none;}
+  .Web3Connect {display: inline-block; text-align:right; margin:10px 10px; padding-left: 0px; float: right;}
 }
 
 @media only screen and (max-device-width: 990px) {
@@ -650,8 +660,8 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 .light .ModalBack  {background: linear-gradient(135deg,#655dfff5,#a0a0a0ea 80%);}
 .dark .ModalBack  {background: linear-gradient(135deg,#655dfff5,#1b1b1bea 80%);}
 
-.light .ModalBoxBanner  {background-color: #ffffff; }
-.dark .ModalBoxBanner  {background-color: #161616; }
+.light .ModalBoxBanner  {background-color: #ffffff; box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
+.dark .ModalBoxBanner  {background-color: #161616; box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
 
 .light .ExtLinkButton  {border-color:#849BBD;color: #849BBD; background-color: transparent;}
 .dark .ExtLinkButton  {border-color:#849BBD;color: #849BBD; background-color: transparent;}
@@ -700,6 +710,9 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 
 .light .MetadataSingleOpened {border-color: #ffffff;}
 .dark .MetadataSingleOpened {border-color: #000000;}
+
+.light .MetadataSingle {background-color: #F0F0F0;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
+.dark .MetadataSingle {background-color: #1b1b1b;box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
 
 .light .MetadataSingleOpened a {background-color: #849BBD; color: #ffffff;}
 .dark .MetadataSingleOpened a {background-color: #849BBD; color: #ffffff;}
@@ -939,6 +952,9 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 .light .DelegationsSectionOne {border-color: #e9effc;}
 .dark .DelegationsSectionOne {border-color: #383c42;}
 
+.light .DelegationsSection {border-color: #e9effc;}
+.dark .DelegationsSection {border-color: #383c42;}
+
 .light .InvestmentsSection {border-color: #e9effc;}
 .dark .InvestmentsSection {border-color: #383c42;}
 
@@ -971,3 +987,30 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 
 .light .VotingPowersAmount { background-color: #EEEEEE; }
 .dark .VotingPowersAmount { background-color: #292929; }
+
+.light .ThemeSelect select {background-color: #E4E4E4; color: #000000;}
+.dark .ThemeSelect select {background-color: #525252; color: #ffffff;}
+
+.light .NavigationItem {background-color: #ffffff;}
+.dark .NavigationItem {background-color: #000000;}
+
+.light .selected {color: #6e6e6e;background-color: #c1befc;}
+.dark .selected {color: #6e6e6e;background-color: #c1befc;}
+
+.light .Web3ConnectChain {background-color: #E4E4E4;}
+.dark .Web3ConnectChain {background-color: #525252;}
+
+.light .Web3ConnectWallet {background-color: #E4E4E4;}
+.dark .Web3ConnectWallet {background-color: #525252;}
+
+@media only screen and (max-width: 1200px) {
+  .light .Header .BlurHeader {background: linear-gradient(-130deg,#c1befc4d,#fdf7f515 80%);}
+  .dark .Header .BlurHeader {background: linear-gradient(-130deg,#c1befc4d,#fdf7f515 80%);}
+  
+  .light .NavigationItem {background-color: transparent;}
+  .dark .NavigationItem {background-color: transparent;}
+
+  .light .NavigationItem:hover, .light .Navigation .Selected {background-color: #ffffff;}
+  .dark .NavigationItem:hover, .dark .Navigation .Selected {background-color: #ffffff;}
+
+}

@@ -57,9 +57,9 @@ export function prepareAddToPlugin(contextualRequire, all, name, link, className
 const ThemeSelectorContext = React.createContext('themeSelector')
 
 const themes = [
-    {name : 'Light', value:'light'},
-    {name : 'Dark', value:'dark'},
-    {name : 'Biz', value:'biz'},
+    {name : '💡', value:'light'},
+    {name : '🕶', value:'dark'},
+    {name : '🍀', value:'biz'},
 ]
 
 export const ThemeSelectorContextProvider = ({children}) => {
