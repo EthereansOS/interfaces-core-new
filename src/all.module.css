@@ -50,7 +50,7 @@ a {cursor: pointer;}
 .Enter {background-color: #00F2C2; padding: 12px 18px; text-align: center; color: #ffffff; font-weight: bold; margin: 20px auto; font-size: 14px; display: inline-block; border-radius: 16px;}
 
 .DappBannerExpl {display: inline-block; padding: 5px; margin: 10px auto; width: 80%;}
-.DappBannerExpl div {box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-webkit-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);border-radius: 20px; display: inline-block; padding: 20px; height:100px; text-align:left; overflow: hidden; vertical-align: middle;}
+.DappBannerExpl div {border-radius: 20px; display: inline-block; padding: 20px; height:100px; text-align:left; overflow: hidden; vertical-align: middle;}
 .DappBannerExpl div h2 {font-size: 16px; font-weight: bold; color: #ffffff; width: 100%; margin-bottom: 10px;}
 .DappBannerExpl div p {font-size: 13px; font-weight: normal; color: #ffffff; width: 100%;}
 .DappBannerL {background-color: #aa9cfe; width: 65%; margin-right: 3%;}
@@ -111,7 +111,7 @@ a {cursor: pointer;}
 .TradeMarketTokenAmountS input:focus{outline: none;}
 .TradeMarketTokenBalanceS {font-size: 10px; cursor: pointer; margin: 5px; font-weight: bold; width: 100%; display: inline-block; text-align: center;}
 
-.ModalBox {width: 600px; height: 80%; display: flex; border-radius: 20px;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
+.ModalBox {width: 600px; height: 80%; display: flex; border-radius: 20px;}
 .TokensSelector {width: 100%; display: block; position: relative;}
 .TokensSelectorList {height: 90%; width: 100%; padding: 10px; display: block; border-radius: 20px 20px 0 0; overflow-y: scroll;}
 .TokensSelectorCategories {height: 60px;  border-top: 2px solid; width: 100%; display: block; border-radius: 0 0 20px 20px; position: absolute; left:0; bottom: 0; text-align: center; overflow: hidden;}
@@ -121,7 +121,7 @@ a {cursor: pointer;}
 .TokensSelectorCategoriesList a {width: 33.33%;padding: 20px 1%; display: inline-block;  vertical-align: top; cursor: pointer;}
 .TokensSelectorCategoriesList .selected {font-weight: bold;}
 
-.TradeMain {width: 550px;  margin-bottom: 30px; display: inline-block; text-align: center; padding: 20px; border-radius: 20px; box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
+.TradeMain {width: 550px;  margin-bottom: 30px; display: inline-block; text-align: center; padding: 20px; border-radius: 20px; }
 .TradeMarketBox {width: 53%; vertical-align: top; display: inline-block; padding-right: 2%; margin-right: 1%; border-right: 1px solid ;}
 .TradeMarketBox h4 {width: 100%; text-align: center; display: inline-block; margin: 15px auto;}
 .TradeMarketBoxSwitch { width:20px; height: 20px;   display: inline-block; margin: -5px auto -5px auto; font-size: 17px; font-weight: bold; border-radius: 100%; cursor: pointer;}
@@ -138,19 +138,19 @@ a {cursor: pointer;}
 .TradeOTCBoxOrdersBuy, .TradeOTCBoxOrdersSell {width: 95%; display: inline-block; padding: 1% 2% 2% 2%; margin: 15px auto 5px auto; border-radius: 20px;}
 .TradeOTCBoxOrdersBuy h6, .TradeOTCBoxOrdersSell h6 {font-size: 13px; width: 100%; text-align: center; padding: 10px 0;}
 
-.Dapp_Menu {display: inline-block; padding: 0 10px; margin: 50px auto 30px auto; width: auto; height: 40px;border-radius: 24px;box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-webkit-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);border: 2px solid;}
+.Dapp_Menu {display: inline-block; padding: 0 10px; margin: 50px auto 30px auto; width: auto; height: 40px;border-radius: 24px;border: 2px solid;}
 .Dapp_Menu > li {display: inline-block;}
 .Dapp_Menu > li > a {display: inline-block; padding: 11px 15px;font-size: 17px;display: inline-block; text-decoration: none; cursor: pointer;}
 
-.DappSubMenu {display: inline-block; padding: 0 8px; margin: 50px auto; width: auto; height: 30px;border-radius: 20px;box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-webkit-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);border: 2px solid;}
+.DappSubMenu {display: inline-block; padding: 0 8px; margin: 50px auto; width: auto; height: 30px;border-radius: 20px;border: 2px solid;}
 .DappSubMenu > li {display: inline-block;}
 .DappSubMenu > li > a {display: inline-block; padding: 7px 15px;font-size: 13px;display: inline-block; text-decoration: none; cursor: pointer;}
 
 .DDapp_Menu {display: inline-block; margin: 50px auto 30px auto; }
-.DDapp_Menu1 {position: relative; z-index:12; padding: 0 10px; width: auto; height: 40px;border-radius: 24px;box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-webkit-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32); border: 2px solid;}
+.DDapp_Menu1 {position: relative; z-index:12; padding: 0 10px; width: auto; height: 40px;border-radius: 24px;border: 2px solid;}
 .DDapp_Menu1 > li {display: inline-block;}
 .DDapp_Menu1 > li > a {display: inline-block; padding: 11px 15px;font-size: 17px;display: inline-block; text-decoration: none; cursor: pointer;}
-.DDapp_Menu2 {display: inline-block; position: relative; z-index:10; padding: 15px 8px 0px 8px; margin: -17px auto 0px auto;  width: auto; height: auto;border-radius: 20px;box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-webkit-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32); border: 2px solid;}
+.DDapp_Menu2 {display: inline-block; position: relative; z-index:10; padding: 15px 8px 0px 8px; margin: -17px auto 0px auto;  width: auto; height: auto;border-radius: 20px;border: 2px solid;}
 .DDapp_Menu2 > li {display: inline-block;}
 .DDapp_Menu2 > li > a {display: inline-block;padding: 8px 10px;font-size: 12px;display: inline-block; text-decoration: none; cursor: pointer;}
 
@@ -343,7 +343,7 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 .DelegationHeadlineCardSideD {height: 40px; display: inline-block; position: absolute; left: 0; bottom: 0; width: 480px; z-index:10;  padding: 15px; text-align: right; border-radius: 0 0 20px 20px;}
 .DelegationHeadlineCardSideD p {font-size: 10px;}
 .DelegationHeadlineCardSideD p {text-decoration: none;}
-.DelegationHeadlineCardConnected {width: 450px; margin-right: 20px; display: inline-block;  height: 200px; border-radius: 20px;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32); text-align: left; overflow: hidden;position: relative;}
+.DelegationHeadlineCardConnected {width: 450px; margin-right: 20px; display: inline-block;  height: 200px; border-radius: 20px; text-align: left; overflow: hidden;position: relative;}
 .DelegationHeadlineCardConnected p {padding: 20px 20px 5px 20px; height: 55px; font-size: 13px; font-weight: bold;}
 .DelegationHeadlineCardConnectedBox {width: 100%; display: inline-block; height: 145px; text-align: left;overflow-x: scroll; overflow-y: hidden; scroll-behavior: smooth; padding: 0px 20px; text-align: left; display: grid;grid-gap: 5px;grid-template-columns: repeat(10, calc(50% - 50px));grid-template-rows: minmax(44px, 1fr);}
 .DelegationHeadlineCardConnectedBox::-webkit-scrollbar {display: none;}
@@ -359,13 +359,13 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 .DelLinks p {width: 100%; font-size: 12px; line-height: 1.3;}
 .DelLinks {width: 310px; display: inline-block; text-align: left; height: 160px; vertical-align: top; padding: 10px 30px;}
 
-.ViewDescriptionD {width: 420px; padding: 20px; display: inline-block; border-radius: 20px;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32); text-align: left; overflow: hidden;position: relative; vertical-align: top;}
+.ViewDescriptionD {width: 420px; padding: 20px; display: inline-block; border-radius: 20px; text-align: left; overflow: hidden;position: relative; vertical-align: top;}
 .ViewDescriptionD p {font-size: 12px; line-height: 1.3;}
-.DelegationMainThingsCardMainInfoD {width: 920px; padding: 20px; display: inline-block;  border-radius: 20px;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32); text-align: left; overflow: hidden;position: relative; margin-top: 20px;}
+.DelegationMainThingsCardMainInfoD {width: 920px; padding: 20px; display: inline-block;  border-radius: 20px; text-align: left; overflow: hidden;position: relative; margin-top: 20px;}
 .DelegationMainThingsCardMainInfoD p {width: 210px; display: inline-block; margin: 5px; font-size: 12px; line-height: 2; text-align: center;  padding: 10px; border-radius: 16px;}
 .DelegationMainThingsCardMainInfoD p b {font-size: 16px;}
 
-.OrgSingle {width: 300px; display: inline-block; border-radius: 20px;overflow: hidden;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32); margin: 10px;}
+.OrgSingle {width: 300px; display: inline-block; border-radius: 20px;overflow: hidden; margin: 10px;}
 .OrgSingle figure {display: block; width: 100px; height: 100px; overflow: hidden; position: relative;display: inline-block; vertical-align: top;}
 .OrgSingle figure img {display: block; width: 100%; height: 100%; position: absolute; left: 0; top: 0;}
 .OrgTitleEx {width: 200px; height: 100px; overflow: hidden; padding: 0px 0px 15px 0px; text-align: left; display: inline-block;  display: inline-block; vertical-align: middle;}
@@ -378,7 +378,7 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 .OrgAllSingle {width: 100%; text-align: left;}
 
 
-.GovCard {width: 920px; margin: 25px; display: inline-block; border-radius: 20px; box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32); text-align: center; overflow: hidden;position: relative; padding: 0px; overflow: hidden;}
+.GovCard {width: 920px; margin: 25px; display: inline-block; border-radius: 20px;  text-align: center; overflow: hidden;position: relative; padding: 0px; overflow: hidden;}
 .GovCardHead {width: 100%;  display: inline-block; text-align: left; padding: 25px;}
 
 .GovCardHeadDelegation figure {width: 50px; height: 50px; display: inline-block;vertical-align: middle;}
@@ -458,7 +458,7 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 .ProposalTitle > h6 > a img {width: 20px; height: 20px; display: inline-block;}
 .MultiVoteBox {width: 450px; display: block; margin: 10px auto; padding: 20px; border-radius: 20px;}
 
-.ModalBoxGov {width: 500px; overflow: scroll; max-height: 70%;  z-index: 10000000; display: flex;  border-radius: 20px;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
+.ModalBoxGov {width: 500px; overflow: scroll; max-height: 70%;  z-index: 10000000; display: flex;  border-radius: 20px;}
 .ProposeContents {width: 450px; display: inline-block; padding: 30px; margin: 5px auto;}
 .ProposeContents h5 {font-size: 20px; font-weight: bold; margin: 10px auto;}
 .ProposeContents .RegularLabel {width: 300px; display: inline-block; padding: 10px; border-radius: 12px; margin: 10px auto;}
@@ -487,7 +487,7 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 .Rule p {font-size: 12px;  line-height: 2;}
 .Rule p b {font-size: 13px; font-weight: bold;}
 
-.OrgHeadline {width: 920px; display: block; height: 200px; border-radius: 20px;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32); text-align: left; overflow: hidden;position: relative; margin: 5px auto;}
+.OrgHeadline {width: 920px; display: block; height: 200px; border-radius: 20px; text-align: left; overflow: hidden;position: relative; margin: 5px auto;}
 .OrgHeadline figure { width: 200px; height: 200px; display: inline-block; z-index: 10; position: relative; vertical-align: top; overflow: hidden; border-radius: 20px 0 0 20px;}
 .OrgHeadline figure img {width: 100%; height: 100%;}
 .OrgHeadlineSide {height: 40px; display: inline-block; position: absolute; left: 0; bottom: 0; width: 920px; z-index:5 ; padding: 15px; text-align: right; border-radius: 0 0 20px 20px;}
@@ -498,7 +498,7 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 .OrgTitle p {width: 100%; font-size: 12px; line-height: 1.3;}
 .OrgLinks {width: 250px; display: inline-block; text-align: center; height: 160px; vertical-align: top; padding: 50px 30px;}
 
-.OrgMainThingsCard {width: 940px; margin: 25px auto; display: inline-block; border-radius: 20px; box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32); text-align: center; overflow: hidden;position: relative; padding: 25px 15px;}
+.OrgMainThingsCard {width: 940px; margin: 25px auto; display: inline-block; border-radius: 20px;  text-align: center; overflow: hidden;position: relative; padding: 25px 15px;}
 .OrgThingsTitle {width: 100%; display: inline-block; padding: 20px 5px; text-align: center;}
 .OrgThingsTitle h6 {font-size: 20px;font-weight: bold; width: 100%; display: inline-block; text-align: center;}
 .OrgThingsInfoContent {width: 22%; display: inline-block; margin: 10px 0.5%; padding: 15px 10px; text-align: center;  border-radius: 12px;}
@@ -506,7 +506,7 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 .OrgThingsInfoContent p {font-size: 13px;display: inline-block; width: 100%; text-align: center;}
 .OrgThingsInfoContent p a {text-decoration: underline;}
 .OrgMainThingsCard .OpenBTN {position: absolute; top: 5px; right: 5px; width: 50px; height: 30px;}
-.OrgPartView {width: 940px; margin: 20px auto; display: inline-block;  border-radius: 20px; box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32); text-align: center; overflow: hidden;position: relative; padding: 25px 15px;}
+.OrgPartView {width: 940px; margin: 20px auto; display: inline-block;  border-radius: 20px;  text-align: center; overflow: hidden;position: relative; padding: 25px 15px;}
 .OrgPartTitle {width: 200px; display: inline-block; margin: 5px 30px 15px 5px; padding: 10px; vertical-align: middle; text-align: left;}
 .OrgPartTitle h6 {font-size: 18px; text-align: left; margin: 5px auto;}
 .OrgPartInfo {width: 200px; display: inline-block; padding: 10px; margin: 5px; border-radius: 12px;}
@@ -532,7 +532,7 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 .OrgPartFarm p {width: 280px;display: inline-block; margin-left: 20px; padding-left: 50px; font-size: 12px; vertical-align: middle; text-align: left; vertical-align: middle; line-height: 1.5;}
 .OrgPartFarm p b {font-size: 15px;}
 
-.OrgThingsCardPics {width: 450px; margin: 15px; display: inline-block;  border-radius: 20px; box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32); text-align: center; overflow: hidden;position: relative; padding: 15px;}
+.OrgThingsCardPics {width: 450px; margin: 15px; display: inline-block;  border-radius: 20px;  text-align: center; overflow: hidden;position: relative; padding: 15px;}
 .OrgThingsRegularTitle {width: 100%; display: inline-block; padding: 5px 5px; text-align: center;}
 .OrgThingsRegularTitle h6 {font-size: 16px;font-weight: bold; width: 100%; display: inline-block; text-align: left;}
 .OrgThingsRegularInfoPictureCarousel {width: 100%; display: inline-block; margin: 10px 0.5%; padding: 5px 5px; text-align: left;overflow-x: scroll; overflow-y: hidden; scroll-behavior: smooth; padding: 10px 1%; text-align: left; display: grid;grid-gap: 5px;grid-template-columns: repeat(10, 130px);grid-template-rows: minmax(44px, 1fr);}
@@ -576,10 +576,10 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 .ThemeSelect select {padding: 5px 40px; border-radius: 12px; text-align: center; border: none;}
 
 .Web3Connect {display: block; text-align:left; margin:40px auto 0px auto; padding-left: 15px;}
-.Web3ConnectChain {height: 35px;display: inline-block; padding: 3px 5px; border-radius: 5px; box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32); margin: 0 10px 0 0px; vertical-align: middle;}
+.Web3ConnectChain {height: 35px;display: inline-block; padding: 3px 5px; border-radius: 5px;  margin: 0 10px 0 0px; vertical-align: middle;}
 .Web3ConnectChain img {width:25px; height:25px; display: inline-block; margin: 3px; vertical-align: middle;}
 .Web3ConnectChain p {display: inline-block; margin: 3px;vertical-align: middle; font-size: 15px;}
-.Web3ConnectWallet {height: 35px;display: inline-block; padding: 3px 5px; border-radius: 12px;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);vertical-align: middle; cursor: pointer; width:150px; text-align: center;}
+.Web3ConnectWallet {height: 35px;display: inline-block; padding: 3px 5px; border-radius: 12px;vertical-align: middle; cursor: pointer; width:150px; text-align: center;}
 .Web3ConnectWallet img {width:25px; height:25px; display: inline-block; margin: 3px 3px 3px -7px; vertical-align: middle;}
 .Web3ConnectWallet p {display: inline-block; margin: 3px;vertical-align: middle;font-size: 13px; font-weight: bold;}
 
@@ -705,6 +705,9 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 .light .FilterOnly {background-color: #e9effc;}
 .dark .FilterOnly {background-color: #383c42;}
 
+.light .DappBannerExpl div {box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-webkit-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
+.dark .DappBannerExpl div {box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
+
 .light .MetadataSingle .MetadataSingleToogle {color: #849BBD; border-color: #849BBD;}
 .dark .MetadataSingle .MetadataSingleToogle {color: #849BBD; border-color: #849BBD;}
 
@@ -765,8 +768,8 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 .light .TokensSelectorCategoriesList .selected, .light .TokensSelectorCategoriesList a:hover {background-color: #ffffff;}
 .dark .TokensSelectorCategoriesList .selected, .dark .TokensSelectorCategoriesList a:hover {background-color: #000000;}
 
-.light .TradeMain {background-color: #F0F0F0;}
-.dark .TradeMain {background-color: #1b1b1b;}
+.light .TradeMain {background-color: #F0F0F0; box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
+.dark .TradeMain {background-color: #1b1b1b; box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
 
 .light .TradeMarketBox {border-color: #ffffff;}
 .dark .TradeMarketBox {border-color: #000000;}
@@ -805,25 +808,25 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 .dark .TradeOTCBoxOrdersBuy .TradeOTCBoxOrder  button {background-color: rgb(106, 234, 200);}
 .dark .TradeOTCBoxOrdersSell .TradeOTCBoxOrder  button {background-color: rgb(252, 98, 111);}
 
-.light .Dapp_Menu {background-color: #ffffff; border-color: #aa9cfe;}
-.dark .Dapp_Menu {background-color: #000000; border-color: #aa9cfe;}
+.light .Dapp_Menu {background-color: #ffffff; border-color: #aa9cfe;box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-webkit-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
+.dark .Dapp_Menu {background-color: #000000; border-color: #aa9cfe;box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
 
-.light .DappSubMenu {background-color: #E4E4E4; border-color: #e1b9be;}
-.dark .DappSubMenu {background-color: #525252; border-color: #e1b9be;}
+.light .DappSubMenu {background-color: #E4E4E4; border-color: #e1b9be;box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-webkit-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
+.dark .DappSubMenu {background-color: #525252; border-color: #e1b9be;box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
 
-.light .DDapp_Menu1 {background-color: #ffffff; border-radius: #aa9cfe;}
-.dark .DDapp_Menu1 {background-color: #000000; border-radius: #aa9cfe;}
+.light .DDapp_Menu1 {background-color: #ffffff; border-radius: #aa9cfe;box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-webkit-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32); }
+.dark .DDapp_Menu1 {background-color: #000000; border-radius: #aa9cfe;box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
 
-.light .DDapp_Menu2 {background-color: #E4E4E4; border-color: #e1b9be;}
-.dark .DDapp_Menu2 {background-color: #525252; border-color: #e1b9be;}
+.light .DDapp_Menu2 {background-color: #E4E4E4; border-color: #e1b9be;box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-webkit-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32); }
+.dark .DDapp_Menu2 {background-color: #525252; border-color: #e1b9be;box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
 
 /* Organizations Components */
 
 .light .DelegationHeadlineCardSideD {background-color: #EEEEEE;}
 .dark .DelegationHeadlineCardSideD {background-color: #1b1b1b;}
 
-.light .DelegationHeadlineCardConnected {background-color: #ffffff;}
-.dark .DelegationHeadlineCardConnected {background-color: #000000;}
+.light .DelegationHeadlineCardConnected {background-color: #ffffff;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
+.dark .DelegationHeadlineCardConnected {background-color: #000000;box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
 
 .light .DelegationHeadlineCardConnectedBox {background-color: #ffffff;}
 .dark .DelegationHeadlineCardConnectedBox {background-color: #000000;}
@@ -831,17 +834,17 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 .light .DelegationMainThingsCardD {background-color: #ffffff;}
 .dark .DelegationMainThingsCardD {background-color: #000000;}
 
-.light .ViewDescriptionD {background-color: #ffffff;}
-.dark .ViewDescriptionD {background-color: #000000;}
+.light .ViewDescriptionD {background-color: #ffffff;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
+.dark .ViewDescriptionD {background-color: #000000;box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
 
-.light .DelegationMainThingsCardMainInfoD {background-color: #ffffff;}
-.dark .DelegationMainThingsCardMainInfoD {background-color: #000000;}
+.light .DelegationMainThingsCardMainInfoD {background-color: #ffffff;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
+.dark .DelegationMainThingsCardMainInfoD {background-color: #000000;box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
 
 .light .DelegationMainThingsCardMainInfoD p {background-color: #e9effc;}
 .dark .DelegationMainThingsCardMainInfoD p {background-color: #383c42;}
 
-.light .OrgSingle {background-color: #ffffff;}
-.dark .OrgSingle {background-color: #000000;}
+.light .OrgSingle {background-color: #ffffff;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
+.dark .OrgSingle {background-color: #000000;box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
 
 .light .OrgTitleEx {background-color: #F0F0F0; color: #000000;}
 .dark .OrgTitleEx {background-color: #1b1b1b; color: #ffffff;}
@@ -855,8 +858,8 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 .light .OrgSingle .OrgInfo {background-color: #F0F0F0;}
 .dark .OrgSingle .OrgInfo {background-color: #1b1b1b;}
 
-.light .GovCard {background-color: #ffffff;}
-.dark .GovCard {background-color: #000000;}
+.light .GovCard {background-color: #ffffff;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
+.dark .GovCard {background-color: #000000;box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
 
 .light .GovCardHead {background-color: #e9effc;}
 .dark .GovCardHead {background-color: #383c42;}
@@ -907,8 +910,11 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 .light .Vote {background-color: #e9effc;}
 .dark .Vote {background-color: #383c42;}
 
-.light .ModalBoxGov {background-color: #ffffff;}
-.dark .ModalBoxGov {background-color: #000000;}
+.light .ModalBoxGov {background-color: #ffffff;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
+.dark .ModalBoxGov {background-color: #000000;box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
+
+.light .ModalBox {box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
+.dark .ModalBox {box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
 
 .light .ProposeContents .RegularLabel {background-color: #e9effc;}
 .dark .ProposeContents .RegularLabel {background-color: #383c42;}
@@ -931,20 +937,20 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 .light .Rule {background-color: #e9effc;}
 .dark .Rule {background-color: #383c42;}
  
-.light .OrgHeadline {background-color: #ffffff;}
-.dark .OrgHeadline {background-color: #000000;}
+.light .OrgHeadline {background-color: #ffffff;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
+.dark .OrgHeadline {background-color: #000000;box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
 
 .light .OrgHeadlineSide {background-color: #EEEEEE;}
 .dark .OrgHeadlineSide {background-color: #292929;}
 
-.light .OrgMainThingsCard {background-color: #ffffff;}
-.dark .OrgMainThingsCard {background-color: #000000;}
+.light .OrgMainThingsCard {background-color: #ffffff;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
+.dark .OrgMainThingsCard {background-color: #000000;box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
 
 .light .OrgThingsInfoContent {background-color: #e9effc;}
 .dark .OrgThingsInfoContent {background-color: #383c42;}
 
-.light .OrgPartView {background-color: #ffffff;}
-.dark .OrgPartView {background-color: #000000;}
+.light .OrgPartView {background-color: #ffffff;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
+.dark .OrgPartView {background-color: #000000;box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
 
 .light .OrgPartInfo {background-color: #e9effc;}
 .dark .OrgPartInfo {background-color: #383c42;}
@@ -964,8 +970,8 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 .light .OrgPartFarm {background-color: #e9effc;}
 .dark .OrgPartFarm {background-color: #383c42;}
 
-.light .OrgThingsCardPics {background-color: #ffffff;}
-.dark .OrgThingsCardPics {background-color: #000000;}
+.light .OrgThingsCardPics {background-color: #ffffff;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
+.dark .OrgThingsCardPics {background-color: #000000;box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
 
 .light .RegularVoteBoxStaked {background-color: #ffffff;}
 .dark .RegularVoteBoxStaked {background-color: #000000;}
@@ -988,8 +994,8 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 .light .VotingPowersAmount { background-color: #EEEEEE; }
 .dark .VotingPowersAmount { background-color: #292929; }
 
-.light .ThemeSelect select {background-color: #E4E4E4; color: #000000;}
-.dark .ThemeSelect select {background-color: #525252; color: #ffffff;}
+.light .ThemeSelect select {background-color: #E4E4E4; color: #000000;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
+.dark .ThemeSelect select {background-color: #525252; color: #ffffff;box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
 
 .light .NavigationItem {background-color: #ffffff;}
 .dark .NavigationItem {background-color: #000000;}
@@ -997,11 +1003,11 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 .light .selected {color: #6e6e6e;background-color: #c1befc;}
 .dark .selected {color: #6e6e6e;background-color: #c1befc;}
 
-.light .Web3ConnectChain {background-color: #E4E4E4;}
-.dark .Web3ConnectChain {background-color: #525252;}
+.light .Web3ConnectChain {background-color: #E4E4E4;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
+.dark .Web3ConnectChain {background-color: #525252;box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
 
-.light .Web3ConnectWallet {background-color: #E4E4E4;}
-.dark .Web3ConnectWallet {background-color: #525252;}
+.light .Web3ConnectWallet {background-color: #E4E4E4; box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
+.dark .Web3ConnectWallet {background-color: #525252;box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
 
 @media only screen and (max-width: 1200px) {
   .light .Header .BlurHeader {background: linear-gradient(-130deg,#c1befc4d,#fdf7f515 80%);}
