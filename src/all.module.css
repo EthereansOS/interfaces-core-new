@@ -550,16 +550,16 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 .UpshotBar {width: 100%; display: inline-block; padding: 5px;border-radius: 16px;}
 .UpshotBar figure {width: 10%; display: inline-block; padding: 5px; border-radius: 16px; font-size: 12px;}
 
-.CardSelectionSingle {width: 45%; background-color: #ffffff; padding: 10px; text-align: center; display: inline-block; border-radius: 18px; margin: 10px 2.5%;}
-.CardSelectionSingle p, .SurveylessOpenCardSelectionSingleCurrent p {font-weight: bold; font-size: 17px; width: 100%; text-align: center; display: inline-block; margin: 5px auto; color: #000000;}
+.CardSelectionSingle {width: 45%;  padding: 10px; text-align: center; display: inline-block; border-radius: 18px; margin: 10px 2.5%;}
+.CardSelectionSingle p, .SurveylessOpenCardSelectionSingleCurrent p {font-weight: bold; font-size: 17px; width: 100%; text-align: center; display: inline-block; margin: 5px auto;}
 .CardSelectionSingle:selected {border-color: green;}
-.CardSelectionSingleCurrent {width: 45%; background-color: #ffffff; padding: 10px; text-align: center; display: inline-block; border-radius: 18px; margin: 10px 2.5%;}
+.CardSelectionSingleCurrent {width: 45%;  padding: 10px; text-align: center; display: inline-block; border-radius: 18px; margin: 10px 2.5%;}
 .CardSelectionSingle span {width: 100%; display: inline-block; font-size: 11px;}
 .CardSelectionSingle input {margin: 10px auto;}
 
 .VotingPowersObject {width: 85px; min-height: 85px; max-height: 130px; display: inline-block; margin: 5px; overflow: hidden; border-radius: 16px;}
 .VotingPowersObject img {width: 100%; height: 100%; display: inline-block; margin: 0;}
-.VotingPowersAmount {padding: 10px; background-color: #EEEEEE; text-align: center;}
+.VotingPowersAmount {padding: 10px;text-align: center;}
 .VotingPowersAmount span {font-size: 13px;}
 
 
@@ -940,8 +940,11 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 .light .UpshotBar figure { background-color: #D4CEFA;}
 .dark .UpshotBar figure { background-color: #2e2c35;}
 
+.light .CardSelectionSingle {background-color: #ffffff;}
+.dark .CardSelectionSingle {background-color: #000000;}
 
+.light .CardSelectionSingleCurrent {background-color: #ffffff;}
+.dark .CardSelectionSingleCurrent {background-color: #ffffff;}
 
-
-
-
+.light .VotingPowersAmount { background-color: #EEEEEE; }
+.dark .VotingPowersAmount { background-color: #292929; }
