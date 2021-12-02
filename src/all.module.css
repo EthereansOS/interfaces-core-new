@@ -97,56 +97,47 @@ a {cursor: pointer;}
 .TradeMarketToken .TradeMarketTokenSelector figure img {width: 100%; height: 100%; display: block;}
 .TradeMarketToken .TradeMarketTokenSelector span {font-size: 13px; font-weight: bold;}
 .TradeMarketTokenAmount {width: 170px;display: inline-block; text-align: right;}
-.TradeMarketTokenAmount input {width: 90%; height: 70px; font-size: 30px; color: #000000; background-color: transparent; border: none; text-align: right;}
+.TradeMarketTokenAmount input {width: 90%; height: 70px; font-size: 30px; border: none; text-align: right;}
 .TradeMarketTokenAmount input:focus{outline: none;}
-.TradeMarketTokenBalance {font-size: 10px; cursor: pointer; color: #000000; margin: 5px; font-weight: bold; width: 100%; display: inline-block; text-align: center;}
+.TradeMarketTokenBalance {font-size: 10px; cursor: pointer;  margin: 5px; font-weight: bold; width: 100%; display: inline-block; text-align: center;}
 
-.TradeMarketTokenAllS {display: inline-block;border-radius: 16px; text-align: left; margin: 5px auto; background-color: #e4e4e4;}
-.TradeMarketTokenS {width: 100%; background-color: #ffffff; padding: 5px; border-radius: 16px; text-align: left; }
-.TradeMarketTokenS .TradeMarketTokenSelector {width: 40px; height: 40px; display: inline-block; text-align: center; cursor: pointer; background-color: #F0F0F0;border-radius: 14px; overflow: hidden; vertical-align: top;}
+.TradeMarketTokenAllS {display: inline-block;border-radius: 16px; text-align: left; margin: 5px auto;}
+.TradeMarketTokenS {width: 100%; padding: 5px; border-radius: 16px; text-align: left; }
+.TradeMarketTokenS .TradeMarketTokenSelector {width: 40px; height: 40px; display: inline-block; text-align: center; cursor: pointer; border-radius: 14px; overflow: hidden; vertical-align: top;}
 .TradeMarketTokenS .TradeMarketTokenSelector figure {width: 100%; height: 40px; display: inline-block;}
 .TradeMarketTokenS .TradeMarketTokenSelector figure img {width: 100%; height: 100%; display: block;}
 .TradeMarketTokenAmountS {width: 180px;display: inline-block; text-align: right;}
-.TradeMarketTokenAmountS input {width: 90%; height: 40px; font-size: 30px; color: #000000; background-color: transparent; border: none; text-align: right;}
+.TradeMarketTokenAmountS input {width: 90%; height: 40px; font-size: 30px; background-color: transparent; border: none; text-align: right;}
 .TradeMarketTokenAmountS input:focus{outline: none;}
-.TradeMarketTokenBalanceS {font-size: 10px; cursor: pointer; color: #000000; margin: 5px; font-weight: bold; width: 100%; display: inline-block; text-align: center;}
+.TradeMarketTokenBalanceS {font-size: 10px; cursor: pointer; margin: 5px; font-weight: bold; width: 100%; display: inline-block; text-align: center;}
 
-.ModalBack {position: fixed; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; background: linear-gradient(135deg,#c1befcd8,#fdf7f5b6 80%); text-align: center;display: flex;flex-wrap: wrap;flex-direction: row;justify-content: center;align-items: center;align-content: center}
-.ModalBox {width: 600px; height: 80%; display: flex; background-color: #F0F0F0; border-radius: 20px;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
+.ModalBack {position: fixed; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; text-align: center;display: flex;flex-wrap: wrap;flex-direction: row;justify-content: center;align-items: center;align-content: center}
+.ModalBox {width: 600px; height: 80%; display: flex; border-radius: 20px;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
 .TokensSelector {width: 100%; display: block; position: relative;}
 .TokensSelectorList {height: 90%; width: 100%; padding: 10px; display: block; border-radius: 20px 20px 0 0; overflow-y: scroll;}
-.TokensSelectorCategories {height: 60px; background-color: #525252; border-top: 2px solid #E4E4E4; width: 100%; display: block; border-radius: 0 0 20px 20px; position: absolute; left:0; bottom: 0; text-align: center; overflow: hidden;}
-.TokensSelectorCategories input {width: 40%;display: inline-block; vertical-align: top;height: 100%;background-color: #525252;border: none;border-radius: 0 0 0 20px;color: #ffffff;font-size: 16px;padding: 2%;}
-.TokensSelectorCategories input::placeholder {color: #ffffff;opacity: 1;}
-.TokensSelectorCategories input:-ms-input-placeholder {color: #ffffff;}
-.TokensSelectorCategories input::-ms-input-placeholder {color: #ffffff;}
-.TokensSelectorCategoriesList {width: 60%; height:100%; display: inline-block;background-color: #F0F0F0;}
-.TokensSelectorCategoriesList a {width: 33.33%;padding: 20px 1%; display: inline-block; background-color: #F0F0F0; vertical-align: top; cursor: pointer;}
-.TokensSelectorCategoriesList .selected, .TokensSelectorCategoriesList a:hover  { background-color: #ffffff;}
+.TokensSelectorCategories {height: 60px;  border-top: 2px solid; width: 100%; display: block; border-radius: 0 0 20px 20px; position: absolute; left:0; bottom: 0; text-align: center; overflow: hidden;}
+.TokensSelectorCategories input {width: 40%;display: inline-block; vertical-align: top;height: 100%;border: none;border-radius: 0 0 0 20px;font-size: 16px;padding: 2%;}
+
+.TokensSelectorCategoriesList {width: 60%; height:100%; display: inline-block;}
+.TokensSelectorCategoriesList a {width: 33.33%;padding: 20px 1%; display: inline-block;  vertical-align: top; cursor: pointer;}
 .TokensSelectorCategoriesList .selected {font-weight: bold;}
 
-.TradeMain {width: 550px;  margin-bottom: 30px; display: inline-block; text-align: center; padding: 20px; border-radius: 20px; background-color: #F0F0F0;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
-.TradeMarketBox {width: 53%; vertical-align: top; display: inline-block; padding-right: 2%; margin-right: 1%; border-right: 1px solid #ffffff;}
+.TradeMain {width: 550px;  margin-bottom: 30px; display: inline-block; text-align: center; padding: 20px; border-radius: 20px; box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
+.TradeMarketBox {width: 53%; vertical-align: top; display: inline-block; padding-right: 2%; margin-right: 1%; border-right: 1px solid ;}
 .TradeMarketBox h4 {width: 100%; text-align: center; display: inline-block; margin: 15px auto;}
-.TradeMarketBoxSwitch { width:20px; height: 20px;  background-color: #e4e4e4; display: inline-block; margin: -5px auto -5px auto; font-size: 17px; font-weight: bold; border-radius: 100%; cursor: pointer;}
-.TradeMarketType {width: 90%; display: inline-block; margin: 20px auto 15px auto; border: 1px solid #ffffff; border-radius: 30px; overflow: hidden;}
-.TradeMarketType a{display: inline-block; width: 50%; margin: 0; padding: 2%; font-size: 15px; font-weight: normal; text-align: center;background-color: #e4e4e4; cursor: pointer;}
-.TradeMarketType .selected, .TradeMarketType a:hover  {color: #000000; background-color: #ffffff;}
+.TradeMarketBoxSwitch { width:20px; height: 20px;   display: inline-block; margin: -5px auto -5px auto; font-size: 17px; font-weight: bold; border-radius: 100%; cursor: pointer;}
+.TradeMarketType {width: 90%; display: inline-block; margin: 20px auto 15px auto; border: 1px solid; border-radius: 30px; overflow: hidden;}
+.TradeMarketType a{display: inline-block; width: 50%; margin: 0; padding: 2%; font-size: 15px; font-weight: normal; text-align: center; cursor: pointer;}
 .TradeMarketType .selected {font-weight: bold;}
 .TradeOTCBox {width: 46%; display: inline-block;padding-left: 2%; text-align: center;}
 .TradeOTCBoxOrders {overflow-y: scroll; height: 150px; display: inline-block;}
-.TradeOTCBoxOrder {width: 100%; display: inline-block; margin: 2px auto; text-align: left; padding: 2px 1%; border-top: 1px solid #e4e4e4;}
+.TradeOTCBoxOrder {width: 100%; display: inline-block; margin: 2px auto; text-align: left; padding: 2px 1%; border-top: 1px solid;}
 .TradeOTCBoxOrder p {display: inline-block; width: 40%; padding: 1%;}
-.TradeOTCBoxOrder .TradeOTCBoxOrderQ {font-size: 11px; text-align: left;width: 28%; font-weight: bold; vertical-align: middle; border-right: 1px solid #e4e4e4; margin-right: 2%;}
+.TradeOTCBoxOrder .TradeOTCBoxOrderQ {font-size: 11px; text-align: left;width: 28%; font-weight: bold; vertical-align: middle; border-right: 1px solid; margin-right: 2%;}
 .TradeOTCBoxOrder .TradeOTCBoxOrderP {font-size: 10px; text-align: left;width: 45%;vertical-align: middle;}
-.TradeOTCBoxOrder button {vertical-align: middle; margin-left: 2%; width: 20%; text-align: center; border:none; padding: 3px 5px; border-radius: 15px; font-size: 11px; font-weight: bold; color: #ffffff;}
-.TradeOTCBoxOrdersBuy, .TradeOTCBoxOrdersSell {width: 95%; display: inline-block; padding: 1% 2% 2% 2%; margin: 15px auto 5px auto; background-color: #ffffff; border-radius: 20px;}
+.TradeOTCBoxOrder button {vertical-align: middle; margin-left: 2%; width: 20%; text-align: center; border:none; padding: 3px 5px; border-radius: 15px; font-size: 11px; font-weight: bold;}
+.TradeOTCBoxOrdersBuy, .TradeOTCBoxOrdersSell {width: 95%; display: inline-block; padding: 1% 2% 2% 2%; margin: 15px auto 5px auto; border-radius: 20px;}
 .TradeOTCBoxOrdersBuy h6, .TradeOTCBoxOrdersSell h6 {font-size: 13px; width: 100%; text-align: center; padding: 10px 0;}
-.TradeOTCBoxOrdersSell h6 {color: rgb(252, 98, 111);}
-.TradeOTCBoxOrdersBuy h6 {color: rgb(106, 234, 200);}
-.TradeOTCBoxOrdersBuy .TradeOTCBoxOrder  button {background-color: rgb(106, 234, 200);}
-.TradeOTCBoxOrdersSell .TradeOTCBoxOrder  button {background-color: rgb(252, 98, 111);}
-
 
 .Dapp_Menu {display: inline-block; padding: 0 10px; margin: 50px auto 30px auto; background-color: #ffffff; width: auto; height: 40px;border-radius: 24px;box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-webkit-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);border: 2px solid #aa9cfe;}
 .Dapp_Menu > li {display: inline-block;}
@@ -592,9 +583,9 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 
 /* themes */
 
-.light p,.light span,.light a,.light h6,.light h5,.light h4,.light h3,.light h2,.light h1,.light aside {color: #000000;}
-.biz p,.biz span,.biz a,.biz h6,.biz h5,.biz h4,.biz h3,.biz h2,.biz h1,.biz aside {color: #000000;}
-.dark p,.dark span,.dark a,.dark h6,.dark h5,.dark h4,.dark h3,.dark h2,.dark h1,.dark aside {color: #ffffff;}
+.light p,.light span,.light a,.light h6,.light h5,.light h4,.light h3,.light h2,.light h1,.light aside,.light input {color: #000000;}
+.biz p,.biz span,.biz a,.biz h6,.biz h5,.biz h4,.biz h3,.biz h2,.biz h1,.biz aside, .biz input {color: #000000;}
+.dark p,.dark span,.dark a,.dark h6,.dark h5,.dark h4,.dark h3,.dark h2,.dark h1,.dark aside, .dark input {color: #ffffff;}
 
 .light, .dark, .biz {min-height: 100vh; overflow: scroll;}
 
@@ -602,7 +593,7 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 .light {background: rgb(255,255,255);background: linear-gradient(300deg, #fdf7f5 70%, rgba(120,111,255,1) 100%);}
 
 .light .ActionInfoSection {background-color: #e4e4e4;}
-.dark .ActionInfoSection {background-color: #313131;}
+.dark .ActionInfoSection {background-color: #525252;}
 
 .light .ActionInfoSection .ActionInfoSectionAMM {background-color: #F0F0F0;}
 .dark .ActionInfoSection .ActionInfoSectionAMM {background-color: #1b1b1b;}
@@ -620,13 +611,13 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 .dark .ActionInfoSectionText p {color: #ffffff;}
 
 .light .ActionInfoSectionS {background-color: #e4e4e4;}
-.dark .ActionInfoSectionS {background-color: #313131;}
+.dark .ActionInfoSectionS {background-color: #525252;}
 
 .light .ActionAWeb3Button button:disabled, .ActionAWeb3ButtonExtraSmall button:disabled, .ActionAWeb3Buttons button:disabled, .ActionAWeb3ButtonSmall button:disabled {background-color: #e4e4e4 !important;}
 .dark .ActionAWeb3Button button:disabled, .ActionAWeb3ButtonExtraSmall button:disabled, .ActionAWeb3Buttons button:disabled, .ActionAWeb3ButtonSmall button:disabled {background-color: #444444 !important;}
 
 .light .BackButton  {background-color: #e4e4e4; color: #6e6e6e;}
-.dark .BackButton  {background-color: #313131; color: #6e6e6e;}
+.dark .BackButton  {background-color: #525252; color: #6e6e6e;}
 
 .light .ModalBack  {background: linear-gradient(135deg,#655dfff5,#a0a0a0ea 80%);}
 .dark .ModalBack  {background: linear-gradient(135deg,#655dfff5,#1b1b1bea 80%);}
@@ -686,7 +677,7 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 .dark .MetadataSingleOpened a {background-color: #849BBD; color: #ffffff;}
 
 .light .TradeMarketTokenAll {background-color: #e4e4e4;}
-.dark .TradeMarketTokenAll {background-color: #313131;}
+.dark .TradeMarketTokenAll {background-color: #525252;}
 
 .light .TradeMarketToken {background-color: #ffffff;}
 .dark .TradeMarketToken {background-color: #000000;}
@@ -694,5 +685,82 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 .light .TradeMarketToken .TradeMarketTokenSelector {background-color: #F0F0F0;}
 .dark .TradeMarketToken .TradeMarketTokenSelector {background-color: #1b1b1b;}
 
+.light .TradeMarketTokenAmount input  {background-color: transparent;}
+.dark .TradeMarketTokenAmount input {background-color: transparent;}
+
+.light .TradeMarketTokenAmountS input  {background-color: transparent;}
+.dark .TradeMarketTokenAmountS input {background-color: transparent;}
+
+.light .TradeMarketTokenBalance {color: #000000;}
+.dark .TradeMarketTokenBalance {color: #ffffff;}
+
+.light .TradeMarketTokenBalanceS {color: #000000;}
+.dark .TradeMarketTokenBalanceS {color: #ffffff;}
+
+.light .TradeMarketTokenAllS {background-color: #e4e4e4;}
+.dark .TradeMarketTokenAllS {background-color: #525252;}
+
+.light .TradeMarketTokenS {background-color: #ffffff;}
+.dark .TradeMarketTokenS {background-color: #000000;}
+
+.light .TradeMarketTokenS .TradeMarketTokenSelector {background-color: #F0F0F0;}
+.dark .TradeMarketTokenS .TradeMarketTokenSelector {background-color: #1b1b1b;}
+
+.light .TokensSelectorCategories {background-color: #525252; border-color: #E4E4E4;}
+.dark .TokensSelectorCategories {background-color: #E4E4E4; border-color: #525252;}
 
 
+.light .TokensSelectorCategories input {background-color: #525252; color: #ffffff;}
+.dark .TokensSelectorCategories input {background-color: #E4E4E4; color: #000000;}
+
+.light .TokensSelectorCategories input::placeholder, .light .TokensSelectorCategories input:-ms-input-placeholder,.light .TokensSelectorCategories input::-ms-input-placeholder {color: #ffffff;opacity: 1;}
+.dark .TokensSelectorCategories input::placeholder, .dark .TokensSelectorCategories input:-ms-input-placeholder,.dark .TokensSelectorCategories input::-ms-input-placeholder {color: #000000;opacity: 1;}
+
+.light .TokensSelectorCategoriesList {background-color: #F0F0F0;}
+.dark .TokensSelectorCategoriesList {background-color: #1b1b1b;}
+
+.light .TokensSelectorCategoriesList a {background-color: #F0F0F0;}
+.dark .TokensSelectorCategoriesList a {background-color: #1b1b1b;}
+
+.light .TokensSelectorCategoriesList .selected, .light .TokensSelectorCategoriesList a:hover {background-color: #ffffff;}
+.dark .TokensSelectorCategoriesList .selected, .dark .TokensSelectorCategoriesList a:hover {background-color: #000000;}
+
+.light .TradeMain {background-color: #F0F0F0;}
+.dark .TradeMain {background-color: #1b1b1b;}
+
+.light .TradeMarketBox {border-color: #ffffff;}
+.dark .TradeMarketBox {border-color: #000000;}
+
+.light .TradeMarketBoxSwitch {background-color: #e4e4e4;}
+.dark .TradeMarketBoxSwitch {background-color: #525252;}
+
+.light .TradeMarketType {background-color: #ffffff;}
+.dark .TradeMarketType {background-color: #000000;}
+
+.light .TradeMarketType a {background-color: #e4e4e4;}
+.dark .TradeMarketType a {background-color: #525252;}
+
+.light .TradeMarketType .selected,.light .TradeMarketType a:hover {color: #000000; background-color: #ffffff;}
+.dark .TradeMarketType .selected,.dark .TradeMarketType a:hover {color: #ffffff; background-color: #000000;}
+
+.light .TradeOTCBoxOrder {border-color: #e4e4e4;}
+.dark .TradeOTCBoxOrder {border-color: #525252;}
+
+.light .TradeOTCBoxOrder .TradeOTCBoxOrderQ {border-color: #e4e4e4;}
+.dark .TradeOTCBoxOrder .TradeOTCBoxOrderQ {border-color: #525252;}
+
+.light .TradeOTCBoxOrder button {color: #fff;}
+.dark .TradeOTCBoxOrder button {color: #fff;}
+
+.light .TradeOTCBoxOrdersBuy, .light .TradeOTCBoxOrdersSell {background-color: #fff;}
+.dark .TradeOTCBoxOrdersBuy, .dark .TradeOTCBoxOrdersSell {background-color: #000;}
+
+.light .TradeOTCBoxOrdersSell h6 {color: rgb(252, 98, 111);}
+.light .TradeOTCBoxOrdersBuy h6 {color: rgb(106, 234, 200);}
+.light .TradeOTCBoxOrdersBuy .TradeOTCBoxOrder  button {background-color: rgb(106, 234, 200);}
+.light .TradeOTCBoxOrdersSell .TradeOTCBoxOrder  button {background-color: rgb(252, 98, 111);}
+
+.dark .TradeOTCBoxOrdersSell h6 {color: rgb(252, 98, 111);}
+.dark .TradeOTCBoxOrdersBuy h6 {color: rgb(106, 234, 200);}
+.dark .TradeOTCBoxOrdersBuy .TradeOTCBoxOrder  button {background-color: rgb(106, 234, 200);}
+.dark .TradeOTCBoxOrdersSell .TradeOTCBoxOrder  button {background-color: rgb(252, 98, 111);}
