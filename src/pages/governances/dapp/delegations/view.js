@@ -14,7 +14,7 @@ import HostOptions from './hostOptions'
 
 import style from '../organizations-main-sections.module.css'
 
-const DelegationView = (props) => {
+const DelegationView = () => {
 
   const [element, setElement] = useState(null)
 
@@ -37,7 +37,7 @@ const DelegationView = (props) => {
   return (
     <div className={style.SingleContentPage}>
       <DelegationHeadline element={element}/>
-      {<HostOptions element={element}/>}
+      {element?.host === account && <HostOptions element={element}/>}
       <GovernanceContainer element={element}/>
     </div>
   )

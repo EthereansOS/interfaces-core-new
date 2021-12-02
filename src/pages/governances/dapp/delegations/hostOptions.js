@@ -5,13 +5,11 @@ import RegularModal from '../../../../components/Global/RegularModal'
 
 import { useWeb3, useEthosContext } from '@ethereansos/interfaces-core'
 
-import { CircularProgress } from '@ethereansos/interfaces-ui'
-
 import { setDelegationMetadata } from '../../../../logic/delegation'
 
 import style from '../../../../all.module.css'
 
-const ChangeMetadata =  ({back, finalize}) => {
+const ChangeMetadata =  ({element}) => {
 
   const context = useEthosContext()
   const {getGlobalContract, newContract, chainId, ipfsHttpClient} = useWeb3()
@@ -19,35 +17,27 @@ const ChangeMetadata =  ({back, finalize}) => {
   const [name, setName] = useState("")
   const [description, setDescription] = useState("")
   const [symbol, setSymbol] = useState("")
-  const [logo, setLogo] = useState("")
+  const [image, setImage] = useState("")
   const [background_color, setBackground_color] = useState("")
   const [external_url, setExternal_url] = useState("")
   const [discussion_url, setDiscussion_url] = useState("")
   const [public_polls, setPublic_polls] = useState("")
 
-  const [loading, setLoading] = useState(false)
-
-  async function deploy() {
-    setLoading(true)
-    var errorMessage
-    try {
-        await setDelegationMetadata({
-          context, newContract, chainId, ipfsHttpClient
-        }, {
-          name,
-          description,
-          symbol,
-          logo,
-          background_color,
-          external_url,
-          discussion_url,
-          public_polls
-        })
-    } catch(e) {
-      errorMessage = e.message || e
-    }
-    setLoading(false)
-    errorMessage && setTimeout(() => alert(errorMessage))
+  function deploy() {
+    return setDelegationMetadata({
+      context, newContract, chainId, ipfsHttpClient
+    },
+    element,
+    {
+      name,
+      description,
+      symbol,
+      image,
+      background_color,
+      external_url,
+      discussion_url,
+      public_polls
+    })
   }
 
   return (
@@ -77,7 +67,7 @@ const ChangeMetadata =  ({back, finalize}) => {
         </label>
         <label className={style.CreationPageLabelFS}>
           <h6>Logo link</h6>
-          <input placeholder="ipfs//..." type="link" value={logo} onChange={e => setLogo(e.currentTarget.value)}/>
+          <input placeholder="ipfs//..." type="link" value={image} onChange={e => setImage(e.currentTarget.value)}/>
           <p>A valid IPFS link for your Delegation’s logo. Please upload a square picture (.png, .gif or .jpg, max size 1mb) so that it fits perfectly with the EthereansOS interface style.</p>
         </label>
         <label className={style.CreationPageLabelFS}>
@@ -91,8 +81,7 @@ const ChangeMetadata =  ({back, finalize}) => {
           <p>If active, all polls created regarding this Delegation will appear on the Delegation’s page. If not active, only polls created by the Delegation host will appear on the Delegation’s page.</p>
         </label>
         <div className={style.ActionDeploy}>
-          {loading && <CircularProgress/>}
-          {!loading && <a className={style.Web3CustomBTN} onClick={deploy}>Deploy</a>}
+          <ActionAWeb3Button onClick={deploy}>Deploy</ActionAWeb3Button>
         </div>
       </div>
   )

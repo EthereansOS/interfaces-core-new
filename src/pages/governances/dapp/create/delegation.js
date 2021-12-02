@@ -35,7 +35,7 @@ const Deploy = ({back, finalize}) => {
   const [name, setName] = useState("")
   const [description, setDescription] = useState("")
   const [symbol, setSymbol] = useState("")
-  const [logo, setLogo] = useState("")
+  const [image, setImage] = useState("")
   const [background_color, setBackground_color] = useState("")
   const [external_url, setExternal_url] = useState("")
   const [discussion_url, setDiscussion_url] = useState("")
@@ -53,7 +53,7 @@ const Deploy = ({back, finalize}) => {
           name,
           description,
           symbol,
-          logo,
+          image,
           background_color,
           external_url,
           discussion_url,
@@ -97,7 +97,7 @@ const Deploy = ({back, finalize}) => {
       </label>
       <label className={style.CreationPageLabelF}>
         <h6>Logo link</h6>
-        <input placeholder="ipfs//..." type="link" value={logo} onChange={e => setLogo(e.currentTarget.value)}/>
+        <input placeholder="ipfs//..." type="link" value={image} onChange={e => setImage(e.currentTarget.value)}/>
         <p>A valid IPFS link for your Delegation’s logo. Please upload a square picture (.png, .gif or .jpg, max size 1mb) so that it fits perfectly with the EthereansOS interface style.</p>
       </label>
       <label className={style.CreationPageLabelF}>

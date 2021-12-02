@@ -106,8 +106,6 @@ export async function getDelegation({context, web3, account, getGlobalContract, 
 
     delegation.host = data.valueAddress
 
-    console.log('delegation host', delegation.host)
-
     return delegation
 }
 
@@ -120,12 +118,12 @@ function instrumentProposalModels(proposalModels) {
     return proposalModels
 }
 
-export async function setDelegationMetadata({context, ipfsHttpClient}, organization, metadata) {
+export async function setDelegationMetadata({ context, newContract, chainId, ipfsHttpClient }, element, metadata) {
     var uri = await uploadMetadata({context, ipfsHttpClient}, metadata)
-
 
 }
 
 export async function retrieveDelegationProposals({context, newContract}, organization) {
-    
+    console.log("sasda")
+    return []
 }

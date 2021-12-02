@@ -150,7 +150,7 @@ export async function getOrganization({ context, web3, account, getGlobalContrac
 
 export async function retrieveAllProposals({ context, newContract }, organization) {
     if(organization.type === 'delegation') {
-        return retrieveDelegationProposals({context, newContract}, organization)
+        return await retrieveDelegationProposals({context, newContract}, organization)
     }
     var proposals = await getProposals({ context, newContract }, organization)
     await Promise.all((organization.organizations || []).map(async org => proposals.push(...(await getProposals({context, newContract}, org)))))
