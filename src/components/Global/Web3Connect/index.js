@@ -8,7 +8,7 @@ const Web3Connect = () => {
   function triggerConnect() {
     var location = window.location.href.toString();
     connectionStatus === web3States.NOT_CONNECTED && (window.location.href = (location.lastIndexOf('/') === location.length - 1 ? location.substring(0, location.length - 1) : location) + '/dapp');
-    connectionStatus === web3States.CONNECTED && void((window.location.href = window.location.href.split('/#')[0] + '/#/'), setTimeout(() => setConnector(null)));
+    connectionStatus === web3States.CONNECTED && void((window.location.href = window.location.href.split('/#')[0] + '/#/'), setTimeout(() => void(setConnector(null), window.localStorage.removeItem("connector"))));
   }
 
   return (
