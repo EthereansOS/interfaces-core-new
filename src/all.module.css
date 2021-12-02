@@ -586,6 +586,7 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 @media only screen and (max-width: 990px) {
   .NavigationItem {font-size: 11px;width: 20%;overflow: hidden; }
   .Navigation .Selected img {display: none;}
+  .Navigation {display: none;}
 }
 
 
@@ -597,13 +598,15 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
   .logoMain img {height: 40px; width: 50px; display: block;}
   .Navigation {display: inline-block;border-left: none;padding: 8px;width: auto;cursor: pointer; text-align: center;margin: 0px 0px 0px 50px;vertical-align: top;}
   .NavigationItem:hover {margin: 7px 10px;}
-  .NavigationItem {font-size: 15px;text-align: center;margin: 7px 10px;display: inline-block;text-align: left; width: 150px; text-align: center;border-radius: 8px;}
+  .NavigationItem {font-size: 15px;text-align: center;margin: 7px 10px;display: inline-block;text-align: left; width: 140px; text-align: center;border-radius: 8px;}
   .NavigationItem img {display: none;}
   .NavigationItem img {width: 10px; height: 10px;}
   .NavigationItem:hover img {display: inline-block;}
   .Navigation .Selected img {display: inline-block;}
   .NavigationItem:hover .Hand {display: none;}
   .Web3Connect {display: inline-block; text-align:right; margin:10px 10px; padding-left: 0px; float: right;}
+  .ThemeSelect {width: auto; display: inline-block;margin:10px auto 0px auto;}
+  .ThemeSelect select {padding: 10px;}
 }
 
 @media only screen and (max-device-width: 990px) {
@@ -812,7 +815,7 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 .dark .Dapp_Menu {background-color: #000000; border-color: #aa9cfe;box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
 
 .light .DappSubMenu {background-color: #E4E4E4; border-color: #e1b9be;box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-webkit-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
-.dark .DappSubMenu {background-color: #525252; border-color: #e1b9be;box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
+.dark .DappSubMenu {background-color: #525252; border: none; box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
 
 .light .DDapp_Menu1 {background-color: #ffffff; border-radius: #aa9cfe;box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-webkit-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32); }
 .dark .DDapp_Menu1 {background-color: #000000; border-radius: #aa9cfe;box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
@@ -994,8 +997,8 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 .light .VotingPowersAmount { background-color: #EEEEEE; }
 .dark .VotingPowersAmount { background-color: #292929; }
 
-.light .ThemeSelect select {background-color: #E4E4E4; color: #000000;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
-.dark .ThemeSelect select {background-color: #525252; color: #ffffff;box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
+.light .ThemeSelect select {background-color: #E4E4E4; color: #000000;}
+.dark .ThemeSelect select {background-color: #525252; color: #ffffff;}
 
 .light .NavigationItem {background-color: #ffffff;}
 .dark .NavigationItem {background-color: #000000;}
@@ -1006,8 +1009,8 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 .light .Web3ConnectChain {background-color: #E4E4E4;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
 .dark .Web3ConnectChain {background-color: #525252;box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
 
-.light .Web3ConnectWallet {background-color: #E4E4E4; box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
-.dark .Web3ConnectWallet {background-color: #525252;box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
+.light .Web3ConnectWallet {background-color: #E4E4E4;}
+.dark .Web3ConnectWallet {background-color: #525252;}
 
 @media only screen and (max-width: 1200px) {
   .light .Header .BlurHeader {background: linear-gradient(-130deg,#c1befc4d,#fdf7f515 80%);}
