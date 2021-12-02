@@ -3,6 +3,9 @@ a {cursor: pointer;}
 
 /* Global Components */
 
+.dark {background-color: #000000 !important;}
+.dark .OrgTitle p { color:rgb(75, 203, 201) !important}
+
 .ActionAWeb3Button {width: 100%; margin: 15px auto; text-align: center;}
 .ActionAWeb3Button button {width: auto; margin: 0 auto; padding: 9px 15px; text-align: center; font-size: 15px; border-radius: 15px; border: none !important; cursor: pointer;background-color: #7474f7; color: #ffffff; font-weight: bold;}
 .ActionAWeb3Button button:disabled {font-weight: normal !important; background-color: #e4e4e4 !important; color: #6e6e6e !important; cursor: default;}
@@ -70,7 +73,7 @@ a {cursor: pointer;}
 .RegularButtonDuoSmallGray {width: 40%; margin: 0 4%; padding: 5px 5px; text-align: center; font-size: 11px; border-radius: 15px; border: none !important; cursor: pointer;background-color: #e2e0e0;color: #849BBD; box-shadow: none;  font-weight: bold;}
 .RegularMiniButton {display: inline-block;padding: 2px 5px;background-color: #849bbd;color: #fff;border-radius: 20px;font-size: 12px;font-weight: bold;cursor: pointer; box-shadow: none; border:none;}
 
-.RegularSelect {position: relative;display: inline-block;margin-bottom: 15px;width: auto;}    
+.RegularSelect {position: relative;display: inline-block;margin-bottom: 15px;width: auto;}
 .RegularSelect select {display: inline-block;width: 100%;cursor: pointer;padding: 10px 16px;outline: 0;border: 1px solid #849bbd;border-radius: 8px;background: transparent;color: #849bbd;appearance: none;-webkit-appearance: none;-moz-appearance: none;padding-right: 40px;font-size: 14px;font-weight: bold;}
 .RegularSelect select::-ms-expand {display: none;}
 .RegularSelect select:hover,.RegularSelect select:focus {color: #849bbd;background: #ffffff;}
@@ -458,9 +461,9 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 .ProposalVotesCount {width: 20%; padding: 5px; display: inline-block; text-align: right;}
 .ProposalVotesCount span {font-size: 12px; margin: 10px auto; display: inline-block;}
 .ProposalResult {width: 20%; padding: 5px;display:inline-block; text-align: left;}
-.PendingTagGreen {color: #00F2C2; border-radius: 6px; font-size: 12px; font-weight: bold; padding: 5px 8px; border: 1px solid #00F2C2; text-align: center; display: inline-block; width: auto;} 
-.PendingTagBlue {color: #8EB2FC; border-radius: 6px; font-size: 12px; font-weight: bold; padding: 5px 8px; border: 1px solid #8EB2FC; text-align: center; display: inline-block; width: auto;} 
-.PendingTagRed {color: #ad0002; border-radius: 6px; font-size: 12px; font-weight: bold; padding: 5px 8px; border: 1px solid #ad0002; text-align: center; display: inline-block; width: auto;} 
+.PendingTagGreen {color: #00F2C2; border-radius: 6px; font-size: 12px; font-weight: bold; padding: 5px 8px; border: 1px solid #00F2C2; text-align: center; display: inline-block; width: auto;}
+.PendingTagBlue {color: #8EB2FC; border-radius: 6px; font-size: 12px; font-weight: bold; padding: 5px 8px; border: 1px solid #8EB2FC; text-align: center; display: inline-block; width: auto;}
+.PendingTagRed {color: #ad0002; border-radius: 6px; font-size: 12px; font-weight: bold; padding: 5px 8px; border: 1px solid #ad0002; text-align: center; display: inline-block; width: auto;}
 .ProposalOpen {width: 100%; text-align: center; display: inline-block; margin: 15px auto; padding: 5px 0; border-top: 1px solid #ffffff;}
 .ProposalOpen .Upshots {background-color: #ffffff; padding: 5px 20px; text-align: center; border-radius: 20px; margin: 10px auto; width: 450px;}
 
@@ -472,8 +475,8 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 .SurveylessOpenCardSelectionSingleOpenStaked {width: 100%; display: inline-block; text-align: center; border-radius: 12px; background-color: #ffffff; margin: 20px auto 0px auto; padding: 10px;}
 .SurveylessOpenCardSelectionSingleOpenStaked p {display: inline-block; margin: 5px 10px; font-size: 13px; color: #000000;}
 
-.ProposalTitle > h6 > a {width: 20px; height: 20px; display: inline-block; vertical-align: middle;} 
-.ProposalTitle > h6 > a img {width: 20px; height: 20px; display: inline-block;} 
+.ProposalTitle > h6 > a {width: 20px; height: 20px; display: inline-block; vertical-align: middle;}
+.ProposalTitle > h6 > a img {width: 20px; height: 20px; display: inline-block;}
 .MultiVoteBox {width: 450px; display: block; margin: 10px auto; background-color: #e9effc; padding: 20px; border-radius: 20px;}
 
 .ModalBack {position: fixed; z-index: 100000; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; background: linear-gradient(135deg,#c1befcd8,#fdf7f5b6 80%); text-align: center;display: flex;flex-wrap: wrap;flex-direction: row;justify-content: center;align-items: center;align-content: center}
@@ -528,7 +531,7 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 .OrgPartView {width: 940px; margin: 20px auto; display: inline-block; background-color: #ffffff; border-radius: 20px; box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32); text-align: center; overflow: hidden;position: relative; padding: 25px 15px;}
 .OrgPartTitle {width: 200px; display: inline-block; margin: 5px 30px 15px 5px; padding: 10px; vertical-align: middle; text-align: left;}
 .OrgPartTitle h6 {font-size: 18px; color: #000000; text-align: left; margin: 5px auto;}
-.OrgPartInfo {width: 200px; display: inline-block; background-color: #e9effc; padding: 10px; margin: 5px; border-radius: 12px;} 
+.OrgPartInfo {width: 200px; display: inline-block; background-color: #e9effc; padding: 10px; margin: 5px; border-radius: 12px;}
 .OrgPartInfo p,.OrgPartInfoB p {font-size: 12px; line-height: 1.5;}
 .OrgPartInfo b, .OrgPartInfoB b {font-size: 13px; line-height: 1.5;}
 .OrgPartInfoB {width: 200px; display: inline-block;vertical-align: middle; padding: 10px 30px; margin: 5px; border-radius: 12px; vertical-align: super;}
@@ -541,8 +544,8 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 .InvestmentsSection {border-top: 1px solid #e9effc; padding: 20px 20px 20px 20px; margin: 10px auto; width: 100%; display: inline-block; text-align: center;}
 .InvestmentsSectionBuySell {width: 415px; display: inline-block; text-align: left; background-color: #e9effc; padding: 20px; border-radius: 12px; margin: 10px; vertical-align: middle;}
 .InvestmentsSectionBuySell p {line-height: 1.3; font-size: 15px; color: #000000; margin: 5px;}
-.InvestmentsSectionBuySell p > a {width: 20px; height: 20px; display: inline-block; vertical-align: middle; margin: 5px; position: relative;} 
-.InvestmentsSectionBuySell p > a img {width: 20px; height: 20px; display: inline-block;} 
+.InvestmentsSectionBuySell p > a {width: 20px; height: 20px; display: inline-block; vertical-align: middle; margin: 5px; position: relative;}
+.InvestmentsSectionBuySell p > a img {width: 20px; height: 20px; display: inline-block;}
 .InvestmentsSectionBuySell p > a span {position: absolute; right: 0px; top: 10px; font-size: 12px;}
 .OrgPartViewF {width: 940px; margin: 15px auto; display: inline-block; text-align: center; overflow: hidden;position: relative;}
 .OrgPartFarm {width: 450px; margin: 10px;display: inline-block; text-align: left; padding: 20px; background-color: #e9effc; border-radius: 16px;}
@@ -593,5 +596,5 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 }
 
 @media only screen and (max-device-width: 990px) {
-  
+
 }

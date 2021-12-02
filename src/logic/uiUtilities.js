@@ -1,4 +1,8 @@
+import React, { useContext, useState, useEffect } from 'react'
+
 import MenuCapableComponent from "../components/Global/MenuCapableComponent"
+
+import style from '../all.module.css'
 
 export function retrieveComponentsByReflection(contextualRequire, key, returnElement) {
     return contextualRequire.keys().map(element => {
@@ -49,3 +53,43 @@ export function prepareAddToPlugin(contextualRequire, all, name, link, className
             }
     }
 }
+
+const ThemeSelectorContext = React.createContext('themeSelector')
+
+const themes = [
+    {name : 'Light', value:'light'},
+    {name : 'Dark', value:'dark'},
+    {name : 'Biz', value:'biz'},
+]
+
+export const ThemeSelectorContextProvider = ({children}) => {
+
+    var currentTheme = themes[0]
+
+    try {
+        currentTheme = window.localStorage.theme || themes[0]
+    } catch(e) {}
+
+    const [theme, setTheme] = useState(currentTheme)
+
+    useEffect(() => {
+        try {
+            window.localStorage.setItem("theme", theme)
+        } catch(e) {
+        }
+    }, [theme])
+
+    var value = {
+        theme,
+        themes,
+        setTheme
+    }
+
+    return <ThemeSelectorContext.Provider value={value}>
+        <div className={style[theme]}>
+            {children}
+        </div>
+    </ThemeSelectorContext.Provider>
+}
+
+export const useThemeSelector = () => useContext(ThemeSelectorContext)
