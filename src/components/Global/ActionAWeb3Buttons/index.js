@@ -7,7 +7,7 @@ import {preparePermit} from '../../../logic/ballot'
 
 import style from '../../../all.module.css'
 
-export default ({token, balance, value, other, buttonText, onClick, onPermitSignature}) => {
+export default ({token, balance, value, other, buttonText, onClick, onPermitSignature, onSuccess}) => {
 
     const { account, chainId } = useWeb3()
 
@@ -49,6 +49,7 @@ export default ({token, balance, value, other, buttonText, onClick, onPermitSign
         try {
             var res = onClick(token, account, balance, value, other)
             res && res.then && await res
+            onSuccess && setTimeout(() => onSuccess(res))
         } catch(e) {
             errorMessage = e.message || e
             console.error(e)

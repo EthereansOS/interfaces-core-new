@@ -3,7 +3,7 @@ import { CircularProgress } from '@ethereansos/interfaces-ui'
 
 import style from '../../../all.module.css'
 
-const ActionAWeb3Button  = ({children, onClick, type}) => {
+const ActionAWeb3Button  = ({children, onClick, type, onSuccess}) => {
 
     var realType = type && (type = type[0].toUpperCase() + type.substring(1))
 
@@ -18,6 +18,7 @@ const ActionAWeb3Button  = ({children, onClick, type}) => {
         try {
             var elem = onClick()
             elem && (elem = !elem.then ? elem : (await elem))
+            onSuccess && setTimeout(() => onSuccess(elem))
         } catch(e) {
             errorMessage = e.message || e
         }

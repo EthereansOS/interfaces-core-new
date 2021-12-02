@@ -4,25 +4,25 @@ import { useWeb3, blockchainCall, fromDecimals, abi } from '@ethereansos/interfa
 
 import { CircularProgress } from '@ethereansos/interfaces-ui'
 
-export function HeaderOsInflationRateActiveSelection({proposal}) {
+export function HeaderOsInflationRateActiveSelection({element}) {
 
     const { block } = useWeb3()
     const [value, setValue] = useState(null)
 
     async function refresh() {
         setValue(null)
-        var perc = await blockchainCall(proposal.organization.components.oSFixedInflationManager.contract.methods.lastTokenPercentage)
+        var perc = await blockchainCall(element.organization.components.oSFixedInflationManager.contract.methods.lastTokenPercentage)
         setValue((fromDecimals(perc, 16, true)) + " %")
     }
 
     useEffect(() => {
         refresh()
-    }, [proposal, block])
+    }, [element, block])
 
     return value || <CircularProgress/>
 }
 
-export function HeaderStateManagerVariable({proposal, name, decimals, suffix}) {
+export function HeaderStateManagerVariable({element, name, decimals, suffix}) {
 
     const { block } = useWeb3()
     const [value, setValue] = useState(null)
@@ -30,7 +30,7 @@ export function HeaderStateManagerVariable({proposal, name, decimals, suffix}) {
     async function refresh() {
         setValue(null)
         try {
-            var value = await blockchainCall(proposal.organization.components.stateManager.contract.methods.get, name)
+            var value = await blockchainCall(element.organization.components.stateManager.contract.methods.get, name)
             value = value.value
             value = abi.decode(["uint256"], value)[0].toString()
             value = fromDecimals(value, decimals)
@@ -42,12 +42,12 @@ export function HeaderStateManagerVariable({proposal, name, decimals, suffix}) {
 
     useEffect(() => {
         refresh()
-    }, [proposal, block])
+    }, [element, block])
 
     return value || <CircularProgress/>
 }
 
-export function HeaderTokens({proposal, buyOrSell}) {
+export function HeaderTokens({element, buyOrSell}) {
     const { block } = useWeb3()
     const [value, setValue] = useState(null)
 
@@ -62,7 +62,7 @@ export function HeaderTokens({proposal, buyOrSell}) {
 
     useEffect(() => {
         refresh()
-    }, [proposal, block])
+    }, [element, block])
 
     return value || <CircularProgress/>
 }

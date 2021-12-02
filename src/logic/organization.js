@@ -3,6 +3,7 @@ import { abi, VOID_ETHEREUM_ADDRESS, uploadMetadata, formatLink, fromDecimals, g
 import { encodeHeader } from "./itemsV2";
 
 import { decodeProposal, decodeProposalVotingToken, generateItemKey } from "./ballot";
+import { retrieveDelegationProposals } from "./delegation";
 
 export async function create({ context, ipfsHttpClient, newContract, chainId, factoryOfFactories }, metadata, organization) {
     var uri = await uploadMetadata({ context, ipfsHttpClient }, metadata)
@@ -147,9 +148,12 @@ export async function getOrganization({ context, web3, account, getGlobalContrac
 }
 
 export async function retrieveAllProposals({ context, newContract }, organization) {
-    var organizations = await getProposals({ context, newContract }, organization)
-    await Promise.all((organization.organizations || []).map(async org => organizations.push(...(await getProposals({context, newContract}, org)))))
-    return organizations
+    if(organization.type === 'delegation') {
+        return retrieveDelegationProposals({context, newContract}, organization)
+    }
+    var proposals = await getProposals({ context, newContract }, organization)
+    await Promise.all((organization.organizations || []).map(async org => proposals.push(...(await getProposals({context, newContract}, org)))))
+    return proposals
 }
 
 export async function getOrganizationComponents({ newContract, context }, contract) {
@@ -352,8 +356,155 @@ async function getAllOrganizations({ account, web3, context, newContract }, orga
     return []
 }
 
-async function getProposals({}, organization) {
-    var proposals = []
+async function getSurveylessProposals({context}, organization) {
+    if(!organization || organization.proposalModels.length === 0) {
+        return []
+    }
+    organization.proposalModels.forEach((it, i) => it.modelIndex = i)
+    var surveyless = organization.proposalModels.filter(it => it.isPreset)
+    var proposalIds = surveyless.reduce((acc, it) => [...acc, ...it.presetProposals.filter(it => it !== VOID_BYTES32)], [])
+    var metadatas = await Promise.all(surveyless.map(async it => {
+        var metadata = {}
+        try {
+            metadata = {...(await(await fetch(formatLink({context}, it.uri))).json()), uri : it.uri}
+        } catch(e) {
+        }
+        try {
+            metadata = {...metadata, ...wellknownPresets[metadata.uri.split('ipfs://ipfs/').join('')]}
+        } catch(e) {}
+        return metadata
+    }))
+
+    var surveylessProposals = surveyless.map((it, i) => {
+        var initialized = it.presetProposals.filter(it => it === VOID_BYTES32).length === 0
+        var subProposals = it.presetValues.map((_, index) => ({
+            ...it,
+            organization,
+            proposalsManager : organization.components.proposalsManager.contract,
+            initialized,
+            isSurveyless : true,
+            ...metadatas[i],
+            proposalId : it.presetProposals[index],
+            label : metadatas[i].presetValues && metadatas[i].presetValues[index],
+            proposalsConfiguration : organization.proposalsConfiguration
+        }))
+        return {
+            ...it,
+            ...metadatas[i],
+            organization,
+            proposalsManager : organization.components.proposalsManager.contract,
+            initialized,
+            isSurveyless : true,
+            subProposals,
+            proposalsConfiguration : organization.proposalsConfiguration
+        }
+    })
+
+    return surveylessProposals
+}
+
+var percentages = {
+    presetValues : [
+        "0.03 %",
+        "0.08 %",
+        "0.3 %",
+        "0.8 %",
+        "1 %",
+        "3 %"
+    ]
+}
+
+var wellknownPresets = {
+    'QmPkZjrGUpNSP19oWhdRfoy9YdP7fL9AJtzmgiFR2sekyT' : {
+        presetValues : [
+            "0.5 %",
+            "1 %",
+            "3 %",
+            "5 %",
+            "8 %",
+            "15 %"
+        ]
+    },
+    'QmSBSi8STApCH3LtRALMQSA6v7iMka9UYFewY8N4jB9dSN' : percentages,
+    'Qmee1ibJCtnhu7ChpcsKyXum9KikptJtQrAxeCLer55Aj5' : percentages,
+    'QmR3S8cPGb4Tm9dr7sVx5meUPMsptV6vBbCCP96e2cZeAL' : percentages,
+    'QmesA2MjYEjdsC2wFRSfqDmThDASftNZThwWMuhZ7vKQaV' : {
+        presetValues : [
+            "0.05 OS",
+            "0.1 OS",
+            "1 OS",
+            "5 OS",
+            "10 OS",
+            "100 OS"
+        ]
+    },
+    'QmVGor81bynT1GLQoWURiTSdPmPEDbe8eC5znNDHfTfkfT' : percentages,
+}
+
+async function getSurveysByModels({context}, organization) {
+    if(!organization || organization.proposalModels.length === 0) {
+        return []
+    }
+    organization.proposalModels.forEach((it, i) => it.modelIndex = i)
+    var surveys = organization.proposalModels.filter(it => !it.isPreset)
+    var metadatas = await Promise.all(surveys.map(async it => {
+        var metadata = {}
+        try {
+            metadata = {...(await(await fetch(formatLink({context}, it.uri))).json()), uri : it.uri}
+        } catch(e) {
+        }
+        try {
+            metadata = {...metadata, ...wellknownPresets[metadata.uri.split('ipfs://ipfs/').join('')]}
+        } catch(e) {}
+        return metadata
+    }))
+
+    var logArray = await Promise.all(surveys.map(it => sendAsync(organization.contract.currentProvider, 'eth_getLogs', {
+        address : organization.address,
+        fromBlock : '0x0',
+        toBlock : 'latest',
+        topics : [
+            web3Utils.sha3('Proposed(uint256,uint256,bytes32)'),
+            abi.encode(["uint256"], [it.modelIndex])
+        ]
+    })))
+
+    for(var logs of logArray) {
+        for(var log of logs) {
+            var proposalId = log.topics[3]
+            var modelIndex = parseInt(abi.decode(["uint256"], log.topics[1])[0].toString())
+            var survey = surveys.filter(it => it.modelIndex === modelIndex)
+            (survey.proposalIds = survey.proposalIds || []).push(proposalId)
+        }
+    }
+
+    var surveysProposals = surveys.map((it, i) => {
+        var subProposals = (it.proposalIds = (it.proposalIds || [])).map(it => ({
+            ...metadatas[i],
+            proposalId : it
+        }))
+        return {
+            ...it,
+            ...metadatas[i],
+            organization,
+            proposalsManager : organization.components.proposalsManager.contract,
+            isSurveyless : false,
+            subProposals,
+            proposalsConfiguration : organization.proposalsConfiguration
+        }
+    })
+
+    return surveysProposals
+}
+
+async function getProposals({context}, organization) {
+    var proposals = [
+        ...(await getSurveylessProposals({context}, organization)),
+        ...(await getSurveysByModels({context}, organization))
+    ]
+    if(proposals.length > 0) {
+        return proposals
+    }
     try {
         if (organization.proposalModels && organization.proposalModels.length > 0) {
             proposals = await Promise.all(organization.proposalModels.map(async (it, i) => ({...it, index: i, proposalsManager : organization.components.proposalsManager, organization })))
@@ -412,7 +563,7 @@ export async function createPresetProposals({}, proposal) {
 export async function vote({account}, proposal, token, accept, refuse, proposalId, permitSignature, voter) {
     if(token.mainInterface) {
         var data = abi.encode(["bytes32", "uint256", "uint256", "address", "bool"], [proposalId, accept, refuse, voter || account, false])
-        await blockchainCall(token.mainInterface.methods.safeTransferFrom, account, proposal.proposalsManager.contract.options.address, token.id, accept.ethereansosAdd(refuse), data)
+        await blockchainCall(token.mainInterface.methods.safeTransferFrom, account, proposal.proposalsManager.options.address, token.id, accept.ethereansosAdd(refuse), data)
     } else {
         await blockchainCall(proposal.proposalsManager.methods.vote, token.address, proposalId, permitSignature || '0x', accept, refuse, voter || account)
     }
@@ -423,11 +574,11 @@ export async function terminateProposal({}, proposal, proposalId) {
 }
 
 export async function withdrawProposal({account}, proposal, proposalId, address, voteOrWithdraw) {
-    await blockchainCall(proposal.proposalsManager.contract.methods.withdrawAll, [proposalId], address || account, voteOrWithdraw || false)
+    await blockchainCall(proposal.proposalsManager.methods.withdrawAll, [proposalId], address || account, voteOrWithdraw || false)
 }
 
 export async function surveylessIsTerminable({ account, newContract, context}, proposal, proposalId) {
-    var proposalData = (await blockchainCall(proposal.proposalsManager.contract.methods.list, [proposalId]))[0]
+    var proposalData = (await blockchainCall(proposal.proposalsManager.methods.list, [proposalId]))[0]
 
     var values = [
         proposalData.proposer,
@@ -461,7 +612,7 @@ export async function surveylessIsTerminable({ account, newContract, context}, p
 
     var results = await Promise.all(proposalData.validatorsAddresses.map(async validator => {
         var checker = newContract(context.IProposalCheckerABI, validator)
-        var result = await blockchainCall(checker.methods.check, proposal.proposalsManager.contract.options.address, proposalId, data, account, account, {from : proposal.proposalsManager.address})
+        var result = await blockchainCall(checker.methods.check, proposal.proposalsManager.options.address, proposalId, data, account, account, {from : proposal.proposalsManager.address})
         return result
     }))
 
@@ -520,12 +671,6 @@ export async function retrieveProposalModelMetadata({context}, proposal) {
     }
 
     try {
-        metadata = instrumentMetadata(metadata, proposal.uri.split('ipfs://ipfs/').join('').split('ipfs://').join(''))
-    } catch(e) {
-        console.log(e)
-    }
-
-    try {
         var rawTypes = metadata.decodePreset.types.map(it => it.rawType)
 
         var values = proposal.presetValues.map(it => abi.decode(rawTypes, it))
@@ -575,10 +720,6 @@ function prettifyValue(value, type) {
         value += ' %'
     }
     return value
-}
-
-function instrumentMetadata(metadata, link) {
-    return {...metadata, ...wellKnownLinks[link]}
 }
 
 var uint256EntryTypePercentage = {

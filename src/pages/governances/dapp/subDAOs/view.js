@@ -13,7 +13,7 @@ import { getOrganization } from '../../../../logic/organization'
 
 import { useEthosContext, useWeb3 } from '@ethereansos/interfaces-core'
 
-const SubDAOView = (props) => {
+const SubDAOView = () => {
 
   const location = useLocation()
   const context = useEthosContext()
@@ -32,7 +32,8 @@ const SubDAOView = (props) => {
 
   const menuVoices = [{
     label : 'Overview',
-    onClick : () => setCurrentView('overview')
+    view : 'overview',
+    component : MainSectionView
   }, {
     label : 'Statements',
   }, {
@@ -41,7 +42,8 @@ const SubDAOView = (props) => {
     label : 'Root',
   }, {
     label : 'Governance',
-    onClick : () => setCurrentView('governance')
+    view : 'governance',
+    component : GovernanceContainer
   }, {
     label : 'Poll',
   }]
@@ -50,15 +52,14 @@ const SubDAOView = (props) => {
     return <CircularProgress/>
   }
 
+  var Component = menuVoices.filter(it => currentView === it.view)[0].component
+
   return (
-    <>
-      <div className={style.SingleContentPage}>
-        <OrgHeadline element={organization}/>
-        <DappSubMenu voices={menuVoices}/>
-        {currentView === 'overview' && <MainSectionView element={organization}/>}
-        {currentView === 'governance' && <GovernanceContainer element={organization}/>}
-      </div>
-    </>
+    <div className={style.SingleContentPage}>
+      <OrgHeadline element={organization}/>
+      <DappSubMenu voices={menuVoices.map(it => ({...it, onClick : () => it.view && setCurrentView(it.view)}))}/>
+      <Component element={organization}/>
+    </div>
   )
 }
 

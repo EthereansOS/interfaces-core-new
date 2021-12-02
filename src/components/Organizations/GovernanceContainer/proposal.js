@@ -11,6 +11,8 @@ import { useWeb3, useEthosContext, blockchainCall, fromDecimals } from '@etherea
 
 import { surveyIsTerminable, terminateProposal, withdrawProposal, tokensToWithdraw } from '../../../logic/organization.js'
 
+import Description from './description'
+
 import style from '../../../all.module.css'
 
 export default ({element, proposal, metadata, checkAll}) => {
@@ -78,15 +80,11 @@ export default ({element, proposal, metadata, checkAll}) => {
       </div>
       {open && <>
         <div className={style.ProposalOpen}>
-          <h6>Summary</h6>
-          <p className={style.DescriptionSmall}>Welcome to the Buidlerberg Event 2020! Tucked away deep inside the Ethereum network, a community of researchers study and experiment with DFO technology, a community of researchers study and experiment with DFO technology, a community of researchers study and experiment with DFO technology.</p>
-          <h6>Rationale and motivations</h6>
-          <p className={style.DescriptionSmall}>Welcome to the Buidlerberg Event 2020! Tucked away deep inside the Ethereum network, a community of researchers study and experiment with DFO technology, a community of researchers study and experiment with DFO technology, a community of researchers study and experiment with DFO technology.</p>
-          <h6>Specification</h6>
-          <p className={style.DescriptionSmall}>Welcome to the Buidlerberg Event 2020! Tucked away deep inside the Ethereum network, a community of researchers study and experiment with DFO technology, a community of researchers study and experiment with DFO technology, a community of researchers study and experiment with DFO technology.</p>
-          <h6>Risks</h6>
-          <p className={style.DescriptionSmall}>Welcome to the Buidlerberg Event 2020! Tucked away deep inside the Ethereum network, a community of researchers study and experiment with DFO technology, a community of researchers study and experiment with DFO technology, a community of researchers study and experiment with DFO technology.</p>
-          <div className={style.Upshots}>
+        <Description description={metadata.summary} title="Summary" className={style.DescriptionBig}/>
+        <Description description={metadata.rationale} title="Rationale and Motivations" className={style.DescriptionBig}/>
+        <Description description={metadata.specification} title="Specification" className={style.DescriptionBig}/>
+        <Description description={metadata.risks} title="Risks" className={style.DescriptionBig}/>
+        <div className={style.Upshots}>
             <p>Upshot</p>
             <Upshots title="Yes" value={element.accept} total={element.accept.ethereansosAdd(element.refuse)}/>
             <Upshots title="No" value={element.refuse} total={element.accept.ethereansosAdd(element.refuse)}/>

@@ -7,19 +7,19 @@ import GovernanceRules from '../../Organizations/GovernanceRules/index.js'
 import ActionAWeb3Button from '../../Global/ActionAWeb3Button'
 import TokenBuyOrSell from "./tokenBuyOrSell"
 
-export default ({element, proposal, metadata, }) => {
+export default ({element}) => {
 
   const [create, setCreate] = useState(false)
 
-  var proposalType = proposal.isPreset ? 'surveyless' : 'poll'
+  var proposalType = element.isSurveyless ? 'surveyless' : 'survey'
   var type = element.type
 
-  var buyOrSell = metadata.name === 'Investment Fund Routine Buy' ? true : metadata.name === 'Investment Fund Routine Sell' ? false : null
+  var buyOrSell = element.name === 'Investment Fund Routine Buy' ? true : element.name === 'Investment Fund Routine Sell' ? false : null
 
   return (
     <div className={style.GovLeft}>
       {buyOrSell !== null && <ActionAWeb3Button onClick={() => setCreate(true)}>Create</ActionAWeb3Button>}
-      {create && <TokenBuyOrSell {...{proposal, buyOrSell, close : () => setCreate(false)}}/>}
+      {create && <TokenBuyOrSell {...{element, buyOrSell, close : () => setCreate(false)}}/>}
       {proposalType === 'surveyless' || proposalType  === 'poll' &&
         <div className={style.Upshots}>
           <p>upshot</p>
@@ -40,14 +40,14 @@ export default ({element, proposal, metadata, }) => {
         </div>
       </>}
 
-      {proposal.organization.proposalsConfiguration.votingTokens.length > 0 && <div className={style.VotingPowersList}>
+      {element.organization.proposalsConfiguration.votingTokens.length > 0 && <div className={style.VotingPowersList}>
         <p><b>Voting Powers:</b></p>
-        <VotingPowersList votingTokens={proposal.organization.proposalsConfiguration.votingTokens}/>
+        <VotingPowersList votingTokens={element.organization.proposalsConfiguration.votingTokens}/>
       </div>}
       {proposalType !== 'poll' && <>
         <div className={style.Rules}>
           <p><b>Governance Rules:</b></p>
-          <GovernanceRules proposal={proposal}/>
+          {false && <GovernanceRules element={element}/>}
         </div>
       </>}
     </div>

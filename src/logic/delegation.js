@@ -43,7 +43,7 @@ export async function createDelegation({context, ipfsHttpClient, newContract, ch
     var logs = transactionReceipt.logs
     logs = logs.filter(it => it.topics[0] === web3Utils.sha3("Deployed(address,address,address,bytes)"))[0]
     var address = logs.topics[2]
-    address = abi.decode(["address"], address)
+    address = abi.decode(["address"], address)[0]
     return address
 }
 
@@ -124,4 +124,8 @@ export async function setDelegationMetadata({context, ipfsHttpClient}, organizat
     var uri = await uploadMetadata({context, ipfsHttpClient}, metadata)
 
 
+}
+
+export async function retrieveDelegationProposals({context, newContract}, organization) {
+    
 }
