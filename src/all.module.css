@@ -624,181 +624,240 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 .light, .dark, .biz {height: 100vh; overflow: scroll;}
 
 .light {background: rgb(255,255,255);background: linear-gradient(300deg, #fdf7f5 70%, rgba(120,111,255,1) 100%);}
+.biz {background: rgb(255,255,255);background: linear-gradient(300deg, #fdf7f5 90%, rgba(120,111,255,1) 100%);}
 .dark {background-color: #000000; background: linear-gradient(300deg, #1a1a1a 70%, rgba(120,111,255,1) 100%);}
 
 
 .light .ActionInfoSection {background-color: #e4e4e4;}
+.biz .ActionInfoSection {background-color: #e4e4e4;}
 .dark .ActionInfoSection {background-color: #525252;}
 
 .light .ActionInfoSection .ActionInfoSectionAMM {background-color: #F0F0F0;}
+.biz .ActionInfoSection .ActionInfoSectionAMM {background-color: #F0F0F0;}
 .dark .ActionInfoSection .ActionInfoSectionAMM {background-color: #1b1b1b;}
 
 .light .ActionInfoSection .ActionInfoSectionSettings {background-color: #F0F0F0;}
+.biz .ActionInfoSection .ActionInfoSectionSettings {background-color: #F0F0F0;}
 .dark .ActionInfoSection .ActionInfoSectionSettings {background-color: #1b1b1b;}
 
 .light .ActionInfoSectionS .ActionInfoSectionAMM {background-color: #F0F0F0;}
+.biz .ActionInfoSectionS .ActionInfoSectionAMM {background-color: #F0F0F0;}
 .dark .ActionInfoSectionS .ActionInfoSectionAMM {background-color: #1b1b1b;}
 
 .light .ActionInfoSectionS .ActionInfoSectionSettings {background-color: #F0F0F0;}
+.biz .ActionInfoSectionS .ActionInfoSectionSettings {background-color: #F0F0F0;}
 .dark .ActionInfoSectionS .ActionInfoSectionSettings {background-color: #1b1b1b;}
 
 .light .ActionInfoSectionText p {color: #000000;}
+.biz .ActionInfoSectionText p {color: #000000;}
 .dark .ActionInfoSectionText p {color: #ffffff;}
 
 .light .ActionInfoSectionS {background-color: #e4e4e4;}
+.biz .ActionInfoSectionS {background-color: #e4e4e4;}
 .dark .ActionInfoSectionS {background-color: #525252;}
 
+.light .ActionAWeb3Button button:disabled, .ActionAWeb3ButtonExtraSmall button:disabled, .ActionAWeb3Buttons button:disabled, .ActionAWeb3ButtonSmall button:disabled {background-color: #e4e4e4 !important;}
 .light .ActionAWeb3Button button:disabled, .ActionAWeb3ButtonExtraSmall button:disabled, .ActionAWeb3Buttons button:disabled, .ActionAWeb3ButtonSmall button:disabled {background-color: #e4e4e4 !important;}
 .dark .ActionAWeb3Button button:disabled, .ActionAWeb3ButtonExtraSmall button:disabled, .ActionAWeb3Buttons button:disabled, .ActionAWeb3ButtonSmall button:disabled {background-color: #444444 !important;}
 
 .light .BackButton  {background-color: #e4e4e4; color: #6e6e6e;}
+.biz .BackButton  {background-color: #e4e4e4; color: #6e6e6e;}
 .dark .BackButton  {background-color: #525252; color: #6e6e6e;}
 
 .light .Web3CustomBTN  {background-color: #7474f7; color: #ffffff;}
+.biz .Web3CustomBTN  {background-color: #7474f7; color: #ffffff;}
 .dark .Web3CustomBTN  {background-color: #7474f7; color: #ffffff;}
 
 .light .Web3BackBTN  {background-color: #e4e4e4; color: #6e6e6e;}
+.biz .Web3BackBTN  {background-color: #e4e4e4; color: #6e6e6e;}
 .dark .Web3BackBTN  {background-color: #525252; color: #6e6e6e;}
 
 .light .ModalBack  {background: linear-gradient(135deg,#655dfff5,#a0a0a0ea 80%);}
+.biz .ModalBack  {background: linear-gradient(135deg,#655dfff5,#a0a0a0ea 80%);}
 .dark .ModalBack  {background: linear-gradient(135deg,#655dfff5,#1b1b1bea 80%);}
 
 .light .ModalBoxBanner  {background-color: #ffffff; box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
+.biz .ModalBoxBanner  {background-color: #ffffff; box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
 .dark .ModalBoxBanner  {background-color: #161616; box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
 
 .light .ExtLinkButton  {border-color:#849BBD;color: #849BBD; background-color: transparent;}
+.biz .ExtLinkButton  {border-color:#849BBD;color: #849BBD; background-color: transparent;}
 .dark .ExtLinkButton  {border-color:#849BBD;color: #849BBD; background-color: transparent;}
 
 .light .ItemLinkButton  {border-color: #59b0fb; color: #59b0fb; background-color: transparent;}
+.biz .ItemLinkButton  {border-color: #59b0fb; color: #59b0fb; background-color: transparent;}
 .dark .ItemLinkButton  {border-color: #59b0fb; color: #59b0fb; background-color: transparent;}
 
 .light .RegularButton, .light .RegularButtonDuo, .light .RegularButtonDuoSmall, .light .RegularButtonDuoXSmall, .light .RegularMiniButton  {background-color: #849bbd;color: #fff;}
+.biz .RegularButton, .biz .RegularButtonDuo, .biz .RegularButtonDuoSmall, .biz .RegularButtonDuoXSmall, .biz .RegularMiniButton  {background-color: #849bbd;color: #fff;}
 .dark .RegularButton .dark .RegularButtonDuo, .dark .RegularButtonDuoSmall, .dark .RegularButtonDuoXSmall, .dark .RegularMiniButton  {background-color: #849bbd;color: #fff;}
 
 .light .RegularButtonDuoSmallWhite {background-color: #ffffff;color: #849BBD;}
+.biz .RegularButtonDuoSmallWhite {background-color: #ffffff;color: #849BBD;}
 .dark .RegularButtonDuoSmallWhite {background-color: #ffffff;color: #849BBD;}
 
 .light .RegularButtonDuoSmallGray {background-color: #e2e0e0;color: #849BBD;}
+.biz .RegularButtonDuoSmallGray {background-color: #e2e0e0;color: #849BBD;}
 .dark .RegularButtonDuoSmallGray {background-color: #e2e0e0;color: #849BBD;}
 
 .light .RegularSelect select {border-color: #849bbd; background: transparent;color: #849bbd;}
+.biz .RegularSelect select {border-color: #849bbd; background: transparent;color: #849bbd;}
 .dark .RegularSelect select {border-color: #849bbd; background: transparent;color: #849bbd;}
 
 .light .RegularSelect select:hover, .light .RegularSelect select:focus {color: #849bbd;background: #ffffff;}
+.biz .RegularSelect select:hover, .biz .RegularSelect select:focus {color: #849bbd;background: #ffffff;}
 .dark .RegularSelect select:hover, .dark .RegularSelect select:focus {color: #849bbd;background: #ffffff;}
 
 .light .select_arrow {border-color: #849BBD;}
+.biz .select_arrow {border-color: #849BBD;}
 .dark .select_arrow {border-color: #849BBD;}
 
 .light .RegularSelect select:hover ~ .select_arrow,.light .RegularSelect select:focus ~ .select_arrow {border-color: #849bbd;}
+.biz .RegularSelect select:hover ~ .select_arrow,.biz .RegularSelect select:focus ~ .select_arrow {border-color: #849bbd;}
 .dark .RegularSelect select:hover ~ .select_arrow,.dark .RegularSelect select:focus ~ .select_arrow {border-color: #849bbd;}
 
 .light .RegularSelect select:disabled ~ .select_arrow {border-top-color: #849bbd;}
+.biz .RegularSelect select:disabled ~ .select_arrow {border-top-color: #849bbd;}
 .dark .RegularSelect select:disabled ~ .select_arrow {border-top-color: #849bbd;}
 
 .light .VioletLinkButton {color: #7472fc; border-color: #7472fc;background-color: transparent; }
+.biz .VioletLinkButton {color: #7472fc; border-color: #7472fc;background-color: transparent; }
 .dark .VioletLinkButton {color: #7472fc; border-color: #7472fc;background-color: transparent; }
 
 .light .FilterMenuSearch {border-color: #849bbd;color: #849bbd;background-color: transparent;}
+.biz .FilterMenuSearch {border-color: #849bbd;color: #849bbd;background-color: transparent;}
 .dark .FilterMenuSearch {border-color: #849bbd;color: #849bbd;background-color: transparent;}
 
 .light .FilterSelect {border-color: #849bbd;color: #849bbd;background-color: transparent;}
+.biz .FilterSelect {border-color: #849bbd;color: #849bbd;background-color: transparent;}
 .dark .FilterSelect {border-color: #849bbd;color: #849bbd;background-color: transparent;}
 
 .light .FilterOnly {background-color: #e9effc;}
+.biz .FilterOnly {background-color: #e9effc;}
 .dark .FilterOnly {background-color: #383c42;}
 
 .light .DappBannerExpl div {box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-webkit-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
+.biz .DappBannerExpl div {box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-webkit-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
 .dark .DappBannerExpl div {box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
 
 .light .MetadataSingle .MetadataSingleToogle {color: #849BBD; border-color: #849BBD;}
+.biz .MetadataSingle .MetadataSingleToogle {color: #849BBD; border-color: #849BBD;}
 .dark .MetadataSingle .MetadataSingleToogle {color: #849BBD; border-color: #849BBD;}
 
 .light .MetadataSingleOpened {border-color: #ffffff;}
+.biz .MetadataSingleOpened {border-color: #ffffff;}
 .dark .MetadataSingleOpened {border-color: #000000;}
 
 .light .MetadataSingle {background-color: #F0F0F0;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
+.biz .MetadataSingle {background-color: #F0F0F0;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
 .dark .MetadataSingle {background-color: #1b1b1b;box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
 
 .light .MetadataSingleOpened a {background-color: #849BBD; color: #ffffff;}
+.biz .MetadataSingleOpened a {background-color: #849BBD; color: #ffffff;}
 .dark .MetadataSingleOpened a {background-color: #849BBD; color: #ffffff;}
 
 .light .TradeMarketTokenAll {background-color: #e4e4e4;}
+.biz .TradeMarketTokenAll {background-color: #e4e4e4;}
 .dark .TradeMarketTokenAll {background-color: #525252;}
 
 .light .TradeMarketToken {background-color: #ffffff;}
+.biz .TradeMarketToken {background-color: #ffffff;}
 .dark .TradeMarketToken {background-color: #000000;}
 
 .light .TradeMarketToken .TradeMarketTokenSelector {background-color: #F0F0F0;}
+.biz .TradeMarketToken .TradeMarketTokenSelector {background-color: #F0F0F0;}
 .dark .TradeMarketToken .TradeMarketTokenSelector {background-color: #1b1b1b;}
 
 .light .TradeMarketTokenAmount input  {background-color: transparent;}
+.biz .TradeMarketTokenAmount input  {background-color: transparent;}
 .dark .TradeMarketTokenAmount input {background-color: transparent;}
 
 .light .TradeMarketTokenAmountS input  {background-color: transparent;}
+.biz .TradeMarketTokenAmountS input  {background-color: transparent;}
 .dark .TradeMarketTokenAmountS input {background-color: transparent;}
 
 .light .TradeMarketTokenBalance {color: #000000;}
+.biz .TradeMarketTokenBalance {color: #000000;}
 .dark .TradeMarketTokenBalance {color: #ffffff;}
 
 .light .TradeMarketTokenBalanceS {color: #000000;}
+.biz .TradeMarketTokenBalanceS {color: #000000;}
 .dark .TradeMarketTokenBalanceS {color: #ffffff;}
 
 .light .TradeMarketTokenAllS {background-color: #e4e4e4;}
+.biz .TradeMarketTokenAllS {background-color: #e4e4e4;}
 .dark .TradeMarketTokenAllS {background-color: #525252;}
 
 .light .TradeMarketTokenS {background-color: #ffffff;}
+.biz .TradeMarketTokenS {background-color: #ffffff;}
 .dark .TradeMarketTokenS {background-color: #000000;}
 
 .light .TradeMarketTokenS .TradeMarketTokenSelector {background-color: #F0F0F0;}
+.biz .TradeMarketTokenS .TradeMarketTokenSelector {background-color: #F0F0F0;}
 .dark .TradeMarketTokenS .TradeMarketTokenSelector {background-color: #1b1b1b;}
 
 .light .TokensSelectorCategories {background-color: #525252; border-color: #E4E4E4;}
+.biz .TokensSelectorCategories {background-color: #525252; border-color: #E4E4E4;}
 .dark .TokensSelectorCategories {background-color: #E4E4E4; border-color: #525252;}
 
 .light .TokensSelectorCategories input {background-color: #525252; color: #ffffff;}
+.biz .TokensSelectorCategories input {background-color: #525252; color: #ffffff;}
 .dark .TokensSelectorCategories input {background-color: #E4E4E4; color: #000000;}
 
 .light .TokensSelectorCategories input::placeholder, .light .TokensSelectorCategories input:-ms-input-placeholder,.light .TokensSelectorCategories input::-ms-input-placeholder {color: #ffffff;opacity: 1;}
+.biz .TokensSelectorCategories input::placeholder, .biz .TokensSelectorCategories input:-ms-input-placeholder,.light .TokensSelectorCategories input::-ms-input-placeholder {color: #ffffff;opacity: 1;}
 .dark .TokensSelectorCategories input::placeholder, .dark .TokensSelectorCategories input:-ms-input-placeholder,.dark .TokensSelectorCategories input::-ms-input-placeholder {color: #000000;opacity: 1;}
 
 .light .TokensSelectorCategoriesList {background-color: #F0F0F0;}
+.biz .TokensSelectorCategoriesList {background-color: #F0F0F0;}
 .dark .TokensSelectorCategoriesList {background-color: #1b1b1b;}
 
 .light .TokensSelectorCategoriesList a {background-color: #F0F0F0;}
+.biz .TokensSelectorCategoriesList a {background-color: #F0F0F0;}
 .dark .TokensSelectorCategoriesList a {background-color: #1b1b1b;}
 
 .light .TokensSelectorCategoriesList .selected, .light .TokensSelectorCategoriesList a:hover {background-color: #ffffff;}
+.biz .TokensSelectorCategoriesList .selected, .biz .TokensSelectorCategoriesList a:hover {background-color: #ffffff;}
 .dark .TokensSelectorCategoriesList .selected, .dark .TokensSelectorCategoriesList a:hover {background-color: #000000;}
 
 .light .TradeMain {background-color: #F0F0F0; box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
+.biz .TradeMain {background-color: #F0F0F0; box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
 .dark .TradeMain {background-color: #1b1b1b; box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
 
 .light .TradeMarketBox {border-color: #ffffff;}
+.biz .TradeMarketBox {border-color: #ffffff;}
 .dark .TradeMarketBox {border-color: #000000;}
 
 .light .TradeMarketBoxSwitch {background-color: #e4e4e4;}
+.biz .TradeMarketBoxSwitch {background-color: #e4e4e4;}
 .dark .TradeMarketBoxSwitch {background-color: #525252;}
 
 .light .TradeMarketType {background-color: #ffffff;}
+.biz .TradeMarketType {background-color: #ffffff;}
 .dark .TradeMarketType {background-color: #000000;}
 
 .light .TradeMarketType a {background-color: #e4e4e4;}
+.biz .TradeMarketType a {background-color: #e4e4e4;}
 .dark .TradeMarketType a {background-color: #525252;}
 
 .light .TradeMarketType .selected,.light .TradeMarketType a:hover {color: #000000; background-color: #ffffff;}
+.biz .TradeMarketType .selected,.light .TradeMarketType a:hover {color: #000000; background-color: #ffffff;}
 .dark .TradeMarketType .selected,.dark .TradeMarketType a:hover {color: #ffffff; background-color: #000000;}
 
 .light .TradeOTCBoxOrder {border-color: #e4e4e4;}
+.biz .TradeOTCBoxOrder {border-color: #e4e4e4;}
 .dark .TradeOTCBoxOrder {border-color: #525252;}
 
 .light .TradeOTCBoxOrder .TradeOTCBoxOrderQ {border-color: #e4e4e4;}
+.biz .TradeOTCBoxOrder .TradeOTCBoxOrderQ {border-color: #e4e4e4;}
 .dark .TradeOTCBoxOrder .TradeOTCBoxOrderQ {border-color: #525252;}
 
 .light .TradeOTCBoxOrder button {color: #fff;}
+.biz .TradeOTCBoxOrder button {color: #fff;}
 .dark .TradeOTCBoxOrder button {color: #fff;}
 
 .light .TradeOTCBoxOrdersBuy, .light .TradeOTCBoxOrdersSell {background-color: #fff;}
+.biz .TradeOTCBoxOrdersBuy, .light .TradeOTCBoxOrdersSell {background-color: #fff;}
 .dark .TradeOTCBoxOrdersBuy, .dark .TradeOTCBoxOrdersSell {background-color: #000;}
 
 .light .TradeOTCBoxOrdersSell h6 {color: rgb(252, 98, 111);}
@@ -806,220 +865,295 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 .light .TradeOTCBoxOrdersBuy .TradeOTCBoxOrder  button {background-color: rgb(106, 234, 200);}
 .light .TradeOTCBoxOrdersSell .TradeOTCBoxOrder  button {background-color: rgb(252, 98, 111);}
 
+.biz .TradeOTCBoxOrdersSell h6 {color: rgb(252, 98, 111);}
+.biz .TradeOTCBoxOrdersBuy h6 {color: rgb(106, 234, 200);}
+.biz .TradeOTCBoxOrdersBuy .TradeOTCBoxOrder  button {background-color: rgb(106, 234, 200);}
+.biz .TradeOTCBoxOrdersSell .TradeOTCBoxOrder  button {background-color: rgb(252, 98, 111);}
+
 .dark .TradeOTCBoxOrdersSell h6 {color: rgb(252, 98, 111);}
 .dark .TradeOTCBoxOrdersBuy h6 {color: rgb(106, 234, 200);}
 .dark .TradeOTCBoxOrdersBuy .TradeOTCBoxOrder  button {background-color: rgb(106, 234, 200);}
 .dark .TradeOTCBoxOrdersSell .TradeOTCBoxOrder  button {background-color: rgb(252, 98, 111);}
 
 .light .Dapp_Menu {background-color: #ffffff; border-color: #aa9cfe;box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-webkit-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
+.biz .Dapp_Menu {background-color: #ffffff; border-color: #aa9cfe;box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-webkit-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
 .dark .Dapp_Menu {background-color: #000000; border-color: #aa9cfe;box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
 
 .light .DappSubMenu {background-color: #E4E4E4; border-color: #e1b9be;box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-webkit-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
+.biz .DappSubMenu {background-color: #E4E4E4; border-color: #e1b9be;box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-webkit-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
 .dark .DappSubMenu {background-color: #525252; border: none; box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
 
 .light .DDapp_Menu1 {background-color: #ffffff; border-radius: #aa9cfe;box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-webkit-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32); }
+.biz .DDapp_Menu1 {background-color: #ffffff; border-radius: #aa9cfe;box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-webkit-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32); }
 .dark .DDapp_Menu1 {background-color: #000000; border-radius: #aa9cfe;box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
 
 .light .DDapp_Menu2 {background-color: #E4E4E4; border-color: #e1b9be;box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-webkit-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32); }
+.biz .DDapp_Menu2 {background-color: #E4E4E4; border-color: #e1b9be;box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-webkit-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32); }
 .dark .DDapp_Menu2 {background-color: #525252; border-color: #e1b9be;box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
 
 /* Organizations Components */
 
 .light .DelegationHeadlineCardSideD {background-color: #EEEEEE;}
+.biz .DelegationHeadlineCardSideD {background-color: #EEEEEE;}
 .dark .DelegationHeadlineCardSideD {background-color: #1b1b1b;}
 
 .light .DelegationHeadlineCardConnected {background-color: #ffffff;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
+.biz .DelegationHeadlineCardConnected {background-color: #ffffff;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
 .dark .DelegationHeadlineCardConnected {background-color: #000000;box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
 
 .light .DelegationHeadlineCardConnectedBox {background-color: #ffffff;}
+.biz .DelegationHeadlineCardConnectedBox {background-color: #ffffff;}
 .dark .DelegationHeadlineCardConnectedBox {background-color: #000000;}
 
 .light .DelegationMainThingsCardD {background-color: #ffffff;}
+.biz .DelegationMainThingsCardD {background-color: #ffffff;}
 .dark .DelegationMainThingsCardD {background-color: #000000;}
 
 .light .ViewDescriptionD {background-color: #ffffff;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
+.biz .ViewDescriptionD {background-color: #ffffff;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
 .dark .ViewDescriptionD {background-color: #000000;box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
 
 .light .DelegationMainThingsCardMainInfoD {background-color: #ffffff;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
+.biz .DelegationMainThingsCardMainInfoD {background-color: #ffffff;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
 .dark .DelegationMainThingsCardMainInfoD {background-color: #000000;box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
 
 .light .DelegationMainThingsCardMainInfoD p {background-color: #e9effc;}
+.biz .DelegationMainThingsCardMainInfoD p {background-color: #e9effc;}
 .dark .DelegationMainThingsCardMainInfoD p {background-color: #383c42;}
 
 .light .OrgSingle {background-color: #ffffff;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
+.biz .OrgSingle {background-color: #ffffff;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
 .dark .OrgSingle {background-color: #000000;box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
 
 .light .OrgTitleEx {background-color: #F0F0F0; color: #000000;}
+.biz .OrgTitleEx {background-color: #F0F0F0; color: #000000;}
 .dark .OrgTitleEx {background-color: #1b1b1b; color: #ffffff;}
 
 .light .OrgTitleEx h6 {background-color: #ffffff;}
+.biz .OrgTitleEx h6 {background-color: #ffffff;}
 .dark .OrgTitleEx h6 {background-color: #000000;}
 
 .light .OrgTitleAsideB {border-color: #a0a0a0;}
+.biz .OrgTitleAsideB {border-color: #a0a0a0;}
 .dark .OrgTitleAsideB {border-color: #a0a0a0;}
 
 .light .OrgSingle .OrgInfo {background-color: #F0F0F0;}
+.biz .OrgSingle .OrgInfo {background-color: #F0F0F0;}
 .dark .OrgSingle .OrgInfo {background-color: #1b1b1b;}
 
 .light .GovCard {background-color: #ffffff;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
+.biz .GovCard {background-color: #ffffff;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
 .dark .GovCard {background-color: #000000;box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
 
 .light .GovCardHead {background-color: #e9effc;}
+.biz .GovCardHead {background-color: #e9effc;}
 .dark .GovCardHead {background-color: #383c42;}
 
 .light .GovCardHeadDelegation span {border-color: #ffffff;}
+.biz .GovCardHeadDelegation span {border-color: #ffffff;}
 .dark .GovCardHeadDelegation span {border-color: #000000;}
 
 .light .GovCardOpened {background-color: #ffffff;}
+.biz .GovCardOpened {background-color: #ffffff;}
 .dark .GovCardOpened {background-color: #000000;}
 
 .light .DelegationWrapBox {background-color: #e9effc;}
+.biz .DelegationWrapBox {background-color: #e9effc;}
 .dark .DelegationWrapBox {background-color: #383c42;}
 
 .light .HostToolsDelegations {background-color: #f7fafe; border-color: #e1b9be;}
+.biz .HostToolsDelegations {background-color: #f7fafe; border-color: #e1b9be;}
 .dark .HostToolsDelegations {background-color: #383c42; border-color: #e1b9be;}
 
 .light .CreationPageLabelFS {background-color: #e9effc; border-color: #e0e2e6;}
+.biz .CreationPageLabelFS {background-color: #e9effc; border-color: #e0e2e6;}
 .dark .CreationPageLabelFS {background-color: #383c42; border-color: #000000;}
 
 .light .CreationPageLabelFS input {background-color: #fff;}
+.biz .CreationPageLabelFS input {background-color: #fff;}
 .dark .CreationPageLabelFS input {background-color: #000;}
 
 .light .CreationPageLabelFS textarea {background-color: #fff;}
+.biz .CreationPageLabelFS textarea {background-color: #fff;}
 .dark .CreationPageLabelFS textarea {background-color: #000;}
 
 .light .Proposal {background-color: #e9effc;}
+.biz .Proposal {background-color: #e9effc;}
 .dark .Proposal {background-color: #383c42;}
 
-.light .PendingTagGreen {color: #00F2C2; border-color: #00F2C2;;}
+.light .PendingTagGreen {color: #00F2C2; border-color: #00F2C2;}
 .light .PendingTagBlue {color: #8EB2FC; border-color:#8EB2FC;}
 .light .PendingTagRed {color: #ad0002; border-color: #ad0002;}
-.dark .PendingTagGreen {color: #00F2C2; border-color: #00F2C2;;}
+.biz .PendingTagGreen {color: #00F2C2; border-color: #00F2C2;}
+.biz .PendingTagBlue {color: #8EB2FC; border-color:#8EB2FC;}
+.biz .PendingTagRed {color: #ad0002; border-color: #ad0002;}
+.dark .PendingTagGreen {color: #00F2C2; border-color: #00F2C2;}
 .dark .PendingTagBlue {color: #8EB2FC; border-color:#8EB2FC;}
 .dark .PendingTagRed {color: #ad0002; border-color: #ad0002;}
 
 .light .ProposalOpen {border-color: #ffffff;}
+.biz .ProposalOpen {border-color: #ffffff;}
 .dark .ProposalOpen {border-color: #000000;}
 
 .light .ProposalOpen .Upshots {background-color: #fff;}
+.biz .ProposalOpen .Upshots {background-color: #fff;}
 .dark .ProposalOpen .Upshots {background-color: #000;}
 
 .light .SurveylessOpenCardSelectionSingleOpenStaked {background-color: #ffffff; }
+.biz .SurveylessOpenCardSelectionSingleOpenStaked {background-color: #ffffff; }
 .dark .SurveylessOpenCardSelectionSingleOpenStaked {background-color: #000; }
 
 .light .MultiVoteBox {background-color: #e9effc;}
+.biz .MultiVoteBox {background-color: #e9effc;}
 .dark .MultiVoteBox {background-color: #383c42;}
 
 .light .Vote {background-color: #e9effc;}
+.biz .Vote {background-color: #e9effc;}
 .dark .Vote {background-color: #383c42;}
 
 .light .ModalBoxGov {background-color: #ffffff;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
+.biz .ModalBoxGov {background-color: #ffffff;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
 .dark .ModalBoxGov {background-color: #000000;box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
 
 .light .ModalBox {box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
+.biz .ModalBox {box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
 .dark .ModalBox {box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
 
 .light .ProposeContents .RegularLabel {background-color: #e9effc;}
+.biz .ProposeContents .RegularLabel {background-color: #e9effc;}
 .dark .ProposeContents .RegularLabel {background-color: #383c42;}
 
 .light .ContextualPool label { background-color: #e9effc;}
+.biz .ContextualPool label { background-color: #e9effc;}
 .dark .ContextualPool label { background-color: #383c42;}
 
 .light .ProposeContents .TradeMarketTokenSelector {background-color: #f0f0f0;}
+.biz .ProposeContents .TradeMarketTokenSelector {background-color: #f0f0f0;}
 .dark .ProposeContents .TradeMarketTokenSelector {background-color: #1b1b1b;}
 
 .light .OptionOpen {background-color: #ffffff;}
+.biz .OptionOpen {background-color: #ffffff;}
 .dark .OptionOpen {background-color: #000000;}
 
 .light .OptionOpen input {background-color: #e4e4e4;}
+.biz .OptionOpen input {background-color: #e4e4e4;}
 .dark .OptionOpen input {background-color: #525252;}
 
 .light .TokenSelectorListProposal {background-color: #e9effc;}
+.biz .TokenSelectorListProposal {background-color: #e9effc;}
 .dark .TokenSelectorListProposal {background-color: #383c42;}
 
 .light .Rule {background-color: #e9effc;}
+.biz .Rule {background-color: #e9effc;}
 .dark .Rule {background-color: #383c42;}
  
 .light .OrgHeadline {background-color: #ffffff;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
+.biz .OrgHeadline {background-color: #ffffff;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
 .dark .OrgHeadline {background-color: #000000;box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
 
 .light .OrgHeadlineSide {background-color: #EEEEEE;}
+.biz .OrgHeadlineSide {background-color: #EEEEEE;}
 .dark .OrgHeadlineSide {background-color: #292929;}
 
 .light .OrgMainThingsCard {background-color: #ffffff;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
+.biz .OrgMainThingsCard {background-color: #ffffff;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
 .dark .OrgMainThingsCard {background-color: #000000;box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
 
 .light .OrgThingsInfoContent {background-color: #e9effc;}
+.biz .OrgThingsInfoContent {background-color: #e9effc;}
 .dark .OrgThingsInfoContent {background-color: #383c42;}
 
 .light .OrgPartView {background-color: #ffffff;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
+.biz .OrgPartView {background-color: #ffffff;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
 .dark .OrgPartView {background-color: #000000;box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
 
 .light .OrgPartInfo {background-color: #e9effc;}
+.biz .OrgPartInfo {background-color: #e9effc;}
 .dark .OrgPartInfo {background-color: #383c42;}
 
 .light .DelegationsSectionOne {border-color: #e9effc;}
+.biz .DelegationsSectionOne {border-color: #e9effc;}
 .dark .DelegationsSectionOne {border-color: #383c42;}
 
 .light .DelegationsSection {border-color: #e9effc;}
+.biz .DelegationsSection {border-color: #e9effc;}
 .dark .DelegationsSection {border-color: #383c42;}
 
 .light .InvestmentsSection {border-color: #e9effc;}
+.biz .InvestmentsSection {border-color: #e9effc;}
 .dark .InvestmentsSection {border-color: #383c42;}
 
 .light .InvestmentsSectionBuySell {background-color: #e9effc;}
+.biz .InvestmentsSectionBuySell {background-color: #e9effc;}
 .dark .InvestmentsSectionBuySell {background-color: #383c42;}
 
 .light .OrgPartFarm {background-color: #e9effc;}
+.biz .OrgPartFarm {background-color: #e9effc;}
 .dark .OrgPartFarm {background-color: #383c42;}
 
 .light .OrgThingsCardPics {background-color: #ffffff;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
+.biz .OrgThingsCardPics {background-color: #ffffff;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
 .dark .OrgThingsCardPics {background-color: #000000;box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
 
 .light .RegularVoteBoxStaked {background-color: #ffffff;}
+.biz .RegularVoteBoxStaked {background-color: #ffffff;}
 .dark .RegularVoteBoxStaked {background-color: #000000;}
 
 .light .Upshot span {background-color: #eeeeee59;}
+.biz .Upshot span {background-color: #eeeeee59;}
 .dark .Upshot span {background-color: #3f3f3f59;}
 
 .light .UpshotBar { background-color: #e9effc; }
+.biz .UpshotBar { background-color: #e9effc; }
 .dark .UpshotBar { background-color: #383c42; }
 
 .light .UpshotBar figure { background-color: #D4CEFA;}
+.biz .UpshotBar figure { background-color: #D4CEFA;}
 .dark .UpshotBar figure { background-color: #2e2c35;}
 
 .light .CardSelectionSingle {background-color: #ffffff;}
+.biz .CardSelectionSingle {background-color: #ffffff;}
 .dark .CardSelectionSingle {background-color: #000000;}
 
 .light .CardSelectionSingleCurrent {background-color: #ffffff;}
+.biz .CardSelectionSingleCurrent {background-color: #ffffff;}
 .dark .CardSelectionSingleCurrent {background-color: #ffffff;}
 
 .light .VotingPowersAmount { background-color: #EEEEEE; }
+.biz .VotingPowersAmount { background-color: #EEEEEE; }
 .dark .VotingPowersAmount { background-color: #292929; }
 
 .light .ThemeSelect select {background-color: #E4E4E4; color: #000000;}
+.biz .ThemeSelect select {background-color: #E4E4E4; color: #000000;}
 .dark .ThemeSelect select {background-color: #525252; color: #ffffff;}
 
 .light .NavigationItem {background-color: #ffffff;}
+.biz .NavigationItem {background-color: #ffffff;}
 .dark .NavigationItem {background-color: #000000;}
 
 .light .selected {color: #6e6e6e;background-color: #c1befc;}
+.biz .selected {color: #6e6e6e;background-color: #c1befc;}
 .dark .selected {color: #6e6e6e;background-color: #c1befc;}
 
 .light .Web3ConnectChain {background-color: #E4E4E4;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
+.biz .Web3ConnectChain {background-color: #E4E4E4;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
 .dark .Web3ConnectChain {background-color: #525252;box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
 
 .light .Web3ConnectWallet {background-color: #E4E4E4;}
+.biz .Web3ConnectWallet {background-color: #E4E4E4;}
 .dark .Web3ConnectWallet {background-color: #525252;}
 
 @media only screen and (max-width: 1200px) {
   .light .Header .BlurHeader {background: linear-gradient(-130deg,#c1befc4d,#fdf7f515 80%);}
+  .biz .Header .BlurHeader {background: linear-gradient(-130deg,#c1befc4d,#fdf7f515 80%);}
   .dark .Header .BlurHeader {background: linear-gradient(-130deg,#c1befc4d,#fdf7f515 80%);}
   
   .light .NavigationItem {background-color: transparent;}
+  .biz .NavigationItem {background-color: transparent;}
   .dark .NavigationItem {background-color: transparent;}
 
   .light .NavigationItem:hover, .light .Navigation .Selected {background-color: #ffffff;}
+  .biz .NavigationItem:hover, .biz .Navigation .Selected {background-color: #ffffff;}
   .dark .NavigationItem:hover, .dark .Navigation .Selected {background-color: #ffffff;}
 
 }
