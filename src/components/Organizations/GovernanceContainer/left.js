@@ -47,7 +47,7 @@ export default ({element}) => {
       {proposalType !== 'poll' && <>
         <div className={style.Rules}>
           <p><b>Governance Rules:</b></p>
-          {false && <GovernanceRules element={element}/>}
+          <GovernanceRules element={element} validators={element.isSurveyless && element.validatorsAddresses[element.votingRulesIndex]}  terminates={element.isSurveyless && element.canTerminateAddresses[element.votingRulesIndex]}/>
         </div>
       </>}
     </div>

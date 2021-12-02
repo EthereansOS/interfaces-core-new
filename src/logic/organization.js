@@ -4,6 +4,7 @@ import { encodeHeader } from "./itemsV2";
 
 import { decodeProposal, decodeProposalVotingToken, generateItemKey } from "./ballot";
 import { retrieveDelegationProposals } from "./delegation";
+import { getData } from "./generalReader"
 
 export async function create({ context, ipfsHttpClient, newContract, chainId, factoryOfFactories }, metadata, organization) {
     var uri = await uploadMetadata({ context, ipfsHttpClient }, metadata)
@@ -552,12 +553,12 @@ async function getProposals({context}, organization) {
 export async function createPresetProposals({}, proposal) {
     var create = proposal.presetProposals.map((_, i) => ({
         codes : [{
-            location : abi.decode(["address"], abi.encode(["uint256"], [proposal.index]))[0],
+            location : abi.decode(["address"], abi.encode(["uint256"], [proposal.modelIndex]))[0],
             bytecode : abi.encode(["uint256"], [i])
         }],
         alsoTerminate : false
     }))
-    await blockchainCall(proposal.proposalsManager.contract.methods.batchCreate, create)
+    await blockchainCall(proposal.proposalsManager.methods.batchCreate, create)
 }
 
 export async function vote({account}, proposal, token, accept, refuse, proposalId, permitSignature, voter) {
@@ -570,7 +571,7 @@ export async function vote({account}, proposal, token, accept, refuse, proposalI
 }
 
 export async function terminateProposal({}, proposal, proposalId) {
-    await blockchainCall(proposal.proposalsManager.contract.methods.terminate, [proposalId])
+    await blockchainCall(proposal.proposalsManager.methods.terminate, [proposalId])
 }
 
 export async function withdrawProposal({account}, proposal, proposalId, address, voteOrWithdraw) {
@@ -878,4 +879,73 @@ export async function tokensToWithdraw({account}, proposal, proposalIds) {
         }
     })
     return tw
+}
+
+export async function readGovernanceRules({}, proposal, proposalId) {
+    var proposalData = (await blockchainCall(proposal.proposalsManager.methods.list, [proposalId]))[0]
+
+    var validators = await extractRules({provider : proposal.proposalsManager.currentProvider}, proposalData.validators, "validation", proposalData)
+    var terminates = await extractRules({provider : proposal.proposalsManager.currentProvider}, proposalData.canTerminates, "termination", proposalData)
+
+    return {validators, terminates}
+}
+
+export async function extractRules({provider}, rules, type, proposalData) {
+    if(!rules || rules.length === 0) {
+        return []
+    }
+    var convertedRules = [];
+    convertedRules = await Promise.all(rules.filter(it => it !== VOID_ETHEREUM_ADDRESS).map(it => getData({provider}, it)))
+    return await cleanRules(convertedRules, type, proposalData);
+}
+
+async function cleanRules(rules, type, proposalData) {
+    if(!rules || rules.length === 0) {
+        return []
+    }
+    return Promise.all(rules.map(it => cleanRule(it, type, proposalData)))
+}
+
+/**
+ *address: "0xe50d3A4f64D76518d77c6193664475d646F97451"
+discriminant: true
+label: "hardCap"
+valueAddress: "0x00000000000000000000000003782DacE9d90000"
+valueUint256: "250000000000000000"
+ */
+
+async function cleanRule(rule, type, proposalData) {
+    var clean = cleaners[rule.label](rule, type, proposalData)
+    clean = clean.then ? await clean : clean
+    return clean
+}
+
+var cleaners = {
+    hardCap(rule, type) {
+        var val = fromDecimals(rule.valueUint256, rule.discriminant ? 16 : 18)
+        var text = (type === "validation" ? "Passes" : "Terminates") + " with a threshold of "
+        var value = val + (rule.discriminant ? " % of votes" : " votes")
+        return {text, value}
+    },
+    quorum(rule, type) {
+        var val = fromDecimals(rule.valueUint256, rule.discriminant ? 16 : 18)
+        var text = (type === "validation" ? "Passes" : "Terminates") + " with a quorum of "
+        var value = val + (rule.discriminant ? " % of votes" : " votes")
+        return {text, value}
+    },
+    host(rule, type) {
+        var text = (type === "validation" ? "Passes when the" : type === 'creation' ? "" : "Terminates when the") + "host is "
+        var value = rule.valueAddress
+        return {text, value}
+    },
+    async blockLength(rule, _, proposalData) {
+        var text = "Terminates at block #"
+        var value = rule.valueUint256.ethereansosAdd(proposalData.creationBlock)
+        return {text, value}
+    },
+    async validationBomb(rule, _, proposalData) {
+        var text = "Can be validated before block #"
+        var value = rule.valueUint256.ethereansosAdd(proposalData.creationBlock)
+        return {text, value}
+    }
 }

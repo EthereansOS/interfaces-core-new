@@ -10,6 +10,15 @@
               "settings" : {
                 "chainId" : [1,4]
               }
+            }
+        ],
+        "useWalletSettingsFinal": [
+            {
+              "id": "injected",
+              "buttonText": "Metamask",
+              "settings" : {
+                "chainId" : [1,4]
+              }
             },
             {
               "id": "walletconnect",
