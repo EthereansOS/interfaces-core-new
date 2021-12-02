@@ -562,7 +562,21 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 .VotingPowersAmount {padding: 10px;text-align: center;}
 .VotingPowersAmount span {font-size: 13px;}
 
+.Navigation {display: block;width: 148px;margin: 20px 15px;cursor: pointer; text-align: center;min-height: 100%;}
+.NavigationItem {position: relative;margin: 7px 0;display: inline-block;width:150px;text-align: left;padding: 8px 15px;background-color: #ffffff;border-radius: 8px;}
+.NavigationItem:hover {margin: 7px 0 7px 25px;}
+.Navigation .selected {margin: 7px 0 7px 20px;}
+.NavigationItem p {font-size: 13px;font-weight: 500;vertical-align: middle;display: inline-block;}
+.NavigationItem img {width: 25px;height: 25px;margin-right: 5px;vertical-align: middle;display: inline-block;}
+.NavigationItem .Hand {position: absolute; left: -30px; top: 10px; width:25px; height: 20px; display: none;}
+.NavigationItem:hover .Hand {display: inline-block;}
+.selected {font-weight: bold;color: #6e6e6e;background-color: #c1befc;}
+.indicator {height: 30px;}
 
+@media only screen and (max-width: 990px) {
+  .NavigationItem {font-size: 11px;width: 20%;overflow: hidden; }
+  .Navigation .Selected img {display: none;}
+}
 
 
 @media only screen and (max-width: 1200px) {
@@ -571,6 +585,15 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
   .Header .BlurHeader {display: block; position: fixed; left: 0%; top: 0%; width: 100%; height: 60px;border-radius: 0;  border: 0; background: linear-gradient(-130deg,#c1befc4d,#fdf7f515 80%); box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-webkit-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
   .logoMain {height: 40px; width: 50px; margin: 10px 0px 0px 10px; display: inline-block;vertical-align: top;}
   .logoMain img {height: 40px; width: 50px; display: block;}
+  .Navigation {display: inline-block;border-left: none;padding: 8px;width: auto;cursor: pointer; text-align: center;margin: 0px 0px 0px 50px;vertical-align: top;}
+  .NavigationItem:hover {margin: 7px 10px;}
+  .NavigationItem {font-size: 15px;text-align: center;margin: 7px 10px;display: inline-block;text-align: left; width: 150px; text-align: center;border-radius: 8px;background-color: transparent;}
+  .NavigationItem img {display: none;}
+  .NavigationItem img {width: 10px; height: 10px;}
+  .NavigationItem:hover img {display: inline-block;}
+  .Navigation .Selected img {display: inline-block;}
+  .NavigationItem:hover, .Navigation .Selected {background-color: #ffffff;}
+  .NavigationItem:hover .Hand {display: none;}
 }
 
 @media only screen and (max-device-width: 990px) {
@@ -581,11 +604,11 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 
 /* Global Components */
 
-.light p,.light span,.light a,.light h6,.light h5,.light h4,.light h3,.light h2,.light h1,.light aside,.light input {color: #000000;}
-.biz p,.biz span,.biz a,.biz h6,.biz h5,.biz h4,.biz h3,.biz h2,.biz h1,.biz aside, .biz input {color: #000000;}
-.dark p,.dark span,.dark a,.dark h6,.dark h5,.dark h4,.dark h3,.dark h2,.dark h1,.dark aside, .dark input {color: #ffffff;}
+.light p,.light b,.light span,.light a,.light h6,.light h5,.light h4,.light h3,.light h2,.light h1,.light aside,.light input {color: #000000;}
+.biz p,.biz b,.biz span,.biz a,.biz h6,.biz h5,.biz h4,.biz h3,.biz h2,.biz h1,.biz aside, .biz input {color: #000000;}
+.dark p,.dark b,.dark span,.dark a,.dark h6,.dark h5,.dark h4,.dark h3,.dark h2,.dark h1,.dark aside, .dark input {color: #ffffff;}
 
-.light, .dark, .biz {min-height: 100vh; overflow: scroll;}
+.light, .dark, .biz {height: 100vh; overflow: scroll;}
 
 .light {background: rgb(255,255,255);background: linear-gradient(300deg, #fdf7f5 70%, rgba(120,111,255,1) 100%);}
 .dark {background-color: #000000; background: linear-gradient(300deg, #1a1a1a 70%, rgba(120,111,255,1) 100%);}
