@@ -128,7 +128,7 @@ var SurveyLess = ({element, refreshElements}) => {
       <Description description={element.rationale} title="Rationale and Motivations" className={style.DescriptionBig}/>
       <Description description={element.specification} title="Specification" className={style.DescriptionBig}/>
       <Description description={element.risks} title="Risks" className={style.DescriptionBig}/>
-      <MultiVoteBox element={element, refreshElements}/>
+      <MultiVoteBox element={element} refreshElements={refreshElements}/>
   </>)
 }
 
