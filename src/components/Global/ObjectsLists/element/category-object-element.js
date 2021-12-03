@@ -1,4 +1,4 @@
-import style from '../objects-lists.module.css'
+import style from '../../../../all.module.css'
 
 import { shortenWord, useEthosContext } from '@ethereansos/interfaces-core'
 import LogoRenderer from '../../LogoRenderer'

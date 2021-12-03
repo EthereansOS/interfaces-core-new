@@ -1,4 +1,4 @@
-import style from '../objects-lists.module.css'
+import style from '../../../../all.module.css'
 
 import { fromDecimals, getNetworkElement, useEthosContext, useWeb3, VOID_ETHEREUM_ADDRESS } from '@ethereansos/interfaces-core'
 

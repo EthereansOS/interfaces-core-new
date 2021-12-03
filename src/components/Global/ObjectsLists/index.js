@@ -5,7 +5,7 @@ import ItemObject  from './item-object.js'
 import CategoryObject  from './category-object.js'
 import DefaultChild from './child'
 
-import style from './objects-lists.module.css'
+import style from '../../../all.module.css'
 
 var defaultSelections = [{
   name : 'ERC-20',
