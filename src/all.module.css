@@ -879,19 +879,19 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 .dark .TradeOTCBoxOrdersSell .TradeOTCBoxOrder  button {background-color: rgb(252, 98, 111);}
 
 .light .Dapp_Menu {background-color: #ffffff; border-color: #aa9cfe;box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-webkit-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
-.biz .Dapp_Menu {background-color: #ffffff; border-color: #aa9cfe;box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-webkit-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
+.biz .Dapp_Menu {background-color: #ffffff; border-color: #aa9cfe;}
 .dark .Dapp_Menu {background-color: #000000; border-color: #aa9cfe;box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
 
 .light .DappSubMenu {background-color: #E4E4E4; border-color: #e1b9be;box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-webkit-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
-.biz .DappSubMenu {background-color: #E4E4E4; border-color: #e1b9be;box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-webkit-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
+.biz .DappSubMenu {background-color: #ffffff; border-color: #aa9cfe;}
 .dark .DappSubMenu {background-color: #525252; border: none; box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
 
 .light .DDapp_Menu1 {background-color: #ffffff; border-radius: #aa9cfe;box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-webkit-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32); }
-.biz .DDapp_Menu1 {background-color: #ffffff; border-radius: #aa9cfe;box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-webkit-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32); }
+.biz .DDapp_Menu1 {background-color: #ffffff; border-radius: #aa9cfe; }
 .dark .DDapp_Menu1 {background-color: #000000; border-radius: #aa9cfe;box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
 
 .light .DDapp_Menu2 {background-color: #E4E4E4; border-color: #e1b9be;box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-webkit-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32); }
-.biz .DDapp_Menu2 {background-color: #E4E4E4; border-color: #e1b9be;box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-webkit-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32); }
+.biz .DDapp_Menu2 {background-color: #E4E4E4; border-color: #aa9cfe;}
 .dark .DDapp_Menu2 {background-color: #525252; border-color: #e1b9be;box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
 
 /* Organizations Components */
@@ -945,11 +945,11 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 .dark .OrgSingle .OrgInfo {background-color: #1b1b1b;}
 
 .light .GovCard {background-color: #ffffff;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
-.biz .GovCard {background-color: #ffffff;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
+.biz .GovCard {background-color: #f5f9ff; border-radius: 0px;    border: 1px solid #b7c5d9;border-left: none;border-top: none;}
 .dark .GovCard {background-color: #000000;box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
 
 .light .GovCardHead {background-color: #e9effc;}
-.biz .GovCardHead {background-color: #e9effc;}
+.biz .GovCardHead {background-color: #ccd3db;; background: linear-gradient(180deg, #f8fbff 90%, #99e9da 100%); border-radius: 0px;    border: 1px solid #99e9da;border-left: none;border-top: none;}
 .dark .GovCardHead {background-color: #383c42;}
 
 .light .GovCardHeadDelegation span {border-color: #ffffff;}
@@ -1051,11 +1051,11 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 .dark .Rule {background-color: #383c42;}
  
 .light .OrgHeadline {background-color: #ffffff;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
-.biz .OrgHeadline {background-color: #ffffff;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
+.biz .OrgHeadline {background-color: #ffffff;}
 .dark .OrgHeadline {background-color: #000000;box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
 
 .light .OrgHeadlineSide {background-color: #EEEEEE;}
-.biz .OrgHeadlineSide {background-color: #EEEEEE;}
+.biz .OrgHeadlineSide {background: linear-gradient(180deg, #fdf7f5 30%, hsl(212deg 30% 83%) 100%);}
 .dark .OrgHeadlineSide {background-color: #292929;}
 
 .light .OrgMainThingsCard {background-color: #ffffff;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
