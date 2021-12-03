@@ -36,40 +36,20 @@ const GovernanceRules = ({element, proposalId}) => {
   }
 
   return (<>
-    {cleanCanTerminates && cleanCanTerminates.length > 0 && <>
-      <h6>Termination rules</h6>
-      <div className={style.Rule}>
-        {cleanCanTerminates.map((it, i) => <Fragment key={"val_" + i}>
-          <p>
-            <b>{it.text}</b>
-            <br/>
-            {it.value && <span>{it.value}</span>}
-          </p>
-          {i < cleanCanTerminates.length - 1 && <>
-            <br/>
-            <h7>Or</h7>
-            <br/>
-          </>}
-        </Fragment>)}
-      </div>
-    </>}
-    {cleanValidators && cleanValidators.length > 0 && <>
-      <h6>Validation rules</h6>
-      <div className={style.Rule}>
-        {cleanValidators.map((it, i) => <Fragment key={"val_" + i}>
-          <p>
-            <b>{it.text}</b>
-            <br/>
-            {it.value && <span>{it.value}</span>}
-          </p>
-          {i < cleanValidators.length - 1 && <>
-            <br/>
-            <h7>And</h7>
-            <br/>
-          </>}
-        </Fragment>)}
-      </div>
-    </>}
+    {cleanCanTerminates && cleanCanTerminates.map(it => <div key={it.label} className={style.Rule}>
+      <p>
+        <b>{it.text}</b>
+        <br/>
+        {it.value && <span>{it.value}</span>}
+      </p>
+    </div>)}
+    {cleanValidators && cleanValidators.map(it => <div key={it.label} className={style.Rule}>
+      <p>
+        <b>{it.text}</b>
+        <br/>
+        {it.value && <span>{it.value}</span>}
+      </p>
+    </div>)}
   </>
   )
 }

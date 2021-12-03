@@ -930,47 +930,35 @@ async function cleanRules(rules, type, proposalData) {
 async function cleanRule(rule, type, proposalData) {
     var clean = cleaners[rule.label](rule, type, proposalData)
     clean = clean.then ? await clean : clean
-    return clean
+    return {label: rule.label, ...clean}
 }
 
 var cleaners = {
     hardCap(rule, type) {
         var val = fromDecimals(rule.valueUint256, rule.discriminant ? 16 : 18)
-        var text = "Threshold is "
-        var value = val + (rule.discriminant ? " % of supply" : " votes")
+        var text = "Threshold"
+        var value = val + (rule.discriminant ? "%" : " votes")
         return {text, value}
     },
     quorum(rule, type) {
         var val = fromDecimals(rule.valueUint256, rule.discriminant ? 16 : 18)
-        var text = "Quorum is "
-        var value = val + (rule.discriminant ? " % of supply" : " votes")
+        var text = "Quorum"
+        var value = val + (rule.discriminant ? "%" : " votes")
         return {text, value}
     },
     host(rule, type) {
-        var text = "Host is "
+        var text = "Host"
         var value = rule.valueAddress
         return {text, value}
     },
     async blockLength(rule, _, proposalData) {
-        if(proposalData) {
-            var text = "Block number is #"
-            var value = rule.valueUint256.ethereansosAdd(proposalData.creationBlock)
-            return {text, value}
-        } else {
-            var text = rule.valueUint256 + " blocks after creation"
-            var value = ""
-            return {text, value}
-        }
+        var text = "Length"
+        var value = rule.valueUint256 + " blocks"
+        return {text, value}
     },
     async validationBomb(rule, _, proposalData) {
-        if(proposalData) {
-            var text = "Block number is before #"
-            var value = rule.valueUint256.ethereansosAdd(proposalData.creationBlock)
-            return {text, value}
-        } else {
-            var text = rule.valueUint256 + " blocks after creation"
-            var value = ""
-            return {text, value}
-        }
+        var text = "Validation bomb"
+        var value = rule.valueUint256 + " blocks"
+        return {text, value}
     }
 }
