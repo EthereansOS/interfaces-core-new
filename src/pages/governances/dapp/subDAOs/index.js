@@ -17,7 +17,7 @@ const SubDAOsList = ({}) => {
   const [modal, setModal] = useState(true)
 
   return (<div className={style.OrganizationsExploreMain}>
-    
+
     <Web3DependantList
       Renderer={ExploreOrganizations}
       rendererIsContainer
@@ -29,7 +29,7 @@ const SubDAOsList = ({}) => {
 SubDAOsList.menuVoice = {
   label : 'Organizations',
   path : '/governances/dapp',
-  contextualRequire : () => require.context('./', false, /.js$/),
+  //contextualRequire : () => require.context('./', false, /.js$/),
   index : 0
 }
 

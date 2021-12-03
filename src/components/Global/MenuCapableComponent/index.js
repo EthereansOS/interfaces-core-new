@@ -35,7 +35,7 @@ const MenuCapableComponent = ({className, contextualRequire, defaultComponentLab
 
     return (
       <div className={className}>
-        {menuVoices && menuVoices.filter(it => it.label).length > 1 && <DappMenu voices={menuVoices}/>}
+        {menuVoices && menuVoices.filter(it => it.label).length > 0 && <DappMenu voices={menuVoices}/>}
         {Component && <Component {...prps}/>}
       </div>
     )

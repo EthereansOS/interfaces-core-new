@@ -129,9 +129,13 @@ const Farmings = ({element}) => {
   }, [])
 
   async function getDailyRateRaw(contract) {
-    var setup = await blockchainCall(contract.methods.setups)
-    setup = setup[setup.length - 1]
-    return formatMoneyUniV3(fromDecimals(parseInt(setup.rewardPerBlock) * 6400, 18, true), 4)
+    try {
+      var setup = await blockchainCall(contract.methods.setups)
+      setup = setup[setup.length - 1]
+      return formatMoneyUniV3(fromDecimals(parseInt(setup.rewardPerBlock) * 6400, 18, true), 4)
+    } catch(e) {
+      return "0"
+    }
   }
 
   return (<div className={style.OrgPartViewF}>
