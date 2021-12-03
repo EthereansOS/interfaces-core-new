@@ -5,7 +5,7 @@ import { retrieveComponentsByReflection, retrieveSavedPath } from '../../../logi
 
 import DappMenu from './../../../components/Global/DappMenu/index.js'
 
-const MenuCapableComponent = ({className, contextualRequire, defaultComponentLabel, componentProps}) => {
+const MenuCapableComponent = ({className, contextualRequire, defaultComponentLabel, componentProps, nomenu}) => {
 
   const [componentIndex, setComponentIndex] = useState(null)
 
@@ -35,7 +35,7 @@ const MenuCapableComponent = ({className, contextualRequire, defaultComponentLab
 
     return (
       <div className={className}>
-        {menuVoices && menuVoices.filter(it => it.label).length > 0 && <DappMenu voices={menuVoices}/>}
+        {!nomenu && menuVoices && menuVoices.filter(it => it.label).length > 0 && <DappMenu selected={componentIndex} voices={menuVoices}/>}
         {Component && <Component {...prps}/>}
       </div>
     )

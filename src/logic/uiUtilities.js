@@ -25,7 +25,7 @@ export function retrieveSavedPath(menuVoices, currentLocationInput) {
     return selectedVoices[selectedVoices.length - 1]
 }
 
-export function prepareAddToPlugin(contextualRequire, all, name, link, className, pluginIndex, image) {
+export function prepareAddToPlugin(contextualRequire, all, name, link, className, pluginIndex, image, nomenu) {
     return {
         pluginIndex,
         addToPlugin: ({ index }) =>
@@ -40,7 +40,9 @@ export function prepareAddToPlugin(contextualRequire, all, name, link, className
                         contextualRequire,
                         menuName: 'appMenu',
                         isDapp: true,
-                        className
+                        link,
+                        className,
+                        nomenu
                     },
                 }))
                 addElement('appMenu', {

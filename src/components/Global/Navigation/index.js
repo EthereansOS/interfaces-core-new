@@ -5,12 +5,12 @@ import { Typography } from '@ethereansos/interfaces-ui'
 
 import style from '../../../all.module.css'
 
-const Navigation = ({ menuName, isDapp }) => {
+const Navigation = ({ menuName, isDapp, selected }) => {
   const menuItems = usePlaceholder(menuName)
 
   const navItem = (item) => {
     return (
-      <Link  className={style.NavigationItem} key={item.name} to={item.link}>
+      <Link className={style.NavigationItem + " " + item.name + (item.link === selected ? ' selected' : '')} key={item.name} to={item.link}>
         <img className={style.Hand} src={`${process.env.PUBLIC_URL}/img/DiamondHand.png`}></img>
         <span>
            <img src={item.image}></img> <p>{item.label}</p>

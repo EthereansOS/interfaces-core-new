@@ -57,7 +57,7 @@ const SubDAOView = () => {
   return (
     <div className={style.SingleContentPage}>
       <OrgHeadline element={organization}/>
-      <DappSubMenu voices={menuVoices.map(it => ({...it, onClick : () => it.view && setCurrentView(it.view)}))}/>
+      <DappSubMenu isSelected={ it => it.view === currentView } voices={menuVoices.map(it => ({...it, onClick : () => it.view && setCurrentView(it.view)}))}/>
       <Component element={organization}/>
     </div>
   )

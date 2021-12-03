@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { Typography } from '@ethereansos/interfaces-ui'
 import style from '../../../all.module.css'
 
-const DappSubMenu = ({voices}) => {
+const DappSubMenu = ({voices, isSelected}) => {
   return (
       /* ---For Items Collections View---
 
@@ -38,7 +38,7 @@ const DappSubMenu = ({voices}) => {
 
       <ul className={style.DappSubMenu}>
         {voices && voices.map(it => <li key={it.label}>
-          <a onClick={it.onClick}>{it.label}</a>
+          <a className={it.label + (isSelected(it) ? " selected" : '')} onClick={it.onClick}>{it.label}</a>
         </li>)}
         {!voices && <>
           <li><a>Collection</a></li>

@@ -10,4 +10,5 @@ export default prepareAddToPlugin(
   style.Web3PagesRoot,
   20,
   `${process.env.PUBLIC_URL}/img/is1.png`,
+  true
 )

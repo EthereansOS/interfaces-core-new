@@ -15,8 +15,8 @@ const Header = (props) => {
       <header className={style.Header}>
         <div className={style.FixedHeader}>
           <Link to="/dapp" className={style.logoMain}><img src={`${process.env.PUBLIC_URL}/img/logo_main.png`}/></Link>
-          
-          <Navigation menuName={props.menuName} isDapp={props.isDapp}/>
+
+          <Navigation menuName={props.menuName} isDapp={props.isDapp} selected={props.link}/>
           <Web3Connect/>
           <div className={style.ThemeSelect}>
             <select value={theme} onChange={e => setTheme(e.currentTarget.value)}>
