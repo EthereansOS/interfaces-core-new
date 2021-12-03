@@ -24,11 +24,15 @@ const DelegationView = () => {
   const context = useEthosContext()
 
   useEffect(() => {
+    refresh()
+  }, [pathname])
+
+  function refresh() {
     setElement(null)
     var delegationAddress = pathname.split('/')
     delegationAddress = delegationAddress[delegationAddress.length - 1]
     getDelegation({ context, newContract }, delegationAddress).then(setElement)
-  }, [pathname])
+  }
 
   if(!element) {
     return <CircularProgress/>
@@ -37,7 +41,7 @@ const DelegationView = () => {
   return (
     <div className={style.SingleContentPage}>
       <DelegationHeadline element={element}/>
-      {element?.host === account && <HostOptions element={element}/>}
+      {element?.host === account && <HostOptions refresh={refresh} element={element}/>}
       <GovernanceContainer element={element}/>
     </div>
   )

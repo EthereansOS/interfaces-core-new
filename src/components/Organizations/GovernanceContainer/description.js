@@ -12,7 +12,7 @@ var Description = ({title, description, className, shortLength}) => {
 
     return (
       <>
-        <h6>{title}</h6>
+        {title && <h6>{title}</h6>}
         <p className={className}>
           {short ? description.substring(0, sl) : description}
           {description.length > sl && <>

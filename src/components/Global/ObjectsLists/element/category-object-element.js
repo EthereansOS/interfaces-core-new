@@ -11,7 +11,7 @@ export default ({element}) => {
             <div className={style.ObjectInfo}>
                 <div className={style.ObjectInfoCategory}>
                     <h5>{element.name}</h5>
-                    {element.description && <span ref={ref => ref && (ref.innerHTML = shortenWord({ context, charsCount : 50}, element.description))}></span>}
+                    {element.description && <span ref={ref => ref && (ref.innerHTML = shortenWord({ context, charsAmount : 50}, element.description))}></span>}
                 </div>
             </div>
         </a>

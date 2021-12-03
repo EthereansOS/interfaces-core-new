@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react"
 
 import { CircularProgress } from '@ethereansos/interfaces-ui'
-import { useEthosContext } from "@ethereansos/interfaces-core"
+import { useEthosContext, formatLink} from "@ethereansos/interfaces-core"
 
 const DEFAULT_IMAGE = `${process.env.PUBLIC_URL}/img/token_image_default.jpg`
 
@@ -16,7 +16,7 @@ export default ({input, figureClassName, noFigure}) => {
 
     useEffect(() => {
         setLoading(image !== undefined && image !== null)
-        setFinalImage(!image ? DEFAULT_IMAGE : image.toLowerCase().indexOf('0x') === 0 ? context.trustwalletImgURLTemplate.split("{0}").join(image) : image)
+        setFinalImage(!image ? DEFAULT_IMAGE : image.toLowerCase().indexOf('0x') === 0 ? context.trustwalletImgURLTemplate.split("{0}").join(image) : formatLink({context}, image))
     }, [image])
 
     var img = <img style={ (finalImage === null || loading) ? {"display" : "none"} : {}} src={finalImage} onLoad={() => setLoading(false)} onError={() => void(setLoading(false), setFinalImage(DEFAULT_IMAGE))}/>

@@ -4,8 +4,15 @@ import LogoRenderer from '../../Global/LogoRenderer'
 
 import style from '../../../all.module.css'
 import ExtLinkButton from '../../Global/ExtLinkButton/index.js'
+import Description from '../GovernanceContainer/description'
+
+import { useEthosContext, useWeb3, getNetworkElement, shortenWord } from '@ethereansos/interfaces-core'
 
 const DelegationHeadline = ({element}) => {
+
+  const context = useEthosContext()
+  const { chainId } = useWeb3()
+
   return (
     <div className={style.DelegationHeadlineCardUPD}>
       <div className={style.DelegationMainThingsCardD}>
@@ -19,14 +26,12 @@ const DelegationHeadline = ({element}) => {
             <p><b>Created:</b> <a>32542555</a> <b>Core:</b>v. <a>1.0</a></p>
           </div>
       </div>
-        <div className={style.ViewDescriptionD}>
-        <p>Welcome to the Buidlerberg Event 2020! Tucked away deep inside the Ethereum network, a community of researchers study and experiment with DFO technology. They are developing the first genuinely on-chain organizations of the future, together with taking on the task of buidling a genuinely decentralized dApp ecosystem. All researchers are invited to share their projects at the first-ever Buidlerberg meeting. more info:</p>
-      </div>
+      <Description className={style.ViewDescriptionD} description={element.description}/>
       <div className={style.DelegationMainThingsCardMainInfoD}>
         <p><b>Type</b><br></br>Poll</p>
         <p><b>Grants</b><br></br>10</p>
         <p><b>Tot Funds</b><br></br>250 ETH</p>
-        <p><b>Host</b><br></br><a>0x04fh93r2gf</a></p>
+        <p><b>Host</b><br></br><a href={`${getNetworkElement({context, chainId}, "etherscanURL")}/address/${element.host}`} target="_blank">{shortenWord({ context, charsAmount : 20}, element.host)}</a></p>
       </div>
     </div>
   )

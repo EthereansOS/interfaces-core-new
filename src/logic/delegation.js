@@ -118,9 +118,41 @@ function instrumentProposalModels(proposalModels) {
     return proposalModels
 }
 
-export async function setDelegationMetadata({ context, newContract, chainId, ipfsHttpClient }, element, metadata) {
+export async function setDelegationMetadata({ context, ipfsHttpClient }, element, metadata) {
     var uri = await uploadMetadata({context, ipfsHttpClient}, metadata)
+    await propose({}, element, 1, abi.encode(["string"], [uri]), true)
+}
 
+export async function changeVotingRules({ }, element,
+    quorumPercentage,
+    validationBomb,
+    blockLength,
+    hardCapPercentage) {
+
+    quorumPercentage = toDecimals(quorumPercentage, 16)
+    hardCapPercentage = toDecimals(hardCapPercentage, 16)
+
+    await propose({},
+        element,
+        2,
+        abi.encode(["uint256","uint256","uint256","uint256"], [
+            quorumPercentage,
+            validationBomb,
+            blockLength,
+            hardCapPercentage
+        ]),
+        true)
+}
+
+async function propose({ }, element, modelIndex, bytecode, alsoTerminate) {
+    var codes = [{
+        codes : [{
+            location : abi.decode(["address"], abi.encode(["uint256"], [modelIndex]))[0],
+            bytecode,
+        }],
+        alsoTerminate : alsoTerminate === true
+    }]
+    await blockchainCall(element.components.proposalsManager.contract.methods.batchCreate, codes)
 }
 
 export async function retrieveDelegationProposals({context, newContract}, organization) {

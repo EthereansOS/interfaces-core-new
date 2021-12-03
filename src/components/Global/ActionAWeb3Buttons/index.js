@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
 import { CircularProgress } from '@ethereansos/interfaces-ui'
-import { abi, useEthosContext, useWeb3, shortenWord, toDecimals, fromDecimals, blockchainCall, VOID_ETHEREUM_ADDRESS } from '@ethereansos/interfaces-core'
+import { useWeb3, blockchainCall, VOID_ETHEREUM_ADDRESS } from '@ethereansos/interfaces-core'
 
 import {preparePermit} from '../../../logic/ballot'
 

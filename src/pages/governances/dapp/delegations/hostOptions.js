@@ -5,18 +5,17 @@ import RegularModal from '../../../../components/Global/RegularModal'
 
 import { useWeb3, useEthosContext } from '@ethereansos/interfaces-core'
 
-import { setDelegationMetadata } from '../../../../logic/delegation'
+import { changeVotingRules, setDelegationMetadata } from '../../../../logic/delegation'
 
 import style from '../../../../all.module.css'
 
-const ChangeMetadata =  ({element}) => {
+const ChangeMetadata =  ({element, close}) => {
 
   const context = useEthosContext()
   const {getGlobalContract, newContract, chainId, ipfsHttpClient} = useWeb3()
 
   const [name, setName] = useState("")
   const [description, setDescription] = useState("")
-  const [symbol, setSymbol] = useState("")
   const [image, setImage] = useState("")
   const [background_color, setBackground_color] = useState("")
   const [external_url, setExternal_url] = useState("")
@@ -31,7 +30,6 @@ const ChangeMetadata =  ({element}) => {
     {
       name,
       description,
-      symbol,
       image,
       background_color,
       external_url,
@@ -61,11 +59,6 @@ const ChangeMetadata =  ({element}) => {
           <p>A place to discuss your Delegation.</p>
         </label>
         <label className={style.CreationPageLabelFS}>
-          <h6>Symbol</h6>
-          <input type="text" value={symbol} onChange={e => setSymbol(e.currentTarget.value)}/>
-          <p>The symbol / ticker of your Delegation.</p>
-        </label>
-        <label className={style.CreationPageLabelFS}>
           <h6>Logo link</h6>
           <input placeholder="ipfs//..." type="link" value={image} onChange={e => setImage(e.currentTarget.value)}/>
           <p>A valid IPFS link for your Delegation’s logo. Please upload a square picture (.png, .gif or .jpg, max size 1mb) so that it fits perfectly with the EthereansOS interface style.</p>
@@ -81,7 +74,7 @@ const ChangeMetadata =  ({element}) => {
           <p>If active, all polls created regarding this Delegation will appear on the Delegation’s page. If not active, only polls created by the Delegation host will appear on the Delegation’s page.</p>
         </label>
         <div className={style.ActionDeploy}>
-          <ActionAWeb3Button onClick={deploy}>Deploy</ActionAWeb3Button>
+          <ActionAWeb3Button onSuccess={close} onClick={deploy}>Deploy</ActionAWeb3Button>
         </div>
       </div>
   )
@@ -93,7 +86,6 @@ const AttachToOrganization = ({element, close}) => {
 
     async function onClick() {
 
-        close()
     }
 
     return (<div className={style.CreationPageLabelS}>
@@ -101,39 +93,65 @@ const AttachToOrganization = ({element, close}) => {
           <h6>Organization address</h6>
             <input type="text" value={address} onChange={e => setAddress(e.currentTarget.value)}/>
         </label>
-        <ActionAWeb3Button onClick={onClick}>Execute</ActionAWeb3Button>
+        <ActionAWeb3Button onSuccess={close} onClick={onClick}>Execute</ActionAWeb3Button>
     </div>)
 }
 
 const ChangeRules = ({element, close}) => {
 
-    const [uri, setUri] = useState(null)
+    const context = useEthosContext()
+    const { getGlobalContract, newContract, chainId } = useWeb3()
+
+    const [quorumPercentage, setQuorumPercentage] = useState(0)
+    const [hardCapPercentage, setHardcapPercentage] = useState(0)
+    const [blockLength, setBlockLength] = useState(0)
+    const [validationBomb, setValidationBomb] = useState(0)
 
     async function onClick() {
-
-        close()
+      await changeVotingRules({},
+        element,
+        quorumPercentage,
+        validationBomb,
+        blockLength,
+        hardCapPercentage)
     }
 
     return (<div className={style.CreationPageLabelS}>
-        <label className={style.CreationPageLabelFS}>
-          <h6>Organization address</h6>
-            <input type="text" value={uri} onChange={e => setUri(e.currentTarget.value)}>New Uri:</input>
+        <label className={style.CreationPageLabelF}>
+          <h6>Survey Duration</h6>
+          <input type="number" value={blockLength} onChange={e => setBlockLength(e.currentTarget.value)}/>
+          <p>The duration (in blocks) that Proposals will be open for.</p>
         </label>
-        <ActionAWeb3Button onClick={onClick}>Execute</ActionAWeb3Button>
+        <label className={style.CreationPageLabelF}>
+          <h6>Validation Bomb</h6>
+          <input type="number" value={validationBomb} onChange={e => setValidationBomb(e.currentTarget.value)}/>
+          <p>This is an optional amount of blocks after which a passed Proposal can never be executed. If set as zero, there is no time limit by which a Proposal must be executed.</p>
+        </label>
+        <label className={style.CreationPageLabelF}>
+          <h6>Quorum</h6>
+          <input className={style.perchentageThing} type="number" min="0" max="100" value={quorumPercentage} onChange={e => setQuorumPercentage(e.currentTarget.value)}/>
+          <p>An minimum number of votes required for a proposal to pass.</p>
+        </label>
+        <label className={style.CreationPageLabelF}>
+          <h6>Hard Cap</h6>
+          <input className={style.perchentageThing} type="number" min="0" max="100" value={hardCapPercentage} onChange={e => setHardcapPercentage(e.currentTarget.value)}/>
+          <p>An optional minimum number of votes required to end a proposal, regardless of how long it is still set to remain open.</p>
+        </label>
+        <ActionAWeb3Button onSuccess={close} onClick={onClick}>Execute</ActionAWeb3Button>
     </div>)
 }
 
-export default ({element}) => {
+export default ({element, refresh}) => {
 
     const [modal, setModal] = useState(null)
 
-    const Component = modal === "changeMetadata" ? ChangeMetadata : modal === 'attachToOrganization' ? AttachToOrganization : modal === 'changeRules' ? ChangeRules : null
+    const Component = modal === "changeMetadata" ? ChangeMetadata : modal === 'attachToOrganization' ? AttachToOrganization : ChangeRules
 
     return <div className={style.HostToolsDelegations}>
         <h6>Host Only Tools</h6>
         {modal && <RegularModal type="medium" close={() => setModal(null)}>
             <div>
-              <Component element={element} close={() => setModal(null)}/>
+              <Component element={element} close={() => void(setModal(null), refresh())}/>
             </div>
         </RegularModal>}
         <div className={style.HostToolsDelegationsBTN}>
