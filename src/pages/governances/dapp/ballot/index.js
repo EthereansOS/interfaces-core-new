@@ -38,12 +38,12 @@ const Ballots = () => {
         </div>
 )}
 
-Ballots.menuVoice = {
+/*Ballots.menuVoice = {
   label : 'Ballots',
   path : '/governances/dapp/ballots',
   subMenuLabel : 'All',
   contextualRequire : () => require.context('./', false, /.js$/),
   index : 3
-}
+}*/
 
 export default Ballots

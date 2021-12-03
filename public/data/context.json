@@ -94,7 +94,15 @@
             "0xdac17f958d2ee523a2206206994597c13d831ec7",
             "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
         ],
+        "factoryOfFactoriesAddress": "0xf68db1F9A5B224f6687FC56e74a224DcB6913221",
         "factoryOfFactoriesAddressRinkeby": "0xff6bd9dfAA47f51Bb7bfDd95F8bBB3C020166eEA",
+        "factoryIndices": {
+            "dfo": 0,
+            "subdao": 1,
+            "farming": 2,
+            "fixedInflation": 3,
+            "delegation": 4
+        },
         "factoryIndicesRinkeby": {
             "dfo": 0,
             "subdao": 1,

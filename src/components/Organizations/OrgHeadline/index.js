@@ -4,6 +4,7 @@ import LogoRenderer from '../../Global/LogoRenderer'
 
 import style from '../../../all.module.css'
 import ExtLinkButton from '../../Global/ExtLinkButton/index.js'
+import Description from '../GovernanceContainer/description'
 
 const OrgHeadline = ({element}) => {
   return (
@@ -12,7 +13,7 @@ const OrgHeadline = ({element}) => {
       <LogoRenderer input={element}/>
       <div className={style.OrgTitle}>
         <h6>{element.name}</h6>
-        {element.description && <p ref={ref => ref && (ref.innerHTML = element.description)}/>}
+        <Description description={element.description}/>
       </div>
       <div className={style.OrgLinks}>
        <ExtLinkButton/>

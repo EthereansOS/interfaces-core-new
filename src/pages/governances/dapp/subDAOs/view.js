@@ -28,25 +28,25 @@ const SubDAOView = () => {
     organizationAddress.indexOf("0x") === 0 && getOrganization({context, account, newContract, blockchainCall, web3}, organizationAddress).then(setOrganization)
   }, [location.pathname])
 
-  const [currentView, setCurrentView] = useState('governance')
+  const [currentView, setCurrentView] = useState('overview')
 
   const menuVoices = [{
     label : 'Overview',
     view : 'overview',
     component : MainSectionView
-  }, {
+  }/*, {
     label : 'Statements',
   }, {
     label : 'DeFi',
   }, {
     label : 'Root',
-  }, {
+  }*/, {
     label : 'Governance',
     view : 'governance',
     component : GovernanceContainer
-  }, {
+  }/*, {
     label : 'Poll',
-  }]
+  }*/]
 
   if(organization === null) {
     return <CircularProgress/>

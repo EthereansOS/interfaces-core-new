@@ -1,146 +1,365 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-import { Typography } from '@ethereansos/interfaces-ui'
+import React, { useEffect, useState } from 'react'
 
-import style from '../../../all.module.css'
 import ExtLinkButton from '../../Global/ExtLinkButton/index.js'
 import RegularButtonDuo from '../../Global/RegularButtonDuo/index.js'
 import Upshots from '../../Organizations/Upshots/index.js'
+import LogoRenderer from '../../Global/LogoRenderer'
+import { CircularProgress } from '@ethereansos/interfaces-ui'
 
-const OrgMainThingsCard = (props) => {
+import { fromDecimals, useWeb3, useEthosContext, getNetworkElement, blockchainCall, numberToString, getEthereumPrice, formatNumber, formatMoney, formatMoneyUniV3, newContract, getTokenPriceInDollarsOnUniswapV3 } from '@ethereansos/interfaces-core'
+
+import style from '../../../all.module.css'
+
+const RootWallet = ({element}) => {
+
+  const context = useEthosContext()
+
+  const { web3 } = useWeb3()
+
+  const [value, setValue] = useState(null)
+
+  useEffect(() => {
+    setTimeout(async () => {
+      var val = await web3.eth.getBalance(element.components.treasuryManager.address)
+      val = parseFloat(fromDecimals(val, 18, true))
+      var ethereumPrice = formatNumber(await getEthereumPrice({context}))
+      val = ethereumPrice * val
+      val = "$ " + formatMoney(val, 2)
+      setValue(val)
+    })
+  }, [element])
+
   return (
-    <>
-      <div className={style.OrgMainThingsCard}>
-        <div className={style.OrgThingsTitle}>
-          <h6>Earnings Splitter</h6>
-        </div>
-        <div className={style.OrgThingsInfoContent}>
-          <b>Current Period</b>
-          <p>35 ETH</p>
-        </div>
-        <div className={style.OrgThingsInfoContent}>
-          <b>Rebalance</b>
-          <p>3 Months</p>
-        </div>
-        <div className={style.OrgThingsInfoContent}>
-          <b>Next</b>
-          <p><a>252345312</a></p>
-        </div>
-        
-        <div className={style.OrgThingsTitle}>
-          <h6>Distribution</h6>
-        </div>
-        <div className={style.OrgThingsInfoContent}>
-          <b>Dividends</b>
-          <p>27%</p>
-        </div>
-        <div className={style.OrgThingsInfoContent}>
-          <b>Investments Fund</b>
-          <p>25%</p>
-        </div>
-        <div className={style.OrgThingsInfoContent}>
-          <b>Delegations Grants</b>
-          <p>40%</p>
-        </div>
-        <div className={style.OrgThingsInfoContent}>
-          <b>Emergency Fund</b>
-          <p>8%</p>
-        </div>
+    <div className={style.OrgMainThingsCard}>
+      <div className={style.OrgThingsTitle}>
+        <h6>Root Wallet</h6>
       </div>
-      <div className={style.OrgPartViewF}>
-        <div className={style.OrgPartFarm}>
-          <a><img src={`${process.env.PUBLIC_URL}/img/eth_logo.png`}></img></a>
-          <p><b>Dividends</b><br></br>APR: 20%<br></br>Daily reward rate: 19,000 ETH</p>
-        </div>
-        <div className={style.OrgPartFarm}>
-          <a><img src={`${process.env.PUBLIC_URL}/img/tokentest/os.png`}></img></a>
-          <p><b>Farm OS</b><br></br>APR: 100%<br></br>Daily reward rate: 66,000 OS</p>
-        </div>
+      <div className={style.OrgThingsInfoContent}>
+        <b>Balance</b>
+        {value === null && <CircularProgress/>}
+        {value !== null && <p>{value}</p>}
       </div>
-
-      <div className={style.OrgPartView}>
-        <div className={style.OrgPartTitle}>
-          <h6>Investments Fund</h6>
-          <ExtLinkButton/>
-          <ExtLinkButton/>
-        </div>
-        <div className={style.OrgPartInfo}>
-          <p><b>Estimated Next buy</b><br></br>$40,000</p>
-        </div>
-        <div className={style.OrgPartInfo}>
-          <p><b>Fund Size</b><br></br>$400,000,000</p>
-        </div>
-        <div className={style.OrgPartInfoB}>
-          <RegularButtonDuo/>
-        </div>
-        <div className={style.InvestmentsSection}>
-          <div className={style.InvestmentsSectionBuySell}>
-            <p>Estimated <b>50</b><a><img src={`${process.env.PUBLIC_URL}/img/eth_logo.png`}></img></a> <b>swap </b> for <a><img src={`${process.env.PUBLIC_URL}/img/tokentest/cro.png`}></img></a><a><img src={`${process.env.PUBLIC_URL}/img/tokentest/cro.png`}></img></a><a><img src={`${process.env.PUBLIC_URL}/img/tokentest/cro.png`}></img></a><a><img src={`${process.env.PUBLIC_URL}/img/tokentest/cro.png`}></img></a><a><img src={`${process.env.PUBLIC_URL}/img/tokentest/os.png`}></img><span>&#128293;</span></a></p>
-            <p>Every 3 months</p>
-            <ExtLinkButton/>
-            <ExtLinkButton/>
-          </div>
-          <div className={style.InvestmentsSectionBuySell}>
-            <p><b>Swap:</b> <a><img src={`${process.env.PUBLIC_URL}/img/tokentest/cro.png`}></img></a><a><img src={`${process.env.PUBLIC_URL}/img/tokentest/cro.png`}></img></a><a><img src={`${process.env.PUBLIC_URL}/img/tokentest/cro.png`}></img></a><a><img src={`${process.env.PUBLIC_URL}/img/tokentest/os.png`}></img></a><a><img src={`${process.env.PUBLIC_URL}/img/tokentest/os.png`}></img></a> for <a><img src={`${process.env.PUBLIC_URL}/img/eth_logo.png`}></img></a></p>
-            <p>Weekly</p>
-            <ExtLinkButton/>
-            <ExtLinkButton/>
-          </div>
-        </div>
-      </div>
-      <div className={style.OrgPartView}>
-        <div className={style.OrgPartTitle}>
-          <h6>Delegations grants</h6>
-          <ExtLinkButton/>
-          <ExtLinkButton/>
-        </div>
-        <div className={style.OrgPartInfo}>
-          <p><b>Estimated Next grant</b><br></br>$50,000</p>
-        </div>
-        <div className={style.OrgPartInfo}>
-          <p><b>Active Delegations</b><br></br>5</p>
-        </div>
-        <div className={style.OrgPartInfoB}>
-          <RegularButtonDuo/>
-        </div>
-        <div className={style.DelegationsSection}>
-         <h6>Grant chart</h6>
-          <div className={style.DelegationsSectionOne}>
-            <figure><img src={`${process.env.PUBLIC_URL}/img/test.jpg`}></img></figure>
-            <Upshots/>
-          </div>
-          <div className={style.DelegationsSectionOne}>
-            <figure><img src={`${process.env.PUBLIC_URL}/img/test.jpg`}></img></figure>
-            <Upshots/>
-          </div>
-          <div className={style.DelegationsSectionOne}>
-            <figure><img src={`${process.env.PUBLIC_URL}/img/test.jpg`}></img></figure>
-            <Upshots/>
-          </div>
-          <div className={style.DelegationsSectionOne}>
-            <figure><img src={`${process.env.PUBLIC_URL}/img/test.jpg`}></img></figure>
-            <Upshots/>
-          </div>
-        </div>
-      </div>
-      <div className={style.OrgPartView}>
-        <div className={style.OrgPartTitle}>
-          <h6>Ethereans (OS) Inflation</h6>
-          <ExtLinkButton/>
-          <ExtLinkButton/>
-        </div>
-        <div className={style.OrgPartInfo}>
-          <p><b>Annual Inflation Rate</b><br></br>8%</p>
-        </div>
-        <div className={style.OrgPartInfo}>
-          <p><b>Routines</b><br></br>1</p>
-        </div>
-        <div className={style.OrgPartInfoB}>
-          <RegularButtonDuo/>
-        </div>
-      </div>
-    </>
-  )
+    </div>)
 }
 
-export default OrgMainThingsCard
+const TreasurySplitter = ({element}) => {
+
+  const context = useEthosContext()
+  const { web3, chainId } = useWeb3()
+
+  const [value, setValue] = useState(null)
+  const [nextBlock, setNextBlock] = useState(null)
+
+  useEffect(() => {
+    setTimeout(async () => {
+      var treasurySplitterManager = element.organizations[0].components.treasurySplitterManager
+      var val = await web3.eth.getBalance(treasurySplitterManager.address)
+      val = parseFloat(fromDecimals(val, 18, true))
+      var ethereumPrice = formatNumber(await getEthereumPrice({context}))
+      val = ethereumPrice * val
+      val = "$ " + formatMoney(val, 2)
+      setValue(val)
+      setNextBlock(await blockchainCall(treasurySplitterManager.contract.methods.nextSplitBlock))
+    })
+  }, [element])
+
+  return (
+    <div className={style.OrgMainThingsCard}>
+      <div className={style.OrgThingsTitle}>
+        <h6>Earnings Splitter</h6>
+      </div>
+      <div className={style.OrgThingsInfoContent}>
+        <b>Current Period</b>
+        {value === null && <CircularProgress/>}
+        {value !== null && <p>{value}</p>}
+      </div>
+      <div className={style.OrgThingsInfoContent}>
+        <b>Rebalance</b>
+        <p>3 Months</p>
+      </div>
+      <div className={style.OrgThingsInfoContent}>
+        <b>Next</b>
+        {nextBlock === null && <CircularProgress/>}
+        {nextBlock !== null && <p><a href={getNetworkElement({context, chainId}, "etherscanURL") + "block/" + nextBlock} target="_blank">#{nextBlock}</a></p>}
+      </div>
+      <div className={style.OrgThingsTitle}>
+        <h6>Distribution</h6>
+      </div>
+      <div className={style.OrgThingsInfoContent}>
+        <b>Dividends</b>
+        <p>27%</p>
+      </div>
+      <div className={style.OrgThingsInfoContent}>
+        <b>Investments Fund</b>
+        <p>25%</p>
+      </div>
+      <div className={style.OrgThingsInfoContent}>
+        <b>Delegations Grants</b>
+        <p>40%</p>
+      </div>
+      <div className={style.OrgThingsInfoContent}>
+        <b>Root Wallet</b>
+        <p>8%</p>
+      </div>
+    </div>)
+}
+
+const Farmings = ({element}) => {
+
+  const context = useEthosContext()
+  const { newContract } = useWeb3()
+
+  const [oSDailyRate, setOSDailyRate] = useState(null)
+  const [dividendsDailyRate, setDividendsDailyRate] = useState(null)
+
+  useEffect(() => {
+    setTimeout(async () => {
+
+      var osFarmingAddress = (await blockchainCall(element.organizations[0].components.oSFarming.contract.methods.data))[0]
+      var osFarming = newContract(context.FarmMainRegularMinStakeABI, osFarmingAddress)
+      var osFarmingDailyRate = await getDailyRateRaw(osFarming)
+      setOSDailyRate(osFarmingDailyRate)
+
+      var dividendsFarmingAddress = (await blockchainCall(element.organizations[0].components.dividendsFarming.contract.methods.data))[0]
+      var dividendsFarming = newContract(context.FarmMainRegularMinStakeABI, dividendsFarmingAddress)
+      var dividendsFarmingDailyRate = await getDailyRateRaw(dividendsFarming)
+      setDividendsDailyRate(dividendsFarmingDailyRate)
+
+    })
+  }, [])
+
+  async function getDailyRateRaw(contract) {
+    var setup = await blockchainCall(contract.methods.setups)
+    setup = setup[setup.length - 1]
+    return formatMoneyUniV3(fromDecimals(parseInt(setup.rewardPerBlock) * 6400, 18, true), 4)
+  }
+
+  return (<div className={style.OrgPartViewF}>
+    <div className={style.OrgPartFarm}>
+      <a><img src={`${process.env.PUBLIC_URL}/img/eth_logo.png`}></img></a>
+      <p>
+        <b>Dividends</b>
+        <br/>
+        <span>Minimum to Stake: 5,000 OS</span>
+        <br/>
+        {!dividendsDailyRate && <CircularProgress/>}
+        {dividendsDailyRate && <span>Daily reward rate: {dividendsDailyRate} ETH</span>}
+      </p>
+    </div>
+    <div className={style.OrgPartFarm}>
+      <a><img src={`${process.env.PUBLIC_URL}/img/tokentest/os.png`}></img></a>
+      <p>
+        <b>Farm OS</b>
+        <br/>
+        {!oSDailyRate && <CircularProgress/>}
+        {oSDailyRate && <span>Daily reward rate: {oSDailyRate} OS</span>}
+      </p>
+    </div>
+  </div>)
+}
+
+const Investments = ({element}) => {
+
+  const context = useEthosContext()
+
+  const { web3, newContract, chainId } = useWeb3()
+
+  const [open, setOpen] = useState(false)
+
+  const [singleSwapFromETHValue, setSingleSwapFromETHValue] = useState(null)
+
+  const [value, setValue] = useState(null)
+
+  const [tokensFromETH, setTokensFromETH] = useState(null)
+  const [tokensToETH, setTokensToETH] = useState(null)
+
+  const [totalValue, setTotalValue] = useState(null)
+
+  async function calculateNextBuy() {
+    var ethereumPrice = formatNumber(await getEthereumPrice({context}))
+    var val = await web3.eth.getBalance(element.organizations[0].components.treasurySplitterManager.address)
+    val = parseFloat(fromDecimals(val, 18, true))
+
+    setSingleSwapFromETHValue(formatMoney(val / 5, 2))
+
+    val = val * 0.25
+    val = ethereumPrice * val
+
+    setValue("$ " + formatMoney(val, 2))
+  }
+
+  async function getTokens() {
+    setTokensFromETH(await blockchainCall(element.organizations[0].components.investmentsManager.contract.methods.tokensFromETH))
+    var data = await blockchainCall(element.organizations[0].components.investmentsManager.contract.methods.tokensToETH)
+    setTokensToETH(data.addresses)
+
+    var balances = await Promise.all(data.addresses.map(it => blockchainCall(newContract(context.IERC20ABI, it).methods.balanceOf, element.organizations[0].components.investmentsManager.address)))
+    var decimals = await Promise.all(data.addresses.map(it => blockchainCall(newContract(context.IERC20ABI, it).methods.decimals)))
+    var dollars = await Promise.all(data.addresses.map((it, i) => getTokenPriceInDollarsOnUniswapV3({context, newContract, chainId}, it, decimals[i])))
+    balances = balances.map((it, i) => parseFloat(fromDecimals(it, decimals[i], true)))
+    balances = balances.map((it, i) => it * dollars[i])
+    var amount = balances.reduce((acc, it) => acc + it, 0)
+    amount = formatMoney(numberToString(amount), 2)
+    setTotalValue(amount)
+  }
+
+  useEffect(() => {
+    setTimeout(async () => {
+      calculateNextBuy()
+      getTokens()
+    })
+  }, [open])
+
+  return (
+    <div className={style.OrgPartView}>
+      <div className={style.OrgPartTitle}>
+        <h6>Investments Fund</h6>
+        <ExtLinkButton/>
+        <ExtLinkButton/>
+      </div>
+      <div className={style.OrgPartInfo}>
+        <p>
+          <b>Estimated Next buy</b>
+          <br/>
+          {!value && <CircularProgress/>}
+          {value && <span>{value}</span>}
+        </p>
+      </div>
+      <div className={style.OrgPartInfo}>
+        <p>
+          <b>Fund Size</b><br/>
+          {!totalValue && <CircularProgress/>}
+          {totalValue && ("$ " + totalValue)}
+        </p>
+      </div>
+      <div className={style.OrgPartInfoB}>
+        <RegularButtonDuo onClick={() => setOpen(!open)}>{open ? "Close" : "Open"}</RegularButtonDuo>
+      </div>
+      {open && <div className={style.InvestmentsSection}>
+        <div className={style.InvestmentsSectionBuySell}>
+          {!tokensFromETH && <CircularProgress/>}
+          {tokensFromETH && <p>
+            Estimated <b>{singleSwapFromETHValue}</b>
+            <a><img src={`${process.env.PUBLIC_URL}/img/eth_logo.png`}></img></a> swap for
+            {tokensFromETH.map(it => <a key={it}><LogoRenderer noFigure input={it}/></a>)}
+            <a><img src={`${process.env.PUBLIC_URL}/img/tokentest/os.png`}></img><span>&#128293;</span></a>
+          </p>}
+          <p>Every 3 months</p>
+          <ExtLinkButton/>
+          <ExtLinkButton/>
+        </div>
+        <div className={style.InvestmentsSectionBuySell}>
+          {!tokensToETH && <CircularProgress/>}
+          {tokensToETH && <p>
+            <b>Swap:</b>
+            {tokensToETH.map(it => <a key={it}><LogoRenderer noFigure input={it}/></a>)}
+            for <a><img src={`${process.env.PUBLIC_URL}/img/eth_logo.png`}></img></a>
+          </p>}
+          <p>Weekly</p>
+          <ExtLinkButton/>
+          <ExtLinkButton/>
+        </div>
+      </div>}
+    </div>)
+}
+
+const Delegations = ({element}) => {
+
+  return (<div className={style.OrgPartView}>
+    <div className={style.OrgPartTitle}>
+      <h6>Delegations grants</h6>
+      <ExtLinkButton/>
+      <ExtLinkButton/>
+    </div>
+    <div className={style.OrgPartInfo}>
+      <p><b>Estimated Next grant</b><br></br>$50,000</p>
+    </div>
+    <div className={style.OrgPartInfo}>
+      <p><b>Active Delegations</b><br></br>5</p>
+    </div>
+    <div className={style.OrgPartInfoB}>
+      <RegularButtonDuo/>
+    </div>
+    <div className={style.DelegationsSection}>
+     <h6>Grant chart</h6>
+      <div className={style.DelegationsSectionOne}>
+        <figure><img src={`${process.env.PUBLIC_URL}/img/test.jpg`}></img></figure>
+        <Upshots/>
+      </div>
+      <div className={style.DelegationsSectionOne}>
+        <figure><img src={`${process.env.PUBLIC_URL}/img/test.jpg`}></img></figure>
+        <Upshots/>
+      </div>
+      <div className={style.DelegationsSectionOne}>
+        <figure><img src={`${process.env.PUBLIC_URL}/img/test.jpg`}></img></figure>
+        <Upshots/>
+      </div>
+      <div className={style.DelegationsSectionOne}>
+        <figure><img src={`${process.env.PUBLIC_URL}/img/test.jpg`}></img></figure>
+        <Upshots/>
+      </div>
+    </div>
+  </div>)
+}
+
+const Inflation = ({element}) => {
+
+  const [dailyMint, setDailyMint] = useState(null)
+  const [annualInflationRate, setAnnualInflationRate] = useState(null)
+
+  useEffect(() => {
+    setTimeout(async () => {
+      var dM = await blockchainCall(element.organizations[0].components.oSFixedInflationManager.contract.methods.lastInflationPerDay)
+      setDailyMint(fromDecimals(dM, 18))
+
+      var percentage = await blockchainCall(element.organizations[0].components.oSFixedInflationManager.contract.methods.lastTokenPercentage)
+      percentage = fromDecimals(percentage, 16)
+      setAnnualInflationRate(percentage + " %")
+    })
+  }, [])
+
+  return (<div className={style.OrgPartView}>
+    <div className={style.OrgPartTitle}>
+      <h6>Ethereans (OS) Inflation</h6>
+      <ExtLinkButton/>
+      <ExtLinkButton/>
+    </div>
+    <div className={style.OrgPartInfo}>
+      <p>
+        <b>Annual Inflation Rate</b><br/>
+        {!annualInflationRate && <CircularProgress/>}
+        {annualInflationRate}
+      </p>
+    </div>
+    <div className={style.OrgPartInfo}>
+      <p><b>Routines</b><br></br>1</p>
+    </div>
+    <div className={style.OrgPartInfo}>
+      <p>
+        <b>Daily Mint</b><br/>
+        {dailyMint === null && <CircularProgress/>}
+        {dailyMint && <span>{dailyMint} OS</span>}
+      </p>
+    </div>
+    <div className={style.OrgPartInfo}>
+      <p><b>OS Farming</b><br></br>30%</p>
+    </div>
+    <div className={style.OrgPartInfo}>
+      <p><b>Operations Treasury</b><br></br>25%</p>
+    </div>
+    <div className={style.OrgPartInfo}>
+      <p><b>Public Treasury</b><br></br>45%</p>
+    </div>
+  </div>)
+}
+
+export default ({element}) => {
+  return (<>
+    <RootWallet element={element}/>
+    <TreasurySplitter element={element}/>
+    <Farmings element={element}/>
+    <Investments element={element}/>
+    {false && <Delegations element={element}/>}
+    <Inflation element={element}/>
+  </>)
+}

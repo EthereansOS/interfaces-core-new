@@ -21,11 +21,11 @@ const DelegationsList = ({}) => {
   </div>)
 }
 
-DelegationsList.menuVoice = {
+/*DelegationsList.menuVoice = {
   label : 'Delegations',
   path : '/governances/dapp/delegations',
   contextualRequire : () => require.context('./', false, /.js$/),
   index : 1
-}
+}*/
 
 export default DelegationsList
