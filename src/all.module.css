@@ -720,8 +720,8 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 .dark .ItemLinkButton  {border-color: #59b0fb; color: #59b0fb; background-color: transparent;}
 
 .light .RegularButton, .light .RegularButtonDuo, .light .RegularButtonDuoSmall, .light .RegularButtonDuoXSmall, .light .RegularMiniButton  {background-color: #849bbd;color: #fff;}
-.biz .RegularButton, .biz .RegularButtonDuo, .biz .RegularButtonDuoSmall, .biz .RegularButtonDuoXSmall, .biz .RegularMiniButton  {background-color: #849bbd;color: #fff;}
-.dark .RegularButton .dark .RegularButtonDuo, .dark .RegularButtonDuoSmall, .dark .RegularButtonDuoXSmall, .dark .RegularMiniButton  {background-color: #849bbd;color: #fff;}
+.biz .RegularButton, .biz .RegularButtonDuo, .biz .RegularButtonDuoSmall, .biz .RegularButtonDuoXSmall, .biz .RegularMiniButton  {background: linear-gradient(0deg, #849BBD 80%, #ffffff 100%); color: #fff; border-radius: 0;}
+.dark .RegularButton, .dark .RegularButtonDuo, .dark .RegularButtonDuoSmall, .dark .RegularButtonDuoXSmall, .dark .RegularMiniButton  {background-color: #fff;color: #000000;}
 
 .light .RegularButtonDuoSmallWhite {background-color: #ffffff;color: #849BBD;}
 .biz .RegularButtonDuoSmallWhite {background-color: #ffffff;color: #849BBD;}
@@ -910,7 +910,7 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 .biz .Dapp_Menu {background-color: #ffffff; border-color: #aa9cfe;}
 .dark .Dapp_Menu {background-color: #000000; border-color: #aa9cfe;box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
 
-.light .DappSubMenu {background-color: #E4E4E4; border-color: #e1b9be;box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-webkit-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
+.light .DappSubMenu {background-color: #E4E4E4; border: none; box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-webkit-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
 .biz .DappSubMenu {background-color: #ffffff; border-color: #aa9cfe;}
 .dark .DappSubMenu {background-color: #525252; border: none; box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
 
@@ -985,7 +985,7 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 .dark .GovCardHeadDelegation span {border-color: #000000;}
 
 .light .GovCardOpened {background-color: #ffffff;}
-.biz .GovCardOpened {background-color: #ffffff;}
+.biz .GovCardOpened {background: linear-gradient(0deg, #849BBD 10%, #ffffff 100%);}
 .dark .GovCardOpened {background-color: #000000;}
 
 .light .DelegationWrapBox {background-color: #e9effc;}
@@ -1035,7 +1035,7 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 .dark .SurveylessOpenCardSelectionSingleOpenStaked {background-color: #000; }
 
 .light .MultiVoteBox {background-color: #e9effc;}
-.biz .MultiVoteBox {background-color: #e9effc;}
+.biz .MultiVoteBox {background-color: #e9effc; border-radius: 0;}
 .dark .MultiVoteBox {background-color: #383c42;}
 
 .light .Vote {background-color: #e9effc;}
@@ -1075,7 +1075,7 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 .dark .TokenSelectorListProposal {background-color: #383c42;}
 
 .light .Rule {background-color: #e9effc;}
-.biz .Rule {background-color: #e9effc;}
+.biz .Rule {background-color: #e9effc; border-radius: 0;}
 .dark .Rule {background-color: #383c42;}
  
 .light .OrgHeadline {background-color: #ffffff;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
@@ -1143,7 +1143,7 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 .dark .UpshotBar figure { background-color: #2e2c35;}
 
 .light .CardSelectionSingle {background-color: #ffffff;}
-.biz .CardSelectionSingle {background-color: #ffffff;}
+.biz .CardSelectionSingle {background-color: #ffffff; border-radius: 0;}
 .dark .CardSelectionSingle {background-color: #000000;}
 
 .light .CardSelectionSingleCurrent {background-color: #ffffff;}
