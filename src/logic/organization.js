@@ -378,6 +378,7 @@ async function getSurveylessProposals({context}, organization) {
     var surveylessProposals = surveyless.map((it, i) => {
         var initialized = it.presetProposals.filter(it => it === VOID_BYTES32).length === 0
         var subProposals = it.presetValues.map((_, index) => ({
+            key : "prop_" + it.modelIndex + "_" + organization.address + "_" + index,
             ...it,
             organization,
             proposalsManager : organization.components.proposalsManager.contract,
@@ -389,6 +390,7 @@ async function getSurveylessProposals({context}, organization) {
             proposalsConfiguration : organization.proposalsConfiguration
         }))
         return {
+            key : "prop_" + it.modelIndex + "_" + organization.address,
             ...it,
             ...metadatas[i],
             organization,
@@ -480,11 +482,12 @@ async function getSurveysByModels({context}, organization) {
     }
 
     var surveysProposals = await Promise.all(surveys.map(async (it, i) => {
-        var subProposals = await Promise.all((it.proposalIds = (it.proposalIds || [])).map(async it => ({
-            ...it,
+        var subProposals = await Promise.all((it.proposalIds = (it.proposalIds || [])).map(async (sp, index) => ({
+            key : "prop_" + it.modelIndex + "_" + organization.address + "_" + sp + "_" + index,
+            ...sp,
             ...metadatas[i],
-            ...((await blockchainCall(organization.components.proposalsManager.contract.methods.list, [it]))[0]),
-            proposalId : it,
+            ...((await blockchainCall(organization.components.proposalsManager.contract.methods.list, [sp]))[0]),
+            proposalId : sp,
             organization,
             proposalsManager : organization.components.proposalsManager.contract,
             isSurveyless : false,
@@ -492,6 +495,7 @@ async function getSurveysByModels({context}, organization) {
             proposalsConfiguration : organization.proposalsConfiguration
         })))
         return {
+            key : "prop_" + it.modelIndex + "_" + organization.address,
             ...it,
             ...metadatas[i],
             organization,

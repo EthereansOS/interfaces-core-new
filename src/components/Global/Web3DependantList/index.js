@@ -16,7 +16,7 @@ export default ({Renderer, emptyMessage, provider, searchText, renderedPropertie
   }, [chainId])
 
   async function refreshElements(withLoader) {
-    withLoader && setElements(null)
+    withLoader === true && setElements(null)
     setError("")
     setTimeout(async () => {
       try {
@@ -39,5 +39,5 @@ export default ({Renderer, emptyMessage, provider, searchText, renderedPropertie
     ? <CircularProgress/>
     : error || (outputElements && outputElements.length === 0)
       ? <h2>{error || (emptyMessage !== undefined && emptyMessage !== null ? emptyMessage : "No elements to display")}</h2>
-      : outputElements && rendererIsContainer ? <Renderer elements={outputElements} {...{...renderedProperties, refreshElements}}/> : outputElements.map((element, i) => <Renderer {...{...renderedProperties, refreshElements}} key={(i + "_" + element)} element={element}/>)
+      : outputElements && rendererIsContainer ? <Renderer elements={outputElements} {...{...renderedProperties, refreshElements}}/> : outputElements.map((element, i) => <Renderer {...{...renderedProperties, refreshElements}} key={(i + "_" + (element.key || element.id || element.index))} element={element}/>)
 }

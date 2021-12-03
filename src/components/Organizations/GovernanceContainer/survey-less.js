@@ -81,7 +81,7 @@ const MultiVoteBox = ({element, refreshElements}) => {
     return (
       <div className={style.MultiVoteBox}>
         <div className={style.VoteList}>
-        {element.presetProposals.filter(it => it !== VOID_BYTES32).length === 0
+          {element.presetProposals.filter(it => it !== VOID_BYTES32).length === 0
             ? <ActionAWeb3Button onSuccess={refreshElements} onClick={() => createPresetProposals({}, element)}>Initialize</ActionAWeb3Button>
             : <>
               {element.subProposals.map((it, i) => <VoteSelections
