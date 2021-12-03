@@ -588,6 +588,9 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
   .Navigation .Selected img {display: none;}
   .Navigation {display: none;}
 }
+@media only screen and (max-width: 989px) {
+  .Navigation, .FixedHeader, .BlurHeader {display: none !important;}
+}
 
 
 @media only screen and (max-width: 1200px) {

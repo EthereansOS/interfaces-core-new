@@ -8,10 +8,8 @@ const ItemsMain = (props) => {
   return (
       <div className={style.Web3PagesRoot}>
         <Typography className={style.title} variant="h3" color="black">
-          Qua ci scrivo le zozzerie offiCéin di Items
         </Typography>
         <Link to="dapp">
-          Andiamo Onnicéin che è meglio valà
         </Link>
       </div>
   )
