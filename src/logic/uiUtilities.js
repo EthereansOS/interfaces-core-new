@@ -69,10 +69,10 @@ export const ThemeSelectorContextProvider = ({children}) => {
 
     const { pathname } = useLocation()
 
-    var currentTheme = themes[0]
+    var currentTheme = themes[0].value
 
     try {
-        currentTheme = window.localStorage.theme || themes[0]
+        currentTheme = window.localStorage.theme || currentTheme
     } catch(e) {}
 
     const [theme, setTheme] = useState(currentTheme)
@@ -91,7 +91,7 @@ export const ThemeSelectorContextProvider = ({children}) => {
     }
 
     return <ThemeSelectorContext.Provider value={value}>
-        <div className={pathname.indexOf('/dapp') !== -1 ? style[theme?.value || theme] : undefined}>
+        <div className={pathname.indexOf('/dapp') !== -1 ? style[theme] : undefined}>
             {children}
         </div>
     </ThemeSelectorContext.Provider>
