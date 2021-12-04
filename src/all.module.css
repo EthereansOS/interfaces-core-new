@@ -522,7 +522,7 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 
 
 .InvestmentsSection {border-top: 1px solid; padding: 20px 20px 20px 20px; margin: 10px auto; width: 100%; display: inline-block; text-align: center;}
-.InvestmentsSectionBuySell {width: 415px; display: inline-block; text-align: left;  padding: 20px; border-radius: 12px; margin: 10px; vertical-align: middle;}
+.InvestmentsSectionBuySell {width: 410px; display: inline-block; text-align: left;  padding: 20px; border-radius: 12px; margin: 10px; vertical-align: middle;}
 .InvestmentsSectionBuySell p {line-height: 1.3; font-size: 15px; margin: 5px;}
 .InvestmentsSectionBuySell p > a {width: 20px; height: 20px; display: inline-block; vertical-align: middle; margin: 5px; position: relative;}
 .InvestmentsSectionBuySell p > a img {width: 20px; height: 20px; display: inline-block;}
@@ -1044,7 +1044,7 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 .dark .GovCard {background-color: #000000;box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
 
 .light .GovCardHead {background-color: #e9effc;}
-.biz .GovCardHead {background-color: #ccd3db; background: linear-gradient(180deg, #f8fbff 90%, #99e9da 100%); border-radius: 0px;    border: 1px solid #99e9da;border-left: none;border-top: none;border-right: none;}
+.biz .GovCardHead {background-color: #ccd3db; background: linear-gradient(180deg, #f8fbff 90%, #99e9da 100%); border-radius: 0px;    border: 1px solid #99e9da;border-left: none;border-top: none;}
 .dark .GovCardHead {background-color: #383c42;}
 
 .light .GovCardHeadDelegation span {border-color: #ffffff;}
@@ -1154,11 +1154,11 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 .dark .OrgHeadlineSide {background-color: #292929;}
 
 .light .OrgMainThingsCard {background-color: #ffffff;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
-.biz .OrgMainThingsCard {background-color: #ffffff;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
+.biz .OrgMainThingsCard {background: linear-gradient(180deg, #ffffff 90%, hsl(212deg 30% 83%) 100%);border: 1px solid hsl(212deg 30% 83%); border-left: none;border-top: none;}
 .dark .OrgMainThingsCard {background-color: #000000;box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
 
 .light .OrgMainThingsCardSL {background-color: #ffffff;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
-.biz .OrgMainThingsCardSL {background-color: #ffffff;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
+.biz .OrgMainThingsCardSL {background: linear-gradient(180deg, #ffffff 80%, hsl(212deg 30% 83%) 100%);border: 1px solid hsl(212deg 30% 83%); border-left: none;border-top: none;}
 .dark .OrgMainThingsCardSL {background-color: #000000;box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
 
 .light .OrgThingsInfoContent {background-color: #e9effc;}
@@ -1166,7 +1166,7 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 .dark .OrgThingsInfoContent {background-color: #383c42;}
 
 .light .OrgPartView {background-color: #ffffff;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
-.biz .OrgPartView {background-color: #ffffff;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
+.biz .OrgPartView {background: linear-gradient(180deg, #ffffff 90%, hsl(212deg 30% 83%) 100%);border: 1px solid hsl(212deg 30% 83%); border-left: none;border-top: none;}
 .dark .OrgPartView {background-color: #000000;box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
 
 .light .OrgPartInfo {background-color: #e9effc;}
@@ -1194,7 +1194,7 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 .dark .OrgPartFarm {background-color: #383c42;}
 
 .light .OrgThingsCardPics {background-color: #ffffff;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
-.biz .OrgThingsCardPics {background-color: #ffffff;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
+.biz .OrgThingsCardPics {background: linear-gradient(180deg, #ffffff 80%, hsl(212deg 30% 83%) 100%);border: 1px solid hsl(212deg 30% 83%); border-left: none;border-top: none;}
 .dark .OrgThingsCardPics {background-color: #000000;box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
 
 .light .RegularVoteBoxStaked {background-color: #ffffff;}
