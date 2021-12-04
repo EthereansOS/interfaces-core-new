@@ -17,7 +17,7 @@ const TokenInputRegular = ({onElement, tokens, tokenOnly, noETH}) => {
 
     const [modalIsOpen, setModalIsOpen] = useState(false)
 
-    const [value, setValue] = useState('0')
+    const [value, setValue] = useState(null)
 
     const [max, setMax] = useState(false)
 
@@ -62,7 +62,7 @@ const TokenInputRegular = ({onElement, tokens, tokenOnly, noETH}) => {
                     {(!tokens || tokens.length > 1) && <span>{element?.symbol || ''} ▼</span>}
                 </a>
                 {!tokenOnly && <div className={style.TradeMarketTokenAmount}>
-                    <input type="number" placeholder="0.0"value={element && max ? fromDecimals(balance, element.decimals, true) : value} onChange={e => void(setMax(false), setValue(e.currentTarget.value))}/>
+                    <input type="number" placeholder="0.0" value={element && max ? fromDecimals(balance, element.decimals, true) : value} onChange={e => void(setMax(false), setValue(e.currentTarget.value))}/>
                 </div>}
             </div>
             {!tokenOnly && element && balance === null && <CircularProgress/>}
