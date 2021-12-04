@@ -818,7 +818,7 @@ export async function proposeBuy({}, proposal, tokens) {
     await blockchainCall(proposal.proposalsManager.methods.batchCreate, create)
 }
 
-export async function proposeSell({}, proposal, tokens, percentages) {
+export async function proposeSell({context, newContract}, proposal, tokens, percentages) {
     var addresses = []
     try {
         addresses = tokens.map(it => it && it.address).filter(it => it !== undefined && it !== null).filter((it, i, array) => array.indexOf(it) === i)
@@ -827,6 +827,12 @@ export async function proposeSell({}, proposal, tokens, percentages) {
 
     if(addresses.length !== 5 || addresses.filter(it => it === VOID_ETHEREUM_ADDRESS).length > 0) {
         throw "You must choose 5 different ERC20 tokens"
+    }
+
+    var balances = await Promise.all(addresses.map(it => blockchainCall(newContract(context.IERC20ABI, it).methods.balanceOf, proposal.organization.components.investmentsManager.address)))
+
+    if(balances.filter(it => it === '0').length > 0) {
+        throw 'Please select only tokens where Investments Manager balance is greater than 0'
     }
 
     var realPercentages = percentages.filter(it => it > 0 && it <= 5).map(it => numberToString(it * 1e16))

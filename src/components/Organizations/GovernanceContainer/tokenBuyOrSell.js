@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
-import { CircularProgress } from "@ethereansos/interfaces-ui"
 import ActionAWeb3Button from "../../Global/ActionAWeb3Button"
 import TokenInputRegular from "../../Global/TokenInputRegular"
 import RegularModal from '../../Global/RegularModal'
 
 import { proposeBuy, proposeSell } from "../../../logic/organization"
 import style from '../../../all.module.css'
+
+import { useWeb3, useEthosContext } from '@ethereansos/interfaces-core'
 
 const percentageEntries = [
     {
@@ -34,6 +35,10 @@ const PercentageSelector = ({onChange, value}) => {
 
 export default ({buyOrSell, close, element}) => {
 
+    const context = useEthosContext()
+
+    const { newContract } = useWeb3()
+
     const [token0, setToken0] = useState(null)
     const [token1, setToken1] = useState(null)
     const [token2, setToken2] = useState(null)
@@ -55,7 +60,7 @@ export default ({buyOrSell, close, element}) => {
                 token3
             ])
         } else {
-            await proposeSell({}, element, [
+            await proposeSell({ context, newContract }, element, [
                 token0,
                 token1,
                 token2,
