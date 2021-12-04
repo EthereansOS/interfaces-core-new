@@ -110,11 +110,53 @@ export async function getOrganizationMetadata({ context }, organization) {
     return {}
 }
 
+export async function getInitializationData({newContract, context}, contract) {
+    var initializerAddress = await blockchainCall(contract.methods.initializer)
+    var factory = newContract(context.SubDAOFactoryABI, initializerAddress)
+
+    var args = {
+        address : initializerAddress,
+        fromBlock : '0x0',
+        toBlock : 'latest',
+        topics : [
+            web3Utils.sha3('Deployed(address,address,address,bytes)'),
+            [],
+            [abi.encode(["uint256"], [contract.options.address])]
+        ]
+    }
+
+    var logs = await sendAsync(contract.currentProvider, 'eth_getLogs', args)
+
+    var creationBlock = logs[0].blockNumber
+
+    var fofAddress = await blockchainCall(factory.methods.initializer)
+    var fof = newContract(context.FactoryOfFactoriesABI, fofAddress)
+
+    var partialList = await blockchainCall(fof.methods.partialList, 0, 4)
+
+    partialList = partialList[1]
+
+    var version;
+    for(var list of partialList) {
+        for(var i in list) {
+            if(list[i] === initializerAddress) {
+                version = i;
+            }
+        }
+    }
+
+    return {
+        creationBlock,
+        version
+    }
+}
+
 export async function getOrganization({ context, web3, account, getGlobalContract, newContract }, organizationAddress, host) {
     var contract = newContract(context.SubDAOABI, organizationAddress)
     var organization = {
         address: organizationAddress,
-        contract
+        contract,
+        ...(await getInitializationData({newContract, context}, contract))
     }
 
     var hostData = host ? host : await tryExtractHost({ context, web3, account, getGlobalContract, newContract }, contract)
