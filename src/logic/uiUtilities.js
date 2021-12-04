@@ -91,7 +91,7 @@ export const ThemeSelectorContextProvider = ({children}) => {
     }
 
     return <ThemeSelectorContext.Provider value={value}>
-        <div className={pathname.indexOf('/dapp') !== -1 ? style[theme] : undefined}>
+        <div className={pathname.indexOf('/dapp') !== -1 ? style[theme?.value || theme] : undefined}>
             {children}
         </div>
     </ThemeSelectorContext.Provider>
