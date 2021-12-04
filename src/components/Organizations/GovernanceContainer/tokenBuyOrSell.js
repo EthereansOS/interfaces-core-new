@@ -74,10 +74,10 @@ export default ({buyOrSell, close, element}) => {
     return (
         <RegularModal close={close} type="medium">
             {!buyOrSell && 
-                <p>Propose a change in the 5 tokens to sell weekly and the holding supply perchentage from 1% to 5% each</p>
+                <p>Propose to change the five tokens that are sold each week, and the percentage (1% to 5%) of each that are sold</p>
             }
             {buyOrSell && 
-                <p>Propose a change in the 4 tokens to buy every quorter</p>
+                <p>Propose to change the four tokens that are bought each quarter</p>
             }
             <div className={style.TokenSelectorListProposal}>
                 <TokenInputRegular noETH tokenOnly onElement={token => setToken0(token)}/>

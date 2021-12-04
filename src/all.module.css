@@ -1243,8 +1243,8 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 .dark .Web3ConnectWallet {background-color: #525252;}
 
 .biz .Factories {background: linear-gradient(0deg, #ffffff 50%, hsl(212deg 30% 83%) 100%);}
-.biz .Items {background: linear-gradient(0deg, #ffffff 50%, hsl(212deg 30% 83%) 100%);}
-.biz .Governances {background: linear-gradient(0deg, #ffffff 50%, #eccfd9 100%);}
+.biz .Items {background: linear-gradient(0deg, #ffffff 50%, #bfc0ea 100%);}
+.biz .Governances {background: linear-gradient(0deg, #ffffff 50%, #99e9da 100%);}
 .biz .covenants {background: linear-gradient(0deg, #ffffff 50%, #eccfd9 100%);}
 
 @media only screen and (max-width: 1200px) {
