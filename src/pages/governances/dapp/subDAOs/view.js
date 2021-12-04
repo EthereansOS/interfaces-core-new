@@ -7,7 +7,7 @@ import GovernanceSectionView from '../SubSections/governance-section-view.js'
 import DappSubMenu from '../../../../components/Global/DappSubMenu/index.js'
 import GovernanceContainer from '../../../../components/Organizations/GovernanceContainer'
 import { useLocation } from 'react-router'
-import { CircularProgress } from '@ethereansos/interfaces-ui'
+import CircularProgress from '../../../../components/Global/OurCircularProgress'
 
 import { getOrganization } from '../../../../logic/organization'
 

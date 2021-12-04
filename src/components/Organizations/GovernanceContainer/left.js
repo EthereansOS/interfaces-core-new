@@ -7,7 +7,7 @@ import GovernanceRules from '../../Organizations/GovernanceRules/index.js'
 import ActionAWeb3Button from '../../Global/ActionAWeb3Button'
 import TokenBuyOrSell from "./tokenBuyOrSell"
 import { useWeb3, fromDecimals, blockchainCall, numberToString } from '@ethereansos/interfaces-core'
-import { CircularProgress } from '@ethereansos/interfaces-ui'
+import CircularProgress from '../../Global/OurCircularProgress'
 import { getData } from '../../../logic/generalReader'
 
 export default ({element}) => {

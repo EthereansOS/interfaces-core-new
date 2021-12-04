@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 
-import { useWeb3, fromDecimals, blockchainCall, VOID_BYTES32, useEthosContext } from '@ethereansos/interfaces-core'
-import { CircularProgress } from '@ethereansos/interfaces-ui'
+import { useWeb3, useEthosContext } from '@ethereansos/interfaces-core'
 
 import { surveylessIsTerminable, terminateProposal } from '../../../logic/organization'
 

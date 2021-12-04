@@ -1,6 +1,6 @@
 import { prepareAddToPlugin } from '../../../logic/uiUtilities'
 
-import style from './items-main.module.css'
+import style from '../../factories/dapp/factories-main.module.css'
 
 const ItemsMain = () => {
   return (

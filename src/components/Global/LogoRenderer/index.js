@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 
-import { CircularProgress } from '@ethereansos/interfaces-ui'
+import CircularProgress from '../OurCircularProgress'
 import { useEthosContext, formatLink} from "@ethereansos/interfaces-core"
 
 const DEFAULT_IMAGE = `${process.env.PUBLIC_URL}/img/default.png`

@@ -1,9 +1,14 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
+import { useEthosContext } from '@ethereansos/interfaces-core'
+
 import style from './index.module.css'
 
 const IndexMain = () => {
+
+  const context = useEthosContext()
+
   return (
     <div className={style.IndexPage}>
       <div className={style.BackgrowndFancy}>
@@ -33,35 +38,35 @@ const IndexMain = () => {
         </figure>
       </div>
       <div className={style.TextPart}>
-      
+
         <h5>Everything In One Place</h5>
         <h6>EthOS is a universal platform for doing everything on Ethereum. It features four protocols, all on-chain, all decentralized, all customizable, all interwoven. Factories offer a safe new way to code and earn revenue for developers. Items are dynamic tokens that work with all applications. Organizations are granular governance vehicles. Covenants are DeFi tools, built on an AMM Aggregator. Builders can mix-and-match from these as they see fit.</h6>
       </div>
       <div className={style.CardsLayer}>
-        <a className={style.CardsFancy}>
+        <Link to='/factories/dapp' className={style.CardsFancy}>
           <figure>
             <img src={`${process.env.PUBLIC_URL}/img/c-2.png`}></img>
           </figure>
           <p>Factories</p>
-        </a>
-          <a className={style.CardsFancy}>
+        </Link>
+        <Link to='/items/dapp/' className={style.CardsFancy}>
           <figure>
             <img src={`${process.env.PUBLIC_URL}/img/c-1.png`}></img>
           </figure>
           <p>Items</p>
-        </a>
-          <a className={style.CardsFancy}>
+        </Link>
+          <Link to='/governances/dapp' className={style.CardsFancy}>
           <figure>
             <img src={`${process.env.PUBLIC_URL}/img/c-3.png`}></img>
           </figure>
           <p>Organizations</p>
-        </a>
-          <a className={style.CardsFancy}>
+        </Link>
+        <Link to='/covenants/dapp' className={style.CardsFancy}>
           <figure>
             <img src={`${process.env.PUBLIC_URL}/img/c-4.png`}></img>
           </figure>
           <p>Covenants</p>
-        </a>
+        </Link>
       </div>
       <div className={style.Graphic}>
         <figure>
@@ -98,14 +103,14 @@ const IndexMain = () => {
         <h5>The first On-Chain Granular Governance, Ruled by OS</h5>
         <h6>EthOS is ruled by $OS and this is the first dapp implementing an on-chain granular governance in the entire Ethereum ecosystem. A step forward for on-chain governance models.</h6>
         <div className={style.TextPartBTN}>
-          <a target="_blank" href="https://ethereansos.eth.link/#/governances/dapp/organizations/0xc28FfD843DCA86565597A1b82265df29A1642262" className={style.IndexHeaderDapp}>EthOS Organization</a>
+          <Link to={"/governances/dapp/organizations/" + context.ourSubDAO} className={style.IndexHeaderDapp}>EthOS Organization</Link>
           <a className={style.IndexHeaderDappL}>EthOS Governance</a>
         </div>
       </div>
       <div className={style.Footer}>
         <img src={`${process.env.PUBLIC_URL}/img/footer.gif`}></img>
         <div className={style.FooterLinks}>
-          <p> EthOS Platform is an R&D project in it's early days, use it at your own risk!</p> 
+          <p> EthOS Platform is an R&D project in it's early days, use it at your own risk!</p>
           <a target="_blank" href="https://github.com/ethereansos">Github</a>
           <a target="_blank" href="https://discord.gg/G4qmxQFnYQ">Discord</a>
           <a target="_blank" href="https://twitter.com/ethereansos">Twitter</a>

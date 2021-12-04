@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-import { CircularProgress } from '@ethereansos/interfaces-ui'
+import CircularProgress from '../OurCircularProgress'
 import { useWeb3, blockchainCall, VOID_ETHEREUM_ADDRESS } from '@ethereansos/interfaces-core'
 
 import {preparePermit} from '../../../logic/ballot'

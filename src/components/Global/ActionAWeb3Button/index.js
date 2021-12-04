@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { CircularProgress } from '@ethereansos/interfaces-ui'
+import CircularProgress from '../OurCircularProgress'
 
 import style from '../../../all.module.css'
 

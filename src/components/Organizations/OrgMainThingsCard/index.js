@@ -4,7 +4,7 @@ import ExtLinkButton from '../../Global/ExtLinkButton/index.js'
 import RegularButtonDuo from '../../Global/RegularButtonDuo/index.js'
 import Upshots from '../../Organizations/Upshots/index.js'
 import LogoRenderer from '../../Global/LogoRenderer'
-import { CircularProgress } from '@ethereansos/interfaces-ui'
+import CircularProgress from '../../Global/OurCircularProgress'
 
 import { fromDecimals, useWeb3, useEthosContext, getNetworkElement, blockchainCall, numberToString, getEthereumPrice, formatNumber, formatMoney, formatMoneyUniV3, newContract, getTokenPriceInDollarsOnUniswapV3 } from '@ethereansos/interfaces-core'
 

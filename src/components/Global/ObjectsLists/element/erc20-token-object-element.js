@@ -2,7 +2,7 @@ import style from '../../../../all.module.css'
 
 import { fromDecimals, getNetworkElement, useEthosContext, useWeb3, VOID_ETHEREUM_ADDRESS } from '@ethereansos/interfaces-core'
 
-import { CircularProgress } from '@ethereansos/interfaces-ui'
+import CircularProgress from '../../OurCircularProgress'
 import LogoRenderer from '../../LogoRenderer'
 
 export default ({element, onClick}) => {

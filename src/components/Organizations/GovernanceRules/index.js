@@ -1,7 +1,6 @@
 import React, { Fragment, useEffect, useState } from 'react'
 
-import { CircularProgress } from '@ethereansos/interfaces-ui'
-import { useWeb3, fromDecimals, blockchainCall, useEthosContext, abi } from '@ethereansos/interfaces-core'
+import CircularProgress from '../../Global/OurCircularProgress'
 
 import style from '../../../all.module.css'
 import { readGovernanceRules, extractRules } from '../../../logic/organization'

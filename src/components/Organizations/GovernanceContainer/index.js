@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react'
 import Left from './left'
 import Head from './head'
 import Right from './right'
-import { CircularProgress } from '@ethereansos/interfaces-ui'
 
 import { useWeb3, useEthosContext } from '@ethereansos/interfaces-core'
 

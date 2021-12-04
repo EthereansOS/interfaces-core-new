@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { useLocation } from 'react-router'
 import { useEthosContext, useWeb3 } from '@ethereansos/interfaces-core'
 import { loadItem } from '../../../../logic/itemsV2'
-import { CircularProgress } from '@ethereansos/interfaces-ui'
+import CircularProgress from '../../../../components/Global/OurCircularProgress'
 import { blockchainCall } from '@ethereansos/interfaces-core'
 
 import DappSubMenu from '../../../../components/Global/DappSubMenu'

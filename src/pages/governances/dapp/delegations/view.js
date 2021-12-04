@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
 import DelegationHeadline from '../../../../components/Organizations/DelegationHeadline'
-import { CircularProgress } from '@ethereansos/interfaces-ui'
+import CircularProgress from '../../../../components/Global/OurCircularProgress'
 import GovernanceContainer from '../../../../components/Organizations/GovernanceContainer'
 
 import { useLocation } from 'react-router'
