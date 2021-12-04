@@ -22,7 +22,7 @@
 
 .ComingSoon {width: 700px; display: inline-block; margin: 100px auto;}
 .ComingSoon img {width: 400px;}
-.ComingSoon a {font-size: 14px; font-weight: bold; text-decoration: underline; color: #000000;}
+.ComingSoon a {font-size: 14px; font-weight: bold; text-decoration: underline;}
 
 .CovenantsMainBox {width:750px; position: relative; display:inline-block; min-height:500px; background-color:#ffffff; box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32); margin: 30px auto 10px auto; padding: 50px; border-radius: 20px;}
 .CovenantsMainBox > ul {position: absolute;top: -30px;margin: 0;left: -60px; width: 100px; height: auto;}

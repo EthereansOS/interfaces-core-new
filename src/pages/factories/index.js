@@ -8,10 +8,8 @@ const FactoriesMain = () => {
   return (
     <>
       <Typography className={style.title} variant="h3" color="black">
-        Qua ci scrivo le zozzerie offiCéin di Factories
       </Typography>
       <Link to="factories/dapp">
-        Andiamo Onnicéin che è meglio valà
       </Link>
     </>
   )
