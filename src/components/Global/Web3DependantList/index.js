@@ -3,7 +3,7 @@ import React, {useState, useEffect} from 'react'
 import { useWeb3 } from '@ethereansos/interfaces-core'
 import { CircularProgress } from "@ethereansos/interfaces-ui"
 
-export default ({Renderer, emptyMessage, provider, searchText, renderedProperties, rendererIsContainer, allowEmpty}) => {
+export default ({discriminant, Renderer, emptyMessage, provider, searchText, renderedProperties, rendererIsContainer, allowEmpty}) => {
 
   const { chainId } = useWeb3()
 
@@ -13,7 +13,7 @@ export default ({Renderer, emptyMessage, provider, searchText, renderedPropertie
 
   useEffect(() => {
     refreshElements(true)
-  }, [chainId])
+  }, [chainId, discriminant])
 
   async function refreshElements(withLoader) {
     withLoader === true && setElements(null)

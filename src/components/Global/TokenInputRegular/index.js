@@ -7,7 +7,7 @@ import ModalStandard from '../ModalStandard'
 import ObjectsLists from '../ObjectsLists'
 import LogoRenderer from '../LogoRenderer'
 
-const TokenInputRegular = ({onElement, tokens, tokenOnly}) => {
+const TokenInputRegular = ({onElement, tokens, tokenOnly, noETH}) => {
 
     const { chainId, account } = useWeb3()
 
@@ -41,8 +41,14 @@ const TokenInputRegular = ({onElement, tokens, tokenOnly}) => {
     }
 
     return modalIsOpen ? (
-        <ModalStandard>
-            <ObjectsLists list={tokens} onlySelections={'ERC-20'} selectionProperties={{'ERC-20' : {alsoETH : true, renderedProperties:{onClick}}}}/>
+        <ModalStandard close={() => setModalIsOpen(false)}>
+            <ObjectsLists
+                list={tokens}
+                onlySelections={['ERC-20', 'Items']}
+                selectionProperties={{
+                    'ERC-20' : {noETH, renderedProperties:{onClick}},
+                    'Items' : {renderedProperties:{onClick}}
+                }}/>
         </ModalStandard>
     ) : (
         <div className={style.TradeMarketTokenAll}>

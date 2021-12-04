@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react'
 
 import { useWeb3, blockchainCall, fromDecimals, abi } from '@ethereansos/interfaces-core'
 
-import { CircularProgress } from '@ethereansos/interfaces-ui'
-
 export function HeaderOsInflationRateActiveSelection({element}) {
 
     const { block } = useWeb3()
@@ -19,7 +17,7 @@ export function HeaderOsInflationRateActiveSelection({element}) {
         refresh()
     }, [element, block])
 
-    return value || <CircularProgress/>
+    return value || <></>
 }
 
 export function HeaderStateManagerVariable({element, name, decimals, suffix}) {
@@ -44,7 +42,7 @@ export function HeaderStateManagerVariable({element, name, decimals, suffix}) {
         refresh()
     }, [element, block])
 
-    return value || <CircularProgress/>
+    return value || <></>
 }
 
 export function HeaderTokens({element, buyOrSell}) {
@@ -64,5 +62,5 @@ export function HeaderTokens({element, buyOrSell}) {
         refresh()
     }, [element, block])
 
-    return value || <CircularProgress/>
+    return value || <></>
 }
