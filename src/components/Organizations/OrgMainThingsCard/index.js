@@ -30,7 +30,7 @@ const RootWallet = ({element}) => {
   }, [element])
 
   return (
-    <div className={style.OrgMainThingsCard}>
+    <div className={style.OrgMainThingsCardSL}>
       <div className={style.OrgThingsTitle}>
         <h6>Root Wallet</h6>
       </div>

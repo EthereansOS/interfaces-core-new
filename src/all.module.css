@@ -517,6 +517,9 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 .DelegationsSectionOne {width: 280px; display: inline-block; margin: 5px; border-radius: 16px;  border: 1px solid; text-align: left; overflow: hidden;}
 .DelegationsSectionOne > figure {display: inline-block; width: 70px; height: 70px; vertical-align: top;}
 .DelegationsSectionOne > figure img {width: 100%; height: 100%;}
+.OrgMainThingsCardSL {width: 450px;margin: 15px; display: inline-block; border-radius: 20px;  text-align: center; overflow: hidden;position: relative; padding: 25px 15px;}
+.OrgMainThingsCardSL .OrgThingsTitle {width: 100%; display: inline-block; padding: 20px 5px; text-align: center;}
+.OrgMainThingsCardSL .OrgThingsTitle h6 {font-size: 20px;font-weight: bold; width: 100%; display: inline-block; text-align: center;}
 
 
 .InvestmentsSection {border-top: 1px solid; padding: 20px 20px 20px 20px; margin: 10px auto; width: 100%; display: inline-block; text-align: center;}
@@ -572,8 +575,8 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 .NavigationItem:hover .Hand {display: inline-block;}
 .selected {font-weight: bold;}
 .indicator {height: 30px;}
-.ThemeSelect {width: 150px; display: block; text-align: left; margin: 20px auto 0px auto;}
-.ThemeSelect select {padding: 5px 40px; border-radius: 12px; text-align: center; border: none;}
+.ThemeSelect {width: 150px; display: block; text-align: left; margin: 20px auto 0px 15px;}
+.ThemeSelect select {padding: 5px 10px; border-radius: 12px; text-align: center; border: none;}
 
 .Web3Connect {display: block; text-align:left; margin:40px auto 0px auto; padding-left: 15px;}
 .Web3ConnectChain {height: 35px;display: inline-block; padding: 3px 5px; border-radius: 5px;  margin: 0 10px 0 0px; vertical-align: middle;}
@@ -1089,6 +1092,10 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 .light .OrgMainThingsCard {background-color: #ffffff;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
 .biz .OrgMainThingsCard {background-color: #ffffff;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
 .dark .OrgMainThingsCard {background-color: #000000;box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
+
+.light .OrgMainThingsCardSL {background-color: #ffffff;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
+.biz .OrgMainThingsCardSL {background-color: #ffffff;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
+.dark .OrgMainThingsCardSL {background-color: #000000;box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
 
 .light .OrgThingsInfoContent {background-color: #e9effc;}
 .biz .OrgThingsInfoContent {background-color: #e9effc;}

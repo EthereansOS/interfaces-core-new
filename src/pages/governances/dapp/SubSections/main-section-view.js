@@ -19,9 +19,6 @@ const GovernanceItems = ({element}) => {
 
 const Delegations = ({element}) => {
   return <Web3DependantList
-    Renderer={OrgThingsCardConnected}
-    rendererIsContainer
-    renderedProperties={{element, title : 'Delegations'}}
     provider={() => []}
     allowEmpty
   />
