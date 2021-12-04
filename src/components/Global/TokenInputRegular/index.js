@@ -21,7 +21,10 @@ const TokenInputRegular = ({onElement, tokens, tokenOnly, noETH}) => {
 
     const [max, setMax] = useState(false)
 
-    useEffect(() => setElement(null), [chainId])
+    useEffect(() => {
+        setElement(null)
+        tokens && tokens.length === 1 && setElement(tokens[0])
+    }, [chainId, tokens])
 
     useEffect(() => onElement && onElement(element, balance || '0', (!element ? '0' : max ? balance : toDecimals(value, element.decimals)) || '0'), [balance, value, max])
 
@@ -54,12 +57,12 @@ const TokenInputRegular = ({onElement, tokens, tokenOnly, noETH}) => {
     ) : (
         <div className={style.TradeMarketTokenAll}>
             <div className={style.TradeMarketToken}>
-                <a onClick={() => setModalIsOpen(true)} className={style.TradeMarketTokenSelector}>
+                <a onClick={() => (!tokens || tokens.length > 1) && setModalIsOpen(true)} className={style.TradeMarketTokenSelector}>
                     <LogoRenderer input={element}/>
-                    <span>{element?.symbol || ''} ▼</span>
+                    {(!tokens || tokens.length > 1) && <span>{element?.symbol || ''} ▼</span>}
                 </a>
                 {!tokenOnly && <div className={style.TradeMarketTokenAmount}>
-                    <input type="number" placeholder="0.0" value={element && max ? fromDecimals(balance, element.decimals, true) : value} onChange={e => setValue(e.currentTarget.value)}/>
+                    <input type="number" placeholder="0.0"value={element && max ? fromDecimals(balance, element.decimals, true) : value} onChange={e => void(setMax(false), setValue(e.currentTarget.value))}/>
                 </div>}
             </div>
             {!tokenOnly && element && balance === null && <CircularProgress/>}

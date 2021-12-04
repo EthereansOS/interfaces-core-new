@@ -29,7 +29,6 @@ export default ({element}) => {
     }
     setTimeout(async () => {
       try {
-        console.log(element)
         var data = await getData({provider : element.proposalsManager.currentProvider}, element.validatorsAddresses[0][0])
         var percentage = parseFloat(fromDecimals(data.valueUint256, 18))
         var votingToken = element.proposalsConfiguration.votingTokens[0]
@@ -39,13 +38,11 @@ export default ({element}) => {
 
         var proposalData = await blockchainCall(element.proposalsManager.methods.list, element.presetProposals)
 
-        var list = proposalData.map((it, i) => ({
+        setUpshots(proposalData.map((it, i) => ({
           label : element.subProposals[i].label,
           value : it.accept,
           total
-        }))
-        setUpshots(list)
-
+        })))
       } catch(e) {
         setUpshots([])
       }
