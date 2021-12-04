@@ -106,7 +106,7 @@ const IndexMain = () => {
         <img src={`${process.env.PUBLIC_URL}/img/footer.gif`}></img>
         <div className={style.FooterLinks}>
           <p> EthOS Platform is an R&D project in it's early days, use it at your own risk!</p> 
-          <a target="_blank" href="https://github.com/ethereansos" className={style.IndexHeaderDappL}>Github</a>
+          <a target="_blank" href="https://github.com/ethereansos">Github</a>
           <a target="_blank" href="https://discord.gg/G4qmxQFnYQ">Discord</a>
           <a target="_blank" href="https://twitter.com/ethereansos">Twitter</a>
           <a target="_blank" href="https://medium.com/ethereansos">Medium</a>

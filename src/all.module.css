@@ -409,6 +409,7 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 .Govright {width: 620px;margin-left: 50px; display: inline-block; vertical-align: top;}
 .DescriptionBig {width: 100%; padding: 20px; font-size: 13px; line-height: 1.2; text-align: left;}
 .DescriptionSmall {width: 450px; font-size: 12px; line-height: 1.2; text-align: left; margin: 20px auto;}
+.DescriptionBig a {text-decoration: underline; font-weight: bold; margin: 5px;}
 
 .HostToolsDelegations {width: 920px; display: inline-block; padding: 60px; text-align: center;  margin: 20px auto; border-radius: 20px; border: 10px solid;}
 .HostToolsDelegations h6 {width: 100%; display: inline-block; font-size: 20px; font-weight: bold; margin: 20px auto;}
@@ -1233,10 +1234,6 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 .biz .NavigationItem {background-color: #ffffff;}
 .dark .NavigationItem {background-color: #000000;}
 
-.light .selected {color: #6e6e6e;background-color: #c1befc;}
-.biz .selected {color: #6e6e6e;background-color: #c1befc;}
-.dark .selected {color: #6e6e6e;background-color: #c1befc;}
-
 .light .Web3ConnectChain {background-color: #E4E4E4;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
 .biz .Web3ConnectChain {background-color: #E4E4E4;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
 .dark .Web3ConnectChain {background-color: #525252;box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
@@ -1245,7 +1242,7 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 .biz .Web3ConnectWallet {background-color: #E4E4E4;}
 .dark .Web3ConnectWallet {background-color: #525252;}
 
-.biz .Items {background: linear-gradient(180deg, #fdf7f5 30%, hsl(212deg 30% 83%) 100%);}
+.biz .Factories {background: linear-gradient(0deg, #ffffff 50%, hsl(212deg 30% 83%) 100%);}
 
 @media only screen and (max-width: 1200px) {
   .light .Header .BlurHeader {background: linear-gradient(-130deg,#c1befc4d,#fdf7f515 80%);}
