@@ -19,7 +19,6 @@ import './test.css'
 
 function App() {
   return (
-    <ThemeSelectorContextProvider>
       <InitContextProvider
         initMethod={async ({ setReady, setValue }) => {
           var response = await fetch(
@@ -40,13 +39,14 @@ function App() {
           <Web3ContextProvider blockInterval={1} blockIntervalTimeout={4000}>
             <GlobalContextsProvider>
               <HashRouter>
-                <AppRouter/>
+                <ThemeSelectorContextProvider>
+                  <AppRouter/>
+                </ThemeSelectorContextProvider>
               </HashRouter>
             </GlobalContextsProvider>
           </Web3ContextProvider>
         </PluginsContextProvider>
       </InitContextProvider>
-    </ThemeSelectorContextProvider>
   )
 }
 

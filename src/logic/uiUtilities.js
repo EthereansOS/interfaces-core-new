@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react'
 
 import MenuCapableComponent from "../components/Global/MenuCapableComponent"
+import { useLocation } from 'react-router'
 
 import style from '../all.module.css'
 
@@ -66,6 +67,8 @@ const themes = [
 
 export const ThemeSelectorContextProvider = ({children}) => {
 
+    const { pathname } = useLocation()
+
     var currentTheme = themes[0]
 
     try {
@@ -88,7 +91,7 @@ export const ThemeSelectorContextProvider = ({children}) => {
     }
 
     return <ThemeSelectorContext.Provider value={value}>
-        <div className={style[theme]}>
+        <div className={pathname.indexOf('/dapp') !== -1 ? style[theme] : undefined}>
             {children}
         </div>
     </ThemeSelectorContext.Provider>
