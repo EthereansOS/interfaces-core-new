@@ -116,3 +116,18 @@ export async function loadTokens({ context, chainId, web3, account, newContract,
 
     return await Promise.all(tokens.map(async token => ({...token, balance : await token.contract.methods.balanceOf(account)})))
 }
+
+export async function loadTokenFromAddress({ context, account, newContract }, tokenAddress) {
+    try {
+        var contract = newContract(context.ItemInteroperableInterfaceABI, tokenAddress)
+        return {
+            name : await blockchainCall(contract.methods.name),
+            symbol : await blockchainCall(contract.methods.symbol),
+            decimals : await blockchainCall(contract.methods.decimals),
+            address : tokenAddress,
+            contract,
+            balance : await blockchainCall(contract.methods.balanceOf, account)
+        }
+    } catch(e) {
+    }
+}

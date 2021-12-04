@@ -3,11 +3,11 @@ import style from '../../../../all.module.css'
 import { getNetworkElement, useEthosContext, useWeb3 } from '@ethereansos/interfaces-core'
 import LogoRenderer from '../../LogoRenderer'
 
-export default ({element}) => {
+export default ({element, onClick}) => {
   const context = useEthosContext()
   const { chainId } = useWeb3()
   return (
-    <a className={style.TokenObject}>
+    <a className={style.TokenObject} onClick={() => onClick && onClick(element)}>
       <LogoRenderer input={element}/>
       <div className={style.ObjectInfo}>
         <div className={style.ObjectInfoAndLink}>

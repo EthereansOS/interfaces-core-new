@@ -74,23 +74,23 @@ export default ({buyOrSell, close, element}) => {
     return (
         <RegularModal close={close} type="medium">
             <div className={style.TokenSelectorListProposal}>
-                <TokenInputRegular tokenOnly onElement={token => setToken0(token)}/>
+                <TokenInputRegular noETH tokenOnly onElement={token => setToken0(token)}/>
                 {!buyOrSell && <PercentageSelector value={percentage0} onChange={e => setPercentage0(parseFloat(e.currentTarget.value))}/>}
             </div>
             <div className={style.TokenSelectorListProposal}>
-                <TokenInputRegular tokenOnly onElement={token => setToken1(token)}/>
+                <TokenInputRegular noETH tokenOnly onElement={token => setToken1(token)}/>
                 {!buyOrSell && <PercentageSelector value={percentage1} onChange={e => setPercentage1(parseFloat(e.currentTarget.value))}/>}
             </div>
             <div className={style.TokenSelectorListProposal}>
-                <TokenInputRegular tokenOnly onElement={token => setToken2(token)}/>
+                <TokenInputRegular noETH tokenOnly onElement={token => setToken2(token)}/>
                 {!buyOrSell && <PercentageSelector value={percentage2} onChange={e => setPercentage2(parseFloat(e.currentTarget.value))}/>}
             </div>
             <div className={style.TokenSelectorListProposal}>
-                <TokenInputRegular tokenOnly onElement={token => setToken3(token)}/>
+                <TokenInputRegular noETH tokenOnly onElement={token => setToken3(token)}/>
                 {!buyOrSell && <PercentageSelector value={percentage3} onChange={e => setPercentage3(parseFloat(e.currentTarget.value))}/>}
             </div>
             {!buyOrSell && <div className={style.TokenSelectorListProposal}>
-                <TokenInputRegular tokenOnly onElement={token => setToken4(token)}/>
+                <TokenInputRegular noETH tokenOnly onElement={token => setToken4(token)}/>
                 <PercentageSelector value={percentage4} onChange={e => setPercentage4(parseFloat(e.currentTarget.value))}/>
             </div>}
             <ActionAWeb3Button onClick={propose} onSuccess={close}>Propose</ActionAWeb3Button>

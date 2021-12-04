@@ -6,13 +6,14 @@ import {loadItemsByFactories} from '../../../logic/itemsV2'
 import ItemObjectElement from './element/item-object-element'
 import Web3DependantList from '../Web3DependantList'
 
-export default ({forCollection, excluding, element = ItemObjectElement, wrappedOnly}) => {
+export default ({forCollection, excluding, element = ItemObjectElement, wrappedOnly, renderedProperties}) => {
 
   const context = useEthosContext()
   const { web3, account, getGlobalContract, newContract } = useWeb3()
 
-  return <Web3DependantList 
+  return <Web3DependantList
     Renderer={element}
+    renderedProperties={renderedProperties}
     provider={() => loadItemsByFactories({context, web3, account, newContract, getGlobalContract, collectionData : forCollection, excluding, wrappedOnly}, getGlobalContract("itemProjectionFactory")) }
   />
 }
