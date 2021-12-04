@@ -1256,8 +1256,8 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
   .biz .NavigationItem {background-color: transparent;}
   .dark .NavigationItem {background-color: transparent;}
 
-  .light .NavigationItem:hover, .light .Navigation .Selected {background-color: #ffffff;}
-  .biz .NavigationItem:hover, .biz .Navigation .Selected {background-color: #ffffff;}
-  .dark .NavigationItem:hover, .dark .Navigation .Selected {background-color: #ffffff;}
+  .light .NavigationItem:hover, .light .Navigation .Selected {background-color: #ffffff !important;}
+  .biz .NavigationItem:hover, .biz .Navigation .Selected {background-color: #ffffff !important;}
+  .dark .NavigationItem:hover, .dark .Navigation .Selected {background-color: #ffffff !important;}
 
 }

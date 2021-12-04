@@ -19,10 +19,9 @@ const IndexMain = () => {
           <img src={`${process.env.PUBLIC_URL}/img/logo_main_v.png`}></img>
         </a>
         <div className={style.IndexHeaderMenu}>
-          <a target="_blank">Products</a>
-          <a target="_blank">Documentation</a>
-          <a target="_blank">Governance</a>
-          <a target="_blank">Community</a>
+          <a target="_blank" href="https://docs.ethos.wiki/ethereansos-docs/">Documentation</a>
+          <a target="_blank" href="https://docs.ethos.wiki/ethereansos-docs/grimoire/ethereansos-governance">Governance</a>
+          <a target="_blank" href="https://discord.gg/G4qmxQFnYQ">Community</a>
           <Link className={style.IndexHeaderDapp} to="/dapp">Launch App</Link>
         </div>
       </div>
@@ -78,7 +77,7 @@ const IndexMain = () => {
         <h6>Everything on EthOS—and EthOS itself—is powered by Factories, and the model contracts they deploy. With tamper-proof cores, these contracts can be cloned and customized by anyone to meet any variety of needs. Any developer can make a Factory, and even code it to earn them revenue. All Factories are part of a shared codebase and listed in a public marketplace here on the platform.</h6>
         <div className={style.TextPartBTN}>
           <Link className={style.IndexHeaderDapp} to="/dapp">Launch App</Link>
-          <a className={style.IndexHeaderDappL}>Learn</a>
+          <a target="_blank" href="https://docs.ethos.wiki/ethereansos-docs/" className={style.IndexHeaderDappL}>Learn</a>
         </div>
       </div>
       <div className={style.Graphic}>
@@ -104,7 +103,8 @@ const IndexMain = () => {
         <h6>EthOS is ruled by $OS and this is the first dapp implementing an on-chain granular governance in the entire Ethereum ecosystem. A step forward for on-chain governance models.</h6>
         <div className={style.TextPartBTN}>
           <Link to={"/governances/dapp/organizations/" + context.ourSubDAO} className={style.IndexHeaderDapp}>EthOS Organization</Link>
-          <a className={style.IndexHeaderDappL}>EthOS Governance</a>
+          <a target="_blank" href="https://docs.ethos.wiki/ethereansos-docs/grimoire/ethereansos-governance" className={style.IndexHeaderDappL}>EthOS Governance</a>
+          <a target="_blank" href="https://docs.ethos.wiki/ethereansos-docs/grimoire/os-economics" className={style.IndexHeaderDappL}>$OS Economics</a>
         </div>
       </div>
       <div className={style.Footer}>
