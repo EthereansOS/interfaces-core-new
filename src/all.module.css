@@ -614,6 +614,7 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 .TokensSelectorCategoriesList a {width: 33.33%;padding: 20px 1%; display: inline-block; vertical-align: top; cursor: pointer;}
 .TokensSelectorCategoriesList .selected {font-weight: bold;}
 .TokenSelectorListProposal > select {width: 50px;display: block;margin: 10px auto;height: 30px;border-radius: 14px; border: none;}
+.pModalDesc {display: inline-block; width: 100%; padding: 20px; font-size: 12px; margin: 10px auto; border-radius: 15px;}
 
 @media only screen and (max-width: 990px) {
   .NavigationItem {font-size: 11px;width: 20%;overflow: hidden; }
@@ -946,6 +947,10 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 .light .TradeOTCBoxOrder {border-color: #e4e4e4;}
 .biz .TradeOTCBoxOrder {border-color: #e4e4e4;}
 .dark .TradeOTCBoxOrder {border-color: #525252;}
+
+.light .pModalDesc  {color: #ffffff; background-color: #7472fc;}
+.biz .pModalDesc  {color: #ffffff; background-color: #7472fc; border-radius: 0px;}
+.dark .pModalDesc  {color: #ffffff; background-color: #7472fc;}
 
 .light .TradeOTCBoxOrder .TradeOTCBoxOrderQ {border-color: #e4e4e4;}
 .biz .TradeOTCBoxOrder .TradeOTCBoxOrderQ {border-color: #e4e4e4;}
