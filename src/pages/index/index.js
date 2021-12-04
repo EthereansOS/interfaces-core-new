@@ -99,8 +99,8 @@ const IndexMain = () => {
         </figure>
       </div>
       <div className={style.TextPart}>
-        <h5>The first On-Chain Granular Governance, Ruled by OS</h5>
-        <h6>EthOS is ruled by $OS and this is the first dapp implementing an on-chain granular governance in the entire Ethereum ecosystem. A step forward for on-chain governance models.</h6>
+        <h5>Purely On-Chain, Truly Decentralized and Governed by $OS</h5>
+        <h6>Governed by $OS, the very first v2 Item, EthOS itself is the debut Organization of the platform. And like everything built on top of it, for the first ever time on Ethereum, it is entirely free from dependence on anything off-chain or centralized.</h6>
         <div className={style.TextPartBTN}>
           <Link to={"/governances/dapp/organizations/" + context.ourSubDAO} className={style.IndexHeaderDapp}>EthOS Organization</Link>
           <a target="_blank" href="https://docs.ethos.wiki/ethereansos-docs/grimoire/ethereansos-governance" className={style.IndexHeaderDappL}>EthOS Governance</a>
@@ -110,7 +110,7 @@ const IndexMain = () => {
       <div className={style.Footer}>
         <img src={`${process.env.PUBLIC_URL}/img/footer.gif`}></img>
         <div className={style.FooterLinks}>
-          <p> EthOS Platform is an R&D project in it's early days, use it at your own risk!</p>
+          <p>The EthOS platform is an R&D project still in its early days. Use it at your own risk.</p>
           <a target="_blank" href="https://github.com/ethereansos">Github</a>
           <a target="_blank" href="https://discord.gg/G4qmxQFnYQ">Discord</a>
           <a target="_blank" href="https://twitter.com/ethereansos">Twitter</a>

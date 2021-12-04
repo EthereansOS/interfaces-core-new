@@ -5,7 +5,7 @@ import style from './organizations-main.module.css'
 export default prepareAddToPlugin(
   require.context('./', true, /index.js$/),
   require.context('./', true, /.js$/),
-  "Governances",
+  "Governance",
   "/governances/dapp",
   style.Web3PagesRoot,
   20,

@@ -7,7 +7,7 @@ const ItemsMain = () => {
     <>
       <div className={style.ComingSoon}>
         <img src={`${process.env.PUBLIC_URL}/img/ite.png`}></img>
-        <h6>Coming Soon. In the meantime you can play with contracts using the <a target="_blank" href="https://docs.ethos.wiki/ethereansos-docs/">documentation</a></h6>
+        <h6>Coming soon. While you wait, you can play with the Items contracts directly, with the help of the <a target="_blank" href="https://docs.ethos.wiki/ethereansos-docs/">documentation</a></h6>
       </div>
     </>
   )
