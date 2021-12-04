@@ -1244,8 +1244,8 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 
 .biz .Factories {background: linear-gradient(0deg, #ffffff 50%, hsl(212deg 30% 83%) 100%);}
 .biz .Items {background: linear-gradient(0deg, #ffffff 50%, hsl(212deg 30% 83%) 100%);}
-.biz .Governances {background: linear-gradient(0deg, #ffffff 50%, hsl(212deg 30% 83%) 100%);}
-.biz .Covenants {background: linear-gradient(0deg, #ffffff 50%, hsl(212deg 30% 83%) 100%);}
+.biz .Governances {background: linear-gradient(0deg, #ffffff 50%, #eccfd9 100%);}
+.biz .covenants {background: linear-gradient(0deg, #ffffff 50%, #eccfd9 100%);}
 
 @media only screen and (max-width: 1200px) {
   .light .Header .BlurHeader {background: linear-gradient(-130deg,#c1befc4d,#fdf7f515 80%);}
