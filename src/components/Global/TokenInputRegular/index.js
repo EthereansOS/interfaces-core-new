@@ -44,10 +44,11 @@ const TokenInputRegular = ({onElement, tokens, tokenOnly, noETH}) => {
         <ModalStandard close={() => setModalIsOpen(false)}>
             <ObjectsLists
                 list={tokens}
-                onlySelections={['ERC-20', 'Items']}
+                onlySelections={['ERC-20', 'Items V1', 'Items V2']}
                 selectionProperties={{
                     'ERC-20' : {noETH, renderedProperties:{onClick}},
-                    'Items' : {renderedProperties:{onClick}}
+                    'Items V1' : {renderedProperties:{onClick}},
+                    'Items V2' : {renderedProperties:{onClick}}
                 }}/>
         </ModalStandard>
     ) : (

@@ -57,8 +57,8 @@ export async function getEthereum({account, web3}) {
     }
 }
 
-export async function loadTokens({ context, chainId, web3, account, newContract, alsoETH }) {
-    var all = (await (await fetch(getNetworkElement({ context, chainId }, "erc20TokensListURL"))).json()).tokens
+export async function loadTokens({ context, chainId, web3, account, newContract, alsoETH, listName }) {
+    var all = (await (await fetch(getNetworkElement({ context, chainId }, listName || "erc20TokensListURL"))).json()).tokens
 
     var tokens = []
 

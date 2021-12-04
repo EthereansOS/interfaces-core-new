@@ -11,8 +11,12 @@ var defaultSelections = [{
   name : 'ERC-20',
   value : ERC20TokenObject
 }, {
-  name : 'Items',
+  name : 'Items V2',
   value : ItemObject
+}, {
+  name : 'Items V1',
+  value : ItemObject,
+  properties : {hardCabledList : 'itemsV1ListURL'}
 }, {
   name : 'Collections',
   value : CategoryObject
@@ -21,7 +25,7 @@ var defaultSelections = [{
 const ObjectsLists = ({onlySelections, selectionProperties, list}) => {
   onlySelections = onlySelections && onlySelections instanceof Array ? onlySelections : [onlySelections]
   var selections = onlySelections ? defaultSelections.filter(it => onlySelections.indexOf(it.name) !== -1) : defaultSelections
-  selectionProperties && (selections = selections.map(it => ({...it, properties : selectionProperties[it.name]})))
+  selectionProperties && (selections = selections.map(it => ({...it, properties : {...it.properties, ...selectionProperties[it.name]}})))
 
   var [currentSelection, setCurrentSelection] = useState(selections[0])
   var [searchText, setSearchText] = useState('')
