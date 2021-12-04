@@ -38,7 +38,7 @@ const DappSubMenu = ({voices, isSelected}) => {
 
       <ul className={style.DappSubMenu}>
         {voices && voices.map(it => <li key={it.label}>
-          <a className={it.label + (isSelected(it) ? " selected" : '')} onClick={it.onClick}>{it.label}</a>
+          <a className={it.label + (isSelected(it) ? (" " + style.selected) : '')} onClick={it.onClick}>{it.label}</a>
         </li>)}
         {!voices && <>
           <li><a>Collection</a></li>

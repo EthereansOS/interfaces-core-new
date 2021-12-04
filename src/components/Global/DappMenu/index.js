@@ -7,8 +7,8 @@ import style from '../../../all.module.css'
 export default ({voices, selected}) => (
   <ul className={style.Dapp_Menu}>
     {voices.filter(it => it.label).map((voice, i) => <li key={voice.path || voice.id}>
-      {voice.path && <Link className={voice.label + (selected === i ? ' selected' : '')} to={voice.path}>{voice.label}</Link>}
-      {!voice.path && <a href="javascript:;" className={selected === i ? 'selected' : ''} onClick={voice.onClick}>{voice.label}</a>}
+      {voice.path && <Link className={voice.label + (selected === i ? (' ' + style.selected) : '')} to={voice.path}>{voice.label}</Link>}
+      {!voice.path && <a href="javascript:;" className={selected === i ? style.selected : ''} onClick={voice.onClick}>{voice.label}</a>}
     </li>)}
   </ul>
 )

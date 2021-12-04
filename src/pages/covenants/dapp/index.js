@@ -32,6 +32,7 @@ CovenantsMain.addToPlugin =
         templateProps: {
           menuName: 'appMenu',
           isDapp: true,
+          link: '/covenants/dapp'
         },
       })
 

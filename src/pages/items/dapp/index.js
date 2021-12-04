@@ -2,7 +2,46 @@ import { prepareAddToPlugin } from '../../../logic/uiUtilities'
 
 import style from './items-main.module.css'
 
-export default prepareAddToPlugin(
+const ItemsMain = () => {
+  return (
+    <>
+      <div className={style.ComingSoon}>
+        <img src={`${process.env.PUBLIC_URL}/img/fact.png`}></img>
+        <h6>Coming Soon</h6>
+      </div>
+    </>
+  )
+}
+
+ItemsMain.pluginIndex = 40;
+ItemsMain.addToPlugin =
+  ({index}) =>
+    ({addElement}) => {
+      addElement('router', {
+        index,
+        path: '/items/dapp',
+        Component: ItemsMain,
+        exact: true,
+        requireConnection: true,
+        templateProps: {
+          menuName: 'appMenu',
+          isDapp: true,
+          link: '/items/dapp'
+        },
+      })
+
+      addElement('appMenu', {
+        name: 'Items',
+        label: 'Items',
+        link: '/items/dapp',
+        index,
+        image : `${process.env.PUBLIC_URL}/img/is2.png`,
+      })
+    }
+
+export default ItemsMain
+
+/*export default prepareAddToPlugin(
   require.context('./', true, /index.js$/),
   require.context('./', true, /.js$/),
   "Items",
@@ -10,4 +49,4 @@ export default prepareAddToPlugin(
   style.Web3PagesRoot,
   10,
   `${process.env.PUBLIC_URL}/img/is2.png`,
-)
+)*/

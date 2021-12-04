@@ -10,7 +10,7 @@ const Navigation = ({ menuName, isDapp, selected }) => {
 
   const navItem = (item) => {
     return (
-      <Link className={style.NavigationItem + " " + item.name + (item.link === selected ? ' selected' : '')} key={item.name} to={item.link}>
+      <Link className={style.NavigationItem + " " + style[item.name] + (item.link === selected ? (' ' + style.selected): '')} key={item.name} to={item.link}>
         <img className={style.Hand} src={`${process.env.PUBLIC_URL}/img/DiamondHand.png`}></img>
         <span>
            <img src={item.image}></img> <p>{item.label}</p>
