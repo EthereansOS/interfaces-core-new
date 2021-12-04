@@ -85,8 +85,8 @@ const IndexMain = () => {
         <h5>Powerful Tools For Buidlers</h5>
         <h6>We provide all the parts you need to build state-of-the-art applications, and a secure environment in which to do so. For guidance, you have access to our full suite of documentation—over a hundred pages that will teach you how to use Factories, Items, Organizations and Covenants.</h6>
         <div className={style.TextPartBTN}>
-          <a className={style.IndexHeaderDappS}>Documentation</a>
-          <a className={style.IndexHeaderDappL}>Github</a>
+          <a target="_blank" href="https://docs.ethos.wiki/ethereansos-docs/" className={style.IndexHeaderDappS}>Documentation</a>
+          <a target="_blank" href="https://github.com/ethereansos" className={style.IndexHeaderDappL}>Github</a>
         </div>
       </div>
       <div className={style.Graphic}>
@@ -98,7 +98,7 @@ const IndexMain = () => {
         <h5>The first On-Chain Granular Governance, Ruled by OS</h5>
         <h6>EthOS is ruled by $OS and this is the first dapp implementing an on-chain granular governance in the entire Ethereum ecosystem. A step forward for on-chain governance models.</h6>
         <div className={style.TextPartBTN}>
-          <a className={style.IndexHeaderDapp}>EthOS Organization</a>
+          <a target="_blank" href="https://ethereansos.eth.link/#/governances/dapp/organizations/0xc28FfD843DCA86565597A1b82265df29A1642262" className={style.IndexHeaderDapp}>EthOS Organization</a>
           <a className={style.IndexHeaderDappL}>EthOS Governance</a>
         </div>
       </div>
@@ -106,11 +106,10 @@ const IndexMain = () => {
         <img src={`${process.env.PUBLIC_URL}/img/footer.gif`}></img>
         <div className={style.FooterLinks}>
           <p> EthOS Platform is an R&D project in it's early days, use it at your own risk!</p> 
-          <a>Github</a>
-          <a>Discord</a>
-          <a>Twitter</a>
-          <a>Medium</a>
-          <a>Press Kit</a>
+          <a target="_blank" href="https://github.com/ethereansos" className={style.IndexHeaderDappL}>Github</a>
+          <a target="_blank" href="https://discord.gg/G4qmxQFnYQ">Discord</a>
+          <a target="_blank" href="https://twitter.com/ethereansos">Twitter</a>
+          <a target="_blank" href="https://medium.com/ethereansos">Medium</a>
         </div>
       </div>
     </div>
