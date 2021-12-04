@@ -366,10 +366,10 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 .DelegationMainThingsCardMainInfoD p b {font-size: 16px;}
 
 .OrgSingle {width: 300px; display: inline-block; border-radius: 20px;overflow: hidden; margin: 10px;}
-.OrgSingle figure {display: block; width: 100px; height: 100px; overflow: hidden; position: relative;display: inline-block; vertical-align: top;}
+.OrgSingle figure {display: inline-block; width: 100px; height: 100px; overflow: hidden; position: relative;display: inline-block; vertical-align: middle;}
 .OrgSingle figure img {display: block; width: 100%; height: 100%; position: absolute; left: 0; top: 0;}
-.OrgTitleEx {width: 200px; height: 100px; overflow: hidden; padding: 0px 0px 15px 0px; text-align: left; display: inline-block;  display: inline-block; vertical-align: middle;}
-.OrgTitleEx h6 {width: 100%; min-height: 50px; display: block; max-height: 45px; padding: 15px 15px; font-size: 15px;text-align: left;}
+.OrgTitleEx {width: 200px; overflow: hidden; padding: 0px 0px 15px 0px; text-align: left; display: inline-block;  display: inline-block; vertical-align: middle;}
+.OrgTitleEx h6 {width: 100%; display: inline-block;  font-size: 20px;text-align: left; vertical-align: middle; padding: 0 10px;}
 .OrgTitleAside {width: 100px; display: inline-block; padding: 10px; height: 55px;}
 .OrgTitleAsideB {width: 99px; border-left: 1px solid;  display: inline-block;padding: 15px 10px 10px 10px;height: 55px;}
 .OrgTitleAside p, .OrgTitleAsideB p {text-align: center; font-size: 10px;  line-height: 1.3;}
@@ -1023,9 +1023,9 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 .biz .OrgSingle {background-color: #ffffff;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
 .dark .OrgSingle {background-color: #000000;box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
 
-.light .OrgTitleEx {background-color: #F0F0F0; color: #000000;}
-.biz .OrgTitleEx {background-color: #F0F0F0; color: #000000;}
-.dark .OrgTitleEx {background-color: #1b1b1b; color: #ffffff;}
+.light .OrgTitleEx { color: #000000;}
+.biz .OrgTitleEx {color: #000000;}
+.dark .OrgTitleEx {color: #ffffff;}
 
 .light .OrgTitleEx h6 {background-color: #ffffff;}
 .biz .OrgTitleEx h6 {background-color: #ffffff;}
