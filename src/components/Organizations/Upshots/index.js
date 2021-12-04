@@ -13,7 +13,7 @@ export default ({title, value, total}) => {
 
   return (
       <div className={style.Upshot}>
-        <span>{title}</span>
+        {title && <span>{title}</span>}
         <div className={style.UpshotBar}>
           <figure style={{width : percentage}}>{percentage}</figure>
         </div>
