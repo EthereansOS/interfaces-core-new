@@ -1102,7 +1102,7 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 .dark .SurveylessOpenCardSelectionSingleOpenStaked {background-color: #000; }
 
 .light .MultiVoteBox {background-color: #e9effc;}
-.biz .MultiVoteBox {background-color: #e9effc; border-radius: 0;}
+.biz .MultiVoteBox {background-color: transparent;}
 .dark .MultiVoteBox {background-color: #383c42;}
 
 .light .Vote {background-color: #e9effc;}
@@ -1142,7 +1142,7 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 .dark .TokenSelectorListProposal {background-color: #383c42;}
 
 .light .Rule {background-color: #e9effc;}
-.biz .Rule {background-color: #e9effc; border-radius: 0;}
+.biz .Rule {background-color: transparent;}
 .dark .Rule {background-color: #383c42;}
  
 .light .OrgHeadline {background-color: #ffffff;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
@@ -1162,7 +1162,7 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 .dark .OrgMainThingsCardSL {background-color: #000000;box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
 
 .light .OrgThingsInfoContent {background-color: #e9effc;}
-.biz .OrgThingsInfoContent {background-color: #e9effc;}
+.biz .OrgThingsInfoContent {background-color: transparent;}
 .dark .OrgThingsInfoContent {background-color: #383c42;}
 
 .light .OrgPartView {background-color: #ffffff;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
@@ -1170,7 +1170,7 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 .dark .OrgPartView {background-color: #000000;box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
 
 .light .OrgPartInfo {background-color: #e9effc;}
-.biz .OrgPartInfo {background-color: #e9effc;}
+.biz .OrgPartInfo {background-color: transparent;}
 .dark .OrgPartInfo {background-color: #383c42;}
 
 .light .DelegationsSectionOne {border-color: #e9effc;}
@@ -1186,11 +1186,11 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 .dark .InvestmentsSection {border-color: #383c42;}
 
 .light .InvestmentsSectionBuySell {background-color: #e9effc;}
-.biz .InvestmentsSectionBuySell {background-color: #e9effc;}
+.biz .InvestmentsSectionBuySell {background-color: transparent;}
 .dark .InvestmentsSectionBuySell {background-color: #383c42;}
 
 .light .OrgPartFarm {background-color: #e9effc;}
-.biz .OrgPartFarm {background-color: #e9effc;}
+.biz .OrgPartFarm {background: linear-gradient(180deg, #f8fbff 90%, #99e9da 100%);border-radius: 0px;border: 1px solid #99e9da; border-left: none; border-top: none;}
 .dark .OrgPartFarm {background-color: #383c42;}
 
 .light .OrgThingsCardPics {background-color: #ffffff;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}

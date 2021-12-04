@@ -8,7 +8,7 @@ var Description = ({title, description, className, shortLength}) => {
       return <></>
     }
 
-    var sl = shortLength || 50
+    var sl = shortLength || 300
 
     return (
       <>
