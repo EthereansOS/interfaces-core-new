@@ -147,7 +147,8 @@ export async function getInitializationData({newContract, context}, contract) {
 
     return {
         creationBlock,
-        version
+        version,
+        initializerAddress
     }
 }
 

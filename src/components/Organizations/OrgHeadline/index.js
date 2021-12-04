@@ -6,7 +6,14 @@ import style from '../../../all.module.css'
 import ExtLinkButton from '../../Global/ExtLinkButton/index.js'
 import Description from '../GovernanceContainer/description'
 
+import { useEthosContext, useWeb3, getNetworkElement } from '@ethereansos/interfaces-core'
+
 const OrgHeadline = ({element}) => {
+
+  const context = useEthosContext()
+
+  const { chainId } = useWeb3()
+
   return (
 
    <div className={style.OrgHeadline}>
@@ -16,14 +23,14 @@ const OrgHeadline = ({element}) => {
         <Description description={element.description}/>
       </div>
       <div className={style.OrgLinks}>
-       <ExtLinkButton/>
-       <ExtLinkButton/>
-       <ExtLinkButton/>
-       <ExtLinkButton/>
+       <ExtLinkButton text="Website" href={element.external_url}/>
+       <ExtLinkButton text="Discussion" href={element.discord_url}/>
+       <ExtLinkButton text="News" href={element.twitter_url}/>
+       <ExtLinkButton text="Address" href={`${getNetworkElement({context, chainId}, 'etherscanURL')}/address/${element.address}`}/>
       </div>
 
       <div className={style.OrgHeadlineSide}>
-        <p><b>Created:</b> <a>32542555</a> <b>Core:</b>v. <a>1.0</a></p>
+        <p><b>Created:</b> <a target="_blank" href={`${getNetworkElement({context, chainId}, 'etherscanURL')}/block/${parseInt(element.creationBlock)}`}>{parseInt(element.creationBlock)}</a> <b>Core:</b>v. {parseInt(element.version || 0) + 1}.0</p>
       </div>
     </div>
   )

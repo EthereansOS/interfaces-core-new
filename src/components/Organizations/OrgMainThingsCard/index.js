@@ -14,7 +14,7 @@ const RootWallet = ({element}) => {
 
   const context = useEthosContext()
 
-  const { web3 } = useWeb3()
+  const { web3, chainId } = useWeb3()
 
   const [value, setValue] = useState(null)
 
@@ -37,7 +37,7 @@ const RootWallet = ({element}) => {
       <div className={style.OrgThingsInfoContent}>
         <b>Balance</b>
         {value === null && <CircularProgress/>}
-        {value !== null && <p>{value}</p>}
+        {value !== null && <p><a target="_blank" href={`${getNetworkElement({context, chainId}, 'etherscanURL')}/tokenholdings?a=${element.components.treasuryManager.address}`}>{value}</a></p>}
       </div>
     </div>)
 }
@@ -71,7 +71,7 @@ const TreasurySplitter = ({element}) => {
       <div className={style.OrgThingsInfoContent}>
         <b>Current Period</b>
         {value === null && <CircularProgress/>}
-        {value !== null && <p>{value}</p>}
+        {value !== null && <p><a target="_blank" href={`${getNetworkElement({context, chainId}, 'etherscanURL')}/tokenholdings?a=${element.organizations[0].components.treasurySplitterManager.address}`}>{value}</a></p>}
       </div>
       <div className={style.OrgThingsInfoContent}>
         <b>Rebalance</b>
@@ -112,15 +112,20 @@ const Farmings = ({element}) => {
   const [oSDailyRate, setOSDailyRate] = useState(null)
   const [dividendsDailyRate, setDividendsDailyRate] = useState(null)
 
+  const [osFarmingAddress, setOSFarmingAddress] = useState(null)
+  const [dividendsFarmingAddress, setDividendsFarmingAddress] = useState(null)
+
   useEffect(() => {
     setTimeout(async () => {
 
       var osFarmingAddress = (await blockchainCall(element.organizations[0].components.oSFarming.contract.methods.data))[0]
+      setOSFarmingAddress(osFarmingAddress)
       var osFarming = newContract(context.FarmMainRegularMinStakeABI, osFarmingAddress)
       var osFarmingDailyRate = await getDailyRateRaw(osFarming)
       setOSDailyRate(osFarmingDailyRate)
 
       var dividendsFarmingAddress = (await blockchainCall(element.organizations[0].components.dividendsFarming.contract.methods.data))[0]
+      setDividendsFarmingAddress(dividendsFarmingAddress)
       var dividendsFarming = newContract(context.FarmMainRegularMinStakeABI, dividendsFarmingAddress)
       var dividendsFarmingDailyRate = await getDailyRateRaw(dividendsFarming)
       setDividendsDailyRate(dividendsFarmingDailyRate)
@@ -139,7 +144,7 @@ const Farmings = ({element}) => {
   }
 
   return (<div className={style.OrgPartViewF}>
-    <div className={style.OrgPartFarm}>
+    <a href={`https://covenants.eth.link/#/farm/dapp/${dividendsFarmingAddress}`} target="_blank" className={style.OrgPartFarm}>
       <a><img src={`${process.env.PUBLIC_URL}/img/eth_logo.png`}></img></a>
       <p>
         <b>Dividends</b>
@@ -149,8 +154,8 @@ const Farmings = ({element}) => {
         {!dividendsDailyRate && <CircularProgress/>}
         {dividendsDailyRate && <span>Daily reward rate: {dividendsDailyRate} ETH</span>}
       </p>
-    </div>
-    <div className={style.OrgPartFarm}>
+    </a>
+    <a href={`https://covenants.eth.link/#/farm/dapp/${osFarmingAddress}`} target="_blank" className={style.OrgPartFarm}>
       <a><img src={`${process.env.PUBLIC_URL}/img/tokentest/os.png`}></img></a>
       <p>
         <b>Farm OS</b>
@@ -158,7 +163,7 @@ const Farmings = ({element}) => {
         {!oSDailyRate && <CircularProgress/>}
         {oSDailyRate && <span>Daily reward rate: {oSDailyRate} OS</span>}
       </p>
-    </div>
+    </a>
   </div>)
 }
 
@@ -178,6 +183,9 @@ const Investments = ({element}) => {
   const [tokensToETH, setTokensToETH] = useState(null)
 
   const [totalValue, setTotalValue] = useState(null)
+
+  const [swapFromETHBlock, setSwapFromETHBlock] = useState(null)
+  const [swapToETHBlock, setSwapToETHBlock] = useState(null)
 
   async function calculateNextBuy() {
     var ethereumPrice = formatNumber(await getEthereumPrice({context}))
@@ -205,6 +213,9 @@ const Investments = ({element}) => {
     var amount = balances.reduce((acc, it) => acc + it, 0)
     amount = formatMoney(numberToString(amount), 2)
     setTotalValue(amount)
+
+    setSwapFromETHBlock(await blockchainCall(element.organizations[0].components.treasurySplitterManager.contract.methods.nextSplitBlock))
+    setSwapToETHBlock(await blockchainCall(element.organizations[0].components.investmentsManager.contract.methods.nextSwapToETHBlock))
   }
 
   useEffect(() => {
@@ -218,8 +229,7 @@ const Investments = ({element}) => {
     <div className={style.OrgPartView}>
       <div className={style.OrgPartTitle}>
         <h6>Investments Fund</h6>
-        <ExtLinkButton/>
-        <ExtLinkButton/>
+        <ExtLinkButton text="Etherscan" href={`${getNetworkElement({context, chainId}, 'etherscanURL')}/tokenholdings?a=${element.organizations[0].components.investmentsManager.address}`}/>
       </div>
       <div className={style.OrgPartInfo}>
         <p>
@@ -249,8 +259,7 @@ const Investments = ({element}) => {
             <a><img src={`${process.env.PUBLIC_URL}/img/tokentest/os.png`}></img><span>&#128293;</span></a>
           </p>}
           <p>Every 3 months</p>
-          <ExtLinkButton/>
-          <ExtLinkButton/>
+          <ExtLinkButton text={"Next" + (swapFromETHBlock ? ` #${swapFromETHBlock}` : '')} href={`${getNetworkElement({context, chainId}, 'etherscanURL')}block/${swapFromETHBlock}`}/>
         </div>
         <div className={style.InvestmentsSectionBuySell}>
           {!tokensToETH && <CircularProgress/>}
@@ -260,20 +269,21 @@ const Investments = ({element}) => {
             for <a><img src={`${process.env.PUBLIC_URL}/img/eth_logo.png`}></img></a>
           </p>}
           <p>Weekly</p>
-          <ExtLinkButton/>
-          <ExtLinkButton/>
+          <ExtLinkButton text={"Next" + (swapToETHBlock ? ` #${swapToETHBlock}` : '')} href={`${getNetworkElement({context, chainId}, 'etherscanURL')}block/${swapToETHBlock}`}/>
         </div>
       </div>}
     </div>)
 }
 
 const Delegations = ({element}) => {
+  const context = useEthosContext()
+
+  const { chainId } = useWeb3()
 
   return (<div className={style.OrgPartView}>
     <div className={style.OrgPartTitle}>
       <h6>Delegations grants</h6>
-      <ExtLinkButton/>
-      <ExtLinkButton/>
+      <ExtLinkButton text="Etherscan" href={`${getNetworkElement({context, chainId}, 'etherscanURL')}/tokenholdings?a=${element.components.delegationsManager.address}`}/>
     </div>
     <div className={style.OrgPartInfo}>
       <p><b>Estimated Next grant</b><br></br>$50,000</p>
@@ -307,6 +317,9 @@ const Delegations = ({element}) => {
 }
 
 const Inflation = ({element}) => {
+  const context = useEthosContext()
+
+  const { chainId } = useWeb3()
 
   const [dailyMint, setDailyMint] = useState(null)
   const [annualInflationRate, setAnnualInflationRate] = useState(null)
@@ -325,8 +338,7 @@ const Inflation = ({element}) => {
   return (<div className={style.OrgPartView}>
     <div className={style.OrgPartTitle}>
       <h6>Ethereans (OS) Inflation</h6>
-      <ExtLinkButton/>
-      <ExtLinkButton/>
+      <ExtLinkButton text="Etherscan" href={`${getNetworkElement({context, chainId}, 'etherscanURL')}/tokenholdings?a=${element.organizations[0].components.oSFixedInflationManager.address}`}/>
     </div>
     <div className={style.OrgPartInfo}>
       <p>
