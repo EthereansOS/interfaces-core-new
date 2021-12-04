@@ -1,6 +1,6 @@
 import React from "react"
 
-import style from "./modal.module.css"
+import style from '../../../all.module.css'
 
 
 const RegularModal = ({children, type, close}) => {

@@ -94,7 +94,7 @@ a {cursor: pointer;}
 .TradeMarketToken {width: 100%; padding: 5px; border-radius: 16px; text-align: left; }
 .TradeMarketToken .TradeMarketTokenSelector {width: 75px; height: 70px; display: inline-block; text-align: center; cursor: pointer; border-radius: 14px; overflow: hidden; vertical-align: top;}
 .TradeMarketToken .TradeMarketTokenSelector figure {width: 100%; height: 50px; display: inline-block;}
-.TradeMarketToken .TradeMarketTokenSelector figure img {width: 100%; height: 100%; display: block;}
+.TradeMarketToken .TradeMarketTokenSelector figure img {width: 100%; height: 100%; display: block;object-fit: contain;}
 .TradeMarketToken .TradeMarketTokenSelector span {font-size: 13px; font-weight: bold;}
 .TradeMarketTokenAmount {width: 170px;display: inline-block; text-align: right;}
 .TradeMarketTokenAmount input {width: 90%; height: 70px; font-size: 30px; border: none; text-align: right;}
@@ -111,7 +111,7 @@ a {cursor: pointer;}
 .TradeMarketTokenAmountS input:focus{outline: none;}
 .TradeMarketTokenBalanceS {font-size: 10px; cursor: pointer; margin: 5px; font-weight: bold; width: 100%; display: inline-block; text-align: center;}
 
-.ModalBox {width: 600px; height: 80%; display: flex; border-radius: 20px;}
+.ModalBox {width: 600px; height: 80%; display: flex; border-radius: 20px; position: relative;}
 .TokensSelector {width: 100%; display: block; position: relative;}
 .TokensSelectorList {height: 90%; width: 100%; padding: 10px; display: block; border-radius: 20px 20px 0 0; overflow-y: scroll;}
 .TokensSelectorCategories {height: 60px;  border-top: 2px solid; width: 100%; display: block; border-radius: 0 0 20px 20px; position: absolute; left:0; bottom: 0; text-align: center; overflow: hidden;}
@@ -454,7 +454,7 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 .SurveylessOpenCardSelectionSingleOpenStaked {width: 100%; display: inline-block; text-align: center; border-radius: 12px; margin: 20px auto 0px auto; padding: 10px;}
 .SurveylessOpenCardSelectionSingleOpenStaked p {display: inline-block; margin: 5px 10px; font-size: 13px;}
 
-.ProposalTitle > h6 > a {width: 20px; height: 20px; display: inline-block; vertical-align: middle;}
+.ProposalTitle > h6 > a {width: 20px; height: 20px; display: inline-block; vertical-align: middle; margin: 5px;}
 .ProposalTitle > h6 > a img {width: 20px; height: 20px; display: inline-block;}
 .MultiVoteBox {width: 450px; display: block; margin: 10px auto; padding: 20px; border-radius: 20px;}
 
@@ -506,10 +506,10 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 .OrgThingsInfoContent p {font-size: 13px;display: inline-block; width: 100%; text-align: center;}
 .OrgThingsInfoContent p a {text-decoration: underline;}
 .OrgMainThingsCard .OpenBTN {position: absolute; top: 5px; right: 5px; width: 50px; height: 30px;}
-.OrgPartView {width: 940px; margin: 20px auto; display: inline-block;  border-radius: 20px;  text-align: center; overflow: hidden;position: relative; padding: 25px 15px;}
-.OrgPartTitle {width: 200px; display: inline-block; margin: 5px 30px 15px 5px; padding: 10px; vertical-align: middle; text-align: left;}
+.OrgPartView {width: 940px; margin: 20px auto; display: inline-block;  border-radius: 20px;  text-align: right; overflow: hidden;position: relative; padding: 25px 15px;}
+.OrgPartTitle {width: 200px; display: inline-block; margin: 5px 30px 15px 5px; padding: 10px; text-align: left; vertical-align: middle; text-align: left;}
 .OrgPartTitle h6 {font-size: 18px; text-align: left; margin: 5px auto;}
-.OrgPartInfo {width: 200px; display: inline-block; padding: 10px; margin: 5px; border-radius: 12px;}
+.OrgPartInfo {width: 200px; display: inline-block; padding: 10px; margin: 5px; border-radius: 12px; text-align: center;}
 .OrgPartInfo p,.OrgPartInfoB p {font-size: 12px; line-height: 1.5;}
 .OrgPartInfo b, .OrgPartInfoB b {font-size: 13px; line-height: 1.5;}
 .OrgPartInfoB {width: 200px; display: inline-block;vertical-align: middle; padding: 10px 30px; margin: 5px; border-radius: 12px; vertical-align: super;}
@@ -517,9 +517,8 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 .DelegationsSectionOne {width: 280px; display: inline-block; margin: 5px; border-radius: 16px;  border: 1px solid; text-align: left; overflow: hidden;}
 .DelegationsSectionOne > figure {display: inline-block; width: 70px; height: 70px; vertical-align: top;}
 .DelegationsSectionOne > figure img {width: 100%; height: 100%;}
-.OrgMainThingsCardSL {width: 450px;margin: 15px; display: inline-block; border-radius: 20px;  text-align: center; overflow: hidden;position: relative; padding: 25px 15px;}
-.OrgMainThingsCardSL .OrgThingsTitle {width: 100%; display: inline-block; padding: 20px 5px; text-align: center;}
-.OrgMainThingsCardSL .OrgThingsTitle h6 {font-size: 20px;font-weight: bold; width: 100%; display: inline-block; text-align: center;}
+.OrgMainThingsCardSL {width: 450px;margin: 15px;    height: 220px; display: inline-block; border-radius: 20px;  text-align: center; overflow: hidden;position: relative; padding:15px;}
+.OrgMainThingsCardSL .OrgThingsInfoContent {width: 200px;display: inline-block;margin: 30px 0.5%;padding: 15px 10px;text-align: center;border-radius: 12px;}
 
 
 .InvestmentsSection {border-top: 1px solid; padding: 20px 20px 20px 20px; margin: 10px auto; width: 100%; display: inline-block; text-align: center;}
@@ -535,7 +534,7 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 .OrgPartFarm p {width: 280px;display: inline-block; margin-left: 20px; padding-left: 50px; font-size: 12px; vertical-align: middle; text-align: left; vertical-align: middle; line-height: 1.5;}
 .OrgPartFarm p b {font-size: 15px;}
 
-.OrgThingsCardPics {width: 450px; margin: 15px; display: inline-block;  border-radius: 20px;  text-align: center; overflow: hidden;position: relative; padding: 15px;}
+.OrgThingsCardPics {width: 450px; margin: 15px; display: inline-block;  border-radius: 20px;  text-align: center; overflow: hidden;position: relative; padding: 15px;    height: 220px;}
 .OrgThingsRegularTitle {width: 100%; display: inline-block; padding: 5px 5px; text-align: center;}
 .OrgThingsRegularTitle h6 {font-size: 16px;font-weight: bold; width: 100%; display: inline-block; text-align: left;}
 .OrgThingsRegularInfoPictureCarousel {width: 100%; display: inline-block; margin: 10px 0.5%; padding: 5px 5px; text-align: left;overflow-x: scroll; overflow-y: hidden; scroll-behavior: smooth; padding: 10px 1%; text-align: left; display: grid;grid-gap: 5px;grid-template-columns: repeat(10, 130px);grid-template-rows: minmax(44px, 1fr);}
@@ -561,7 +560,7 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 .CardSelectionSingle input {margin: 10px auto;}
 
 .VotingPowersObject {width: 85px; min-height: 85px; max-height: 130px; display: inline-block; margin: 5px; overflow: hidden; border-radius: 16px;}
-.VotingPowersObject img {width: 100%; height: 100%; display: inline-block; margin: 0;}
+.VotingPowersObject img {width: 100%; height: 100%; display: inline-block; margin: 0;object-fit: contain;}
 .VotingPowersAmount {padding: 10px;text-align: center;}
 .VotingPowersAmount span {font-size: 13px;}
 
@@ -578,6 +577,11 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 .ThemeSelect {width: 150px; display: block; text-align: left; margin: 20px auto 0px 15px;}
 .ThemeSelect select {padding: 5px 10px; border-radius: 12px; text-align: center; border: none;}
 
+.medium {width: 500px; position: relative; overflow: scroll; max-height: 70%;  z-index: 100000000000000; border-radius: 20px;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32); padding: 40px; z-index: 1000000000000000000;}
+.Small {width: 500px; position: relative; overflow: scroll; max-height: 70%;  z-index: 100000000000000;border-radius: 20px;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32); padding: 40px; z-index: 1000000000000000000;}
+.Large {width: 500px; position: relative; overflow: scroll; max-height: 70%;  z-index: 100000000000000; border-radius: 20px;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32); padding: 40px; z-index: 1000000000000000000;}
+.BackButton {position: absolute; top: 0px; left: 0px; padding: 5px 10px; font-size: 13px; border-radius: 100% 10px 10px 0px; background-color: tomato; color: #ffffff; z-index: 1000000000000000;}
+
 .Web3Connect {display: block; text-align:left; margin:40px auto 0px auto; padding-left: 15px;}
 .Web3ConnectChain {height: 35px;display: inline-block; padding: 3px 5px; border-radius: 5px;  margin: 0 10px 0 0px; vertical-align: middle;}
 .Web3ConnectChain img {width:25px; height:25px; display: inline-block; margin: 3px; vertical-align: middle;}
@@ -587,32 +591,28 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 .Web3ConnectWallet p {display: inline-block; margin: 3px;vertical-align: middle;font-size: 13px; font-weight: bold;}
 
 .ObjectsLists {width: 100%; display: inline-block;}
-.TokenObject {width: 100%; height: 100px; display: inline-block; padding: 0px 20px 0px 0px; text-align: left;vertical-align: top; border: 1px solid #ffffff; border-radius: 20px; overflow: hidden; cursor: pointer; margin: 5px auto;}
-.TokenObject:hover {background-color: #ffffff;}
+.TokenObject {width: 100%; height: 100px; display: inline-block; padding: 0px 20px 0px 0px; text-align: left;vertical-align: top; border: 1px solid; border-radius: 20px; overflow: hidden; cursor: pointer; margin: 5px auto;}
 .TokenObject figure {width: 100px; height: 100px; display: inline-block;}
-.TokenObject figure img {width: 100%; height: 100%; display: inline-block}
+.TokenObject figure img {width: 100%; height: 100%; display: inline-block; object-fit: contain;}
 .ObjectInfo {width: 440px;height: 80px;padding: 10px 5px 10px 20px; display: inline-block; text-align: right; vertical-align: top;}
 .ObjectInfoAndLink {width: 45%; display: inline-block; text-align: left; margin-right: 5%; vertical-align: middle; padding: 4% 0;}
 .ObjectInfoAndLink h5 {width:100%; text-align:left;}
-.ObjectInfoAndLink a {padding: 4px 8px; font-size: 11px; border: 2px solid #849bbd; color: #849bbd; margin: 5px 5px 5px 0; border-radius: 5px; display: inline-block;}
-.ObjectInfoAndLink .LinkCool {border: 2px solid #59b0fb;color: #59b0fb; font-weight: bold;}
+.ObjectInfoAndLink a {padding: 4px 8px; font-size: 11px; border: 2px solid;margin: 5px 5px 5px 0; border-radius: 5px; display: inline-block;}
+.ObjectInfoAndLink .LinkCool {border: 2px solid; font-weight: bold;}
 .ObjectInfoBalance {width: 50%; display: inline-block; text-align: right;vertical-align: middle;padding: 7% 0;}
 .ObjectInfoBalance p {width: 100%; text-align: right;}
 .ObjectInfoBalance span {width: 100%; text-align: right; font-size:11px;}
 .ObjectInfoCategory {width: 100%; display: inline-block; text-align: left; padding: 4% 0;}
 .ObjectInfoCategory h5 {width:100%; text-align:left;}
 .ObjectInfoCategory span {width: 100%; text-align: left; font-size:11px;}
-.TokensSelector {width: 100%; display: block; position: relative;}
+.TokensSelector {width: 100%; display: block; position: relative; border-radius: 20px;}
 .TokensSelectorList {height: 90%; width: 100%; padding: 10px; display: block; border-radius: 20px 20px 0 0; overflow-y: scroll;}
-.TokensSelectorCategories {height: 60px; background-color: #525252; border-top: 2px solid #E4E4E4; width: 100%; display: block; border-radius: 0 0 20px 20px; position: absolute; left:0; bottom: 0; text-align: center; overflow: hidden;}
-.TokensSelectorCategories input {width: 40%;display: inline-block; vertical-align: top;height: 100%;background-color: #525252;border: none;border-radius: 0 0 0 20px;color: #ffffff;font-size: 16px;padding: 2%;}
-.TokensSelectorCategories input::placeholder {color: #ffffff;opacity: 1;}
-.TokensSelectorCategories input:-ms-input-placeholder {color: #ffffff;}
-.TokensSelectorCategories input::-ms-input-placeholder {color: #ffffff;}
-.TokensSelectorCategoriesList {width: 60%; height:100%; display: inline-block;background-color: #F0F0F0;}
-.TokensSelectorCategoriesList a {width: 33.33%;padding: 20px 1%; display: inline-block; background-color: #F0F0F0; vertical-align: top; cursor: pointer;}
-.TokensSelectorCategoriesList .selected, .TokensSelectorCategoriesList a:hover  { background-color: #ffffff;}
+.TokensSelectorCategories {height: 60px;  border-top: 2px solid; width: 100%; display: block; border-radius: 0 0 20px 20px; position: absolute; left:0; bottom: 0; text-align: center; overflow: hidden;}
+.TokensSelectorCategories input {width: 40%;display: inline-block; vertical-align: top;height: 100%;border: none;border-radius: 0 0 0 20px;font-size: 16px;padding: 2%;}
+.TokensSelectorCategoriesList {width: 60%; height:100%; display: inline-block;}
+.TokensSelectorCategoriesList a {width: 33.33%;padding: 20px 1%; display: inline-block; vertical-align: top; cursor: pointer;}
 .TokensSelectorCategoriesList .selected {font-weight: bold;}
+.TokenSelectorListProposal > select {width: 50px;display: block;margin: 10px auto;height: 30px;border-radius: 14px; border: none;}
 
 @media only screen and (max-width: 990px) {
   .NavigationItem {font-size: 11px;width: 20%;overflow: hidden; }
@@ -655,6 +655,8 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 .biz p,.biz b,.biz figure,.biz span,.biz a,.biz h6,.biz h5,.biz h4,.biz h3,.biz h2,.biz h1,.biz aside, .biz input {color: #000000;}
 .dark p,.dark b,.dark figure,.dark span,.dark a,.dark h6,.dark h5,.dark h4,.dark h3,.dark h2,.dark h1,.dark aside, .dark input {color: #ffffff;}
 
+.biz a, .biz div,.biz figure, .biz input, .biz ul, .biz li, .biz nav, .biz select, .biz button, .biz span {border-radius: 0 !important;}
+
 .light, .dark, .biz {height: 100vh; overflow: scroll;}
 
 .light {background: rgb(255,255,255);background: linear-gradient(300deg, #fdf7f5 70%, rgba(120,111,255,1) 100%);}
@@ -670,9 +672,25 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 .biz .ActionInfoSection .ActionInfoSectionAMM {background-color: #F0F0F0;}
 .dark .ActionInfoSection .ActionInfoSectionAMM {background-color: #1b1b1b;}
 
+.light .medium {background-color: #ffffff;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
+.biz .medium {background-color: #ffffff;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
+.dark .medium {background-color: #1b1b1b;box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
+
+.light .large {background-color: #ffffff;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
+.biz .large {background-color: #ffffff;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
+.dark .large {background-color: #1b1b1b;box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
+
+.light .small  {background-color: #ffffff;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
+.biz .small {background-color: #ffffff;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
+.dark .small {background-color: #1b1b1b;box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
+
 .light .ActionInfoSection .ActionInfoSectionSettings {background-color: #F0F0F0;}
 .biz .ActionInfoSection .ActionInfoSectionSettings {background-color: #F0F0F0;}
 .dark .ActionInfoSection .ActionInfoSectionSettings {background-color: #1b1b1b;}
+
+.light .TokenSelectorListProposal > select {background-color: #ffffff; color: #000000;}
+.biz .TokenSelectorListProposal > select {background-color: #ffffff; color: #000000;}
+.dark .TokenSelectorListProposal > select {background-color: #000000; color: #ffffff;}
 
 .light .ActionInfoSectionS .ActionInfoSectionAMM {background-color: #F0F0F0;}
 .biz .ActionInfoSectionS .ActionInfoSectionAMM {background-color: #F0F0F0;}
@@ -690,9 +708,9 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 .biz .ActionInfoSectionS {background-color: #e4e4e4;}
 .dark .ActionInfoSectionS {background-color: #525252;}
 
-.light .ActionAWeb3Button button:disabled, .ActionAWeb3ButtonExtraSmall button:disabled, .ActionAWeb3Buttons button:disabled, .ActionAWeb3ButtonSmall button:disabled {background-color: #e4e4e4 !important;}
-.light .ActionAWeb3Button button:disabled, .ActionAWeb3ButtonExtraSmall button:disabled, .ActionAWeb3Buttons button:disabled, .ActionAWeb3ButtonSmall button:disabled {background-color: #e4e4e4 !important;}
-.dark .ActionAWeb3Button button:disabled, .ActionAWeb3ButtonExtraSmall button:disabled, .ActionAWeb3Buttons button:disabled, .ActionAWeb3ButtonSmall button:disabled {background-color: #444444 !important;}
+.light .ActionAWeb3Button button:disabled, .light .ActionAWeb3ButtonExtraSmall button:disabled, .light .ActionAWeb3Buttons button:disabled, .light .ActionAWeb3ButtonSmall button:disabled {background-color: #e4e4e4 !important;}
+.biz .ActionAWeb3Button button:disabled, .biz .ActionAWeb3ButtonExtraSmall button:disabled, .biz .ActionAWeb3Buttons button:disabled, .biz .ActionAWeb3ButtonSmall button:disabled {background-color: #e4e4e4 !important;}
+.dark .ActionAWeb3Button button:disabled, .dark .ActionAWeb3ButtonExtraSmall button:disabled, .dark .ActionAWeb3Buttons button:disabled, .dark .ActionAWeb3ButtonSmall button:disabled {background-color: #444444 !important;}
 
 .light .BackButton  {background-color: #e4e4e4; color: #6e6e6e;}
 .biz .BackButton  {background-color: #e4e4e4; color: #6e6e6e;}
@@ -799,7 +817,7 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 .dark .TradeMarketToken {background-color: #000000;}
 
 .light .TradeMarketToken .TradeMarketTokenSelector {background-color: #F0F0F0;}
-.biz .TradeMarketToken .TradeMarketTokenSelector {background-color: #F0F0F0;}
+.biz .TradeMarketToken .TradeMarketTokenSelector {background-color: #F0F0F0; border-radius: 0;}
 .dark .TradeMarketToken .TradeMarketTokenSelector {background-color: #1b1b1b;}
 
 .light .TradeMarketTokenAmount input  {background-color: transparent;}
@@ -861,6 +879,52 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 .light .TradeMarketBox {border-color: #ffffff;}
 .biz .TradeMarketBox {border-color: #ffffff;}
 .dark .TradeMarketBox {border-color: #000000;}
+
+.light .TokensSelector {background-color: #ffffff;}
+.biz .TokensSelector {background-color: #ffffff;}
+.dark .TokensSelector {background-color: #000000;}
+
+.light .TokenObject {border-color: #ffffff;}
+.biz .TokenObject {border-color: #ffffff;}
+.dark .TokenObject {border-color: #525252;}
+
+.light .ObjectInfoAndLink a {border-color: #849bbd; color: #849bbd;}
+.biz .ObjectInfoAndLink a {border-color: #849bbd; color: #849bbd;}
+.dark .ObjectInfoAndLink a {border-color: #849bbd; color: #849bbd;}
+
+.light .ObjectInfoAndLink .LinkCool {border-color: #59b0fb;color: #59b0fb;}
+.biz .ObjectInfoAndLink .LinkCool {border-color: #59b0fb;color: #59b0fb;}
+.dark .ObjectInfoAndLink .LinkCool {border-color: #59b0fb;color: #59b0fb;}
+
+.light .TokensSelectorCategories {background-color: #525252; border-color: #E4E4E4;}
+.biz .TokensSelectorCategories {background-color: #525252; border-color: #E4E4E4;}
+.dark .TokensSelectorCategories {background-color: #525252; border-color: #E4E4E4;}
+
+.light .TokensSelectorCategories input::placeholder {color: #ffffff;opacity: 1;}
+.light .TokensSelectorCategories input:-ms-input-placeholder {color: #ffffff;}
+.light .TokensSelectorCategories input::-ms-input-placeholder {color: #ffffff;}
+.biz .TokensSelectorCategories input::placeholder {color: #ffffff;opacity: 1;}
+.biz .TokensSelectorCategories input:-ms-input-placeholder {color: #ffffff;}
+.biz .TokensSelectorCategories input::-ms-input-placeholder {color: #ffffff;}
+.dark .TokensSelectorCategories input::placeholder {color: #ffffff;opacity: 1;}
+.dark .TokensSelectorCategories input:-ms-input-placeholder {color: #ffffff;}
+.dark .TokensSelectorCategories input::-ms-input-placeholder {color: #ffffff;}
+
+.light .TokensSelectorCategories input {color: #ffffff;background-color: #525252;}
+.biz .TokensSelectorCategories input {color: #ffffff;background-color: #525252;}
+.dark .TokensSelectorCategories input {color: #525252;background-color: #000000;}
+
+.light .TokensSelectorCategoriesList {background-color: #F0F0F0;}
+.biz .TokensSelectorCategoriesList {background-color: #F0F0F0;}
+.dark .TokensSelectorCategoriesList {background-color: #525252;}
+
+.light .TokensSelectorCategoriesList a {background-color: #F0F0F0;}
+.biz .TokensSelectorCategoriesList a {background-color: #F0F0F0;}
+.dark .TokensSelectorCategoriesList a {background-color: #525252;}
+
+.light .TokensSelectorCategoriesList .selected, .light .TokensSelectorCategoriesList a:hover  { background-color: #ffffff;}
+.biz .TokensSelectorCategoriesList .selected, .biz .TokensSelectorCategoriesList a:hover  { background-color: #ffffff;}
+.dark .TokensSelectorCategoriesList .selected, .dark .TokensSelectorCategoriesList a:hover  { background-color: #414141;}
 
 .light .TradeMarketBoxSwitch {background-color: #e4e4e4;}
 .biz .TradeMarketBoxSwitch {background-color: #e4e4e4;}
@@ -1180,6 +1244,8 @@ input[type=range]:focus::-ms-fill-upper {background: #849BBD;}
 .light .Web3ConnectWallet {background-color: #E4E4E4;}
 .biz .Web3ConnectWallet {background-color: #E4E4E4;}
 .dark .Web3ConnectWallet {background-color: #525252;}
+
+.biz .Items {background: linear-gradient(180deg, #fdf7f5 30%, hsl(212deg 30% 83%) 100%);}
 
 @media only screen and (max-width: 1200px) {
   .light .Header .BlurHeader {background: linear-gradient(-130deg,#c1befc4d,#fdf7f515 80%);}

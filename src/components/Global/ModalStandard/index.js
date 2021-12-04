@@ -8,8 +8,9 @@ import style from '../../../all.module.css'
 const ModalStandard  = (props) => {
     return (
         <div className={style.ModalBack}>
-            {props.close && <a onClick={props.close}>X</a>}
+            
             <div className={style.ModalBox}>
+            {props.close && <a className={style.BackButton} onClick={props.close}>X</a>}
                 {props.children}
             </div>
         </div>

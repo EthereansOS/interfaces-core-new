@@ -31,7 +31,7 @@ const RootWallet = ({element}) => {
 
   return (
     <div className={style.OrgMainThingsCardSL}>
-      <div className={style.OrgThingsTitle}>
+      <div className={style.OrgThingsRegularTitle}>
         <h6>Root Wallet</h6>
       </div>
       <div className={style.OrgThingsInfoContent}>
