@@ -12,7 +12,7 @@ const CovenantsMain = () => {
   return (
     <>
       <div className={style.ComingSoon}>
-        <img src={`${process.env.PUBLIC_URL}/img/cov.png`}></img>
+        <img src={`${process.env.PUBLIC_URL}/img/covsoon.png`}></img>
         <h6>Covenants is coming soon. While you wait, you can use the old <a target="_blank" href="https://covenants.eth.link">Covenants Interface</a></h6>
       </div>
     </>
