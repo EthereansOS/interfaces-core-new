@@ -4,8 +4,14 @@ import RegularButtonDuo from '../../Global/RegularButtonDuo/index.js'
 import ExtLinkButton from '../../Global/ExtLinkButton/index.js'
 import LogoRenderer from '../../Global/LogoRenderer'
 import { HeaderOsInflationRateActiveSelection, HeaderStateManagerVariable } from './verticalizations'
+import { useEthosContext, useWeb3, getNetworkElement } from '@ethereansos/interfaces-core'
 
 export default ({element, onToggle}) => {
+
+  const context = useEthosContext()
+
+  const { web3, newContract, chainId } = useWeb3()
+
   var type = element.organization.type
 
   const [opened, setOpened] = useState(false)
@@ -39,9 +45,8 @@ export default ({element, onToggle}) => {
       <div className={style.GovCardHeadOrganization}>
         <div className={style.GovCardHeadOrganizationTitle}>
           <h6>{element.name}</h6>
-          <ExtLinkButton></ExtLinkButton>
-          <ExtLinkButton></ExtLinkButton>
-          <ExtLinkButton></ExtLinkButton>
+          <ExtLinkButton text="Etherscan" href={`${getNetworkElement({context, chainId}, 'etherscanURL')}/tokenholdings?a=${element.organization.address}`}/>
+          <ExtLinkButton text="Discussion" href={element.discord_url}/>
         </div>
         <div className={style.GovCardHeadOrganizationInfo}>
             <p><b>Type:</b><br></br> {element.isSurveyless ? "Surveyless" : type === 'organization' ? "Survey" : "Poll"}</p>

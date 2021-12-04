@@ -259,7 +259,7 @@ const Investments = ({element}) => {
             <a><img src={`${process.env.PUBLIC_URL}/img/tokentest/os.png`}></img><span>&#128293;</span></a>
           </p>}
           <p>Every 3 months</p>
-          <ExtLinkButton text={"Next" + (swapFromETHBlock ? ` #${swapFromETHBlock}` : '')} href={`${getNetworkElement({context, chainId}, 'etherscanURL')}block/${swapFromETHBlock}`}/>
+          <ExtLinkButton text="Next" href={`${getNetworkElement({context, chainId}, 'etherscanURL')}block/${swapFromETHBlock}`}/>
         </div>
         <div className={style.InvestmentsSectionBuySell}>
           {!tokensToETH && <CircularProgress/>}
@@ -269,7 +269,7 @@ const Investments = ({element}) => {
             for <a><img src={`${process.env.PUBLIC_URL}/img/eth_logo.png`}></img></a>
           </p>}
           <p>Weekly</p>
-          <ExtLinkButton text={"Next" + (swapToETHBlock ? ` #${swapToETHBlock}` : '')} href={`${getNetworkElement({context, chainId}, 'etherscanURL')}block/${swapToETHBlock}`}/>
+          <ExtLinkButton text="Next" href={`${getNetworkElement({context, chainId}, 'etherscanURL')}block/${swapToETHBlock}`}/>
         </div>
       </div>}
     </div>)

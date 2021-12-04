@@ -75,8 +75,6 @@ export default ({element, refreshElements}) => {
         {tokens.map(it => <a key={it}><LogoRenderer noFigure input={it}/></a>)}
         </h6>}
       </>}
-        <ExtLinkButton/>
-        <ExtLinkButton/>
         <div className={style.ProposalResult}>
         {/*
           <p className={style.PendingTagGreen}>Succeding</p>
