@@ -11,7 +11,7 @@ const TokenInputSmall  = (props) => {
             <div className={style.TradeMarketTokenS}>
                 <a className={style.TradeMarketTokenSelectorS}>
                     <figure>
-                        <img src={`${process.env.PUBLIC_URL}/img/test.jpg`}></img>
+                        <img src={`${process.env.PUBLIC_URL}/img/default.png`}></img>
                     </figure>
                 </a>
                 <div className={style.TradeMarketTokenAmountS}>

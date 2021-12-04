@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react"
 import { CircularProgress } from '@ethereansos/interfaces-ui'
 import { useEthosContext, formatLink} from "@ethereansos/interfaces-core"
 
-const DEFAULT_IMAGE = `${process.env.PUBLIC_URL}/img/token_image_default.jpg`
+const DEFAULT_IMAGE = `${process.env.PUBLIC_URL}/img/default.png`
 
 export default ({input, figureClassName, noFigure}) => {
 
