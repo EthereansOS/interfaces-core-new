@@ -17,7 +17,7 @@ export default ({element, onClick}) => {
           {element.address !== VOID_ETHEREUM_ADDRESS && <a href={`${getNetworkElement({context, chainId}, "etherscanURL")}/token/${element.address}`} target="blank">Etherscan</a>}
         </div>
         {!element.balance && <CircularProgress/>}
-        {element.balance && <div className={style.ObjectInfoBalance}>
+        {element.balance && <div style={{"visibility" : "visible"}} className={style.ObjectInfoBalance}>
           <p>{fromDecimals(element.balance, element.decimals)}</p>
           <span>Balance</span>
         </div>}

@@ -1,20 +1,22 @@
 import React from 'react'
-import { usePlaceholder } from '@ethereansos/interfaces-core'
-import { Link } from 'react-router-dom'
-import { Typography } from '@ethereansos/interfaces-ui'
 
 import style from '../../../all.module.css'
 
-const ModalStandard  = (props) => {
+export default ({close, children}) => {
+
+    function preventClose(e) {
+        e.preventDefault && e.preventDefault();
+        e.stopPropagation && e.stopPropagation();
+        e.stopImmediatePropagation && e.stopImmediatePropagation();
+        return false;
+    }
+
     return (
-        <div className={style.ModalBack}>
-            
-            <div className={style.ModalBox}>
-            {props.close && <a className={style.BackButton} onClick={props.close}>X</a>}
-                {props.children}
+        <div onClick={close} className={style.ModalBack}>
+            <div onClick={preventClose} className={style.ModalBox}>
+                {close && <a className={style.BackButton} onClick={close}>X</a>}
+                {children}
             </div>
         </div>
     )
 }
-
-    export default ModalStandard

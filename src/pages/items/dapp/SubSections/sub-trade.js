@@ -1,16 +1,16 @@
 import React from 'react'
-import {Typography} from '@ethereansos/interfaces-ui'
 
-import style from './items-main-sub-sections.module.css'
-import Trade from '../../../../components/Global/Trade/index.js'
+import { OpenSeaContextProvider } from '../../../../logic/uiUtilities'
+import Trade from '../../../../components/Global/Trade'
 
-const SubTrade = (props) => {
+import style from '../../../../all.module.css'
+
+export default ({item}) => {
   return (
       <div className={style.ItemsMetaMain}>
-        <Trade></Trade>
+        <OpenSeaContextProvider>
+          <Trade item={item}/>
+        </OpenSeaContextProvider>
       </div>
   )
 }
-
-
-export default SubTrade

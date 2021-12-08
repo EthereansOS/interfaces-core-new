@@ -8,6 +8,7 @@ import ExploreOrganizations from '../../../../components/Organizations/ExploreOr
 import style from '../organizations-main-sections.module.css'
 
 import RegularModal from '../../../../components/Global/RegularModal'
+import DappMenu from '../../../../components/Global/DappMenu'
 
 const SubDAOsList = ({}) => {
 
@@ -16,19 +17,21 @@ const SubDAOsList = ({}) => {
 
   const [modal, setModal] = useState(true)
 
-  return (<div className={style.OrganizationsExploreMain}>
-
-    <Web3DependantList
-      Renderer={ExploreOrganizations}
-      rendererIsContainer
-      provider={() => all({context, getGlobalContract, newContract, chainId, factoryOfFactories : getGlobalContract('factoryOfFactories')}) }
-    />
-  </div>)
+  return (
+  <>
+    <div className={style.OrganizationsExploreMain}>
+      <Web3DependantList
+        Renderer={ExploreOrganizations}
+        rendererIsContainer
+        provider={() => all({context, getGlobalContract, newContract, chainId, factoryOfFactories : getGlobalContract('factoryOfFactories')}) }
+      />
+    </div>
+  </>)
 }
 
 SubDAOsList.menuVoice = {
   label : 'Organizations',
-  path : '/governances/dapp',
+  path : '/guilds/dapp',
   contextualRequire : () => require.context('./', false, /.js$/),
   index : 0
 }

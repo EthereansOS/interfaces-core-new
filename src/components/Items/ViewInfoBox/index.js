@@ -1,32 +1,29 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
-import { Typography } from '@ethereansos/interfaces-ui'
 
-import style from '../../../all.module.css'
+import { useEthosContext, useWeb3, getNetworkElement } from '@ethereansos/interfaces-core'
+
 import ExtLinkButton from '../../Global/ExtLinkButton/index.js'
 
-const ViewInfoBox = ({collection}) => {
+import style from '../../../all.module.css'
+
+export default ({collection}) => {
+
+  const context = useEthosContext()
+
+  const { chainId } = useWeb3()
+
   return (
     <div className={style.InfoBox}>
       <h1>{collection.name + (collection.symbol ? ` (${collection.symbol})` : "")}</h1>
-      <a className={style.shareIt}></a>
-      <div className={style.InfoBoxSide}>
-        <p>Items: {collection.items.length}</p>
-        <p>Farmable:  12</p>
-        <p>Organizations:  12</p>
-        <p>Delegations:  0</p>
-      </div>
       <div className={style.InfoBoxBtns}>
-        <ExtLinkButton></ExtLinkButton> {/* Contract - Contract Link */}
-        <ExtLinkButton></ExtLinkButton> {/* Website - Website Link */}
-        <ExtLinkButton></ExtLinkButton> {/* Host - Host Link */}
-        <ExtLinkButton></ExtLinkButton> {/* Open Sea - Open Sea Link */}
+        <ExtLinkButton href={getNetworkElement({context, chainId}, 'etherscanURL') + 'address/' + collection.mainInterface.options.address} text="Contract"/> {/* Contract - Contract Link */}
+        <ExtLinkButton href={collection.external_url} text="Website"/> {/* Website - Website Link */}
+        <ExtLinkButton href={getNetworkElement({context, chainId}, 'etherscanURL') + 'address/' + collection.host} text="Host"/> {/* Host - Host Link */}
+        {false &&<ExtLinkButton text="Opensea"/>} {/* Open Sea - Open Sea Link */}
       </div>
       <div className={style.InfoBoxaside}>
-        <a>Version: Native_1.1.1</a>
+        <a>Version: {collection.symbol.indexOf("W") === 0 ? collection.symbol : 'Native'}_1.0.0</a>
       </div>
     </div>
   )
 }
-
-export default ViewInfoBox

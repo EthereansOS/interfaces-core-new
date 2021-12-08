@@ -2,7 +2,7 @@ import React from 'react'
 
 import ExploreCollections from '../../../../components/Items/ExploreCollections/'
 
-import style from './../items-main.module.css'
+import style from '../../../../all.module.css'
 
 const Collections = () => (
   <div className={style.ItemsExploreMain}>

@@ -1,6 +1,7 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 
-import { Style, useEthosContext, useWeb3 } from '@ethereansos/interfaces-core'
+import { Link, useLocation } from 'react-router-dom'
+import { Style, useEthosContext, useWeb3, web3Utils } from '@ethereansos/interfaces-core'
 import {createDelegation, finalizeDelegation} from '../../../../logic/delegation'
 import CircularProgress from '../../../../components/Global/OurCircularProgress'
 import style from '../organizations-main-sections.module.css'
@@ -16,7 +17,7 @@ const Init = ({onSelection}) => {
       </div>
       <div className={style.CreateBoxDesc}>
         <h6>Delegation</h6>
-        <p>Start a delegation, an independent governance party that can compete for grant funding from one or more Organizations.</p>
+        <p>A Delegation is an independent governance party that can compete for grant funding from one or more Organizations.</p>
         <a className={style.NextStep}  onClick={() => onSelection("deploy")}>Start</a>
         <a target="_blank" className={style.ExtLinkButtonAlpha} href="https://docs.ethos.wiki/ethereansos-docs/organizations/delegations">Learn</a>
       </div>
@@ -36,10 +37,13 @@ const Deploy = ({back, finalize}) => {
   const [description, setDescription] = useState("")
   const [symbol, setSymbol] = useState("")
   const [image, setImage] = useState("")
+  const [tokenURI, setTokenURI] = useState("")
   const [background_color, setBackground_color] = useState("")
   const [external_url, setExternal_url] = useState("")
-  const [discussion_url, setDiscussion_url] = useState("")
+  const [community_url, setCommunity_url] = useState("")
   const [public_polls, setPublic_polls] = useState("")
+  const [news_url, setNews_url] = useState("")
+  const [blog_url, setBlog_url] = useState("")
 
   const [loading, setLoading] = useState(false)
 
@@ -54,10 +58,13 @@ const Deploy = ({back, finalize}) => {
           description,
           symbol,
           image,
+          tokenURI,
           background_color,
           external_url,
-          discussion_url,
-          public_polls
+          community_url,
+          public_polls,
+          news_url,
+          blog_url
 
         }))
     } catch(e) {
@@ -86,8 +93,18 @@ const Deploy = ({back, finalize}) => {
         <p>The official website of your Delegation.</p>
       </label>
       <label className={style.CreationPageLabelF}>
-        <h6>Discussion link</h6>
-        <input type="link" value={discussion_url} onChange={e => setDiscussion_url(e.currentTarget.value)}/>
+        <h6>Community link</h6>
+        <input type="link" value={community_url} onChange={e => setCommunity_url(e.currentTarget.value)}/>
+        <p>A place to discuss your Delegation.</p>
+      </label>
+      <label className={style.CreationPageLabelF}>
+        <h6>News link</h6>
+        <input type="link" value={news_url} onChange={e => setNews_url(e.currentTarget.value)}/>
+        <p>A place to discuss your Delegation.</p>
+      </label>
+      <label className={style.CreationPageLabelF}>
+        <h6>Blog link</h6>
+        <input type="link" value={blog_url} onChange={e => setBlog_url(e.currentTarget.value)}/>
         <p>A place to discuss your Delegation.</p>
       </label>
       <label className={style.CreationPageLabelF}>
@@ -98,17 +115,22 @@ const Deploy = ({back, finalize}) => {
       <label className={style.CreationPageLabelF}>
         <h6>Logo link</h6>
         <input placeholder="ipfs//..." type="link" value={image} onChange={e => setImage(e.currentTarget.value)}/>
-        <p>A valid IPFS link for your Delegation’s logo. Please upload a square picture (.png, .gif or .jpg, max size 1mb) so that it fits perfectly with the EthereansOS interface style.</p>
+        <p>Logo Link: A valid IPFS link for your Delegation’s logo. Please upload a square picture (.png, .gif or .jpg; max size 1mb) so that it fits perfectly with the EthereansOS interface style.</p>
+      </label>
+      <label className={style.CreationPageLabelF}>
+        <h6>Token Logo Link</h6>
+        <input placeholder="ipfs//..." type="link" value={tokenURI} onChange={e => setTokenURI(e.currentTarget.value)}/>
+        <p>Logo Link: A valid IPFS link for your Delegation’s token logo. Please upload a square picture (.png, .gif or .jpg; max size 1mb) so that it fits perfectly with the EthereansOS interface style.</p>
       </label>
       <label className={style.CreationPageLabelF}>
         <h6>Logo Background</h6>
         <input type="color" value="#ffffff" onChange={e => setBackground_color(e.currentTarget.value)}/>
-        <p>The background color of your Delegation’s logo. This color will fill any empty space that the logo leaves if it doesn’t match any standard box in the interface.</p>
+        <p>Logo Background: The background color of your Delegation’s logo. This color will fill any empty space that the logo leaves if it is smaller than any standard box in the interface.</p>
       </label>
       <label className={style.CreationPageLabelF}>
         <h6>Public polls</h6>
-        <input type="checkbox" onChange={e => setPublic_polls(e.currentTarget.value)}/>
-        <p>If active, all polls created regarding this Delegation will appear on the Delegation’s page. If not active, only polls created by the Delegation host will appear on the Delegation’s page.</p>
+        <input type="checkbox" onChange={e => setPublic_polls(e.currentTarget.checked)} checked={public_polls}/>
+        <p>Public Polls (coming soon): If selected, all polls that involve this Delegation will appear on the Delegation’s page. If not, only polls created by the Delegation’s host will.</p>
       </label>
       <div className={style.ActionDeploy}>
         {loading && <CircularProgress/>}
@@ -174,17 +196,17 @@ const Finalize = ({back, success, cumulativeData}) => {
       <label className={style.CreationPageLabelF}>
         <h6>Validation Bomb</h6>
         <input type="number" value={validationBomb} onChange={e => setValidationBomb(e.currentTarget.value)}/>
-        <p>This is an optional amount of blocks after which a passed Proposal can never be executed. If set as zero, there is no time limit by which a Proposal must be executed.</p>
+        <p>An optional duration (in blocks) after which a passed Proposal can never be executed. If set as zero, there is no time before which a Proposal can be executed.</p>
       </label>
       <label className={style.CreationPageLabelF}>
-        <h6>Quorum</h6>
-        <input className={style.perchentageThing} type="number" min="0" max="100" value={quorumPercentage} onChange={e => setQuorumPercentage(e.currentTarget.value)}/>
-        <p>An minimum number of votes required for a proposal to pass.</p>
+        <h6>Quorum {quorumPercentage || "0"}%</h6>
+        <input className={style.perchentageThing} type="range" min="0" max="100" value={quorumPercentage} onChange={e => setQuorumPercentage(e.currentTarget.value)}/>
+        <p>A minimum amount of votes (calculated as a percentage of the Delegation token’s total supply) required for a Proposal to pass.</p>
       </label>
       <label className={style.CreationPageLabelF}>
-        <h6>Hard Cap</h6>
-        <input className={style.perchentageThing} type="number" min="0" max="100" value={hardCapPercentage} onChange={e => setHardcapPercentage(e.currentTarget.value)}/>
-        <p>An optional minimum number of votes required to end a proposal, regardless of how long it is still set to remain open.</p>
+        <h6>Hard Cap {hardCapPercentage || "0"}%</h6>
+        <input className={style.perchentageThing} type="range" min="0" max="100" value={hardCapPercentage} onChange={e => setHardcapPercentage(e.currentTarget.value)}/>
+        <p>An optional minimum amount of votes (calculated as a percentage of the Delegation token’s total supply) required to end a Proposal, regardless of how long it is still set to remain open.</p>
       </label>
       <div className={style.ActionDeploy}>
         {loading && <CircularProgress/>}
@@ -195,26 +217,38 @@ const Finalize = ({back, success, cumulativeData}) => {
   )
 }
 
-const Success = ({back}) => {
+const Success = ({cumulativeData}) => {
   return (
     <div>
       <h6>&#127881; &#127881; Delegation Created! &#127881; &#127881;</h6>
       <p><b>And Now?</b></p>
       <label className={style.CreationPageLabelF}>
-        <h6>Select an Organization</h6>
-        <select/>
-        <p>Connect your delegation to an Organization to be elegible for grants!</p>
+        <h6><Link to={`/guilds/dapp/delegations/${cumulativeData.delegationAddress}`}>Explore your Delegation</Link></h6>
       </label>
-      <a onClick={back}>Back Che serve solo per navigare in produzione va tolto</a>
     </div>
   )
 }
 
 const DelegationsCreate = ({}) => {
 
+  const { pathname } = useLocation()
+
   const [cumulativeData, setCumulativeData] = useState({
     step : 'init'
   })
+
+  useEffect(() => {
+    try {
+      var delegationAddress = pathname.split('/')
+      var index = delegationAddress.length - 1
+      if(delegationAddress[index] === "") {
+        index--
+      }
+      delegationAddress = delegationAddress[index]
+      delegationAddress = web3Utils.toChecksumAddress(delegationAddress)
+      setCumulativeData(oldValue => ({...oldValue, delegationAddress, step : 'finalize'}))
+    } catch(e) {}
+  }, [pathname])
 
   var steps = {
     init : () => <Init
@@ -230,7 +264,7 @@ const DelegationsCreate = ({}) => {
       success={() => setCumulativeData(oldValue => ({...oldValue, step: 'success'}))}
     />,
     success : () => <Success
-      back={() => setCumulativeData(oldValue => ({...oldValue, step : 'finalize'}))}
+      cumulativeData={cumulativeData}
     />
   }
 

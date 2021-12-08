@@ -3,8 +3,10 @@ import React, { useEffect, useState } from 'react'
 import DelegationHeadline from '../../../../components/Organizations/DelegationHeadline'
 import CircularProgress from '../../../../components/Global/OurCircularProgress'
 import GovernanceContainer from '../../../../components/Organizations/GovernanceContainer'
+import DelegationAttach from '../../../../components/Organizations/DelegationAttach'
 
 import { useLocation } from 'react-router'
+import { Link } from 'react-router-dom'
 
 import { getDelegation } from '../../../../logic/delegation'
 
@@ -41,14 +43,19 @@ const DelegationView = () => {
   return (
     <div className={style.SingleContentPage}>
       <DelegationHeadline element={element}/>
+      {!element?.host && <>
+        <h4>This Delegation must be finalized</h4>
+        {element.deployer === account && <Link to={`/guilds/dapp/create/${element.address}`}>Finalize Delegation</Link>}
+      </>}
       {element?.host === account && <HostOptions refresh={refresh} element={element}/>}
-      <GovernanceContainer element={element}/>
+      {element?.host && <GovernanceContainer element={element}/>}
+      {element?.host && <DelegationAttach element={element}/>}
     </div>
   )
 }
 
 DelegationView.menuVoice = {
-  path : '/governances/dapp/delegations/:id'
+  path : '/guilds/dapp/delegations/:id'
 }
 
 export default DelegationView

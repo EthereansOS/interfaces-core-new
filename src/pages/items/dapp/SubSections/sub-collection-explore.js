@@ -1,21 +1,26 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-import style from './items-main-sub-sections.module.css'
-import ExploreItems from '../../../../components/Items/ExploreItems/index.js'
+import LogoRenderer from '../../../../components/Global/LogoRenderer'
+import ExploreItems from '../../../../components/Items/ExploreItems'
+
+import { shortenWord, useEthosContext } from '@ethereansos/interfaces-core'
+
+import style from '../../../../all.module.css'
 
 const SubCollectionExplore = ({item}) => {
+
+  const context = useEthosContext()
+
   return (
       <div className={style.SubCollectionExplore}>
-        <div className={style.SubCollectionInfo}>
-          <figure className={style.SubCollectionInfoCover}>
-          <img src={`${process.env.PUBLIC_URL}/img/test.jpg`}></img>
-          </figure>
+        <Link to={`/items/dapp/collections/${item.collectionId}`} className={style.SubCollectionInfo}>
+          <LogoRenderer input={item.collectionData} figureClassName={style.SubCollectionInfoCover}/>
           <div className={style.SubCollectionInfoName}>
             <h5>More From {item.collectionData.name} Collection</h5>
-            <Link to={`/items/dapp/collections/${item.collectionId}`}>View</Link>
+            <p>{shortenWord({ context, charsAmount : '260', shortenWordSuffix : '...' }, item.collectionData.description)}</p>
           </div>
-        </div>
+        </Link>
         <ExploreItems forCollection={item.collectionData} excluding={item.id}/>
       </div>
   )

@@ -6,31 +6,31 @@ import style from './../index.module.css'
 const IndexMain = () => {
   return (
       <div className={style.CardsLayerS}>
-        <a className={style.CardsFancy}>
+        <Link to="/factories/dapp" className={style.CardsFancy}>
           <figure>
             <img src={`${process.env.PUBLIC_URL}/img/c-2.png`}></img>
           </figure>
-          <Link to="/factories/dapp">Factories</Link>
-        </a>
-        <a className={style.CardsFancy}>
+          <p>Factories</p>
+        </Link>
+        <Link to="/items/dapp" className={style.CardsFancy}>
           <figure>
             <img src={`${process.env.PUBLIC_URL}/img/c-1.png`}></img>
           </figure>
-          <Link to="/items/dapp">Items</Link>
-        </a>
+          <p>Items</p>
+        </Link>
         <br></br>
-        <a className={style.CardsFancy}>
+        <Link to="/guilds/dapp" className={style.CardsFancy}>
           <figure>
             <img src={`${process.env.PUBLIC_URL}/img/c-3.png`}></img>
           </figure>
-          <Link to="/governances/dapp">Governance</Link>
-        </a>
-        <a className={style.CardsFancy}>
+          <p>Guilds</p>
+        </Link>
+        <Link to="/factories/dapp" className={style.CardsFancy}>
           <figure>
             <img src={`${process.env.PUBLIC_URL}/img/c-4.png`}></img>
           </figure>
-          <Link to="/covenants/dapp">Convenants</Link>
-        </a>
+          <p>Convenants</p>
+        </Link>
       </div>
   )
 }

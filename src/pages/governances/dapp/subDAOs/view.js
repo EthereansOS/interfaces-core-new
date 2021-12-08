@@ -13,6 +13,8 @@ import { getOrganization } from '../../../../logic/organization'
 
 import { useEthosContext, useWeb3 } from '@ethereansos/interfaces-core'
 
+import DappMenu from '../../../../components/Global/DappMenu'
+
 const SubDAOView = () => {
 
   const location = useLocation()
@@ -55,16 +57,18 @@ const SubDAOView = () => {
   var Component = menuVoices.filter(it => currentView === it.view)[0].component
 
   return (
-    <div className={style.SingleContentPage}>
-      <OrgHeadline element={organization}/>
-      <DappSubMenu isSelected={ it => it.view === currentView } voices={menuVoices.map(it => ({...it, onClick : () => it.view && setCurrentView(it.view)}))}/>
-      <Component element={organization}/>
-    </div>
+    <>
+      <div className={style.SingleContentPage}>
+        <OrgHeadline element={organization}/>
+        <DappSubMenu isSelected={ it => it.view === currentView } voices={menuVoices.map(it => ({...it, onClick : () => it.view && setCurrentView(it.view)}))}/>
+        <Component element={organization}/>
+      </div>
+    </>
   )
 }
 
 SubDAOView.menuVoice = {
-  path : '/governances/dapp/organizations/:id'
+  path : '/guilds/dapp/organizations/:id'
 }
 
 export default SubDAOView

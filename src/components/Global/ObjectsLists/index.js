@@ -4,6 +4,7 @@ import ERC20TokenObject  from './erc20-token-object.js'
 import ItemObject  from './item-object.js'
 import CategoryObject  from './category-object.js'
 import DefaultChild from './child'
+import NFTS from './nfts'
 
 import style from '../../../all.module.css'
 
@@ -20,6 +21,14 @@ var defaultSelections = [{
 }, {
   name : 'Collections',
   value : CategoryObject
+}, {
+  name : 'ERC-721',
+  value : NFTS,
+  properties : {type : 'ERC721'}
+}, {
+  name : 'ERC-1155',
+  value : NFTS,
+  properties : {type : 'ERC1155'}
 }];
 
 const ObjectsLists = ({onlySelections, selectionProperties, list}) => {

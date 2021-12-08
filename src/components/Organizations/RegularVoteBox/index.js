@@ -30,6 +30,7 @@ const RegularVoteBox = ({element, proposalId, address, forRefuse, refresh}) => {
         other={element.proposalsManager.address}
         balance={tokenData.balance}
         value={tokenData.value}
+        noApproveNeeded={tokenData.token.mainInterface}
         buttonText={"Vote"}
         onPermitSignature={setPermitSignature}
         onClick={() => vote({account}, element, tokenData.token, forRefuse ? 0 : tokenData.value, forRefuse ? tokenData.value : 0, proposalId, permitSignature, address)}

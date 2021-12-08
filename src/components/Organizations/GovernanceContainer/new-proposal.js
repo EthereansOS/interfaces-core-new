@@ -9,7 +9,7 @@ import RegularModal from '../../Global/RegularModal/index.js'
 
 export default ({element, proposalType, close}) => {
   return (
-      <RegularModal close={close} type="medium">
+      <RegularModal close={close}>
           <div className={style.ProposeContents}>
             {proposalType === 'poll' ?  <>
               <h5>New Poll</h5>

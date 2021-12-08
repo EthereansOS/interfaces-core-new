@@ -76,8 +76,7 @@ export async function loadTokens({ context, chainId, web3, account, newContract,
             decimals : it.decimals + "",
             address : it.address,
             image : formatLink({ context }, it.logoURI),
-            contract,
-            balance : '0'
+            contract
         })
     }, chunkSize)
     /*var length = all.length
@@ -114,10 +113,15 @@ export async function loadTokens({ context, chainId, web3, account, newContract,
         }))))
     }*/
 
-    return await Promise.all(tokens.map(async token => ({...token, balance : await token.contract.methods.balanceOf(account)})))
+    tokens = await Promise.all(tokens.map(async token => ({...token, balance : await blockchainCall(token.contract.methods.balanceOf, account)})))
+
+    return tokens
 }
 
-export async function loadTokenFromAddress({ context, account, newContract }, tokenAddress) {
+export async function loadTokenFromAddress({ context, account, web3, newContract }, tokenAddress) {
+    if(!tokenAddress || tokenAddress === VOID_ETHEREUM_ADDRESS) {
+        return await getEthereum({account, web3})
+    }
     try {
         var contract = newContract(context.ItemInteroperableInterfaceABI, tokenAddress)
         return {

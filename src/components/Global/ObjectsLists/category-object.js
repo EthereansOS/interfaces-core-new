@@ -9,10 +9,10 @@ import Web3DependantList from '../Web3DependantList'
 export default ({element = CategoryObjectElement}) => {
 
   const context = useEthosContext()
-  const { web3, account, getGlobalContract, newContract } = useWeb3()
+  const { chainId, web3, account, getGlobalContract, newContract } = useWeb3()
 
-  return <Web3DependantList 
+  return <Web3DependantList
     Renderer={element}
-    provider={() => loadCollectionsByFactories({context, web3, account, newContract}, getGlobalContract("itemProjectionFactory"))}
+    provider={() => loadCollectionsByFactories({chainId, context, web3, account, newContract, getGlobalContract}, getGlobalContract("itemProjectionFactory"))}
   />
 }

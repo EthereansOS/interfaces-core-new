@@ -1,20 +1,32 @@
-import React from 'react'
-import { usePlaceholder } from '@ethereansos/interfaces-core'
-import { Link } from 'react-router-dom'
-import { Typography } from '@ethereansos/interfaces-ui'
+import React, { useState } from 'react'
 
-import style from '../../../all.module.css'
 import Market from './market.js'
 import OTC from './otc.js'
 
-const Trade = (props) => {
+import style from '../../../all.module.css'
 
-    return (
-      <div className={style.TradeMain}>
-        <Market></Market>
-        <OTC></OTC>
-      </div>
-    )
+export default ({item}) => {
+
+  const [otcItem, setOtcItem] = useState(item)
+
+  function onTokens(input, output) {
+    const inputToken = input?.token
+    const outputToken = output?.token
+    if(!inputToken && !outputToken) {
+      return
+    }
+
+    if(!inputToken || inputToken.symbol === 'ETH' || inputToken.symbol === 'USDC' || inputToken.symbol === 'iUSDC' || inputToken.symbol === 'WETH' || inputToken.symbol === 'iETH') {
+      return setOtcItem(outputToken)
+    }
+
+    return setOtcItem(inputToken)
   }
 
-export default Trade
+  return (
+    <div className={style.TradeMain}>
+      <Market item={item} onTokens={onTokens}/>
+      <OTC item={otcItem}/>
+    </div>
+  )
+}

@@ -1,0 +1,13 @@
+[{
+    "name": "Wrapped ERC-20",
+    "image" : "ipfs://ipfs/QmatJvnHaUHwZAEEyAHP3tMunSADTRzCnC2qaziyFedfhu",
+    "description" : "A collection of ERC-20 tokens wrapped using the Item Standard. More: https://docs.ethos.wiki/ethereansos-docs/items/items"
+}, {
+    "name": "Wrapped ERC-721",
+    "image" : "ipfs://ipfs/Qmdgj1R5ZLAoChchH3iCyYidibm9FPPwoRzrvq1bHV7A9M",
+    "description" : "A collection of ERC-721 NFTs wrapped using the Item Standard. More: https://docs.ethos.wiki/ethereansos-docs/items/items"
+}, {
+    "name": "Wrapped ERC-1155",
+    "image" : "ipfs://ipfs/QmXCbCTMqurbyypAzZ7WiMtmabebZkZ6e7CNkpqXgRoJaE",
+    "description" : "A collection of ERC-1155 NFTs wrapped using the Item Standard. More: https://docs.ethos.wiki/ethereansos-docs/items/items"
+}]

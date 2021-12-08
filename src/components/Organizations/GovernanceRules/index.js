@@ -22,8 +22,8 @@ const GovernanceRules = ({element, proposalId}) => {
         vals = await extractRules({provider : element.proposalsManager.currentProvider}, element.validatorsAddresses[element.votingRulesIndex], true)
         terms = await extractRules({provider : element.proposalsManager.currentProvider}, element.canTerminateAddresses[element.votingRulesIndex])
       } else {
-        vals = await extractRules({provider : element.proposalsManager.currentProvider}, element.validatorsAddresses[element.votingRulesIndex], true)
-        terms = await extractRules({provider : element.proposalsManager.currentProvider}, element.canTerminateAddresses[element.votingRulesIndex])
+        vals = await extractRules({provider : element.proposalsManager.currentProvider}, element.validatorsAddresses && (element.validatorsAddresses[element.votingRulesIndex] || element.validatorsAddresses) || element.proposalsConfiguration.validatorsAddresses, true)
+        terms = await extractRules({provider : element.proposalsManager.currentProvider}, element.canTerminateAddresses && (element.canTerminateAddresses[element.votingRulesIndex] || element.canTerminateAddresses) || element.proposalsConfiguration.canTerminateAddresses)
       }
       setCleanValidators(vals || [])
       setCleanCanTerminates(terms || [])

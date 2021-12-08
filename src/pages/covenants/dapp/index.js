@@ -1,20 +1,21 @@
 import React from 'react'
-import {Typography} from '@ethereansos/interfaces-ui'
+import DappMenu from '../../../components/Global/DappMenu'
 
-import style from './covenants-main.module.css'
-import FarmMain from './Sections/farm-main.js'
-import RoutinesMain from './Sections/routines-main.js'
-import TradeMain from './Sections/trade-main.js'
-import DoubleDappMenu from './../../../components/Global/DoubleDappMenu/index.js'
-import DappBannerExpl from './../../../components/Global/DappBannerExpl/index.js'
+import { OpenSeaContextProvider } from '../../../logic/uiUtilities'
+import Trade from '../../../components/Global/Trade'
+
+const TradeComponent = () => {
+  return (<OpenSeaContextProvider>
+    <Trade/>
+  </OpenSeaContextProvider>)
+}
 
 const CovenantsMain = () => {
   return (
     <>
-      <div className={style.ComingSoon}>
-        <img src={`${process.env.PUBLIC_URL}/img/covsoon.png`}></img>
-        <h6>Covenants is coming soon. While you wait, you can use the old <a target="_blank" href="https://covenants.eth.link">Covenants Interface</a></h6>
-      </div>
+      <DappMenu voices={[{label : "Bazar", path : "/covenants/dapp"}]} selected={0}/>
+      <br/>
+      <TradeComponent/>
     </>
   )
 }

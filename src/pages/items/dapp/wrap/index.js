@@ -1,33 +1,33 @@
 import React, { useState } from 'react'
 
-import W20 from "./w20"
-import W721 from "./w721"
-import W1155 from "./w1155"
-import DappMenu from '../../../../components/Global/DappMenu'
+import WrapERC20 from "../../../../components/Items/Wrap/ERC20"
+import WrapNFT from "../../../../components/Items/Wrap/NFT"
+import DappSubMenu from '../../../../components/Global/DappSubMenu'
 
-var wrapVoices = [
+const wrapVoices = [
   {
-    id : "w20",
+    id : "ERC20",
     label : "Ethereum or ERC-20",
-    Component : W20
+    Component : WrapERC20
   }, {
-    id : "w721",
+    id : "ERC721",
     label : "ERC-721",
-    Component : W721
+    Component : WrapNFT,
+    props : {nftType : 'ERC721'}
   }, {
-    id : "w1155",
+    id : "ERC1155",
     label : "ERC-1155",
-    Component : W1155
+    Component : WrapNFT
   }
 ];
 
-var Wrap = () => {
+const Wrap = ({}) => {
   const [currentVoice, setCurrentVoice] = useState(wrapVoices[0])
-  var Component = currentVoice.Component
+  const { Component, props } = currentVoice
   return (
     <div>
-      <DappMenu voices={wrapVoices.map(it => ({...it, onClick : () => setCurrentVoice(it)}))}/>
-      <Component/>
+      <DappSubMenu isSelected={it => it.id === currentVoice?.id} voices={wrapVoices.map(it => ({...it, onClick : () => setCurrentVoice(it)}))}/>
+      <Component {...props}/>
     </div>
   )
 }

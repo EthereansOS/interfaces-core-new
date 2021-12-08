@@ -5,10 +5,13 @@ import RegularButtonDuo from '../../Global/RegularButtonDuo/index.js'
 import Upshots from '../../Organizations/Upshots/index.js'
 import LogoRenderer from '../../Global/LogoRenderer'
 import CircularProgress from '../../Global/OurCircularProgress'
+import ActionAWeb3Button from '../../Global/ActionAWeb3Button'
+import { Link } from 'react-router-dom'
 
 import { fromDecimals, useWeb3, useEthosContext, getNetworkElement, blockchainCall, numberToString, getEthereumPrice, formatNumber, formatMoney, formatMoneyUniV3, newContract, getTokenPriceInDollarsOnUniswapV3 } from '@ethereansos/interfaces-core'
 
 import style from '../../../all.module.css'
+import { getDelegationsOfOrganization } from '../../../logic/delegation.js'
 
 const RootWallet = ({element}) => {
 
@@ -45,7 +48,7 @@ const RootWallet = ({element}) => {
 const TreasurySplitter = ({element}) => {
 
   const context = useEthosContext()
-  const { web3, chainId } = useWeb3()
+  const { web3, chainId, block, account } = useWeb3()
 
   const [value, setValue] = useState(null)
   const [nextBlock, setNextBlock] = useState(null)
@@ -62,6 +65,10 @@ const TreasurySplitter = ({element}) => {
       setNextBlock(await blockchainCall(treasurySplitterManager.contract.methods.nextSplitBlock))
     })
   }, [element])
+
+  async function executeSplit() {
+    return blockchainCall(element.organizations[0].components.treasurySplitterManager.contract.methods.splitTreasury, account)
+  }
 
   return (
     <div className={style.OrgMainThingsCard}>
@@ -80,7 +87,8 @@ const TreasurySplitter = ({element}) => {
       <div className={style.OrgThingsInfoContent}>
         <b>Next</b>
         {nextBlock === null && <CircularProgress/>}
-        {nextBlock !== null && <p><a href={getNetworkElement({context, chainId}, "etherscanURL") + "block/" + nextBlock} target="_blank">#{nextBlock}</a></p>}
+        {nextBlock !== null && parseInt(block) < parseInt(nextBlock) && <p><a href={getNetworkElement({context, chainId}, "etherscanURL") + "block/" + nextBlock} target="_blank">#{nextBlock}</a></p>}
+        {nextBlock !== null && parseInt(block) >= parseInt(nextBlock) && <p><ActionAWeb3Button onClick={executeSplit}>Split Treasury</ActionAWeb3Button></p>}
       </div>
       <div className={style.OrgThingsTitle}>
         <h6>Distribution</h6>
@@ -278,7 +286,35 @@ const Investments = ({element}) => {
 const Delegations = ({element}) => {
   const context = useEthosContext()
 
-  const { chainId } = useWeb3()
+  const useWeb3Data = useWeb3()
+
+  const { chainId, web3 } = useWeb3Data
+
+  const [open, setOpen] = useState()
+
+  const [list, setList] = useState()
+
+  const [value, setValue] = useState()
+  const [val, setVal] = useState()
+
+  useEffect(() => {
+    setTimeout(async function() {
+        var ethereumPrice = formatNumber(await getEthereumPrice({context}))
+        var val = await web3.eth.getBalance(element.organizations[0].components.treasurySplitterManager.address)
+        val = parseFloat(fromDecimals(val, 18, true))
+
+        val = val * 0.4
+        val = ethereumPrice * val
+        setValue("$ " + formatMoney(val, 2))
+        setVal(val)
+    })
+    setTimeout(async function() {
+      window.delegationsManager = await element.organizations[0].components.delegationsManager.contract
+      setList(await getDelegationsOfOrganization({...useWeb3Data, context}, element))
+    })
+  }, [])
+
+  var total = numberToString(1e18)
 
   return (<div className={style.OrgPartView}>
     <div className={style.OrgPartTitle}>
@@ -286,33 +322,26 @@ const Delegations = ({element}) => {
       <ExtLinkButton text="Etherscan" href={`${getNetworkElement({context, chainId}, 'etherscanURL')}/tokenholdings?a=${element.components.delegationsManager.address}`}/>
     </div>
     <div className={style.OrgPartInfo}>
-      <p><b>Estimated Next grant</b><br></br>$50,000</p>
+      <p><b>Estimated Next grant</b><br></br>{!value ? <CircularProgress/> : value}</p>
     </div>
     <div className={style.OrgPartInfo}>
-      <p><b>Active Delegations</b><br></br>5</p>
+      <p><b>Active Delegations</b><br></br>{!list ? <CircularProgress/> : list.length}</p>
     </div>
     <div className={style.OrgPartInfoB}>
-      <RegularButtonDuo/>
+      <RegularButtonDuo onClick={() => setOpen(!open)}>{open ? "Close" : "Open"}</RegularButtonDuo>
     </div>
-    <div className={style.DelegationsSection}>
+    {open && <div className={style.DelegationsSection}>
      <h6>Grant chart</h6>
-      <div className={style.DelegationsSectionOne}>
-        <figure><img src={`${process.env.PUBLIC_URL}/img/test.jpg`}></img></figure>
-        <Upshots/>
-      </div>
-      <div className={style.DelegationsSectionOne}>
-        <figure><img src={`${process.env.PUBLIC_URL}/img/test.jpg`}></img></figure>
-        <Upshots/>
-      </div>
-      <div className={style.DelegationsSectionOne}>
-        <figure><img src={`${process.env.PUBLIC_URL}/img/test.jpg`}></img></figure>
-        <Upshots/>
-      </div>
-      <div className={style.DelegationsSectionOne}>
-        <figure><img src={`${process.env.PUBLIC_URL}/img/test.jpg`}></img></figure>
-        <Upshots/>
-      </div>
-    </div>
+     {!list && <CircularProgress/>}
+     {list && list.length === 0 && <h4>No Delegations right now!</h4>}
+     {list && list.length > 0 && list.map(it => <Link key={it.key} to={`/guilds/dapp/delegations/${it.delegationAddress}`}>
+        <div className={style.DelegationsSectionOne}>
+          <LogoRenderer input={it}/>
+          <Upshots title={it.name} total={total} value={it.percentage}/>
+          {false && val !== undefined && val !== null && val !== 0 && <span>{"$ " + formatMoney(val * (parseFloat(fromDecimals(it.percentage, 18, true))), 2)}</span>}
+        </div>
+      </Link>)}
+    </div>}
   </div>)
 }
 
@@ -375,7 +404,7 @@ export default ({element}) => {
     <TreasurySplitter element={element}/>
     <Farmings element={element}/>
     <Investments element={element}/>
-    {false && <Delegations element={element}/>}
+    <Delegations element={element}/>
     <Inflation element={element}/>
   </>)
 }

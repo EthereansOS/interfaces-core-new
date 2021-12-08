@@ -4,30 +4,16 @@ import { Typography } from '@ethereansos/interfaces-ui'
 
 import style from '../../../all.module.css'
 
-const ViewProperties = (props) => {
+const ViewProperties = ({item}) => {
+  if(!item.attributes || item.attributes.length === 0) {
+    return <></>
+  }
   return (
     <div className={style.ViewProperties}>
-      <div className={style.ViewProperty}>
-        <p>Background:</p>
-        <h6>purple</h6>
-      </div>
-      <div className={style.ViewProperty}>
-        <p>Background:</p>
-        <h6>purple</h6>
-      </div>
-      <div className={style.ViewProperty}>
-        <p>Background:</p>
-        <h6>purple</h6>
-      </div>
-      <div className={style.ViewProperty}>
-        <p>Line extension:</p>
-        <h6>Marco Vasapollo</h6>
-      </div>
-      <div className={style.ViewProperty}>
-        <p>Background:</p>
-        <h6>purple</h6>
-      </div>
-      
+      {item.attributes.map(attr => <div key={attr.name} className={style.ViewProperty}>
+        <p>{attr.trait_type}:</p>
+        <h6>{attr.value || '\u00a0'}</h6>
+      </div>)}
     </div>
   )
 }

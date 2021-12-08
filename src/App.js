@@ -9,7 +9,7 @@ import {
   GlobalContextsProvider,
 } from '@ethereansos/interfaces-core'
 
-import { ThemeSelectorContextProvider } from './logic/uiUtilities'
+import { ThemeSelectorContextProvider, GlobalModalContextProvider, TransactionModalContextProvider } from './logic/uiUtilities'
 
 import appPlugin from './plugins'
 import AppRouter from './router'
@@ -21,6 +21,16 @@ function App() {
   return (
       <InitContextProvider
         initMethod={async ({ setReady, setValue }) => {
+
+          var localContext
+          try {
+            localContext = await (await fetch(
+              `${process.env.PUBLIC_URL}/data/context.local.json`
+            )).json()
+          } catch(e) {
+            console.clear && console.clear()
+          }
+
           var response = await fetch(
             `${process.env.PUBLIC_URL}/data/context.json`
           )
@@ -30,7 +40,15 @@ function App() {
           )
           context = {...context, ...(await response.json())}
 
-          setValue('context', context)
+          try {
+            response = await fetch(
+              `${process.env.PUBLIC_URL}/data/context.local.json`
+            )
+            context = {...context, ...(await response.json())}
+          } catch(e) {
+          }
+
+          setValue('context', {...context, localContext})
           setReady()
         }}
         Loading={() => <div>Loading...</div>}
@@ -40,7 +58,11 @@ function App() {
             <GlobalContextsProvider>
               <HashRouter>
                 <ThemeSelectorContextProvider>
-                  <AppRouter/>
+                  <GlobalModalContextProvider>
+                    <TransactionModalContextProvider>
+                      <AppRouter/>
+                    </TransactionModalContextProvider>
+                  </GlobalModalContextProvider>
                 </ThemeSelectorContextProvider>
               </HashRouter>
             </GlobalContextsProvider>

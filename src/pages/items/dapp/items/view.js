@@ -9,35 +9,41 @@ import { blockchainCall } from '@ethereansos/interfaces-core'
 import DappSubMenu from '../../../../components/Global/DappSubMenu'
 import ViewCover from '../../../../components/Items/ViewCover'
 import ViewDescription from '../../../../components/Items/ViewDescription'
+import Unwrap from '../../../../components/Items/Unwrap'
 import ViewProperties from '../../../../components/Items/ViewProperties'
 import ViewBasics from '../../../../components/Items/ViewBasics'
 import SubTrade from '../SubSections/sub-trade.js'
 import SubCollectionExplore from '../SubSections/sub-collection-explore.js'
+import Wrap from '../../../../components/Items/Wrap'
 
-import style from '../items-main-sections.module.css'
+import style from '../../../../all.module.css'
 
 const ItemView = () => {
-  const location = useLocation()
+
+  const { pathname } = useLocation()
+
   const context = useEthosContext()
+
   const { chainId, web3, account, newContract, getGlobalContract } = useWeb3()
+
   const [item, setItem] = useState(null)
 
   useEffect(() => {
     setTimeout(async () => {
-      var itemId = location.pathname.substring(location.pathname.lastIndexOf('/') + 1)
+      var itemId = pathname.substring(pathname.lastIndexOf('/') + 1)
       setItem(null)
       var item;
       if(itemId.toLowerCase().indexOf('0x') === -1) {
         item = newContract(context.ItemMainInterfaceABI, await blockchainCall(getGlobalContract("itemProjectionFactory").methods.mainInterface))
       }
-      loadItem({context, web3, account, newContract}, itemId, item).then(setItem).catch(() => setItem(undefined))
+      loadItem({chainId, context, web3, account, newContract, getGlobalContract}, itemId, item).then(setItem).catch(() => setItem(undefined))
     })
-  }, [chainId, account, location.pathname])
+  }, [pathname])
 
   return (
     <div className={style.SingleContentPage}>
       {item === null && <CircularProgress/>}
-      {item === undefined && <h1>No item found with provided Id or address. Maybe wrong network?</h1>}
+      {item === undefined && <h1>No item found. 👀 Wrong network? 👀 </h1>}
       {item && <>
         <div className={style.CollectionLeft}>
           <ViewCover item={item}/>
@@ -47,7 +53,11 @@ const ItemView = () => {
         </div>
         <div className={style.CollectionRight}>
           <SubTrade item={item}/>
-          <DappSubMenu item={item}/>
+          <div className={style.WrapUnwrapBox}>
+            {item?.wrapper && <Wrap item={item}/>}
+            {item?.wrapper && <Unwrap item={item} wrapper={item.wrapper}/>}
+          </div>
+          {item.collectionData.mintOperator === account && <DappSubMenu item={item} voices={item.collectionData.mintOperator === account ? [{label : 'Manage', to : `/items/dapp/create/item/${item.address}`}] : undefined}/>}
           <SubCollectionExplore item={item}/>
         </div>
       </>}

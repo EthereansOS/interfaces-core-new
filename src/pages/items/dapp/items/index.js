@@ -2,7 +2,7 @@ import React from 'react'
 
 import ExploreItems from '../../../../components/Items/ExploreItems/index.js'
 
-import style from '../items-main-sections.module.css'
+import style from '../../../../all.module.css'
 
 const ItemsList = ({wrappedOnly}) => (
   <div className={style.ItemsExploreMain}>

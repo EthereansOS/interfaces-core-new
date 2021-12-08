@@ -11,7 +11,7 @@ import ViewDescription from '../../../../components/Items/ViewDescription/'
 import ViewInfoBox from '../../../../components/Items/ViewInfoBox/'
 import SubItemsExplore from '../SubSections/sub-items-explore.js'
 
-import style from '../items-main-sections.module.css'
+import style from '../../../../all.module.css'
 
 const CollectionView = () => {
   const location = useLocation()
@@ -23,7 +23,7 @@ const CollectionView = () => {
     setTimeout(async () => {
       var collectionId = location.pathname.substring(location.pathname.lastIndexOf('/') + 1)
       setCollection(null)
-      loadCollection({context, web3, account, newContract}, collectionId, getGlobalContract("itemProjectionFactory")).then(setCollection).catch(() => setCollection(undefined))
+      loadCollection({chainId, context, web3, account, newContract, getGlobalContract}, collectionId, getGlobalContract("itemProjectionFactory")).then(setCollection).catch(() => setCollection(undefined))
     })
   }, [chainId, account])
 
@@ -38,7 +38,7 @@ const CollectionView = () => {
           </div>
           <div className={style.CollectionRight}>
             <ViewInfoBox collection={collection}/>
-            <DappSubMenu item={collection}/>
+            <DappSubMenu item={collection} voices={collection.mintOperator === account ? [{label : 'Manage', to : `/items/dapp/create/item/${collection.id}`}] : undefined}/>
             <SubItemsExplore collection={collection}/>
           </div>
         </>}

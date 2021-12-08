@@ -179,7 +179,7 @@ export async function getOrganization({ context, web3, account, getGlobalContrac
 
     organization.organizations = await getAllOrganizations({ context, web3, account, getGlobalContract, newContract }, organization)
 
-    //organization.proposals = await getProposals({ context, newContract }, organization)
+    //organization.proposals = await getProposals({ account, web3, context, newContract }, organization)
 
     organization.allProposals = organization.proposals || []
     try {
@@ -191,11 +191,14 @@ export async function getOrganization({ context, web3, account, getGlobalContrac
     return organization
 }
 
-export async function retrieveAllProposals({ context, newContract }, organization) {
+export async function retrieveAllProposals({ context, web3, account, chainId, getGlobalContract, newContract }, organization) {
     if(organization.type === 'delegation') {
-        return await retrieveDelegationProposals({context, newContract}, organization)
+        return await retrieveDelegationProposals({ context, web3, account, chainId, getGlobalContract, newContract }, organization)
     }
-    var proposals = await getProposals({ context, newContract }, organization)
+    if(!organization.proposalModels) {
+        organization = await getOrganization({ account, web3, context, newContract }, organization.address, organization)
+    }
+    var proposals = await getProposals({ web3, account, context, newContract }, organization)
     await Promise.all((organization.organizations || []).map(async org => proposals.push(...(await getProposals({context, newContract}, org)))))
     return proposals
 }
@@ -404,6 +407,7 @@ async function getSurveylessProposals({context}, organization) {
     if(!organization || organization.proposalModels.length === 0) {
         return []
     }
+    organization.proposalModels = (await blockchainCall(organization.contract.methods.proposalModels)).map(it => ({...it}))
     organization.proposalModels.forEach((it, i) => it.modelIndex = i)
     var surveyless = organization.proposalModels.filter(it => it.isPreset)
     var metadatas = await Promise.all(surveyless.map(async it => {
@@ -459,7 +463,7 @@ var percentages = {
     ]
 }
 
-var wellknownPresets = {
+export var wellknownPresets = {
     'QmPkZjrGUpNSP19oWhdRfoy9YdP7fL9AJtzmgiFR2sekyT' : {
         presetValues : [
             "0.5 %",
@@ -484,6 +488,16 @@ var wellknownPresets = {
         ]
     },
     'QmVGor81bynT1GLQoWURiTSdPmPEDbe8eC5znNDHfTfkfT' : percentages,
+    'QmUMFxQjd3zj7oVGpDPGDom6ogYu1b9o6CnKAYFSaCsmuU' : {
+        presetValues : [
+            "0.05 OS",
+            "0.1 OS",
+            "1 OS",
+            "5 OS",
+            "10 OS",
+            "100 OS"
+        ]
+    }
 }
 
 async function getSurveysByModels({context}, organization) {
@@ -552,7 +566,7 @@ async function getSurveysByModels({context}, organization) {
     return surveysProposals
 }
 
-async function getProposals({context}, organization) {
+async function getProposals({account, web3, newContract, context}, organization) {
     var proposals = [
         ...(await getSurveylessProposals({context}, organization)),
         ...(await getSurveysByModels({context}, organization))
@@ -560,47 +574,76 @@ async function getProposals({context}, organization) {
     if(proposals.length > 0) {
         return proposals
     }
-    try {
-        if (organization.proposalModels && organization.proposalModels.length > 0) {
-            proposals = await Promise.all(organization.proposalModels.map(async (it, i) => ({...it, index: i, proposalsManager : organization.components.proposalsManager, organization })))
-            var toDiscard = {}
-            proposals.forEach(it => it.proposals = it.presetProposals.filter(it => it !== VOID_BYTES32))
-            proposals.forEach(it => it.proposals.forEach(proposalId => toDiscard[proposalId] = true))
-            var args = {
-                address: organization.address,
-                fromBlock: '0x0',
-                toBlock: 'latest',
-                topics: [
-                    web3Utils.sha3('Proposed(uint256,uint256,bytes32)')
-                ]
-            }
 
-            var logs = await sendAsync(organization.contract.currentProvider, 'eth_getLogs', args)
-            logs = logs.map(it => ({
-                modelIndex: abi.decode(["uint256"], it.topics[1])[0],
-                proposalId: it.topics[3]
-            }))
-            .filter(it => !toDiscard[it.proposalId])
-            logs.forEach(({ modelIndex, proposalId }) => proposals[modelIndex].proposals.push(proposalId))
-            await Promise.all(proposals.filter(it => it.isPreset).map(async proposal => {
-                var args = {
-                    address: organization.address,
-                    fromBlock: '0x0',
-                    toBlock: 'latest',
-                    topics: [
-                        web3Utils.sha3('ProposalTerminated(bytes32,bool,bytes)'),
-                        proposal.proposals.filter(it => it.proposalId)
-                    ]
-                }
-                var logs = await sendAsync(organization.contract.currentProvider, 'eth_getLogs', args)
-                logs = logs.filter(it => abi.decode(["bool", "bytes"], it.data)[0][0]).reverse()[0]
-                var proposalId = logs?.topics[1]
-                proposalId && (proposal.lastChosenValue = proposal.presetValues[proposal.presetProposals.indexOf(proposalId)])
-            }))
-        }
-    } catch(e) {
-        console.log(e)
+    const provider = organization.components.proposalsManager.contract.currentProvider
+
+    const args = {
+        address : organization.components.proposalsManager.address,
+        topics : [
+            web3Utils.sha3('ProposalCreated(address,address,bytes32)')
+        ],
+        fromBlock : '0x0',
+        toBlock : 'latest'
     }
+    var logs = await sendAsync(provider, 'eth_getLogs', args)
+    var proposalIds = logs.map(it => it.topics[3]).filter((it, i, arr) => arr.indexOf(it) === i)
+
+    proposals = await blockchainCall(organization.components.proposalsManager.contract.methods.list, proposalIds)
+
+    var proposalsConfiguration = await blockchainCall(organization.components.proposalsManager.contract.methods.configuration)
+
+    var votingTokens = await Promise.all(proposalsConfiguration.objectIds.map((_, i) => decodeProposalVotingToken({account, web3, context, newContract}, VOID_BYTES32, proposalsConfiguration.collections[i], proposalsConfiguration.objectIds[i], proposalsConfiguration.weights[i])))
+
+    proposals = proposals.map((it, i) => ({ key: `prop_${i}_${proposalIds[i]}`, proposalsConfiguration, proposalIds: [proposalIds[i]], proposalsManager: organization.components.proposalsManager.contract, isPreset: false, isSurveyless: false, organization, id: proposalIds[i], proposalId: proposalIds[i], proposalType: 'normal', type: 'survey', ...it}))
+
+    proposals = await Promise.all(proposals.map(async it => {
+        try {
+            var data = await getData({ context, provider }, it.codeSequence[0])
+
+            var uri = formatLink({ context }, data.uri)
+
+            var metadata = await (await fetch(uri)).json()
+
+            it = { ...it, uri, ...data, ...metadata}
+        } catch(e) {
+        }
+        try {
+            var data = await getData({ context, provider }, it.codeSequence[0])
+
+            var additionalUri = formatLink({ context }, data.additionalUri)
+
+            var metadata = await (await fetch(additionalUri)).json()
+
+            it = { ...it, additionalUri, ...metadata}
+        } catch(e) {
+        }
+        return {
+            ...it,
+            proposalsConfiguration : {
+                ...proposalsConfiguration,
+                votingTokens
+            }
+        }
+    }))
+
+    proposals = [{
+        name : "OS-UP",
+        proposalType : "normal",
+        type : "survey",
+        subProposals : proposals,
+        organization,
+        proposalsConfiguration : {
+            ...proposalsConfiguration,
+            votingTokens
+        },
+        proposalsManager: organization.components.proposalsManager.contract,
+        isPreset : false,
+        proposalIds,
+        votingTokens,
+        isSurveyless : false,
+        key : 'prop_0_0'
+    }]
+
     return proposals
 }
 
@@ -632,7 +675,7 @@ export async function withdrawProposal({account}, proposal, proposalId, address,
     await blockchainCall(proposal.proposalsManager.methods.withdrawAll, [proposalId], address || account, voteOrWithdraw || false)
 }
 
-export async function surveylessIsTerminable({ account, newContract, context}, proposal, proposalId) {
+export async function checkSurveyStatus({ account, newContract, context}, proposal, proposalId, addressesKey) {
     var proposalData = (await blockchainCall(proposal.proposalsManager.methods.list, [proposalId]))[0]
 
     var values = [
@@ -665,59 +708,21 @@ export async function surveylessIsTerminable({ account, newContract, context}, p
 
     var data = abi.encode([`tuple(${types.join(',')})`], [values])
 
-    var results = await Promise.all(proposalData.validatorsAddresses.map(async validator => {
+    var results = await Promise.all(proposalData[`${addressesKey || 'canTerminate'}Addresses`].map(async validator => {
         var checker = newContract(context.IProposalCheckerABI, validator)
         var result = await blockchainCall(checker.methods.check, proposal.proposalsManager.options.address, proposalId, data, account, account, {from : proposal.proposalsManager.address})
         return result
     }))
 
-    return results.filter(it => !it).length === 0
+    return addressesKey === 'validators' ? results.filter(it => !it).length === 0 : results.filter(it => it).length > 0
 }
 
-export async function surveyIsTerminable({ account, newContract, context}, proposal, proposalId) {
-    var proposalData = (await blockchainCall(proposal.proposalsManager.methods.list, [proposalId]))[0]
+export function surveylessIsTerminable({ account, newContract, context}, proposal, proposalId) {
+    return checkSurveyStatus({ account, newContract, context}, proposal, proposalId, "validators")
+}
 
-    var values = [
-        proposalData.proposer,
-        proposalData.codeSequence,
-        proposalData.creationBlock,
-        proposalData.accept,
-        proposalData.refuse,
-        proposalData.triggeringRules,
-        proposalData.canTerminateAddresses,
-        proposalData.validatorsAddresses,
-        proposalData.validationPassed,
-        proposalData.terminationBlock,
-        proposalData.votingTokens
-    ]
-
-    if(proposalData.terminationBlock !== '0') {
-        return false
-    }
-
-    var types = [
-        "address",
-        "address[]",
-        "uint256",
-        "uint256",
-        "uint256",
-        "address",
-        "address[]",
-        "address[]",
-        "bool",
-        "uint256",
-        "bytes"
-    ]
-
-    var data = abi.encode([`tuple(${types.join(',')})`], [values])
-
-    var results = await Promise.all(proposalData.canTerminateAddresses.map(async validator => {
-        var checker = newContract(context.IProposalCheckerABI, validator)
-        var result = await blockchainCall(checker.methods.check, proposal.proposalsManager.options.address, proposalId, data, account, account, {from : proposal.proposalsManager.address})
-        return result
-    }))
-
-    return results.filter(it => it).length > 0
+export function surveyIsTerminable({ account, newContract, context}, proposal, proposalId) {
+    return checkSurveyStatus({ account, newContract, context}, proposal, proposalId)
 }
 
 export async function retrieveProposalModelMetadata({context}, proposal) {
@@ -838,7 +843,7 @@ var wellKnownLinks = {
     'QmVGor81bynT1GLQoWURiTSdPmPEDbe8eC5znNDHfTfkfT' : uint256EntryTypePercentage,
 }
 
-export async function proposeBuy({}, proposal, tokens) {
+export async function proposeBuy({ context, ipfsHttpClient }, proposal, additionalMetadata, tokens) {
 
     var addresses = []
     try {
@@ -850,10 +855,12 @@ export async function proposeBuy({}, proposal, tokens) {
         throw "You must choose 4 different ERC20 tokens"
     }
 
+    var additionalMetadataUri = await uploadMetadata({ context, ipfsHttpClient }, additionalMetadata)
+
     var create = [{
         codes : [{
             location : abi.decode(["address"], abi.encode(["uint256"], [proposal.modelIndex]))[0],
-            bytecode : abi.encode(["address[]"], [addresses])
+            bytecode : abi.encode(["string", "address[]"], [additionalMetadataUri, addresses])
         }],
         alsoTerminate : false
     }]
@@ -861,7 +868,8 @@ export async function proposeBuy({}, proposal, tokens) {
     await blockchainCall(proposal.proposalsManager.methods.batchCreate, create)
 }
 
-export async function proposeSell({context, newContract}, proposal, tokens, percentages) {
+export async function proposeSell({context, ipfsHttpClient, newContract}, proposal, additionalMetadata, tokens, percentages) {
+
     var addresses = []
     try {
         addresses = tokens.map(it => it && it.address).filter(it => it !== undefined && it !== null).filter((it, i, array) => array.indexOf(it) === i)
@@ -883,10 +891,12 @@ export async function proposeSell({context, newContract}, proposal, tokens, perc
         throw "Percentages must be 5 numbers greater than zero and less than or equal to 5%"
     }
 
+    var additionalMetadataUri = await uploadMetadata({ context, ipfsHttpClient }, additionalMetadata)
+
     var create = [{
         codes : [{
             location : abi.decode(["address"], abi.encode(["uint256"], [proposal.modelIndex]))[0],
-            bytecode : abi.encode(["address[]", "uint256[]"], [addresses, percentages])
+            bytecode : abi.encode(["string", "address[]", "uint256[]"], [additionalMetadataUri, addresses, percentages])
         }],
         alsoTerminate : false
     }]
@@ -955,21 +965,21 @@ export async function tokensToWithdraw({account, web3, context, newContract}, pr
     return {tw, accs, refs}
 }
 
-export async function readGovernanceRules({}, proposal, proposalId) {
+export async function readGovernanceRules({ context }, proposal, proposalId) {
     var proposalData = (await blockchainCall(proposal.proposalsManager.methods.list, [proposalId]))[0]
 
-    var validators = await extractRules({provider : proposal.proposalsManager.currentProvider}, proposalData.validators, "validation", proposalData)
-    var terminates = await extractRules({provider : proposal.proposalsManager.currentProvider}, proposalData.canTerminates, "termination", proposalData)
+    var validators = await extractRules({context, provider : proposal.proposalsManager.currentProvider}, proposalData.validators, "validation", proposalData)
+    var terminates = await extractRules({context, provider : proposal.proposalsManager.currentProvider}, proposalData.canTerminates, "termination", proposalData)
 
     return {validators, terminates}
 }
 
-export async function extractRules({provider}, rules, type, proposalData) {
+export async function extractRules({context, provider}, rules, type, proposalData) {
     if(!rules || rules.length === 0) {
         return []
     }
     var convertedRules = [];
-    convertedRules = await Promise.all(rules.filter(it => it !== VOID_ETHEREUM_ADDRESS).map(it => getData({provider}, it)))
+    convertedRules = await Promise.all(rules.filter(it => it !== VOID_ETHEREUM_ADDRESS).map(it => getData({context, provider}, it)))
     return await cleanRules(convertedRules, type, proposalData);
 }
 
@@ -989,7 +999,7 @@ async function cleanRule(rule, type, proposalData) {
 var cleaners = {
     hardCap(rule, type) {
         var val = fromDecimals(rule.valueUint256, rule.discriminant ? 16 : 18)
-        var text = "Threshold"
+        var text = "Max Cap"
         var value = val + (rule.discriminant ? "%" : " votes")
         return {text, value}
     },

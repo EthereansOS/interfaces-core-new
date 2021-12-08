@@ -7,66 +7,69 @@ import ModalStandard from '../ModalStandard'
 import ObjectsLists from '../ObjectsLists'
 import LogoRenderer from '../LogoRenderer'
 
-const TokenInputRegular = ({onElement, tokens, tokenOnly, noETH}) => {
+const TokenInputRegular = ({onElement, onlySelections, tokens, tokenOnly, noETH, selected, outputValue, disabled, noBalance}) => {
 
-    const { chainId, account } = useWeb3()
+    const { block, account } = useWeb3()
 
-    const [element, setElement] = useState(null)
+    const element = tokens && tokens.length === 1 ? tokens[0] : selected || null
 
     const [balance, setBalance] = useState(null)
 
     const [modalIsOpen, setModalIsOpen] = useState(false)
 
-    const [value, setValue] = useState(null)
+    const [value, setValue] = useState(outputValue)
 
     const [max, setMax] = useState(false)
 
     useEffect(() => {
-        setElement(null)
-        tokens && tokens.length === 1 && setElement(tokens[0])
-    }, [chainId, tokens])
-
-    useEffect(() => onElement && onElement(element, balance || '0', (!element ? '0' : max ? balance : toDecimals(value, element.decimals)) || '0'), [balance, value, max])
+        outputValue && setValue(outputValue)
+    }, [outputValue])
 
     useEffect(() => {
-        setBalance(null)
+        !element && setBalance(null)
         element && !element.mainInterface && blockchainCall(element.contract.methods.balanceOf, account).then(setBalance)
         element && element.mainInterface && blockchainCall(element.contract.methods.balanceOf, account, element.id).then(setBalance)
-    }, [account, element])
+    }, [account, element, block])
 
     useEffect(() => {
+        if(max && value === balance) {
+            return
+        }
         setMax(false)
     }, [value])
 
+    useEffect(() => {
+        onElement && onElement(element, balance || '0', (!element ? '' : max ? balance : value === '0' ? '' : toDecimals(value, element.decimals)) || '')
+    }, [balance, value, max])
+
     var onClick = el => {
-        setElement(el)
+        onElement && onElement(el, balance || '0', (!el ? '0' : max ? balance : toDecimals(value, el.decimals)) || '0')
         setModalIsOpen(false)
     }
+
+    const selections = onlySelections || ['ERC-20', 'Items V1', 'Items V2']
+    const properties = selections.reduce((acc, it) => ({...acc, [it] : {noETH : noETH === true, renderedProperties:{onClick}}}), {})
 
     return modalIsOpen ? (
         <ModalStandard close={() => setModalIsOpen(false)}>
             <ObjectsLists
                 list={tokens}
-                onlySelections={['ERC-20', 'Items V1', 'Items V2']}
-                selectionProperties={{
-                    'ERC-20' : {noETH, renderedProperties:{onClick}},
-                    'Items V1' : {renderedProperties:{onClick}},
-                    'Items V2' : {renderedProperties:{onClick}}
-                }}/>
+                onlySelections={selections}
+                selectionProperties={properties}/>
         </ModalStandard>
     ) : (
         <div className={style.TradeMarketTokenAll}>
             <div className={style.TradeMarketToken}>
                 <a onClick={() => (!tokens || tokens.length > 1) && setModalIsOpen(true)} className={style.TradeMarketTokenSelector}>
                     <LogoRenderer input={element}/>
-                    {(!tokens || tokens.length > 1) && <span>{element?.symbol || ''} ▼</span>}
+                    <span>{element?.symbol || ''}{(!tokens || tokens.length > 1) ? <span> ▼</span> : ''}</span>
                 </a>
                 {!tokenOnly && <div className={style.TradeMarketTokenAmount}>
-                    <input type="number" placeholder="0.0" value={element && max ? fromDecimals(balance, element.decimals, true) : value} onChange={e => void(setMax(false), setValue(e.currentTarget.value))}/>
+                    <input disabled={disabled} type="number" placeholder="0.0" min="0.000000000000000001" value={element && max ? fromDecimals(balance, element.decimals, true) : value === '0' ? "" : value} onChange={e => void(setMax(false), setValue(e.currentTarget.value))}/>
                 </div>}
             </div>
-            {!tokenOnly && element && balance === null && <CircularProgress/>}
-            {!tokenOnly && element && balance !== null && <a onClick={() => setMax(true)} className={style.TradeMarketTokenBalance}>
+            {!noBalance && !tokenOnly && element && balance === null && <CircularProgress/>}
+            {element && balance !== null && !noBalance && !tokenOnly && <a onClick={() => !disabled && setMax(true)} className={style.TradeMarketTokenBalance}>
                 Balance: {fromDecimals(balance, element.decimals)} {element.symbol}
             </a>}
         </div>

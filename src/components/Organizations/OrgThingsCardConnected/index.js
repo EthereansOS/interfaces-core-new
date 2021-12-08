@@ -17,7 +17,7 @@ const OrgThingsCardTokens = ({title, elements}) => {
         <h6>{title}</h6>
       </div>
       <div className={style.OrgThingsRegularInfoPictureCarousel}>
-        {elements.map(it => <a key={it.address} target="_blank" href={`${getNetworkElement({context, chainId}, 'etherscanURL')}/token/${it.address}`}>
+        {elements.map(it => <a key={it.address} target="_blank" href={`${getNetworkElement({context, chainId}, 'etherscanURL')}/token/${it.interoperableInterface?.options.address || it.address}`}>
           <LogoRenderer input={it}/>
         </a>)}
       </div>

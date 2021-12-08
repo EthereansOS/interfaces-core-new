@@ -1,15 +1,43 @@
-import React, { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
+
+import { useWeb3, web3States, truncatedWord, useEthosContext, abi, web3Utils, sendAsync, blockchainCall, formatLink } from '@ethereansos/interfaces-core'
+import { ethers } from 'ethers'
+import LogoRenderer from '../LogoRenderer'
+import {Link} from 'react-router-dom'
+
+import makeBlockie from 'ethereum-blockies-base64'
+
 import style from '../../../all.module.css'
-import { useWeb3, web3States, truncatedWord, useEthosContext } from '@ethereansos/interfaces-core'
 
 const Web3Connect = () => {
   const context = useEthosContext()
-  const { account, connectionStatus, setConnector } = useWeb3();
-  function triggerConnect() {
-    var location = window.location.href.toString();
-    connectionStatus === web3States.NOT_CONNECTED && (window.location.href = (location.lastIndexOf('/') === location.length - 1 ? location.substring(0, location.length - 1) : location) + '/dapp');
-    connectionStatus === web3States.CONNECTED && void((window.location.href = window.location.href.split('/#')[0] + '/#/'), setTimeout(() => void(setConnector(null), window.localStorage.removeItem("connector"))));
-  }
+
+  const { chainId, account, connectionStatus, setConnector, web3, newContract } = useWeb3()
+
+  const [ensData, setEnsData] = useState()
+
+  useEffect(() => {
+    setTimeout(async () => {
+      const address = account
+      if(ensData && ensData.account === account) {
+        return
+      }
+      var name
+      try {
+        const ethersProvider = new ethers.providers.Web3Provider(web3.currentProvider)
+        name = await ethersProvider.lookupAddress(address)
+      } catch(e) {
+        var index = e.message.split('\n')[0].indexOf('value="')
+        if(index !== -1) {
+          name = e.message.substring(index + 7)
+          name = name.substring(0, name.indexOf("\""))
+        }
+      }
+      name && setEnsData(oldValue => ({...oldValue, name, account}))
+    })
+  }, [account, chainId, ensData])
+
+  const blockie = !ensData?.name ? makeBlockie(account) : undefined
 
   return (
       <div className={style.Web3Connect}>
@@ -18,10 +46,10 @@ const Web3Connect = () => {
           <img src={`${process.env.PUBLIC_URL}/img/ethereum.png`}></img>
           <p>Ethereum <span>▼</span></p>
         </a>*/}
-        <a href="javascript:;" onClick={triggerConnect} className={style.Web3ConnectWallet}>
-          <img src={`${process.env.PUBLIC_URL}/img/ethereum.png`}></img>
-          <p>{connectionStatus === web3States.NOT_CONNECTED ? "Connect" : truncatedWord({context, charsAmount : 5 }, account)}</p>
-        </a>
+        <Link to="/account/dapp" className={style.Web3ConnectWallet}>
+          <LogoRenderer noDotLink noFigure input={ensData?.name ? `//metadata.ens.domains/mainnet/avatar/${ensData?.name}` : blockie} defaultImage={blockie}/>
+          <p>{connectionStatus === web3States.NOT_CONNECTED ? "Connect" : truncatedWord({context, charsAmount : 19 }, ensData?.name || account)}</p>
+        </Link>
       </div>
   )
 }

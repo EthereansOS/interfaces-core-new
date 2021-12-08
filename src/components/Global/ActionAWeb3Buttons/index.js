@@ -7,7 +7,7 @@ import {preparePermit} from '../../../logic/ballot'
 
 import style from '../../../all.module.css'
 
-export default ({token, balance, value, other, buttonText, onClick, onPermitSignature, onSuccess}) => {
+export default ({token, balance, value, other, buttonText, onClick, onPermitSignature, onSuccess, noApproveNeeded}) => {
 
     const { account, chainId } = useWeb3()
 
@@ -23,6 +23,12 @@ export default ({token, balance, value, other, buttonText, onClick, onPermitSign
     async function refreshApprove() {
         setApproved(null)
         setLoading(false)
+        if(!token) {
+            return setApproved(false)
+        }
+        if(noApproveNeeded) {
+            return setApproved(true)
+        }
         var appr = false
         if(!token.mainInterface || token.passedAsERC20) {
             try {
@@ -33,6 +39,13 @@ export default ({token, balance, value, other, buttonText, onClick, onPermitSign
         } else {
             try {
                 appr = await blockchainCall(token.mainInterface.methods.isApprovedForAll, account, otherAddress)
+                if(!appr) {
+                    try {
+                        var allowance = await blockchainCall(token.contract.methods.allowance, account, otherAddress)
+                        appr = parseInt(balance) > 0 && parseInt(allowance) >= parseInt(balance)
+                    } catch(e) {
+                    }
+                }
             } catch(e) {
             }
         }
@@ -48,7 +61,7 @@ export default ({token, balance, value, other, buttonText, onClick, onPermitSign
         var errorMessage;
         try {
             var res = onClick(token, account, balance, value, other)
-            res && res.then && await res
+            res = res && res.then ? await res : res
             onSuccess && setTimeout(() => onSuccess(res))
         } catch(e) {
             errorMessage = e.message || e
@@ -64,7 +77,7 @@ export default ({token, balance, value, other, buttonText, onClick, onPermitSign
         var errorMessage;
         try {
             if(!token.mainInterface || token.passedAsERC20) {
-                await blockchainCall(token.contract.methods.approve, otherAddress, "0xffffffffffffffffffffff")
+                await blockchainCall(token.contract.methods.approve, otherAddress, await blockchainCall(token.contract.methods.totalSupply))
             } else {
                 await blockchainCall(token.mainInterface.methods.setApprovalForAll, otherAddress, true)
             }
@@ -88,10 +101,9 @@ export default ({token, balance, value, other, buttonText, onClick, onPermitSign
 
     return (
         <div className={style.ActionAWeb3Buttons}>
-            {!token?.mainInterface && approved !== null && <button disabled={parseInt(balance) === 0 || approved} className={style.ActionASide} onClick={performApprove}>Approve</button>}
-            {!token?.mainInterface || token?.passedAsERC20 && approved !== null && <button disabled={parseInt(balance) === 0 || approved} className={style.ActionASide} onClick={performApprove}>Approve</button>}
+            {approved !== null && <button disabled={parseInt(balance) === 0 || approved} className={style.ActionASide} onClick={performApprove}>Approve</button>}
             {(approved === null || loading) && <CircularProgress/>}
-            {!loading && <button disabled={parseInt(balance) === 0 || parseInt(value) === 0 || parseInt(value) > parseInt(balance) || (!approved && !token?.mainInterface)} onClick={performAction} className={style.ActionAMain}>{buttonText || 'Swap'}</button>}
+            {!loading && <button disabled={parseInt(balance) === 0 || parseInt(value) === 0 || parseInt(value) > parseInt(balance) || !approved} onClick={performAction} className={style.ActionAMain}>{buttonText || 'Swap'}</button>}
         </div>
     )
 }

@@ -5,14 +5,14 @@ import { Typography } from '@ethereansos/interfaces-ui'
 
 import style from '../../../all.module.css'
 
-const ExtLinkButton = (props) => {
+const ExtLinkButton = ({href, text}) => {
 
     function onClick() {
-        window.open(props.href, '_blank').focus();
+        window.open(href, '_blank').focus();
     }
 
     return (
-        <button onClick={onClick} className={style.ExtLinkButton}>{props.text || "Open"}</button>
+        <button onClick={onClick} className={style.ExtLinkButton}>{text || "Open"}</button>
     )
 }
 

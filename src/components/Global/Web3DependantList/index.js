@@ -25,7 +25,7 @@ export default ({discriminant, Renderer, emptyMessage, provider, searchText, ren
         els = els instanceof Array ? els : [els]
         setElements(els)
       } catch(e) {
-        console.error(e)
+        console.log(e)
         setError('Error while loading: ' + (e.message || e))
       }
     })
@@ -35,9 +35,18 @@ export default ({discriminant, Renderer, emptyMessage, provider, searchText, ren
 
   searchText && outputElements && (outputElements = outputElements.filter(element => element.name?.toLowerCase().indexOf(searchText.toLowerCase()) !== -1 || element.address?.toLowerCase().indexOf(searchText.toLowerCase()) !== -1 || element.symbol?.toLowerCase().indexOf(searchText.toLowerCase()) !== -1))
 
+  var message =
+  error
+    ? <h2>{error}</h2>
+    : emptyMessage !== undefined && emptyMessage !== null
+      ? typeof emptyMessage === 'string'
+        ? <h2>{emptyMessage}</h2>
+        : emptyMessage
+      : <h2>No elements to display</h2>
+
   return (!error && !outputElements)
     ? <CircularProgress/>
     : error || (outputElements && outputElements.length === 0 && !allowEmpty)
-      ? <h2>{error || (emptyMessage !== undefined && emptyMessage !== null ? emptyMessage : "No elements to display")}</h2>
-      : outputElements && rendererIsContainer ? <Renderer elements={outputElements} {...{...renderedProperties, refreshElements}}/> : outputElements.map((element, i) => <Renderer {...{...renderedProperties, refreshElements}} key={(i + "_" + (element.key || element.id || element.index))} element={element}/>)
+      ? message
+      : outputElements && rendererIsContainer ? <Renderer elements={outputElements} {...{refreshElements, ...renderedProperties}}/> : outputElements.map((element, i) => <Renderer {...{refreshElements, ...renderedProperties}} key={(i + "_" + (element.key || element.id || element.index || element.hash))} element={element}/>)
 }

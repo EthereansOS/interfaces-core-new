@@ -12,7 +12,7 @@ import Description from './description.js'
 
 import style from '../../../all.module.css'
 
-const MultiVoteBox = ({element, refreshElements}) => {
+const MultiVoteBox = ({element, refreshElements, forDelegationVote}) => {
 
     const context = useEthosContext()
     const {block, account, web3, newContract} = useWeb3()
@@ -78,11 +78,16 @@ const MultiVoteBox = ({element, refreshElements}) => {
       refreshData()
     }, [element, block, account])
 
+    function afterAction() {
+      refreshData()
+      setAddress(null)
+    }
+
     return (
       <div className={style.MultiVoteBox}>
         <div className={style.VoteList}>
           {element.presetProposals.filter(it => it !== VOID_BYTES32).length === 0
-            ? <ActionAWeb3Button onSuccess={refreshElements} onClick={() => createPresetProposals({}, element)}>Initialize</ActionAWeb3Button>
+            ? <>{!forDelegationVote && <ActionAWeb3Button onSuccess={refreshElements} onClick={() => createPresetProposals({}, element)}>Initialize</ActionAWeb3Button>}</>
             : <>
               {element.subProposals.map((it, i) => <VoteSelections
                 key={it.proposalId}
@@ -94,16 +99,17 @@ const MultiVoteBox = ({element, refreshElements}) => {
                   value : it.proposalId,
                   label : it.label,
                   votes : accepts && accepts[i],
-                  proposalId : it.proposalId
+                  proposalId : it.proposalId,
+                  forDelegationVote
                 }}/>)}
               {(value || (toWithdraw && toWithdraw.length > 0)) && <div className={style.Options}>
-                <ActionInfoSection hideAmmStuff onSettingsToggle={settings => setAddress(settings ? '' : null)}/>
+                <ActionInfoSection hideAmmStuff settings={address !== null} onSettingsToggle={settings => setAddress(settings ? '' : null)}/>
               </div>}
               {value && <RegularVoteBox
                 element={element}
                 address={address}
                 proposalId={value}
-                refresh={refreshData}
+                refresh={afterAction}
                 />}
               {address !== null &&
                 <div className={style.OptionOpen}>
@@ -112,9 +118,9 @@ const MultiVoteBox = ({element, refreshElements}) => {
                     <input type="text" value={address} onChange={e => setAddress(e.currentTarget.value)}/>
                   </label>
                 </div>}
-              {toWithdraw && toWithdraw.length > 0 && toWithdraw.filter(it => it.value !== '0').map(it => <div key={it.address} className={style.RegularVoteBoxStaked}>
+              {!forDelegationVote && toWithdraw && toWithdraw.length > 0 && toWithdraw.filter(it => it.value !== '0').map(it => <div key={it.address} className={style.RegularVoteBoxStaked}>
                 <p>{it.prettifiedValue} - {it.value} {it.symbol} staked</p>
-                <ActionAWeb3Button type="ExtraSmall" onSuccess={refreshData} onClick={() => withdrawProposal({account}, element, it.proposalId, address, false)}>Withdraw</ActionAWeb3Button>
+                <ActionAWeb3Button type="ExtraSmall" onSuccess={afterAction} onClick={() => withdrawProposal({account}, element, it.proposalId, address, false)}>Withdraw</ActionAWeb3Button>
               </div>)}
           </>}
         </div>
@@ -122,13 +128,16 @@ const MultiVoteBox = ({element, refreshElements}) => {
     )
   }
 
-var SurveyLess = ({element, refreshElements}) => {
+var SurveyLess = ({element, refreshElements, forDelegationVote}) => {
   return (<>
-      <Description description={element.description} title="Summary" className={style.DescriptionBig}/>
-      <Description description={element.rationale} title="Rationale and Motivations" className={style.DescriptionBig}/>
-      <Description description={element.specification} title="Specification" className={style.DescriptionBig}/>
+      <Description description={element.context} title="Context" className={style.DescriptionBig}/>
+      <Description description={element.summary} title="Summary" className={style.DescriptionBig}/>
+      <Description description={element.description} title="Description" className={style.DescriptionBig}/>
+      <Description description={element.motivations} title="Motivations" className={style.DescriptionBig}/>
+      <Description description={element.rationale} title="Rationale" className={style.DescriptionBig}/>
+      <Description description={element.specification} title="Specifications" className={style.DescriptionBig}/>
       <Description description={element.risks} title="Risks" className={style.DescriptionBig}/>
-      <MultiVoteBox element={element} refreshElements={refreshElements}/>
+      <MultiVoteBox element={element} refreshElements={refreshElements} forDelegationVote={forDelegationVote}/>
   </>)
 }
 

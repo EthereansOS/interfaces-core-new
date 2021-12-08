@@ -9,11 +9,10 @@ const ExploreOrganizations = ({elements}) => {
   return (
     <div className={style.OrgAllSingle}>
       {elements.map(element => (
-        <Link key={element.address} className={style.OrgSingle} to={`/governances/dapp/${element.type}/${element.address}`}>
+        <Link key={element.address} className={style.OrgSingle} to={`/guilds/dapp/${element.type}/${element.address}`}>
           <LogoRenderer input={element}/>
           <div className={style.OrgTitleEx}>
             <h6>{element.name}</h6>
-            
           </div>
        </Link>))}
     </div>

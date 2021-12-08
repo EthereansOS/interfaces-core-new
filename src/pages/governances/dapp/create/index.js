@@ -6,9 +6,9 @@ const Create = (props) => {
   return <DelegationsCreate {...props}/>
 }
 
-/*Create.menuVoice = {
+Create.menuVoice = {
   label : 'Create',
-  path : '/governances/dapp/create',
-}*/
+  path : '/guilds/dapp/create/:id',
+}
 
 export default Create

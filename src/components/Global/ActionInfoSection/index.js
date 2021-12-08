@@ -1,36 +1,59 @@
 import React, {useState, useEffect} from 'react'
-import { usePlaceholder } from '@ethereansos/interfaces-core'
-import { Link } from 'react-router-dom'
-import { Typography } from '@ethereansos/interfaces-ui'
+
+import OurCircularProgress from '../OurCircularProgress'
+import RegularModal from '../RegularModal'
+
+import { useWeb3, useEthosContext } from '@ethereansos/interfaces-core'
+import { getAMMs } from '../../../logic/amm'
+import LogoRenderer from '../LogoRenderer'
 
 import style from '../../../all.module.css'
 
-const ActionInfoSection  = ({hideAmmStuff, onSettingsToggle}) => {
+const ActionInfoSection  = ({hideAmmStuff, settings, onSettingsToggle, amm, onAMM, ammRecap}) => {
 
-    const [settings, setSettings] = useState(false)
+    const context = useEthosContext()
 
-    useEffect(() => onSettingsToggle && onSettingsToggle(settings), [settings])
+    const { chainId, newContract } = useWeb3()
+
+    const [amms, setAMMS] = useState(null)
+    const [selectAMM, setSelectAMM] = useState(false)
+
+    useEffect(() => {
+        setAMMS(null)
+        if(hideAmmStuff) {
+            return
+        }
+        getAMMs({context, chainId, newContract}).then(retrievedAMMS => void(setAMMS(retrievedAMMS), onAMM(retrievedAMMS.filter(it => it.name === 'UniswapV3')[0])))
+    }, [chainId, hideAmmStuff])
 
     return (
-
-        <div className={style.ActionInfoSection}>
-            {!hideAmmStuff && <div className={style.ActionInfoSectionText}>
-                <p>Price Impact: 5%</p>
-                <p>USDC &#x2192; ETH &#x2192; BJK</p>
-            </div>}
-            {!hideAmmStuff && <a className={style.ActionInfoSectionAMM}>
-                <figure>
-                    <img src={`${process.env.PUBLIC_URL}/img/test_amm.png`}></img>
-                </figure>
-                <span>▼</span>
-            </a>}
-            <a className={style.ActionInfoSectionSettings} onClick={() => setSettings(!settings)}>
-                <figure>
-                    <img src={`${process.env.PUBLIC_URL}/img/settings.svg`}></img>
-                </figure>
-            </a>
-        </div>
-
+        <>
+            {selectAMM && <RegularModal close={() => setSelectAMM(false)}>
+                <div className={style.AMMSelector}>
+                        {amms.map(amm => <label key={amm.address}>
+                            <a onClick={() => void(onAMM(amm), setSelectAMM(false))}>
+                                <LogoRenderer input={amm}/>
+                                <span>{amm.name}</span>
+                            </a>
+                        </label>)}
+                </div>
+            </RegularModal>}
+            <div className={style.ActionInfoSection}>
+                {!hideAmmStuff && (ammRecap || '')}
+                {!hideAmmStuff && <>
+                    {!amms && <OurCircularProgress/>}
+                    {amms && amm && <a className={style.ActionInfoSectionAMM} onClick={() => setSelectAMM(!selectAMM)}>
+                        <LogoRenderer input={amm} title={amm?.name}/>
+                        <span>▼</span>
+                    </a>}
+                </>}
+                <a className={style.ActionInfoSectionSettings} onClick={() => onSettingsToggle(!settings)}>
+                    <figure>
+                        <img src={`${process.env.PUBLIC_URL}/img/settings.svg`}></img>
+                    </figure>
+                </a>
+            </div>
+        </>
     )
 }
 

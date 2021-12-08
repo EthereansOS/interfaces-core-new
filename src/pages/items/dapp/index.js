@@ -39,9 +39,9 @@ ItemsMain.addToPlugin =
       })
     }
 
-export default ItemsMain
+//export default ItemsMain
 
-/*export default prepareAddToPlugin(
+export default prepareAddToPlugin(
   require.context('./', true, /index.js$/),
   require.context('./', true, /.js$/),
   "Items",
@@ -49,4 +49,4 @@ export default ItemsMain
   style.Web3PagesRoot,
   10,
   `${process.env.PUBLIC_URL}/img/is2.png`,
-)*/
+)

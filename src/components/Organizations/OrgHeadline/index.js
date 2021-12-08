@@ -19,8 +19,8 @@ const OrgHeadline = ({element}) => {
    <div className={style.OrgHeadline}>
       <LogoRenderer input={element}/>
       <div className={style.OrgTitle}>
-        <h6>{element.name}</h6>
-        <Description description={element.description}/>
+        <h6><span className={style.GuildTagO}>Organization</span> {element.name}</h6>
+        <Description description={element.description} modal/>
       </div>
       <div className={style.OrgLinks}>
        <ExtLinkButton text="Website" href={element.external_url}/>
