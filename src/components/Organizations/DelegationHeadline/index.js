@@ -15,13 +15,20 @@ const DelegationHeadline = ({element}) => {
 
   return (
     <div className={style.DelegationHeadlineCardUPD}>
-      <div className={style.DelegationMainThingsCardD}>
+      <div className={style.OrgHeadline}>
           <LogoRenderer input={element}/>
-          <div className={style.DelLinks}>
+          <div className={style.OrgTitle}>
             <h6>{element.name}</h6>
-            <ExtLinkButton></ExtLinkButton>
-            <ExtLinkButton></ExtLinkButton>
+            <Description description={element.description}/>
           </div>
+          <div className={style.OrgLinks}>
+          <ExtLinkButton text="Website" href={element.external_url}/>
+          <ExtLinkButton text="Discussion" href={element.discord_url}/>
+          <ExtLinkButton text="News" href={element.twitter_url}/>
+          <ExtLinkButton text="Address" href={`${getNetworkElement({context, chainId}, 'etherscanURL')}/address/${element.address}`}/>
+          <ExtLinkButton text="Host" href={`${getNetworkElement({context, chainId}, "etherscanURL")}/address/${element.host}`}/>
+          <ExtLinkButton text="Host"/>
+      </div>
           <div className={style.DelegationHeadlineCardSideD}>
             <p><b>Created:</b> <a>32542555</a> <b>Core:</b>v. <a>1.0</a></p>
           </div>
