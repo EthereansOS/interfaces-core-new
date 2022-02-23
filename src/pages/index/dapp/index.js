@@ -25,7 +25,7 @@ const IndexMain = () => {
           </figure>
           <p>Guilds</p>
         </Link>
-        <Link to="/factories/dapp" className={style.CardsFancy}>
+        <Link to="/covenants/dapp" className={style.CardsFancy}>
           <figure>
             <img src={`${process.env.PUBLIC_URL}/img/c-4.png`}></img>
           </figure>

@@ -33,7 +33,7 @@ const Web3Connect = () => {
           name = name.substring(0, name.indexOf("\""))
         }
       }
-      name && setEnsData(oldValue => ({...oldValue, name, account}))
+      setEnsData(oldValue => ({...oldValue, name, account}))
     })
   }, [account, chainId, ensData])
 

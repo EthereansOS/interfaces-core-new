@@ -48,7 +48,9 @@ const LoadCollection = ({state, onStateEntry, setComponentIndex}) => {
                 onStateEntry('mintOperator', mintOperator)
                 onStateEntry('metadataOperator', metadataOperator)
             }
-          } catch(e) {}
+          } catch(e) {
+            collection = undefined
+          }
           setCollection(collection)
       })
     }, [state.collectionId])
@@ -292,7 +294,7 @@ const Metadata = ({state, onStateEntry}) => {
         if(!state.metadataType) {
             return
         }
-        onStateEntry(state.metadataType === 'metadata' ? 'metadataLink' : 'metadata', state.metadataType === 'metadata' ? undefined : { background_color : "#000000" })
+        onStateEntry(state.metadataType === 'metadata' ? 'metadataLink' : 'metadata', state.metadataType === 'metadata' ? undefined : { background_color : "#000000", ...state.metadata })
     }, [state.metadataType])
 
     useEffect(() => {

@@ -35,7 +35,7 @@ const Deploy = ({back, finalize}) => {
 
   const [name, setName] = useState("")
   const [description, setDescription] = useState("")
-  const [symbol, setSymbol] = useState("")
+  const [ticker, setTicker] = useState("")
   const [image, setImage] = useState("")
   const [tokenURI, setTokenURI] = useState("")
   const [background_color, setBackground_color] = useState("")
@@ -56,7 +56,7 @@ const Deploy = ({back, finalize}) => {
         }, {
           name,
           description,
-          symbol,
+          ticker,
           image,
           tokenURI,
           background_color,
@@ -108,9 +108,9 @@ const Deploy = ({back, finalize}) => {
         <p>A place to discuss your Delegation.</p>
       </label>
       <label className={style.CreationPageLabelF}>
-        <h6>Symbol</h6>
-        <input type="text" value={symbol} onChange={e => setSymbol(e.currentTarget.value)}/>
-        <p>The symbol / ticker of your Delegation.</p>
+        <h6>Token Name</h6>
+        <input type="text" value={ticker} onChange={e => setTicker(e.currentTarget.value)}/>
+        <p>The ticker of your Delegation.</p>
       </label>
       <label className={style.CreationPageLabelF}>
         <h6>Logo link</h6>
