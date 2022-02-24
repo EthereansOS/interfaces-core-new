@@ -6,7 +6,6 @@ import { loadItem } from '../../../../logic/itemsV2'
 import CircularProgress from '../../../../components/Global/OurCircularProgress'
 import { blockchainCall } from '@ethereansos/interfaces-core'
 
-import DappSubMenu from '../../../../components/Global/DappSubMenu'
 import ViewCover from '../../../../components/Items/ViewCover'
 import ViewDescription from '../../../../components/Items/ViewDescription'
 import Unwrap from '../../../../components/Items/Unwrap'
@@ -15,6 +14,7 @@ import ViewBasics from '../../../../components/Items/ViewBasics'
 import SubTrade from '../SubSections/sub-trade.js'
 import SubCollectionExplore from '../SubSections/sub-collection-explore.js'
 import Wrap from '../../../../components/Items/Wrap'
+import ViewManageItem from '../../../../components/Items/ViewManageItem'
 
 import style from '../../../../all.module.css'
 
@@ -48,6 +48,7 @@ const ItemView = () => {
         <div className={style.CollectionLeft}>
           <ViewCover item={item}/>
           <ViewBasics item={item}/>
+          <ViewManageItem item={item}/>
           <ViewDescription item={item}/>
           <ViewProperties item={item}/>
         </div>
@@ -57,7 +58,6 @@ const ItemView = () => {
             {item?.wrapper && <Wrap item={item}/>}
             {item?.wrapper && <Unwrap item={item} wrapper={item.wrapper}/>}
           </div>
-          {item.collectionData.mintOperator === account && <DappSubMenu item={item} voices={item.collectionData.mintOperator === account ? [{label : 'Manage', to : `/items/dapp/create/item/${item.address}`}] : undefined}/>}
           <SubCollectionExplore item={item}/>
         </div>
       </>}

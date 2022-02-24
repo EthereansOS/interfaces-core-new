@@ -15,7 +15,7 @@ import TraitTypes from './traitTypes'
 
 import itemMetadataTypes from './itemMetadataTypes.json'
 
-const LoadCollection = ({state, onStateEntry, setComponentIndex}) => {
+const LoadCollection = ({inputItem, mode, state, onStateEntry, setComponentIndex}) => {
 
     const context = useEthosContext()
 
@@ -57,10 +57,16 @@ const LoadCollection = ({state, onStateEntry, setComponentIndex}) => {
 
     useEffect(() => {
       onStateEntry('disabled', collection ? undefined : true)
+      if(collection && mode) {
+        mode === 'mintNewItem' && mintNewItem()
+        mode === 'changeMintOperator' && changeMintOperator()
+        mode === 'changeMetadataOperator' && changeMetadataOperator()
+      }
     }, [collection])
 
     function mintNewItem() {
         NameAndSymbol.prev = LoadCollection
+        inputItem && delete NameAndSymbol.prev
         onStateEntry('item', 'new')
         onStateEntry('name')
         onStateEntry('symbol')
@@ -76,12 +82,14 @@ const LoadCollection = ({state, onStateEntry, setComponentIndex}) => {
     }
 
     function changeMintOperator() {
+        inputItem && delete Host.prev
         onStateEntry('hostType', 'mint')
         onStateEntry('host', state.mintOperator)
         setComponentIndex(components.indexOf(Host))
     }
 
     function changeMetadataOperator() {
+        inputItem && delete Host.prev
         onStateEntry('hostType', 'metadata')
         onStateEntry('host', state.metadataOperator)
         setComponentIndex(components.indexOf(Host))
@@ -329,7 +337,8 @@ const Metadata = ({state, onStateEntry}) => {
     }, [state.metadata?.image])
 
     return (<>
-        <h6>New Item - 2/2 Metadata</h6>
+        {!state.modal && <h6>New Item - 2/2 Metadata</h6>}
+        {state.modal && <h6>Change Item Metadata</h6>}
         <select className={style.CreationSelect} value={state.metadataType} onChange={e => onStateEntry('metadataType', e.currentTarget.value)}>
             {itemMetadataTypes.map(it => <option key={it.name} value={it.name}>{it.label}</option>)}
             <option value="metadataLink">Custom</option>
@@ -408,7 +417,7 @@ const CreateSuccess = ({success, state}) => {
       </div>)
   }
 
-const CreateItem = ({}) => {
+const CreateItem = ({inputItem, mode}) => {
 
     const { pathname } = useLocation()
 
@@ -438,6 +447,12 @@ const CreateItem = ({}) => {
         }
         setTimeout(async () => {
 
+          if(inputItem) {
+            onStateEntry('modal', true)
+            component.length === 42 && delete Mint.prev
+            component.length === 42 && delete Metadata.prev
+          }
+
           const itemProjectionFactory = getGlobalContract('itemProjectionFactory')
           const mainInterface = newContract(context.ItemMainInterfaceABI, await blockchainCall(itemProjectionFactory.methods.mainInterface))
 
@@ -451,6 +466,7 @@ const CreateItem = ({}) => {
             onStateEntry('name', item.header.name)
             onStateEntry('symbol', item.header.symbol)
             onStateEntry('metadataLink', item.header.uri)
+            inputItem && mode === 'changeMetadata' && onStateEntry('metadata', inputItem)
           }
 
           try {
@@ -466,13 +482,13 @@ const CreateItem = ({}) => {
                 onStateEntry('metadataOperator', metadataOperator === account)
                 setComponentIndex(components.indexOf(LoadCollection))
                 component.length === 42 && delete NameAndSymbol.prev
-                component.length === 42 && setComponentIndex(components.indexOf(Mint))
+                component.length === 42 && setComponentIndex(components.indexOf(mode === 'changeMetadata' ? Metadata : Mint))
             }
           } catch(e) {
             return setComponentIndex(0)
           }
         })
-    }, [pathname])
+    }, [pathname, inputItem])
 
     if(componentIndex === undefined) {
         return <OurCircularProgress/>
@@ -491,7 +507,7 @@ const CreateItem = ({}) => {
             <div className={style.stepTitle}>
                 <h6>Manage a collection</h6>
             </div>
-            <Component state={state} onStateEntry={onStateEntry} setComponentIndex={setComponentIndex}/>
+            <Component state={state} inputItem={inputItem} mode={mode} onStateEntry={onStateEntry} setComponentIndex={setComponentIndex}/>
             <div className={style.ActionDeploy}>
                 {previousComponentIndex !== -1 && <a className={style.Web3BackBTN} onClick={() => setComponentIndex(previousComponentIndex)}>Back</a>}
                 {nextComponentIndex !== -1 && <a className={style.RegularButton + (state?.disabled ? (' ' + style.disabled) : '')} onClick={() => !state.disabled && setComponentIndex(nextComponentIndex)}>Next</a>}

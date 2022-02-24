@@ -10,6 +10,7 @@ import ViewCover from '../../../../components/Items/ViewCover/'
 import ViewDescription from '../../../../components/Items/ViewDescription/'
 import ViewInfoBox from '../../../../components/Items/ViewInfoBox/'
 import SubItemsExplore from '../SubSections/sub-items-explore.js'
+import ViewManageCollection from '../../../../components/Items/ViewManageCollection'
 
 import style from '../../../../all.module.css'
 
@@ -34,11 +35,11 @@ const CollectionView = () => {
         {collection && <>
           <div className={style.CollectionLeft}>
             <ViewCover item={collection}/>
+            <ViewManageCollection item={collection}/>
             <ViewDescription item={collection}/>
           </div>
           <div className={style.CollectionRight}>
             <ViewInfoBox collection={collection}/>
-            <DappSubMenu item={collection} voices={collection.mintOperator === account ? [{label : 'Manage', to : `/items/dapp/create/item/${collection.id}`}] : undefined}/>
             <SubItemsExplore collection={collection}/>
           </div>
         </>}
