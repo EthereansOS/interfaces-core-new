@@ -3,7 +3,7 @@ import React from 'react'
 import ExtLinkButton from '../../Global/ExtLinkButton/index.js'
 import AddItemToMetamask from '../../Global/AddItemToMetamask'
 
-import { useWeb3, getNetworkElement, useEthosContext, fromDecimals } from '@ethereansos/interfaces-core'
+import { useWeb3, getNetworkElement, useEthosContext, fromDecimals, VOID_ETHEREUM_ADDRESS } from '@ethereansos/interfaces-core'
 
 import style from '../../../all.module.css'
 
@@ -21,8 +21,8 @@ const ViewBasics = ({item}) => {
         <ExtLinkButton href={`https://opensea.io/assets/${item.mainInterface.options.address}/${item.id}`} text="OpenSea"/>
         <ExtLinkButton href={`https://info.uniswap.org/#/tokens/${item.address}`} text="Uniswap"/>
         <ExtLinkButton href={item.discord_url} text="Share"/>
-        <ExtLinkButton href={`${getNetworkElement({context, chainId}, "etherscanURL")}/address/${item.host}`} text="Mintable"/>
-        <ExtLinkButton href={`${getNetworkElement({context, chainId}, "etherscanURL")}/address/${item.host}`} text="Metadata Host"/>
+        {item.collectionData.mintOperator && item.collectionData.mintOperator !== VOID_ETHEREUM_ADDRESS && <ExtLinkButton href={getNetworkElement({context, chainId}, 'etherscanURL') + 'address/' + item.collectionData.mintOperator} text="Mintable"/>}
+        <ExtLinkButton className={(!item.collectionData.metadataOperator || item.collectionData.metadataOperator === VOID_ETHEREUM_ADDRESS) && 'Disabled'} href={item.collectionData.metadataOperator && item.collectionData.metadataOperator !== VOID_ETHEREUM_ADDRESS ? (getNetworkElement({context, chainId}, 'etherscanURL') + 'address/' + item.collectionData.metadataOperator) : undefined} text={`Metadata ${item.collectionData.metadataOperator && item.collectionData.metadataOperator !== VOID_ETHEREUM_ADDRESS ? 'Host' : 'Frozen'}`}/>
     </div>
   )
 }
