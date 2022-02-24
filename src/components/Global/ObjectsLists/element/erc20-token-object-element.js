@@ -5,7 +5,7 @@ import { fromDecimals, getNetworkElement, useEthosContext, useWeb3, VOID_ETHEREU
 import CircularProgress from '../../OurCircularProgress'
 import LogoRenderer from '../../LogoRenderer'
 
-export default ({element, onClick}) => {
+export default ({element, onClick, noBalance}) => {
   const context = useEthosContext()
   const { chainId } = useWeb3()
   return (
@@ -16,8 +16,8 @@ export default ({element, onClick}) => {
           <h5>{element.name} ({element.symbol})</h5>
           {element.address !== VOID_ETHEREUM_ADDRESS && <a href={`${getNetworkElement({context, chainId}, "etherscanURL")}/token/${element.address}`} target="blank">Etherscan</a>}
         </div>
-        {!element.balance && <CircularProgress/>}
-        {element.balance && <div style={{"visibility" : "visible"}} className={style.ObjectInfoBalance}>
+        {!noBalance && !element.balance && <CircularProgress/>}
+        {!noBalance && element.balance && <div style={{"visibility" : "visible"}} className={style.ObjectInfoBalance}>
           <p>{fromDecimals(element.balance, element.decimals)}</p>
           <span>Balance</span>
         </div>}

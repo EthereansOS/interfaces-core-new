@@ -3,7 +3,7 @@ import style from '../../../../all.module.css'
 import { getNetworkElement, useEthosContext, useWeb3, fromDecimals } from '@ethereansos/interfaces-core'
 import LogoRenderer from '../../LogoRenderer'
 
-export default ({element, onClick}) => {
+export default ({element, onClick, noBalance}) => {
   const context = useEthosContext()
   const { chainId } = useWeb3()
   return (
@@ -15,7 +15,7 @@ export default ({element, onClick}) => {
           <a>Etherscan</a>
           <a className={style.LinkCool} target="_blank" href={`${getNetworkElement({context, chainId}, "etherscanURL")}/token/${element.address}`}>Item</a>
         </div>
-        <div style={{"visibility" : "visible"}} className={style.ObjectInfoBalance}>
+        <div style={{"visibility" : noBalance ? "hidden" : "visible"}} className={style.ObjectInfoBalance}>
           <p>{fromDecimals(element.balance, element.decimals)}</p>
           <span>Balance</span>
         </div>

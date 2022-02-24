@@ -48,7 +48,7 @@ const TokenInputRegular = ({onElement, onlySelections, tokens, tokenOnly, noETH,
     }
 
     const selections = onlySelections || ['ERC-20', 'Items V1', 'Items V2']
-    const properties = selections.reduce((acc, it) => ({...acc, [it] : {noETH : noETH === true, renderedProperties:{onClick}}}), {})
+    const properties = selections.reduce((acc, it) => ({...acc, [it] : {noETH : noETH === true, renderedProperties:{onClick, noBalance}}}), {})
 
     return modalIsOpen ? (
         <ModalStandard close={() => setModalIsOpen(false)}>

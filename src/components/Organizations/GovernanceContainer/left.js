@@ -55,6 +55,8 @@ const ProposeDelegationTransfer = ({ element, setOnClick, stateProvider }) => {
 
   const [state, setState] = stateProvider
 
+  useEffect(() => !state.token && getEthereum({web3 : useWeb3Data.web3, account : useWeb3Data.account }).then(token => setState(oldValue => ({...oldValue, token}))), [])
+
   function next() {
     !disabled() && setOnClick(() => additionalMetadata => proposeTransfer({ context, ipfsHttpClient : useWeb3Data.ipfsHttpClient }, element, additionalMetadata, state.list))
   }
