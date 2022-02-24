@@ -6,7 +6,8 @@ import { decodeProposalVotingToken } from './ballot'
 
 import { getData, getRawField } from "./generalReader"
 
-import { loadToken } from "./itemsV2"
+import { loadItem, loadToken } from "./itemsV2"
+import { loadTokenFromAddress } from "./erc20"
 
 export async function getDelegationsOfOrganization({ context, chainId, web3, account, getGlobalContract, newContract }, organization) {
     var delegationsManager = organization.components.delegationsManager.contract
@@ -318,16 +319,24 @@ export async function proposeTransfer({ context, ipfsHttpClient }, element, addi
         "bytes"
     ];
 
-    var values = list.map(it => [
-        VOID_ETHEREUM_ADDRESS,
-        [],
-        [it.value],
-        it.address,
-        false,
-        false,
-        false,
-        "0x"
-    ])
+    var values = list.map(it => {
+        var val = [
+            (it.token.mainInterface && it.token.mainInterface.options.address) || it.token.address,
+            [],
+            [it.value],
+            it.address,
+            false,
+            false,
+            false,
+            "0x"
+        ]
+
+        if(it.token.mainInterface) {
+            val[1].push(it.token.id)
+        }
+
+        return val
+    })
 
     await propose({}, element.organization, 3, abi.encode(["string", "address", `tuple(${types.join(',')})[]`], [additionalUri, element.delegationsManager.treasuryManagerAddress, values]))
 }
@@ -442,7 +451,7 @@ export async function refreshProposals({ context, web3, account, chainId, getGlo
         var proposalInfo = proposalsInfo[i]
         var proposalId = proposalInfo.id
         var modelIndex = proposalInfo.model
-        var isOfThisOrganization = await proposalResolvers[modelIndex]({ context, chainId, newContract, provider : web3.currentProvider, element }, proposalId, proposalData, element.delegationsManager)
+        var isOfThisOrganization = await proposalResolvers[modelIndex]({ web3, context, chainId, newContract, provider : web3.currentProvider, element, account, getGlobalContract }, proposalId, proposalData, element.delegationsManager)
         if(!isOfThisOrganization) {
             return
         }
@@ -567,7 +576,7 @@ const proposalResolvers = {
             context : fromData + '\n' + newDataDescription
         }
     },
-    "3" : async function({ context, chainId, provider, newContract }, proposalId, proposalData, delegationsManager) {
+    "3" : async function({ web3, context, chainId, provider, newContract, account, getGlobalContract }, proposalId, proposalData, delegationsManager) {
         var treasuryManagerAddress = await getRawField({ provider }, proposalData.codeSequence[0], 'treasuryManagerAddress')
         treasuryManagerAddress = abi.decode(["address"], treasuryManagerAddress)[0]
         if(delegationsManager.treasuryManagerAddress !== treasuryManagerAddress) {
@@ -588,12 +597,11 @@ const proposalResolvers = {
         ]
         entries = abi.decode([`tuple(${types.join(',')})[]`], entries)[0]
 
-        var total = entries.reduce((glob, it) => glob.ethereansosAdd(it[2][0]), '0')
-        total = fromDecimals(total, 18)
+        entries = await Promise.all(entries.map(async it => ({ ...it, token : it[1].length === 0 ? await loadTokenFromAddress({context, account, web3, newContract}, it[0]) : await loadItem({ context, chainId, account, newContract, getGlobalContract}, it[1][0].toString())})))
 
         return {
-            name : `Transfer ${total} ETH`,
-            context : entries.map(it => `- ${fromDecimals(it[2][0], 18)} ETH to [${it[3]}](${getNetworkElement({context, chainId}, "etherscanURL")}tokenholdings?a=${it[3]})`).join('\n')
+            name : `Transfer assets within the Grant Treasury Manager`,
+            context : entries.map(it => `- ${fromDecimals(it[2][0], it.token.decimals, true)} ${it.token.symbol} to [${it[3]}](${getNetworkElement({context, chainId}, "etherscanURL")}tokenholdings?a=${it[3]})`).join('\n')
         }
     },
     "4" : async function({ context, newContract, provider, chainId }, proposalId, proposalData, delegationsManager) {
