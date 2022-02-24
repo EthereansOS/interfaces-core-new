@@ -504,7 +504,7 @@ const CreateItem = ({inputItem, mode}) => {
             {success && <RegularModal>
                 <CreateSuccess success={success} state={state}/>
             </RegularModal>}
-            <div className={style.stepTitle}>
+            <div className={style.stepTitleI}>
                 <h6>Manage a collection</h6>
             </div>
             <Component state={state} inputItem={inputItem} mode={mode} onStateEntry={onStateEntry} setComponentIndex={setComponentIndex}/>

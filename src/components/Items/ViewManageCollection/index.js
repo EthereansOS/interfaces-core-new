@@ -21,13 +21,13 @@ export default ({item}) => {
         return <></>
     }
 
-    return (<div className={style.ViewBasics}>
+    return (<div className={style.ViewBasicsHost}>
         {mode && <RegularModal close={() => setMode()}>
             <CreateItem inputItem={item} mode={mode}/>
         </RegularModal>}
-        <h5>Host options</h5>
+        <h5>Host Tools</h5>
         {account === item.mintOperator && <a onClick={() => setMode("mintNewItem")}>New Item</a>}
-        {account === item.mintOperator && <a onClick={() => setMode("changeMintOperator")}>Mint Permissions</a>}
-        {account === item.metadataOperator && <a onClick={() => setMode("changeMetadataOperator")}>Metadata Permissions</a>}
+        {account === item.mintOperator && <a onClick={() => setMode("changeMintOperator")}>Edit Mint Host</a>}
+        {account === item.metadataOperator && <a onClick={() => setMode("changeMetadataOperator")}>Edit Metadata Host</a>}
     </div>)
 }

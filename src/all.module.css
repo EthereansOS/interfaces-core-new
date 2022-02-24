@@ -60,8 +60,8 @@ a {cursor: pointer;}
 .DappBannerL {background-color: #aa9cfe; width: 65%; margin-right: 3%;}
 .DappBannerS {background-color: #e1b9be;width: 30%;}
 
-.ExtLinkButton {border: 1px solid; border-radius: 5px;display: inline-block;width: 70px;margin: 5px;font-size: 11px;padding: 3px 2px;text-align: center;cursor: pointer;box-shadow: none;}
-.ItemLinkButton {border: 2px solid;border-radius: 5px;display: inline-block;width: 70px;margin: 5px;font-size: 11px;padding: 3px 2px;text-align: center;cursor: pointer;box-shadow: none;font-weight: bold;}
+.ExtLinkButton {border: 1px solid; border-radius: 5px;display: inline-block;min-width: 70px;margin: 5px;font-size: 11px;padding: 3px 2px;text-align: center;cursor: pointer;box-shadow: none;}
+.ItemLinkButton {border: 2px solid;border-radius: 5px;display: inline-block;min-width: 70px;margin: 5px;font-size: 11px;padding: 3px 2px;text-align: center;cursor: pointer;box-shadow: none;font-weight: bold;}
 .RegularButton {display: inline-block;padding: 4px 13px;border-radius: 20px;font-size: 14px;font-weight: 700;cursor: pointer; box-shadow: none; border:none;}
 .RegularButtonDuo {display: inline-block;padding: 7px 13px;border-radius: 8px;font-size: 14px;font-weight: 700;cursor: pointer; box-shadow: none; border:none; width: 90%; margin: 0 auto;}
 .RegularButtonDuoSmall {width: 200px; margin: 0 auto; padding: 5px 12px; text-align: center; font-size: 11px; border-radius: 15px; border: none !important; cursor: pointer;box-shadow: none;  margin: 0 auto;}
@@ -200,8 +200,10 @@ a {cursor: pointer;}
 .Web3CustomBTN {width: 200px; margin: 0 auto; padding: 5px 12px; text-align: center; font-size: 13px; border-radius: 15px; border: none !important; cursor: pointer;background-color: #7474f7; color: #ffffff; font-weight: bold; margin: 5px;}
 .Web3BackBTN {width: 200px; margin: 0 auto; padding: 5px 12px; text-align: center; font-size: 13px; border-radius: 15px; border: none !important; cursor: pointer;background-color: #7474f7; color: #ffffff; font-weight: bold;font-weight: normal !important; background-color: #e4e4e4 !important; color: #6e6e6e !important; margin: 5px;}
 .stepTitle {width: 100%; display: inline-block; margin: 20px auto;}
+.stepTitleI {width: 100%; display: inline-block; margin: 20px auto;}
 .CreationSelect {width: 100px; display: inline-block; margin: 10px auto; border: none; padding: 10px; border-radius: 12px; text-align: center;}
 .stepTitle h6 {font-size: 22px;}
+.stepTitleI h6 {font-size: 22px;}
 
 /* Covenants Components (colored @todo) */
 .FarmInfoBox {}
@@ -352,6 +354,11 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .ViewBasics {width: 270px; display: inline-block; text-align: left; padding: 15px; margin-top: 45px; border-radius: 20px;}
 .ViewBasics a {border: 2px solid; border-radius: 5px;display: inline-block; width: 80px; margin: 5px; font-size: 12px; padding: 3px 2px; text-align: center; cursor: pointer;}
 .ViewBasics h5 {font-size: 16px; display: inline-block; text-align: center; margin: 5px auto 15px auto; width: 100%;}
+.ViewBasics p {font-size: 12px; width: 100%; text-align: center; display: inline-block; margin: 10px auto;}
+
+.ViewBasicsHost {width: 250px; display: inline-block; text-align: left; padding: 15px; margin-top: 45px; border-radius: 20px; border: 10px solid;}
+.ViewBasicsHost > a {border: 2px solid; border-radius: 12px;display: inline-block; width: 100%; margin: 5px auto; font-size: 12px; padding: 10px 0px; text-align: center; cursor: pointer; font-weight: bold;}
+.ViewBasicsHost h5 {font-size: 16px; display: inline-block; text-align: center; margin: 5px auto 15px auto; width: 100%;}
 
 .ICViewCover {width: 270px; min-height: 130px; display: inline-block;border-radius: 20px; overflow: hidden; vertical-align: middle;}
 .ICViewCover img {display: block; width: 100%; height: 100%;}
@@ -486,6 +493,11 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .HostToolsDelegations {width: 920px; display: block; padding: 60px; text-align: center;  margin: 20px auto; border-radius: 20px; border: 10px solid;}
 .HostToolsDelegations h6 {width: 100%; display: inline-block; font-size: 20px; font-weight: bold; margin: 20px auto;}
 .HostToolsDelegationsBTN {width: 260px; display: inline-block; margin: 5px;}
+
+.medium .CreatePage {width: 100%; display: inline-block; padding: 5px 20px;margin: 0px auto; border: none; box-shadow: none !important;}
+.medium .CreatePage .CreationPageLabelF input, .medium .CreatePage .CreationPageLabelF textarea {width: 100%;}
+.medium .CreatePage .CreationPageLabel {padding: 10px 0;}
+.medium .CreatePage .stepTitleI {display: none;}
 
 .CreationPageLabelS {width: 100%; display: inline-block; padding: 20px;}
 .CreationPageLabelFS {width: 100%; display: inline-block;border: 1px solid;border-radius: 12px; padding: 20px 50px; margin: 15px auto;}
@@ -1487,9 +1499,17 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .biz .ViewBasics {background-color: #ffffff; border: 3px solid #D2CDF9; border-left: none; border-top: none;}
 .dark .ViewBasics {background-color: #000000;box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
 
+.light .ViewBasicsHost {background-color: #ffffff;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);border-color: #000000;}
+.biz .ViewBasicsHost {background-color: #ffffff; border: 3px solid #D2CDF9; border-color: #e1b9be;}
+.dark .ViewBasicsHost {background-color: #000000;box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);border-color: #ffffff;}
+
 .light .ViewBasics a {border-color: #849BBD;color: #849BBD;}
 .biz .ViewBasics a {border-color: #849BBD;color: #849BBD;}
 .dark .ViewBasics a {border-color: #849BBD;color: #849BBD;}
+
+.light .ViewBasicsHost a {background-color: #849BBD;color: #ffffff;}
+.biz .ViewBasicsHost a {background-color: #849BBD;color: #ffffff;}
+.dark .ViewBasicsHost a {background-color: #849BBD;color: #ffffff;}
 
 .light .ICViewCover {box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
 .biz .ICViewCover {}
