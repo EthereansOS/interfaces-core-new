@@ -110,7 +110,7 @@ const Deploy = ({back, finalize}) => {
       <label className={style.CreationPageLabelF}>
         <h6>Token Name</h6>
         <input type="text" value={ticker} onChange={e => setTicker(e.currentTarget.value)}/>
-        <p>The ticker of your Delegation.</p>
+        <p>The token name of your Delegation.</p>
       </label>
       <label className={style.CreationPageLabelF}>
         <h6>Logo link</h6>

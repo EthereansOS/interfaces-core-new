@@ -29,7 +29,7 @@ const IndexMain = () => {
           <figure>
             <img src={`${process.env.PUBLIC_URL}/img/c-4.png`}></img>
           </figure>
-          <p>Convenants</p>
+          <p>Covenants</p>
         </Link>
       </div>
   )
