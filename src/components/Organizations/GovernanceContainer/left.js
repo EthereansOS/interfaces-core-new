@@ -55,8 +55,6 @@ const ProposeDelegationTransfer = ({ element, setOnClick, stateProvider }) => {
 
   const [state, setState] = stateProvider
 
-  useEffect(() => !state.ethereum && getEthereum({web3 : useWeb3Data.web3, account : useWeb3Data.account }).then(ethereum => setState(oldValue => ({...oldValue, ethereum}))), [])
-
   function next() {
     !disabled() && setOnClick(() => additionalMetadata => proposeTransfer({ context, ipfsHttpClient : useWeb3Data.ipfsHttpClient }, element, additionalMetadata, state.list))
   }
@@ -79,14 +77,14 @@ const ProposeDelegationTransfer = ({ element, setOnClick, stateProvider }) => {
   }
 
   function add() {
-    if(!isEthereumAddress(state.address)) {
+    if(!state.token || !isEthereumAddress(state.address)) {
       return
     }
     if(!state.value || !state.value === '0' || isNaN(parseFloat(state.value))) {
       return
     }
 
-    setState(oldValue => ({...oldValue, address : "", value : 0, list : [...(oldValue.list || []), {address : oldValue.address, value : oldValue.value}]}))
+    setState(oldValue => ({...oldValue, address : "", value : 0, list : [...(oldValue.list || []), {address : oldValue.address, token : { ...oldValue.token }, value : oldValue.value}]}))
   }
 
   const isDisabled = disabled()
@@ -100,14 +98,13 @@ const ProposeDelegationTransfer = ({ element, setOnClick, stateProvider }) => {
     <h4>Transfer - 1/2</h4>
     {state.list?.length > 0 && <div className={style.TranferETHProp}>
       {state.list.map((it, i) => <div className={style.TranferETHPropRecap} key={`${it.address}_${it.value}_${i}`}>
-        <span><b>{formatMoney(fromDecimals(it.value, 18, true), 5)} ETH</b> to <a href={`${getNetworkElement({context, chainId : useWeb3Data.chainId}, "etherscanURL")}address/${it.address}`} target="_blank">{it.address}</a></span>
+        <span><b>{formatMoney(fromDecimals(it.value, it.token.decimals, true), 5)} {it.token.symbol}</b> to <a href={`${getNetworkElement({context, chainId : useWeb3Data.chainId}, "etherscanURL")}address/${it.address}`} target="_blank">{it.address}</a></span>
         <a onClick={() => setState(oldValue => ({...oldValue, list : state.list.filter((_, idx) => idx !== i)}))}>X</a>
       </div>)}
     </div>}
     <div className={style.TranferETHProp}>
       <div>
-        {!state.ethereum && <CircularProgress/>}
-        {state.ethereum && <TokenInputRegular tokens={[state.ethereum]} selected={state.ethereum} onElement={(_, a, v) => setState(oldValue => ({...oldValue, value : v}))} outputValue={fromDecimals(state.value, 18, true)} noBalance/>}
+        <TokenInputRegular selected={state.token} onElement={(token, _, value) => setState(oldValue => ({ ...oldValue, token, value }))} outputValue={fromDecimals(state.value, 18, true)} noBalance/>
       </div>
       <div>
         <label className={style.AddAReceiver}>
