@@ -49,11 +49,11 @@ export default ({element, onToggle}) => {
         <div className={style.GovCardHeadDelegation}>
           {element.delegationsManager && <LogoRenderer input={element}/>}
           <span>{element.name}</span>
-          {element.delegationsManager && <p><b>Grant size:</b><br></br> <a href={`${getNetworkElement({context, chainId}, "etherscanURL")}tokenholdings?a=${element.delegationsManager.treasuryManagerAddress}`} target="_blank">{fromDecimals(grantSize, 18, true)} ETH</a></p>}
           {element.delegationsManager && <p><b>Supporters stake:</b><br></br> {fromDecimals(supportersStake, 18, true)} {element.delegationsManager.supportedToken.symbol}</p>}
           <div className={style.DelegationWalletsCardBTN}>
             <RegularButtonDuo onClick={() => setOpened(!opened)}>{opened ? 'Close' : 'Open'}</RegularButtonDuo>
           </div>
+          {element.delegationsManager && <ExtLinkButton href={`${getNetworkElement({context, chainId}, "etherscanURL")}tokenholdings?a=${element.delegationsManager.treasuryManagerAddress}`} text="Treasury"/>}
         </div>
       </> : <>
         <div className={style.GovCardHeadOrganization}>

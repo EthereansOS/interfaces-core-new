@@ -70,6 +70,8 @@ a {cursor: pointer;}
 .RegularButtonDuoSmallWhite {width: 40%; margin: 0 auto; padding: 5px 12px; text-align: center; font-size: 11px; border-radius: 15px; border: none !important; cursor: pointer;box-shadow: none;  font-weight: bold;}
 .RegularButtonDuoSmallGray {width: 40%; margin: 0 4%; padding: 5px 5px; text-align: center; font-size: 11px; border-radius: 15px; border: none !important; cursor: pointer; box-shadow: none;  font-weight: bold;}
 .RegularMiniButton {display: inline-block;padding: 2px 5px;border-radius: 20px;font-size: 12px;font-weight: bold;cursor: pointer; box-shadow: none; border:none;}
+.GovCardHeadDelegation .ExtLinkButton {font-size: 13px;}
+
 
 .RegularSelect {position: relative;display: inline-block;margin-bottom: 15px;width: auto;}
 .RegularSelect select {display: inline-block;width: 100%;cursor: pointer;padding: 10px 16px;outline: 0;border: 1px solid; border-radius: 8px;appearance: none;-webkit-appearance: none;-moz-appearance: none;padding-right: 40px;font-size: 14px;font-weight: bold;}
