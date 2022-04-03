@@ -1,6 +1,6 @@
 import { prepareAddToPlugin } from '../../../logic/uiUtilities'
 
-import style from './organizations-main.module.css'
+import style from '../../../all.module.css'
 
 export default prepareAddToPlugin(
   require.context('./', true, /index.js$/),

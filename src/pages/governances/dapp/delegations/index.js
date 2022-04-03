@@ -5,7 +5,7 @@ import {all} from '../../../../logic/delegation'
 import Web3DependantList from '../../../../components/Global/Web3DependantList'
 import ExploreOrganizations from '../../../../components/Organizations/ExploreOrganizations'
 
-import style from '../organizations-main-sections.module.css'
+import style from '../../../../all.module.css'
 
 const DelegationsList = ({ mine, onList }) => {
 

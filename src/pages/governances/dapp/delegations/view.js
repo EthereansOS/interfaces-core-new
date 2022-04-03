@@ -14,7 +14,7 @@ import { useWeb3, useEthosContext } from '@ethereansos/interfaces-core'
 
 import HostOptions from './hostOptions'
 
-import style from '../organizations-main-sections.module.css'
+import style from '../../../../all.module.css'
 
 const DelegationView = () => {
 
