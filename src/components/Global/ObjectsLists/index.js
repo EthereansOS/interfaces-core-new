@@ -12,13 +12,13 @@ var defaultSelections = [{
   name : 'ERC-20',
   value : ERC20TokenObject
 }, {
-  name : 'Items V2',
+  name : 'Items',
   value : ItemObject
-}, {
+},/* {
   name : 'Items V1',
   value : ItemObject,
   properties : {hardCabledList : 'itemsV1ListURL'}
-}, {
+},*/ {
   name : 'Collections',
   value : CategoryObject
 }, {
@@ -50,7 +50,7 @@ const ObjectsLists = ({onlySelections, selectionProperties, list}) => {
       <div className={style.TokensSelectorCategories}>
         <input type="text" placeholder="Search name or address" value={searchText} onChange={e => setSearchText(e.currentTarget.value)}/>
         {!list && <div className={style.TokensSelectorCategoriesList}>
-          {selections.map(it => <a key={it.name} href="javascript:;" className={currentSelection === it ? style.selected : undefined} onClick={() => setCurrentSelection(it)}>{it.name}</a>)}
+          {selections.map(it => <a key={it.name} className={currentSelection === it ? style.selected : undefined} onClick={() => setCurrentSelection(it)}>{it.name}</a>)}
         </div>}
       </div>
     </div>

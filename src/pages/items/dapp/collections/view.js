@@ -13,6 +13,7 @@ import SubItemsExplore from '../SubSections/sub-items-explore.js'
 import ViewManageCollection from '../../../../components/Items/ViewManageCollection'
 
 import style from '../../../../all.module.css'
+import { useOpenSea } from '../../../../logic/uiUtilities'
 
 const CollectionView = () => {
   const location = useLocation()
@@ -20,11 +21,13 @@ const CollectionView = () => {
   const { chainId, web3, account, newContract, getGlobalContract } = useWeb3()
   const [collection, setCollection] = useState(null)
 
+  const seaport = useOpenSea()
+
   useEffect(() => {
     setTimeout(async () => {
       var collectionId = location.pathname.substring(location.pathname.lastIndexOf('/') + 1)
       setCollection(null)
-      loadCollection({chainId, context, web3, account, newContract, getGlobalContract}, collectionId, getGlobalContract("itemProjectionFactory")).then(setCollection).catch(() => setCollection(undefined))
+      loadCollection({seaport, chainId, context, web3, account, newContract, getGlobalContract, deep : true}, collectionId, getGlobalContract("itemProjectionFactory")).then(setCollection).catch(() => setCollection(undefined))
     })
   }, [chainId, account])
 

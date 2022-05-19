@@ -6,6 +6,7 @@ import Web3DependantList from '../../../../components/Global/Web3DependantList'
 import ExploreOrganizations from '../../../../components/Organizations/ExploreOrganizations'
 
 import style from '../../../../all.module.css'
+import Banners from '../../../../components/Global/banners/index.js'
 
 import RegularModal from '../../../../components/Global/RegularModal'
 import DappMenu from '../../../../components/Global/DappMenu'
@@ -19,6 +20,7 @@ const SubDAOsList = ({}) => {
 
   return (
   <>
+  <Banners bannerA="banner1" bannerB="banner2" sizeA="30%" sizeB="63%" titleA="Purely On-Chain Governance" titleB="The Next Generation of Human Coordination" linkA="https://docs.ethos.wiki/ethereansos-docs/guilds/guilds-learn" linkB="https://docs.ethos.wiki/ethereansos-docs/guilds/guilds-documentation" textA="EthOS Organizations are 100% on-chain and deeply customizable DAOs." textB="Decentralized without compromise, EthOS Organizations give you the tools you need to govern and manage your political economy in a deeply granular and entirely transparent way."/>
     <div className={style.OrganizationsExploreMain}>
       <Web3DependantList
         Renderer={ExploreOrganizations}

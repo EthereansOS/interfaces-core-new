@@ -25,7 +25,12 @@ const NameAndSymbol = ({state, onStateEntry}) => {
 
     return (
         <div className={style.CreationPageLabel}>
-            <h6>1/3 Basics</h6>
+            <div className={style.FancyExplanationCreate}>
+                <h6>Basic Info</h6>
+                <div className={style.proggressCreate}>
+                    <div className={style.proggressCreatePerch} style={{width: "33%"}}>Step 1 of 3</div>
+                </div>
+            </div>
             <label className={style.CreationPageLabelF}>
                 <h6>Name</h6>
                 <input type="text" value={state.name} onChange={e => onStateEntry("name", e.currentTarget.value)}/>
@@ -64,7 +69,12 @@ const Host = ({state, onStateEntry}) => {
 
     return (
     <div className={style.CreationPageLabel}>
-        <h6>2/3 Host</h6>
+        <div className={style.FancyExplanationCreate}>
+            <h6>Host</h6>
+            <div className={style.proggressCreate}>
+                <div className={style.proggressCreatePerch} style={{width: "66%"}}>Step 2 of 3</div>
+            </div>
+        </div>
         <label className={style.CreationPageLabelF}>
             <h6>Mint Host</h6>
             <input type="text" value={state.host} onChange={e => onStateEntry("host", e.currentTarget.value)}/>
@@ -134,7 +144,12 @@ const Metadata = ({state, onStateEntry}) => {
     }, [state.metadata?.image])
 
     return (<>
-       <h6>3/3 Metadata</h6>
+       <div className={style.FancyExplanationCreate}>
+            <h6>Metadata</h6>
+            <div className={style.proggressCreate}>
+                <div className={style.proggressCreatePerchLast} style={{width: "100%"}}>Step 3 of 3</div>
+            </div>
+        </div>
         <select className={style.CreationSelect} value={state.metadataType} onChange={e => onStateEntry('metadataType', e.currentTarget.value)}>
             <option value="metadata">Basic</option>
             <option value="metadataLink">Custom</option>
@@ -235,14 +250,11 @@ const CreateCollection = ({}) => {
             {success && <RegularModal>
                 <CreateSuccess success={success}/>
             </RegularModal>}
-            <div className={style.stepTitle}>
-                <h6>Create a collection</h6>
-            </div>
             <Component state={state} onStateEntry={onStateEntry}/>
-            <div className={style.ActionDeploy}>
+            <div className={style.ActionBTNCreateX}>
                 {previousComponentIndex !== -1 && <a className={style.Web3BackBTN} onClick={() => setComponentIndex(previousComponentIndex)}>Back</a>}
                 {nextComponentIndex !== -1 && <a className={style.RegularButton + (state?.disabled ? (' ' + style.disabled) : '')} onClick={() => !state.disabled && setComponentIndex(nextComponentIndex)}>Next</a>}
-                {Component.deploy && <ActionAWeb3Button onSuccess={setSuccess} className={style.Web3CustomBTN + (state?.disabled ? (' ' + style.disabled) : '')} onClick={() => deployCollection({ context, ipfsHttpClient, projectionFactory : getGlobalContract('itemProjectionFactory') }, state)}>Deploy Collection</ActionAWeb3Button>}
+                {Component.deploy && <ActionAWeb3Button onSuccess={setSuccess} className={style.Web3CustomBTN + (state?.disabled ? (' ' + style.disabled) : '')} onClick={() => deployCollection({ context, ipfsHttpClient, projectionFactory : getGlobalContract('itemProjectionFactory') }, state)}>Deploy</ActionAWeb3Button>}
             </div>
         </div>
     )

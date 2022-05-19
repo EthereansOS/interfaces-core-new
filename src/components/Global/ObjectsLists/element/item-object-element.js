@@ -1,6 +1,6 @@
 import style from '../../../../all.module.css'
 
-import { getNetworkElement, useEthosContext, useWeb3, fromDecimals } from '@ethereansos/interfaces-core'
+import { getNetworkElement, useEthosContext, useWeb3, fromDecimals, shortenWord } from '@ethereansos/interfaces-core'
 import LogoRenderer from '../../LogoRenderer'
 
 export default ({element, onClick, noBalance}) => {
@@ -11,7 +11,7 @@ export default ({element, onClick, noBalance}) => {
       <LogoRenderer input={element}/>
       <div className={style.ObjectInfo}>
         <div className={style.ObjectInfoAndLink}>
-          <h5>{element.name} ({element.symbol})</h5>
+          <h5>{shortenWord({ context, charsAmount : 15}, element.name)} ({shortenWord({ context, charsAmount : 15}, element.symbol)})</h5>
           <a>Etherscan</a>
           <a className={style.LinkCool} target="_blank" href={`${getNetworkElement({context, chainId}, "etherscanURL")}/token/${element.address}`}>Item</a>
         </div>

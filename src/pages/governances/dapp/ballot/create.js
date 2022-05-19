@@ -78,7 +78,7 @@ const BallotCreate = () => {
             Weight
             <input type="text" value={weight} onChange={e => setWeight(e.currentTarget.value)}/>
 
-            <a href="javascript:;" onClick={deploy}>Deploy</a>
+            <a onClick={deploy}>Deploy</a>
         </div>
     )
 }

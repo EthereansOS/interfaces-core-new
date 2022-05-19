@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react"
 import OurCircularProgress from '../../../../components/Global/OurCircularProgress'
 
 import traitTypesTemplates from './traitTypesTemplates.json'
+import style from '../../../../all.module.css'
 
 export default ({ state, onStateEntry }) => {
 
@@ -64,26 +65,33 @@ export default ({ state, onStateEntry }) => {
     }
 
     function renderTraitTypeElement(it, isCustom) {
-        return <section className="MetaImputThings" key={it}>
-            {isCustom && <a className="RemoveAthing" href="javascript:" data-key={it} onClick={removeCustomTraitType}>X</a>}
-            <label className="createWhat">
-                <p>{it}</p>
-                <input className="ITEMURLINPUT" id={it.split(' ').join('')} data-key={it} type="text" value={renterTraitTypeValue(it)} onChange={onTraitTypeValueChange} />
-            </label>
-        </section>
+        return <div className={style.CreationPageLabelF}>
+            <div key={it}>
+                <h6>{it}</h6>
+                <input id={it.split(' ').join('')} data-key={it} type="text" value={renterTraitTypeValue(it)} onChange={onTraitTypeValueChange} />
+                {isCustom && <a className={style.RoundedButton} href="javascript:" data-key={it} onClick={removeCustomTraitType}>X</a>}
+            </div>
+        </div>
     }
 
     function renderNewTraitType() {
-        return <section className="NewTrait">
-            <h6>Add Custom Trait</h6>
-            <input className="ITEMURLINPUT" type="text" value={newTraitType} onChange={e => setNewTraitType(e.currentTarget.value)} />
-            <a className="AddAthing" href="javascript:" onClick={addCustomTraitType}>Add</a>
-        </section>
+        return <> 
+            <div className={style.CreationPageLabelF}>
+                <h6>New Trait</h6>
+                <input type="text" value={newTraitType} onChange={e => setNewTraitType(e.currentTarget.value)} />
+                <a className={style.RoundedButton} href="javascript:" onClick={addCustomTraitType}>+</a>
+            </div>
+        </>
     }
 
-    return !traitTypesTemplates ? <OurCircularProgress /> : <section className="MetaDataThings">
-        <section className="spacialImputs">
-            <h3>Traits</h3>
+    return !traitTypesTemplates ? <OurCircularProgress /> : <section>
+        <section>
+            <div className={style.FancyExplanationCreate}>
+                <h6>Traits</h6>
+                <div className={style.proggressCreate}>
+                    <div className={style.proggressCreatePerchLast} style={{width: "100%"}}>Step 3 of 3</div>
+                </div>
+            </div>
             {standardTraitTypes.map(it => renderTraitTypeElement(it))}
             {customTraitTypes.map(it => renderTraitTypeElement(it, true))}
             {renderNewTraitType()}

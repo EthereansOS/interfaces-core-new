@@ -15,8 +15,21 @@ import SubTrade from '../SubSections/sub-trade.js'
 import SubCollectionExplore from '../SubSections/sub-collection-explore.js'
 import Wrap from '../../../../components/Items/Wrap'
 import ViewManageItem from '../../../../components/Items/ViewManageItem'
+import ViewFarmings from '../../../covenants/dapp/farming/index'
+import DappSubMenu from '../../../../components/Global/DappSubMenu'
 
 import style from '../../../../all.module.css'
+
+const itemSubmenuVoices = [
+  {
+      id : 'collection',
+      label : 'Collection'
+  },
+  {
+      id : 'farming',
+      label : 'Farming'
+  }
+]
 
 const ItemView = () => {
 
@@ -28,6 +41,9 @@ const ItemView = () => {
 
   const [item, setItem] = useState(null)
 
+  const [submenuSelection, setSubmenuSelection] = useState(itemSubmenuVoices[0].id)
+
+
   useEffect(() => {
     setTimeout(async () => {
       var itemId = pathname.substring(pathname.lastIndexOf('/') + 1)
@@ -36,7 +52,21 @@ const ItemView = () => {
       if(itemId.toLowerCase().indexOf('0x') === -1) {
         item = newContract(context.ItemMainInterfaceABI, await blockchainCall(getGlobalContract("itemProjectionFactory").methods.mainInterface))
       }
-      loadItem({chainId, context, web3, account, newContract, getGlobalContract}, itemId, item).then(setItem).catch(() => setItem(undefined))
+
+      async function bypassOpenSeaEvilness() {
+        try {
+            const loadedItem = await loadItem({chainId, context, web3, account, newContract, getGlobalContract}, itemId, item)
+            return setItem(loadedItem)
+        } catch(e) {
+          const message = (e.message || e).toLowerCase()
+          if(message.indexOf('header not found') !== -1 || message.indexOf('429') !== -1 || message.indexOf('failed to fetch') !== -1) {
+                await new Promise(ok => setTimeout(ok, 3000))
+                return bypassOpenSeaEvilness()
+            }
+        }
+        setItem(undefined)
+    }
+    bypassOpenSeaEvilness()
     })
   }, [pathname])
 
@@ -54,11 +84,13 @@ const ItemView = () => {
         </div>
         <div className={style.CollectionRight}>
           <SubTrade item={item}/>
-          <div className={style.WrapUnwrapBox}>
-            {item?.wrapper && <Wrap item={item}/>}
-            {item?.wrapper && <Unwrap item={item} wrapper={item.wrapper}/>}
-          </div>
-          <SubCollectionExplore item={item}/>
+          {item?.wrapper && <div className={style.WrapUnwrapBox}>
+            <Wrap item={item}/>
+            <Unwrap item={item} wrapper={item.wrapper}/>
+          </div>}
+          <DappSubMenu isSelected={it => it.id === submenuSelection} voices={itemSubmenuVoices.map(it => ({...it, onClick : () => submenuSelection !== it.id && setSubmenuSelection(it.id)}))}/>
+          {submenuSelection === itemSubmenuVoices[0].id && <SubCollectionExplore item={item}/>}
+          {submenuSelection === itemSubmenuVoices[1].id && <ViewFarmings rewardTokenAddress={item.address}/>}
         </div>
       </>}
     </div>

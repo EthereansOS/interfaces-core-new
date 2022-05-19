@@ -1,5 +1,5 @@
 import { blockchainCall, web3Utils, sendAsync, getNetworkElement, numberToString, VOID_ETHEREUM_ADDRESS, formatLink } from "@ethereansos/interfaces-core"
-import peach from 'parallel-each'
+import { loadItem } from "./itemsV2"
 
 export async function getEthereum({account, web3}) {
     return {
@@ -58,69 +58,55 @@ export async function getEthereum({account, web3}) {
 }
 
 export async function loadTokens({ context, chainId, web3, account, newContract, alsoETH, listName }) {
-    var all = (await (await fetch(getNetworkElement({ context, chainId }, listName || "erc20TokensListURL"))).json()).tokens
 
-    var tokens = []
+    try {
+        var all = []
 
-    alsoETH && tokens.push(await getEthereum({account, web3}))
-
-    var chunkSize = 750
-    await peach(all, async it => {
-        if(it.chainId !== chainId) {
-            return
+        try {
+            all = JSON.parse(window.localStorage.getItem("erc20Tokens_" + chainId))
+        } catch(e) {
         }
-        var contract = newContract(context.ItemInteroperableInterfaceABI, it.address)
-        tokens.push({
-            name : it.name,
-            symbol : it.symbol,
+
+        if(!all || all.length === 0) {
+            all = (await (await fetch(getNetworkElement({ context, chainId }, listName || "erc20TokensListURL"))).json()).tokens
+            window.localStorage.setItem("erc20Tokens_" + chainId, JSON.stringify(all))
+        }
+
+        var tokens = all.filter(it => it.chainId === chainId)
+
+        alsoETH && tokens.unshift(await getEthereum({account, web3}))
+
+        /*var chunkSize = 750
+        await peach(all, it => it.chainId === chainId && tokens.push({
+            ...it,
             decimals : it.decimals + "",
-            address : it.address,
             image : formatLink({ context }, it.logoURI),
-            contract
-        })
-    }, chunkSize)
-    /*var length = all.length
-    var start = 0
-    while(start < length) {
-        var end = start + trancheSize
-        end = end > length ? length : end
-        var tranche = all.slice(start, end).filter(it => it.chainId === chainId)
-        start = end
-        var address = tranche.map(it => it.address)
-        var balances = {}
-        var logs = await sendAsync(web3.currentProvider, 'eth_getLogs', {
-            address,
-            topics : [
-                web3Utils.sha3('Transfer(address,address,uint256)'),
-                [],
-                web3.eth.abi.encodeParameter("address", account)
-            ],
-            fromBlock : '0x0',
-            toBlock : 'latest'
-        })
-        logs.forEach(it => balances[it.address] = true)
-        tokens.push(...(await Promise.all(tranche.map(async it => {
-            var contract = newContract(context.ItemInteroperableInterfaceABI, it.address)
-            return {
-                name : it.name,
-                symbol : it.symbol,
-                decimals : it.decimals + "",
-                address : it.address,
-                image : formatLink({ context }, it.logoURI),
-                contract,
-                balance : balances[it.address] ? await blockchainCall(contract.methods.balanceOf, account) : '0'
-            }
-        }))))
-    }*/
+            contract : newContract(context.ItemInteroperableInterfaceABI, it.address)
+        }), chunkSize)*/
 
-    tokens = await Promise.all(tokens.map(async token => ({...token, balance : await blockchainCall(token.contract.methods.balanceOf, account)})))
+        //tokens = await Promise.all(tokens.map(async token => ({...token, balance : await blockchainCall(token.contract.methods.balanceOf, account)})))
 
-    return tokens
+        return tokens
+    } catch(e) {
+        const message = (e.message || e).toLowerCase()
+        if(message.indexOf('header not found') !== -1) {
+            await new Promise(ok => setTimeout(ok, 3000))
+            return await loadTokens({ context, chainId, web3, account, newContract, alsoETH, listName })
+        }
+        throw e
+    }
 }
 
-export async function loadTokenFromAddress({ context, account, web3, newContract }, tokenAddress) {
+export async function loadTokenFromAddress({ context, chainId, account, web3, newContract, getGlobalContract, forceItem }, tokenAddress) {
     if(!tokenAddress || tokenAddress === VOID_ETHEREUM_ADDRESS) {
         return await getEthereum({account, web3})
+    }
+    try {
+        return await loadItem({ context, chainId, account, web3, newContract, getGlobalContract }, tokenAddress)
+    } catch(e) {
+        if(forceItem) {
+            return
+        }
     }
     try {
         var contract = newContract(context.ItemInteroperableInterfaceABI, tokenAddress)

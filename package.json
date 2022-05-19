@@ -4,14 +4,14 @@
   "private": true,
   "homepage": "./",
   "dependencies": {
-    "@ethereansos/interfaces-core": "^0.4.98",
+    "@ethereansos/interfaces-core": "^0.4.107",
     "@ethereansos/interfaces-ui": "^0.4.34",
     "@ethersproject/hash": "^5.5.0",
     "@monaco-editor/react": "^4.1.3",
     "classnames": "^2.2.6",
     "ethereum-blockies-base64": "^1.0.2",
     "ipfs-http-client": "^53.0.1",
-    "opensea-js": "^1.2.2",
+    "opensea-js": "3.0.0",
     "p-limit": "^3.1.0",
     "parallel-each": "^1.1.7",
     "pupa": "2.1.1",
@@ -19,6 +19,7 @@
     "react-dom": "^17.0.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
+    "react-window": "^1.8.6",
     "web-vitals": "^0.2.4",
     "web3": "^1.3.0",
     "web3-utils": "^1.4.0"
@@ -26,7 +27,7 @@
   "scripts": {
     "start": "HOST=127.0.0.1 react-scripts start",
     "start:win": "env HOST=127.0.0.1 react-scripts start",
-    "build": "react-scripts build",
+    "build": "react-scripts build && rimraf build/data/context.local.json",
     "test": "react-scripts test --watchAll false --passWithNoTests",
     "test:dev": "react-scripts test",
     "lint": "eslint src",
@@ -69,6 +70,7 @@
     "lint-staged": "^10.5.0",
     "prettier": "2.3.0",
     "react-error-overlay": "6.0.9",
-    "react-test-renderer": "^17.0.1"
+    "react-test-renderer": "^17.0.1",
+    "rimraf": "^3.0.2"
   }
 }

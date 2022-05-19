@@ -1,26 +1,43 @@
+import React, { useState, useEffect, useMemo, useCallback } from 'react'
+
 import style from '../../../../all.module.css'
 
-import { fromDecimals, getNetworkElement, useEthosContext, useWeb3, VOID_ETHEREUM_ADDRESS } from '@ethereansos/interfaces-core'
+import { blockchainCall, fromDecimals, getNetworkElement, useEthosContext, useWeb3, VOID_ETHEREUM_ADDRESS, formatLink, shortenWord } from '@ethereansos/interfaces-core'
 
 import CircularProgress from '../../OurCircularProgress'
 import LogoRenderer from '../../LogoRenderer'
 
-export default ({element, onClick, noBalance}) => {
+export default ({element, onClick}) => {
   const context = useEthosContext()
-  const { chainId } = useWeb3()
+
+  const { chainId, account, newContract } = useWeb3()
+
+  const [balance, setBalance] = useState(element.balance)
+
+  useEffect(() => {
+    blockchainCall((element.contract = element.contract || newContract(context.ItemInteroperableInterfaceABI, element.address)).methods.balanceOf, account).then(bal => setBalance(element.balance = bal))
+  }, [element.address, account])
+
   return (
-    <a className={style.TokenObject} onClick={() => onClick(element)}>
+    <a className={style.TokenObject} onClick={() => onClick({
+      ...element,
+      decimals : element.decimals + "",
+      image : formatLink({ context }, element.image || element.logoURI),
+      contract : element.contract || newContract(context.ItemInteroperableInterfaceABI, element.address),
+      balance : "0"
+    })}>
       <LogoRenderer input={element}/>
       <div className={style.ObjectInfo}>
         <div className={style.ObjectInfoAndLink}>
-          <h5>{element.name} ({element.symbol})</h5>
-          {element.address !== VOID_ETHEREUM_ADDRESS && <a href={`${getNetworkElement({context, chainId}, "etherscanURL")}/token/${element.address}`} target="blank">Etherscan</a>}
+          <h5>{shortenWord({ context, charsAmount : 15}, element.name)} ({shortenWord({ context, charsAmount : 15}, element.symbol)})</h5>
+          {false && element.address !== VOID_ETHEREUM_ADDRESS && <a href={`${getNetworkElement({context, chainId}, "etherscanURL")}/token/${element.address}`} target="blank">Etherscan</a>}
         </div>
-        {!noBalance && !element.balance && <CircularProgress/>}
-        {!noBalance && element.balance && <div style={{"visibility" : "visible"}} className={style.ObjectInfoBalance}>
-          <p>{fromDecimals(element.balance, element.decimals)}</p>
+        <div className={style.ObjectInfoBalance}>
+          <p>
+            {!balance ? <CircularProgress/> : fromDecimals(balance, element.decimals)}
+          </p>
           <span>Balance</span>
-        </div>}
+        </div>
       </div>
     </a>
   )

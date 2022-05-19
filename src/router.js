@@ -2,7 +2,7 @@ import React, { useMemo, useState, useEffect } from 'react'
 import { Switch, Route } from 'react-router-dom'
 
 import Web3 from 'web3'
-import { useEthosContext, usePlaceholder, useWeb3, abi, getNetworkElement, sendAsync, fromDecimals, blockchainCall } from '@ethereansos/interfaces-core'
+import { useEthosContext, usePlaceholder, useWeb3, abi, getNetworkElement, web3Utils, sendAsync, fromDecimals, blockchainCall } from '@ethereansos/interfaces-core'
 import Connect from './components/Global/Connect'
 import MainTemplate from './components/Global/MainTemplate'
 import BetaBanner from './components/Global/BetaBanner'
@@ -21,9 +21,11 @@ const AppRouter = () => {
     window.sendAsync = window.sendAsync || sendAsync
     window.abi = window.abi || abi
     window.blockchainCall = window.blockchainCall || blockchainCall
+    window.web3Utils = window.web3Utils || web3Utils
     window.getNetworkElement = window.getNetworkElement || (varName => getNetworkElement({context: window.context, chainId : window.web3Data.chainId}, varName))
     window.context = context
     window.web3Data = web3Data
+    window.web3 = new Web3()
     window.web3 = web3Data.web3 || window.web3 || new Web3()
     try {
       window.web3.eth.getBalance(web3Data.account).then(result => {

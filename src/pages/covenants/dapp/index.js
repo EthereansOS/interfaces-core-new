@@ -1,49 +1,13 @@
-import React from 'react'
-import DappMenu from '../../../components/Global/DappMenu'
+import { prepareAddToPlugin } from '../../../logic/uiUtilities'
 
-import { OpenSeaContextProvider } from '../../../logic/uiUtilities'
-import Trade from '../../../components/Global/Trade'
+import style from '../../factories/dapp/factories-main.module.css'
 
-const TradeComponent = () => {
-  return (<OpenSeaContextProvider>
-    <Trade/>
-  </OpenSeaContextProvider>)
-}
-
-const CovenantsMain = () => {
-  return (
-    <>
-      <DappMenu voices={[{label : "Bazar", path : "/covenants/dapp"}]} selected={0}/>
-      <br/>
-      <TradeComponent/>
-    </>
-  )
-}
-
-CovenantsMain.pluginIndex = 30;
-CovenantsMain.addToPlugin =
-  ({index}) =>
-    ({addElement}) => {
-      addElement('router', {
-        index,
-        path: '/covenants/dapp',
-        Component: CovenantsMain,
-        exact: true,
-        requireConnection: true,
-        templateProps: {
-          menuName: 'appMenu',
-          isDapp: true,
-          link: '/covenants/dapp'
-        },
-      })
-
-      addElement('appMenu', {
-        name: 'covenants',
-        label: 'Covenants',
-        link: '/covenants/dapp',
-        index,
-        image : `${process.env.PUBLIC_URL}/img/is3.png`,
-      })
-    }
-
-export default CovenantsMain
+export default prepareAddToPlugin(
+  require.context('./', true, /index.js$/),
+  require.context('./', true, /.js$/),
+  "Covenants",
+  "/covenants/dapp",
+  style.Web3PagesRoot,
+  30,
+  `${process.env.PUBLIC_URL}/img/is3.png`,
+)

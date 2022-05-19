@@ -152,7 +152,7 @@ const Farmings = ({element}) => {
   }
 
   return (<div className={style.OrgPartViewF}>
-    <a href={`https://covenants.eth.link/#/farm/dapp/${dividendsFarmingAddress}`} target="_blank" className={style.OrgPartFarm}>
+    <Link to={`/covenants/dapp/farming/${dividendsFarmingAddress}`} className={style.OrgPartFarm}>
       <a><img src={`${process.env.PUBLIC_URL}/img/eth_logo.png`}></img></a>
       <p>
         <b>Dividends</b>
@@ -162,8 +162,8 @@ const Farmings = ({element}) => {
         {!dividendsDailyRate && <CircularProgress/>}
         {dividendsDailyRate && <span>Daily reward rate: {dividendsDailyRate} ETH</span>}
       </p>
-    </a>
-    <a href={`https://covenants.eth.link/#/farm/dapp/${osFarmingAddress}`} target="_blank" className={style.OrgPartFarm}>
+    </Link>
+    <Link href={`/covenants/dapp/farming/${osFarmingAddress}`} className={style.OrgPartFarm}>
       <a><img src={`${process.env.PUBLIC_URL}/img/tokentest/os.png`}></img></a>
       <p>
         <b>Farm OS</b>
@@ -171,7 +171,7 @@ const Farmings = ({element}) => {
         {!oSDailyRate && <CircularProgress/>}
         {oSDailyRate && <span>Daily reward rate: {oSDailyRate} OS</span>}
       </p>
-    </a>
+    </Link>
   </div>)
 }
 

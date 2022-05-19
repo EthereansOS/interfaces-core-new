@@ -7,13 +7,15 @@ const Create = ({}) => {
     <div className={style.CreatePage}>
       <div className={style.CreateBoxDesc}>
       <h6>New Collection</h6>
-        <p>Deploy an On-chain folder to manage and hosting your Items.</p>
-        <Link className={style.CreateBTN} to="/items/dapp/create/collection">Start</Link>
+        <p>Deploy an on-chain folder to manage and host your Items.</p>
+        <Link className={style.NextStep} to="/items/dapp/create/collection">Start</Link>
+        <a target="_blank" className={style.ExtLinkButtonAlpha} href="https://docs.ethos.wiki/ethereansos-docs/organizations/delegations">Learn</a>
       </div>
       <div className={style.CreateBoxDesc}>
-      <h6>Manage a Collection</h6>
-        <p>Manage Items into a collection you have the permissions to host. You can create new Items or mint more quantities in existing Items.</p>
-        <Link className={style.CreateBTN} to="/items/dapp/create/item/">Start</Link>
+      <h6>Manage Collection</h6>
+        <p>Manage Items in any Collection you have permission to host. You can create entirely new Items for the Collection, or mint more of old ones.</p>
+        <Link className={style.NextStep} to="/items/dapp/create/item/">Start</Link>
+        <a target="_blank" className={style.ExtLinkButtonAlpha} href="https://docs.ethos.wiki/ethereansos-docs/organizations/delegations">Learn</a>
       </div>
     </div>
   )

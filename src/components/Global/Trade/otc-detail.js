@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useState, useCallback } from 'react'
 
 import Web3DependantList from '../Web3DependantList'
-import { CircularProgress } from '@ethereansos/interfaces-ui'
 import RegularModal from '../RegularModal'
 import ActionAWeb3Buttons from '../ActionAWeb3Buttons'
 import ActionAWeb3Button from '../ActionAWeb3Button'
@@ -64,7 +63,7 @@ const Record = ({item, element, refresh, buyOrSell}) => {
                 <br/>
                 {fromDecimals(element.currentPrice.toString(), element.paymentTokenContract.decimals, true)} {buyOrSell ? element.paymentTokenContract.symbol.split('WETH').join('ETH') : element.paymentTokenContract.symbol}
             </p>
-            {loading && <CircularProgress/>}
+            {loading && <OurCircularProgress/>}
             {!loading && <button onClick={onClick}>{web3Utils.toChecksumAddress(element.maker) === web3Utils.toChecksumAddress(account) ? "Cancel" : buyOrSell ? "Sell" : "Buy"}</button>}
         </div>
     )
@@ -90,8 +89,8 @@ const PlaceOTCOrder = ({item, buyOrSell, onSuccess}) => {
 
     function refreshOpenSeaRegistry() {
         setOpenSeaRegistry()
-        seaport._wyvernProtocol.wyvernExchange.tokenTransferProxy.callAsync().then(setOpenseaAddress)
-        seaport._wyvernProtocol.wyvernProxyRegistry.proxies.callAsync(account).then(setOpenSeaRegistry)
+        seaport._wyvernProtocol.wyvernExchange.tokenTransferProxy().callAsync().then(setOpenseaAddress)
+        seaport._wyvernProtocol.wyvernProxyRegistry.proxies(account).callAsync().then(setOpenSeaRegistry)
     }
 
     useEffect(() => {
@@ -203,7 +202,7 @@ const PlaceOTCOrder = ({item, buyOrSell, onSuccess}) => {
     }
 
     function initialize() {
-        const proxyRegistry = newContract(context.OpenSeaRegistryProxyABI, seaport._wyvernProtocol.wyvernProxyRegistry.web3ContractInstance.address)
+        const proxyRegistry = newContract(context.OpenSeaRegistryProxyABI, seaport._wyvernProtocol.wyvernProxyRegistry.address)
         return blockchainCall(proxyRegistry.methods.registerProxy)
     }
 

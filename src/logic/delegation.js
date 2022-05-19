@@ -8,6 +8,7 @@ import { getData, getRawField } from "./generalReader"
 
 import { loadItem, loadToken } from "./itemsV2"
 import { loadTokenFromAddress } from "./erc20"
+import { getLogs } from "./logger"
 
 export async function getDelegationsOfOrganization({ context, chainId, web3, account, getGlobalContract, newContract }, organization) {
     var delegationsManager = organization.components.delegationsManager.contract
@@ -68,7 +69,7 @@ export async function getDelegationsManagers({ context, chainId, getGlobalContra
         toBlock : 'latest'
     }
 
-    var logs = await sendAsync(web3.currentProvider, 'eth_getLogs', args)
+    var logs = await getLogs(web3.currentProvider, 'eth_getLogs', args)
 
     address = logs.map(it => abi.decode(["address"], it.topics[2])[0])
 
@@ -83,7 +84,7 @@ export async function getDelegationsManagers({ context, chainId, getGlobalContra
         fromBlock : '0x0',
         toBlock : 'latest'
     }
-    var logs = await sendAsync(web3.currentProvider, 'eth_getLogs', args)
+    var logs = await getLogs(web3.currentProvider, 'eth_getLogs', args)
     address = logs.map(it => it.address)
     address = address.filter((it, i, array) => array.indexOf(it) === i)
 
@@ -204,7 +205,7 @@ export async function all({context, newContract, chainId, factoryOfFactories, ac
         toBlock : 'latest'
     }
 
-    var logs = await sendAsync(factoryOfFactories.currentProvider, "eth_getLogs", args)
+    var logs = await getLogs(factoryOfFactories.currentProvider, "eth_getLogs", args)
 
     var delegations = logs.map(it => newContract(context.ISubDAOABI, abi.decode(["address"], it.topics[2])[0]))
 
@@ -438,7 +439,7 @@ export async function refreshProposals({ context, web3, account, chainId, getGlo
         ]
     }
 
-    var logs = await sendAsync(web3.currentProvider, 'eth_getLogs', args)
+    var logs = await getLogs(web3.currentProvider, 'eth_getLogs', args)
 
     var proposalsInfo = logs.map(it => ({
         id : it.topics[3],
@@ -683,7 +684,7 @@ export async function tryRetrieveDelegationAddressFromItem({ context, chainId },
         fromBlock : '0x0',
         toBlock : 'latest'
     }
-    var logs = await sendAsync(item.mainInterface.currentProvider, "eth_getLogs", args)
+    var logs = await getLogs(item.mainInterface.currentProvider, "eth_getLogs", args)
     if(logs.length !== 1) {
         return
     }

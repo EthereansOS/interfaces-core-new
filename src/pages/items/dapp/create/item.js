@@ -14,6 +14,7 @@ import OurCircularProgress from '../../../../components/Global/OurCircularProgre
 import TraitTypes from './traitTypes'
 
 import itemMetadataTypes from './itemMetadataTypes.json'
+import { useOpenSea } from '../../../../logic/uiUtilities'
 
 const LoadCollection = ({inputItem, mode, state, onStateEntry, setComponentIndex}) => {
 
@@ -122,6 +123,8 @@ const LoadItems = ({state, onStateEntry, setComponentIndex}) => {
 
     const [items, setItems] = useState(null)
 
+    const seaport = useOpenSea()
+
     useEffect(() => {
         onStateEntry('item')
         onStateEntry('name')
@@ -131,7 +134,7 @@ const LoadItems = ({state, onStateEntry, setComponentIndex}) => {
         onStateEntry('amount')
       setTimeout(async () => {
         const itemProjectionFactory = getGlobalContract('itemProjectionFactory')
-        setItems(await loadItemsByFactories({chainId, context, web3, account, newContract, getGlobalContract, collectionData : await loadCollectionMetadata({context, newContract, getGlobalContract}, state.collectionId, newContract(context.ItemMainInterfaceABI, await blockchainCall(itemProjectionFactory.methods.mainInterface)))}, itemProjectionFactory))
+        setItems(await loadItemsByFactories({seaport, chainId, context, web3, account, newContract, getGlobalContract, collectionData : await loadCollectionMetadata({context, newContract, getGlobalContract, deep : true}, state.collectionId, newContract(context.ItemMainInterfaceABI, await blockchainCall(itemProjectionFactory.methods.mainInterface)))}, itemProjectionFactory))
       })
     }, [])
 
@@ -207,7 +210,12 @@ const NameAndSymbol = ({state, onStateEntry}) => {
 
     return (<>
         <div className={style.CreationPageLabel}>
-            <h6>New Item - 1/2 Basics</h6>
+            <div className={style.FancyExplanationCreate}>
+                <h6>Basic Info</h6>
+                <div className={style.proggressCreate}>
+                    <div className={style.proggressCreatePerch} style={{width: "33%"}}>Step 1 of 3</div>
+                </div>
+            </div>
             <label className={style.CreationPageLabelF}>
                 <h6>Name</h6>
                 <input type="text" value={state.name} onChange={e => onStateEntry("name", e.currentTarget.value)}/>
@@ -337,7 +345,13 @@ const Metadata = ({state, onStateEntry}) => {
     }, [state.metadata?.image])
 
     return (<>
-        {!state.modal && <h6>New Item - 2/2 Metadata</h6>}
+        {!state.modal &&
+         <div className={style.FancyExplanationCreate}>
+            <h6>Metadata</h6>
+            <div className={style.proggressCreate}>
+                <div className={style.proggressCreatePerch} style={{width: "66%"}}>Step 2 of 3</div>
+            </div>
+        </div>}
         {state.modal && <h6>Change Item Metadata</h6>}
         <select className={style.CreationSelect} value={state.metadataType} onChange={e => onStateEntry('metadataType', e.currentTarget.value)}>
             {itemMetadataTypes.map(it => <option key={it.name} value={it.name}>{it.label}</option>)}
@@ -504,9 +518,6 @@ const CreateItem = ({inputItem, mode}) => {
             {success && <RegularModal>
                 <CreateSuccess success={success} state={state}/>
             </RegularModal>}
-            <div className={style.stepTitleI}>
-                <h6>Manage a collection</h6>
-            </div>
             <Component state={state} inputItem={inputItem} mode={mode} onStateEntry={onStateEntry} setComponentIndex={setComponentIndex}/>
             <div className={style.ActionDeploy}>
                 {previousComponentIndex !== -1 && <a className={style.Web3BackBTN} onClick={() => setComponentIndex(previousComponentIndex)}>Back</a>}

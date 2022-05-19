@@ -42,30 +42,34 @@ const IndexMain = () => {
         <h6>EthOS is a universal platform for doing everything on Ethereum. It features four protocols, all on-chain, all decentralized, all customizable, all interwoven. Factories offer a safe new way to code and earn revenue for developers. Items are dynamic tokens that work with all applications. Organizations are granular governance vehicles. Covenants are DeFi tools, built on an AMM Aggregator. Builders can mix-and-match from these as they see fit.</h6>
       </div>
       <div className={style.CardsLayer}>
-        <Link to='/factories/dapp' className={style.CardsFancy}>
+        <a target="_blank"  href='https://docs.ethos.wiki/ethereansos-docs/factories/factories-learn' className={style.CardsFancy}>
           <figure>
             <img src={`${process.env.PUBLIC_URL}/img/c-2.png`}></img>
           </figure>
           <p>Factories</p>
-        </Link>
-        <Link to='/items/dapp/' className={style.CardsFancy}>
+          <span>A new secure way to build on Ethereum</span>
+        </a>
+        <a target="_blank"  href='https://docs.ethos.wiki/ethereansos-docs/items/items-learn' className={style.CardsFancy}>
           <figure>
             <img src={`${process.env.PUBLIC_URL}/img/c-1.png`}></img>
           </figure>
           <p>Items</p>
-        </Link>
-          <Link to='/guilds/dapp' className={style.CardsFancy}>
+          <span>Overpowered token standard to unleash the power of new or existing ERC-20 and NFTs</span>
+        </a>
+          <a target="_blank" href='https://docs.ethos.wiki/ethereansos-docs/guilds/guilds-learn' className={style.CardsFancy}>
           <figure>
             <img src={`${process.env.PUBLIC_URL}/img/c-3.png`}></img>
           </figure>
-          <p>Organizations</p>
-        </Link>
-        <Link to='/covenants/dapp' className={style.CardsFancy}>
+          <p>Guilds</p>
+          <span>Fully on-chain and transparent governance systems</span>
+        </a>
+        <a target="_blank" href='https://docs.ethos.wiki/ethereansos-docs/covenants/covenants-learn' className={style.CardsFancy}>
           <figure>
             <img src={`${process.env.PUBLIC_URL}/img/c-4.png`}></img>
           </figure>
           <p>Covenants</p>
-        </Link>
+          <span>Secure multi-AMM DeFi tools for every token or NFT</span>
+        </a>
       </div>
       <div className={style.Graphic}>
         <figure>

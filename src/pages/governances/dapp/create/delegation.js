@@ -6,6 +6,7 @@ import {createDelegation, finalizeDelegation} from '../../../../logic/delegation
 import CircularProgress from '../../../../components/Global/OurCircularProgress'
 import style from '../../../../all.module.css'
 
+
 const Init = ({onSelection}) => {
   return (
     <div>
@@ -17,7 +18,7 @@ const Init = ({onSelection}) => {
       </div>
       <div className={style.CreateBoxDesc}>
         <h6>Delegation</h6>
-        <p>A Delegation is an independent governance party that can compete for grant funding from one or more Organizations.</p>
+        <p>Create a Delegation, an independent political party that can compete for grant funding from one or more Organizations.</p>
         <a className={style.NextStep}  onClick={() => onSelection("deploy")}>Start</a>
         <a target="_blank" className={style.ExtLinkButtonAlpha} href="https://docs.ethos.wiki/ethereansos-docs/organizations/delegations">Learn</a>
       </div>
@@ -76,8 +77,11 @@ const Deploy = ({back, finalize}) => {
 
   return (
     <div className={style.CreationPageLabel}>
-      <div className={style.stepTitle}>
-        <h6>Step 1/2 - Bio</h6>
+      <div className={style.FancyExplanationCreate}>
+          <h6>Basic Info</h6>
+          <div className={style.proggressCreate}>
+              <div className={style.proggressCreatePerch} style={{width: "50%"}}>Step 1 of 2</div>
+          </div>
       </div>
       <label className={style.CreationPageLabelF}>
         <h6>Name</h6>
@@ -176,8 +180,11 @@ const Finalize = ({back, success, cumulativeData}) => {
 
   return (
     <div className={style.CreationPageLabel}>
-      <div className={style.stepTitle}>
-        <h6>Step 2/2 - Governance Rules</h6>
+      <div className={style.FancyExplanationCreate}>
+          <h6>Governance Rules</h6>
+          <div className={style.proggressCreate}>
+              <div className={style.proggressCreatePerchLast} style={{width: "100%"}}>Step 2 of 2</div>
+          </div>
       </div>
       <label className={style.CreationPageLabelF}>
         <h6>Delegation address</h6>

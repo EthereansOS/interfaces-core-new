@@ -3,7 +3,7 @@ import CircularProgress from '../OurCircularProgress'
 
 import style from '../../../all.module.css'
 
-const ActionAWeb3Button  = ({children, onClick, type, onSuccess, className}) => {
+const ActionAWeb3Button  = ({children, onClick, type, onSuccess, className, disabled}) => {
 
     var realType = type && (type = type[0].toUpperCase() + type.substring(1))
 
@@ -32,7 +32,7 @@ const ActionAWeb3Button  = ({children, onClick, type, onSuccess, className}) => 
 
     return (
         <div className={!realType ? style.ActionAWeb3Button : style["ActionAWeb3Button" + realType]}>
-            <button className={(!realType ? style.ActionAMain : style["ActionAWeb3Button" + realType]) + (className ? ' ' + className : '')} onClick={onButtonClick}>
+            <button disabled={disabled} className={(!realType ? style.ActionAMain : style["ActionAWeb3Button" + realType]) + (className ? ' ' + className : '') + (disabled ? style.disabled : '')} onClick={onButtonClick}>
                 {children}
             </button>
         </div>

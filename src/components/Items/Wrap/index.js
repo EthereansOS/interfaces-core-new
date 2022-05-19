@@ -8,12 +8,12 @@ import NFT from './NFT'
 import { blockchainCall, useEthosContext, useWeb3 } from '@ethereansos/interfaces-core'
 
 import { loadTokenFromAddress } from '../../../logic/erc20'
-import { OpenSeaContextProvider, useOpenSea } from '../../../logic/uiUtilities'
+import { useOpenSea } from '../../../logic/uiUtilities'
 import { retrieveAsset } from '../../../logic/opensea'
 
 import style from '../../../all.module.css'
 
-const Wrap = ({item}) => {
+export default ({item}) => {
 
     const context = useEthosContext()
 
@@ -44,7 +44,3 @@ const Wrap = ({item}) => {
         <Component {...{token, nftType : item.wrapType}}/>
     </div>
 }
-
-export default (props) => <OpenSeaContextProvider>
-    <Wrap {...props}/>
-</OpenSeaContextProvider>

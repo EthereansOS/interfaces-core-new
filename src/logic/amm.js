@@ -2,6 +2,8 @@ import { blockchainCall, web3Utils, sendAsync, getNetworkElement, numberToString
 
 import { getRawField } from './generalReader'
 
+const MAX_UINT256 = '0x' + web3Utils.toBN(2).pow(web3Utils.toBN(256)).sub(web3Utils.toBN(1)).toString('hex')
+
 export async function getUniswapV3AMMForSwap({context, chainId, newContract}) {
     var ammAggregatorAddress = getNetworkElement({context, chainId}, "ammAggregatorAddress")
     var ammAggregator = newContract(context.AMMAggregatorABI, ammAggregatorAddress)
@@ -47,7 +49,7 @@ var conversionEncode = {
     "10000": "002710"
 }
 
-async function calculateUniswapV3PriceWithSlippage({ provider, context, chainId }, pool, inputTokenAddress, outputTokenAddress, middleTokenAddress, value, decimals) {
+async function calculateUniswapV3PriceWithSlippage({ provider, context, chainId }, pool, inputTokenAddress, outputTokenAddress, middleTokenAddress, value, decimals, method) {
 
     var path = inputTokenAddress + conversionEncode[pool[0].fee] + (middleTokenAddress || outputTokenAddress).substring(2)
 
@@ -55,10 +57,28 @@ async function calculateUniswapV3PriceWithSlippage({ provider, context, chainId 
         path += (conversionEncode[pool[1].fee] + outputTokenAddress.substring(2))
     }
 
-    var output = await sendAsync(provider, 'eth_call', {
-        to : getNetworkElement({ context, chainId }, 'uniswapV3QuoterAddress'),
-        data : (web3Utils.sha3('quoteExactInput(bytes,uint256)').substring(0, 10)) + (abi.encode(["bytes", "uint256"], [path, value]).substring(2))
-    }, 'latest')
+    if(method === 'quoteExactOutput') {
+        path = outputTokenAddress + conversionEncode[pool[0].fee] + inputTokenAddress.substring(2)
+
+        if(middleTokenAddress) {
+            path = outputTokenAddress + conversionEncode[pool[1].fee] + middleTokenAddress.substring(2) + conversionEncode[pool[0].fee] + inputTokenAddress.substring(2)
+        }
+    }
+
+    var output
+    try {
+        output = await sendAsync(provider, 'eth_call', {
+            to : getNetworkElement({ context, chainId }, 'uniswapV3QuoterAddress'),
+            data : (web3Utils.sha3((method || 'quoteExactInput') + '(bytes,uint256)').substring(0, 10)) + (abi.encode(["bytes", "uint256"], [path, value]).substring(2))
+        }, 'latest')
+    } catch(e) {
+        return {
+            swapInput : '0',
+            swapOutput : '0',
+            priceImpact : '0',
+            path
+        }
+    }
 
     const swapOutput = abi.decode(['uint256'], output)[0].toString()
     var priceImpact = '0'
@@ -101,13 +121,17 @@ async function calculateUniswapV3PriceWithSlippage({ provider, context, chainId 
     priceImpact = numberToString(((pricePerSingleAfterSwap / pricePerSingleBeforeSwap) - 1) * 100)
 
     return {
+        swapInput : swapOutput,
         swapOutput,
         priceImpact,
-        path
+        path,
+        liquidityPoolAddresses : pool.map(it => it.liquidityPoolAddress),
+        inputTokenAddress,
+        swapPath : middleTokenAddress ? [middleTokenAddress, outputTokenAddress] : [outputTokenAddress]
     }
 }
 
-export async function calculateUniswapV3SwapOutput({ context, chainId }, input, output, amm, middleTokenAddress) {
+export async function elaborateForUniswapV3Calculation({ context, chainId }, input, output, amm, middleTokenAddress, value, method) {
 
     const inputTokenAddress = input.token.address === VOID_ETHEREUM_ADDRESS ? amm.ethereumAddress : input.token.address
     const outputTokenAddress = output.token.address === VOID_ETHEREUM_ADDRESS ? amm.ethereumAddress : output.token.address
@@ -160,7 +184,14 @@ export async function calculateUniswapV3SwapOutput({ context, chainId }, input, 
         abi.decode(['uint256'], await getRawField({ provider }, middleTokenAddress || outputTokenAddress, 'decimals'))[0].toString()
     ]
 
-    const prices = await Promise.all(pools.map(pool => calculateUniswapV3PriceWithSlippage({ provider, context, chainId }, pool, inputTokenAddress, outputTokenAddress, middleTokenAddress, input.value, decimals)))
+    const prices = await Promise.all(pools.map(pool => calculateUniswapV3PriceWithSlippage({ provider, context, chainId }, pool, inputTokenAddress, outputTokenAddress, middleTokenAddress, value, decimals, method)))
+
+    return prices
+}
+
+export async function calculateUniswapV3SwapOutput({ context, chainId }, input, output, amm, middleTokenAddress) {
+
+    const prices = await elaborateForUniswapV3Calculation({ context, chainId }, input, output, amm, middleTokenAddress, input.value)
 
     const swapOutputs = prices.map(it => parseInt(it.swapOutput))
 
@@ -171,7 +202,59 @@ export async function calculateUniswapV3SwapOutput({ context, chainId }, input, 
     return selected
 }
 
-async function calculateAMMBasedSwapOutput({ chainId, context }, input, output, amm, middleTokenAddress) {
+export async function calculateUniswapV3SwapInput({ context, chainId }, input, output, amm, middleTokenAddress) {
+
+    const prices = await elaborateForUniswapV3Calculation({ context, chainId }, input, output, amm, middleTokenAddress, output.value, 'quoteExactOutput')
+
+    const swapInputs = prices.map(it => parseInt(it.swapInput))
+
+    var selected = Math.max.apply(null, swapInputs);
+    selected = swapInputs.indexOf(selected)
+    selected = prices[selected]
+
+    return selected
+}
+
+async function calculateAMMBasedSwapInput(data, input, output, amm, liquidityPoolAddresses, inputTokenAddress, inputTokens) {
+
+    const { context, newContract } = data
+
+    var path = [
+        inputTokenAddress,
+        ...inputTokens
+    ]
+
+    if(amm.name === 'UniswapV2') {
+        var result = (await blockchainCall(newContract(context.uniswapV2RouterABI, context.uniswapV2RouterAddress).methods.getAmountsIn, output.value, path)).map(it => it).reverse()
+        result.splice(0, 1)
+        return result
+    }
+    if(amm.name === 'SushiSwap') {
+        var result = (await blockchainCall(newContract(context.uniswapV2RouterABI, context.sushiSwapRouterAddress).methods.getAmountsIn, output.value, path)).map(it => it).reverse()
+        result.splice(0, 1)
+        return result
+    }
+    if(amm.name === 'Balancer') {
+        var result = [output.value]
+        for(var i = liquidityPoolAddresses.length - 1; i >= 0; i--) {
+            const liquidityPoolAddress = liquidityPoolAddresses[i]
+            const from = path[i]
+            const to = path[i + 1]
+            const bPool = newContract(context.BPoolABI, liquidityPoolAddress)
+            const res = await bPool.methods.swapExactAmountOut(from, MAX_UINT256, to, result[0], MAX_UINT256).call()
+            result.unshift(res.tokenAmountIn)
+        }
+        result.splice(result.length - 1, 1)
+        return result
+    }
+
+    return inputTokens.map(() => '0')
+}
+
+async function calculateAMMBasedSwap(data, input, output, amm, middleTokenAddress, exactOutput) {
+
+    const { chainId, context } = data
+
     const inputTokenAddress = input.token.address === VOID_ETHEREUM_ADDRESS ? amm.ethereumAddress : input.token.address
     const outputTokenAddress = output.token.address === VOID_ETHEREUM_ADDRESS ? amm.ethereumAddress : output.token.address
     const provider = amm.contract.currentProvider
@@ -188,14 +271,14 @@ async function calculateAMMBasedSwapOutput({ chainId, context }, input, output, 
     }
 
     if(liquidityPoolAddresses.filter(it => it === VOID_ETHEREUM_ADDRESS).length > 0) {
-        return { swapOutput : '0', priceImpact : 0, liquidityPoolAddresses }
+        return { swapInput : '0', swapOutput : '0', priceImpact : 0, liquidityPoolAddresses }
     }
 
     inputTokens.push(outputTokenAddress)
 
-    var swapOutputArray = await blockchainCall(amm.contract.methods.getSwapOutput, inputTokenAddress, input.value, liquidityPoolAddresses, inputTokens)
+    var dataArray = exactOutput ? await calculateAMMBasedSwapInput(data, input, output, amm, liquidityPoolAddresses, inputTokenAddress, inputTokens) : await blockchainCall(amm.contract.methods.getSwapOutput, inputTokenAddress, input.value, liquidityPoolAddresses, inputTokens)
 
-    var swapOutput = swapOutputArray[swapOutputArray.length - 1]
+    var swapOutput = dataArray[dataArray.length - 1]
 
     var liquidityPoolAddress = await blockchainCall(amm.contract.methods.byLiquidityPool, liquidityPoolAddresses[liquidityPoolAddresses.length - 1])
     var amounts = liquidityPoolAddress[1]
@@ -204,10 +287,14 @@ async function calculateAMMBasedSwapOutput({ chainId, context }, input, output, 
 
     var inputPosition = tokens[0] === (middleTokenAddress || inputTokenAddress) ? 0 : 1
 
-    var token0Decimals = abi.decode(['uint256'], await getRawField({ provider }, tokens[0], 'decimals'))[0]
-    var token1Decimals = abi.decode(['uint256'], await getRawField({ provider }, tokens[1], 'decimals'))[0]
+    if(exactOutput && parseInt(amounts[1 - inputPosition]) < parseInt(output.value)) {
+        return { swapInput : '0', priceImpact : '0', liquidityPoolAddresses }
+    }
 
-    var normalizedInputAmount = parseFloat(fromDecimals(swapOutputArray[swapOutputArray.length - 2], token0Decimals, true))
+    var token0Decimals = tokens[0] === VOID_ETHEREUM_ADDRESS ? '18' : abi.decode(['uint256'], await getRawField({ provider }, tokens[0], 'decimals'))[0]
+    var token1Decimals = tokens[1] === VOID_ETHEREUM_ADDRESS ? '18' : abi.decode(['uint256'], await getRawField({ provider }, tokens[1], 'decimals'))[0]
+
+    var normalizedInputAmount = parseFloat(fromDecimals(dataArray[dataArray.length - 2], token0Decimals, true))
 
     var normalizedAmounts = [
         parseFloat(fromDecimals(amounts[0], token0Decimals, true)),
@@ -226,7 +313,9 @@ async function calculateAMMBasedSwapOutput({ chainId, context }, input, output, 
 
     var priceImpact = numberToString(((pricePerSingleAfterSwap / pricePerSingleBeforeSwap) - 1) * 100)
 
-    return { swapOutput, priceImpact, liquidityPoolAddresses }
+    return { swapInput : swapOutput, swapOutput, priceImpact, liquidityPoolAddresses,
+        inputTokenAddress,
+        swapPath : middleTokenAddress ? [middleTokenAddress, outputTokenAddress] : [outputTokenAddress] }
 }
 
 export async function calculateSwapOutput({ chainId, context }, input, output, amm) {
@@ -234,10 +323,23 @@ export async function calculateSwapOutput({ chainId, context }, input, output, a
         return
     }
 
+    if(amm instanceof Array) {
+        var ammData = await Promise.all(amm.map(it => calculateSwapOutput({ chainId, context }, input, output, it)))
+        ammData = ammData.filter(it => it && it.swapOutput)
+        var idx = '0'
+        for(var i in ammData) {
+            var item = ammData[i]
+            if(parseInt(item.swapOutput) > parseInt(ammData[idx].swapOutput)) {
+                idx = i
+            }
+        }
+        return ammData[idx]
+    }
+
     const inputTokenAddress = web3Utils.toChecksumAddress(input.token.address === VOID_ETHEREUM_ADDRESS ? amm.ethereumAddress : input.token.address)
     const outputTokenAddress = web3Utils.toChecksumAddress(output.token.address === VOID_ETHEREUM_ADDRESS ? amm.ethereumAddress : output.token.address)
 
-    const middleTokens = [
+    const middleTokens = amm.name === 'Mooniswap' || amm.name === 'Balancer' ? [undefined] : [
         undefined,
         amm.ethereumAddress,
         web3Utils.toChecksumAddress(getNetworkElement({chainId, context}, "osTokenAddress")),
@@ -252,34 +354,81 @@ export async function calculateSwapOutput({ chainId, context }, input, output, a
         var priceImpact = '0'
         var liquidityPoolAddresses
         var path
-
-        if(amm.name === 'UniswapV3') {
-            var out = await calculateUniswapV3SwapOutput({ chainId, context }, input, output, amm, middleTokenAddress)
-            swapOutput = out.swapOutput
-            priceImpact = out.priceImpact
-            path = out.path
-        } else {
-            var out = await calculateAMMBasedSwapOutput({ chainId, context }, input, output, amm, middleTokenAddress)
-            swapOutput = out.swapOutput
-            priceImpact = out.priceImpact
-            liquidityPoolAddresses = out.liquidityPoolAddresses
+        var swapPath
+        var inputTokenAddress
+        try {
+            if(amm.name === 'UniswapV3') {
+                var out = await calculateUniswapV3SwapOutput({ chainId, context }, input, output, amm, middleTokenAddress)
+                swapOutput = out.swapOutput
+                priceImpact = out.priceImpact
+                path = out.path
+                liquidityPoolAddresses = out.liquidityPoolAddresses
+                swapPath = out.swapPath
+                inputTokenAddress = out.inputTokenAddress
+            } else {
+                var out = await calculateAMMBasedSwap({ chainId, context }, input, output, amm, middleTokenAddress)
+                swapOutput = out.swapOutput
+                priceImpact = out.priceImpact
+                liquidityPoolAddresses = out.liquidityPoolAddresses
+                swapPath = out.swapPath
+                inputTokenAddress = out.inputTokenAddress
+            }
+        } catch(e) {
+            liquidityPoolAddresses = []
         }
-
-        return { swapOutput, priceImpact, middleTokenAddress, liquidityPoolAddresses, path }
+        return { swapOutput, priceImpact, middleTokenAddress, liquidityPoolAddresses, path, swapPath, inputTokenAddress }
     }))
 
     var swapOutputs = data.map(it => parseInt(it.swapOutput))
 
-    var selected = Math.max.apply(null, swapOutputs);
+    var selected = Math.max.apply(null, swapOutputs)
     selected = swapOutputs.indexOf(selected)
     selected = data[selected]
     selected.middleSymbol = selected.middleTokenAddress && abi.decode(['string'], await getRawField({ provider : amm.contract.currentProvider }, selected.middleTokenAddress, 'symbol'))[0]
     selected.middleSymbol && (selected.middleSymbol = selected.middleSymbol.split('WETH').join('ETH'))
+    selected.amm = amm
 
     return selected
 }
 
-export async function performSwap({ chainId, context, account }, input, output, amm, swapDataInfo, slippage, receiver) {
+const swapActions = {
+    UniswapV2BasedSwap(address, data, swapData, amountOutMinimum, value) {
+        const { newContract, context } = data
+        const methodName = `swapExact${swapData.enterInETH ? 'ETH' : 'Tokens'}For${swapData.exitInETH ? 'ETH' : 'Tokens'}`
+        const args = [
+            newContract(context.uniswapV2RouterABI, address).methods[methodName]
+        ]
+        !swapData.enterInETH && args.push(swapData.inputTokenAmount)
+        args.push(...[
+            amountOutMinimum,
+            [swapData.inputTokenAddress, ...swapData.path],
+            swapData.receiver,
+            new Date().getTime() + 10000,
+            {value}
+        ])
+        return blockchainCall.apply(window, args)
+    },
+    UniswapV2(data, swapData, amountOutMinimum, value) {
+        return this.UniswapV2BasedSwap(data.context.uniswapV2RouterAddress, data, swapData, amountOutMinimum, value)
+    },
+    SushiSwap(data, swapData, amountOutMinimum, value) {
+        return this.UniswapV2BasedSwap(data.context.sushiSwapRouterAddress, data, swapData, amountOutMinimum, value)
+    },
+    Balancer(data, swapData, amountOutMinimum, value) {
+        const { context, newContract } = data
+        const contract = newContract(context.BPoolABI, swapData.liquidityPoolAddresses[0])
+        return blockchainCall(contract.methods.swapExactAmountIn, swapData.inputTokenAddress, swapData.inputTokenAmount, swapData.path[0], amountOutMinimum, MAX_UINT256, { value })
+    },
+    MooniSwap(data, swapData, amountOutMinimum, value) {
+        const { context, newContract } = data
+        const contract = newContract(context.MooniswapABI, swapData.liquidityPoolAddresses[0])
+        return blockchainCall(contract.methods.swap, swapData.inputTokenAddress, swapData.path[0], swapData.inputTokenAmount, amountOutMinimum, VOID_ETHEREUM_ADDRESS, { value })
+    }
+}
+
+export async function performSwap(data, input, output, amm, swapDataInfo, slippage, receiver) {
+
+    const { chainId, context, account } = data
 
     var amountOutMinimum = numberToString(parseInt(swapDataInfo.swapOutput) * (1 - (slippage / 100))).split('.')[0]
 
@@ -308,7 +457,9 @@ export async function performSwap({ chainId, context, account }, input, output, 
 
         const value = swapData.enterInETH ? swapData.amount : '0'
 
-        await blockchainCall(amm.contract.methods.swapLiquidity, swapData, { value })
+        return await swapActions[amm.name](data, swapData, amountOutMinimum, value)
+
+        //await blockchainCall(amm.contract.methods.swapLiquidity, swapData, { value })
     }
 }
 
@@ -330,4 +481,83 @@ export async function performUniswapV3Swap({ chainId, context }, input, output, 
     const value = input.token.address === VOID_ETHEREUM_ADDRESS ? input.value : '0'
 
     await blockchainCall(amm.contract.methods.multicall, multicallData, { value })
+}
+
+export async function calculateSwapInput(data, input, output, amm) {
+    if(!input?.token || !output?.value || !output?.value === '0' || !output?.token || !amm) {
+        return
+    }
+
+    if(amm instanceof Array) {
+        var ammData = await Promise.all(amm.map(it => calculateSwapInput(data, input, output, it)))
+        ammData = ammData.filter(it => it && it.swapInput)
+        var idx = '0'
+        for(var i in ammData) {
+            var item = ammData[i]
+            if(parseInt(item.swapInput) < parseInt(ammData[idx].swapInput)) {
+                idx = i
+            }
+        }
+        return ammData[idx]
+    }
+
+    const { chainId, context } = data
+
+    const inputTokenAddress = web3Utils.toChecksumAddress(input.token.address === VOID_ETHEREUM_ADDRESS ? amm.ethereumAddress : input.token.address)
+    const outputTokenAddress = web3Utils.toChecksumAddress(output.token.address === VOID_ETHEREUM_ADDRESS ? amm.ethereumAddress : output.token.address)
+
+    const middleTokens = amm.name === 'Mooniswap' || amm.name === 'Balancer' ? [undefined] : [
+        undefined,
+        amm.ethereumAddress,
+        web3Utils.toChecksumAddress(getNetworkElement({chainId, context}, "osTokenAddress")),
+        web3Utils.toChecksumAddress(getNetworkElement({chainId, context}, "usdtTokenAddress")),
+        web3Utils.toChecksumAddress(getNetworkElement({chainId, context}, "usdcTokenAddress")),
+        web3Utils.toChecksumAddress(getNetworkElement({chainId, context}, "daiTokenAddress"))
+    ].filter(it => it !== inputTokenAddress && it !== outputTokenAddress)
+
+    var data = await Promise.all(middleTokens.map(async middleTokenAddress => {
+
+        var swapInput = '0'
+        var priceImpact = '0'
+        var liquidityPoolAddresses
+        var path
+        var swapPath
+        var inputTokenAddress
+        try {
+            if(amm.name === 'UniswapV3') {
+                var out = await calculateUniswapV3SwapInput({ chainId, context }, input, output, amm, middleTokenAddress)
+                swapInput = out.swapInput
+                priceImpact = out.priceImpact
+                path = out.path
+                liquidityPoolAddresses = out.liquidityPoolAddresses
+                swapPath = out.swapPath
+                inputTokenAddress = out.inputTokenAddress
+            } else {
+                var out = await calculateAMMBasedSwap(data, input, output, amm, middleTokenAddress, true)
+                swapInput = out.swapInput
+                priceImpact = out.priceImpact
+                liquidityPoolAddresses = out.liquidityPoolAddresses
+                swapPath = out.swapPath
+                inputTokenAddress = out.inputTokenAddress
+            }
+        } catch(e) {
+            liquidityPoolAddresses = []
+        }
+        return { swapInput, priceImpact, middleTokenAddress, liquidityPoolAddresses, path, swapPath, inputTokenAddress }
+    }))
+
+    var swapInputs = data.map(it => parseInt(it.swapInput))
+
+    if(swapInputs.filter(it => it > 0).length === 0) {
+        return
+    }
+
+    var selected = Math.min.apply(null, swapInputs.filter(it => it > 0))
+    selected = swapInputs.indexOf(selected)
+    selected = data[selected]
+    selected.middleSymbol = selected.middleTokenAddress && abi.decode(['string'], await getRawField({ provider : amm.contract.currentProvider }, selected.middleTokenAddress, 'symbol'))[0]
+    selected.middleSymbol && (selected.middleSymbol = selected.middleSymbol.split('WETH').join('ETH'))
+    selected.amm = amm
+
+    return selected
 }

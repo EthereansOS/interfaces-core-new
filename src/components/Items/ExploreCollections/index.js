@@ -8,7 +8,7 @@ import LogoRenderer from '../../Global/LogoRenderer'
 import style from '../../../all.module.css'
 
 const ExploreCollections = ({element}) => (
-  <Link to={"/items/dapp/collections/" + element.id}>
+  <Link to={element.isDecks ? "/items/dapp/decks" : "/items/dapp/collections/" + element.id}>
    <div className={style.CollectionSingle}>
       <LogoRenderer input={element}/>
       <div className={style.CollectionTitle}>

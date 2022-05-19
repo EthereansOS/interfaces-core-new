@@ -1,9 +1,10 @@
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect, useMemo, useCallback } from 'react'
 
 import { useWeb3 } from '@ethereansos/interfaces-core'
-import { CircularProgress } from "@ethereansos/interfaces-ui"
+import { FixedSizeList } from 'react-window'
+import OurCircularProgress from '../OurCircularProgress'
 
-export default ({discriminant, Renderer, emptyMessage, provider, searchText, renderedProperties, rendererIsContainer, allowEmpty}) => {
+export default ({ discriminant, Renderer, emptyMessage, provider, searchText, renderedProperties, rendererIsContainer, allowEmpty, fixedList, sortOrder, filter }) => {
 
   const { chainId } = useWeb3()
 
@@ -15,7 +16,7 @@ export default ({discriminant, Renderer, emptyMessage, provider, searchText, ren
     refreshElements(true)
   }, [chainId, discriminant])
 
-  async function refreshElements(withLoader) {
+  const refreshElements = useCallback(async withLoader => {
     withLoader === true && setElements(null)
     setError("")
     setTimeout(async () => {
@@ -29,11 +30,15 @@ export default ({discriminant, Renderer, emptyMessage, provider, searchText, ren
         setError('Error while loading: ' + (e.message || e))
       }
     })
-  }
+  }, [provider])
 
   var outputElements = elements
 
   searchText && outputElements && (outputElements = outputElements.filter(element => element.name?.toLowerCase().indexOf(searchText.toLowerCase()) !== -1 || element.address?.toLowerCase().indexOf(searchText.toLowerCase()) !== -1 || element.symbol?.toLowerCase().indexOf(searchText.toLowerCase()) !== -1))
+
+  filter && outputElements && (outputElements = outputElements.filter(filter))
+
+  sortOrder && outputElements && (outputElements = outputElements.sort(sortOrder))
 
   var message =
   error
@@ -44,9 +49,22 @@ export default ({discriminant, Renderer, emptyMessage, provider, searchText, ren
         : emptyMessage
       : <h2>No elements to display</h2>
 
+  const Row = useCallback(({data, index, style}) => <div style={style}>
+    <Renderer {...{refreshElements, ...renderedProperties}} element={data[index]} />
+  </div>, [Renderer, refreshElements, renderedProperties])
+
   return (!error && !outputElements)
-    ? <CircularProgress/>
+    ? <OurCircularProgress/>
     : error || (outputElements && outputElements.length === 0 && !allowEmpty)
       ? message
-      : outputElements && rendererIsContainer ? <Renderer elements={outputElements} {...{refreshElements, ...renderedProperties}}/> : outputElements.map((element, i) => <Renderer {...{refreshElements, ...renderedProperties}} key={(i + "_" + (element.key || element.id || element.index || element.hash))} element={element}/>)
+      : outputElements && rendererIsContainer ? <Renderer elements={outputElements} {...{refreshElements, ...renderedProperties}}/> : fixedList ? <FixedSizeList
+        itemKey={(i, itemData) => (i + "_" + (itemData[i].key || itemData[i].id || itemData[i].index || itemData[i].hash || itemData[i].address))}
+        itemData={outputElements}
+        itemCount={outputElements.length}
+        width="100%"
+        height={674}
+        itemSize={100}
+      >
+        {Row}
+      </FixedSizeList> : outputElements.map((element, i) => <Renderer {...{refreshElements, ...renderedProperties}} key={(i + "_" + (element.key || element.id || element.index || element.hash || element.address))} element={element}/>)
 }

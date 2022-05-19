@@ -23,12 +23,13 @@ import RegularModal from '../../Global/RegularModal/index.js'
 import ProposalMetadata from '../ProposalMetadata/index.js'
 import BackButton from '../../Global/BackButton/index.js'
 import { generateItemKey } from '../../../logic/ballot.js'
+import { getLogs } from '../../../logic/logger.js'
 
 export default ({element, refreshElements, forDelegationVote}) => {
 
   const context = useEthosContext()
 
-  const { newContract, block, account, web3, ipfsHttpClient } = useWeb3()
+  const { newContract, block, account, web3, ipfsHttpClient, chainId } = useWeb3()
 
   const [value, setValue] = useState(null)
   const [accepts, setAccepts] = useState(null)
@@ -74,13 +75,13 @@ export default ({element, refreshElements, forDelegationVote}) => {
         Executed : oldValue?.Executed
       }))
       if(proposalData.terminationBlock !== '0' && (!status || (!status.Defeated && !status.Executed))){
-        var logs = await sendAsync(web3.currentProvider, "eth_getLogs", {
+        var logs = await getLogs(web3.currentProvider, 'eth_getLogs', {
           address : element.proposalsManager.options.address,
           topics : [
             web3Utils.sha3('ProposalTerminated(bytes32,bool,bytes)'),
             element.id
           ],
-          fromBlock : '0x0',
+          fromBlock : web3Utils.toHex(getNetworkElement({ context, chainId }, 'deploySearchStart')) || "0x0",
           toBlock : 'latest'
         })
         if(logs.length > 0) {

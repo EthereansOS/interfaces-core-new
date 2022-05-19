@@ -23,6 +23,7 @@ const Account = () => {
   const [ownedItemList, setOwnedItemList] = useState()
   const [hostedItemList, setHostedItemList] = useState()
   const [hostedDelegationList, setHostedDelegationList] = useState()
+  const [ownedDecksList, setOwnedDecksList] = useState()
 
   useEffect(() => {
     setTimeout(async () => {
@@ -54,6 +55,13 @@ const Account = () => {
 
   const [connect, setConnect] = useState(false)
 
+  useEffect(() => {
+    setOwnedItemList()
+    setHostedItemList()
+    setHostedDelegationList()
+    setOwnedDecksList()
+  }, [account, chainId])
+
   if(connectionStatus !== web3States.CONNECTED) {
       return <>
         {(connect || window.localStorage.connector) && <RegularModal close={() => void(window.localStorage.removeItem('connector'), setConnect(false))}>
@@ -79,7 +87,7 @@ const Account = () => {
             <h4 className={style.AccountName}><span>Address: <a href={`${getNetworkElement({context, chainId}, 'etherscanURL')}address/${account}`} target="_blank">{account}</a></span></h4>
           </div>
           <div className={style.AccountInfoR}>
-            <a className={style.AccounDisconnect} href='javascript:;' onClick={triggerConnect}>Disconnect</a>
+            <a className={style.AccounDisconnect} onClick={triggerConnect}>Disconnect</a>
           </div>
         </div>
         {(!hostedDelegationList || hostedDelegationList.length > 0) && <div className={style.AccountSection}>
@@ -97,6 +105,10 @@ const Account = () => {
         {(!ownedItemList || ownedItemList.length > 0) && <div className={style.AccountSection}>
             <h4>Items Owned</h4>
             <ExploreItems allMine onResult={setOwnedItemList}/>
+        </div>}
+        {(!ownedDecksList || ownedDecksList.length > 0) && <div className={style.AccountSection}>
+            <h4>Decks Owned</h4>
+            <ExploreItems allMine wrappedOnly={'Deck'} onResult={setOwnedDecksList}/>
         </div>}
       </div>
   )

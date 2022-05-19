@@ -9,7 +9,7 @@ import LogoRenderer from '../LogoRenderer'
 
 import style from '../../../all.module.css'
 
-const ActionInfoSection  = ({hideAmmStuff, settings, onSettingsToggle, amm, onAMM, ammRecap}) => {
+const ActionInfoSection = ({hideAmmStuff, settings, onSettingsToggle, amm, onAMM, ammRecap, onAMMs}) => {
 
     const context = useEthosContext()
 
@@ -25,6 +25,8 @@ const ActionInfoSection  = ({hideAmmStuff, settings, onSettingsToggle, amm, onAM
         }
         getAMMs({context, chainId, newContract}).then(retrievedAMMS => void(setAMMS(retrievedAMMS), onAMM(retrievedAMMS.filter(it => it.name === 'UniswapV3')[0])))
     }, [chainId, hideAmmStuff])
+
+    useEffect(() => amms && onAMMs && onAMMs(amms), [amms])
 
     return (
         <>

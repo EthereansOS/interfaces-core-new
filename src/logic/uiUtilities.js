@@ -1,15 +1,16 @@
 import React, { useContext, useState, useEffect, useMemo } from 'react'
 
 import { OpenSeaPort, Network } from 'opensea-js'
+import { loadTokenFromAddress } from './erc20'
 
 import MenuCapableComponent from "../components/Global/MenuCapableComponent"
 import { useLocation } from 'react-router'
-import { useEthosContext, useWeb3, sendAsync } from '@ethereansos/interfaces-core'
+import { useWeb3, sendAsync } from '@ethereansos/interfaces-core'
 
-import RegularModal from '../components/Global/RegularModal'
+import TransactionResult from '../components/Global/TransactionResult'
 
 import style from '../all.module.css'
-import TransactionResult from '../components/Global/TransactionResult'
+import custom from '../custom.module.css'
 
 export function retrieveComponentsByReflection(contextualRequire, key, returnElement) {
     return contextualRequire.keys().map(element => {
@@ -111,10 +112,12 @@ export const OpenSeaContextProvider = ({ children }) => {
 
     const { chainId, web3 } = useWeb3()
 
-    const seaport = useMemo(() => web3 ? new OpenSeaPort(web3.currentProvider, {
-        networkName: chainId === 4 ? Network.Rinkeby : Network.Main,
-        apiKey: chainId === 4 ? undefined : require('./frankSwet.json')
-    }) : null, [chainId, web3])
+    const seaport = useMemo(() => {
+        return web3 && web3.currentProvider ? new OpenSeaPort(web3.currentProvider, {
+            networkName: chainId === 4 ? Network.Rinkeby : Network.Main,
+            apiKey: chainId === 4 ? undefined : require('./frankSwet.json')
+        }) : null
+    }, [chainId, web3])
 
     return (<OpenSeaContext.Provider value={seaport}>{children}</OpenSeaContext.Provider>)
 }
@@ -146,36 +149,44 @@ const GlobalModalContext = React.createContext("globalModal")
 
 export const useGlobalModal = () => useContext(GlobalModalContext)
 
-export const GlobalModalContextProvider = (props) => {
+export const GlobalModalContextProvider = props => {
 
-    const [closeable, setCloseable] = useState()
+    const [value, setValue] = useState({})
+
     const [onClose, setOnClose] = useState()
 
     const [children, setChildren] = useState()
 
+    const [className, setClassName] = useState()
+
     function close() {
         setChildren()
-        setCloseable()
         var oc = onClose
         setOnClose()
         oc && oc()
     }
 
-    function value({
-        closeable,
-        onClose,
-        children,
-        timeout
-    }) {
-        setCloseable(closeable)
+    value.show = function show(data) {
+        const {
+            onClose,
+            className,
+            timeout,
+            content
+        } = data || {}
+        if(content && children) {
+            return
+        }
         setOnClose(onClose)
+        setClassName(className)
+        setChildren(content)
         timeout && setTimeout(close, timeout)
-        setChildren(children)
     }
+
+    var chosenClassName = className || "OverlayBox"
 
     return (
         <GlobalModalContext.Provider value={value}>
-            {children && <div className={style.SuccessMessage}>{children}</div>}
+            {children && <div className={style[chosenClassName] || custom[chosenClassName]}>{children}</div>}
             {props.children}
         </GlobalModalContext.Provider>
     )
@@ -191,7 +202,7 @@ export const TransactionModalContextProvider = ({ children }) => {
 
     const globalModal = useGlobalModal()
 
-    function instrumentMethod(provider, name, funct) {
+    function instrumentMethod(provider, name) {
         if(!provider[name]) {
             return
         }
@@ -221,9 +232,10 @@ export const TransactionModalContextProvider = ({ children }) => {
                     if(!receipt) {
                         return setTimeout(tim, millis)
                     }
-                    globalModal({
+                    globalModal.show({
+                        className : "SuccessMessage",
                         timeout : 7000,
-                        children : <TransactionResult transactionHash={transactionHash}/>
+                        content : <TransactionResult transactionHash={transactionHash}/>
                     })
                 }
                 setTimeout(tim, millis)
@@ -245,4 +257,46 @@ export const TransactionModalContextProvider = ({ children }) => {
             {children}
         </TransactionModalContext.Provider>
     )
+}
+
+export async function addTokenToMetamask(data, address, image) {
+
+    const { web3 } = data
+
+    const token = await loadTokenFromAddress(data, address)
+
+    web3.currentProvider.request({
+        method: 'wallet_watchAsset',
+        params: {
+            type: "ERC20",
+            options: {
+                address,
+                symbol : token.symbol,
+                decimals : token.decimals,
+                image : image || token.image,
+            },
+        },
+        id: Math.round(Math.random() * 100000),
+    }, (err, added) => {
+        console.log('provider returned', { err, added })
+    })
+}
+
+export function copyToClipboard(value) {
+    if(navigator.clipboard) {
+        return navigator.clipboard.writeText(value)
+    }
+    const input = document.createElement('input')
+    input.type = 'text'
+    input.value = value
+    document.body.appendChild(input)
+    input.focus()
+    input.select()
+    input.setSelectionRange(0, 99999)
+    try {
+        document.execCommand('copy')
+    } catch(e) {
+        console.log(e)
+    }
+    document.body.removeChild(input)
 }

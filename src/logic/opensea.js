@@ -2,27 +2,75 @@ import { getNetworkElement, VOID_ETHEREUM_ADDRESS, blockchainCall, abi, web3Util
 import { loadTokenFromAddress } from './erc20'
 import { OrderSide } from 'opensea-js/lib/types'
 
-export async function retrieveAsset({ context, seaport, newContract, account }, tokenAddress, tokenId) {
-    return await toItem({context, newContract, account}, await seaport.api.getAsset({tokenAddress, tokenId}))
+export function loadAsset(tokenAddressOrKey, tokenId) {
+    const key = tokenId ? `${web3Utils.toChecksumAddress(tokenAddressOrKey)}-${tokenId}` : tokenAddressOrKey
+
+    try {
+        var asset = window.localStorage.getItem(key)
+        if(asset) {
+            asset = JSON.parse(asset)
+        }
+        if(asset) {
+            return asset
+        }
+    } catch(e) {}
 }
 
-export async function getOwnedTokens({ context, seaport, account, newContract, getGlobalContract }, type) {
+export async function getAsset(seaport, tokenAddress, tokenId) {
+    const key = `${web3Utils.toChecksumAddress(tokenAddress)}-${tokenId}`
+
+    var asset = loadAsset(key)
+
+    if(asset) {
+        return asset
+    }
+
+    var times = 12
+    while(times-- > 0) {
+        try {
+            asset = await seaport.api.getAsset({tokenAddress, tokenId})
+        } catch(e) {
+            await new Promise(ok => setTimeout(ok, 6000))
+        }
+    }
+
+    try {
+        window.localStorage.setItem(key, JSON.stringify(asset))
+    } catch(e) {
+    }
+
+    return asset
+}
+
+export async function retrieveAsset({ context, seaport, newContract, account }, tokenAddress, tokenId) {
+    return await toItem({context, newContract, account}, await getAsset(seaport, tokenAddress, tokenId))
+}
+
+export async function getOwnedTokens({ context, seaport, account, owner, newContract, getGlobalContract }, type, asset_contract_address) {
     const toExclude = [
         await blockchainCall(getGlobalContract("itemProjectionFactory").methods.mainInterface),
         getGlobalContract('eRC20Wrapper'),
         getGlobalContract('eRC721Wrapper'),
-        getGlobalContract('eRC1155Wrapper')
+        getGlobalContract('eRC1155Wrapper'),
+        getGlobalContract('eRC721WrapperDeck'),
+        getGlobalContract('eRC1155WrapperDeck')
     ].map(it => it.options ? it.options.address : it)
     var assets = []
     const length = 3
     const limit = 50
     for(var i = 0; i < length; i++) {
         try {
-            assets.push(...(await seaport.api.getAssets({ owner : account, offset : i * limit, limit })).assets)
-        } catch(e) {}
+            assets.push(...(await seaport.api.getAssets({ asset_contract_address, owner : owner || account, offset : i * limit, limit })).assets)
+        } catch(e) {
+            var message = (e.message || e || "").toLowerCase()
+            if(message.indexOf("fetch") !== -1) {
+                i--
+                await new Promise(ok => setTimeout(ok, 15000))
+            }
+        }
     }
     assets = assets.filter(it => it.assetContract.schemaName === type && toExclude.indexOf(web3Utils.toChecksumAddress(it.tokenAddress)) === -1)
-    assets = assets.map(it => ({...it, name : it.name || it.assetContract.name, symbol : it.assetContract.tokenSymbol, image : it.imageUrl}))
+    assets = assets.map(it => ({...it, name : it.name || it.assetContract.name, symbol : it.assetContract.tokenSymbol, image : it.imageUrl?.split('s120').join('s300')}))
     return await Promise.all(assets.map(it => toItem({context, newContract, account}, it)))
 }
 
@@ -65,7 +113,7 @@ export function getPaymentTokens({ context, chainId, account, web3, newContract 
         VOID_ETHEREUM_ADDRESS,
         getNetworkElement({ chainId, context}, 'wethTokenAddress'),
         getNetworkElement({ chainId, context}, 'usdcTokenAddress')
-    ].map(it => web3Utils.toChecksumAddress(it)).filter(it => it !== undefined && it !== null)
+    ].filter(it => it !== undefined && it !== null && it).map(web3Utils.toChecksumAddress)
     return addressesOnly ? tokens : Promise.all(tokens.map(tokenAddress => loadTokenFromAddress({context, account, web3, newContract}, tokenAddress)))
 }
 
@@ -83,7 +131,12 @@ export async function getItemOrders({chainId, context, seaport, account, web3, n
             ordersInput = orders
             break
         } catch(e) {
-            console.error(e)
+            const message = (e.message || e).toLowerCase()
+            if(message.indexOf('429') !== -1) {
+                tries++
+            } else {
+                console.log(e)
+            }
             await new Promise(ok => setTimeout(ok, 3000))
         }
     }

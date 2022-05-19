@@ -25,9 +25,10 @@ a {cursor: pointer; text-decoration: none;}
 .FooterLinks {width: 990px; margin: 10px auto; display: block;}
 .CardsLayer {width: 100%;margin: 100px auto 10px auto; display: block; text-align: center;}
 .CardsLayer .CardsFancy {background: rgba(173, 163, 236, 0.3);box-shadow: inset 2px -2px 4px rgba(173, 163, 236, 0.9);border-radius: 30px;width: 200px;height: 290px; display: inline-block; margin: 10px; text-align: center; vertical-align: middle;}
-.CardsLayer figure {width: 90px; height: 90px; display: inline-block; margin: 60px auto;}
-.CardsLayer figure img {width: 90px; display: inline-block;}
-.CardsLayer p {font-size: 20px; color: #786FFF; font-weight: bold;}
+.CardsLayer figure {width: 90px; height: 90px; display: inline-block; margin: 40px auto 10px auto;}
+.CardsLayer figure img {width: 90px; display: inline-block;height: 90px;}
+.CardsLayer p {font-size: 20px; color: #786FFF; font-weight: bold; display: block; margin: 10px auto 5px auto; color: #000000;}
+.CardsLayer span {font-size: 12px; color: #786FFF; font-weight: bold; display: block; margin: 10px auto; color: #000000; padding: 20px; text-align: left; line-height: 1.2; font-weight: normal;}
 .CardsFancy a {font-size: 20px;width: 100%; display: inline-block; color: #786FFF; font-weight: bold;}
 .CardsFancy a {font-size: 20px;width: 100%; display: inline-block; color: #786FFF; font-weight: bold;}
 .TextPartBTN {width: 100%; text-align: left; margin: 10px auto;}

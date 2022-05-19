@@ -5,6 +5,7 @@ import { encodeHeader } from "./itemsV2";
 import { decodeProposal, decodeProposalVotingToken, extractProposalVotingTokens, generateItemKey } from "./ballot";
 import { retrieveDelegationProposals } from "./delegation";
 import { getData } from "./generalReader"
+import { getLogs } from "./logger";
 
 export async function create({ context, ipfsHttpClient, newContract, chainId, factoryOfFactories }, metadata, organization) {
     var uri = await uploadMetadata({ context, ipfsHttpClient }, metadata)
@@ -57,12 +58,12 @@ export async function all({ context, newContract, chainId, factoryOfFactories })
         fromBlock: '0x0',
         toBlock: 'latest'
     }
-    var logs = await sendAsync(factoryOfFactories.currentProvider, "eth_getLogs", args)
+    var logs = await getLogs(factoryOfFactories.currentProvider, "eth_getLogs", args)
     var organizations = logs.map(it => abi.decode(["address"], it.topics[2])[0])
     organizations = (await Promise.all(organizations.map(it => hasNoHost({ context, newContract }, it)))).filter(it => it)
 
     args.address = (await blockchainCall(factoryOfFactories.methods.get, getNetworkElement({ context, chainId }, "factoryIndices").dfo)).factoryList
-    logs = await sendAsync(factoryOfFactories.currentProvider, "eth_getLogs", args)
+    logs = await getLogs(factoryOfFactories.currentProvider, "eth_getLogs", args)
     organizations = [...organizations, ...logs.map(it => abi.decode(["address"], it.topics[2])[0])]
 
     return await Promise.all(organizations.map(it => (tryRetrieveMetadata({ context }, { contract: newContract(context.SubDAOABI, it), address: it, type: 'organizations' }))))
@@ -125,7 +126,7 @@ export async function getInitializationData({newContract, context}, contract) {
         ]
     }
 
-    var logs = await sendAsync(contract.currentProvider, 'eth_getLogs', args)
+    var logs = await getLogs(contract.currentProvider, 'eth_getLogs', args)
 
     var creationBlock = logs[0].blockNumber
 
@@ -246,7 +247,7 @@ export async function getOrganizationComponents({ newContract, context }, contra
         var addr = componentsAddress[i]
         var componentName = componentNames[i]
         if (addr != VOID_ETHEREUM_ADDRESS) {
-            console.log(componentName)
+            console.log(componentName, addr)
             item = {
                 address: addr,
                 key,
@@ -350,7 +351,7 @@ export async function allProposals({ account, web3, context, newContract }, prop
         web3Utils.sha3('ProposalCreated(address,address,bytes32)')
     ]
 
-    var logs = await sendAsync(proposalsManager.currentProvider, 'eth_getLogs', {
+    var logs = await getLogs(proposalsManager.currentProvider, 'eth_getLogs', {
         address: proposalsManager.options.address,
         topics,
         fromBlock: '0x0',
@@ -390,7 +391,7 @@ async function getAllOrganizations({ account, web3, context, newContract }, orga
         }
 
         var keys = {}
-        var logs = await sendAsync(organization.contract.currentProvider, 'eth_getLogs', args)
+        var logs = await getLogs(organization.contract.currentProvider, 'eth_getLogs', args)
         logs.forEach(it => keys[it.topics[1]] = true)
         var organizations = await blockchainCall(organization.components.subDAOsManager.contract.methods.list, Object.keys(keys))
         organizations = Object.keys(keys).reduce((acc, it, i) => {
@@ -518,7 +519,7 @@ async function getSurveysByModels({context}, organization) {
         return metadata
     }))
 
-    var logArray = await Promise.all(surveys.map(it => sendAsync(organization.contract.currentProvider, 'eth_getLogs', {
+    var logArray = await Promise.all(surveys.map(it => getLogs(organization.contract.currentProvider, 'eth_getLogs', {
         address : organization.address,
         fromBlock : '0x0',
         toBlock : 'latest',
@@ -585,7 +586,7 @@ async function getProposals({account, web3, newContract, context}, organization)
         fromBlock : '0x0',
         toBlock : 'latest'
     }
-    var logs = await sendAsync(provider, 'eth_getLogs', args)
+    var logs = await getLogs(provider, 'eth_getLogs', args)
     var proposalIds = logs.map(it => it.topics[3]).filter((it, i, arr) => arr.indexOf(it) === i)
 
     proposals = await blockchainCall(organization.components.proposalsManager.contract.methods.list, proposalIds)
@@ -917,7 +918,7 @@ export async function retrieveSurveyByModel({}, proposal) {
         ]
     }
 
-    var logs = await sendAsync(proposal.proposalsManager.currentProvider, 'eth_getLogs', args)
+    var logs = await getLogs(proposal.proposalsManager.currentProvider, 'eth_getLogs', args)
     var proposalIds = logs.map(it => it.topics[3])
 
     var proposals = await blockchainCall(proposal.proposalsManager.methods.list, proposalIds)

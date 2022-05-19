@@ -1,0 +1,3 @@
+.OverlayBox {width: 100%; display: inline-block; position: fixed; top: 0px; left: 0px; right: 0px; padding: 40px; z-index: 2147483647; text-align: center;}
+.OverlayBox {background-color: white;}
+.OverlayBox a {text-decoration: underline; font-size: 13px;}

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 import OTCDetail from './otc-detail.js'
 
-import { useEthosContext, useWeb3, blockchainCall, abi } from '@ethereansos/interfaces-core'
+import { useEthosContext, useWeb3, blockchainCall, abi, shortenWord } from '@ethereansos/interfaces-core'
 
 import { loadItem } from '../../../logic/itemsV2.js'
 
@@ -34,7 +34,7 @@ export default ({item}) => {
         var itemId = await blockchainCall(w20.methods.itemIdOf, item.address)
         if(itemId !== '0') {
             itemId = abi.decode(["address"], abi.encode(["uint256"], [itemId]))[0].toString()
-            setItemInput(await loadItem({ chainId, context, account, newContract, getGlobalContract }, itemId))
+            return setItemInput(await loadItem({ chainId, context, account, newContract, getGlobalContract }, itemId))
         }
         try {
             const itemId = abi.decode(['uint256'], abi.encode(['address'], [item.address]))[0].toString()
@@ -56,7 +56,7 @@ export default ({item}) => {
                 <WrapERC20 token={item} onSuccess={() => refreshItemInput(item)}/>
             </RegularModal>}
             <div className={style.TradeOTCBox}>
-                <h4>{(itemInput || item)?.symbol} Orders</h4>
+                <h4>{shortenWord({ context, charsAmount : 15}, (itemInput || item)?.symbol)} Orders</h4>
                 {!itemInput && <a onClick={() => setWrap(true)}>Be the first to wrap this token</a>}
                 {itemInput && !itemInput.mainInterface && <OurCircularProgress/>}
                 {itemInput?.mainInterface && <>

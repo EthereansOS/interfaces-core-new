@@ -1,20 +1,54 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 
 import ExtLinkButton from '../../Global/ExtLinkButton/index.js'
 import AddItemToMetamask from '../../Global/AddItemToMetamask'
 
-import { useWeb3, getNetworkElement, useEthosContext, fromDecimals, VOID_ETHEREUM_ADDRESS } from '@ethereansos/interfaces-core'
+import RegularButtonDuo from '../../Global/RegularButtonDuo/index.js'
+import RegularModal from '../../Global/RegularModal/index.js'
+
+import ViewFarmings from '../../../pages/covenants/dapp/farming/index'
+
+import { useWeb3, getNetworkElement, useEthosContext, fromDecimals, VOID_ETHEREUM_ADDRESS, formatMoney, getTokenPriceInDollarsOnUniswap, getTokenPriceInDollarsOnSushiSwap, getTokenPriceInDollarsOnUniswapV3, blockchainCall } from '@ethereansos/interfaces-core'
+
+import { allFarmings } from '../../../logic/farming.js'
 
 import style from '../../../all.module.css'
+import OurCircularProgress from '../../Global/OurCircularProgress/index.js'
 
-const ViewBasics = ({item}) => {
+export default ({item}) => {
   const context = useEthosContext()
-  const { chainId } = useWeb3()
+
+  const web3Data = useWeb3()
+
+  const { chainId } = web3Data
+
+  const [farming, setFarming] = useState()
+
+  const [hasFarming, setHasFarming] = useState(null)
+
+  const [price, setPrice] = useState(item.price)
+  const [totalSupply, setTotalSupply] = useState(item.totalSupply)
+
+  useEffect(() => {
+    blockchainCall(item.mainInterface.methods.totalSupply, item.id).then(setTotalSupply)
+
+    Promise.all([
+      getTokenPriceInDollarsOnUniswapV3({ context, ...web3Data}, item.address, item.decimals),
+      getTokenPriceInDollarsOnUniswap({ context, ...web3Data}, item.address, item.decimals),
+      getTokenPriceInDollarsOnSushiSwap({ context, ...web3Data}, item.address, item.decimals)
+    ]).then(prices => setPrice(Math.max.apply(window, prices)))
+  }, [])
+
+  useEffect(() => allFarmings({ context, ...web3Data, rewardTokenAddress : item.address, lightweight : true }).then(farmings => setHasFarming(farmings.length > 0)), [])
 
   return (
     <div className={style.ViewBasics}>
+        {farming && <RegularModal close={() => setFarming()}>
+          <ViewFarmings rewardTokenAddress={item.address}/>
+        </RegularModal>}
         <h5>{item.name} ({item.symbol})</h5>
         <p>Supply: {fromDecimals(item.totalSupply, item.decimals)}</p>
+        <p>{price ? ("Price: $" + formatMoney(price, 2)) : '-'}</p>
         <AddItemToMetamask item={item}/>
         <ExtLinkButton href={`${getNetworkElement({context, chainId}, "etherscanURL")}/token/${item.address}`} text="Contract"/>
         <ExtLinkButton href={item.external_url} text="Website"/>
@@ -23,8 +57,8 @@ const ViewBasics = ({item}) => {
         <ExtLinkButton href={item.discord_url} text="Share"/>
         {item.collectionData.mintOperator && item.collectionData.mintOperator !== VOID_ETHEREUM_ADDRESS && <ExtLinkButton href={getNetworkElement({context, chainId}, 'etherscanURL') + 'address/' + item.collectionData.mintOperator} text="Mintable"/>}
         <ExtLinkButton className={(!item.collectionData.metadataOperator || item.collectionData.metadataOperator === VOID_ETHEREUM_ADDRESS) && 'Disabled'} href={item.collectionData.metadataOperator && item.collectionData.metadataOperator !== VOID_ETHEREUM_ADDRESS ? (getNetworkElement({context, chainId}, 'etherscanURL') + 'address/' + item.collectionData.metadataOperator) : undefined} text={`Metadata ${item.collectionData.metadataOperator && item.collectionData.metadataOperator !== VOID_ETHEREUM_ADDRESS ? 'Host' : 'Frozen'}`}/>
+        {false && hasFarming === null && <OurCircularProgress/>}
+        {false && hasFarming !== null && <RegularButtonDuo onClick={() => setFarming(true)}>Farming Contracts</RegularButtonDuo>}
     </div>
   )
 }
-
-export default ViewBasics

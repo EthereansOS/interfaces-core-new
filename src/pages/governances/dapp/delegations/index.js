@@ -4,6 +4,7 @@ import { useEthosContext, useWeb3 } from '@ethereansos/interfaces-core'
 import {all} from '../../../../logic/delegation'
 import Web3DependantList from '../../../../components/Global/Web3DependantList'
 import ExploreOrganizations from '../../../../components/Organizations/ExploreOrganizations'
+import Banners from '../../../../components/Global/banners/index.js'
 
 import style from '../../../../all.module.css'
 
@@ -18,7 +19,9 @@ const DelegationsList = ({ mine, onList }) => {
   const context = useEthosContext()
   const {getGlobalContract, newContract, chainId, account} = useWeb3()
 
-  return (<div className={style.OrganizationsExploreMain}>
+  return (<>
+  <Banners bannerA="banner1" bannerB="banner2" sizeA="36%" sizeB="54%" titleA="Rule Together" titleB="Be a Player In the Game of Guilds" linkA="https://docs.ethos.wiki/ethereansos-docs/guilds/guilds-documentation/delegations/how-delegations-work" linkB="https://docs.ethos.wiki/ethereansos-docs/guilds/guilds-documentation/delegations" textA="Delegations are independent political parties that compete with each other for grant funding from one or more EthOS Organizations." textB="Create and lead a Delegation. Rally the support of an EthOS Organization’s token holders to win grant funding. Use that funding to govern your Delegation’s political economy with your supporters."/>
+  <div className={style.OrganizationsExploreMain}>
     <Web3DependantList
       Renderer={ExploreOrganizations}
       rendererIsContainer
@@ -29,7 +32,8 @@ const DelegationsList = ({ mine, onList }) => {
         return l
       }) }
     />
-  </div>)
+  </div>
+  </>)
 }
 
 DelegationsList.menuVoice = {

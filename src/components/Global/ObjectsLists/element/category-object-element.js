@@ -10,7 +10,7 @@ export default ({element}) => {
             <LogoRenderer input={element}/>
             <div className={style.ObjectInfo}>
                 <div className={style.ObjectInfoCategory}>
-                    <h5>{element.name}</h5>
+                    <h5>{shortenWord({ context, charsAmount : 15}, element.name)}</h5>
                     {element.description && <span ref={ref => ref && (ref.innerHTML = shortenWord({ context, charsAmount : 50}, element.description))}></span>}
                 </div>
             </div>

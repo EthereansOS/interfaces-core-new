@@ -1,0 +1,109 @@
+import React, { useState } from 'react'
+
+import { formatMoney, fromDecimals, useEthosContext } from '@ethereansos/interfaces-core'
+
+import CreateOrEditFarmingSetup from './CreateOrEditFarmingSetup'
+import CreateOrEditFarmingSetupGen2 from './CreateOrEditFarmingSetupGen2'
+import style from '../../../../all.module.css'
+
+export default props => {
+    const { rewardToken, farmingSetups, onAddFarmingSetup, onEditFarmingSetup, onRemoveFarmingSetup, onCancel, onFinish, generation, finishButton } = props
+
+    const context = useEthosContext()
+
+    const [isAdd, setIsAdd] = useState(false)
+    const [editSetup, setEditSetup] = useState(null)
+    const [editSetupIndex, setEditSetupIndex] = useState(0)
+    const [selectedFarmingType, setSelectedFarmingType] = useState("")
+    const [currentStep, setCurrentStep] = useState(0)
+    const [gen2SetupType, setGen2SetupType] = useState("")
+
+    if (currentStep > 0 || editSetup) {
+        const Component = generation === 'gen2' ? CreateOrEditFarmingSetupGen2 : CreateOrEditFarmingSetup
+        return (<Component
+            editing={editSetup?.editing}
+            rewardToken={rewardToken}
+            onAddFarmingSetup={setup => void(onAddFarmingSetup(setup), setCurrentStep(0), setIsAdd(false), setGen2SetupType("")) }
+            editSetup={editSetup}
+            editSetupIndex={editSetupIndex}
+            onEditFarmingSetup={(setup, index) => void(onEditFarmingSetup(setup, index), setEditSetup(null), setEditSetupIndex(0), setCurrentStep(0), setGen2SetupType(""))}
+            selectedFarmingType={editSetup ? !editSetup.maxLiquidity ? "free" : "locked" : selectedFarmingType}
+            onCancel={() => void(setCurrentStep(0), setEditSetup(null), setEditSetupIndex(0), setGen2SetupType(""))}
+            gen2SetupType={gen2SetupType || editSetup.gen2SetupType}
+        />)
+    }
+
+    if (farmingSetups.length === 0 || isAdd) {
+        return (
+            <div className={style.generationBoh}>
+                {generation === 'gen2' ?  <>
+                    <div className={style.CreateBoxDesc}>
+                        <h6>Diluted Liquidity</h6>
+                        <p className={style.BreefRecapC}>By selecting Diluted Liquidity, your setup will be automatically customized with a price curve the moment it is activated. The range of the curve will have a max of (10,000 x current price of the token) and a minimum of (current price of the token / 10,000). Diluted liquidity mitigates the risk of impermanent loss.</p>
+                        <a className={style.RegularButtonDuo} onClick={() => void(setGen2SetupType("diluted"), setSelectedFarmingType('free'), setCurrentStep(1))}>Select</a>
+                    </div>
+                    <div className={style.CreateBoxDesc}>
+                        <h6>Concentrated Liquidity</h6>
+                        <p className={style.BreefRecapC}>By selecting Concentrated Liquidity, you will need to manually customize the setup’s price curve. To learn more about price curves and the risk of impermanent loss, read the Uniswap Documentation: <a target="_blank" href="https://docs.uniswap.org/concepts/V3-overview/concentrated-liquidity">Uniswap Documentation</a></p>
+                        <a className={style.RegularButtonDuo} onClick={() => void(setGen2SetupType("concentrated"), setSelectedFarmingType('free'), setCurrentStep(1))}>Select</a>
+                    </div>
+                </> : <>
+                    <div className={style.CreateBoxDesc}>
+                        <h6>Free</h6>
+                        <p> className={style.BreefRecapC}In free farming setups, farmers can stake and un-stake liquidity anytime, but the total rewards available are shared among all active farmers (relative to how much liquidity each has staked).</p>
+                        <a className={style.RegularButtonDuo} onClick={() => void(setSelectedFarmingType('free'), setCurrentStep(1))}>Select</a>
+                    </div>
+                    <div className={style.CreateBoxDesc}>
+                        <h6>Locked</h6>
+                        <p className={style.BreefRecapC}>In locked setups, farmers lock liquidity until the setup ends, but rewards are predetermined & guaranteed.</p>
+                        <a className={style.RegularButtonDuo} onClick={() =>  void(setSelectedFarmingType('locked'), setCurrentStep(1))}>Select</a>
+                    </div>
+                </>}
+                <div className={style.ActionBTNCreateX}>
+                    <a className={style.Web3BackBTN} onClick={onCancel}>Back</a>
+                    <br/>
+                    <a className={style.PlainLink} onClick={onFinish}>Plain Deploy</a>
+                </div>
+            </div>
+        )
+    }
+
+    return (
+        <div>
+            {
+                farmingSetups.map((setup, i) => {
+                    return (
+                        <div className={style.generationSelectorULTRA} key={i}>
+                            <div className={style.SetupINFORECAP}>
+                                <span className={style.RecapInfo}><b>Pair:</b><br/>{!setup.free ? `${(setup.mainToken.isEth && setup.involvingEth) ? 'ETH' : setup.liquidityPoolToken.symbol}` : ` ${setup.liquidityPoolToken.tokens.map((token) => `${(setup.involvingEth && token.address.toLowerCase() === setup.ethAddress.toLowerCase()) ? 'ETH' : token.symbol}`)}`}</span>
+                                <span className={style.RecapInfo}><b>AMM:</b><br/>{setup.liquidityPoolToken.name}</span>
+                                <span className={style.RecapInfo}><b>Start Block:</b><br/>{setup.startBlock !== '0' ? setup.startBlock : '-'}</span>
+                                <br/>
+                                <span className={style.RecapInfo}><b>Reward/Block:</b><br/>{formatMoney(fromDecimals(setup.rewardPerBlock, rewardToken.decimals, true), 8)} {rewardToken.symbol}</span>
+                                <span className={style.RecapInfo}><b>Total Reward:</b><br/>{formatMoney(fromDecimals(parseInt(setup.rewardPerBlock) * parseInt(setup.blockDuration), rewardToken.decimals, true), 8)} {rewardToken.symbol}</span>
+                                <span className={style.RecapInfo}><b>Duration:</b><br/>{Object.entries(context.blockIntervals).filter(it => parseInt(it[1]) === parseInt(setup.blockDuration))[0][0]}</span>
+                                {setup.renewTimes !== 0 && setup.renewTimes && parseInt(setup.renewTimes) > 0 && <>
+                                    <br/>
+                                    <span className={style.RecapInfo}><b>Renew Times:</b><br/>{setup.renewTimes}</span>
+                                </>}
+                            </div>
+                            <div className={style.SetupActions}>
+                                {(!setup.editing || setup.lastSetup?.active) && <a className={style.RegularButtonDuo} onClick={() => onRemoveFarmingSetup(i)}><b>{setup.editing ? setup.disable ? "Cancel Disable" : "Disable" : "Delete"}</b></a>}
+                                {(!setup.editing || setup.lastSetup?.active || parseInt(setup.initialRenewTimes) > 0) && <a className={style.RegularButtonDuo} onClick={() => void(setEditSetup(setup), setEditSetupIndex(i))}><b>Edit</b></a>}
+                            </div>
+                        </div>
+                    )
+                })
+            }
+            <div>
+                <a className={style.RoundedButton} onClick={() => setIsAdd(true)}>+</a>
+                <div className={style.ActionBTNCreateX}>
+                    {!finishButton && <a className={style.Web3BackBTN} onClick={() => {
+                        farmingSetups.forEach((_, index) => onRemoveFarmingSetup(index))
+                        onCancel()
+                    }}>Back</a>} {finishButton || <a className={style.RegularButton} onClick={() => onFinish()}>Next</a>}
+                </div>
+            </div>
+        </div>
+    )
+}

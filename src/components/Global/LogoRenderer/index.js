@@ -3,7 +3,9 @@ import React, { useState, useEffect } from "react"
 import CircularProgress from '../OurCircularProgress'
 import { useEthosContext, formatLink, web3Utils} from "@ethereansos/interfaces-core"
 
-const DEFAULT_IMAGE = `${process.env.PUBLIC_URL}/img/default.png`
+import style from '../../../all.module.css'
+
+const DEFAULT_IMAGE = `${process.env.PUBLIC_URL}/img/missingcoin.gif`
 
 export default ({input, figureClassName, noFigure, title, defaultImage, noDotLink, onError}) => {
 
@@ -53,7 +55,8 @@ export default ({input, figureClassName, noFigure, title, defaultImage, noDotLin
     if(!noFigure) {
         var figureProperties = {}
         figureClassName && (figureProperties.className = figureClassName)
-        input && input.background_color && (figureProperties.style={'background-color' : input.background_color})
+        input && input.background_color && (figureProperties.style={backgroundColor : input.background_color})
+        input && input.isDeck && (figureProperties.className = (figureProperties.className || '') + (figureProperties.className ? ' ' : '') + style.Deck)
         img = <figure {...figureProperties}>
             {img}
         </figure>

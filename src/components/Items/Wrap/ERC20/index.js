@@ -33,7 +33,7 @@ export default ({token, onSuccess}) => {
   return (
     <div>
       <p>Wrap {token ? token.symbol : 'ERC-20 Tokens into Items'}</p>
-      {success && <RegularModal close={() => setSuccess(null)}>
+      {false && success && <RegularModal close={() => setSuccess(null)}>
           <WrapSuccess success={success}/>
         </RegularModal>}
       <TokenInputRegular selected={data?.token} tokens={token ? [token] : undefined} onElement={onElement} onlySelections={['ERC-20', 'Items V1']}/>
