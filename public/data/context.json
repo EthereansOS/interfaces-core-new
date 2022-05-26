@@ -115,7 +115,8 @@
             "subdao": 1,
             "farming": 2,
             "fixedInflation": 3,
-            "delegation": 4
+            "delegation": 4,
+            "farmingGen1": 5
         },
         "grimoire": {
             "COMPONENT_KEY_TREASURY_MANAGER": "0xcfe1633df53a0649d88d788961f26058c5e7a0b5644675f19f67bb2975827ba2",

@@ -93,13 +93,13 @@ export async function getFarming(data, address, generation) {
 
     generation = generation || await getFarmingContractGenerationByAddress(data, address)
 
-    const contract = await newContract(context[generation === 'gen2' ? "NewFarmingABI" : "FarmMainGen1ABI"], address)
+    const contract = newContract(context[generation === 'gen2' ? "NewFarmingABI" : "FarmMainGen1ABI"], address)
     var farmTokenCollection
     try {
-        farmTokenCollection = await newContract(context.INativeV1ABI, await blockchainCall(contract.methods._farmTokenCollection))
+        farmTokenCollection = newContract(context.INativeV1ABI, await blockchainCall(contract.methods._farmTokenCollection))
     } catch(e) {}
     const extensionAddress = await blockchainCall(contract.methods.host)
-    const extensionContract = await newContract(context[generation === 'gen2' ? "FarmExtensionGen2ABI" : "FarmExtensionGen1ABI"], extensionAddress)
+    const extensionContract = newContract(context[generation === 'gen2' ? "FarmExtensionGen2ABI" : "FarmExtensionGen1ABI"], extensionAddress)
     const { host, byMint } = await blockchainCall(extensionContract.methods.data)
 
     if(mode === 'hosted' && host !== account) {
@@ -374,7 +374,7 @@ export async function loadFarmingPosition(data, farmingContract, positionId) {
     Object.entries(originalPosition).forEach(it => position[it[0]] = it[1])
     try {
         position.tokenId = position.liquidityPoolTokenAmount
-        var uniswapV3NonfungiblePositionManager = await newContract(context.UniswapV3NonfungiblePositionManagerABI, getNetworkElement({ context, chainId }, 'uniswapV3NonfungiblePositionManagerAddress'))
+        var uniswapV3NonfungiblePositionManager = newContract(context.UniswapV3NonfungiblePositionManagerABI, getNetworkElement({ context, chainId }, 'uniswapV3NonfungiblePositionManagerAddress'))
         position.liquidityPoolTokenAmount = await blockchainCall(uniswapV3NonfungiblePositionManager.methods.positions, position.tokenId)
         position.liquidityPoolTokenAmount = position.liquidityPoolTokenAmount.liquidity
     } catch(e) {
@@ -485,13 +485,61 @@ export async function getFarmingSetupInfo(data, element) {
     return list
 }
 
-export async function findLiquidityPoolToken(data, gen2SetupType, address) {
+export function findLiquidityPoolToken(data, generation, address, gen2SetupType) {
+    return address && isEthereumAddress(address) ? generation === 'gen1' ? findLiquidityPoolTokenGen1(data, address) : findLiquidityPoolTokenGen2(data, address, gen2SetupType) : undefined
+
+}
+
+export async function findLiquidityPoolTokenGen1(data, address) {
 
     const { context, newContract, chainId } = data
 
-    if (!address || !isEthereumAddress(address)) {
-        return
+    const ammAggregator = newContract(context.AMMAggregatorABI, getNetworkElement({ context, chainId}, 'ammAggregatorAddress'))
+    const res = await blockchainCall(ammAggregator.methods.info, address)
+    const name = res['name']
+    const ammAddress = res['amm']
+    const ammContract = newContract(context.AMMABI, ammAddress)
+    const ammData = await blockchainCall(ammContract.methods.data)
+    const lpInfo = await blockchainCall(ammContract.methods.byLiquidityPool, address)
+    const tokens = []
+    var ethTokenFound = false
+    var involvingETH = false
+    var ethAddress = VOID_ETHEREUM_ADDRESS
+    var ethSelectData = null
+    await Promise.all(lpInfo[2].map(async tkAddress => {
+        if (tkAddress.toLowerCase() === ammData[0].toLowerCase()) {
+            involvingETH = true
+            ethTokenFound = true
+            ethAddress = ammData[0]
+            if (ammData[0] !== VOID_ETHEREUM_ADDRESS) {
+                const notEthToken = newContract(context.ERC20ABI, ammData[0])
+                const notEthTokenSymbol = await blockchainCall(notEthToken.methods.symbol)
+                ethSelectData = { symbol: notEthTokenSymbol }
+            }
+        }
+        const currentToken = newContract(context.ERC20ABI, tkAddress)
+        const symbol = tkAddress === VOID_ETHEREUM_ADDRESS || tkAddress === ammData[0] ? "ETH" : await blockchainCall(currentToken.methods.symbol)
+        var name = tkAddress === VOID_ETHEREUM_ADDRESS || tkAddress === ammData[0] ? "Ethereum" : await blockchainCall(currentToken.methods.name)
+        var decimals = parseInt(tkAddress === VOID_ETHEREUM_ADDRESS ? "18" : await blockchainCall(currentToken.methods.decimals))
+        tokens.push({ symbol, name, decimals, address: tkAddress, isEth: tkAddress.toLowerCase() === ammData[0].toLowerCase() })
+    }))
+    ethSelectData = ethTokenFound ? ethSelectData : null
+    return {
+        address,
+        name,
+        tokens,
+        poolContract : newContract(context.ERC20ABI, address),
+        ethTokenFound,
+        involvingETH,
+        ethAddress,
+        ethSelectData
     }
+}
+
+export async function findLiquidityPoolTokenGen2(data, address, gen2SetupType) {
+
+    const { context, newContract, chainId } = data
+
     const dilutedTickRange = context.dilutedTickRange
     const poolContract = newContract(context.UniswapV3PoolABI, address)
     var fee = await blockchainCall(poolContract.methods.fee)

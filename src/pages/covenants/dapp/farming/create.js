@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router'
 import { Link } from "react-router-dom"
 
@@ -17,6 +17,7 @@ import { loadTokenFromAddress } from '../../../../logic/erc20'
 import { getFarmingSetupInfo } from '../../../../logic/farming'
 
 import style from '../../../../all.module.css'
+import { getRawField } from '../../../../logic/generalReader'
 
 export default props => {
 
@@ -65,10 +66,7 @@ export default props => {
             setupInfoTypes : ["bool","uint256","uint256","uint256","uint256","uint256","uint256","address","address","address","address","bool","uint256","uint256","uint256"],
             initTypes : [
                 "address",
-                "bytes",
-                "address",
-                "address",
-                "bytes",
+                "bytes"
             ], async parseSetup(setup) {
                 const ammAggregator = newContract(context.AMMAggregatorABI, getNetworkElement({ context, chainId }, 'ammAggregatorAddress'))
                 const isFree = setup.free
@@ -90,14 +88,14 @@ export default props => {
                     setup.liquidityPoolToken.address,
                     mainTokenAddress,
                     VOID_ETHEREUM_ADDRESS,
-                    setup.involvingEth,
+                    setup.involvingETH,
                     isFree ? 0 : fromDecimals(numberToString(parseFloat(setup.penaltyFee) / 100)),
                     0,
                     0
                 ]
                 return parsedSetup
             }, getInitArray(extensionAddress, extensionInitData, rewardTokenAddress, encodedSetups) {
-                return  [web3Utils.toChecksumAddress(extensionAddress ? extensionAddress : hostDeployedContract), extensionPayload || extensionInitData || "0x", getNetworkElement({ context, chainId }, "ethItemOrchestratorAddress"), rewardTokenAddress, encodedSetups || 0]
+                return [web3Utils.toChecksumAddress((extensionAddress ? extensionAddress : hostDeployedContract) || VOID_ETHEREUM_ADDRESS), abi.encode(["bytes", "address", "bytes"], [extensionPayload || extensionInitData || "0x", rewardTokenAddress, encodedSetups || "0x"])]
             }
         }, gen2 : {
             setupInfoTypes : ["uint256","uint256","uint256","uint256","uint256","address","address","bool","uint256","uint256","int24","int24"],
@@ -115,7 +113,7 @@ export default props => {
                     setup.renewTimes,
                     setup.liquidityPoolToken.address,
                     setup.liquidityPoolToken.tokens[setup.mainTokenIndex].address,
-                    setup.involvingEth,
+                    setup.involvingETH,
                     0,
                     0,
                     setup.tickLower,
@@ -123,7 +121,7 @@ export default props => {
                 ]
                 return parsedSetup
             }, getInitArray(extensionAddress, extensionInitData, rewardTokenAddress, encodedSetups) {
-                return  [web3Utils.toChecksumAddress(extensionAddress ? extensionAddress : hostDeployedContract), extensionPayload || extensionInitData || "0x", rewardTokenAddress, encodedSetups || 0]
+                return [web3Utils.toChecksumAddress(extensionAddress ? extensionAddress : hostDeployedContract), extensionPayload || extensionInitData || "0x", rewardTokenAddress, encodedSetups || "0x"]
             }
         }
     }
@@ -172,7 +170,7 @@ export default props => {
                     liquidityPoolTokenAddress : info.liquidityPoolTokenAddress || info.liquidityPoolToken.address,
                     setupsCount : 0,
                     lastSetupIndex : 0,
-                    involvingETH : info.involvingEth === true
+                    involvingETH : info.involvingETH === true
                 }
             }
         }).filter(it => it)
@@ -237,27 +235,37 @@ export default props => {
     function createActionSequence(data) {
 
         async function getFactory(state) {
-            const { generation, regularNFT } = state
-            var factoryAddress = (await blockchainCall(getGlobalContract("factoryOfFactories").methods.get, getNetworkElement({ context, chainId }, "factoryIndices").farming)).factoryList
+            const { generation } = state
+            var factoryAddress = (await blockchainCall(getGlobalContract("factoryOfFactories").methods.get, getNetworkElement({ context, chainId }, "factoryIndices")[generation === 'gen1' ? 'farmingGen1' : 'farming'])).factoryList
             factoryAddress = factoryAddress[factoryAddress.length - 1]
-            factoryAddress = generation === 'gen2' ? factoryAddress : getNetworkElement({ context, chainId }, generation === 'gen2' ? regularNFT ? "farmGen2FactoryAddressRegular" : "farmGen2FactoryAddress" : "farmFactoryAddress")
+            //factoryAddress = generation === 'gen2' ? factoryAddress : getNetworkElement({ context, chainId }, generation === 'gen2' ? regularNFT ? "farmGen2FactoryAddressRegular" : "farmGen2FactoryAddress" : "farmFactoryAddress")
             const farmFactory = newContract(context.NewFactoryABI, factoryAddress)
             return farmFactory
         }
 
         const sequence = [{
-            label : "Deploy Farming Contract",
+            label : `Deploy Farming Contract${generation === 'gen1' && !hostDeployedContract && !deployContract ? ' (cloning Default Extension)' : ''}`,
             async onTransactionReceipt(transactionReceipt, state) {
+
+                const { deployData } = state
+                const { extensionInitData } = deployData
+
                 const farmFactory = await getFactory(state)
                 if(web3Utils.toChecksumAddress(transactionReceipt.to) !== web3Utils.toChecksumAddress(farmFactory.options.address)) {
                     throw "Wrong transaction"
                 }
                 var farmMainContractAddress = web3.eth.abi.decodeParameter("address", transactionReceipt.logs.filter(it => it.topics[0] === web3.utils.sha3('Deployed(address,address,address,bytes)'))[0].topics[2])
-                return { farmMainContractAddress }
+                var retrievedExtensionAddress = await getRawField({ provider : web3Data.web3.currentProvider }, farmMainContractAddress, 'host')
+                retrievedExtensionAddress = abi.decode(["address"], retrievedExtensionAddress)[0].toString()
+                return { farmMainContractAddress, ...returnDeployData(state, retrievedExtensionAddress, extensionInitData) }
             },
             async onAction(state, element) {
-                const { deployData, generation } = state
-                const { setups, rewardTokenAddress, extensionAddress, extensionInitData } = deployData
+                const { deployData, generation, hostDeployedContract, deployContract } = state
+                var { setups, rewardTokenAddress, extensionAddress, extensionInitData, host } = deployData
+
+                if(generation === 'gen1' && !hostDeployedContract && !deployContract) {
+                    extensionInitData = newContract(context[generation === 'gen2' ? "FarmExtensionGen2ABI" : "FarmExtensionGen1ABI"]).methods.init(byMint, host, treasuryAddress || VOID_ETHEREUM_ADDRESS).encodeABI()
+                }
 
                 const farmFactory = await getFactory(state)
 
@@ -277,12 +285,12 @@ export default props => {
             }
         }]
 
-        function returnData(state, extensionAddress, extensionInitData) {
+        function returnDeployData(state, extensionAddress, extensionInitData) {
             const deployData = {...state.deployData, extensionAddress, extensionInitData : extensionInitData || state.extensionInitData}
             return { deployData }
         }
 
-        !hostDeployedContract && !deployContract && sequence.unshift({
+        !hostDeployedContract && !deployContract && generation === 'gen2' && sequence.unshift({
             label : "Clone Default Extension",
             async onTransactionReceipt(transactionReceipt, state) {
 
@@ -298,7 +306,7 @@ export default props => {
                 const farmExtension = newContract(context[generation === 'gen2' ? "FarmExtensionGen2ABI" : "FarmExtensionGen1ABI"], extensionAddress)
                 const extensionInitData = farmExtension.methods.init(byMint, host, treasuryAddress || VOID_ETHEREUM_ADDRESS).encodeABI()
 
-                return returnData(state, extensionAddress, extensionInitData)
+                return returnDeployData(state, extensionAddress, extensionInitData)
             },
             async onAction(state, element) {
                 const farmFactory = await getFactory(state)
@@ -314,7 +322,7 @@ export default props => {
                 if(!transactionReceipt.contractAddress) {
                     throw "Invalid transaction"
                 }
-                return returnData(state, transactionReceipt.contractAddress)
+                return returnDeployData(state, transactionReceipt.contractAddress)
             },
             async onAction(state, element) {
                 const { deployContract } = state
@@ -323,7 +331,7 @@ export default props => {
                 const deployMethod = newContract(abi).deploy({ data: bytecode })
                 const gasLimit = await deployMethod.estimateGas(payloadData)
                 const extension = await deployMethod.send({ ...payloadData, gasLimit, gas: gasLimit })
-                return returnData(state, extension.options.address)
+                return returnDeployData(state, extension.options.address)
             }
         })
 
@@ -332,7 +340,8 @@ export default props => {
                 deployData : data,
                 regularNFT,
                 generation,
-                deployContract
+                deployContract,
+                hostDeployedContract
             },
             sequence,
             onComplete(state) {
@@ -627,7 +636,6 @@ export default props => {
                             return
                         }
                         initializeDeployData().then(createActionSequence)
-                        //setDeployStep(hostDeployedContract ? 2 : 1)
                     }} disabled={!canDeploy()}>Deploy</a>
                 </div>
             </div>
@@ -725,7 +733,7 @@ export default props => {
                 <h6>Covenants Farming</h6>
                 <p className={style.BreefRecapB}>Build a farming contract with multiple customizable setups. Covenants farming contracts can be extended and governed by a wallet, an automated contract or an Organization.</p>
                 </div>
-                {false && <div className={style.CreateBoxDesc}>
+                {true && <div className={style.CreateBoxDesc}>
                     <h6>Multi AMM</h6>
                     <p>Powered by the AMM aggregator, these contracts work with <b>Uniswap V2, Balancer V1, Mooniswap V1 and Sushiswap V1.</b></p>
                     <a className={style.RegularButtonDuo} onClick={() => void(setGeneration("gen1"), setRegularNFT(false))}>Select</a>
