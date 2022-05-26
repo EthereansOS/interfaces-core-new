@@ -207,7 +207,7 @@ export default props => {
         try {
             const host = selectedHost !== "fromSourceCode" && web3Utils.toChecksumAddress(selectedHost === 'address' ? hostWalletAddress : hostDeployedContract)
             const hasExtension = (selectedHost === "deployedContract" && hostDeployedContract && !deployContract)
-            const data = { setups: [], rewardTokenAddress: selectedRewardToken.address, byMint, deployContract, host, hasExtension, extensionInitData: extensionPayload || '' }
+            const data = { setups: [], rewardTokenAddress: selectedRewardToken.address, byMint, deployContract, host, hasExtension, extensionInitData: extensionPayload || '', treasuryAddress }
             console.log(farmingSetups)
             var calculatedTotalToSend = "0"
             var cumulativeTotalToSend = "0"
@@ -245,7 +245,7 @@ export default props => {
 
         const sequence = [{
             label : `Deploy Farming Contract${generation === 'gen1' && !hostDeployedContract && !deployContract ? ' (cloning Default Extension)' : ''}`,
-            async onTransactionReceipt(transactionReceipt, state) {
+            async onTransactionReceipt(transactionReceipt, state, _, retrievedExtensionInitData) {
 
                 const { deployData } = state
                 const { extensionInitData } = deployData
@@ -257,11 +257,11 @@ export default props => {
                 var farmMainContractAddress = web3.eth.abi.decodeParameter("address", transactionReceipt.logs.filter(it => it.topics[0] === web3.utils.sha3('Deployed(address,address,address,bytes)'))[0].topics[2])
                 var retrievedExtensionAddress = await getRawField({ provider : web3Data.web3.currentProvider }, farmMainContractAddress, 'host')
                 retrievedExtensionAddress = abi.decode(["address"], retrievedExtensionAddress)[0].toString()
-                return { farmMainContractAddress, ...returnDeployData(state, retrievedExtensionAddress, extensionInitData) }
+                return { farmMainContractAddress, ...returnDeployData(state, retrievedExtensionAddress, retrievedExtensionInitData || extensionInitData) }
             },
             async onAction(state, element) {
                 const { deployData, generation, hostDeployedContract, deployContract } = state
-                var { setups, rewardTokenAddress, extensionAddress, extensionInitData, host } = deployData
+                var { setups, rewardTokenAddress, extensionAddress, extensionInitData, host, treasuryAddress } = deployData
 
                 if(generation === 'gen1' && !hostDeployedContract && !deployContract) {
                     extensionInitData = newContract(context[generation === 'gen2' ? "FarmExtensionGen2ABI" : "FarmExtensionGen1ABI"]).methods.init(byMint, host, treasuryAddress || VOID_ETHEREUM_ADDRESS).encodeABI()
@@ -281,7 +281,7 @@ export default props => {
 
                 console.log(payload)
                 const deployTransaction = await blockchainCall(farmFactory.methods.deploy, payload)
-                return this.onTransactionReceipt(await web3.eth.getTransactionReceipt(deployTransaction.transactionHash), state, element)
+                return this.onTransactionReceipt(await web3.eth.getTransactionReceipt(deployTransaction.transactionHash), state, element, extensionInitData)
             }
         }]
 
@@ -295,7 +295,7 @@ export default props => {
             async onTransactionReceipt(transactionReceipt, state) {
 
                 const { generation, deployData } = state
-                const { host } = deployData
+                const { host, treasuryAddress, byMint, treasuryAddress } = deployData
 
                 const farmFactory = await getFactory(state)
                 if(web3Utils.toChecksumAddress(transactionReceipt.to) !== web3Utils.toChecksumAddress(farmFactory.options.address)) {
