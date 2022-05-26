@@ -9,10 +9,10 @@ import {
 import { Token } from "@uniswap/sdk-core/dist"
 import { getLogs } from '../logic/logger'
 
-async function getFactory(data) {
+async function getFactory(data, generation) {
     const { context, chainId, getGlobalContract } = data
-    var factoryAddress = (await blockchainCall(getGlobalContract("factoryOfFactories").methods.get, getNetworkElement({ context, chainId }, "factoryIndices").farming)).factoryList
-    return factoryAddress
+    var factoryAddress = (await blockchainCall(getGlobalContract("factoryOfFactories").methods.get, getNetworkElement({ context, chainId }, "factoryIndices")[generation === 'gen1' ? "farmingGen1" : "farming"])).factoryList
+    return factoryAddress.map(web3Utils.toChecksumAddress)
 }
 
 export async function allFarmings(data, factoryAddress, generation) {
@@ -21,9 +21,8 @@ export async function allFarmings(data, factoryAddress, generation) {
 
     if(!generation) {
         return (await Promise.all([
-            [await getFactory(data), 'gen2'],
-            [undefined, 'gen2'],
-            [undefined, 'gen1']
+            [await getFactory(data, "gen2"), 'gen2'],
+            [await getFactory(data, "gen1"), 'gen1']
         ].map(it => allFarmings(data, it[0], it[1])))).reduce((all, it) => [...all, ...it], [])
     }
 
@@ -211,16 +210,10 @@ export async function getFarmingContractGenerationByAddress(data, address) {
 
     const { context, chainId, web3 } = data
 
-    const gen1FarmingFactoryAddress = getNetworkElement({ context, chainId }, "farmFactoryAddress")
-
-    const factories = [
-        ...(await getFactory(data)),
-        getNetworkElement({ context, chainId }, "farmGen2FactoryAddress"),
-        gen1FarmingFactoryAddress
-    ].filter(it => it)
+    const gen1Factories = await getFactory(data, "gen1")
 
     const args = {
-        address : factories,
+        address : gen1Factories.concat(await getFactory(data, "gen2")),
         topics: [
             web3Utils.sha3('Deployed(address,address,address,bytes)'),
             [],
@@ -232,7 +225,7 @@ export async function getFarmingContractGenerationByAddress(data, address) {
 
     const log = await getLogs(web3.currentProvider, 'eth_getLogs', args)
 
-    return gen1FarmingFactoryAddress && log[0].address.toLowerCase() === gen1FarmingFactoryAddress.toLowerCase() ? "gen1" : "gen2"
+    return gen1Factories.indexOf(web3Utils.toChecksumAddress(log[0].address)) !== -1 ? 'gen1' : 'gen2'
 }
 
 export async function loadFarmingPositions(data, farming) {
