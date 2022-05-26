@@ -1,12 +1,29 @@
-import React, { useRef, useEffect, useState } from 'react'
+import React, { useRef, useEffect, useState, useMemo } from 'react'
 
-import LockedPositionComponent from './LockedPositionComponent'
+import { useEthosContext, useWeb3, getNetworkElement, VOID_ETHEREUM_ADDRESS, web3Utils, formatNumber, numberToString, getEthereumPrice, getTokenPricesInDollarsOnCoingecko, toDecimals, fromDecimals, normalizeValue, isEthereumAddress, formatMoney, abi } from '@ethereansos/interfaces-core'
+
+import { getLogs } from '../../../logic/logger'
+import { addTokenToMetamask } from '../../../logic/uiUtilities'
+import { loadFarmingSetup, isValidPosition } from '../../../logic/farming'
 
 import OurCircularProgress from '../../Global/OurCircularProgress'
 import LogoRenderer from '../../Global/LogoRenderer'
 
+import style from '../../../all.module.css'
+
+const MAX_UINT128 = '0x' + web3Utils.toBN(2).pow(web3Utils.toBN(128)).sub(web3Utils.toBN(1)).toString('hex')
+const MAX_UINT256 = '0x' + web3Utils.toBN(2).pow(web3Utils.toBN(256)).sub(web3Utils.toBN(1)).toString('hex')
+
 export default props => {
-    let { className, dfoCore, setupIndex, lmContract, hostedBy } = props
+
+    var { className, setupIndex, element, generation } = props
+
+    const context = useEthosContext()
+
+    const web3Data = useWeb3()
+
+    const { web3, account, chainId, newContract, block } = web3Data
+
     // general info and setup data
     const [setup, setSetup] = useState(null)
     const [setupInfo, setSetupInfo] = useState(null)
@@ -73,23 +90,23 @@ export default props => {
     const [withdrawingAll, setWithdrawingAll] = useState(false)
 
     function getFarmingPrestoAddress() {
-        var prestoAddress = props.dfoCore.getContextElement("farmingPrestoAddress")
-        var oldPrestoAddress = props.dfoCore.getContextElement("farmingPrestoAddressOld")
-        var oldFarmingPrestoContracts = props.dfoCore.getContextElement("oldFarmingPrestoContracts").map(it => props.dfoCore.web3.utils.toChecksumAddress(it))
-        var lmContractAddress = props.dfoCore.web3.utils.toChecksumAddress(lmContract.options.address)
+        var prestoAddress = getNetworkElement({ context, chainId }, "farmingPrestoAddress")
+        var oldPrestoAddress = getNetworkElement({ context, chainId }, "farmingPrestoAddressOld")
+        var oldFarmingPrestoContracts = getNetworkElement({ context, chainId }, "oldFarmingPrestoContracts").map(it => web3Utils.toChecksumAddress(it))
+        var lmContractAddress = web3Utils.toChecksumAddress(element.contract.options.address)
         return oldFarmingPrestoContracts.indexOf(lmContractAddress) === -1 ? prestoAddress : oldPrestoAddress
     }
 
-    var farmingPresto = new props.dfoCore.web3.eth.Contract(props.dfoCore.getContextElement("FarmingPrestoABI"), getFarmingPrestoAddress())
+    const farmingPresto = useMemo(() => newContract(context.FarmingPrestoABI, getFarmingPrestoAddress()), [])
 
     useEffect(() => {
         getSetupMetadata()
         setTimeout(async () => {
-            let amms = []
-            const ammAggregator = await props.dfoCore.getContract(props.dfoCore.getContextElement('AMMAggregatorABI'), props.dfoCore.getContextElement('ammAggregatorAddress'))
+            var amms = []
+            const ammAggregator = newContract(context.AMMAggregatorABI, getNetworkElement({ context, chainId }, 'ammAggregatorAddress'))
             const ammAddresses = await ammAggregator.methods.amms().call()
-            for (let address of ammAddresses) {
-                const ammContract = await props.dfoCore.getContract(props.dfoCore.getContextElement("AMMABI"), address)
+            for (var address of ammAddresses) {
+                const ammContract = newContract(context.AMMABI, address)
                 const amm = {
                     address,
                     contract: ammContract,
@@ -117,14 +134,14 @@ export default props => {
     const getSetupMetadata = async () => {
         setLoading(true)
         try {
-            const { '0': farmSetup, '1': farmSetupInfo } = await props.dfoCore.loadFarmingSetup(lmContract, setupIndex)
+            const { '0': farmSetup, '1': farmSetupInfo } = await loadFarmingSetup({ ...web3Data, context }, element.contract, setupIndex)
             setSetup(farmSetup)
             setSetupInfo(farmSetupInfo)
             setShowPrestoError(false)
             await loadData(farmSetup, farmSetupInfo, true)
             if (!intervalId.current) {
                 intervalId.current = setInterval(async () => {
-                    const { '0': s, '1': si } = await props.dfoCore.loadFarmingSetup(lmContract, setupIndex)
+                    const { '0': s, '1': si } = await loadFarmingSetup({ ...web3Data, context }, element.contract, setupIndex)
                     setSetup(s)
                     setSetupInfo(si)
                     await loadData(s, si)
@@ -138,18 +155,18 @@ export default props => {
     }
 
     const loadData = async (farmSetup, farmSetupInfo, reset) => {
-        let position = null
-        let lockPositions = []
-        let positionIds = []
-        const farmTokenCollectionAddress = await lmContract.methods._farmTokenCollection().call()
-        const farmTokenCollection = await props.dfoCore.getContract(props.dfoCore.getContextElement('INativeV1ABI'), farmTokenCollectionAddress)
-        const ammContract = await dfoCore.getContract(dfoCore.getContextElement('AMMABI'), farmSetupInfo.ammPlugin)
+        var position = null
+        var lockPositions = []
+        var positionIds = []
+        const farmTokenCollectionAddress = await element.contract.methods._farmTokenCollection().call()
+        const farmTokenCollection = newContract(context.INativeV1ABI, farmTokenCollectionAddress)
+        const ammContract = newContract(context.AMMABI, farmSetupInfo.ammPlugin)
         setAmmContract(ammContract)
         if (!farmSetupInfo.free) {
             // retrieve farm token data
             const objectId = farmSetup.objectId
             if (objectId !== "0") {
-                const ftBalance = await farmTokenCollection.methods.balanceOf(props.dfoCore.address, objectId).call()
+                const ftBalance = await farmTokenCollection.methods.balanceOf(account, objectId).call()
                 const ftSymbol = await farmTokenCollection.methods.symbol(objectId).call()
                 const ftDecimals = await farmTokenCollection.methods.decimals(objectId).call()
                 const ftERC20Address = await farmTokenCollection.methods.asInteroperable(objectId).call()
@@ -166,19 +183,19 @@ export default props => {
         reset && setLockedEstimatedReward(0)
         setUpdatedRenewTimes(farmSetupInfo.renewTimes)
         setUpdatedRewardPerBlock(farmSetup.rewardPerBlock)
-        const events = await window.getLogs({
-            address: lmContract.options.address,
+        const events = await getLogs(web3.currentProvider, 'eth_getLogs', {
+            address: element.contract.options.address,
             topics: [
-                window.web3.utils.sha3("Transfer(uint256,address,address)")
+                web3Utils.sha3("Transfer(uint256,address,address)")
             ],
-            fromBlock: props.dfoCore.getContextElement('deploySearchStart'),
+            fromBlock: getNetworkElement({ context, chainId }, 'deploySearchStart') || "0x0",
             toBlock: 'latest',
         })
         for (const event of events) {
             const { topics } = event
-            var positionId = props.dfoCore.web3.eth.abi.decodeParameter("uint256", topics[1])
-            const pos = await lmContract.methods.position(positionId).call()
-            if (dfoCore.isValidPosition(pos) && parseInt(pos.setupIndex) === parseInt(setupIndex)) {
+            var positionId = abi.decode(["uint256"], topics[1])[0].toString()
+            const pos = await element.contract.methods.position(positionId).call()
+            if (isValidPosition({ ...web3Data, context }, pos) && parseInt(pos.setupIndex) === parseInt(setupIndex)) {
                 if (farmSetupInfo.free) {
                     position = { ...pos, positionId }
                 } else if (!positionIds.includes(positionId)) {
@@ -193,43 +210,43 @@ export default props => {
             setOpen(false)
             setWithdrawOpen(false)
         }
-        const extensionAddress = await lmContract.methods.host().call()
-        const extContract = await dfoCore.getContract(dfoCore.getContextElement(props.generation === 'gen2' ? "FarmExtensionGen2ABI" : "FarmExtensionGen1ABI"), extensionAddress)
+        const extensionAddress = await element.contract.methods.host().call()
+        const extContract = newContract(context[generation === 'gen2' ? "FarmExtensionGen2ABI" : "FarmExtensionGen1ABI"], extensionAddress)
         reset && setExtensionContract(extContract)
-        const rewardTokenAddress = await lmContract.methods._rewardTokenAddress().call()
-        const isEth = rewardTokenAddress === dfoCore.voidEthereumAddress
-        const rewardToken = !isEth ? await dfoCore.getContract(dfoCore.getContextElement('ERC20ABI'), rewardTokenAddress) : null
+        const rewardTokenAddress = await element.contract.methods._rewardTokenAddress().call()
+        const isEth = rewardTokenAddress === VOID_ETHEREUM_ADDRESS
+        const rewardToken = !isEth ? newContract(context.ERC20ABI, rewardTokenAddress) : null
         const rewardTokenSymbol = !isEth ? await rewardToken.methods.symbol().call() : 'ETH'
         const rewardTokenDecimals = !isEth ? await rewardToken.methods.decimals().call() : 18
-        const rewardTokenApproval = !isEth ? await rewardToken.methods.allowance(dfoCore.address, lmContract.options.address).call() : 2 ^ 256 - 1
-        const rewardTokenBalance = !isEth ? await rewardToken.methods.balanceOf(dfoCore.address).call() : await dfoCore.web3.eth.getBalance(dfoCore.address)
+        const rewardTokenApproval = !isEth ? await rewardToken.methods.allowance(account, element.contract.options.address).call() : 2 ^ 256 - 1
+        const rewardTokenBalance = !isEth ? await rewardToken.methods.balanceOf(account).call() : await web3.eth.getBalance(account)
         setRewardTokenInfo({ contract: rewardToken, symbol: rewardTokenSymbol, decimals: rewardTokenDecimals, balance: rewardTokenBalance, address: rewardTokenAddress, approval: parseInt(rewardTokenApproval) !== 0 && parseInt(rewardTokenApproval) >= parseInt(rewardTokenBalance) })
 
-        const bNumber = await dfoCore.getBlockNumber()
+        const bNumber = block
         setBlockNumber(bNumber)
 
-        const lpToken = await dfoCore.getContract(dfoCore.getContextElement('ERC20ABI'), farmSetupInfo.liquidityPoolTokenAddress)
+        const lpToken = newContract(context.ERC20ABI, farmSetupInfo.liquidityPoolTokenAddress)
         const lpTokenSymbol = await lpToken.methods.symbol().call()
         const lpTokenDecimals = await lpToken.methods.decimals().call()
-        const lpTokenBalance = await lpToken.methods.balanceOf(dfoCore.address).call()
-        const lpTokenApproval = await lpToken.methods.allowance(dfoCore.address, lmContract.options.address).call()
+        const lpTokenBalance = await lpToken.methods.balanceOf(account).call()
+        const lpTokenApproval = await lpToken.methods.allowance(account, element.contract.options.address).call()
         setLpTokenInfo({ contract: lpToken, symbol: lpTokenSymbol, decimals: lpTokenDecimals, balance: lpTokenBalance, approval: parseInt(lpTokenApproval) !== 0 && parseInt(lpTokenApproval) >= parseInt(lpTokenBalance) })
 
         const activateSetup = parseInt(farmSetupInfo.renewTimes) > 0 && !farmSetup.active && parseInt(farmSetupInfo.lastSetupIndex) === parseInt(setupIndex)
         setCanActivateSetup(activateSetup)
-        var startBlock = window.formatNumber(farmSetupInfo.startBlock || 0)
+        var startBlock = formatNumber(farmSetupInfo.startBlock || 0)
         setDelayedBlock(bNumber > startBlock ? 0 : startBlock)
 
-        setEndBlockReached(bNumber > window.formatNumber(farmSetup.endBlock))
+        setEndBlockReached(bNumber > formatNumber(farmSetup.endBlock))
 
         const { host, byMint } = await extContract.methods.data().call()
-        let isSetupReady = false
-        const extensionBalance = !isEth ? await rewardToken.methods.balanceOf(extensionAddress).call() : await dfoCore.web3.eth.getBalance(extensionAddress)
+        var isSetupReady = false
+        const extensionBalance = !isEth ? await rewardToken.methods.balanceOf(extensionAddress).call() : await web3.eth.getBalance(extensionAddress)
         // check if it's a setup from a DFO
         try {
-            const doubleProxyContract = await dfoCore.getContract(dfoCore.getContextElement('dfoDoubleProxyABI'), host)
-            const proxyContract = await dfoCore.getContract(dfoCore.getContextElement('dfoProxyABI'), await doubleProxyContract.methods.proxy().call())
-            const stateHolderContract = await dfoCore.getContract(dfoCore.getContextElement('dfoStateHolderABI'), await proxyContract.methods.getStateHolderAddress().call())
+            const doubleProxyContract = newContract(context.dfoDoubleProxyABI, host)
+            const proxyContract = newContract(context.dfoProxyABI, await doubleProxyContract.methods.proxy().call())
+            const stateHolderContract = newContract(context.dfoStateHolderABI, await proxyContract.methods.getStateHolderAddress().call())
             isSetupReady = await stateHolderContract.methods.getBool(`farming.authorized.${extensionAddress.toLowerCase()}`).call()
         } catch (error) {
             // not from dfo
@@ -238,29 +255,29 @@ export default props => {
         setSetupReady(isSetupReady)
 
         const tokenAddress = farmSetupInfo.liquidityPoolTokenAddress
-        let res
+        var res
         if (farmSetupInfo.free) {
             res = await ammContract.methods.byLiquidityPoolAmount(tokenAddress, farmSetup.totalSupply).call()
         } else {
             res = await ammContract.methods.byTokenAmount(tokenAddress, farmSetupInfo.mainTokenAddress, farmSetup.totalSupply).call()
             res = await ammContract.methods.byLiquidityPoolAmount(tokenAddress, res.liquidityPoolAmount).call()
         }
-        let mtInfo = null
+        var mtInfo = null
         const tokens = []
         const approvals = []
         const contracts = []
         for (const i in res.liquidityPoolTokens) {
             const address = res.liquidityPoolTokens[i]
-            const token = !isWeth(farmSetupInfo, address) ? await dfoCore.getContract(dfoCore.getContextElement('ERC20ABI'), address) : null
+            const token = !isWeth(farmSetupInfo, address) ? newContract(context.ERC20ABI, address) : null
             const symbol = token ? await token.methods.symbol().call() : 'ETH'
             const decimals = token ? await token.methods.decimals().call() : 18
-            const balance = token ? await token.methods.balanceOf(dfoCore.address).call() : await dfoCore.web3.eth.getBalance(dfoCore.address)
-            const approval = token ? await token.methods.allowance(dfoCore.address, lmContract.options.address).call() : true
+            const balance = token ? await token.methods.balanceOf(account).call() : await web3.eth.getBalance(account)
+            const approval = token ? await token.methods.allowance(account, element.contract.options.address).call() : true
             approvals.push(parseInt(approval) !== 0 && (parseInt(approval) >= parseInt(balance) || !token))
-            tokens.push({ amount: 0, balance: dfoCore.toDecimals(dfoCore.toFixed(balance), decimals), liquidity: res.tokensAmounts[i], decimals, address: token ? address : dfoCore.voidEthereumAddress, symbol })
+            tokens.push({ amount: 0, balance: fromDecimals((balance), decimals), liquidity: res.tokensAmounts[i], decimals, address: token ? address : VOID_ETHEREUM_ADDRESS, symbol })
             contracts.push(token)
             if (address.toLowerCase() === farmSetupInfo.mainTokenAddress.toLowerCase()) {
-                mtInfo = { approval: parseInt(approval) !== 0 && (parseInt(approval) >= parseInt(balance) || !token), decimals, contract: token, address: token ? address : dfoCore.voidEthereumAddress, symbol }
+                mtInfo = { approval: parseInt(approval) !== 0 && (parseInt(approval) >= parseInt(balance) || !token), decimals, contract: token, address: token ? address : VOID_ETHEREUM_ADDRESS, symbol }
                 setMainTokenInfo(mtInfo)
             }
         }
@@ -280,12 +297,12 @@ export default props => {
             const mainTokenAmount = position['mainTokenAmount']
             const amounts = await ammContract.methods.byLiquidityPoolAmount(farmSetupInfo.liquidityPoolTokenAddress, liquidityPoolTokenAmount).call()
             console.log(position.positionId)
-            const availableReward = await lmContract.methods.calculateFreeFarmingReward(position.positionId, true).call()
-            let freeReward = parseInt(availableReward)
+            const availableReward = await element.contract.methods.calculateFreeFarmingReward(position.positionId, true).call()
+            var freeReward = parseInt(availableReward)
             if (blockNumber < parseInt(farmSetup.endBlock)) {
                 freeReward += (parseInt(farmSetup.rewardPerBlock) * (parseInt(position.liquidityPoolTokenAmount) / parseInt(farmSetup.totalSupply)))
             }
-            freeReward = window.numberToString(freeReward).split('.')[0]
+            freeReward = numberToString(freeReward).split('.')[0]
             setFreeAvailableRewards(freeReward)
             var withdrawOnly = !farmSetup.active || bNumber > parseInt(farmSetup.endBlock)
             setManageStatus({ withdrawOnly, free, creationBlock, positionSetupIndex, liquidityPoolAmount: liquidityPoolTokenAmount, mainTokenAmount, tokensAmounts: amounts['tokensAmounts'], tokens })
@@ -300,9 +317,9 @@ export default props => {
                 const liquidityPoolTokenAmount = lockedPosition['liquidityPoolTokenAmount']
                 const mainTokenAmount = lockedPosition['mainTokenAmount']
                 const amounts = await ammContract.methods.byLiquidityPoolAmount(farmSetupInfo.liquidityPoolTokenAddress, liquidityPoolTokenAmount).call()
-                const availableReward = await lmContract.methods.calculateLockedFarmingReward(0, 0, true, lockedPosition.positionId).call()
+                const availableReward = await element.contract.methods.calculateLockedFarmingReward(0, 0, true, lockedPosition.positionId).call()
                 const lockedReward = parseInt(availableReward.reward) + (parseInt(farmSetup.endBlock) <= parseInt(blockNumber) ? 0 : parseInt(lockedPosition.lockedRewardPerBlock))
-                const partiallyRedeemed = await lmContract.methods._partiallyRedeemed(lockedPosition.positionId).call()
+                const partiallyRedeemed = await element.contract.methods._partiallyRedeemed(lockedPosition.positionId).call()
                 lockRewards.push(lockedReward)
                 lockStatuses.push({ free, creationBlock, positionSetupIndex, partiallyRedeemed, liquidityPoolAmount: liquidityPoolTokenAmount, mainTokenAmount, tokensAmounts: amounts['tokensAmounts'], tokens })
             }
@@ -317,17 +334,17 @@ export default props => {
         if (parseInt(setup.totalSupply) === 0) return -1
         const yearlyBlocks = 2304000
         try {
-            const ethPrice = await window.getEthereumPrice()
-            const wusdAddress = await dfoCore.getContextElement("WUSDAddress")
+            const ethPrice = await getEthereumPrice({ context })
+            const wusdAddress = await getNetworkElement({ context, chainId }, "WUSDAddress")
             if (setupInfo.free) {
                 const searchTokens = `${rewardTokenAddress},${setupTokens.map((token) => (token && token.address) ? `${token.address},` : '')}`.slice(0, -1)
-                const res = await window.getTokenPricesInDollarsOnCoingecko(searchTokens)
+                const res = await getTokenPricesInDollarsOnCoingecko({ context, web3Data }, searchTokens)
                 const { data } = res
-                const rewardTokenPriceUsd = rewardTokenAddress !== dfoCore.voidEthereumAddress ? rewardTokenAddress.toLowerCase() === wusdAddress.toLowerCase() ? 1 : data[rewardTokenAddress.toLowerCase()].usd : ethPrice
-                let den = 0
+                const rewardTokenPriceUsd = rewardTokenAddress !== VOID_ETHEREUM_ADDRESS ? rewardTokenAddress.toLowerCase() === wusdAddress.toLowerCase() ? 1 : data[rewardTokenAddress.toLowerCase()].usd : ethPrice
+                var den = 0
                 await Promise.all(setupTokens.map(async (token) => {
                     if (token && token.address) {
-                        const tokenPrice = token.address !== dfoCore.voidEthereumAddress ? token.address.toLowerCase() === wusdAddress.toLowerCase() ? 1 : data[token.address.toLowerCase()].usd : ethPrice
+                        const tokenPrice = token.address !== VOID_ETHEREUM_ADDRESS ? token.address.toLowerCase() === wusdAddress.toLowerCase() ? 1 : data[token.address.toLowerCase()].usd : ethPrice
                         den += (tokenPrice * token.liquidity * 10 ** (18 - token.decimals))
                     }
                 }))
@@ -335,13 +352,13 @@ export default props => {
                 return (num * 100 / den)
             } else {
                 const { mainTokenAddress } = setupInfo
-                const mainTokenContract = mainTokenAddress !== dfoCore.voidEthereumAddress ? await dfoCore.getContract(dfoCore.getContextElement('ERC20ABI'), mainTokenAddress) : null
-                const decimals = mainTokenAddress !== dfoCore.voidEthereumAddress ? await mainTokenContract.methods.decimals().call() : 18
+                const mainTokenContract = mainTokenAddress !== VOID_ETHEREUM_ADDRESS ? newContract(context.ERC20ABI, mainTokenAddress) : null
+                const decimals = mainTokenAddress !== VOID_ETHEREUM_ADDRESS ? await mainTokenContract.methods.decimals().call() : 18
                 const searchTokens = `${rewardTokenAddress},${mainTokenAddress}`
-                const res = await window.getTokenPricesInDollarsOnCoingecko(searchTokens)
+                const res = await getTokenPricesInDollarsOnCoingecko({ context, web3Data }, searchTokens)
                 const { data } = res
-                const rewardTokenPriceUsd = rewardTokenAddress !== dfoCore.voidEthereumAddress ? rewardTokenAddress.toLowerCase() === wusdAddress.toLowerCase() ? 1 : data[rewardTokenAddress.toLowerCase()].usd : ethPrice
-                const mainTokenPriceUsd = mainTokenAddress !== dfoCore.voidEthereumAddress ? mainTokenAddress.toLowerCase() === wusdAddress.toLowerCase() ? 1 : data[mainTokenAddress.toLowerCase()].usd : ethPrice
+                const rewardTokenPriceUsd = rewardTokenAddress !== VOID_ETHEREUM_ADDRESS ? rewardTokenAddress.toLowerCase() === wusdAddress.toLowerCase() ? 1 : data[rewardTokenAddress.toLowerCase()].usd : ethPrice
+                const mainTokenPriceUsd = mainTokenAddress !== VOID_ETHEREUM_ADDRESS ? mainTokenAddress.toLowerCase() === wusdAddress.toLowerCase() ? 1 : data[mainTokenAddress.toLowerCase()].usd : ethPrice
                 const num = (parseInt(setup.rewardPerBlock) * 10 ** (18 - rewardTokenDecimals) * yearlyBlocks) * rewardTokenPriceUsd * 100
                 const den = (parseInt(setupInfo.maxStakeable) * 10 ** (18 - decimals) * mainTokenPriceUsd) * 2
                 return num / den
@@ -356,7 +373,7 @@ export default props => {
     }
 
     const getPeriodFromDuration = (duration) => {
-        const blockIntervals = dfoCore.getContextElement('blockIntervals')
+        const blockIntervals = getNetworkElement({ context, chainId }, 'blockIntervals')
         const inv = Object.entries(blockIntervals).reduce((ret, entry) => {
             const [key, value] = entry
             ret[value] = key
@@ -369,9 +386,8 @@ export default props => {
         if (!setupReady) return
         setActivateLoading(true)
         try {
-            const gas = window.formatNumber(await lmContract.methods.activateSetup(setup.infoIndex).estimateGas({ from: props.dfoCore.address }))
-            const result = await lmContract.methods.activateSetup(setup.infoIndex).send({ from: props.dfoCore.address, gas : window.numberToString(gas * props.dfoCore.getContextElement("farmSetupActivationGasMultiplier")) })
-            props.addTransaction(result)
+            const gas = formatNumber(await element.contract.methods.activateSetup(setup.infoIndex).estimateGas({ from: account }))
+            const result = await element.contract.methods.activateSetup(setup.infoIndex).send({ from: account, gas : numberToString(gas * getNetworkElement({ context, chainId }, "farmSetupActivationGasMultiplier")) })
             await getSetupMetadata()
         } catch (error) {
             console.error(error)
@@ -399,8 +415,8 @@ export default props => {
         window.updateAmountTimeout = setTimeout(async function () {
             var ethereumAddress = (await ammContract.methods.data().call())[0]
             var tokenAddress = setupTokens[index].address
-            tokenAddress = tokenAddress === window.voidEthereumAddress ? ethereumAddress : tokenAddress
-            const fullValue = window.toDecimals(value, setupTokens[index].decimals)
+            tokenAddress = tokenAddress === VOID_ETHEREUM_ADDRESS ? ethereumAddress : tokenAddress
+            const fullValue = toDecimals(value, setupTokens[index].decimals)
             var result = await ammContract.methods.byTokenAmount(setupInfo.liquidityPoolTokenAddress, tokenAddress, fullValue).call()
             var { liquidityPoolAmount } = result
             result = await ammContract.methods.byLiquidityPoolAmount(setupInfo.liquidityPoolTokenAddress, liquidityPoolAmount).call()
@@ -411,23 +427,23 @@ export default props => {
                 ams = result.tokensAmounts
             }
             setLpTokenAmount(liquidityPoolAmount)
-            setTokensAmount(ams.map((_, i) => { return index === i ? { value: window.numberToString(value), full: ams[i] } : ams[i] }))
+            setTokensAmount(ams.map((_, i) => { return index === i ? { value: numberToString(value), full: ams[i] } : ams[i] }))
             if (!setupInfo.free) {
-                let mainTokenIndex = 0
+                var mainTokenIndex = 0
                 setupTokens.forEach((t, i) => {
                     if (t.address === setupInfo.mainTokenAddress) {
                         mainTokenIndex = i
                     }
                 })
                 if (parseInt(ams[mainTokenIndex]) > 0) {
-                    const reward = await lmContract.methods.calculateLockedFarmingReward(setupIndex, ams[mainTokenIndex], false, 0).call()
-                    setLockedEstimatedReward(window.fromDecimals(parseInt(reward.relativeRewardPerBlock) * (parseInt(setup.endBlock) - blockNumber), rewardTokenInfo.decimals))
+                    const reward = await element.contract.methods.calculateLockedFarmingReward(setupIndex, ams[mainTokenIndex], false, 0).call()
+                    setLockedEstimatedReward(fromDecimals(parseInt(reward.relativeRewardPerBlock) * (parseInt(setup.endBlock) - blockNumber), rewardTokenInfo.decimals))
                 }
             } else {
                 if (parseInt(setup.totalSupply) + parseInt(liquidityPoolAmount) > 0) {
                     const val = parseInt(liquidityPoolAmount) * 6400 * parseInt(setup.rewardPerBlock) / (parseInt(setup.totalSupply) + parseInt(liquidityPoolAmount))
                     if (!isNaN(val)) {
-                        setFreeEstimatedReward(props.dfoCore.toDecimals(props.dfoCore.toFixed(val), rewardTokenInfo.decimals))
+                        setFreeEstimatedReward(fromDecimals((val), rewardTokenInfo.decimals))
                     }
                 }
             }
@@ -444,33 +460,33 @@ export default props => {
         }
         window.updateAmountTimeout = setTimeout(async function () {
             try {
-                const fullValue = isFull ? value : props.dfoCore.toFixed(props.dfoCore.fromDecimals(value, parseInt(lpTokenInfo.decimals)))
-                setLpTokenAmount({ value: window.numberToString(value), full: fullValue })
+                const fullValue = isFull ? value : (toDecimals(value, parseInt(lpTokenInfo.decimals)))
+                setLpTokenAmount({ value: numberToString(value), full: fullValue })
                 const result = await ammContract.methods.byLiquidityPoolAmount(setupInfo.liquidityPoolTokenAddress, fullValue).call()
                 const ams = result.tokensAmounts
                 setTokensAmount(ams)
                 if (!setupInfo.free) {
-                    let mainTokenIndex = 0
+                    var mainTokenIndex = 0
                     await setupTokens.map((t, i) => {
                         if (t.address === setupInfo.mainTokenAddress) {
                             mainTokenIndex = i
                         }
                     })
                     if (parseInt(ams[mainTokenIndex]) > 0) {
-                        const reward = await lmContract.methods.calculateLockedFarmingReward(setupIndex, ams[mainTokenIndex], false, 0).call()
-                        setLockedEstimatedReward(props.dfoCore.toDecimals(props.dfoCore.toFixed(parseInt(reward.relativeRewardPerBlock) * (parseInt(setup.endBlock) - blockNumber)), rewardTokenInfo.decimals))
+                        const reward = await element.contract.methods.calculateLockedFarmingReward(setupIndex, ams[mainTokenIndex], false, 0).call()
+                        setLockedEstimatedReward(fromDecimals((parseInt(reward.relativeRewardPerBlock) * (parseInt(setup.endBlock) - blockNumber)), rewardTokenInfo.decimals))
                     }
                 } else {
-                    const val = parseInt(props.dfoCore.fromDecimals(value, parseInt(lpTokenInfo.decimals))) * 6400 * parseInt(setup.rewardPerBlock) / (parseInt(setup.totalSupply) + parseInt(props.dfoCore.fromDecimals(value, parseInt(lpTokenInfo.decimals))))
+                    const val = parseInt(toDecimals(value, parseInt(lpTokenInfo.decimals))) * 6400 * parseInt(setup.rewardPerBlock) / (parseInt(setup.totalSupply) + parseInt(toDecimals(value, parseInt(lpTokenInfo.decimals))))
                     if (!isNaN(val)) {
-                        setFreeEstimatedReward(props.dfoCore.toDecimals(window.numberToString(val), rewardTokenInfo.decimals))
+                        setFreeEstimatedReward(fromDecimals(numberToString(val), rewardTokenInfo.decimals))
                     }
                 }
             } catch (error) {
                 console.error(error)
             }
         }, 300)
-        // setFreeEstimatedReward(props.dfoCore.toDecimals(props.dfoCore.toFixed(parseInt(props.dfoCore.toFixed(props.dfoCore.fromDecimals(value, parseInt(lpTokenInfo.decimals)))) * 6400 * parseInt(setup.rewardPerBlock) / (parseInt(setup.totalSupply) + parseInt(value))), rewardTokenInfo.decimals))
+        // setFreeEstimatedReward(fromDecimals((parseInt((toDecimals(value, parseInt(lpTokenInfo.decimals)))) * 6400 * parseInt(setup.rewardPerBlock) / (parseInt(setup.totalSupply) + parseInt(value))), rewardTokenInfo.decimals))
     }
 
     const addLiquidity = async () => {
@@ -481,50 +497,46 @@ export default props => {
                 setupIndex,
                 amount: 0,
                 amountIsLiquidityPool: inputType === 'add-lp' ? true : false,
-                positionOwner: openPositionForAnotherWallet ? uniqueOwner : dfoCore.voidEthereumAddress,
+                positionOwner: openPositionForAnotherWallet ? uniqueOwner : VOID_ETHEREUM_ADDRESS,
             }
 
-            let ethTokenIndex = null
-            let ethTokenValue = 0
-            let mainTokenIndex = 0
+            var ethTokenIndex = null
+            var ethTokenValue = 0
+            var mainTokenIndex = 0
             var ethereumAddress = (await ammContract.methods.data().call())[0]
             await Promise.all(setupTokens.map(async (token, i) => {
-                if (setupInfo.involvingETH && token.address === window.voidEthereumAddress) {
+                if (setupInfo.involvingETH && token.address === VOID_ETHEREUM_ADDRESS) {
                     ethTokenIndex = i
                 }
-                if (token.address === setupInfo.mainTokenAddress || setupInfo.involvingETH && token.address === window.voidEthereumAddress && setupInfo.mainTokenAddress === ethereumAddress) {
+                if (token.address === setupInfo.mainTokenAddress || setupInfo.involvingETH && token.address === VOID_ETHEREUM_ADDRESS && setupInfo.mainTokenAddress === ethereumAddress) {
                     mainTokenIndex = i
                 }
             }))
-            let lpAmount = window.numberToString(lpTokenAmount.full || lpTokenAmount)
-            stake.amount = window.numberToString(stake.amountIsLiquidityPool ? lpAmount : tokensAmounts[mainTokenIndex].full || tokensAmounts[mainTokenIndex])
-            ethTokenValue = ethTokenIndex === undefined || ethTokenIndex === null ? "0" : window.numberToString(tokensAmounts[ethTokenIndex].full || tokensAmounts[ethTokenIndex])
+            var lpAmount = numberToString(lpTokenAmount.full || lpTokenAmount)
+            stake.amount = numberToString(stake.amountIsLiquidityPool ? lpAmount : tokensAmounts[mainTokenIndex].full || tokensAmounts[mainTokenIndex])
+            ethTokenValue = ethTokenIndex === undefined || ethTokenIndex === null ? "0" : numberToString(tokensAmounts[ethTokenIndex].full || tokensAmounts[ethTokenIndex])
             var value = setupInfo.involvingETH && !stake.amountIsLiquidityPool ? ethTokenValue : "0"
 
             if (prestoData) {
                 console.log('using presto!')
-                var sendingOptions = { from: dfoCore.address, value: prestoData.ethValue, gasLimit: 9999999 }
+                var sendingOptions = { from: account, value: prestoData.ethValue, gasLimit: 9999999 }
                 sendingOptions.gasLimit = await prestoData.transaction.estimateGas(sendingOptions)
-                sendingOptions.gasLimit = parseInt(sendingOptions.gasLimit * (props.dfoCore.getContextElement("farmGasMultiplier") || 1))
+                sendingOptions.gasLimit = parseInt(sendingOptions.gasLimit * (getNetworkElement({ context, chainId }, "farmGasMultiplier") || 1))
                 sendingOptions.gas = sendingOptions.gasLimit
                 var result = await prestoData.transaction.send(sendingOptions)
-                props.addTransaction(result)
             } else {
                 if (setupInfo.free) {
                     if (!currentPosition || openPositionForAnotherWallet) {
-                        const gasLimit = await lmContract.methods.openPosition(stake).estimateGas({ from: dfoCore.address, value })
-                        const result = await lmContract.methods.openPosition(stake).send({ from: dfoCore.address, gas: parseInt(gasLimit * (props.dfoCore.getContextElement("farmGasMultiplier") || 1)), gasLimit: parseInt(gasLimit * (props.dfoCore.getContextElement("farmGasMultiplier") || 1)), value })
-                        props.addTransaction(result)
+                        const gasLimit = await element.contract.methods.openPosition(stake).estimateGas({ from: account, value })
+                        const result = await element.contract.methods.openPosition(stake).send({ from: account, gas: parseInt(gasLimit * (getNetworkElement({ context, chainId }, "farmGasMultiplier") || 1)), gasLimit: parseInt(gasLimit * (getNetworkElement({ context, chainId }, "farmGasMultiplier") || 1)), value })
                     } else if (currentPosition) {
-                        const gasLimit = await lmContract.methods.addLiquidity(currentPosition.positionId, stake).estimateGas({ from: dfoCore.address, value })
-                        const result = await lmContract.methods.addLiquidity(currentPosition.positionId, stake).send({ from: dfoCore.address, gas: parseInt(gasLimit * (props.dfoCore.getContextElement("farmGasMultiplier") || 1)), gasLimit: parseInt(gasLimit * (props.dfoCore.getContextElement("farmGasMultiplier") || 1)), value })
-                        props.addTransaction(result)
+                        const gasLimit = await element.contract.methods.addLiquidity(currentPosition.positionId, stake).estimateGas({ from: account, value })
+                        const result = await element.contract.methods.addLiquidity(currentPosition.positionId, stake).send({ from: account, gas: parseInt(gasLimit * (getNetworkElement({ context, chainId }, "farmGasMultiplier") || 1)), gasLimit: parseInt(gasLimit * (getNetworkElement({ context, chainId }, "farmGasMultiplier") || 1)), value })
                     }
                 } else {
                     // opening position
-                    const gasLimit = await lmContract.methods.openPosition(stake).estimateGas({ from: dfoCore.address, value })
-                    const result = await lmContract.methods.openPosition(stake).send({ from: dfoCore.address, gas: parseInt(gasLimit * (props.dfoCore.getContextElement("farmGasMultiplier") || 1)), gasLimit: parseInt(gasLimit * (props.dfoCore.getContextElement("farmGasMultiplier") || 1)), value })
-                    props.addTransaction(result)
+                    const gasLimit = await element.contract.methods.openPosition(stake).estimateGas({ from: account, value })
+                    const result = await element.contract.methods.openPosition(stake).send({ from: account, gas: parseInt(gasLimit * (getNetworkElement({ context, chainId }, "farmGasMultiplier") || 1)), gasLimit: parseInt(gasLimit * (getNetworkElement({ context, chainId }, "farmGasMultiplier") || 1)), value })
                 }
             }
             await getSetupMetadata()
@@ -543,14 +555,12 @@ export default props => {
         setRemoveLoading(true)
         try {
             if (setupInfo.free) {
-                const removedLiquidity = manageStatus?.withdrawOnly || removalAmount === 100 ? manageStatus.liquidityPoolAmount : props.dfoCore.toFixed(parseInt(manageStatus.liquidityPoolAmount) * removalAmount / 100).toString().split('.')[0]
-                const gasLimit = await lmContract.methods.withdrawLiquidity(currentPosition.positionId, 0, outputType === 'to-pair', removedLiquidity).estimateGas({ from: dfoCore.address })
-                const result = await lmContract.methods.withdrawLiquidity(currentPosition.positionId, 0, outputType === 'to-pair', removedLiquidity).send({ from: dfoCore.address, gasLimit, gas: gasLimit })
-                props.addTransaction(result)
+                const removedLiquidity = manageStatus?.withdrawOnly || removalAmount === 100 ? manageStatus.liquidityPoolAmount : (parseInt(manageStatus.liquidityPoolAmount) * removalAmount / 100).toString().split('.')[0]
+                const gasLimit = await element.contract.methods.withdrawLiquidity(currentPosition.positionId, 0, outputType === 'to-pair', removedLiquidity).estimateGas({ from: account })
+                const result = await element.contract.methods.withdrawLiquidity(currentPosition.positionId, 0, outputType === 'to-pair', removedLiquidity).send({ from: account, gasLimit, gas: gasLimit })
             } else {
-                const gasLimit = await lmContract.methods.withdrawLiquidity(0, setup.objectId, outputType === 'to-pair', farmTokenBalance).estimateGas({ from: dfoCore.address })
-                const result = await lmContract.methods.withdrawLiquidity(0, setup.objectId, outputType === 'to-pair', farmTokenBalance).send({ from: dfoCore.address, gasLimit, gas: gasLimit })
-                props.addTransaction(result)
+                const gasLimit = await element.contract.methods.withdrawLiquidity(0, setup.objectId, outputType === 'to-pair', farmTokenBalance).estimateGas({ from: account })
+                const result = await element.contract.methods.withdrawLiquidity(0, setup.objectId, outputType === 'to-pair', farmTokenBalance).send({ from: account, gasLimit, gas: gasLimit })
             }
             await getSetupMetadata()
         } catch (error) {
@@ -563,9 +573,8 @@ export default props => {
     const withdrawReward = async () => {
         setClaimLoading(true)
         try {
-            const gasLimit = await lmContract.methods.withdrawReward(currentPosition.positionId).estimateGas({ from: dfoCore.address })
-            const result = await lmContract.methods.withdrawReward(currentPosition.positionId).send({ from: dfoCore.address, gasLimit, gas: gasLimit })
-            props.addTransaction(result)
+            const gasLimit = await element.contract.methods.withdrawReward(currentPosition.positionId).estimateGas({ from: account })
+            const result = await element.contract.methods.withdrawReward(currentPosition.positionId).send({ from: account, gasLimit, gas: gasLimit })
             await getSetupMetadata()
         } catch (error) {
             console.error(error)
@@ -579,9 +588,8 @@ export default props => {
         if (setupInfo.free) {
             setTransferLoading(true)
             try {
-                //const gasLimit = await lmContract.methods.transferPosition(freeTransferAddress, positionId).estimateGas({ from: dfoCore.address })
-                const result = await lmContract.methods.transferPosition(dfoCore.address, positionId).send({ from: dfoCore.address, gasLimit : 99999999, gas : 99999999 })
-                props.addTransaction(result)
+                //const gasLimit = await element.contract.methods.transferPosition(freeTransferAddress, positionId).estimateGas({ from: account })
+                const result = await element.contract.methods.transferPosition(account, positionId).send({ from: account, gasLimit : 99999999, gas : 99999999 })
                 await getSetupMetadata()
             } catch (error) {
                 console.error(error)
@@ -601,18 +609,18 @@ export default props => {
                     minStakeable: 0,
                     maxStakeable: 0,
                     renewTimes: updatedRenewTimes,
-                    ammPlugin: dfoCore.voidEthereumAddress,
-                    liquidityPoolTokenAddress: dfoCore.voidEthereumAddress,
-                    mainTokenAddress: dfoCore.voidEthereumAddress,
-                    ethereumAddress: dfoCore.voidEthereumAddress,
+                    ammPlugin: VOID_ETHEREUM_ADDRESS,
+                    liquidityPoolTokenAddress: VOID_ETHEREUM_ADDRESS,
+                    mainTokenAddress: VOID_ETHEREUM_ADDRESS,
+                    ethereumAddress: VOID_ETHEREUM_ADDRESS,
                     involvingETH: false,
                     penaltyFee: 0,
                     setupsCount: 0,
                     lastSetupIndex: 0,
                 }
                 const updatedSetupConfiguration = { add: false, disable: false, index: parseInt(setupIndex), info: updatedSetup }
-                const gasLimit = await extensionContract.methods.setFarmingSetups([updatedSetupConfiguration]).estimateGas({ from: dfoCore.address })
-                const result = await extensionContract.methods.setFarmingSetups([updatedSetupConfiguration]).send({ from: dfoCore.address, gasLimit, gas: gasLimit })
+                const gasLimit = await extensionContract.methods.setFarmingSetups([updatedSetupConfiguration]).estimateGas({ from: account })
+                const result = await extensionContract.methods.setFarmingSetups([updatedSetupConfiguration]).send({ from: account, gasLimit, gas: gasLimit })
                 await getSetupMetadata()
             } catch (error) {
                 console.error(error)
@@ -631,18 +639,18 @@ export default props => {
                     minStakeable: 0,
                     maxStakeable: 0,
                     renewTimes: 0,
-                    ammPlugin: dfoCore.voidEthereumAddress,
-                    liquidityPoolTokenAddress: dfoCore.voidEthereumAddress,
-                    mainTokenAddress: dfoCore.voidEthereumAddress,
-                    ethereumAddress: dfoCore.voidEthereumAddress,
+                    ammPlugin: VOID_ETHEREUM_ADDRESS,
+                    liquidityPoolTokenAddress: VOID_ETHEREUM_ADDRESS,
+                    mainTokenAddress: VOID_ETHEREUM_ADDRESS,
+                    ethereumAddress: VOID_ETHEREUM_ADDRESS,
                     involvingETH: false,
                     penaltyFee: 0,
                     setupsCount: 0,
                     lastSetupIndex: 0,
                 }
                 const updatedSetupConfiguration = { add: false, disable: true, index: parseInt(setupIndex), info: updatedSetup }
-                const gasLimit = await extensionContract.methods.setFarmingSetups([updatedSetupConfiguration]).estimateGas({ from: dfoCore.address })
-                const result = await extensionContract.methods.setFarmingSetups([updatedSetupConfiguration]).send({ from: dfoCore.address, gasLimit, gas: gasLimit })
+                const gasLimit = await extensionContract.methods.setFarmingSetups([updatedSetupConfiguration]).estimateGas({ from: account })
+                const result = await extensionContract.methods.setFarmingSetups([updatedSetupConfiguration]).send({ from: account, gasLimit, gas: gasLimit })
                 await getSetupMetadata()
             } catch (error) {
                 console.error(error)
@@ -656,14 +664,14 @@ export default props => {
         if (!isLp) {
             const notApprovedIndex = tokensApprovals.findIndex((value) => !value)
             if (notApprovedIndex !== -1) {
-                return <button contract={tokensContracts[notApprovedIndex]} from={props.dfoCore.address} spender={lmContract.options.address} onApproval={() => onTokenApproval(notApprovedIndex, false)} onError={(error) => console.error(error)} text={`Approve ${setupTokens[notApprovedIndex].symbol}`} />
+                return <button contract={tokensContracts[notApprovedIndex]} from={account} spender={element.contract.options.address} onApproval={() => onTokenApproval(notApprovedIndex, false)} onError={(error) => console.error(error)} text={`Approve ${setupTokens[notApprovedIndex].symbol}`} />
             } else {
                 return <div />
             }
         } else {
 
             if (!lpTokenInfo.approval) {
-                return <button contract={lpTokenInfo.contract} from={props.dfoCore.address} spender={lmContract.options.address} onApproval={() => onTokenApproval(null, true)} onError={(error) => console.error(error)} text={`Approve ${lpTokenInfo.symbol}`} />
+                return <button contract={lpTokenInfo.contract} from={account} spender={element.contract.options.address} onApproval={() => onTokenApproval(null, true)} onError={(error) => console.error(error)} text={`Approve ${lpTokenInfo.symbol}`} />
             } else {
                 return <div />
             }
@@ -672,7 +680,7 @@ export default props => {
 
     const onInputTypeChange = async (e) => {
         setInputType(e.target.value)
-        const ethBalance = await props.dfoCore.web3.eth.getBalance(props.dfoCore.address)
+        const ethBalance = await web3.eth.getBalance(account)
         setEthBalanceOf(ethBalance)
         setPrestoData(null)
         setShowPrestoError(false)
@@ -697,9 +705,9 @@ export default props => {
             if (!parseFloat(amount)) {
                 return setLoadingPrestoData(false)
             }
-            var value = window.toDecimals(window.numberToString(amount), 18)
+            var value = toDecimals(numberToString(amount), 18)
 
-            var halfValue = props.dfoCore.web3.utils.toBN(value).div(props.dfoCore.web3.utils.toBN(2)).toString()
+            var halfValue = web3Utils.toBN(value).div(web3Utils.toBN(2)).toString()
             var ammEthereumAddress = (await ammContract.methods.data().call())[0]
 
             var info = setupInfo
@@ -707,12 +715,12 @@ export default props => {
             var liquidityPool = info.liquidityPoolTokenAddress
 
             var tokens = await ammContract.methods.byLiquidityPool(liquidityPool).call()
-            var token0 = new window.web3.eth.Contract(props.dfoCore.getContextElement("ERC20ABI"), tokens[2][0])
-            var token1 = new window.web3.eth.Contract(props.dfoCore.getContextElement("ERC20ABI"), tokens[2][1])
-            var token0decimals = tokens[2][0] === window.voidEthereumAddress ? 18 : await token0.methods.decimals().call()
-            var token1decimals = tokens[2][1] === window.voidEthereumAddress ? 18 : await token1.methods.decimals().call()
+            var token0 = newContract(context.ERC20ABI, tokens[2][0])
+            var token1 = newContract(context.ERC20ABI, tokens[2][1])
+            var token0decimals = tokens[2][0] === VOID_ETHEREUM_ADDRESS ? 18 : await token0.methods.decimals().call()
+            var token1decimals = tokens[2][1] === VOID_ETHEREUM_ADDRESS ? 18 : await token1.methods.decimals().call()
 
-            var lpDecimals = await new window.web3.eth.Contract(props.dfoCore.getContextElement("ERC20ABI"), liquidityPool).methods.decimals().call()
+            var lpDecimals = await newContract(context.ERC20ABI, liquidityPool).methods.decimals().call()
 
             var mainTokenIndex = tokens[2].indexOf(info.mainTokenAddress)
 
@@ -726,19 +734,19 @@ export default props => {
 
                 var liquidityPoolAddress = data[2]
 
-                if (liquidityPoolAddress === window.voidEthereumAddress) {
+                if (liquidityPoolAddress === VOID_ETHEREUM_ADDRESS) {
                     return {}
                 }
 
                 var mainTokenIndex = data[3].indexOf(firstToken)
                 var middleTokenIndex = data[3].indexOf(ethereumAddress)
 
-                var mainAmount = window.formatNumber(window.normalizeValue(data[1][mainTokenIndex], firstDecimals))
-                var middleTokenAmount = window.formatNumber(window.normalizeValue(data[1][middleTokenIndex], 18))
+                var mainAmount = formatNumber(normalizeValue(data[1][mainTokenIndex], firstDecimals))
+                var middleTokenAmount = formatNumber(normalizeValue(data[1][middleTokenIndex], 18))
 
                 var constant = mainAmount * middleTokenAmount
 
-                var newMiddleTokenAmount = middleTokenAmount + window.formatNumber(window.normalizeValue(halfValue, 18))
+                var newMiddleTokenAmount = middleTokenAmount + formatNumber(normalizeValue(halfValue, 18))
 
                 var newMainAmount = constant / newMiddleTokenAmount
 
@@ -750,23 +758,23 @@ export default props => {
                 var ratio = newMainAmount / mainAmount
 
                 if (!hf) {
-                    return await calculateBestLP(firstToken, secondToken, firstDecimals, secondDecimals, halfValue = window.numberToString(window.formatNumber(halfValue) * ratio).split('.')[0])
+                    return await calculateBestLP(firstToken, secondToken, firstDecimals, secondDecimals, halfValue = numberToString(formatNumber(halfValue) * ratio).split('.')[0])
                 }
 
                 var token1Value = (await ammContract.methods.byTokenAmount(liquidityPool, firstToken, token0Value).call())
                 var lpAmount = token1Value[0]
                 token1Value = token1Value[1][token1Value[2].indexOf(secondToken)]
 
-                lpAmount = window.numberToString(parseInt(lpAmount) / ratio).split('.')[0]
-                token1Value = window.numberToString(parseInt(token1Value) / ratio).split('.')[0]
+                lpAmount = numberToString(parseInt(lpAmount) / ratio).split('.')[0]
+                token1Value = numberToString(parseInt(token1Value) / ratio).split('.')[0]
 
-                const updatedFirstTokenAmount = window.formatNumber(window.normalizeValue(token0Value, firstDecimals))
-                const updatedSecondTokenAmount = window.formatNumber(window.normalizeValue(token1Value, secondDecimals))
+                const updatedFirstTokenAmount = formatNumber(normalizeValue(token0Value, firstDecimals))
+                const updatedSecondTokenAmount = formatNumber(normalizeValue(token1Value, secondDecimals))
 
                 liquidityPoolAddress = (await amm.methods.byTokens([ethereumAddress, secondToken]).call())[2]
                 var secondTokenEthLiquidityPoolAddress = liquidityPoolAddress
                 var token1ValueETH = "0"
-                if (secondTokenEthLiquidityPoolAddress !== window.voidEthereumAddress) {
+                if (secondTokenEthLiquidityPoolAddress !== VOID_ETHEREUM_ADDRESS) {
                     token1ValueETH = (await amm.methods.getSwapOutput(secondToken, token1Value, [liquidityPoolAddress], [ethereumAddress]).call())[1]
                 }
 
@@ -797,7 +805,7 @@ export default props => {
 
             var operations = []
 
-            token0EthLiquidityPoolAddress !== window.voidEthereumAddress && operations.push({
+            token0EthLiquidityPoolAddress !== VOID_ETHEREUM_ADDRESS && operations.push({
                 inputTokenAddress: ethereumAddress,
                 inputTokenAmount: firstTokenETH,
                 ammPlugin: amm.options.address,
@@ -809,7 +817,7 @@ export default props => {
                 receiversPercentages: []
             })
 
-            token1EthLiquidityPoolAddress !== window.voidEthereumAddress && operations.push({
+            token1EthLiquidityPoolAddress !== VOID_ETHEREUM_ADDRESS && operations.push({
                 inputTokenAddress: ethereumAddress,
                 inputTokenAmount: secondTokenETH,
                 ammPlugin: amm.options.address,
@@ -822,34 +830,34 @@ export default props => {
             })
 
             var ethValue = 0
-            token0EthLiquidityPoolAddress !== window.voidEthereumAddress && (ethValue = props.dfoCore.web3.utils.toBN(ethValue).add(props.dfoCore.web3.utils.toBN(firstTokenETH)).toString())
-            token1EthLiquidityPoolAddress !== window.voidEthereumAddress && (ethValue = props.dfoCore.web3.utils.toBN(ethValue).add(props.dfoCore.web3.utils.toBN(secondTokenETH)).toString())
-            info.involvingETH && token0.options.address === ammEthereumAddress && (ethValue = props.dfoCore.web3.utils.toBN(ethValue).add(props.dfoCore.web3.utils.toBN(firstTokenAmount)).toString())
-            info.involvingETH && token1.options.address === ammEthereumAddress && (ethValue = props.dfoCore.web3.utils.toBN(ethValue).add(props.dfoCore.web3.utils.toBN(secondTokenAmount)).toString())
+            token0EthLiquidityPoolAddress !== VOID_ETHEREUM_ADDRESS && (ethValue = web3Utils.toBN(ethValue).add(web3Utils.toBN(firstTokenETH)).toString())
+            token1EthLiquidityPoolAddress !== VOID_ETHEREUM_ADDRESS && (ethValue = web3Utils.toBN(ethValue).add(web3Utils.toBN(secondTokenETH)).toString())
+            info.involvingETH && token0.options.address === ammEthereumAddress && (ethValue = web3Utils.toBN(ethValue).add(web3Utils.toBN(firstTokenAmount)).toString())
+            info.involvingETH && token1.options.address === ammEthereumAddress && (ethValue = web3Utils.toBN(ethValue).add(web3Utils.toBN(secondTokenAmount)).toString())
 
             var request = {
                 setupIndex,
                 amount: mainTokenIndex === 0 ? firstTokenAmount : secondTokenAmount,
                 amountIsLiquidityPool: false,
-                positionOwner: window.isEthereumAddress(uniqueOwner) ? uniqueOwner : props.dfoCore.address
+                positionOwner: isEthereumAddress(uniqueOwner) ? uniqueOwner : account
             }
 
             if (!setupInfo.free) {
-                const reward = await lmContract.methods.calculateLockedFarmingReward(setupIndex, mainTokenIndex === 0 ? firstTokenAmount : secondTokenAmount, false, 0).call()
-                setLockedEstimatedReward(props.dfoCore.toDecimals(props.dfoCore.toFixed(parseInt(reward.relativeRewardPerBlock) * (parseInt(setup.endBlock) - blockNumber)), rewardTokenInfo.decimals))
+                const reward = await element.contract.methods.calculateLockedFarmingReward(setupIndex, mainTokenIndex === 0 ? firstTokenAmount : secondTokenAmount, false, 0).call()
+                setLockedEstimatedReward(fromDecimals((parseInt(reward.relativeRewardPerBlock) * (parseInt(setup.endBlock) - blockNumber)), rewardTokenInfo.decimals))
             } else {
                 const val = parseInt(lpAmount) * 6400 * parseInt(setup.rewardPerBlock) / (parseInt(setup.totalSupply) + parseInt(lpAmount))
                 if (!isNaN(val)) {
-                    setFreeEstimatedReward(props.dfoCore.toDecimals(props.dfoCore.toFixed(val), rewardTokenInfo.decimals))
+                    setFreeEstimatedReward(fromDecimals((val), rewardTokenInfo.decimals))
                 }
             }
 
             setPrestoData({
                 ethValue: value,
                 transaction: farmingPresto.methods.openPosition(
-                    props.dfoCore.getContextElement("prestoAddress"),
+                    getNetworkElement({ context, chainId }, "prestoAddress"),
                     operations,
-                    lmContract.options.address,
+                    element.contract.options.address,
                     request
                 ),
                 firstTokenAmount,
@@ -862,7 +870,7 @@ export default props => {
                 token1Symbol: info.involvingETH && token1.options.address === ammEthereumAddress ? "ETH" : await token1.methods.symbol().call()
             })
 
-            setLpTokenAmount({full : lpAmount, value : window.fromDecimals(lpAmount, lpDecimals)})
+            setLpTokenAmount({full : lpAmount, value : fromDecimals(lpAmount, lpDecimals)})
         } catch (error) {
             console.error(error)
         }
@@ -875,7 +883,7 @@ export default props => {
         const normalizedRewardPerBlock = parseInt(rewardPerBlock) * 10 ** (18 - rewardTokenInfo.decimals)
         const normalizedMaxStakeable = parseInt(maxStakeable) * 10 ** (18 - mainTokenInfo.decimals)
         const amount = normalizedRewardPerBlock * (1 / normalizedMaxStakeable)
-        return (canActivateSetup) ? window.formatMoney(amount * parseInt(setupInfo.blockDuration), 6) : parseInt(blockNumber) >= parseInt(setup.endBlock) ? 0 : window.formatMoney(amount * (parseInt(setup.endBlock) - parseInt(blockNumber)), 6)
+        return (canActivateSetup) ? formatMoney(amount * parseInt(setupInfo.blockDuration), 6) : parseInt(blockNumber) >= parseInt(setup.endBlock) ? 0 : formatMoney(amount * (parseInt(setup.endBlock) - parseInt(blockNumber)), 6)
     }
 
     const getAdvanced = () => {
@@ -892,7 +900,7 @@ export default props => {
                 {
                     setupInfo.free &&
                     <div className="col-12 mb-md-2">
-                        <input value={dfoCore.toDecimals(updatedRewardPerBlock)} min={0} onChange={(e) => setUpdatedRewardPerBlock(dfoCore.toFixed(dfoCore.fromDecimals(e.target.value), rewardTokenInfo.decimals))} label={"Reward per block"} />
+                        <input value={fromDecimals(updatedRewardPerBlock)} min={0} onChange={(e) => setUpdatedRewardPerBlock((toDecimals(e.target.value), rewardTokenInfo.decimals))} label={"Reward per block"} />
                     </div>
                 }
                 <div className="col-12 mb-md-2">
@@ -907,14 +915,14 @@ export default props => {
     }
 
     function calculateDailyEarnings() {
-        var rewardPerBlock = window.formatNumber(window.fromDecimals(setup.rewardPerBlock, rewardTokenInfo.decimals, true))
-        var liquidityPoolAmount = window.formatNumber(window.fromDecimals(manageStatus.liquidityPoolAmount, rewardTokenInfo.decimals, true))
-        var totalSupply = window.formatNumber(window.fromDecimals(setup.totalSupply, rewardTokenInfo.decimals, true))
+        var rewardPerBlock = formatNumber(fromDecimals(setup.rewardPerBlock, rewardTokenInfo.decimals, true))
+        var liquidityPoolAmount = formatNumber(fromDecimals(manageStatus.liquidityPoolAmount, rewardTokenInfo.decimals, true))
+        var totalSupply = formatNumber(fromDecimals(setup.totalSupply, rewardTokenInfo.decimals, true))
         var dailyEarnings = (rewardPerBlock * 6400 * liquidityPoolAmount) / totalSupply
-        dailyEarnings = window.numberToString(dailyEarnings)
-        dailyEarnings = window.formatMoney(dailyEarnings, 9)
+        dailyEarnings = numberToString(dailyEarnings)
+        dailyEarnings = formatMoney(dailyEarnings, 9)
         return dailyEarnings
-        //window.fromDecimals((parseInt(setup.rewardPerBlock) * 6400 * parseInt(manageStatus.liquidityPoolAmount) / parseInt(setup.totalSupply)).toString().split('.')[0], rewardTokenInfo.decimals, true)
+        //fromDecimals((parseInt(setup.rewardPerBlock) * 6400 * parseInt(manageStatus.liquidityPoolAmount) / parseInt(setup.totalSupply)).toString().split('.')[0], rewardTokenInfo.decimals, true)
     }
 
     const getManageAdvanced = () => {
@@ -924,7 +932,7 @@ export default props => {
                     {!manageStatus?.withdrawOnly &&  <>
                         <input type="range" value={removalAmount} onChange={(e) => setRemovalAmount(parseInt(e.target.value))} className="form-control-range" id="formControlRange" />
                         <div className="Web2ActionsBTNs">
-                            <p className="BreefRecap"><b>Amount:</b> {removalAmount}% ({window.formatMoney(dfoCore.toDecimals(dfoCore.toFixed(parseInt(manageStatus.liquidityPoolAmount) * removalAmount / 100).toString(), lpTokenInfo.decimals), lpTokenInfo.decimals)} {lpTokenInfo.symbol} - {manageStatus.tokens.map((token, i) => <span key={token.address}> {window.formatMoney(dfoCore.toDecimals(dfoCore.toFixed(parseInt(manageStatus.tokensAmounts[i].full || manageStatus.tokensAmounts[i]) * removalAmount / 100).toString(), token.decimals), token.decimals)} {token.symbol} </span>)})</p>
+                            <p className="BreefRecap"><b>Amount:</b> {removalAmount}% ({formatMoney(fromDecimals((parseInt(manageStatus.liquidityPoolAmount) * removalAmount / 100).toString(), lpTokenInfo.decimals), lpTokenInfo.decimals)} {lpTokenInfo.symbol} - {manageStatus.tokens.map((token, i) => <span key={token.address}> {formatMoney(fromDecimals((parseInt(manageStatus.tokensAmounts[i].full || manageStatus.tokensAmounts[i]) * removalAmount / 100).toString(), token.decimals), token.decimals)} {token.symbol} </span>)})</p>
                             <a className="web2ActionBTN" onClick={() => setRemovalAmount(10)} >10%</a>
                             <a className="web2ActionBTN" onClick={() => setRemovalAmount(25)} >25%</a>
                             <a className="web2ActionBTN" onClick={() => setRemovalAmount(50)} >50%</a>
@@ -1016,18 +1024,18 @@ export default props => {
                     {setup.active && (setupInfo.free || !currentPosition) && parseInt(setup.endBlock) > parseInt(blockNumber) && <>
                         <label className="PrestoSelector">
                             <span>From Pair</span>
-                            <input name={`inputType-${lmContract.options.address}-${setupIndex}`} type="radio" value="add-pair" checked={inputType === "add-pair"} onChange={(e) => onInputTypeChange(e)} />
+                            <input name={`inputType-${element.contract.options.address}-${setupIndex}`} type="radio" value="add-pair" checked={inputType === "add-pair"} onChange={(e) => onInputTypeChange(e)} />
                         </label>
                         {
                             (!currentPosition || openPositionForAnotherWallet || !setupInfo.free) &&
                             <label className="PrestoSelector">
                                 <span>From ETH (BETA)</span>
-                                <input name={`inputType-${lmContract.options.address}-${setupIndex}`} type="radio" value="add-eth" checked={inputType === "add-eth"} onChange={(e) => onInputTypeChange(e)} />
+                                <input name={`inputType-${element.contract.options.address}-${setupIndex}`} type="radio" value="add-eth" checked={inputType === "add-eth"} onChange={(e) => onInputTypeChange(e)} />
                             </label>
                         }
                         <label className="PrestoSelector">
                             <span>From LP Token</span>
-                            <input name={`inputType-${lmContract.options.address}-${setupIndex}`} type="radio" value="add-lp" checked={inputType === "add-lp"} onChange={(e) => onInputTypeChange(e)} />
+                            <input name={`inputType-${element.contract.options.address}-${setupIndex}`} type="radio" value="add-lp" checked={inputType === "add-lp"} onChange={(e) => onInputTypeChange(e)} />
                         </label>
                     </>
                     }
@@ -1037,26 +1045,26 @@ export default props => {
                 {
                     setupTokens.map((setupToken, i) => {
                         return <div key={setupToken.address} className="InputTokenRegular">
-                            <input showMax={true} address={setupToken.address} value={tokensAmounts[i].value || window.fromDecimals(tokensAmounts[i], setupToken.decimals, true)} balance={setupToken.balance} min={0} onChange={(e) => onUpdateTokenAmount(e.target.value, i)} showCoin={true} showBalance={true} name={setupToken.symbol} />
+                            <input showMax={true} address={setupToken.address} value={tokensAmounts[i].value || fromDecimals(tokensAmounts[i], setupToken.decimals, true)} balance={setupToken.balance} min={0} onChange={(e) => onUpdateTokenAmount(e.target.value, i)} showCoin={true} showBalance={true} name={setupToken.symbol} />
                         </div>
                     })
                 }
                 {
                     parseFloat(lpTokenAmount) > 0 && <div className="DiffWallet">
                         <p className="BreefRecap"><b>LP tokens</b>:
-                            <span> {window.formatMoney(dfoCore.toDecimals(lpTokenAmount, lpTokenInfo.decimals), lpTokenInfo.decimals)} {lpTokenInfo.symbol}</span>
+                            <span> {formatMoney(fromDecimals(lpTokenAmount, lpTokenInfo.decimals), lpTokenInfo.decimals)} {lpTokenInfo.symbol}</span>
                         </p>
                     </div>
                 }
                 {
                     (!setupInfo.free && rewardTokenInfo) && <div className="DiffWallet">
-                        <p className="BreefRecap">Total Rewards until end block: <br></br><b>{window.formatMoney(lockedEstimatedReward, rewardTokenInfo.decimals)} {rewardTokenInfo.symbol}</b></p>
+                        <p className="BreefRecap">Total Rewards until end block: <br></br><b>{formatMoney(lockedEstimatedReward, rewardTokenInfo.decimals)} {rewardTokenInfo.symbol}</b></p>
                         <p className="BreefExpl">Once you lock this liquidity you'll be able to withdraw it at the Setup End Block. If you want to Unlock this position earlier, you'll need to pay a Penalty Fee (in Reward Tokens) + all of the Reward Tokens you Claimed from this position + All of the Farm Token you're minting (representing your LP tokens locked).</p>
                     </div>
                 }
                 {
                     (setupInfo.free && rewardTokenInfo) && <div className="DiffWallet">
-                        <p className="BreefRecap">Estimated reward per day: <br></br><b>{window.formatMoney(freeEstimatedReward, rewardTokenInfo.decimals)} {rewardTokenInfo.symbol}</b></p>
+                        <p className="BreefRecap">Estimated reward per day: <br></br><b>{formatMoney(freeEstimatedReward, rewardTokenInfo.decimals)} {rewardTokenInfo.symbol}</b></p>
                     </div>
                 }
                 <div className="Web3BTNs">
@@ -1073,26 +1081,26 @@ export default props => {
                 </div>
             </> : inputType === 'add-lp' ? <>
                 <div className="InputTokenRegular">
-                    <input showMax={true} address={lpTokenInfo.contract.options.address} value={lpTokenAmount.value || window.fromDecimals(lpTokenAmount, lpTokenInfo.decimals, true)} balance={window.fromDecimals(lpTokenInfo.balance, lpTokenInfo.decimals, true)} min={0} onChange={(e) => onUpdateLpTokenAmount(e.target.value)} showCoin={true} showBalance={true} name={lpTokenInfo.symbol} />
+                    <input showMax={true} address={lpTokenInfo.contract.options.address} value={lpTokenAmount.value || fromDecimals(lpTokenAmount, lpTokenInfo.decimals, true)} balance={fromDecimals(lpTokenInfo.balance, lpTokenInfo.decimals, true)} min={0} onChange={(e) => onUpdateLpTokenAmount(e.target.value)} showCoin={true} showBalance={true} name={lpTokenInfo.symbol} />
                 </div>
                 {
                     parseFloat(lpTokenAmount.value || lpTokenAmount) > 0 && <div className="DiffWallet">
                         <p className="BreefRecap"><b>Pair</b>:
                             {
-                                setupTokens.map((setupToken, i) => <span key={setupToken.address}> {tokensAmounts[i].value || window.formatMoney(dfoCore.toDecimals(tokensAmounts[i], setupToken.decimals), setupToken.decimals)} {setupToken.symbol}</span>)
+                                setupTokens.map((setupToken, i) => <span key={setupToken.address}> {tokensAmounts[i].value || formatMoney(fromDecimals(tokensAmounts[i], setupToken.decimals), setupToken.decimals)} {setupToken.symbol}</span>)
                             }
                         </p>
                     </div>
                 }
                 {
                     (!setupInfo.free && rewardTokenInfo) && <div className="DiffWallet">
-                        <p className="BreefRecap">Total Rewards until end block: <br></br><b>{window.formatMoney(lockedEstimatedReward, rewardTokenInfo.decimals)} {rewardTokenInfo.symbol}</b></p>
+                        <p className="BreefRecap">Total Rewards until end block: <br></br><b>{formatMoney(lockedEstimatedReward, rewardTokenInfo.decimals)} {rewardTokenInfo.symbol}</b></p>
                         <p className="BreefExpl">Once you lock this liquidity you'll be able to withdraw it at the Setup End Block. If you want to Unlock this position earlier, you'll need to pay a Penalty Fee (in Reward Tokens) + all of the Reward Tokens you Claimed from this position + All of the Farm Token you're minting (representing your LP tokens locked).</p>
                     </div>
                 }
                 {
                     (setupInfo.free && rewardTokenInfo) && <div className="DiffWallet">
-                        <p className="BreefRecap"><b>Estimated reward per day</b>: {window.formatMoney(freeEstimatedReward, rewardTokenInfo.decimals)} {rewardTokenInfo.symbol}</p>
+                        <p className="BreefRecap"><b>Estimated reward per day</b>: {formatMoney(freeEstimatedReward, rewardTokenInfo.decimals)} {rewardTokenInfo.symbol}</p>
                     </div>
                 }
                 <div className="Web3BTNs">
@@ -1110,24 +1118,24 @@ export default props => {
             </> :
                 inputType === 'add-eth' ? <>
                     <div className="InputTokenRegular">
-                        <input showMax={true} address={dfoCore.voidEthereumAddress} value={ethAmount} balance={dfoCore.toDecimals(ethBalanceOf, 18)} min={0} onChange={e => updateEthAmount(e.target.value)} showCoin={true} showBalance={true} name={"ETH"} />
+                        <input showMax={true} address={VOID_ETHEREUM_ADDRESS} value={ethAmount} balance={fromDecimals(ethBalanceOf, 18)} min={0} onChange={e => updateEthAmount(e.target.value)} showCoin={true} showBalance={true} name={"ETH"} />
                     </div>
                     <div className="DiffWallet">
                         {false && amms.length > 0 && <select className="SelectRegular" value={selectedAmmIndex.toString()} onChange={e => setSelectedAmmIndex(e.target.value)}>
                             {amms.map((it, i) => <option key={it.address} value={i}>{it.info[0]}</option>)}
                         </select>}
                         {loadingPrestoData && <OurCircularProgress />}
-                        {prestoData && <p className="BreefRecap">Position Weight: <br></br><b>{window.fromDecimals(prestoData.firstTokenAmount, prestoData.token0decimals)} {prestoData.token0Symbol}</b> and <b>{window.fromDecimals(prestoData.secondTokenAmount, prestoData.token1decimals)} {prestoData.token1Symbol}</b></p>}
+                        {prestoData && <p className="BreefRecap">Position Weight: <br></br><b>{fromDecimals(prestoData.firstTokenAmount, prestoData.token0decimals)} {prestoData.token0Symbol}</b> and <b>{fromDecimals(prestoData.secondTokenAmount, prestoData.token1decimals)} {prestoData.token1Symbol}</b></p>}
                     </div>
                     {
                         (!setupInfo.free && rewardTokenInfo) && <div className="DiffWallet">
-                            <p className="BreefRecap">Total Rewards until end block: <br></br><b>{window.formatMoney(lockedEstimatedReward, rewardTokenInfo.decimals)} {rewardTokenInfo.symbol}</b></p>
+                            <p className="BreefRecap">Total Rewards until end block: <br></br><b>{formatMoney(lockedEstimatedReward, rewardTokenInfo.decimals)} {rewardTokenInfo.symbol}</b></p>
                             <p className="BreefExpl">Once you lock this liquidity you'll be able to withdraw it at the Setup End Block. If you want to Unlock this position earlier, you'll need to pay a Penalty Fee (in Reward Tokens) + all of the Reward Tokens you Claimed from this position + All of the Farm Token you're minting (representing your LP tokens locked).</p>
                         </div>
                     }
                     {
                         (setupInfo.free && rewardTokenInfo) && <div className="DiffWallet">
-                            <p className="BreefRecap">Estimated reward per day: <br></br><b>{window.formatMoney(freeEstimatedReward, rewardTokenInfo.decimals)} {rewardTokenInfo.symbol}</b></p>
+                            <p className="BreefRecap">Estimated reward per day: <br></br><b>{formatMoney(freeEstimatedReward, rewardTokenInfo.decimals)} {rewardTokenInfo.symbol}</b></p>
                         </div>
                     }
                     <div className="Web3BTNs">
@@ -1162,20 +1170,20 @@ export default props => {
     return (
         <div className={className}>
             <div className="FarmSetupMain">
-                <h5><b>{setupInfo.free ? "Free Farming" : "Locked Farming"} {!delayedBlock && <> {(!setup.active && canActivateSetup) ? <span className="text-secondary">{setupReady ? "(new)" : "(Soon)"}</span> : (!setup.active) ? <span>(Inactive)</span> : <></>} {(parseInt(setup.endBlock) <= blockNumber && parseInt(setup.endBlock) !== 0) && <span> - Ended</span>}</>}{delayedBlock !== 0 && <span className="text-secondary">(Soon)</span>}</b><a className="specialAMMlink" target="_blank" href={`${props.dfoCore.getContextElement("etherscanURL")}address/${setupInfo.liquidityPoolTokenAddress}`}>{AMM.name}</a><p className="TVLGen1R"><b>TVL</b>: {setupTokens.map((token, index) => <span key={token.address}>{props.dfoCore.toDecimals(token.liquidity, token.decimals, 3)} {token.symbol}{index !== setupTokens.length - 1 ? ' - ' : ''}</span>)}</p></h5>
+                <h5><b>{setupInfo.free ? "Free Farming" : "Locked Farming"} {!delayedBlock && <> {(!setup.active && canActivateSetup) ? <span className="text-secondary">{setupReady ? "(new)" : "(Soon)"}</span> : (!setup.active) ? <span>(Inactive)</span> : <></>} {(parseInt(setup.endBlock) <= blockNumber && parseInt(setup.endBlock) !== 0) && <span> - Ended</span>}</>}{delayedBlock !== 0 && <span className="text-secondary">(Soon)</span>}</b><a className="specialAMMlink" target="_blank" href={`${getNetworkElement({ context, chainId }, "etherscanURL")}address/${setupInfo.liquidityPoolTokenAddress}`}>{AMM.name}</a><p className="TVLGen1R"><b>TVL</b>: {setupTokens.map((token, index) => <span key={token.address}>{fromDecimals(token.liquidity, token.decimals, 3)} {token.symbol}{index !== setupTokens.length - 1 ? ' - ' : ''}</span>)}</p></h5>
                 <aside>
-                    {parseInt(setup.endBlock) > 0 ? <p><b>block end</b>: <a className="BLKEMD" target="_blank" href={`${props.dfoCore.getContextElement("etherscanURL")}block/${setup.endBlock}`}>{setup.endBlock}</a></p> : <p><b>Duration</b>: {getPeriodFromDuration(setupInfo.blockDuration)}</p>}
-                    {setupInfo.minStakeable > 0 && <p><b>Min to Farm</b>: {window.formatMoney(window.fromDecimals(setupInfo.minStakeable, mainTokenInfo.decimals, true), 6)} {mainTokenInfo.symbol}</p>}
-                    {!setupInfo.free && !endBlockReached && <> <p><b>Available to Farm</b>: {window.fromDecimals(parseInt(setupInfo.maxStakeable) - parseInt(setup.totalSupply), mainTokenInfo.decimals)} {mainTokenInfo.symbol}</p>
+                    {parseInt(setup.endBlock) > 0 ? <p><b>block end</b>: <a className="BLKEMD" target="_blank" href={`${getNetworkElement({ context, chainId }, "etherscanURL")}block/${setup.endBlock}`}>{setup.endBlock}</a></p> : <p><b>Duration</b>: {getPeriodFromDuration(setupInfo.blockDuration)}</p>}
+                    {setupInfo.minStakeable > 0 && <p><b>Min to Farm</b>: {formatMoney(fromDecimals(setupInfo.minStakeable, mainTokenInfo.decimals, true), 6)} {mainTokenInfo.symbol}</p>}
+                    {!setupInfo.free && !endBlockReached && <> <p><b>Available to Farm</b>: {fromDecimals(parseInt(setupInfo.maxStakeable) - parseInt(setup.totalSupply), mainTokenInfo.decimals)} {mainTokenInfo.symbol}</p>
                             <p><b>Rate</b>: {calculateLockedFixedValue()} {rewardTokenInfo.symbol} (fixed) (for every {mainTokenInfo.symbol} locked until the end block)</p>
-                            <p><b>Limit</b>: {props.dfoCore.toDecimals(setupInfo.maxStakeable, mainTokenInfo.decimals)} {mainTokenInfo.symbol}</p>
-                            <p><b>Penalty fee</b>: {parseInt(setupInfo.penaltyFee) === 0 ? `0` : props.dfoCore.formatMoney(props.dfoCore.toDecimals(props.dfoCore.toFixed(setupInfo.penaltyFee), 18) * 100, 18)}%</p>
+                            <p><b>Limit</b>: {fromDecimals(setupInfo.maxStakeable, mainTokenInfo.decimals)} {mainTokenInfo.symbol}</p>
+                            <p><b>Penalty fee</b>: {parseInt(setupInfo.penaltyFee) === 0 ? `0` : formatMoney(fromDecimals((setupInfo.penaltyFee), 18) * 100, 18)}%</p>
                         </>
                     }
-                    {setupInfo.free && rewardTokenInfo && !endBlockReached && <p><b>Daily Rate</b>: {window.formatMoney(window.fromDecimals(parseInt(setup.rewardPerBlock) * 6400, rewardTokenInfo.decimals, true), 6)} {rewardTokenInfo.symbol}</p>}
+                    {setupInfo.free && rewardTokenInfo && !endBlockReached && <p><b>Daily Rate</b>: {formatMoney(fromDecimals(parseInt(setup.rewardPerBlock) * 6400, rewardTokenInfo.decimals, true), 6)} {rewardTokenInfo.symbol}</p>}
                 </aside>
                 <div className="SetupFarmingInstructions SetupFarmingInstructionsOMLYG1">
-                    <p>{setupTokens.map((token, i) => <figure key={token.address}>{i !== 0 ? '+ ' : ''}{token.address !== props.dfoCore.voidEthereumAddress ? <a target="_blank" href={`${props.dfoCore.getContextElement("etherscanURL")}token/${token.address}`}><LogoRenderer input={token} /></a> : <LogoRenderer input={token} />} </figure>)} {!endBlockReached && <> {apy > 0 && <> <b> APR</b>: {window.formatMoney(apy, 3)}%</>}</>}</p>
+                    <p>{setupTokens.map((token, i) => <figure key={token.address}>{i !== 0 ? '+ ' : ''}{token.address !== VOID_ETHEREUM_ADDRESS ? <a target="_blank" href={`${getNetworkElement({ context, chainId }, "etherscanURL")}token/${token.address}`}><LogoRenderer input={token} /></a> : <LogoRenderer input={token} />} </figure>)} {!endBlockReached && <> {apy > 0 && <> <b> APR</b>: {formatMoney(apy, 3)}%</>}</>}</p>
                 </div>
                 {!currentPosition &&
                 <div className="ActionButtonV1">
@@ -1203,7 +1211,7 @@ export default props => {
                                 </>
                             }
                             {delayedBlock !== 0 && <div>
-                                <p className="BreefRecap"><b>Start Block: <a href={`${props.dfoCore.getContextElement("etherscanURL")}block/${delayedBlock}`} target="_blank">#{delayedBlock}</a></b></p>
+                                <p className="BreefRecap"><b>Start Block: <a href={`${getNetworkElement({ context, chainId }, "etherscanURL")}block/${delayedBlock}`} target="_blank">#{delayedBlock}</a></b></p>
                             </div>}
                         </>
                     }
@@ -1215,7 +1223,7 @@ export default props => {
                         <div className="FarmYou FarmYouFARMFARMFARM">
                             {manageStatus && <>
                                     <p>
-                                        <b>Your Deposit</b>:<br></br> {manageStatus.tokens.map((token, i) => <span key={token.address}> {window.formatMoney(window.fromDecimals(manageStatus.tokensAmounts[i], token.decimals, true), 6)} {token.symbol} </span>)}
+                                        <b>Your Deposit</b>:<br></br> {manageStatus.tokens.map((token, i) => <span key={token.address}> {formatMoney(fromDecimals(manageStatus.tokensAmounts[i], token.decimals, true), 6)} {token.symbol} </span>)}
                                     </p>
                                 </>}
                             {(!manageStatus?.withdrawOnly && !open && parseInt(setup.endBlock) > parseInt(blockNumber)) && <a className="web2ActionBTN" onClick={() => void(setOpen(true), setWithdrawOpen(false), setEdit(false))}>Increase</a>}
@@ -1227,7 +1235,7 @@ export default props => {
                         { setupInfo.free && <>
                             <div className="Farmed">
                                 {!endBlockReached && <p><b>Daily Earnings</b>: {calculateDailyEarnings()} {rewardTokenInfo.symbol}</p>}
-                                <p><b>Available</b>: {window.fromDecimals(freeAvailableRewards, rewardTokenInfo.decimals, true)} {rewardTokenInfo.symbol}</p>
+                                <p><b>Available</b>: {fromDecimals(freeAvailableRewards, rewardTokenInfo.decimals, true)} {rewardTokenInfo.symbol}</p>
 
                                 {
                                     claimLoading ? <a className="Web3ActionBTN" disabled={claimLoading}>
@@ -1243,9 +1251,9 @@ export default props => {
                             {parseInt(farmTokenBalance) > 0 && <>
                             <div className="LockedFarmTokensPosition">
                                 <p><b>Your Farm ITEM (fLP) Balance</b>:</p>
-                                <p>{window.formatMoney(window.fromDecimals(farmTokenBalance, farmTokenDecimals, true), 9)} ({setupTokens.map((setupToken, i) => `${parseInt(farmTokenBalance) === 0 ? 0 : window.formatMoney(window.fromDecimals(farmTokenRes[i], setupToken.decimals, true), 3)} ${setupToken.symbol}${i !== setupTokens.length - 1 ? ' - ' : ''}`)})</p>
-                                <a className="MetamaskAddButton specialITEMlink" target="_blank" href={props.dfoCore.getContextElement("itemURLTemplate").format(farmTokenERC20Address)}>ITEM</a>
-                                <a className="MetamaskAddButton specialMETAlink" onClick={() => props.dfoCore.addTokenToMetamask(farmTokenERC20Address, "fLP", farmTokenDecimals, "https://ipfs.io/ipfs/Qmec5J1qui78ui9exoJmGdkYeyvvc8F45y86Wz2TfaXzhS")}>Add to Metamask</a>
+                                <p>{formatMoney(fromDecimals(farmTokenBalance, farmTokenDecimals, true), 9)} ({setupTokens.map((setupToken, i) => `${parseInt(farmTokenBalance) === 0 ? 0 : formatMoney(fromDecimals(farmTokenRes[i], setupToken.decimals, true), 3)} ${setupToken.symbol}${i !== setupTokens.length - 1 ? ' - ' : ''}`)})</p>
+                                <a className="MetamaskAddButton specialITEMlink" target="_blank" href={context.itemURLTemplate.format(farmTokenERC20Address)}>ITEM</a>
+                                <a className="MetamaskAddButton specialMETAlink" onClick={() => addTokenToMetamask({context, ...web3Data}, farmTokenERC20Address, "https://ipfs.io/ipfs/Qmec5J1qui78ui9exoJmGdkYeyvvc8F45y86Wz2TfaXzhS")}>Add to Metamask</a>
                             </div>
                             </>}
                             {
@@ -1253,11 +1261,11 @@ export default props => {
                                     <div className="QuestionRegular QuestionRegularFarmTokenRem">
                                         <label className="PrestoSelector">
                                             <span>To Pair</span>
-                                            <input name={`outputType-${lmContract.options.address}-${setupIndex}`} type="radio" value="to-pair" checked={outputType === "to-pair"} onChange={onOutputTypeChange} />
+                                            <input name={`outputType-${element.contract.options.address}-${setupIndex}`} type="radio" value="to-pair" checked={outputType === "to-pair"} onChange={onOutputTypeChange} />
                                         </label>
                                         <label className="PrestoSelector">
                                             <span>To LP Token</span>
-                                            <input name={`outputType-${lmContract.options.address}-${setupIndex}`} type="radio" value="to-lp" checked={outputType === "to-lp"} onChange={onOutputTypeChange} />
+                                            <input name={`outputType-${element.contract.options.address}-${setupIndex}`} type="radio" value="to-lp" checked={outputType === "to-lp"} onChange={onOutputTypeChange} />
                                         </label>
                                         {
                                             removeLoading ? <a className="Web3ActionBTN Web3ActionBTNV" disabled={removeLoading}>
@@ -1268,42 +1276,8 @@ export default props => {
                                 </>
                             }
                         </div>}
-                        {
-                            lockedPositions.length > 0 && <>
-                                {
-                                    lockedPositions.map((position, index) => {
-                                        return (
-                                            <LockedPositionComponent
-                                                key={index}
-                                                farmTokenBalance={farmTokenBalance}
-                                                farmTokenSymbol={farmTokenSymbol}
-                                                farmTokenDecimals={farmTokenDecimals}
-                                                onComplete={result => void(props.addTransaction(result), getSetupMetadata()) }
-                                                lmContract={lmContract}
-                                                position={position}
-                                                blockNumber={blockNumber}
-                                                setup={setup}
-                                                setupInfo={setupInfo}
-                                                dfoCore={dfoCore}
-                                                rewardTokenInfo={rewardTokenInfo}
-                                                setupTokens={setupTokens}
-                                                lpTokenInfo={lpTokenInfo}
-                                                lockedPositionStatus={lockedPositionStatuses[index]}
-                                                lockedPositionReward={lockedPositionRewards[index]}
-                                                mainTokenInfo={mainTokenInfo}
-                                                onRewardTokenApproval={() => setRewardTokenInfo({ ...rewardTokenInfo, approval: true })}
-                                            />
-                                        )
-                                    })
-                                }
-                            </>
-                        }
-            {
-                ((open || withdrawOpen) && !edit) ? <><hr />{getAdvanced()}</> : <div />
-            }
-            {
-                (edit && !open && !withdrawOpen) ? getEdit() : <div />
-            }
+            {((open || withdrawOpen) && !edit) && <><br/>{getAdvanced()}</>}
+            {(edit && !open && !withdrawOpen) && getEdit()}
         </div>
     )
 }
