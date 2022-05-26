@@ -295,7 +295,7 @@ export default props => {
             async onTransactionReceipt(transactionReceipt, state) {
 
                 const { generation, deployData } = state
-                const { host, treasuryAddress, byMint, treasuryAddress } = deployData
+                const { host, treasuryAddress, byMint } = deployData
 
                 const farmFactory = await getFactory(state)
                 if(web3Utils.toChecksumAddress(transactionReceipt.to) !== web3Utils.toChecksumAddress(farmFactory.options.address)) {
