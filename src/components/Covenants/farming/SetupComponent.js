@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState, useMemo } from 'react'
 
-import { useEthosContext, useWeb3, getNetworkElement, VOID_ETHEREUM_ADDRESS, web3Utils, formatNumber, numberToString, getEthereumPrice, getTokenPricesInDollarsOnCoingecko, toDecimals, fromDecimals, normalizeValue, isEthereumAddress, formatMoney, abi } from '@ethereansos/interfaces-core'
+import { useEthosContext, useWeb3, getNetworkElement, VOID_ETHEREUM_ADDRESS, web3Utils, formatNumber, numberToString, getEthereumPrice, getTokenPricesInDollarsOnCoingecko, toDecimals, fromDecimals, normalizeValue, isEthereumAddress, formatMoney, abi, blockchainCall } from '@ethereansos/interfaces-core'
 
 import { getLogs } from '../../../logic/logger'
 import { addTokenToMetamask } from '../../../logic/uiUtilities'
@@ -87,7 +87,13 @@ export default props => {
     const [delayedBlock, setDelayedBlock] = useState(0)
     const [endBlockReached, setEndBlockReached] = useState(false)
 
-    const [withdrawingAll, setWithdrawingAll] = useState(false)
+    const [minimumStakingError, setMinimumStakingError] = useState()
+
+    const [feeType, setFeeType] = useState("percentage")
+
+    const [feeData, setFeeData] = useState()
+
+    const [burnFeeAllowance, setBurnFeeAllowance] = useState()
 
     function getFarmingPrestoAddress() {
         var prestoAddress = getNetworkElement({ context, chainId }, "farmingPrestoAddress")
@@ -97,7 +103,9 @@ export default props => {
         return oldFarmingPrestoContracts.indexOf(lmContractAddress) === -1 ? prestoAddress : oldPrestoAddress
     }
 
-    const farmingPresto = useMemo(() => newContract(context.FarmingPrestoABI, getFarmingPrestoAddress()), [])
+    const farmingPresto = useMemo(() => newContract(context.FarmingPrestoABI, getFarmingPrestoAddress()), [chainId])
+
+    useEffect(() => blockchainCall(element.contract.methods.initializer).then(factoryAddress => blockchainCall(newContract(context.EthereansFactoryABI, factoryAddress).methods.feeInfo)).then(result => void(setFeeData(result))), [])
 
     useEffect(() => {
         getSetupMetadata()

@@ -112,6 +112,32 @@ export default props => {
 
     const [burnFeeAllowance, setBurnFeeAllowance] = useState()
 
+    const ammAggregatorPromise = useMemo(() => new Promise(async ok => {
+        var amms = []
+            const ammAggregator = newContract(context.AMMAggregatorABI, getNetworkElement({ context, chainId }, 'ammAggregatorAddress'))
+            const ammAddresses = (await ammAggregator.methods.amms().call()).map(web3Utils.toChecksumAddress)
+            for (var address of ammAddresses) {
+                const ammContract = newContract(context.AMMABI, address)
+                const amm = {
+                    address,
+                    contract: ammContract,
+                    info: await ammContract.methods.info().call(),
+                    data: await ammContract.methods.data().call()
+                }
+                amm.ethereumAddress = web3Utils.toChecksumAddress(amm.data[0])
+                amm.data[2] && amms.push(amm)
+            }
+            setSelectedAmmIndex(0)
+            const uniswap = amms.filter(it => it.info[0] === 'UniswapV2')[0]
+            const index = amms.indexOf(uniswap)
+            amms.splice(index, 1)
+            amms.unshift(uniswap)
+            ok({
+                ammAggregator,
+                amms
+            })
+    }), [chainId])
+
     function getFarmingPrestoAddress() {
         var prestoAddress = getNetworkElement({ context, chainId }, "farmingPrestoAddress")
         var oldPrestoAddress = getNetworkElement({ context, chainId }, "farmingPrestoAddressOld")
@@ -128,48 +154,83 @@ export default props => {
         updateEthAmount(ethAmount)
     }, [receiver, selectedAmmIndex])
 
-    useEffect(() => calculateSlippageAmounts(slippage, lpTokenAmount).then(setAmountsMin), [slippage, lpTokenAmount])
+    useEffect(() => element.generation === 'gen2' && calculateSlippageAmounts(slippage, lpTokenAmount).then(setAmountsMin), [element.generation, slippage, lpTokenAmount])
+    useEffect(() => {
+        if(element.generation !== 'gen1' || !tokenAmounts || tokenAmounts.length === 0) {
+            return setAmountsMin(['0', '0'])
+        }
+        const arr = [
+            numberToString(parseInt(tokenAmounts[0].full || tokenAmounts[0]) * (100 - parseFloat(slippage)) / 100).split('.')[0],
+            numberToString(parseInt(tokenAmounts[1].full || tokenAmounts[1]) * (100 - parseFloat(slippage)) / 100).split('.')[0]
+        ]
+        setAmountsMin(arr)
+    }, [element.generation, tokenAmounts, slippage])
 
     useEffect(() => setTimeout(async () => {
-        try {
-            var slot = await blockchainCall(lpTokenInfo.contract.methods.slot0)
-            var a = formatNumber(tickToPrice(lpTokenInfo.uniswapTokens[0], lpTokenInfo.uniswapTokens[1], parseInt(setupInfo.tickLower)).toSignificant(15))
-            var b = formatNumber(tickToPrice(lpTokenInfo.uniswapTokens[0], lpTokenInfo.uniswapTokens[1], parseInt(setupInfo.tickUpper)).toSignificant(15))
-            var c = formatNumber(tickToPrice(lpTokenInfo.uniswapTokens[0], lpTokenInfo.uniswapTokens[1], parseInt(slot.tick)).toSignificant(15))
-            var diluted = Math.abs(parseInt(setupInfo.tickUpper) - parseInt(setupInfo.tickLower)) >= 180000
-            var tickData = {
-                diluted,
-                maxPrice : tickToPrice(lpTokenInfo.uniswapTokens[1 - secondTokenIndex], lpTokenInfo.uniswapTokens[secondTokenIndex], parseInt(setupInfo.tickLower)).toSignificant(4),
-                minPrice : tickToPrice(lpTokenInfo.uniswapTokens[1 - secondTokenIndex], lpTokenInfo.uniswapTokens[secondTokenIndex], parseInt(setupInfo.tickUpper)).toSignificant(4),
-                currentPrice : tickToPrice(lpTokenInfo.uniswapTokens[1 - secondTokenIndex], lpTokenInfo.uniswapTokens[secondTokenIndex], parseInt(slot.tick)).toSignificant(4),
-                cursorNumber : !(c > a) ? 100 : !(c < b) ? 0 : null,
-                outOfRangeLower : parseInt(slot.tick) <= parseInt(setupInfo.tickLower),
-                outOfRangeUpper : parseInt(slot.tick) >= parseInt(setupInfo.tickUpper),
-                tickLowerUSDPrice : 0,
-                tickUpperUSDPrice : 0,
-                tickCurrentUSDPrice : 0
+        if(element.generation === 'gen1') {
+            try {
+                var tickData = {
+                    diluted : true,
+                    maxPrice : 0,
+                    minPrice : 9999999,
+                    currentPrice : 0,
+                    cursorNumber : 50,
+                    outOfRangeLower : 0,
+                    outOfRangeUpper : 99999999,
+                    tickLowerUSDPrice : 0,
+                    tickUpperUSDPrice : 0,
+                    tickCurrentUSDPrice : 0
+                }
+                const tokenIndex = secondTokenIndex
+                const value = formatNumber(fromDecimals(lpTokenInfo.tokenValues[tokenIndex], lpTokenInfo.tokens[tokenIndex].decimals, true))
+                const price = Object.values((await getTokenPricesInDollarsOnCoingecko({context, web3Data}, lpTokenInfo.tokenAddresses[tokenIndex])).data)[0]
+                const usdPrice = price
+                tickData.tickCurrentUSDPrice = usdPrice
+                setTickData(tickData)
+            } catch(e) {
             }
-            if(secondTokenIndex === 1) {
-                var maxPrice = tickData.maxPrice
-                tickData.maxPrice = tickData.minPrice
-                tickData.minPrice = maxPrice
-            }
-            if(tickData.cursorNumber !== 0 && tickData.cursorNumber !== 100) {
-                tickData.cursorNumber = (1 / ((Math.sqrt(a * b) - Math.sqrt(b * c)) / (c - Math.sqrt(b * c)) + 1)) * 100
-            }
-            tickData.cursor = formatMoneyUniV3(secondTokenIndex === 1 ? 100 - tickData.cursorNumber : tickData.cursorNumber, 2)
+        }
+        if(element.generation === 'gen2') {
+            try {
+                var slot = await blockchainCall(lpTokenInfo.contract.methods.slot0)
+                var a = formatNumber(tickToPrice(lpTokenInfo.uniswapTokens[0], lpTokenInfo.uniswapTokens[1], parseInt(setupInfo.tickLower)).toSignificant(15))
+                var b = formatNumber(tickToPrice(lpTokenInfo.uniswapTokens[0], lpTokenInfo.uniswapTokens[1], parseInt(setupInfo.tickUpper)).toSignificant(15))
+                var c = formatNumber(tickToPrice(lpTokenInfo.uniswapTokens[0], lpTokenInfo.uniswapTokens[1], parseInt(slot.tick)).toSignificant(15))
+                var diluted = Math.abs(parseInt(setupInfo.tickUpper) - parseInt(setupInfo.tickLower)) >= 180000
+                var tickData = {
+                    diluted,
+                    maxPrice : tickToPrice(lpTokenInfo.uniswapTokens[1 - secondTokenIndex], lpTokenInfo.uniswapTokens[secondTokenIndex], parseInt(setupInfo.tickLower)).toSignificant(4),
+                    minPrice : tickToPrice(lpTokenInfo.uniswapTokens[1 - secondTokenIndex], lpTokenInfo.uniswapTokens[secondTokenIndex], parseInt(setupInfo.tickUpper)).toSignificant(4),
+                    currentPrice : tickToPrice(lpTokenInfo.uniswapTokens[1 - secondTokenIndex], lpTokenInfo.uniswapTokens[secondTokenIndex], parseInt(slot.tick)).toSignificant(4),
+                    cursorNumber : !(c > a) ? 100 : !(c < b) ? 0 : null,
+                    outOfRangeLower : parseInt(slot.tick) <= parseInt(setupInfo.tickLower),
+                    outOfRangeUpper : parseInt(slot.tick) >= parseInt(setupInfo.tickUpper),
+                    tickLowerUSDPrice : 0,
+                    tickUpperUSDPrice : 0,
+                    tickCurrentUSDPrice : 0
+                }
+                if(secondTokenIndex === 1) {
+                    var maxPrice = tickData.maxPrice
+                    tickData.maxPrice = tickData.minPrice
+                    tickData.minPrice = maxPrice
+                }
+                if(tickData.cursorNumber !== 0 && tickData.cursorNumber !== 100) {
+                    tickData.cursorNumber = (1 / ((Math.sqrt(a * b) - Math.sqrt(b * c)) / (c - Math.sqrt(b * c)) + 1)) * 100
+                }
+                tickData.cursor = formatMoneyUniV3(secondTokenIndex === 1 ? 100 - tickData.cursorNumber : tickData.cursorNumber, 2)
 
-            var tokensForPrice = lpTokenInfo.uniswapTokens.map(it => it.address === ethereumAddress ? VOID_ETHEREUM_ADDRESS : it.address)
-            var ethIndex = tokensForPrice.indexOf(VOID_ETHEREUM_ADDRESS)
-            if(ethIndex !== -1) {
-                var ethPrice = await getEthereumPrice({ context })
-                tickData.tickLowerUSDPrice = formatNumber(tickToPrice(lpTokenInfo.uniswapTokens[1 - ethIndex], lpTokenInfo.uniswapTokens[ethIndex], parseInt(setupInfo.tickLower)).toSignificant(15)) * ethPrice
-                tickData.tickUpperUSDPrice = formatNumber(tickToPrice(lpTokenInfo.uniswapTokens[1 - ethIndex], lpTokenInfo.uniswapTokens[ethIndex], parseInt(setupInfo.tickUpper)).toSignificant(15)) * ethPrice
-                tickData.tickCurrentUSDPrice = formatNumber(tickToPrice(lpTokenInfo.uniswapTokens[1 - ethIndex], lpTokenInfo.uniswapTokens[ethIndex], parseInt(slot.tick)).toSignificant(15)) * ethPrice
-                tickData.cursor = formatMoneyUniV3(ethIndex === 1 ? 100 - tickData.cursorNumber : tickData.cursorNumber, 2)
+                var tokensForPrice = lpTokenInfo.uniswapTokens.map(it => it.address === ethereumAddress ? VOID_ETHEREUM_ADDRESS : it.address)
+                var ethIndex = tokensForPrice.indexOf(VOID_ETHEREUM_ADDRESS)
+                if(ethIndex !== -1) {
+                    var ethPrice = await getEthereumPrice({ context })
+                    tickData.tickLowerUSDPrice = formatNumber(tickToPrice(lpTokenInfo.uniswapTokens[1 - ethIndex], lpTokenInfo.uniswapTokens[ethIndex], parseInt(setupInfo.tickLower)).toSignificant(15)) * ethPrice
+                    tickData.tickUpperUSDPrice = formatNumber(tickToPrice(lpTokenInfo.uniswapTokens[1 - ethIndex], lpTokenInfo.uniswapTokens[ethIndex], parseInt(setupInfo.tickUpper)).toSignificant(15)) * ethPrice
+                    tickData.tickCurrentUSDPrice = formatNumber(tickToPrice(lpTokenInfo.uniswapTokens[1 - ethIndex], lpTokenInfo.uniswapTokens[ethIndex], parseInt(slot.tick)).toSignificant(15)) * ethPrice
+                    tickData.cursor = formatMoneyUniV3(ethIndex === 1 ? 100 - tickData.cursorNumber : tickData.cursorNumber, 2)
+                }
+                setTickData(tickData)
+            } catch(e) {
             }
-            setTickData(tickData)
-        } catch(e) {
         }
     }), [lpTokenInfo, secondTokenIndex, setupInfo])
 
@@ -331,28 +392,50 @@ export default props => {
         const lpToken = newContract(context.UniswapV3PoolABI, tokenAddress)
 
         if(!loop) {
-            const lpTokenSymbol = "UniV3"
-            const lpTokenDecimals = "18"
-            const lpTokenBalance = "0"
-            const lpTokenApproval = "0"
-            const fee = await blockchainCall(lpToken.methods.fee)
-            const slot = await blockchainCall(lpToken.methods.slot0)
-            var uniswapTokens = await Promise.all([
-                await blockchainCall(lpToken.methods.token0),
-                await blockchainCall(lpToken.methods.token1)
-            ].map(async tkAddress => {
-                const currentToken = await loadTokenFromAddress({ context, ...web3Data }, tkAddress)
-                return new Token(chainId, tkAddress, parseInt(currentToken.decimals), currentToken.symbol, currentToken.name)
-            }))
-            console.log("Slot", farmSetup.infoIndex, {
-                tick: slot.tick,
-                sqrtPriceX96: slot.sqrtPriceX96,
-                tickLower : farmSetupInfo.tickLower,
-                tickUpper : farmSetupInfo.tickUpper,
-                fee,
-                inRange : parseInt(farmSetupInfo.tickLower) >= parseInt(slot.tick) && parseInt(slot.tick) <= parseInt(farmSetupInfo.tickUpper)
-            })
-            setLpTokenInfo({ uniswapTokens, fee, contract: lpToken, symbol: lpTokenSymbol, decimals: lpTokenDecimals, balance: lpTokenBalance, approval: parseInt(lpTokenApproval) !== 0 && parseInt(lpTokenApproval) >= parseInt(lpTokenBalance) })
+            if(element.generation === 'gen1') {
+                const lpToken = newContract(context.ERC20ABI, farmSetupInfo.liquidityPoolTokenAddress)
+                const lpTokenSymbol = await lpToken.methods.symbol().call()
+                const lpTokenDecimals = await lpToken.methods.decimals().call()
+                const lpTokenBalance = await lpToken.methods.balanceOf(account).call()
+                const lpTokenApproval = await lpToken.methods.allowance(account, element.contract.options.address).call()
+
+                const info = await blockchainCall((await ammAggregatorPromise).ammAggregator.methods.findByLiquidityPool, tokenAddress)
+
+                const ammAggregatorAddress = web3Utils.toChecksumAddress(info[3])
+                const amms = (await ammAggregatorPromise).amms
+                const amm = amms.filter(it => it.address === ammAggregatorAddress)[0]
+
+                const originalTokenAddresses = info[2].map(web3Utils.toChecksumAddress)
+                const tokenAddresses = originalTokenAddresses.map(it => farmSetupInfo.involvingETH && it === amm.ethereumAddress ? VOID_ETHEREUM_ADDRESS : it)
+                const tokens = await Promise.all(tokenAddresses.map(it => loadTokenFromAddress({ context, ...web3Data }, it)))
+
+                const tokenValues = (await blockchainCall(amm.contract.methods.byLiquidityPoolAmount, farmSetupInfo.liquidityPoolTokenAddress, lpTokenBalance))[0]
+
+                setLpTokenInfo({ originalTokenAddresses, tokenAddresses, tokens, tokenValues, amm, contract: lpToken, symbol: lpTokenSymbol, decimals: lpTokenDecimals, balance: lpTokenBalance, approval: parseInt(lpTokenApproval) !== 0 && parseInt(lpTokenApproval) >= parseInt(lpTokenBalance) })
+            } else {
+                const lpTokenSymbol = "UniV3"
+                const lpTokenDecimals = "18"
+                const lpTokenBalance = "0"
+                const lpTokenApproval = "0"
+                const fee = await blockchainCall(lpToken.methods.fee)
+                const slot = await blockchainCall(lpToken.methods.slot0)
+                var uniswapTokens = await Promise.all([
+                    await blockchainCall(lpToken.methods.token0),
+                    await blockchainCall(lpToken.methods.token1)
+                ].map(async tkAddress => {
+                    const currentToken = await loadTokenFromAddress({ context, ...web3Data }, tkAddress)
+                    return new Token(chainId, tkAddress, parseInt(currentToken.decimals), currentToken.symbol, currentToken.name)
+                }))
+                console.log("Slot", farmSetup.infoIndex, {
+                    tick: slot.tick,
+                    sqrtPriceX96: slot.sqrtPriceX96,
+                    tickLower : farmSetupInfo.tickLower,
+                    tickUpper : farmSetupInfo.tickUpper,
+                    fee,
+                    inRange : parseInt(farmSetupInfo.tickLower) >= parseInt(slot.tick) && parseInt(slot.tick) <= parseInt(farmSetupInfo.tickUpper)
+                })
+                setLpTokenInfo({ uniswapTokens, fee, contract: lpToken, symbol: lpTokenSymbol, decimals: lpTokenDecimals, balance: lpTokenBalance, approval: parseInt(lpTokenApproval) !== 0 && parseInt(lpTokenApproval) >= parseInt(lpTokenBalance) })
+            }
         }
         const activateSetup = parseInt(farmSetupInfo.renewTimes) > 0 && !farmSetup.active && parseInt(farmSetupInfo.lastSetupIndex) === parseInt(setup.setupIndex)
         setCanActivateSetup(activateSetup)
@@ -384,12 +467,15 @@ export default props => {
                 }
             }
         }
+        if(element.generation === 'gen1' && lpTokenInfo) {
+            balances = lpTokenInfo.tokenValues
+        }
         const tokens = [...setupTokens]
         if(tokens.length === 0) {
-            const liquidityPoolTokens = await Promise.all([
+            const liquidityPoolTokens = element.generation === 'gen2' ? await Promise.all([
                 blockchainCall(lpToken.methods.token0),
                 blockchainCall(lpToken.methods.token1)
-            ])
+            ]) : (await blockchainCall((await ammAggregatorPromise).ammAggregator.methods.findByLiquidityPool, tokenAddress))[2]
             for (var i in liquidityPoolTokens) {
                 const address = liquidityPoolTokens[i]
                 const token = await loadTokenFromAddress({context, ...web3Data}, isWeth(farmSetupInfo, address) ? VOID_ETHEREUM_ADDRESS : address)
@@ -672,36 +758,58 @@ export default props => {
                     val = tks[currentIndex = 1 - currentIndex].full
                 }
                 var tokenAddress = setupTokens[currentIndex].address
-                tokenAddress = tokenAddress === VOID_ETHEREUM_ADDRESS ? ethereumAddress : tokenAddress
-                var pool = await createPool()
-                var fromAmountData = {pool, tickLower : parseInt(setupInfo.tickLower), tickUpper : parseInt(setupInfo.tickUpper), useFullPrecision : false}
-                fromAmountData[`amount${currentIndex}`] = formatNumber(val) + surplus
-                var pos = Position[`fromAmount${currentIndex}`](fromAmountData)
-                liquidityPoolAmount = pos.liquidity.toString()
-
-                if(setup.objectId && setup.objectId !== '0') {
-                    var amount0 = pos.amount0.toSignificant(18)
-                    amount0 === '0' && tickData.cursorNumber !== 0 && tickData.cursorNumber !== 100 && (amount0 = fromDecimals('1', setupTokens[0].decimals, true))
-
-                    var amount1 = pos.amount1.toSignificant(18)
-                    amount1 === '0' && tickData.cursorNumber !== 0 && tickData.cursorNumber !== 100 && (amount1 = fromDecimals('1', setupTokens[1].decimals, true))
+                if(element.generation === 'gen1') {
+                    tokenAddress = lpTokenInfo.originalTokenAddresses[currentIndex]
+                    const ammContract = lpTokenInfo.amm.contract
+                    var result = await blockchainCall(ammContract.methods.byTokenAmount, setupInfo.liquidityPoolTokenAddress, tokenAddress, val.ethereansosAdd(surplus))
+                    var { liquidityPoolAmount } = result
+                    result = await blockchainCall(ammContract.methods.byLiquidityPoolAmount, setupInfo.liquidityPoolTokenAddress, liquidityPoolAmount)
+                    var ams = result.tokensAmounts
+                    if(fullValue !== ams[index] && setupTokens[index].decimals !== '18') {
+                        result = await blockchainCall(ammContract.methods.byTokenAmount, setupInfo.liquidityPoolTokenAddress, tokenAddress, ams[index])
+                        liquidityPoolAmount = result.liquidityPoolAmount
+                        ams = result.tokensAmounts
+                    }
                     tks[0] = {
-                        value : index === 0 && !isFull ? value : numberToString(amount0),
-                        full : toDecimals(numberToString(amount0), setupTokens[0].decimals)
+                        value : index === 0 && !isFull ? value : fromDecimals(ams[0], setupTokens[0].decimals, true),
+                        full : ams[0]
                     }
                     tks[1] = {
-                        value : index === 1 && !isFull ? value : numberToString(amount1),
-                        full : toDecimals(numberToString(amount1), setupTokens[1].decimals)
+                        value : index === 1 && !isFull ? value : fromDecimals(ams[1], setupTokens[1].decimals, true),
+                        full : ams[1]
                     }
                 } else {
-                    pos = pos.mintAmounts
-                    tks[0] = {
-                        value : index === 0 && !isFull ? value : fromDecimals(pos.amount0.toString(), setupTokens[0].decimals, true),
-                        full : pos.amount0.toString()
-                    }
-                    tks[1] = {
-                        value : index === 1 && !isFull ? value : fromDecimals(pos.amount1.toString(), setupTokens[1].decimals, true),
-                        full : pos.amount1.toString()
+                    tokenAddress = tokenAddress === VOID_ETHEREUM_ADDRESS ? ethereumAddress : tokenAddress
+                    var pool = await createPool()
+                    var fromAmountData = {pool, tickLower : parseInt(setupInfo.tickLower), tickUpper : parseInt(setupInfo.tickUpper), useFullPrecision : false}
+                    fromAmountData[`amount${currentIndex}`] = formatNumber(val) + surplus
+                    var pos = Position[`fromAmount${currentIndex}`](fromAmountData)
+                    liquidityPoolAmount = pos.liquidity.toString()
+
+                    if(setup.objectId && setup.objectId !== '0') {
+                        var amount0 = pos.amount0.toSignificant(18)
+                        amount0 === '0' && tickData.cursorNumber !== 0 && tickData.cursorNumber !== 100 && (amount0 = fromDecimals('1', setupTokens[0].decimals, true))
+
+                        var amount1 = pos.amount1.toSignificant(18)
+                        amount1 === '0' && tickData.cursorNumber !== 0 && tickData.cursorNumber !== 100 && (amount1 = fromDecimals('1', setupTokens[1].decimals, true))
+                        tks[0] = {
+                            value : index === 0 && !isFull ? value : numberToString(amount0),
+                            full : toDecimals(numberToString(amount0), setupTokens[0].decimals)
+                        }
+                        tks[1] = {
+                            value : index === 1 && !isFull ? value : numberToString(amount1),
+                            full : toDecimals(numberToString(amount1), setupTokens[1].decimals)
+                        }
+                    } else {
+                        pos = pos.mintAmounts
+                        tks[0] = {
+                            value : index === 0 && !isFull ? value : fromDecimals(pos.amount0.toString(), setupTokens[0].decimals, true),
+                            full : pos.amount0.toString()
+                        }
+                        tks[1] = {
+                            value : index === 1 && !isFull ? value : fromDecimals(pos.amount1.toString(), setupTokens[1].decimals, true),
+                            full : pos.amount1.toString()
+                        }
                     }
                 }
             }
@@ -714,7 +822,7 @@ export default props => {
                 tks[index].full = balance
             }
             const mainTokenIndex = setupTokens.indexOf(setupTokens.filter(it => web3Utils.toChecksumAddress(it.address) === web3Utils.toChecksumAddress(isWeth(setupInfo, setupInfo.mainTokenAddress) ? VOID_ETHEREUM_ADDRESS : setupInfo.mainTokenAddress))[0])
-            while(setupInfo.minStakeable !== '0' && index === mainTokenIndex && parseInt(tks[index].full) >= parseInt(setupInfo.minStakeable) && !await addLiquidity({test : true, tokenAmounts : tks, lpTokenAmount : liquidityPoolAmount})) {
+            while(element.generation === 'gen2' && setupInfo.minStakeable !== '0' && index === mainTokenIndex && parseInt(tks[index].full) >= parseInt(setupInfo.minStakeable) && !await addLiquidity({test : true, tokenAmounts : tks, lpTokenAmount : liquidityPoolAmount})) {
                 console.log("value0", tks[0].full)
                 console.log("value1", tks[1].full)
                 await elaborateValue(surplus += 999999, true)
@@ -782,8 +890,42 @@ export default props => {
         // setFreeEstimatedReward(dfoCore.toDecimals(dfoCore.toFixed(parseInt(dfoCore.toFixed(dfoCore.fromDecimals(value, parseInt(lpTokenInfo.decimals)))) * 6400 * parseInt(setup.rewardPerBlock) / (parseInt(setup.totalSupply) + parseInt(value))), rewardTokenInfo.decimals))
     }
 
-    function addLiquidity(data) {
-        return addLiquidityGen2({setup, lpTokenAmount, receiver, setupTokens, inputType, setupInfo, ethereumAddress, tokenAmounts, element, currentPosition, prestoData, amountsMin, context, ...web3Data, ...data })
+    async function addLiquidity(data) {
+        if(element.generation === 'gen2') {
+            return await addLiquidityGen2({setup, lpTokenAmount, receiver, setupTokens, inputType, setupInfo, ethereumAddress, tokenAmounts, element, currentPosition, prestoData, amountsMin, context, ...web3Data, ...data })
+        }
+
+        const stake = {
+            setupIndex : setup.setupIndex,
+            amount: 0,
+            amountIsLiquidityPool: inputType === 'add-lp' ? true : false,
+            positionOwner: receiver || VOID_ETHEREUM_ADDRESS,
+            amount0Min : amountsMin[0],
+            amount1Min : amountsMin[1]
+        }
+
+        var ethTokenIndex = null
+        var ethTokenValue = 0
+        var mainTokenIndex = 0
+        var ethereumAddress = lpTokenInfo.ethereumAddress
+        await Promise.all(setupTokens.map(async (token, i) => {
+            if (setupInfo.involvingETH && token.address === VOID_ETHEREUM_ADDRESS) {
+                ethTokenIndex = i
+            }
+            if (token.address === setupInfo.mainTokenAddress || setupInfo.involvingETH && token.address === VOID_ETHEREUM_ADDRESS && setupInfo.mainTokenAddress === ethereumAddress) {
+                mainTokenIndex = i
+            }
+        }))
+        var lpAmount = numberToString((lpTokenAmount && lpTokenAmount.full) || lpTokenAmount)
+        stake.amount = numberToString(stake.amountIsLiquidityPool ? lpAmount : tokenAmounts[mainTokenIndex].full || tokenAmounts[mainTokenIndex])
+        ethTokenValue = ethTokenIndex === undefined || ethTokenIndex === null ? "0" : numberToString(tokenAmounts[ethTokenIndex].full || tokenAmounts[ethTokenIndex])
+        var value = setupInfo.involvingETH && !stake.amountIsLiquidityPool ? ethTokenValue : "0"
+
+        if (!currentPosition || receiver) {
+            await blockchainCall(element.contract.methods.openPosition, stake, { value })
+        } else if (currentPosition) {
+            await blockchainCall(element.contract.methods.addLiquidity, currentPosition.positionId, stake, { value })
+        }
     }
 
     async function percentageFeeOrBurn() {
@@ -930,11 +1072,10 @@ export default props => {
     }
 
     const approveButton = useMemo(() => {
-
-        const notApprovedIndex = tokensApprovals.findIndex((value) => !value)
+        const notApprovedIndex = tokensApprovals.findIndex(value => !value)
         if (notApprovedIndex !== -1) {
-            if(tickData.cursorNumber === 0 || tickData.cursorNumber === 100) {
-                var index = tickData.cursorNumber === 100 ? 0 : 1
+            if(!tickData || tickData.cursorNumber === 0 || tickData.cursorNumber === 100) {
+                var index = tickData?.cursorNumber === 100 ? 0 : 1
                 return notApprovedIndex === index && <ApproveButton contract={setupTokens[index].contract} spender={element.address} onApproval={() => onTokenApproval(index, false)} text={`Approve ${setupTokens[index].symbol}`} />
             }
             return <ApproveButton contract={setupTokens[notApprovedIndex].contract} spender={element.address} onApproval={() => onTokenApproval(notApprovedIndex, false)} text={`Approve ${setupTokens[notApprovedIndex].symbol}`} />
@@ -1280,29 +1421,27 @@ export default props => {
             )
         }
 
-        return <div className={style.FarmingDynamics}>
-                {
-                    setupTokens.map((setupToken, i) => {
-                        return <div className={style.FarmToken} key={setupToken.address}>
-                            {(i === 1 ? tickData.cursorNumber !== 100 : tickData.cursorNumber !== 0) && <TokenInputRegular selected={setupToken} tokens={[setupToken]} onElement={(t, _, value) => onUpdateTokenAmount(fromDecimals(value, t.decimals, true), i) } outputValue={tokenAmounts[i].value || fromDecimals(tokenAmounts[i].full || tokenAmounts[i], setupToken.decimals, true)}/>}
-                        </div>
-                    })
-                }
+        return (
+            <div className={style.FarmingDynamics}>
+                {setupTokens.map((setupToken, i) => {
+                    return <div className={style.FarmToken} key={setupToken.address}>
+                        {(i === 1 ? tickData.cursorNumber !== 100 : tickData.cursorNumber !== 0) && <TokenInputRegular selected={setupToken} tokens={[setupToken]} onElement={(t, _, value) => onUpdateTokenAmount(fromDecimals(value, t.decimals, true), i) } outputValue={tokenAmounts[i].value || fromDecimals(tokenAmounts[i].full || tokenAmounts[i], setupToken.decimals, true)}/>}
+                    </div>
+                })}
                 {minimumStakingError && <div>
                     <p>{minimumStakingError}</p>
                 </div>}
-                {
-                    (setupInfo.free && rewardTokenInfo && lpTokenAmount !== undefined && lpTokenAmount !== null && lpTokenAmount !== '' && lpTokenAmount !== '0' && (!lpTokenAmount.full || lpTokenAmount.full !== '0')) && <div>
-                        <p>Estimated reward per day: <br></br><b>{formatMoneyUniV3(freeEstimatedReward, rewardTokenInfo.decimals)} {rewardTokenInfo.symbol}</b>
-                        </p>
-                    </div>
-                }
+                {(setupInfo.free && rewardTokenInfo && lpTokenAmount !== undefined && lpTokenAmount !== null && lpTokenAmount !== '' && lpTokenAmount !== '0' && (!lpTokenAmount.full || lpTokenAmount.full !== '0')) && <div>
+                    <p>Estimated reward per day: <br></br><b>{formatMoneyUniV3(freeEstimatedReward, rewardTokenInfo.decimals)} {rewardTokenInfo.symbol}</b>
+                    </p>
+                </div>}
                 {renderSettings(true, false, !currentPosition)}
                 <div className={style.timeToFarm}>
                     {tokensApprovals.some(value => !value) && approveButton}
                     <ActionAWeb3Button onSuccess={reloadData} onClick={addLiquidity} disabled={tokensApprovals.some(value => !value) || tokenAmounts.some(value => value === 0)}>Add Liquidity</ActionAWeb3Button>
                 </div>
-        </div>
+            </div>
+        )
     }
 
     if (!setupTokens || setupTokens.length === 0 || !setup) {
@@ -1382,12 +1521,12 @@ export default props => {
                                 <a onClick={() => setsecondTokenIndex(1 - (secondTokenIndex || 0))}><img src={`${process.env.PUBLIC_URL}/img/switch.png`}/></a> {setupTokens[secondTokenIndex].symbol} per {setupTokens[1 - secondTokenIndex].symbol}
                             </p>
                         </p>
-                        <p className={style.farmInfoCurveR}>
+                        {element.generation === 'gen2' && <p className={style.farmInfoCurveR}>
                             <p className={style.PriceRangeInfoFarm}>
                                 <a className={style.ExtLinkButton} target="_blank" href={context.uniswapV3PoolURLTemplate.split('{0}').join(setupInfo.liquidityPoolTokenAddress)}>{formatMoneyUniV3(numberToString(parseInt(lpTokenInfo.fee) / 10000), '2')}%</a>
                                 {((currentPosition?.tokenId && currentPosition?.tokenId !== '0') || (setup.objectId && setup.objectId !== '0')) && <a className={style.ExtLinkButton} href={context.uniswapV3NFTURLTemplate.split('{0}').join(currentPosition?.tokenId || setup.objectId)} target="_blank">NFT</a>}
                             </p>
-                        </p>
+                        </p>}
                         {!tickData ? <OurCircularProgress/> : <div className={style.UniV3CurveView}>
                             <div className={style.UniV3CurveViewCurv}>
                                 <span className={style.CircleLeftV3Curve}></span>
@@ -1452,4 +1591,6 @@ export default props => {
             }
             {((open || withdrawOpen) && !edit) && <><hr/>{getAdvanced()}</>}
             {(edit && !open && !withdrawOpen) && getEdit()}
-        </div>)}
+        </div>
+    )
+}

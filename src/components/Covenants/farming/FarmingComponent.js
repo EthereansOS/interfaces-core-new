@@ -29,8 +29,6 @@ export default props => {
 
     const dailyReward = useMemo(() => element.rewardPerBlock.ethereansosMul(6400), [element && element.rewardPerBlock])
 
-    const CurrentSetupComponent = useMemo(() => element.generation === 'gen2' && SetupComponentGen2 || SetupComponent, [element && element.generation])
-
     const logoContainer = useMemo(() => {
         var result = <LogoRenderer input={element.rewardToken}/>
         return element.rewardTokenAddress === VOID_ETHEREUM_ADDRESS ? result : element.rewardToken.mainInterface ? <Link to={`/items/dapp/items/${element.rewardToken.id}`}>{result}</Link> : <a target="_blank" href={`${getNetworkElement({ context, chainId}, 'etherscanURL')}token/${element.rewardToken.address}`}>{result}</a>
@@ -78,7 +76,7 @@ export default props => {
             </div>
             {(!setOpened || opened) && <div>
                 <div>
-                    {element.setups.filter(it => it.active || it.canActivateSetup).map(it => <CurrentSetupComponent key={it.setupIndex + "_" + element.key} {...{
+                    {element.setups.filter(it => it.active || it.canActivateSetup).map(it => <SetupComponentGen2 key={it.setupIndex + "_" + element.key} {...{
                         ...props,
                         setupInput: it,
                         element
@@ -87,7 +85,7 @@ export default props => {
                 {!rewardTokenAddress && element.setups.filter(it => !it.active && !it.canActivateSetup).length > 0 && <>
                     <div className={style.OldSetups}>
                         <RegularButtonDuo onClick={() => setShowOldSetups(!showOldSetups)}>{showOldSetups ? "Hide" : "Show"} old setups</RegularButtonDuo>
-                        {showOldSetups && element.setups.filter(it => !it.active && !it.canActivateSetup).map(it => <CurrentSetupComponent key={it.setupIndex + "_" + element.key} {...{
+                        {showOldSetups && element.setups.filter(it => !it.active && !it.canActivateSetup).map(it => <SetupComponentGen2 key={it.setupIndex + "_" + element.key} {...{
                             ...props,
                             setupInput: it,
                             element
