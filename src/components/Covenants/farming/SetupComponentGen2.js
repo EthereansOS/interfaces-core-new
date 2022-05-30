@@ -762,7 +762,7 @@ export default props => {
                     tokenAddress = lpTokenInfo.originalTokenAddresses[currentIndex]
                     const ammContract = lpTokenInfo.amm.contract
                     var result = await blockchainCall(ammContract.methods.byTokenAmount, setupInfo.liquidityPoolTokenAddress, tokenAddress, val.ethereansosAdd(surplus))
-                    var { liquidityPoolAmount } = result
+                    liquidityPoolAmount = result.liquidityPoolAmount
                     result = await blockchainCall(ammContract.methods.byLiquidityPoolAmount, setupInfo.liquidityPoolTokenAddress, liquidityPoolAmount)
                     var ams = result.tokensAmounts
                     if(fullValue !== ams[index] && setupTokens[index].decimals !== '18') {
@@ -1362,10 +1362,11 @@ export default props => {
         return formatMoney(fromDecimals(amount, setupToken.decimals, true), 6)
     }
 
-    function renderSettings(renderSlippage, renderFeeType, renderAddress) {
+    function renderSettings(renderSlippage, renderFeeType, renderAddress, content) {
         const postfix = "_" + numberToString(new Date() * Math.random()).split('.').join('')
         return (<>
             <div className={style.ActionInfoSection}>
+                {content && <div>{content}</div>}
                 <a className={style.ActionInfoSectionSettings} onClick={() => setSettings(!settings)}>
                     <figure>
                         <img src={`${process.env.PUBLIC_URL}/img/settings.svg`}/>
@@ -1431,11 +1432,13 @@ export default props => {
                 {minimumStakingError && <div>
                     <p>{minimumStakingError}</p>
                 </div>}
-                {(setupInfo.free && rewardTokenInfo && lpTokenAmount !== undefined && lpTokenAmount !== null && lpTokenAmount !== '' && lpTokenAmount !== '0' && (!lpTokenAmount.full || lpTokenAmount.full !== '0')) && <div>
-                    <p>Estimated reward per day: <br></br><b>{formatMoneyUniV3(freeEstimatedReward, rewardTokenInfo.decimals)} {rewardTokenInfo.symbol}</b>
+                {renderSettings(true, false, !currentPosition, (setupInfo.free && rewardTokenInfo && lpTokenAmount !== undefined && lpTokenAmount !== null && lpTokenAmount !== '' && lpTokenAmount !== '0' && (!lpTokenAmount.full || lpTokenAmount.full !== '0')) && <div>
+                    <p>
+                        Estimated reward per day:
+                        <br/>
+                        <b>{formatMoneyUniV3(freeEstimatedReward, rewardTokenInfo.decimals)} {rewardTokenInfo.symbol}</b>
                     </p>
-                </div>}
-                {renderSettings(true, false, !currentPosition)}
+                </div>)}
                 <div className={style.timeToFarm}>
                     {tokensApprovals.some(value => !value) && approveButton}
                     <ActionAWeb3Button onSuccess={reloadData} onClick={addLiquidity} disabled={tokensApprovals.some(value => !value) || tokenAmounts.some(value => value === 0)}>Add Liquidity</ActionAWeb3Button>
