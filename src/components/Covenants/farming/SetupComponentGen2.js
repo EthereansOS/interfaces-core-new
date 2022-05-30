@@ -516,6 +516,11 @@ export default props => {
                 additionalFees = simulation.fees
             } catch(e) {
             }
+            if(element.generation === 'gen1') {
+                const amm = (await ammAggregatorPromise).amms.filter(it => web3Utils.toChecksumAddress(it.address) === web3Utils.toChecksumAddress(setupInfo.ammPlugin))[0]
+                const result = await blockchainCall(amm.contract.methods.byLiquidityPoolAmount, setupInfo.liquidityPoolTokenAddress, position.liquidityPoolTokenAmount)
+                amounts.tokenAmounts = result[0]
+            }
             console.log(position.positionId)
             const availableReward = await blockchainCall(element.contract.methods.calculateFreeFarmingReward, position.positionId, true)
             var freeReward = parseInt(availableReward)
@@ -941,6 +946,9 @@ export default props => {
         const removedLiquidity = removalAmount === 100 || setupInfo.minStakeable !== '0' ? manageStatus.liquidityPoolAmount : numberToString(parseInt(manageStatus.liquidityPoolAmount) * removalAmount / 100).split('.')[0]
         var amMin = await calculateSlippageAmounts(slippage, removedLiquidity, 'burn')
         var burnData = await percentageFeeOrBurn()
+        if(element.generation === 'gen1') {
+            return await blockchainCall(element.contract.methods.withdrawLiquidity, currentPosition.positionId, 0, removedLiquidity, amMin[0].full || amMin[0], amMin[1].full || amMin[1], burnData)
+        }
         try {
             await blockchainCall(element.contract.methods.withdrawLiquidity, currentPosition.positionId, removedLiquidity, amMin[0].full || amMin[0], amMin[1].full || amMin[1], burnData)
         } catch(e) {
@@ -955,6 +963,9 @@ export default props => {
     async function withdrawAll() {
         var amMin = await calculateSlippageAmounts(slippage, manageStatus.liquidityPoolAmount, 'burn')
         var burnData = await percentageFeeOrBurn()
+        if(element.generation === 'gen1') {
+            return await blockchainCall(element.contract.methods.withdrawLiquidity, currentPosition.positionId, 0, manageStatus.liquidityPoolAmount, amMin[0].full || amMin[0], amMin[1].full || amMin[1], burnData)
+        }
         try {
             await blockchainCall(element.contract.methods.withdrawLiquidity, currentPosition.positionId, manageStatus.liquidityPoolAmount, amMin[0].full || amMin[0], amMin[1].full || amMin[1], burnData)
         } catch(e) {
@@ -1384,7 +1395,7 @@ export default props => {
                     <p>Protocol Fees:</p>
                     <label className={style.FarmProtocolFee}>
                         <span><b>🧮  Transaction</b></span>
-                        {setupTokens && manageStatus && manageStatus.additionalFees && feeData && feeData.feePercentageForTransacted && <span>{calculateTransactedFee(feeData.feePercentageForTransacted, manageStatus.additionalFees[0], setupTokens[0])} {setupTokens[0].symbol} - {calculateTransactedFee(feeData.feePercentageForTransacted, manageStatus.additionalFees[1], setupTokens[1])}  {setupTokens[1].symbol}</span>}
+                        {setupTokens && manageStatus && manageStatus.additionalFees && feeData && feeData.feePercentageForTransacted && <span>{calculateTransactedFee(feeData.feePercentageForTransacted, element.generation === 'gen1' ? manageStatus.tokenAmounts[0] : manageStatus.additionalFees[0], setupTokens[0])} {setupTokens[0].symbol} - {calculateTransactedFee(feeData.feePercentageForTransacted, element.generation === 'gen1' ? manageStatus.tokenAmounts[1] : manageStatus.additionalFees[1], setupTokens[1])}  {setupTokens[1].symbol}</span>}
                         <input type="radio" name={"feeType" + postfix} checked={feeType === 'percentage'} onClick={() => setFeeType("percentage")}/>
                     </label>
                     {contracts.indexOf(web3Utils.toChecksumAddress(element.address)) === -1 && <label className={style.FarmProtocolFee}>
@@ -1584,10 +1595,10 @@ export default props => {
                     </div>
                     <div className={style.farmed}>
                         <p><b>Available</b>: <br></br>{formatMoneyUniV3(fromDecimals(freeAvailableRewards, rewardTokenInfo.decimals, true), 4)} {rewardTokenInfo.symbol}</p>
-                        {manageStatus && <p><b>Fees Earned</b>: <br></br>{formatMoneyUniV3(fromDecimals(manageStatus.additionalFees[0], setupTokens[0].decimals, true), 4)} {setupTokens[0].symbol} - {formatMoneyUniV3(fromDecimals(manageStatus.additionalFees[1], setupTokens[1].decimals, true), 4)} {setupTokens[1].symbol}</p>}
+                        {element.generation === 'gen2' && manageStatus && <p><b>Fees Earned</b>: <br></br>{formatMoneyUniV3(fromDecimals(manageStatus.additionalFees[0], setupTokens[0].decimals, true), 4)} {setupTokens[0].symbol} - {formatMoneyUniV3(fromDecimals(manageStatus.additionalFees[1], setupTokens[1].decimals, true), 4)} {setupTokens[1].symbol}</p>}
                         {!manageStatus?.withdrawOnly && <>
                             {approveFeeButton}
-                            {!open && !withdrawOpen && renderSettings(false, true)}
+                            {element.generation === 'gen2' && !open && !withdrawOpen && renderSettings(false, true)}
                         </>}
                     </div>
                 </div>
