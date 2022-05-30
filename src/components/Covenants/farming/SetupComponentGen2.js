@@ -600,10 +600,10 @@ export default props => {
         if (parseInt(setup.totalSupply) === 0) return -1
         const yearlyBlocks = 2304000
         try {
-            const ethPrice = await getEthereumPrice()
-            const wusdAddress = await getNetworkElement({ context, chainId }, "WUSDAddress")
+            const ethPrice = await getEthereumPrice({ context })
+            const wusdAddress = getNetworkElement({ context, chainId }, "WUSDAddress")
             if (setupInfo.free) {
-                const searchTokens = `${rewardTokenAddress},${setupTokens.map((token) => (token && token.address) ? `${token.address},` : '')}`.slice(0, -1)
+                const searchTokens = [rewardTokenAddress, ...setupTokens.map(it => it.address || it)].filter(it => it).map(web3Utils.toChecksumAddress).filter((it, i, arr) => arr.indexOf(it) === i)
                 const res = await getTokenPricesInDollarsOnCoingecko({ context, web3Data }, searchTokens, { tickToPrice, Token, Pool, Position, nearestUsableTick, TICK_SPACINGS, TickMath, maxLiquidityForAmounts })
                 const { data } = res
                 const rewardTokenPriceUsd = rewardTokenAddress !== VOID_ETHEREUM_ADDRESS ? rewardTokenAddress.toLowerCase() === wusdAddress.toLowerCase() ? 1 : data[rewardTokenAddress.toLowerCase()].usd : ethPrice
