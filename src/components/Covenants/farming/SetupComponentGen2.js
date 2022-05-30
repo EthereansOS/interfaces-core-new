@@ -536,7 +536,7 @@ export default props => {
         }
         // calculate APY
         setApy(await calculateApy(farmSetup, farmSetupInfo, rewardToken.address, rewardToken.decimals, tokens))
-    }, [setupTokens])
+    }, [setupTokens, account])
 
     const reloadData = useCallback(async (noReset, loop) => {
         try {
@@ -907,7 +907,7 @@ export default props => {
         var ethTokenIndex = null
         var ethTokenValue = 0
         var mainTokenIndex = 0
-        var ethereumAddress = lpTokenInfo.ethereumAddress
+        var ethereumAddress = lpTokenInfo?.amm?.ethereumAddress
         await Promise.all(setupTokens.map(async (token, i) => {
             if (setupInfo.involvingETH && token.address === VOID_ETHEREUM_ADDRESS) {
                 ethTokenIndex = i
