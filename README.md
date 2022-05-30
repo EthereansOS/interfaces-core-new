@@ -1,4 +1,4 @@
-# Covenants app
+# EthereansOS app
 
 This package contains the main application, based on [Create React App](https://create-react-app.dev).
 
