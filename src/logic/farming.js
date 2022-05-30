@@ -497,13 +497,13 @@ export async function findLiquidityPoolTokenGen1(data, address) {
     const tokens = []
     var ethTokenFound = false
     var involvingETH = false
-    var ethAddress = VOID_ETHEREUM_ADDRESS
+    var ethereumAddress = VOID_ETHEREUM_ADDRESS
     var ethSelectData = null
     await Promise.all(lpInfo[2].map(async tkAddress => {
         if (tkAddress.toLowerCase() === ammData[0].toLowerCase()) {
             involvingETH = true
             ethTokenFound = true
-            ethAddress = ammData[0]
+            ethereumAddress = ammData[0]
             if (ammData[0] !== VOID_ETHEREUM_ADDRESS) {
                 const notEthToken = newContract(context.ERC20ABI, ammData[0])
                 const notEthTokenSymbol = await blockchainCall(notEthToken.methods.symbol)
@@ -524,7 +524,7 @@ export async function findLiquidityPoolTokenGen1(data, address) {
         poolContract : newContract(context.ERC20ABI, address),
         ethTokenFound,
         involvingETH,
-        ethAddress,
+        ethereumAddress,
         ethSelectData
     }
 }
@@ -564,13 +564,13 @@ export async function findLiquidityPoolTokenGen2(data, address, gen2SetupType) {
     var uniTokens = []
     let ethTokenFound = false
     var involvingETH = false
-    var ethAddress
+    var ethereumAddress
     var ethSelectData = null
     await Promise.all(lpInfo[2].map(async (tkAddress) => {
         if (tkAddress.toLowerCase() === ammData[0].toLowerCase()) {
             involvingETH = true
             ethTokenFound = true
-            ethAddress = ammData[0]
+            ethereumAddress = ammData[0]
             if (ammData[0] !== VOID_ETHEREUM_ADDRESS) {
                 const notEthToken = newContract(context.ERC20ABI, ammData[0])
                 const notEthTokenSymbol = await blockchainCall(notEthToken.methods.symbol)
@@ -595,7 +595,7 @@ export async function findLiquidityPoolTokenGen2(data, address, gen2SetupType) {
         tick,
         ethTokenFound,
         involvingETH,
-        ethAddress,
+        ethereumAddress,
         realTickLower,
         realTickUpper,
         ethSelectData,

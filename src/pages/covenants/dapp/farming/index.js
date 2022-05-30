@@ -9,17 +9,14 @@ import style from '../../../../all.module.css'
 import Banners from '../../../../components/Global/banners/index.js'
 
 import SetupComponent from '../../../../components/Covenants/farming/SetupComponent'
-import SetupComponentGen2 from '../../../../components/Covenants/farming/SetupComponentGen2'
 import FarmingComponent from '../../../../components/Covenants/farming/FarmingComponent'
 
 const FarmingCard = props => {
 
     const { element, mode, opened, setOpened, rewardTokenAddress, refresh } = props
 
-    const CurrentSetupComponent = useMemo(() => element.generation === 'gen2' && SetupComponentGen2 || SetupComponent, [element])
-
     if(mode === "positions" && element.positions) {
-        return element.positions.map((it, i) => <CurrentSetupComponent key={i + "_" + element.key} {...{
+        return element.positions.map((it, i) => <SetupComponent key={i + "_" + element.key} {...{
             ...props,
             position : it,
             setupInput : it.setup

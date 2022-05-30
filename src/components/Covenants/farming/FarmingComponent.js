@@ -6,7 +6,6 @@ import { formatMoney, useEthosContext, useWeb3, getNetworkElement, fromDecimals,
 
 import LogoRenderer from '../../Global/LogoRenderer'
 import SetupComponent from './SetupComponent'
-import SetupComponentGen2 from './SetupComponentGen2'
 import RegularButtonDuo from '../../Global/RegularButtonDuo'
 import RegularModal from '../../Global/RegularModal'
 import Create from '../../../pages/covenants/dapp/farming/create'
@@ -76,7 +75,7 @@ export default props => {
             </div>
             {(!setOpened || opened) && <div>
                 <div>
-                    {element.setups.filter(it => it.active || it.canActivateSetup).map(it => <SetupComponentGen2 key={it.setupIndex + "_" + element.key} {...{
+                    {element.setups.filter(it => it.active || it.canActivateSetup).map(it => <SetupComponent key={it.setupIndex + "_" + element.key} {...{
                         ...props,
                         setupInput: it,
                         element
@@ -85,7 +84,7 @@ export default props => {
                 {!rewardTokenAddress && element.setups.filter(it => !it.active && !it.canActivateSetup).length > 0 && <>
                     <div className={style.OldSetups}>
                         <RegularButtonDuo onClick={() => setShowOldSetups(!showOldSetups)}>{showOldSetups ? "Hide" : "Show"} old setups</RegularButtonDuo>
-                        {showOldSetups && element.setups.filter(it => !it.active && !it.canActivateSetup).map(it => <SetupComponentGen2 key={it.setupIndex + "_" + element.key} {...{
+                        {showOldSetups && element.setups.filter(it => !it.active && !it.canActivateSetup).map(it => <SetupComponent key={it.setupIndex + "_" + element.key} {...{
                             ...props,
                             setupInput: it,
                             element
