@@ -458,7 +458,7 @@ export async function getFarmingSetupInfo(data, element) {
 
         console.log(TickMath.MAX_TICK, TickMath.MIN_TICK)
 
-        const liquidityPoolToken = await findLiquidityPoolToken(data, gen2SetupType, it.liquidityPoolTokenAddress)
+        const liquidityPoolToken = await findLiquidityPoolToken(data, element.generation, it.liquidityPoolTokenAddress, gen2SetupType)
 
         return {
             ...it,

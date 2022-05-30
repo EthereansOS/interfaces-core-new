@@ -54,7 +54,7 @@ export default props => {
         <div>
             {farmingSetups.map((setup, index) => <div key={index} className={style.generationSelectorULTRA}>
                 <div className={style.SetupINFORECAP}>
-                    <span className={style.RecapInfo}><b>Pair:</b><br/>{!setup.free ? `${(setup.mainToken.isEth && setup.involvingETH) ? 'ETH' : setup.liquidityPoolToken.symbol}` : ` ${setup.liquidityPoolToken.tokens.map((token) => `${(setup.involvingETH && token.address.toLowerCase() === setup.ethAddress.toLowerCase()) ? 'ETH' : token.symbol}`)}`}</span>
+                    <span className={style.RecapInfo}><b>Pair:</b><br/>{!setup.free ? `${(setup.mainToken.isEth && setup.involvingETH) ? 'ETH' : setup.liquidityPoolToken.symbol}` : ` ${setup.liquidityPoolToken.tokens.map((token) => `${(setup.involvingETH && token.address.toLowerCase() === setup.ethereumAddress.toLowerCase()) ? 'ETH' : token.symbol}`)}`}</span>
                     <span className={style.RecapInfo}><b>AMM:</b><br/>{setup.liquidityPoolToken.name}</span>
                     <span className={style.RecapInfo}><b>Start Block:</b><br/>{setup.startBlock !== '0' ? setup.startBlock : '-'}</span>
                     <br/>
