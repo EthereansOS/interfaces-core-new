@@ -38,7 +38,7 @@ export default props => {
     const [mainTokenIndex, setMainTokenIndex] = useState((editSetup && editSetup.mainTokenIndex) ? editSetup.mainTokenIndex : 0)
     const [mainToken, setMainToken] = useState((editSetup && editSetup.mainToken) ? editSetup.mainToken : null)
     const [rewardPerBlock, setRewardPerBlock] = useState((editSetup && (editSetup.rewardPerBlock || editSetup.originalRewardPerBlock)) ? editSetup.rewardPerBlock || editSetup.originalRewardPerBlock : 0)
-    const [ethAddress, setEthAddress] = useState((editSetup && editSetup.ethereumAddress) ? editSetup.ethereumAddress : "")
+    const [ethereumAddress, setEthereumAddress] = useState((editSetup && editSetup.ethereumAddress) ? editSetup.ethereumAddress : "")
     const [uniswapTokens, setUniswapTokens] = useState([])
     const [secondTokenIndex, setSecondTokenIndex] = useState(1)
     const [maxPrice, setMaxPrice] = useState(0)
@@ -85,7 +85,7 @@ export default props => {
                 setTickLower(data.realTickLower)
                 setInvolvingEth(data.involvingETH)
                 setEthSelectData(data.ethSelectData)
-                setEthAddress(data.ethAddress || data.ethereumAddress)
+                setEthereumAddress(data.ethereumAddress)
                 setLiquidityPoolToken(data)
                 setMainToken(data.tokens[0])
                 setUniswapTokens(data.uniTokens)
@@ -127,7 +127,7 @@ export default props => {
             rewardPerBlock,
             maxStakeable : 0,
             penaltyFee : 0,
-            ethAddress,
+            ethereumAddress,
             tickLower,
             tickUpper,
             gen2SetupType,

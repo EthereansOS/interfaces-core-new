@@ -1422,19 +1422,19 @@ export default props => {
     }
 
     const getManageAdvanced = () => {
+        const RemoveButton = <ActionAWeb3Button onSuccess={reloadData} onClick={removeLiquidity}>Remove</ActionAWeb3Button>
         if (withdrawOpen && currentPosition && setupInfo.free) {
             return (
                 <div>
-                    {(!setupInfo || setupInfo.minStakeable === '0') && <>
-                    <div className={style.RemoveLiquiditytools}>
+                    {(!setupInfo || setupInfo.minStakeable === '0') && <div className={style.RemoveLiquiditytools}>
                         <input type="range" value={removalAmount} onChange={(e) => setRemovalAmount(parseInt(e.target.value))} id="formControlRange" />
                         <a className={style.RegularButtonDuo} onClick={() => setRemovalAmount(100)} >MAX</a>
                         {renderSettings(true, true)}
                         <p><b>{removalAmount}%</b></p> <p>{manageStatus.tokens.map((token, i) => <span key={token.address}> {formatMoneyUniV3(fromDecimals(parseInt(manageStatus.tokenAmounts[i].full || manageStatus.tokenAmounts[i]) * removalAmount / 100, token.decimals, true), 4)} {token.symbol} </span>)}</p>
-                    </div>
-                    </>}
+                    </div>}
                     <div>
-                        <ActionAWeb3Button onSuccess={reloadData} onClick={removeLiquidity}>Remove</ActionAWeb3Button>
+                        {setupInfo && setupInfo.minStakeable === '0' && RemoveButton}
+                        {setupInfo && setupInfo.minStakeable !== '0' && renderSettings(true, true, undefined, RemoveButton)}
                     </div>
                 </div>
             )
