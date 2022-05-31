@@ -72,7 +72,7 @@ export default props => {
                 const isFree = setup.free
                 const result = await blockchainCall(ammAggregator.methods.findByLiquidityPool, setup.liquidityPoolToken.address)
                 const { amm } = result
-                var mainToken = isFree ? setup.liquidityPoolToken.tokens[0] : setup.mainToken
+                var mainToken = setup.mainToken
                 var mainTokenAddress = mainToken.address
                 const mainTokenDecimals = mainToken.decimals
 
