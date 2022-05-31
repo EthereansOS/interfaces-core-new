@@ -491,7 +491,7 @@ export default props => {
             token.liquidity = balances[i]
             const approval = await blockchainCall(token.contract.methods.allowance, account, element.address)
             approvals.push(parseInt(approval) !== 0 && (parseInt(approval) >= parseInt(token.balance) || !token))
-            if (web3Utils.toChecksumAddress(token.address) === web3Utils.toChecksumAddress(farmSetupInfo.mainTokenAddress)) {
+            if (web3Utils.toChecksumAddress(token.address) === web3Utils.toChecksumAddress(farmSetupInfo.mainTokenAddress) || (web3Utils.toChecksumAddress(token.address) === VOID_ETHEREUM_ADDRESS && web3Utils.toChecksumAddress(farmSetupInfo.mainTokenAddress) && web3Utils.toChecksumAddress(farmSetupInfo.ethereumAddress))) {
                 setMainTokenInfo(oldValue => ({...oldValue, ...token, approval: parseInt(approval) !== 0 && (parseInt(approval) >= parseInt(token.balance) || !token)}))
             }
         }
