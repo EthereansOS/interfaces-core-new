@@ -131,6 +131,7 @@ export default props => {
             tickLower,
             tickUpper,
             gen2SetupType,
+            ammPlugin : editSetup?.ammPlugin || editSetup?.data?.ammPlugin || editSetup?.liquidityPoolToken?.ammPlugin,
             index : editSetup?.index,
             editing : editSetup?.editing,
             disable : editSetup?.disable,

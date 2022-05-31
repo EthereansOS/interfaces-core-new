@@ -480,7 +480,6 @@ export async function getFarmingSetupInfo(data, element) {
 
 export function findLiquidityPoolToken(data, generation, address, gen2SetupType) {
     return address && isEthereumAddress(address) ? generation === 'gen1' ? findLiquidityPoolTokenGen1(data, address) : findLiquidityPoolTokenGen2(data, address, gen2SetupType) : undefined
-
 }
 
 export async function findLiquidityPoolTokenGen1(data, address) {
@@ -525,7 +524,8 @@ export async function findLiquidityPoolTokenGen1(data, address) {
         ethTokenFound,
         involvingETH,
         ethereumAddress,
-        ethSelectData
+        ethSelectData,
+        ammPlugin : ammAddress
     }
 }
 

@@ -151,7 +151,7 @@ export default props => {
 
     async function edit() {
         var setupConfigurations = farmingSetups.map(info => {
-            if(info.editing === true && info.disable !== true && info.initialRewardPerBlock === (info.rewardPerBlock || info.originalRewardPerBlock) && info.initialRenewTimes === info.renewTimes) {
+            if(info.editing === true && info.disable !== true && parseInt(info.initialRewardPerBlock) === parseInt(info.rewardPerBlock || info.originalRewardPerBlock || 0) && parseInt(info.initialRenewTimes) === parseInt(info.renewTimes)) {
                 return
             }
             if(info.disable === true) {
