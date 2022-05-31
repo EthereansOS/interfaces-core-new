@@ -471,7 +471,8 @@ export async function getFarmingSetupInfo(data, element) {
             initialRewardPerBlock : it.originalRewardPerBlock,
             initialRenewTimes : it.renewTimes,
             lastSetup : element.setups[it.lastSetupIndex],
-            data : liquidityPoolToken
+            data : liquidityPoolToken,
+            ethereumAddress : liquidityPoolToken.ethereumAddress
         }
     }))
 
