@@ -16,11 +16,11 @@ const FarmingCard = props => {
     const { element, mode, opened, setOpened, rewardTokenAddress, refresh } = props
 
     if(mode === "positions" && element.positions) {
-        return element.positions.map((it, i) => <SetupComponent key={i + "_" + element.key} {...{
+        return element.positions.map((it, i) => <div className={style.FarmContent}><div><div><SetupComponent key={i + "_" + element.key} {...{
             ...props,
             position : it,
             setupInput : it.setup
-        }} />)
+        }} /></div></div></div>)
     }
 
     return <FarmingComponent refresh={refresh} element={element} opened={opened} setOpened={setOpened} rewardTokenAddress={rewardTokenAddress}/>
