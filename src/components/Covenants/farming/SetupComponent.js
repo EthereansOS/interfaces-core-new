@@ -1596,7 +1596,7 @@ export default props => {
                         {!manageStatus?.withdrawOnly && !withdrawOpen && <RegularButtonDuo onClick={() => void(setOpen(false), setWithdrawOpen(true), setEdit(false))}>Decrease</RegularButtonDuo>}
                         {withdrawOpen && <RegularButtonDuo onClick={() => void(setOpen(false), setWithdrawOpen(false), setEdit(false))}>Close</RegularButtonDuo>}
                         {manageStatus?.withdrawOnly && <>
-                            {!open && !withdrawOpen && renderSettings(false, true, undefined, <ActionAWeb3Button onSuccess={reloadData} onClick={withdrawAll}>Withdraw All</ActionAWeb3Button>)}
+                            {!open && !withdrawOpen && renderSettings(true, true, undefined, <ActionAWeb3Button onSuccess={reloadData} onClick={withdrawAll}>Withdraw All</ActionAWeb3Button>)}
                         </>}
                     </div>
                     <div className={style.farmed}>
