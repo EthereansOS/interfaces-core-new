@@ -409,7 +409,7 @@ export default props => {
                 const tokenAddresses = originalTokenAddresses.map(it => farmSetupInfo.involvingETH && it === amm.ethereumAddress ? VOID_ETHEREUM_ADDRESS : it)
                 const tokens = await Promise.all(tokenAddresses.map(it => loadTokenFromAddress({ context, ...web3Data }, it)))
 
-                const tokenValues = (await blockchainCall(amm.contract.methods.byLiquidityPoolAmount, farmSetupInfo.liquidityPoolTokenAddress, await lpToken.methods.balanceOf(element.address).call()))[0]
+                const tokenValues = (await blockchainCall(amm.contract.methods.byLiquidityPoolAmount, farmSetupInfo.liquidityPoolTokenAddress, farmSetup.totalSupply))[0]
 
                 setLpTokenInfo({ originalTokenAddresses, tokenAddresses, tokens, tokenValues, amm, contract: lpToken, symbol: lpTokenSymbol, decimals: lpTokenDecimals, balance: lpTokenBalance, approval: parseInt(lpTokenApproval) !== 0 && parseInt(lpTokenApproval) >= parseInt(lpTokenBalance) })
             } else {
