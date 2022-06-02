@@ -344,7 +344,6 @@ export default props => {
         reset && setLockedEstimatedReward(0)
         setUpdatedRenewTimes(farmSetupInfo.renewTimes)
         setUpdatedRewardPerBlock(farmSetup.rewardPerBlock)
-        setSetupMustBeToggled(farmSetup.active && parseInt(farmSetup.endBlock) > parseInt(block) && parseInt(farmSetup.totalSupply) === 0 && parseInt(farmSetupInfo.renewTimes) > 0)
         var positions = element.positions || []
         var positionIds = positions.map(it => it.positionId)
         if(positions.length === 0) {
@@ -377,6 +376,7 @@ export default props => {
                 }
             }
         }
+        setSetupMustBeToggled(farmSetup.active && parseInt(block) > parseInt(farmSetup.endBlock) && (parseInt(farmSetup.totalSupply) === 0 || position === undefined || position === null) && parseInt(farmSetupInfo.renewTimes) > 0)
         setCurrentPosition(position)
         setLockedPositions(lockPositions)
         if (!position && reset) {
@@ -500,6 +500,7 @@ export default props => {
 
         reset && setLpTokenAmount(null)
         reset && setTokenAmounts(new Array(tokens.length).fill(0))
+
         // retrieve the manage data using the position
         if (position) {
             const free = position['free']
