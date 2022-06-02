@@ -542,7 +542,7 @@ export default props => {
         }
         // calculate APY
         setApy(await calculateApy(farmSetup, farmSetupInfo, rewardToken.address, rewardToken.decimals, tokens))
-    }, [setupTokens, account])
+    }, [setupTokens, account, block])
 
     const reloadData = useCallback(async (noReset, loop) => {
         try {
