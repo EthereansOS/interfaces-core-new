@@ -27,7 +27,7 @@ const contracts = [
 
 export default props => {
 
-    const { element, setupInput } = props
+    const { element, setupInput, refresh } = props
 
     const context = useEthosContext()
 
@@ -111,6 +111,8 @@ export default props => {
     const [feeData, setFeeData] = useState()
 
     const [burnFeeAllowance, setBurnFeeAllowance] = useState()
+
+    const [setupMustBeToggled, setSetupMustBeToggled] = useState()
 
     const ammAggregatorPromise = useMemo(() => new Promise(async ok => {
         var amms = []
@@ -332,11 +334,8 @@ export default props => {
 
     useEffect(recalculateFeeAllowance, [recalculateFeeAllowance])
 
-    async function toggleSetup() {
-        try {
-            const result = await blockchainCall(element.contract.methods.toggleSetup, setup.infoIndex)
-        } catch(e) {
-        }
+    function toggleSetup() {
+        return blockchainCall(element.contract.methods.toggleSetup, setup.infoIndex)
     }
 
     const loadData = useCallback(async (farmSetup, farmSetupInfo, reset, loop) => {
@@ -345,6 +344,7 @@ export default props => {
         reset && setLockedEstimatedReward(0)
         setUpdatedRenewTimes(farmSetupInfo.renewTimes)
         setUpdatedRewardPerBlock(farmSetup.rewardPerBlock)
+        setSetupMustBeToggled(farmSetup.active && parseInt(farmSetup.endBlock) > 0 && parseInt(farmSetup.totalSupply) === 0 && parseInt(farmSetupInfo.renewTimes) > 0)
         var positions = element.positions || []
         var positionIds = positions.map(it => it.positionId)
         if(positions.length === 0) {
@@ -1487,6 +1487,7 @@ export default props => {
                         {rewardTokenInfo && <p className={style.BlockInfoV3}><b>Daily Rate</b>: {formatMoneyUniV3(fromDecimals(parseInt(setup.rewardPerBlock) * 6400, rewardTokenInfo.decimals, true), 4)} {rewardTokenInfo.symbol}</p>}
                         {mainTokenInfo && setupInfo && setupInfo.minStakeable !== '0' && <p className={style.BlockInfoV3}><b>Minimum Staking</b>: {formatMoneyUniV3(fromDecimals(setupInfo.minStakeable, mainTokenInfo.decimals, true), 6)} {mainTokenInfo.symbol}</p>}
                         {parseInt(setup.endBlock) > 0 ? <p className={style.BlockInfoV3}><b>End</b>: <a target="_blank" href={`${getNetworkElement({ context, chainId }, "etherscanURL")}block/${setup.endBlock}`}>{setup.endBlock}</a></p> : <p className={style.BlockInfoV3}><b>Duration</b>: {getPeriodFromDuration(setupInfo.blockDuration)}</p>}
+                        {setupMustBeToggled && <ActionAWeb3Button onSuccess={refresh} onClick={toggleSetup}>Toggle</ActionAWeb3Button>}
                         {!currentPosition && (!open && parseInt(setup.endBlock) > parseInt(block)) && <a className={style.RegularButtonDuo} onClick={() => void(setOpen(true), setWithdrawOpen(false), setEdit(false))}>Farm</a>}
                         {!currentPosition && open && <RegularButtonDuo className={style.RegularButtonDuoBack} onClick={() => void(setOpen(false), setWithdrawOpen(false), setEdit(false))}>Close</RegularButtonDuo>}
                         {

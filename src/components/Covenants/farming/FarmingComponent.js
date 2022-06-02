@@ -78,7 +78,8 @@ export default props => {
                     {element.setups.filter(it => it.active || it.canActivateSetup).map(it => <SetupComponent key={it.setupIndex + "_" + element.key} {...{
                         ...props,
                         setupInput: it,
-                        element
+                        element,
+                        refresh
                     }} />)}
                 </div>
                 {!rewardTokenAddress && element.setups.filter(it => !it.active && !it.canActivateSetup).length > 0 && <>
@@ -87,7 +88,8 @@ export default props => {
                         {showOldSetups && element.setups.filter(it => !it.active && !it.canActivateSetup).map(it => <SetupComponent key={it.setupIndex + "_" + element.key} {...{
                             ...props,
                             setupInput: it,
-                            element
+                            element,
+                            refresh
                         }} />)}
                     </div>
                 </>}
