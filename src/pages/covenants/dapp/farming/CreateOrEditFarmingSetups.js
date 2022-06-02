@@ -14,7 +14,7 @@ export default props => {
     const [editSetup, setEditSetup] = useState()
     const [gen2SetupType, setGen2SetupType] = useState()
 
-    if (generation === 'gen2' && (farmingSetups.length === 0 || (editSetup === null && !gen2SetupType))) {
+    if (generation === 'gen2' && !gen2SetupType && (farmingSetups.length === 0 || editSetup === null)) {
         return (
             <div className={style.generationBoh}>
                 <div className={style.CreateBoxDesc}>
