@@ -14,21 +14,7 @@ export default props => {
     const [editSetup, setEditSetup] = useState()
     const [gen2SetupType, setGen2SetupType] = useState()
 
-    if (editSetup !== undefined || (generation === 'gen1' && farmingSetups.length === 0)) {
-        return (
-            <CreateOrEditFarmingSetup
-                rewardToken={rewardToken}
-                generation={generation}
-                gen2SetupType={generation === 'gen1' ? 'diluted' : (gen2SetupType || editSetup?.gen2SetupType)}
-                editSetup={editSetup}
-                onAddFarmingSetup={setup => void(onAddFarmingSetup(setup), setEditSetup()) }
-                onEditFarmingSetup={(setup, index) => void(onEditFarmingSetup(setup, index), setEditSetup())}
-                onCancel={() => setEditSetup()}
-            />
-        )
-    }
-
-    if (generation === 'gen2' && farmingSetups.length === 0) {
+    if (generation === 'gen2' && (farmingSetups.length === 0 || (editSetup === null && !gen2SetupType))) {
         return (
             <div className={style.generationBoh}>
                 <div className={style.CreateBoxDesc}>
@@ -42,11 +28,27 @@ export default props => {
                     <a className={style.RegularButtonDuo} onClick={() => void(setGen2SetupType("concentrated"), setEditSetup(null))}>Select</a>
                 </div>
                 <div className={style.ActionBTNCreateX}>
-                    <a className={style.Web3BackBTN} onClick={onCancel}>Back</a>
-                    <br/>
-                    <a className={style.PlainLink} onClick={onFinish}>Plain Deploy</a>
+                    <a className={style.Web3BackBTN} onClick={() => farmingSetups.filter(it => it.editing).length === 0  ? onCancel() : setEditSetup()}>Back</a>
+                    {farmingSetups.filter(it => it.editing).length === 0 && <>
+                        <br/>
+                        <a className={style.PlainLink} onClick={onFinish}>Plain Deploy</a>
+                    </>}
                 </div>
             </div>
+        )
+    }
+
+    if (editSetup !== undefined || (generation === 'gen1' && farmingSetups.length === 0) || (generation === 'gen2' && gen2SetupType)) {
+        return (
+            <CreateOrEditFarmingSetup
+                rewardToken={rewardToken}
+                generation={generation}
+                gen2SetupType={generation === 'gen1' ? 'diluted' : (gen2SetupType || editSetup?.gen2SetupType)}
+                editSetup={editSetup}
+                onAddFarmingSetup={setup => void(onAddFarmingSetup(setup), setEditSetup(), setGen2SetupType()) }
+                onEditFarmingSetup={(setup, index) => void(onEditFarmingSetup(setup, index), setEditSetup(), setGen2SetupType())}
+                onCancel={() => void(setEditSetup(), setGen2SetupType())}
+            />
         )
     }
 
