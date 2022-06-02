@@ -344,7 +344,7 @@ export default props => {
         reset && setLockedEstimatedReward(0)
         setUpdatedRenewTimes(farmSetupInfo.renewTimes)
         setUpdatedRewardPerBlock(farmSetup.rewardPerBlock)
-        setSetupMustBeToggled(farmSetup.active && parseInt(farmSetup.endBlock) > 0 && parseInt(farmSetup.totalSupply) === 0 && parseInt(farmSetupInfo.renewTimes) > 0)
+        setSetupMustBeToggled(farmSetup.active && parseInt(farmSetup.endBlock) > parseInt(block) && parseInt(farmSetup.totalSupply) === 0 && parseInt(farmSetupInfo.renewTimes) > 0)
         var positions = element.positions || []
         var positionIds = positions.map(it => it.positionId)
         if(positions.length === 0) {
