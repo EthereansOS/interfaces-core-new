@@ -71,6 +71,6 @@
     "prettier": "2.3.0",
     "react-error-overlay": "6.0.9",
     "react-test-renderer": "^17.0.1",
-    "rimraf": "^3.0.2"
+    "rimraf": "3.0.2"
   }
 }
