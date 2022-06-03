@@ -1549,7 +1549,7 @@ export default props => {
                         </p>
                         {element.generation === 'gen1' && lpTokenInfo && <p className={style.farmInfoCurveR}>
                             <p className={style.PriceRangeInfoFarm}>
-                                <a target="_blank" href={`${getNetworkElement({ context, chainId }, 'etherscanURL')}address/${setupInfo.liquidityPoolAddress}`}><span className={style.VersionFarm}>{lpTokenInfo.amm.name}</span></a>
+                                <a target="_blank" href={`${getNetworkElement({ context, chainId }, 'etherscanURL')}address/${lpTokenInfo.contract.options.address}`}><span className={style.VersionFarm}>{lpTokenInfo.amm.name}</span></a>
                             </p>
                         </p>}
                         {element.generation === 'gen2' && <p className={style.farmInfoCurveR}>
