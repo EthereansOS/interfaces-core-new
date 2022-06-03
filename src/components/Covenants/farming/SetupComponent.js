@@ -126,6 +126,7 @@ export default props => {
                     info: await ammContract.methods.info().call(),
                     data: await ammContract.methods.data().call()
                 }
+                amm.name = amm.info[0]
                 amm.ethereumAddress = web3Utils.toChecksumAddress(amm.data[0])
                 amm.data[2] && amms.push(amm)
             }
@@ -1546,6 +1547,11 @@ export default props => {
                                 <a onClick={() => setsecondTokenIndex(1 - (secondTokenIndex || 0))}><img src={`${process.env.PUBLIC_URL}/img/switch.png`}/></a> {setupTokens[secondTokenIndex].symbol} per {setupTokens[1 - secondTokenIndex].symbol}
                             </p>
                         </p>
+                        {element.generation === 'gen1' && lpTokenInfo && <p className={style.farmInfoCurveR}>
+                            <p className={style.PriceRangeInfoFarm}>
+                                <a target="_blank" href={`${getNetworkElement({ context, chainId }, 'etherscanURL')}address/${setupInfo.liquidityPoolAddress}`}><span className={style.VersionFarm}>{lpTokenInfo.amm.name}</span></a>
+                            </p>
+                        </p>}
                         {element.generation === 'gen2' && <p className={style.farmInfoCurveR}>
                             <p className={style.PriceRangeInfoFarm}>
                                 <a className={style.ExtLinkButton} target="_blank" href={context.uniswapV3PoolURLTemplate.split('{0}').join(setupInfo.liquidityPoolTokenAddress)}>{formatMoneyUniV3(numberToString(parseInt(lpTokenInfo.fee) / 10000), '2')}%</a>
