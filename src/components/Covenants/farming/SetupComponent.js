@@ -1483,7 +1483,7 @@ export default props => {
                             <p className={style.BlockInfoV3B}>
                             {setup.active && parseInt(setup.endBlock) > block && <span className={style.V3FarmStatusYEP}>Active</span>}
                                 {!delayedBlock && <> {(!setup.active && canActivateSetup) ? <span>{setupReady ? "new" : "Soon"}</span> : (!setup.active) ? <span>Inactive</span> : <></>} {(parseInt(setup.endBlock) <= block && parseInt(setup.endBlock) !== 0) && <span>Ended</span>}</>}{delayedBlock !== 0 && <span>Soon</span>}
-                                {apy > 0 && <> <b>APR</b>: {formatMoneyUniV3(apy, 3)}%</>}
+                                {!isNaN(apy) && <> <b>APR</b>: {apy === 0 ? 0 : formatMoneyUniV3(apy, 3)}%</>}
                             </p>
                         }
                         {rewardTokenInfo && <p className={style.BlockInfoV3}><b>Daily Rate</b>: {formatMoneyUniV3(fromDecimals(parseInt(setup.rewardPerBlock) * 6400, rewardTokenInfo.decimals, true), 4)} {rewardTokenInfo.symbol}</p>}
@@ -1562,7 +1562,7 @@ export default props => {
                             <div className={style.UniV3CurveViewCurv}>
                                 <span className={style.CircleLeftV3Curve}></span>
                                 <span className={style.CircleLeftV3CurvePrice}>
-                                    {tickData.diluted ? "Diluted" :
+                                    {tickData.diluted ? element.generation === 'gen2' ? "Diluted" : <>&#8734;</> :
                                         tickData.tickLowerUSDPrice ?
                                         ("$" + formatMoneyUniV3(tickData.tickLowerUSDPrice)) :
                                         `${formatMoneyUniV3(tickData.minPrice)} ${setupTokens[secondTokenIndex].symbol}`
@@ -1570,7 +1570,7 @@ export default props => {
                                 </span>
                                 <span className={style.CircleRightV3Curve}></span>
                                 <span className={style.CircleRightV3CurvePrice}>
-                                    {tickData.diluted ? "Diluted" :
+                                    {tickData.diluted ? element.generation === 'gen2' ? "Diluted" : <>&#8734;</> :
                                         tickData.tickUpperUSDPrice ?
                                         ("$" + formatMoneyUniV3(tickData.tickUpperUSDPrice)) :
                                         `${formatMoneyUniV3(tickData.maxPrice)} ${setupTokens[secondTokenIndex].symbol}`
