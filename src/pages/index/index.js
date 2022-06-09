@@ -21,7 +21,8 @@ const IndexMain = () => {
         <div className={style.IndexHeaderMenu}>
           <a target="_blank" href="https://docs.ethos.wiki/ethereansos-docs/">Documentation</a>
           <a target="_blank" href="https://docs.ethos.wiki/ethereansos-docs/grimoire/ethereansos-governance">Governance</a>
-          <a target="_blank" href="https://discord.gg/G4qmxQFnYQ">Community</a>
+          <a target="_blank" href="https://discord.gg/Eqf5xWBJsN">Community</a>
+          <a target="_blank" href="https://ethereanslabs.com">The Lab</a>
           <Link className={style.IndexHeaderDapp} to="/dapp">Launch App</Link>
         </div>
       </div>
@@ -114,7 +115,7 @@ const IndexMain = () => {
       <div className={style.Footer}>
         <img src={`${process.env.PUBLIC_URL}/img/footer.gif`}></img>
         <div className={style.FooterLinks}>
-          <p>The EthOS platform is an R&D project still in its early days. Use it at your own risk.</p>
+          <p>EthereansOS is an R&D project built by <a target="_blank" href="https://ethereanslabs.com">Ethereans Labs AG</a> still in its early days. Use it at your own risk.</p>
           <a target="_blank" href="https://github.com/ethereansos">Github</a>
           <a target="_blank" href="https://discord.gg/G4qmxQFnYQ">Discord</a>
           <a target="_blank" href="https://twitter.com/ethereansos">Twitter</a>
