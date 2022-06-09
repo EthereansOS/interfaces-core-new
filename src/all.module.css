@@ -564,6 +564,8 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .OperationsTrigger .ActionInfoSection {width: 40px; display: inline-block; background-color: transparent !important;}
 .OperationsTrigger .SettingFB {width: 360px; display: block; margin: 10px auto;}
 
+.LiqiudityAffairs .ActionInfoSection {text-align: center;}
+
 .RoutineContent {border-color: #ebebeb;background-color: #f7fafe;width: 100%;display: inline-block;margin: 10px auto;border-radius: 12px;padding: 5%;text-align: left;}
 .RoutineContentTitle {width: 55%;display: inline-block;margin-right: 1%;text-align: left;}
 .RoutineContentTitle h6 {font-size: 17px;width: 95%;text-align: left;display: inline-block;font-weight: bolder; margin-bottom: 10px;}

@@ -1435,7 +1435,7 @@ export default props => {
                         {renderSettings(true, true)}
                         <p><b>{removalAmount}%</b></p> <p>{manageStatus.tokens.map((token, i) => <span key={token.address}> {formatMoneyUniV3(fromDecimals(parseInt(manageStatus.tokenAmounts[i].full || manageStatus.tokenAmounts[i]) * removalAmount / 100, token.decimals, true), 4)} {token.symbol} </span>)}</p>
                     </div>}
-                    <div>
+                    <div className={style.LiqiudityAffairs}>
                         {setupInfo && setupInfo.minStakeable === '0' && RemoveButton}
                         {setupInfo && setupInfo.minStakeable !== '0' && renderSettings(true, true, undefined, RemoveButton)}
                     </div>
