@@ -1387,7 +1387,7 @@ export default props => {
         const postfix = "_" + numberToString(new Date() * Math.random()).split('.').join('')
         return (<>
             <div className={style.ActionInfoSection}>
-                {content && <div>{content}</div>}
+                {content && <div className={style.FarmingAsideInfoLP}>{content}</div>}
                 <a className={style.ActionInfoSectionSettings} onClick={() => setSettings(!settings)}>
                     <figure>
                         <img src={`${process.env.PUBLIC_URL}/img/settings.svg`}/>
