@@ -96,7 +96,7 @@ export default props => {
     const [delayedBlock, setDelayedBlock] = useState(0)
     const [endBlockReached, setEndBlockReached] = useState(false)
     const [secondTokenIndex, setsecondTokenIndex] = useState(0)
-    const [tickData, setTickData] = useState(null)
+    const [tickData, setTickData] = useState({cursorNumber : 50})
 
     const ethereumAddress = getNetworkElement({ context, chainId }, "wethTokenAddress")
 
