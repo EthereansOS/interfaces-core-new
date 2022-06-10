@@ -14,6 +14,7 @@ import { formatMoney, blockchainCall, getTokenPricesInDollarsOnCoingecko, ethers
 import { loadFarmingSetup, loadFarmingPosition, isValidPosition, addLiquidityGen2 } from '../../../logic/farming'
 import { loadTokenFromAddress } from '../../../logic/erc20'
 import { getLogs } from '../../../logic/logger'
+import { enqueue, dequeue } from '../../../logic/interval'
 
 import style from '../../../all.module.css'
 
@@ -27,7 +28,7 @@ const contracts = [
 
 export default props => {
 
-    const { element, setupInput, refresh } = props
+    const { element, setupInput, refresh, noInternalRefetch } = props
 
     const context = useEthosContext()
 
@@ -86,7 +87,7 @@ export default props => {
     const [outputType, setOutputType] = useState("to-pair")
     const [ethAmount, setEthAmount] = useState(0)
     const [ethBalanceOf, setEthBalanceOf] = useState("0")
-    const intervalId = useRef(null)
+    const intervalId = useMemo(() => new Date().getTime() + '_' + (new Date().getTime() * Math.random()), [])
     const updateAmountTimeout = useRef(null)
     const minimumStakingErrorTimeout = useRef(null)
     const [prestoData, setPrestoData] = useState(null)
@@ -453,18 +454,20 @@ export default props => {
 
         var balances = ['0', '0']
         var fees = ['0', '0']
-        try {
-            ({balances, fees} = await simulateDecreaseLiquidityAndCollect(farmSetup.objectId, element.address))
-        } catch(e) {
-            if(farmSetup.totalSupply !== '0') {
-                try {
-                    const lpTokenEthers = new ethers.Contract(tokenAddress, context.UniswapV3PoolABI, ethersProvider)
-                    var data = await lpTokenEthers.callStatic.burn(farmSetupInfo.tickLower, farmSetupInfo.tickUpper, farmSetup.totalSupply, {
-                        from : getNetworkElement({ context, chainId }, "uniswapV3NonfungiblePositionManagerAddress")
-                    })
-                    balances = [data.amount0.toString(), data.amount1.toString()]
-                } catch(e) {
-                    console.log(e)
+        if(element.generation === 'gen2') {
+            try {
+                ({balances, fees} = await simulateDecreaseLiquidityAndCollect(farmSetup.objectId, element.address))
+            } catch(e) {
+                if(farmSetup.totalSupply !== '0') {
+                    try {
+                        const lpTokenEthers = new ethers.Contract(tokenAddress, context.UniswapV3PoolABI, ethersProvider)
+                        var data = await lpTokenEthers.callStatic.burn(farmSetupInfo.tickLower, farmSetupInfo.tickUpper, farmSetup.totalSupply, {
+                            from : getNetworkElement({ context, chainId }, "uniswapV3NonfungiblePositionManagerAddress")
+                        })
+                        balances = [data.amount0.toString(), data.amount1.toString()]
+                    } catch(e) {
+                        console.log(e)
+                    }
                 }
             }
         }
@@ -562,13 +565,13 @@ export default props => {
     }, [element.address, setup && setup.setupIndex, loadData])
 
     useEffect(() => {
-        intervalId.current && clearInterval(intervalId.current)
-        if(!setupTokens || setupTokens.length === 0) {
+        dequeue(intervalId)
+        if(noInternalRefetch || !setupTokens || setupTokens.length === 0) {
             return
         }
-        intervalId.current = setInterval(() => reloadData(true, true), 5000)
-        return () => intervalId.current && clearInterval(intervalId.current)
-    }, [reloadData, setupTokens])
+        enqueue(intervalId, () => reloadData(true, true))
+        return () => dequeue(intervalId)
+    }, [noInternalRefetch, reloadData, setupTokens])
 
     async function simulateDecreaseLiquidityAndCollect(objectId, lmContractAddress, amount) {
         var nftPosMan = newContract(context.UniswapV3NonfungiblePositionManagerABI, getNetworkElement({ context, chainId }, "uniswapV3NonfungiblePositionManagerAddress"))

@@ -19,7 +19,8 @@ const FarmingCard = props => {
         return element.positions.map((it, i) => <div className={style.FarmContent}><div><div><SetupComponent key={i + "_" + element.key} {...{
             ...props,
             position : it,
-            setupInput : it.setup
+            setupInput : it.setup,
+            noInternalRefetch : true
         }} /></div></div></div>)
     }
 
