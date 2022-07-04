@@ -48,7 +48,7 @@ const Web3Connect = () => {
         </a>*/}
         <Link to="/account/dapp" className={style.Web3ConnectWallet}>
           <LogoRenderer noDotLink noFigure input={ensData?.name ? `//metadata.ens.domains/mainnet/avatar/${ensData?.name}` : blockie} defaultImage={blockie}/>
-          <p>{connectionStatus === web3States.NOT_CONNECTED ? "Connect" : truncatedWord({context, charsAmount : 19 }, ensData?.name || account)}</p>
+          <p>{connectionStatus === web3States.NOT_CONNECTED ? "Connect" : truncatedWord({context, charsAmount : 8 }, ensData?.name || account)}</p>
         </Link>
       </div>
   )
