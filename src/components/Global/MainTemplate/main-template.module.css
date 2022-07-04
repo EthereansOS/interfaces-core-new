@@ -5,6 +5,7 @@
   margin: 0  auto 0 auto;
   display: block;
   text-align: center;
+  padding-top: 40px;
 }
 .OnlyMobile {display: none;}
 
