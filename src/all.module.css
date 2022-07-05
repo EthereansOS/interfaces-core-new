@@ -1008,7 +1008,7 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .Large {width: 500px; position: relative; overflow: scroll; max-height: 70%;  z-index: 100000000000000; border-radius: 20px;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32); padding: 40px; z-index: 1000000000000000000;}
 .BackButton {position: absolute; top: 0px; left: 0px; padding: 5px 10px; font-size: 13px; border-radius: 100% 10px 10px 0px; background-color: tomato; color: #ffffff; z-index: 100;}
 
-.Web3Connect {display: inline-block; text-align:left;}
+.Web3Connect {display: inline-block; text-align:left;margin:10px 10px;}
 .Web3ConnectChain {height: 35px;display: inline-block; padding: 3px 5px; border-radius: 5px;  margin: 0 10px 0 0px; vertical-align: middle;}
 .Web3ConnectChain img {width:25px; height:25px; display: inline-block; margin: 3px; vertical-align: middle;}
 .Web3ConnectChain p {display: inline-block; margin: 3px;vertical-align: middle; font-size: 15px;}
@@ -1016,13 +1016,13 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .Web3ConnectWallet img {width:30px; height:30px; border-radius: 12px; display: inline-block; margin: 3px 3px 3px 0px; vertical-align: middle;object-fit: contain;}
 .Web3ConnectWallet p {display: inline-block; vertical-align: middle;font-size: 12px; font-weight: bold; max-width: 135px; overflow: hidden; margin-left: 5px;}
 
-.ThemeSelect {width: 60px; display: inline-block; text-align: left; margin: 10px auto 0px 15px;}
+.ThemeSelect {width: 60px; display: inline-block; text-align: left;}
 .ThemeSelect select {padding: 10px 10px; border-radius: 12px; text-align: center; border: none;}
 
-.NetworkSelect {width: 135px; display: inline-block; text-align: left; margin: 10px auto 0px 15px;border-radius: 12px;}
+.NetworkSelect {width: 120px; display: inline-block; text-align: left; margin: 10px auto 0px 15px;border-radius: 12px;}
 .NetworkSelectL1 {border-radius: 12px 0px 0px 12px; opacity: 0.5;}
 .NetworkSelectL2 {border-radius: 0px 12px 12px 0px; opacity: 0.5;}
-.NetworkSelect a {padding: 5px 4px; text-align: center; border: none; width: 60px; display: inline-block;}
+.NetworkSelect a {padding: 7px 4px; text-align: center; border: none; width: 60px; display: inline-block;}
 .NetworkSelect img {width:20px; height:20px;display: inline-block; margin: 3px 3px 3px 0px; vertical-align: middle;}
 .NetworkSelect p {display: inline-block; vertical-align: middle;font-size: 12px; font-weight: bold; max-width: 40px; overflow: hidden; margin-left: 2px;}
 
@@ -1144,25 +1144,30 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 
 @media only screen and (max-width: 1200px) {
   .Header {height: 60px;display: block;text-align: left;width:100%;position: relative;margin-bottom: 20px;min-height: auto;}
-  .Header .FixedHeader {position: fixed; left: 0; top: 0; width: 100%; height: 60px;backdrop-filter: blur(6px);}
-  .Header .BlurHeader {display: block; position: fixed; left: 0%; top: 0%; width: 100%; height: 60px;border-radius: 0;  border: 0;  box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-webkit-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
+  .Header .FixedHeader {position: fixed; left: 0; top: 0; width: auto; backdrop-filter: blur(6px);height: 60px;}
+  .Header .BlurHeader {display: none;}
   .logoMain {height: 40px; width: 50px; margin: 10px 0px 0px 10px; display: inline-block;vertical-align: top;}
   .logoMain img {height: 40px; width: 50px; display: block;}
-  .Navigation {display: inline-block;border-left: none;padding: 8px;width: auto;cursor: pointer; text-align: center;margin: 0px 0px 0px 50px;vertical-align: top;}
-  .NavigationItem:hover {margin: 7px 10px;}
-  .NavigationItem {font-size: 15px;text-align: center;margin: 7px 10px;display: inline-block;text-align: left; width: 140px; text-align: center;border-radius: 8px;}
-  .NavigationItem img {display: none;}
+  .RightMenu {padding-bottom: 5px;}
+  .Navigation {display: inline-block;border-left: none;padding: 10px 0 5px 0;width: auto;cursor: pointer; text-align: center;margin: 0px 0px 0px 50px;vertical-align: top; border-radius: 0px 0px 12px 12px;}
+  .NavigationItem:hover {margin: 5px 5px;}
+  .NavigationItem {font-size: 13px; text-align: center;margin: 5px 5px;display: inline-block;text-align: left; width: 90px; text-align: center;border-radius: 8px; font-weight: bold !important;}
+  .NavigationItem img {display: none !important;}
+  .NavigationItem:hover img {display: none !important;;}
   .NavigationItem img {width: 10px; height: 10px;}
-  .NavigationItem:hover img {display: inline-block;}
-  .Navigation .Selected img {display: inline-block;}
+  .NavigationItem:hover img {display: none;}
+  .Navigation .Selected img {display: none;}
+  .Navigation .selected {margin: 5px 5px;}
   .NavigationItem:hover .Hand {display: none;}
-  .Web3Connect {display: inline-block; text-align:right; margin:10px 10px; padding-left: 0px; float: right;}
+  .Web3Connect {display: inline-block; text-align:right; margin:10px 10px; padding-left: 0px;}
   .ThemeSelect {width: auto; display: inline-block;margin:10px auto 0px auto;}
   .ThemeSelect select {padding: 10px;}
   .Web3ConnectWallet {max-width: 140px;}
   .CartNFTs {width: 50%;}
   .Cart { min-width: 792px;}
   .Web3ConnectWallet p {width: 100px;}
+  .DDapp_Menu {margin: 10px auto 30px auto; }
+  .Dapp_Menu {margin: 10px auto 30px auto; }
 }
 
 @media only screen and (max-device-width: 990px) {
@@ -2125,12 +2130,16 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
   .biz .Header .BlurHeader {background: linear-gradient(-130deg,#c1befc4d,#fdf7f515 80%);}
   .dark .Header .BlurHeader {background: linear-gradient(-130deg,#c1befc4d,#fdf7f515 80%);}
 
+  .light .Navigation {background-color: #ffffff6e;}
+  .biz .Navigation {background-color: #8cd4d17a;}
+  .dark .Navigation {background-color: #1a1a1a80;}
+
   .light .NavigationItem {background-color: transparent;}
   .biz .NavigationItem {background-color: transparent;}
   .dark .NavigationItem {background-color: transparent;}
 
-  .light .NavigationItem:hover, .light .Navigation .Selected {background-color: #ffffff !important;}
-  .biz .NavigationItem:hover, .biz .Navigation .Selected {background-color: #ffffff !important;}
-  .dark .NavigationItem:hover, .dark .Navigation .Selected {background-color: #ffffff !important;}
+  .light .NavigationItem:hover, .light .Navigation .selected {background-color: #ffffff !important;}
+  .biz .NavigationItem:hover, .biz .Navigation .selected {font-weight: bold !important;}
+  .dark .NavigationItem:hover, .dark .Navigation .selected {background-color: #000000 !important;}
 
 }
