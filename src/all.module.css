@@ -1008,7 +1008,7 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .Large {width: 500px; position: relative; overflow: scroll; max-height: 70%;  z-index: 100000000000000; border-radius: 20px;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32); padding: 40px; z-index: 1000000000000000000;}
 .BackButton {position: absolute; top: 0px; left: 0px; padding: 5px 10px; font-size: 13px; border-radius: 100% 10px 10px 0px; background-color: tomato; color: #ffffff; z-index: 100;}
 
-.Web3Connect {display: inline-block; text-align:left; padding-left: 20px;}
+.Web3Connect {display: inline-block; text-align:left;}
 .Web3ConnectChain {height: 35px;display: inline-block; padding: 3px 5px; border-radius: 5px;  margin: 0 10px 0 0px; vertical-align: middle;}
 .Web3ConnectChain img {width:25px; height:25px; display: inline-block; margin: 3px; vertical-align: middle;}
 .Web3ConnectChain p {display: inline-block; margin: 3px;vertical-align: middle; font-size: 15px;}
@@ -1019,7 +1019,7 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .ThemeSelect {width: 60px; display: inline-block; text-align: left; margin: 10px auto 0px 15px;}
 .ThemeSelect select {padding: 10px 10px; border-radius: 12px; text-align: center; border: none;}
 
-.NetworkSelect {width: 140px; display: inline-block; text-align: left; margin: 10px auto 0px 15px;border-radius: 12px;}
+.NetworkSelect {width: 135px; display: inline-block; text-align: left; margin: 10px auto 0px 15px;border-radius: 12px;}
 .NetworkSelectL1 {border-radius: 12px 0px 0px 12px; opacity: 0.5;}
 .NetworkSelectL2 {border-radius: 0px 12px 12px 0px; opacity: 0.5;}
 .NetworkSelect a {padding: 5px 4px; text-align: center; border: none; width: 60px; display: inline-block;}
@@ -1129,13 +1129,16 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
   .NavigationItem {font-size: 11px;width: 20%;overflow: hidden; }
   .Navigation .Selected img {display: none;}
   .Navigation {display: none;}
+  .Web3ConnectWallet p {width: 100px;}
 }
 @media only screen and (max-width: 989px) {
   .NavigationItem {margin: 7px 0 7px 0px !important; width: 85px !important; padding: 8px 4px !important;}
+  .Web3ConnectWallet p {width: 100px;}
 }
 
 @media only screen and (max-width: 700px) {
   .FixedHeader, .Header {height: auto !important; min-height: 60px;}
+  .Web3ConnectWallet p {width: 100px;}
 }
 
 
@@ -1159,6 +1162,7 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
   .Web3ConnectWallet {max-width: 140px;}
   .CartNFTs {width: 50%;}
   .Cart { min-width: 792px;}
+  .Web3ConnectWallet p {width: 100px;}
 }
 
 @media only screen and (max-device-width: 990px) {
@@ -2128,7 +2132,5 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
   .light .NavigationItem:hover, .light .Navigation .Selected {background-color: #ffffff !important;}
   .biz .NavigationItem:hover, .biz .Navigation .Selected {background-color: #ffffff !important;}
   .dark .NavigationItem:hover, .dark .Navigation .Selected {background-color: #ffffff !important;}
-
-  .Web3ConnectWallet p {width: 100px;}
 
 }
