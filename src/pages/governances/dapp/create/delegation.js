@@ -8,24 +8,32 @@ import style from '../../../../all.module.css'
 
 
 const Init = ({onSelection}) => {
+
+  const useWeb3Data = useWeb3()
+
+  const { chainId } = useWeb3Data
+
   return (
-    <div>
-      <div className={style.CreateBoxDesc}>
-        <h6>Organization</h6>
-        <p>Start a completely on-chain governance organization with deeply composable permission levels.</p>
-        <b className={style.ExtLinkButtonAlpha}>Coming Soon</b>
-        <a target="_blank" href="https://docs.ethos.wiki/ethereansos-docs/organizations/organizations" className={style.ExtLinkButtonAlpha}>Learn</a>
-      </div>
-      <div className={style.CreateBoxDesc}>
-        <h6>Delegation</h6>
-        <p>Create a Delegation, an independent political party that can compete for grant funding from one or more Organizations.</p>
-        <a className={style.NextStep}  onClick={() => onSelection("deploy")}>Start</a>
-        <a target="_blank" className={style.ExtLinkButtonAlpha} href="https://docs.ethos.wiki/ethereansos-docs/organizations/delegations">Learn</a>
-      </div>
-      <div className={style.AdvancedLinks}>
-        <a onClick={() => onSelection("finalize")}>Finalize</a>
-      </div>
-    </div>
+    <>
+      {chainId === 10 && <h2>Actually not supported by this chain</h2>}
+      {chainId !== 10 && <div>
+        <div className={style.CreateBoxDesc}>
+          <h6>Organization</h6>
+          <p>Start a completely on-chain governance organization with deeply composable permission levels.</p>
+          <b className={style.ExtLinkButtonAlpha}>Coming Soon</b>
+          <a target="_blank" href="https://docs.ethos.wiki/ethereansos-docs/organizations/organizations" className={style.ExtLinkButtonAlpha}>Learn</a>
+        </div>
+        <div className={style.CreateBoxDesc}>
+          <h6>Delegation</h6>
+          <p>Create a Delegation, an independent political party that can compete for grant funding from one or more Organizations.</p>
+          <a className={style.NextStep}  onClick={() => onSelection("deploy")}>Start</a>
+          <a target="_blank" className={style.ExtLinkButtonAlpha} href="https://docs.ethos.wiki/ethereansos-docs/organizations/delegations">Learn</a>
+        </div>
+        <div className={style.AdvancedLinks}>
+          <a onClick={() => onSelection("finalize")}>Finalize</a>
+        </div>
+      </div>}
+    </>
   )
 }
 

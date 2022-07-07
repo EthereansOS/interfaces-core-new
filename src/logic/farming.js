@@ -11,7 +11,14 @@ import { getLogs } from '../logic/logger'
 
 async function getFactory(data, generation) {
     const { context, chainId, getGlobalContract } = data
-    var factoryAddress = (await blockchainCall(getGlobalContract("factoryOfFactories").methods.get, getNetworkElement({ context, chainId }, "factoryIndices")[generation === 'gen1' ? "farmingGen1" : "farming"])).factoryList
+
+    var factoryIndex = getNetworkElement({ context, chainId }, "factoryIndices")[generation === 'gen1' ? "farmingGen1" : "farming"]
+
+    if(factoryIndex === undefined || factoryIndex === null) {
+        return []
+    }
+
+    var factoryAddress = (await blockchainCall(getGlobalContract("factoryOfFactories").methods.get, factoryIndex)).factoryList
     return factoryAddress.map(web3Utils.toChecksumAddress)
 }
 
@@ -26,8 +33,14 @@ export async function allFarmings(data, factoryAddress, generation) {
         ].map(it => allFarmings(data, it[0], it[1])))).reduce((all, it) => [...all, ...it], [])
     }
 
+    factoryAddress = factoryAddress || getNetworkElement({ context, chainId }, generation === 'gen2' ? "farmGen2FactoryAddress" : "farmFactoryAddress")
+
+    if(!factoryAddress || factoryAddress.length === 0) {
+        return []
+    }
+
     var args = {
-        address: factoryAddress || getNetworkElement({ context, chainId }, generation === 'gen2' ? "farmGen2FactoryAddress" : "farmFactoryAddress"),
+        address: factoryAddress,
         topics: [
             web3Utils.sha3('Deployed(address,address,address,bytes)')
         ],

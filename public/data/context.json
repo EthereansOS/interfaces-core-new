@@ -49,6 +49,7 @@
         "erc20TokensListURL" : "https://wispy-bird-88a7.uniswap.workers.dev/?url=http://tokens.1inch.eth.link",
         "_erc20TokensListURL" : "https://tokens.coingecko.com/uniswap/all.json",
         "erc20TokensListURLRinkeby" : "https://gateway.ipfs.io/ipns/tokens.uniswap.org",
+        "erc20TokensListURLOptimism" : "https://static.optimism.io/optimism.tokenlist.json",
         "itemsV1ListURL": "https://raw.githubusercontent.com/EthereansOS/ITEMS-Swap/master/src/constants/ethItemLists/dist/tokensList.json",
         "dappVersion": "BETA 0.5",
         "etherscanURL": "https://etherscan.io/",

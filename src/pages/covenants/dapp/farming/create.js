@@ -732,7 +732,7 @@ export default props => {
                 <h6>Covenants Farming</h6>
                 <p className={style.BreefRecapB}>Build a farming contract with multiple customizable setups. Covenants farming contracts can be extended and governed by a wallet, an automated contract or an Organization.</p>
                 </div>
-                {true && <div className={style.CreateBoxDesc}>
+                {chainId !== 10 && <div className={style.CreateBoxDesc}>
                     <h6>Multi AMM</h6>
                     <p>Powered by the AMM aggregator, these contracts work with <b>Uniswap V2, Balancer V1, Mooniswap V1 and Sushiswap V1.</b></p>
                     <a className={style.RegularButtonDuo} onClick={() => void(setGeneration("gen1"), setRegularNFT(false))}>Select</a>
