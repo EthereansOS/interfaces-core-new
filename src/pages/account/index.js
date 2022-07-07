@@ -28,7 +28,7 @@ const Account = () => {
   useEffect(() => {
     setTimeout(async () => {
       const address = account
-      if(ensData && ensData.account === account) {
+      if(ensData && ensData.account === account && ensData.chainId === chainId) {
         return
       }
       var name
@@ -42,7 +42,7 @@ const Account = () => {
           name = name.substring(0, name.indexOf("\""))
         }
       }
-      name && setEnsData(oldValue => ({...oldValue, name, account}))
+      name && setEnsData(oldValue => ({...oldValue, name, account, chainId}))
     })
   }, [account, chainId, ensData])
 
