@@ -2390,6 +2390,7 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .dark .ObjectInfoAndLink h5 {color: #ffffff !important;}
 .sepia .ObjectInfoAndLink h5 {color: #49646a !important;}
 
+.opacity1 { opacity: 1 !important;}
 
 @media only screen and (max-width: 1200px) {
   .light .Header .BlurHeader {background: linear-gradient(-130deg,#c1befc4d,#fdf7f515 80%);}

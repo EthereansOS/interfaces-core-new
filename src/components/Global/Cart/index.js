@@ -122,8 +122,11 @@ export default props => {
             selectedAmount[i] = inputType[i][0]
         }
         setInputType(() => inputType)
+        if(balance && cart.length === 1 && parseInt(balance) < parseInt(selectedAmount[0])) {
+            selectedAmount[0] = balance
+        }
         setSelectedAmount(() => selectedAmount)
-    }), [cart])
+    }), [cart, balance])
 
     const checkPresto = useCallback(() => {
         setSwapData(null)

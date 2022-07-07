@@ -33,11 +33,11 @@ const Header = (props) => {
         <div className={style.RightMenu}>
           <div className={style.NetworkSelect}>
             <div>
-              <a className={style.NetworkSelectL1 + (context.ethereumNetworks.indexOf(parseInt(chainId)) !== -1 ? (' ' + style.selected) : '')} onClick={chainId !== 1 && switchToNetwork}>
+              <a className={style.NetworkSelectL1 + (context.ethereumNetworks.indexOf(parseInt(chainId)) !== -1 ? (' ' + style.opacity1) : '')} onClick={chainId !== 1 && switchToNetwork}>
                 <img src={`${process.env.PUBLIC_URL}/img/ethereum.png`}/>
                 <p>ETH</p>
               </a>
-              <a className={style.NetworkSelectL2 + (context.optimismNetworks.indexOf(parseInt(chainId)) !== -1 ? (' ' + style.selected) : '')} onClick={chainId !== 10 && switchToNetwork}>
+              <a className={style.NetworkSelectL2 + (context.optimismNetworks.indexOf(parseInt(chainId)) !== -1 ? (' ' + style.opacity1) : '')} onClick={chainId !== 10 && switchToNetwork}>
                 <img src={`${process.env.PUBLIC_URL}/img/optimism.png`}/>
                 <p>OP</p>
               </a>
