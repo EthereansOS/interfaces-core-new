@@ -94,7 +94,7 @@
         "ipfsUrlBase": "https://ipfs.io/ipfs",
         "uniswapV3PoolURLTemplate": "https://info.uniswap.org/#/pools/{0}",
         "uniswapV3NFTURLTemplate": "https://app.uniswap.org/#/pool/{0}",
-        "deploySearchStart": 13505828,
+        "deploySearchStart": 12000000,
         "deploySearchStartRinkeby": 9851551,
         "deploySearchStartOptimism": 13897200,
         "blockSearchSection": 0,
