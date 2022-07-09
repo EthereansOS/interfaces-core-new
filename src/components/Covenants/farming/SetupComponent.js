@@ -17,6 +17,7 @@ import { getLogs } from '../../../logic/logger'
 import { enqueue, dequeue } from '../../../logic/interval'
 
 import style from '../../../all.module.css'
+import { getRawField } from '../../../logic/generalReader'
 
 const MAX_UINT128 = '0x' + web3Utils.toBN(2).pow(web3Utils.toBN(128)).sub(web3Utils.toBN(1)).toString('hex')
 const MAX_UINT256 = '0x' + web3Utils.toBN(2).pow(web3Utils.toBN(256)).sub(web3Utils.toBN(1)).toString('hex')
@@ -34,7 +35,9 @@ export default props => {
 
     const web3Data = useWeb3()
 
-    const { web3, account, chainId, newContract, block } = web3Data
+    const { web3, account, chainId, newContract, block, dualChainId, dualBlock } = web3Data
+
+    const currentBlock = useMemo(() => parseInt(dualBlock || block), [block, dualBlock])
 
     const ethersProvider = useMemo(() => new ethers.providers.Web3Provider(web3.currentProvider), [web3])
 
@@ -378,7 +381,7 @@ export default props => {
                 }
             }
         }
-        setSetupMustBeToggled(farmSetup.active && parseInt(block) > parseInt(farmSetup.endBlock) && (parseInt(farmSetup.totalSupply) === 0 || position === undefined || position === null) && parseInt(farmSetupInfo.renewTimes) > 0)
+        setSetupMustBeToggled(farmSetup.active && parseInt(currentBlock) > parseInt(farmSetup.endBlock) && (parseInt(farmSetup.totalSupply) === 0 || position === undefined || position === null) && parseInt(farmSetupInfo.renewTimes) > 0)
         setCurrentPosition(position)
         setLockedPositions(lockPositions)
         if (!position && reset) {
@@ -442,9 +445,9 @@ export default props => {
         const activateSetup = parseInt(farmSetupInfo.renewTimes) > 0 && !farmSetup.active && parseInt(farmSetupInfo.lastSetupIndex) === parseInt(setup.setupIndex)
         setCanActivateSetup(activateSetup)
         var startBlock = formatNumber(farmSetupInfo.startBlock || 0)
-        setDelayedBlock(block > startBlock ? 0 : startBlock)
+        setDelayedBlock(currentBlock > startBlock ? 0 : startBlock)
 
-        setEndBlockReached(block > formatNumber(farmSetup.endBlock))
+        setEndBlockReached(currentBlock > formatNumber(farmSetup.endBlock))
 
         if(!loop) {
             const extensionBalance = await blockchainCall(rewardToken.contract.methods.balanceOf, element.extensionAddress)
@@ -529,7 +532,7 @@ export default props => {
             console.log(position.positionId)
             const availableReward = await blockchainCall(element.contract.methods.calculateFreeFarmingReward, position.positionId, true)
             var freeReward = parseInt(availableReward)
-            if (block < parseInt(farmSetup.endBlock)) {
+            if (currentBlock < parseInt(farmSetup.endBlock)) {
                 freeReward += (parseInt(farmSetup.rewardPerBlock) * (parseInt(position.liquidityPoolTokenAmount) / parseInt(farmSetup.totalSupply)))
             }
             freeReward = numberToString(freeReward).split('.')[0]
@@ -541,18 +544,18 @@ export default props => {
                     result[1]
                 ]
             } catch(e) {}
-            var withdrawOnly = !farmSetup.active || block > parseInt(farmSetup.endBlock)
+            var withdrawOnly = !farmSetup.active || currentBlock > parseInt(farmSetup.endBlock)
             setManageStatus({ withdrawOnly, additionalFees, free, creationBlock, positionSetupIndex, liquidityPoolAmount: liquidityPoolTokenAmount, tokenAmounts: amounts['tokenAmounts'], tokens })
         }
         // calculate APY
         setApy(await calculateApy(farmSetup, farmSetupInfo, rewardToken.address, rewardToken.decimals, tokens))
-    }, [setupTokens, account, block])
+    }, [setupTokens, account, currentBlock])
 
     const reloadData = useCallback(async (noReset, loop) => {
         try {
             var { '0': farmSetup, '1': farmSetupInfo } = await loadFarmingSetup({ ...web3Data, context }, element.contract, setup.setupIndex)
             farmSetupInfo = {... farmSetupInfo, free : true, ethereumAddress : getNetworkElement({ context, chainId }, 'wethTokenAddress')}
-            farmSetup = {... farmSetup, togglable : farmSetup.active && block > parseInt(farmSetup.endBlock)}
+            farmSetup = {... farmSetup, togglable : farmSetup.active && currentBlock > parseInt(farmSetup.endBlock)}
             farmSetup.setupIndex = setup.setupIndex
             farmSetup.setupInfo = farmSetupInfo
             setSetup(farmSetup)
@@ -611,14 +614,34 @@ export default props => {
         const yearlyBlocks = 2304000
         try {
             const ethPrice = await getEthereumPrice({ context })
-            const wusdAddress = getNetworkElement({ context, chainId }, "WUSDAddress")
+            const wusdAddress = getNetworkElement({ context, chainId }, "WUSDAddress") || ""
+            const realRewardTokenAddress = web3Utils.toChecksumAddress(rewardTokenAddress) === web3Utils.toChecksumAddress(context.daiTokenAddressOptimism) ? context.daiTokenAddress : rewardTokenAddress
+            const realSetupTokens = !dualChainId ? setupTokens : await Promise.all(setupTokens.map(async it => {
+                try {
+                    var addr = it.address || it
+                    if(web3Utils.toChecksumAddress(addr) === web3Utils.toChecksumAddress(context.daiTokenAddressOptimism)) {
+                        return it.address ? {
+                            ...it,
+                            address : context.daiTokenAddress
+                        } : context.daiTokenAddress
+                    }
+                    var result = await getRawField({ provider : web3.currentProvider }, addr, "l1Token")
+                    result = abi.decode(["address"], result)[0]
+                    return it.address ? {
+                        ...it,
+                        address : result
+                    } : result
+                } catch(e) {
+                    return it
+                }
+            }))
             if (setupInfo.free) {
-                const searchTokens = [rewardTokenAddress, ...setupTokens.map(it => it.address || it)].filter(it => it).map(web3Utils.toChecksumAddress).filter((it, i, arr) => arr.indexOf(it) === i)
+                const searchTokens = [realRewardTokenAddress, ...realSetupTokens.map(it => it.address || it)].filter(it => it).map(web3Utils.toChecksumAddress).filter((it, i, arr) => arr.indexOf(it) === i)
                 const res = await getTokenPricesInDollarsOnCoingecko({ context, web3Data }, searchTokens, { tickToPrice, Token, Pool, Position, nearestUsableTick, TICK_SPACINGS, TickMath, maxLiquidityForAmounts })
                 const { data } = res
-                const rewardTokenPriceUsd = rewardTokenAddress !== VOID_ETHEREUM_ADDRESS ? rewardTokenAddress.toLowerCase() === wusdAddress.toLowerCase() ? 1 : data[rewardTokenAddress.toLowerCase()].usd : ethPrice
+                const rewardTokenPriceUsd = realRewardTokenAddress !== VOID_ETHEREUM_ADDRESS ? realRewardTokenAddress.toLowerCase() === wusdAddress.toLowerCase() ? 1 : data[realRewardTokenAddress.toLowerCase()].usd : ethPrice
                 var den = 0
-                await Promise.all(setupTokens.map(async (token) => {
+                await Promise.all(realSetupTokens.map(async (token) => {
                     if (token && token.address) {
                         const tokenPrice = token.address !== VOID_ETHEREUM_ADDRESS ? token.address.toLowerCase() === wusdAddress.toLowerCase() ? 1 : data[token.address.toLowerCase()].usd : ethPrice
                         den += (tokenPrice * token.liquidity * 10 ** (18 - token.decimals))
@@ -892,7 +915,7 @@ export default props => {
                     })
                     if (parseInt(ams[mainTokenIndex]) > 0) {
                         const reward = await blockchainCall(element.contract.methods.calculateLockedFarmingReward, setup.setupIndex, ams[mainTokenIndex], false, 0)
-                        setLockedEstimatedReward(toDecimals(parseInt(reward.relativeRewardPerBlock) * (parseInt(setup.endBlock) - block), rewardTokenInfo.decimals))
+                        setLockedEstimatedReward(toDecimals(parseInt(reward.relativeRewardPerBlock) * (parseInt(setup.endBlock) - currentBlock), rewardTokenInfo.decimals))
                     }
                 } else {
                     const val = parseInt(fromDecimals(value, parseInt(lpTokenInfo.decimals))) * 6400 * parseInt(setup.rewardPerBlock) / (parseInt(setup.totalSupply) + parseInt(fromDecimals(value, parseInt(lpTokenInfo.decimals))))
@@ -964,6 +987,7 @@ export default props => {
         try {
             await blockchainCall(element.contract.methods.withdrawLiquidity, currentPosition.positionId, removedLiquidity, amMin[0].full || amMin[0], amMin[1].full || amMin[1], burnData)
         } catch(e) {
+            console.error(e.stack)
             const message = (e.message || e).toLowerCase()
             if(message.indexOf('user denied') === -1 && message.indexOf('price slippage') === -1) {
                 await blockchainCall(element.contract.methods.withdrawLiquidity, currentPosition.positionId, removedLiquidity, burnData)
@@ -980,8 +1004,15 @@ export default props => {
             return await blockchainCall(element.contract.methods.withdrawLiquidity, currentPosition.positionId, 0, manageStatus.liquidityPoolAmount, amMin[0].full || amMin[0], amMin[1].full || amMin[1], burnData)
         }
         try {
+            await element.contract.methods.withdrawLiquidity(currentPosition.positionId, manageStatus.liquidityPoolAmount, amMin[0].full || amMin[0], amMin[1].full || amMin[1], burnData).call({from : account})
+        } catch(e) {
+            console.error(e.message)
+            console.error(e.stack)
+        }
+        try {
             await blockchainCall(element.contract.methods.withdrawLiquidity, currentPosition.positionId, manageStatus.liquidityPoolAmount, amMin[0].full || amMin[0], amMin[1].full || amMin[1], burnData)
         } catch(e) {
+            console.error(e.stack)
             const message = (e.message || e).toLowerCase()
             if(message.indexOf('user denied') === -1 && message.indexOf('price slippage') === -1) {
                 await blockchainCall(element.contract.methods.withdrawLiquidity, currentPosition.positionId, manageStatus.liquidityPoolAmount, burnData)
@@ -1282,7 +1313,7 @@ export default props => {
 
             if (!setupInfo.free) {
                 const reward = await blockchainCall(element.contract.methods.calculateLockedFarmingReward, setup.setupIndex, mainTokenIndex === 0 ? firstTokenAmount : secondTokenAmount, false, 0)
-                setLockedEstimatedReward(fromDecimals(parseInt(reward.relativeRewardPerBlock) * (parseInt(setup.endBlock) - block), rewardTokenInfo.decimals))
+                setLockedEstimatedReward(fromDecimals(parseInt(reward.relativeRewardPerBlock) * (parseInt(setup.endBlock) - currentBlock), rewardTokenInfo.decimals))
             } else {
                 const val = parseInt(lpAmount) * 6400 * parseInt(setup.rewardPerBlock) / (parseInt(setup.totalSupply) + parseInt(lpAmount))
                 if (!isNaN(val)) {
@@ -1321,7 +1352,7 @@ export default props => {
         const normalizedRewardPerBlock = parseInt(rewardPerBlock) * 10 ** (18 - rewardTokenInfo.decimals)
         const normalizedMaxStakeable = parseInt(maxStakeable) * 10 ** (18 - mainTokenInfo.decimals)
         const amount = normalizedRewardPerBlock * (1 / normalizedMaxStakeable)
-        return (canActivateSetup) ? formatMoneyUniV3(amount * parseInt(setupInfo.blockDuration), 6) : parseInt(block) >= parseInt(setup.endBlock) ? 0 : formatMoneyUniV3(amount * (parseInt(setup.endBlock) - parseInt(block)), 6)
+        return (canActivateSetup) ? formatMoneyUniV3(amount * parseInt(setupInfo.blockDuration), 6) : parseInt(currentBlock) >= parseInt(setup.endBlock) ? 0 : formatMoneyUniV3(amount * (parseInt(setup.endBlock) - parseInt(currentBlock)), 6)
     }
 
     function onSlippageChange(e) {
@@ -1352,7 +1383,7 @@ export default props => {
                 {
                     setupInfo.free &&
                     <div col-12 mb-md-2">
-                        <Input value={dfoCore.toDecimals(updatedRewardPerBlock)} min={0} onChange={(e) => setUpdatedRewardPerBlock(dfoCore.toFixed(dfoCore.fromDecimals(e.target.value), rewardTokenInfo.decimals))} label={"Reward per block"} />
+                        <Input value={dfoCore.toDecimals(updatedRewardPerBlock)} min={0} onChange={(e) => setUpdatedRewardPerBlock(dfoCore.toFixed(dfoCore.fromDecimals(e.target.value), rewardTokenInfo.decimals))} label={"Reward per currentBlock"} />
                     </div>
                 }
                 <div col-12 mb-md-2">
@@ -1412,7 +1443,7 @@ export default props => {
                         {setupTokens && manageStatus && manageStatus.additionalFees && feeData && feeData.feePercentageForTransacted && <span>{calculateTransactedFee(feeData.feePercentageForTransacted, element.generation === 'gen1' ? manageStatus.tokenAmounts[0] : manageStatus.additionalFees[0], setupTokens[0])} {setupTokens[0].symbol} - {calculateTransactedFee(feeData.feePercentageForTransacted, element.generation === 'gen1' ? manageStatus.tokenAmounts[1] : manageStatus.additionalFees[1], setupTokens[1])}  {setupTokens[1].symbol}</span>}
                         <input type="radio" name={"feeType" + postfix} checked={feeType === 'percentage'} onClick={() => setFeeType("percentage")}/>
                     </label>
-                    {contracts.indexOf(web3Utils.toChecksumAddress(element.address)) === -1 && <label className={style.FarmProtocolFee}>
+                    {!dualChainId && contracts.indexOf(web3Utils.toChecksumAddress(element.address)) === -1 && <label className={style.FarmProtocolFee}>
                         <span><b>🔥 Burn</b></span>
                         {feeData && feeData.tokenToTransferOrBurnInApplication && feeData.transferOrBurnAmountInApplication && <span>{formatMoney(fromDecimals(feeData.transferOrBurnAmountInApplication, feeData.tokenToTransferOrBurnInApplication.decimals, true), 6)} {feeData.tokenToTransferOrBurnInApplication.symbol}</span>}
                         <input type="radio" name={"feeType" + postfix} checked={feeType === 'burn'} onClick={() => setFeeType("burn")}/>
@@ -1484,16 +1515,16 @@ export default props => {
                         {setupTokens.map((token, i) => <div key={token.address} className={style.TokenFarmV3InfoBox}>{token.address !== VOID_ETHEREUM_ADDRESS ? <a target="_blank" href={`${getNetworkElement({ context, chainId }, "etherscanURL")}token/${token.address}`}><LogoRenderer input={token} /></a> : <LogoRenderer input={token} />}<span> {tickData && `${formatMoneyUniV3(i === 0 ? tickData.cursorNumber : 100 - tickData.cursorNumber, 2)}%`} <span>{token.symbol}</span></span> </div>)}
                         {!endBlockReached &&
                             <p className={style.BlockInfoV3B}>
-                            {setup.active && parseInt(setup.endBlock) > block && <span className={style.V3FarmStatusYEP}>Active</span>}
-                                {!delayedBlock && <> {(!setup.active && canActivateSetup) ? <span>{setupReady ? "new" : "Soon"}</span> : (!setup.active) ? <span>Inactive</span> : <></>} {(parseInt(setup.endBlock) <= block && parseInt(setup.endBlock) !== 0) && <span>Ended</span>}</>}{delayedBlock !== 0 && <span>Soon</span>}
+                            {setup.active && parseInt(setup.endBlock) > currentBlock && <span className={style.V3FarmStatusYEP}>Active</span>}
+                                {!delayedBlock && <> {(!setup.active && canActivateSetup) ? <span>{setupReady ? "new" : "Soon"}</span> : (!setup.active) ? <span>Inactive</span> : <></>} {(parseInt(setup.endBlock) <= currentBlock && parseInt(setup.endBlock) !== 0) && <span>Ended</span>}</>}{delayedBlock !== 0 && <span>Soon</span>}
                                 {!isNaN(apy) && <> <b>APR</b>: {apy === 0 ? 0 : formatMoneyUniV3(apy, 3)}%</>}
                             </p>
                         }
                         {rewardTokenInfo && <p className={style.BlockInfoV3}><b>Daily Rate</b>: {formatMoneyUniV3(fromDecimals(parseInt(setup.rewardPerBlock) * 6400, rewardTokenInfo.decimals, true), 4)} {rewardTokenInfo.symbol}</p>}
                         {mainTokenInfo && setupInfo && setupInfo.minStakeable !== '0' && <p className={style.BlockInfoV3}><b>Minimum Staking</b>: {formatMoneyUniV3(fromDecimals(setupInfo.minStakeable, mainTokenInfo.decimals, true), 6)} {mainTokenInfo.symbol}</p>}
-                        {parseInt(setup.endBlock) > 0 ? <p className={style.BlockInfoV3}><b>End</b>: <a target="_blank" href={`${getNetworkElement({ context, chainId }, "etherscanURL")}block/${setup.endBlock}`}>{setup.endBlock}</a></p> : <p className={style.BlockInfoV3}><b>Duration</b>: {getPeriodFromDuration(setupInfo.blockDuration)}</p>}
+                        {parseInt(setup.endBlock) > 0 ? <p className={style.BlockInfoV3}><b>End</b>: <a target="_blank" href={`${getNetworkElement({ context, chainId : dualChainId || chainId }, "etherscanURL")}block/${setup.endBlock}`}>{setup.endBlock}</a></p> : <p className={style.BlockInfoV3}><b>Duration</b>: {getPeriodFromDuration(setupInfo.blockDuration)}</p>}
                         {setupMustBeToggled && <ActionAWeb3Button onSuccess={refresh} onClick={toggleSetup}>Toggle</ActionAWeb3Button>}
-                        {!currentPosition && (!open && parseInt(setup.endBlock) > parseInt(block)) && <a className={style.RegularButtonDuo} onClick={() => void(setOpen(true), setWithdrawOpen(false), setEdit(false))}>Farm</a>}
+                        {!currentPosition && (!open && parseInt(setup.endBlock) > parseInt(currentBlock)) && <a className={style.RegularButtonDuo} onClick={() => void(setOpen(true), setWithdrawOpen(false), setEdit(false))}>Farm</a>}
                         {!currentPosition && open && <RegularButtonDuo className={style.RegularButtonDuoBack} onClick={() => void(setOpen(false), setWithdrawOpen(false), setEdit(false))}>Close</RegularButtonDuo>}
                         {
                             !delayedBlock && canActivateSetup && <>
@@ -1502,7 +1533,7 @@ export default props => {
                                         {
                                             activateLoading ? <OurCircularProgress/> : <>
                                                 <RegularButtonDuo onClick={() => void(setOpen(true), setWithdrawOpen(false), setEdit(false))}>Farm</RegularButtonDuo>
-                                                <p className={style.FarmDisclamerGas}>You're the first farmer on this setup, you'll spend more gas, but all of the initial block rewards are yours! </p>
+                                                <p className={style.FarmDisclamerGas}>You're the first farmer on this setup, you'll spend more gas, but all of the initial currentBlock rewards are yours! </p>
                                             </>
                                         }
                                     </>
@@ -1511,7 +1542,7 @@ export default props => {
                             </>
                         }
                         {delayedBlock !== 0 && <div>
-                            <p><b>Start Block: <a href={`${getNetworkElement({ context, chainId }, "etherscanURL")}block/${delayedBlock}`} target="_blank">#{delayedBlock}</a></b></p>
+                            <p><b>Start Block: <a href={`${getNetworkElement({ context, chainId : dualChainId || chainId }, "etherscanURL")}block/${delayedBlock}`} target="_blank">#{delayedBlock}</a></b></p>
                         </div>}
                         {/*<a Web3ActionBTN" onClick={async () => {
                             var updatedSetups = [{
@@ -1604,7 +1635,7 @@ export default props => {
                     <div className={style.FarmYou}>
                         {manageStatus && <p><b>Your Deposit</b>:<br></br> {manageStatus.tokens.map((token, i) => <span key={token.address}> {formatMoneyUniV3(fromDecimals(manageStatus.tokenAmounts[i], token.decimals, true), 3)} {token.symbol} </span>)}</p>}
                         {!endBlockReached && <p><b>Daily Earnings</b>:<br></br> {calculateDailyEarnings()} {rewardTokenInfo.symbol}</p>}
-                        {(!manageStatus?.withdrawOnly && !open && parseInt(setup.endBlock) > parseInt(block)) && <RegularButtonDuo onClick={() => void(setOpen(true), setWithdrawOpen(false), setEdit(false))}>Increase</RegularButtonDuo>}
+                        {(!manageStatus?.withdrawOnly && !open && parseInt(setup.endBlock) > parseInt(currentBlock)) && <RegularButtonDuo onClick={() => void(setOpen(true), setWithdrawOpen(false), setEdit(false))}>Increase</RegularButtonDuo>}
                         {open && <RegularButtonDuo onClick={() => void(setOpen(false), setWithdrawOpen(false), setEdit(false))}>Close</RegularButtonDuo>}
                         {!manageStatus?.withdrawOnly && !withdrawOpen && <RegularButtonDuo onClick={() => void(setOpen(false), setWithdrawOpen(true), setEdit(false))}>Decrease</RegularButtonDuo>}
                         {withdrawOpen && <RegularButtonDuo onClick={() => void(setOpen(false), setWithdrawOpen(false), setEdit(false))}>Close</RegularButtonDuo>}

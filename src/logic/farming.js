@@ -101,7 +101,9 @@ export async function allFarmings(data, factoryAddress, generation) {
 
 export async function getFarming(data, address, generation) {
 
-    const { context, chainId, newContract, lightweight, positionIds, account, mode, block } = data
+    const { context, chainId, newContract, lightweight, positionIds, account, mode, block, dualBlock } = data
+
+    const currentBlock = parseInt(dualBlock || block)
 
     generation = generation || await getFarmingContractGenerationByAddress(data, address)
 
@@ -135,7 +137,7 @@ export async function getFarming(data, address, generation) {
         if (!byMint && setup.rewardPerBlock !== "0") {
             setup.canActivateSetup = setup.canActivateSetup && (parseInt(extensionBalance) >= (parseInt(setup.rewardPerBlock) * parseInt(setupInfo.blockDuration)))
         }
-        if (setup.active && (parseInt(setup.endBlock) > block)) {
+        if (setup.active && (parseInt(setup.endBlock) > currentBlock)) {
             setupInfo.free ? freeSetups.push(setup) : lockedSetups.push(setup)
             rewardPerBlock += parseInt(setup.rewardPerBlock)
         }

@@ -2,10 +2,18 @@
         "ethereumNetwork": {
             "1": "",
             "4" : "Rinkeby",
-            "10" : "Optimism"
+            "42" : "Kovan",
+            "10" : "Optimism",
+            "69" : "OptimismKovan"
         },
-        "ethereumNetworks": [1,4],
-        "optimismNetworks": [10],
+        "dualChainId" : {
+            "10" : 1,
+            "69" : 42
+        },
+        "chainProvider" : {
+            "1" : "https://mainnet.infura.io/v3/2eddecc384554c7b8fce50f068a1232d",
+            "42" : "https://kovan.infura.io/v3/2eddecc384554c7b8fce50f068a1232d"
+        },
         "useWalletSettings": [
             {
               "id": "injected",
@@ -20,7 +28,7 @@
               "id": "injected",
               "buttonText": "Metamask",
               "settings" : {
-                "chainId" : [1,4]
+                "chainId" : [1,4,10]
               }
             },
             {
@@ -55,7 +63,7 @@
         "etherscanURL": "https://etherscan.io/",
         "etherscanURLRopsten": "https://ropsten.etherscan.io/",
         "etherscanURLRinkeby": "https://rinkeby.etherscan.io/",
-        "etherscanURLOptimism": "https://optimism.etherscan.io/",
+        "etherscanURLOptimism": "https://optimistic.etherscan.io/",
         "covenantsURLplain": "https://covenants.eth.link/",
         "uniSwapInfoURL": "https://uniswap.info/token/",
         "uniSwapSwapURLTemplate": "https://app.uniswap.org/#/swap?inputCurrency={0}&outputCurrency={1}",

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 
 import { isEthereumAddress, useWeb3, useEthosContext, getNetworkElement, blockchainCall, VOID_ETHEREUM_ADDRESS, formatMoney, fromDecimals, web3Utils, abi, toDecimals, numberToString } from '@ethereansos/interfaces-core'
 
@@ -25,7 +25,9 @@ const ViewRoutine = ({ loadedElement, onBack }) => {
 
     const web3Data = useWeb3()
 
-    const { chainId, block, newContract, account } = web3Data
+    const { chainId, block, newContract, account, dualChainId, dualBlock } = web3Data
+
+    const currentBlock = useMemo(() => dualBlock || block, [block, dualBlock])
 
     const { pathname } = useLocation()
 
@@ -92,7 +94,7 @@ const ViewRoutine = ({ loadedElement, onBack }) => {
             const period = Object.values(context.blockIntervals).filter(value => value === entry.blockInterval)
             const oneHundred = await contract.methods.ONE_HUNDRED().call()
             const executorReward = formatMoney(parseFloat(fromDecimals(entry.callerRewardPercentage, 18, true)) * 100)
-            var blockNumber = parseInt(block)
+            var blockNumber = parseInt(currentBlock)
             var nextBlock = parseInt(entry.lastBlock) + parseInt(entry.blockInterval)
             nextBlock = nextBlock <= parseInt(entry.blockInterval) ? 0 : nextBlock
             var extensionContract = newContract(context.FixedInflationExtensionABI, await contract.methods.host().call())
@@ -208,7 +210,7 @@ const ViewRoutine = ({ loadedElement, onBack }) => {
                     </div>}
                 </>}
             </div>
-            {element.nextBlock > 0 && <h5>Next Execution Block: <a href={`${getNetworkElement({ context, chainId }, "etherscanURL")}block/${element.nextBlock}`} target="_blank"><b>#{element.nextBlock}</b></a></h5>}
+            {element.nextBlock > 0 && <h5>Next Execution Block: <a href={`${getNetworkElement({ context, chainId : dualChainId || chainId }, "etherscanURL")}block/${element.nextBlock}`} target="_blank"><b>#{element.nextBlock}</b></a></h5>}
             {element.executable && <ActionAWeb3Button onSuccess={getContractMetadata} onClick={execute}>Execute</ActionAWeb3Button>}
         </div>}
     </div>

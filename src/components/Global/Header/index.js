@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import Navigation from '../Navigation'
 
@@ -15,14 +15,14 @@ const Header = (props) => {
 
   const context = useEthosContext()
   const web3Data = useWeb3()
-  const { chainId, web3 } = web3Data
+  const { chainId, web3, dualChainId } = web3Data
 
   const switchToNetwork = useCallback(() => {
     return web3.currentProvider.request({
       method : 'wallet_switchEthereumChain',
-      params: [{chainId : parseInt(chainId) === 1 ? "0xa" : "0x1"}]
+      params: [{chainId : "0x" + parseInt(dualChainId || Object.entries(context.dualChainId).filter(it => parseInt(it[1]) === chainId)[0][0]).toString(16)}]
     })
-  }, [chainId])
+  }, [chainId, dualChainId])
 
   return (
       <header className={style.Header}>
@@ -33,11 +33,11 @@ const Header = (props) => {
         <div className={style.RightMenu}>
           <div className={style.NetworkSelect}>
             <div>
-              <a className={style.NetworkSelectL1 + (context.ethereumNetworks.indexOf(parseInt(chainId)) !== -1 ? (' ' + style.opacity1) : '')} onClick={chainId !== 1 && switchToNetwork}>
+              <a className={style.NetworkSelectL1 + (!dualChainId ? (' ' + style.opacity1) : '')} onClick={dualChainId && switchToNetwork}>
                 <img src={`${process.env.PUBLIC_URL}/img/ethereum.png`}/>
                 <p>ETH</p>
               </a>
-              <a className={style.NetworkSelectL2 + (context.optimismNetworks.indexOf(parseInt(chainId)) !== -1 ? (' ' + style.opacity1) : '')} onClick={chainId !== 10 && switchToNetwork}>
+              <a className={style.NetworkSelectL2 + (dualChainId ? (' ' + style.opacity1) : '')} onClick={!dualChainId && switchToNetwork}>
                 <img src={`${process.env.PUBLIC_URL}/img/optimism.png`}/>
                 <p>OP</p>
               </a>
