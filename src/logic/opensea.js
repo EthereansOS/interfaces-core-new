@@ -45,7 +45,12 @@ export async function getAsset(seaport, tokenAddress, tokenId) {
 }
 
 export async function retrieveAsset({ context, seaport, newContract, account }, tokenAddress, tokenId) {
-    return await toItem({context, newContract, account}, await getAsset(seaport, tokenAddress, tokenId))
+    return await toItem({context, newContract, account}, seaport ? await getAsset(seaport, tokenAddress, tokenId) : (await cleanTokens({context, web3 : window.web3}, {
+        [web3Utils.toChecksumAddress(tokenAddress)] : [{
+            id : tokenId,
+            owned : true
+        }]
+    }, 'ERC1155', ['uri(uint256)', 'uri', 'tokenURI(uint256)', 'tokenUri(uint256)']))[0])
 }
 
 export async function getOwnedTokens(web3Data, type, asset_contract_address) {
@@ -195,6 +200,13 @@ async function cleanTokens(web3Data, tokens, type, uriLabels) {
                 uri = uri.split('{id}').join(item.tokenId)
                 uri = formatLink({ context }, uri)
                 metadata = await memoryFetch(uri)
+                if(metadata.image) {
+                    var image = metadata.image
+                    image = image.split('0x{id}').join(web3Utils.numberToHex(item.tokenId))
+                    image = image.split('{id}').join(image.tokenId)
+                    image = formatLink({ context }, image)
+                    metadata.image = image
+                }
                 break
             } catch(e) {
             }
@@ -240,6 +252,9 @@ async function toItem({context, newContract, account}, element) {
             result.balance = await blockchainCall(result.contract.methods.balanceOf, account, result.id)
         }
     } catch(e) {}
+    result.collection = result.collection || {
+        imageUrl : result.image
+    }
     return result
 }
 

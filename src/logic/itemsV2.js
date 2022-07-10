@@ -293,7 +293,7 @@ export async function loadDeckMetadata({chainId, context, account, newContract, 
                         }
                     }
                 }
-                asset = await retrieveAsset({context, seaport, newContract, account}, element.mainInterface.options.address, element.id)
+                asset = await retrieveAsset({context, seaport : chainId === 10 ? null : seaport, newContract, account}, element.mainInterface.options.address, element.id)
 
                 window.localStorage.setItem(itemData.id, JSON.stringify({ collection : asset.collection }))
             }
@@ -752,7 +752,7 @@ export async function loadDeckItem(data, itemId, item) {
 
     item = await loadItem(data, itemId, item)
 
-    var { getGlobalContract, wrapper, is721, seaport, context, newContract, chainId } = data
+    var { getGlobalContract, wrapper, is721, seaport, context, newContract, chainId, dualChainId } = data
 
     wrapper = wrapper || await loadDeckWrapper(data, item)
 
@@ -777,7 +777,7 @@ export async function loadDeckItem(data, itemId, item) {
 
     const tokenId = abi.decode(["uint256"], logs[0].topics[2])[0].toString()
 
-    const collection = (await seaport.api.getAsset({ tokenAddress : originalAddress, tokenId })).collection
+    const collection = dualChainId ? { imageUrl : item.image } : (await seaport.api.getAsset({ tokenAddress : originalAddress, tokenId })).collection
 
     item = {
         ...item,
