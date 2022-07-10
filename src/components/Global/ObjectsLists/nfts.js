@@ -45,7 +45,7 @@ export default ({type, renderedProperties, searchText}) => {
     return <Web3DependantList
       Renderer={SingleOpenseaElement}
       renderedProperties={renderedProperties}
-      provider={() => tokenAddress ? loadNFTItemsFromAddress({ context, seaport, ...web3Data}, tokenAddress, type) : getOwnedTokens({context, seaport, getGlobalContract, chainId, account, web3, newContract}, type)}
+      provider={() => tokenAddress ? loadNFTItemsFromAddress({ context, seaport, ...web3Data}, tokenAddress, type) : getOwnedTokens({ context, seaport, ...web3Data}, type)}
       discriminant={account + tokenAddress}
       filter={filter}
       fixedList
