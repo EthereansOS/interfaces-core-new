@@ -467,7 +467,7 @@ export async function checkCoverSize({context}, file, mandatory) {
     if ((typeof file).toLowerCase() === "string") {
         cover = await (await fetch(formatLink({context}, file))).blob()
     } else {
-        cover = file.size ? file : file.item ? file.item(0) : file.get(0)
+        cover = file.size ? file : file.item ? file.item(0) : file.get ? file.get(0) : file[0]
     }
     if(!cover && mandatory) {
         throw "Cover is Mandatory"

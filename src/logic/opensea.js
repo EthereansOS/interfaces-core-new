@@ -267,6 +267,9 @@ export async function getItemOrders({chainId, context, seaport, account, web3, n
             break
         } catch(e) {
             const message = (e.message || e).toLowerCase()
+            if(message.indexOf('for chain ethereum not found') !== -1) {
+                return []
+            }
             if(message.indexOf('429') !== -1) {
                 tries++
             } else {
