@@ -12,12 +12,14 @@ import { useOpenSea } from '../../../logic/uiUtilities'
 import { retrieveAsset } from '../../../logic/opensea'
 
 import style from '../../../all.module.css'
+import { resolveToken } from '../../../logic/dualChain'
 
 export default ({item}) => {
 
     const context = useEthosContext()
 
-    const { web3, account, newContract } = useWeb3()
+    const web3Data = useWeb3()
+    const { web3, account, newContract } = web3Data
 
     const seaport  = useOpenSea()
 
@@ -28,7 +30,7 @@ export default ({item}) => {
         setTimeout(async () => {
             const source = await blockchainCall(item.wrapper.methods.source, item.id)
             if(item.wrapType === 'ERC20') {
-                return setToken(await loadTokenFromAddress({account, context, newContract, web3}, source))
+                return setToken(await loadTokenFromAddress({account, context, newContract, web3}, await resolveToken({ context, ...web3Data }, source)))
             }
             setToken(await retrieveAsset({context, seaport, newContract, account}, source[0], source[1]))
         })

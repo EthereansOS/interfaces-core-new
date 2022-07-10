@@ -5,6 +5,7 @@ import { blockchainCall, formatLink, useEthosContext, getNetworkElement, useWeb3
 import LogoRenderer from '../../Global/LogoRenderer'
 import OurCircularProgress from '../../Global/OurCircularProgress'
 import { getLogs } from '../../../logic/logger'
+import { resolveToken } from '../../../logic/dualChain'
 
 export default props => {
 
@@ -12,7 +13,8 @@ export default props => {
 
     const seaport = useOpenSea()
 
-    const { newContract, account, web3, chainId } = useWeb3()
+    const web3Data = useWeb3()
+    const { newContract, account, web3, chainId } = web3Data
 
     async function onError() {
         var element = props.input
@@ -33,7 +35,10 @@ export default props => {
             }
             const logs = await getLogs(web3.currentProvider, 'eth_getLogs', args)
             if(logs.length === 0) {
-                return
+                var source = await blockchainCall(element.wrapper.methods.source, element.id)
+                var link = context.trustwalletImgURLTemplate.split('{0}').join(await resolveToken({ context, ...web3Data }, source))
+                link = formatLink({ context }, link)
+                return link
             }
 
             element = {

@@ -49,7 +49,7 @@ function getResolver(web3Data, resolverName) {
 export async function resolveToken(web3Data, tokenAddress) {
     var resolver = getResolver(web3Data, 'resolveToken')
     if(!resolver) {
-        return tokenAddress
+        return web3Utils.toChecksumAddress(tokenAddress)
     }
-    return await resolver(web3Data, tokenAddress)
+    return web3Utils.toChecksumAddress(await resolver(web3Data, tokenAddress))
 }
