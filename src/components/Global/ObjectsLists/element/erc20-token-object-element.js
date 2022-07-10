@@ -10,11 +10,15 @@ import LogoRenderer from '../../LogoRenderer'
 export default ({element, onClick}) => {
   const context = useEthosContext()
 
-  const { chainId, account, newContract } = useWeb3()
+  const { web3, chainId, account, newContract } = useWeb3()
 
   const [balance, setBalance] = useState(element.balance)
 
   useEffect(() => {
+    if(element.symbol === 'ETH' && element.address !== VOID_ETHEREUM_ADDRESS) {
+      web3.eth.getBalance(account).then(setBalance)
+      return
+    }
     blockchainCall((element.contract = element.contract || newContract(context.ItemInteroperableInterfaceABI, element.address)).methods.balanceOf, account).then(bal => setBalance(element.balance = bal))
   }, [element.address, account])
 
