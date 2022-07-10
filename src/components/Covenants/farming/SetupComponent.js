@@ -1126,7 +1126,7 @@ export default props => {
             return <ActionAWeb3Button onSuccess={reloadData} onClick={withdrawReward}>Claim</ActionAWeb3Button>
         }
         return <ApproveButton contract={feeData.tokenToTransferOrBurnInApplication.contract} spender={feeData.operator} onApproval={setBurnFeeAllowance} text={`Approve ${feeData.tokenToTransferOrBurnInApplication.symbol} to transfer/burn fees`}/>
-    }, [feeData, burnFeeAllowance])
+    }, [feeData, burnFeeAllowance, currentPosition])
 
     const onInputTypeChange = async (e) => {
         setInputType(e.target.value)
