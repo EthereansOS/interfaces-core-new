@@ -124,7 +124,7 @@ async function getOwned721Tokens(web3Data, toExclude) {
             return tokens[addr] = null
         }
     }))
-    return await cleanTokens(web3Data, tokens, 'ERC721', ['tokenURI', 'tokenUri', 'uri'])
+    return await cleanTokens(web3Data, tokens, 'ERC721', ['tokenURI(uint256)', 'tokenUri(uint256)', 'uri(uint256)'])
 }
 
 async function getOwned1155Tokens(web3Data, toExclude) {
@@ -168,38 +168,31 @@ async function getOwned1155Tokens(web3Data, toExclude) {
             tokens[addr][index].owned = '0' !== abi.decode(["uint256"], await getRawField({ provider : web3.currentProvider}, addr, 'balanceOf(address,uint256)', address, id))[0].toString()
         }
     }))
-    return await cleanTokens(web3Data, tokens, 'ERC1155', 'uri')
+    return await cleanTokens(web3Data, tokens, 'ERC1155', ['uri(uint256)', 'uri', 'tokenURI(uint256)', 'tokenUri(uint256)'])
 }
 
 async function cleanTokens(web3Data, tokens, type, uriLabels) {
 
     const { web3, context } = web3Data
 
-    var _ = ([...Object.entries(tokens)]).forEach(entry => {
-        if(!entry[1]) {
-            delete tokens[entry[0]]
-            return
-        }
-        tokens[entry[0]] = entry[1].filter(it => it.owned).map(it => it.id).sort()
-        if(tokens[entry[0]].length === 0) {
-            delete tokens[entry[0]]
-        }
-    })
-    var assets = Object.entries(tokens).map(it => ({
-        tokenAddress : it[0],
-        tokenId : it[1][0],
+    uriLabels = uriLabels instanceof Array ? uriLabels : [uriLabels]
+
+    var assets = Object.entries(tokens).filter(it => it[1]).map(entry => entry[1].filter(it => it.owned).map(it => ({
+        tokenAddress : entry[0],
+        tokenId : it.id,
         assetContract : {
             schemaName : type
         }
-    }))
-    uriLabels = uriLabels instanceof Array ? uriLabels : [uriLabels]
+    }))).reduce((acc, it) => [...acc, ...it], [])
     assets = await Promise.all(assets.map(async item => {
         var uri
         var metadata
         for(var uriLabel of uriLabels) {
             try {
-                uri = await getRawField({ provider : web3.currentProvider }, item.tokenAddress, (uriLabel + '(uint256)'), item.tokenId)
+                uri = await getRawField({ provider : web3.currentProvider }, item.tokenAddress, uriLabel, item.tokenId)
                 uri = abi.decode(["string"], uri)[0]
+                uri = uri.split('0x{id}').join(web3Utils.numberToHex(item.tokenId))
+                uri = uri.split('{id}').join(item.tokenId)
                 uri = formatLink({ context }, uri)
                 metadata = await memoryFetch(uri)
                 break

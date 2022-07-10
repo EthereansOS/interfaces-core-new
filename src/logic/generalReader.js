@@ -24,7 +24,7 @@ export async function getData({ provider }, address) {
 export async function getRawField({provider}, to, fieldName) {
     var response = '0x'
     var data = web3Utils.sha3(fieldName + '()').substring(0, 10)
-    if(arguments.length > 3) {
+    if(fieldName.indexOf('(') !== -1 && fieldName.indexOf('()') === -1) {
         var fields = fieldName.split('(')[1]
         fields = fields.split(')')[0]
         fields = fields.split(',')
