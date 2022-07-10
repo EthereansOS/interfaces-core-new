@@ -46,7 +46,7 @@ export default props => {
             }
             while(true) {
                 try {
-                    const asset = await retrieveAsset({context, seaport, newContract, account}, element.mainInterface.options.address, element.id)
+                    const asset = await retrieveAsset({context, seaport : chainId === 10 ? null : seaport, newContract, account}, element.mainInterface.options.address, element.id)
                     return asset.collection.imageUrl?.split('s120').join('s300')
                 } catch(e) {
                     console.log(e)
@@ -54,7 +54,7 @@ export default props => {
             }
         }
         try {
-            const asset = await retrieveAsset({context, seaport, newContract, account}, element.mainInterface.options.address, element.id)
+            const asset = await retrieveAsset({context, seaport : chainId === 10 ? null : seaport, newContract, account}, element.mainInterface.options.address, element.id)
             return asset.imageUrl?.split('s120').join('s300')
         } catch(e) {
             console.log(e)

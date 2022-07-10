@@ -20,7 +20,13 @@ export async function getLogs(provider, _, args) {
 
     var logs = []
     while(start < end) {
-        logs.push(sendAsync(provider, _, { ...args, fromBlock : web3Utils.toHex(start), toBlock : web3Utils.toHex(end)}))
+        logs.push((async () => {
+            try {
+                return await sendAsync(provider, _, { ...args, fromBlock : web3Utils.toHex(start), toBlock : web3Utils.toHex(end)})
+            } catch(e) {
+                return []
+            }
+        })())
         if(end === lastBlock) {
             break
         }
