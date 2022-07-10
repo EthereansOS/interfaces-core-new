@@ -17,7 +17,7 @@ import { getLogs } from '../../../logic/logger'
 import { enqueue, dequeue } from '../../../logic/interval'
 
 import style from '../../../all.module.css'
-import { getRawField } from '../../../logic/generalReader'
+import { resolveToken } from '../../../logic/dualChain'
 
 const MAX_UINT128 = '0x' + web3Utils.toBN(2).pow(web3Utils.toBN(128)).sub(web3Utils.toBN(1)).toString('hex')
 const MAX_UINT256 = '0x' + web3Utils.toBN(2).pow(web3Utils.toBN(256)).sub(web3Utils.toBN(1)).toString('hex')
@@ -615,26 +615,8 @@ export default props => {
         try {
             const ethPrice = await getEthereumPrice({ context })
             const wusdAddress = getNetworkElement({ context, chainId }, "WUSDAddress") || ""
-            const realRewardTokenAddress = web3Utils.toChecksumAddress(rewardTokenAddress) === web3Utils.toChecksumAddress(context.daiTokenAddressOptimism) ? context.daiTokenAddress : rewardTokenAddress
-            const realSetupTokens = !dualChainId ? setupTokens : await Promise.all(setupTokens.map(async it => {
-                try {
-                    var addr = it.address || it
-                    if(web3Utils.toChecksumAddress(addr) === web3Utils.toChecksumAddress(context.daiTokenAddressOptimism)) {
-                        return it.address ? {
-                            ...it,
-                            address : context.daiTokenAddress
-                        } : context.daiTokenAddress
-                    }
-                    var result = await getRawField({ provider : web3.currentProvider }, addr, "l1Token")
-                    result = abi.decode(["address"], result)[0]
-                    return it.address ? {
-                        ...it,
-                        address : result
-                    } : result
-                } catch(e) {
-                    return it
-                }
-            }))
+            const realRewardTokenAddress = await resolveToken({ context, ...web3Data }, rewardTokenAddress)
+            const realSetupTokens = await Promise.all(setupTokens.map(it => resolveToken({ context, ...web3Data }, it)))
             if (setupInfo.free) {
                 const searchTokens = [realRewardTokenAddress, ...realSetupTokens.map(it => it.address || it)].filter(it => it).map(web3Utils.toChecksumAddress).filter((it, i, arr) => arr.indexOf(it) === i)
                 const res = await getTokenPricesInDollarsOnCoingecko({ context, web3Data }, searchTokens, { tickToPrice, Token, Pool, Position, nearestUsableTick, TICK_SPACINGS, TickMath, maxLiquidityForAmounts })
