@@ -4,7 +4,7 @@
   "private": true,
   "homepage": "./",
   "dependencies": {
-    "@ethereansos/interfaces-core": "^0.4.118",
+    "@ethereansos/interfaces-core": "^0.4.119",
     "@ethereansos/interfaces-ui": "^0.4.34",
     "@ethersproject/hash": "^5.5.0",
     "@monaco-editor/react": "^4.1.3",
