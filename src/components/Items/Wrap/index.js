@@ -19,7 +19,7 @@ export default ({item}) => {
     const context = useEthosContext()
 
     const web3Data = useWeb3()
-    const { web3, account, newContract } = web3Data
+    const { web3, account, newContract, dualChainId } = web3Data
 
     const seaport  = useOpenSea()
 
@@ -37,7 +37,7 @@ export default ({item}) => {
                     console.log(e)
                 }
             }
-            setToken(await retrieveAsset({context, seaport, newContract, account}, source[0], source[1]))
+            setToken(await retrieveAsset({context, seaport : dualChainId ? null : seaport, newContract, account}, source[0], source[1]))
         })
     }, [item])
 
