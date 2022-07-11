@@ -28,9 +28,14 @@ export default ({item}) => {
     useEffect(() => {
         setToken(null)
         setTimeout(async () => {
-            const source = await blockchainCall(item.wrapper.methods.source, item.id)
+            var source = await blockchainCall(item.wrapper.methods.source, item.id)
+            //source = await resolveToken({ context, ...web3Data }, source)
             if(item.wrapType === 'ERC20') {
-                return setToken(await loadTokenFromAddress({account, context, newContract, web3}, await resolveToken({ context, ...web3Data }, source)))
+                try {
+                    return setToken(await loadTokenFromAddress({account, context, newContract, web3}, source))
+                } catch(e) {
+                    console.log(e)
+                }
             }
             setToken(await retrieveAsset({context, seaport, newContract, account}, source[0], source[1]))
         })
