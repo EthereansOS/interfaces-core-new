@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react"
 
 import CircularProgress from '../OurCircularProgress'
-import { useEthosContext, formatLink, web3Utils} from "@ethereansos/interfaces-core"
+import { useEthosContext, formatLink, web3Utils, useWeb3 } from "@ethereansos/interfaces-core"
+import { resolveToken } from "../../../logic/dualChain"
 
 import style from '../../../all.module.css'
 
@@ -15,9 +16,11 @@ export default ({input, figureClassName, noFigure, title, defaultImage, noDotLin
 
     const context = useEthosContext()
 
+    const web3Data = useWeb3()
+
     const [finalImage, setFinalImage] = useState(null)
     const [loading, setLoading] = useState(false)
-    const [error, setError] = useState()
+    const [tried, setTried] = useState()
 
     useEffect(() => {
         setFinalImage(null)
@@ -31,6 +34,12 @@ export default ({input, figureClassName, noFigure, title, defaultImage, noDotLin
     async function onLoadError() {
         setLoading(onError ? true : false)
         setFinalImage((onError && await onError()) || realDefaultImage)
+        if(!onError && !tried) {
+            setTried(true)
+            var token = await resolveToken({ context, ...web3Data}, input.address || input)
+            var link = context.trustwalletImgURLTemplate.split('{0}').join(token)
+            setFinalImage(link)
+        }
         setLoading(false)
     }
 
