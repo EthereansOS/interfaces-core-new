@@ -44,8 +44,8 @@ export async function getAsset(seaport, tokenAddress, tokenId) {
     return asset
 }
 
-export async function retrieveAsset({ context, seaport, newContract, account }, tokenAddress, tokenId) {
-    return await toItem({context, newContract, account}, seaport ? await getAsset(seaport, tokenAddress, tokenId) : (await cleanTokens({context, web3 : window.web3}, {
+export async function retrieveAsset({ context, dualChainId, seaport, newContract, account }, tokenAddress, tokenId) {
+    return await toItem({context, newContract, account}, !dualChainId && seaport ? await getAsset(seaport, tokenAddress, tokenId) : (await cleanTokens({context, web3 : window.web3}, {
         [web3Utils.toChecksumAddress(tokenAddress)] : [{
             id : tokenId,
             owned : true
