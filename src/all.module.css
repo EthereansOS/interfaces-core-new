@@ -1132,7 +1132,7 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
   .Web3ConnectWallet p {width: 100px;}
 }
 @media only screen and (max-width: 989px) {
-  .NavigationItem {margin: 7px 0 7px 0px !important; width: 85px !important; padding: 8px 4px !important;}
+  .NavigationItem {width: 85px !important;}
   .Web3ConnectWallet p {width: 100px;}
 }
 
