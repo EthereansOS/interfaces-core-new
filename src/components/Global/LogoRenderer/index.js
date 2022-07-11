@@ -36,9 +36,11 @@ export default ({input, figureClassName, noFigure, title, defaultImage, noDotLin
         setFinalImage((onError && await onError()) || realDefaultImage)
         if(!onError && !tried) {
             setTried(true)
-            var token = await resolveToken({ context, ...web3Data}, input.address || input)
-            var link = context.trustwalletImgURLTemplate.split('{0}').join(token)
-            setFinalImage(link)
+            if((typeof input).toLowerCase() === 'string' || input.address) {
+                var token = await resolveToken({ context, ...web3Data}, input.address || input)
+                var link = context.trustwalletImgURLTemplate.split('{0}').join(token)
+                setFinalImage(link)
+            }
         }
         setLoading(false)
     }

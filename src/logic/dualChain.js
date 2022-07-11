@@ -51,5 +51,10 @@ export async function resolveToken(web3Data, tokenAddress) {
     if(!resolver) {
         return web3Utils.toChecksumAddress(tokenAddress)
     }
-    return web3Utils.toChecksumAddress(await resolver(web3Data, tokenAddress))
+
+    var resolved = await resolver(web3Data, tokenAddress)
+    resolved.address && (resolved.address = web3Utils.toChecksumAddress(resolved.address))
+    (typeof resolved).toLowerCase() === 'string' && (resolved = web3Utils.toChecksumAddress(resolved))
+
+    return resolved
 }
