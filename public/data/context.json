@@ -130,7 +130,7 @@
         ],
         "factoryOfFactoriesAddress": "0xf68db1F9A5B224f6687FC56e74a224DcB6913221",
         "factoryOfFactoriesAddressRinkeby": "0xff6bd9dfAA47f51Bb7bfDd95F8bBB3C020166eEA",
-        "factoryOfFactoriesAddressOptimism": "0x3A8BDadE5544bC27F15a06F7D6263a834e30D221",
+        "factoryOfFactoriesAddressOptimism": "0x241c5FAd7e3Dc73a0c8303F37a3Ecf43f9f4e1E9",
         "factoryIndices": {
             "dfo": 0,
             "subdao": 1,

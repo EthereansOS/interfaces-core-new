@@ -33,7 +33,6 @@ export default ({input, figureClassName, noFigure, title, defaultImage, noDotLin
 
     async function onLoadError() {
         setLoading(onError ? true : false)
-        setFinalImage((onError && await onError()) || realDefaultImage)
         if(!onError && !tried) {
             setTried(true)
             if((typeof input).toLowerCase() === 'string' || input.address) {
@@ -41,6 +40,8 @@ export default ({input, figureClassName, noFigure, title, defaultImage, noDotLin
                 var link = context.trustwalletImgURLTemplate.split('{0}').join(token)
                 setFinalImage(link)
             }
+        } else {
+            setFinalImage((onError && await onError()) || realDefaultImage)
         }
         setLoading(false)
     }
