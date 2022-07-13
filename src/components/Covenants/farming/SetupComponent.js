@@ -1569,8 +1569,8 @@ export default props => {
                         </p>}
                         {element.generation === 'gen2' && <p className={style.farmInfoCurveR}>
                             <p className={style.PriceRangeInfoFarm}>
-                                <a className={style.ExtLinkButton} target="_blank" href={context.uniswapV3PoolURLTemplate.split('{0}').join(setupInfo.liquidityPoolTokenAddress)}>{formatMoneyUniV3(numberToString(parseInt(lpTokenInfo.fee) / 10000), '2')}%</a>
-                                {((currentPosition?.tokenId && currentPosition?.tokenId !== '0') || (setup.objectId && setup.objectId !== '0')) && <a className={style.ExtLinkButton} href={context.uniswapV3NFTURLTemplate.split('{0}').join(currentPosition?.tokenId || setup.objectId)} target="_blank">NFT</a>}
+                                <a className={style.ExtLinkButton} target="_blank" href={context.uniswapV3PoolURLTemplate.split('{0}').join(dualChainId ? 'optimism/' : '').split('{1}').join(setupInfo.liquidityPoolTokenAddress)}>{formatMoneyUniV3(numberToString(parseInt(lpTokenInfo.fee) / 10000), '2')}%</a>
+                                {((currentPosition?.tokenId && currentPosition?.tokenId !== '0') || (setup.objectId && setup.objectId !== '0')) && <a className={style.ExtLinkButton} href={context.uniswapV3NFTURLTemplate.split('{0}').join(dualChainId ? 'optimism/' : '').split('{1}').join(currentPosition?.tokenId || setup.objectId)} target="_blank">NFT</a>}
                             </p>
                         </p>}
                         {!tickData ? <OurCircularProgress/> : <div className={style.UniV3CurveView}>
