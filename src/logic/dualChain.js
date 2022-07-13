@@ -1,6 +1,8 @@
 import { VOID_ETHEREUM_ADDRESS, abi, web3Utils } from "@ethereansos/interfaces-core"
 import { getRawField } from "./generalReader"
 
+import { toChecksumAddress } from "./uiUtilities"
+
 const chains = {
     10 : {
         async resolveToken(web3Data, it) {
@@ -49,12 +51,7 @@ function getResolver(web3Data, resolverName) {
 export async function resolveToken(web3Data, tokenAddress) {
     var resolver = getResolver(web3Data, 'resolveToken')
     if(!resolver) {
-        return web3Utils.toChecksumAddress(tokenAddress)
+        return toChecksumAddress(tokenAddress)
     }
-
-    var resolved = await resolver(web3Data, tokenAddress)
-    resolved.address && (resolved.address = web3Utils.toChecksumAddress(resolved.address))
-    (typeof resolved).toLowerCase() === 'string' && (resolved = web3Utils.toChecksumAddress(resolved))
-
-    return resolved
+    return toChecksumAddress(await resolver(web3Data, tokenAddress))
 }
