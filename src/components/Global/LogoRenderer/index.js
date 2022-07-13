@@ -18,6 +18,8 @@ export default ({input, figureClassName, noFigure, title, defaultImage, noDotLin
 
     const web3Data = useWeb3()
 
+    const { dualChainId } = web3Data
+
     const [finalImage, setFinalImage] = useState(null)
     const [loading, setLoading] = useState(false)
     const [tried, setTried] = useState()
@@ -32,12 +34,27 @@ export default ({input, figureClassName, noFigure, title, defaultImage, noDotLin
     }, [image, finalImage])
 
     async function onLoadError() {
-        setLoading(onError ? true : false)
-        if(!onError && !tried) {
+        setLoading((onError || dualChainId) ? true : false)
+        if(!onError && !tried && dualChainId) {
             setTried(true)
-            if((typeof input).toLowerCase() === 'string' || input.address) {
-                var token = await resolveToken({ context, ...web3Data}, input.address || input)
+            if((typeof input).toLowerCase() === 'string' || input.tokenAddress || input.address) {
+                var token = await resolveToken({ context, ...web3Data}, input.tokenAddress || input.address || input)
                 var link = context.trustwalletImgURLTemplate.split('{0}').join(token)
+                var key = link + '_url'
+                try {
+                    var loc = window.localStorage[key]
+                    if(loc === undefined) {
+                        var result = await (await fetch(link)).text()
+                        loc = result.indexOf('404') === -1 ? 'true' : 'false'
+                    }
+                    if (loc === 'false') {
+                        link = realDefaultImage
+                    }
+                    window.localStorage.setItem(key, loc)
+                } catch(e) {
+                    link = realDefaultImage
+                    window.localStorage.setItem(key, 'false')
+                }
                 setFinalImage(link)
             }
         } else {
