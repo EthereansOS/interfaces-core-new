@@ -64,13 +64,15 @@ export default props => {
         const logs = transactionReceipt.logs
         const topic = web3Utils.sha3('CollectionItem(bytes32,bytes32,uint256)')
         const mint = logs.filter(it => it.topics[0] === topic)[0]
-        const tokenAddress = abi.decode(["address"], mint.topics[3])[0]
-        var link = '/items/dapp/'
-        if(originalType.indexOf('Deck') !== -1) {
-            link += 'decks/'
+        if(mint) {
+            const tokenAddress = abi.decode(["address"], mint.topics[3])[0]
+            var link = '/items/dapp/'
+            if(originalType.indexOf('Deck') !== -1) {
+                link += 'decks/'
+            }
+            link = link + tokenAddress
+            history.push(link)
         }
-        link = link + tokenAddress
-        history.push(link)
     }
 
     return (
