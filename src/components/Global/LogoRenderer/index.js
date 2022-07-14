@@ -71,7 +71,11 @@ export default ({input, figureClassName, noFigure, title, defaultImage, noDotLin
 
     if(src && src.indexOf('trustwallet') !== -1) {
         var split = src.split('/')
-        split[split.length - 2] = web3Utils.toChecksumAddress(split[split.length - 2])
+        try {
+            split[split.length - 2] = web3Utils.toChecksumAddress(split[split.length - 2])
+        } catch(e) {
+            console.error(e)
+        }
         src = split.join('/')
     }
 
