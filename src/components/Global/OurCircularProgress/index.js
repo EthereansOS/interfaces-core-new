@@ -1,11 +1,13 @@
 import React from 'react'
 
-import { CircularProgress } from '@ethereansos/interfaces-ui'
 import style from '../../../all.module.css'
 
 export default ({}) => {
     return (
     <div className={style.LoaderA}>
-        <CircularProgress/>
+        <div class={style.loadingio_spinner_disk_hn1zpmja0x6}><div class={style.ldio_f2vadqclpalj}>
+                <div><div></div><div></div></div>
+            </div>
+        </div>
     </div>)
 }
