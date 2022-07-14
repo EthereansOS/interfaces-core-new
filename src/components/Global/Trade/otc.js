@@ -57,6 +57,8 @@ export default ({item}) => {
             </RegularModal>}
             <div className={style.TradeOTCBox}>
                 <h4>{shortenWord({ context, charsAmount : 15}, (itemInput || item)?.symbol)} Orders</h4>
+                
+                <p>Orders are currently unavailable</p> {/*
                 {!itemInput && <a onClick={() => setWrap(true)}>Be the first to wrap this token</a>}
                 {itemInput && !itemInput.mainInterface && <OurCircularProgress/>}
                 {itemInput?.mainInterface && <>
@@ -72,7 +74,7 @@ export default ({item}) => {
                             <OTCDetail item={itemInput} buyOrSell={false} modal={sellModal} close={() => setSellModal(false)}/>
                         </div>
                     </div>
-                </>}
+                </>} }*/}
             </div>
         </>
     )
