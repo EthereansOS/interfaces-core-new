@@ -71,6 +71,7 @@ const themes = [
     {name : '🕶', value:'dark'},
     {name : '👓', value:'sepia'},
     {name : '🍀', value:'biz'},
+   {/* {name : '🏴‍☠️', value:'matrix'}, */}
 ]
 
 export const ThemeSelectorContextProvider = ({children}) => {

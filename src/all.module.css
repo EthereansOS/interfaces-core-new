@@ -610,7 +610,7 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .CollectionSingle figure img {display: block; width: 100%; height: 100%; position: absolute; left: 0; top: 0; object-fit: contain;}
 .CollectionSingle .CollectionTitle {width: 100%; padding: 10px 4%; text-align: center; display: inline-block;}
 .CollectionSingle .CollectionTitle h6 { font-size: 14px;}
-.CollectionSingle .CollectionFolder {width: 100%; height: 65px; overflow-x: scroll; overflow-y: hidden; scroll-behavior: smooth; padding: 10px 1%; text-align: left; display: grid;grid-gap: 5px;grid-template-columns: repeat(10, calc(50% - 38px));grid-template-rows: minmax(44px, 1fr);}
+.CollectionSingle .CollectionFolder {width: 100%; height: 59px; overflow-x: scroll; overflow-y: hidden; scroll-behavior: smooth; padding: 10px 1%; text-align: left; display: grid;grid-gap: 5px;grid-template-columns: repeat(10, calc(50% - 38px));grid-template-rows: minmax(44px, 1fr);}
 .CollectionSingle .CollectionFolder::-webkit-scrollbar {display: none;}
 .CollectionSingle .CollectionFolder a, .CollectionSingle .CollectionFolder figure {display: inline-block; width: 44px; height: 44px; overflow: hidden; position: relative;border-radius: 8px;}
 
@@ -1204,7 +1204,7 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
  .Navigation {width: 290px; margin: 0px 10px; padding: 0;}
  .Navigation .selected {margin: 2px 5px;  padding: 5px;}
  .Navigation .selected p {font-weight: bold;}
- .Dapp_Menu, .DDapp_Menu a {font-size: 11px !important; padding: 10px !important;}
+ .Dapp_Menu a, .DDapp_Menu a {font-size: 11px !important; padding: 10px !important;}
 
  .TradeOTCBox {display: none;}
  .TradeMain {width: 95%;}
@@ -1220,7 +1220,34 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 
  .exploreBanners {display: none;}
 
+ .FilterMenu {text-align: center;}
+ .FilterMenuSearch {width: 90%; margin: 8px auto;}
+
  .CovenantsMainBox {width: 95%; padding: 2%;}
+ .FarmContent {width: 100%; min-width: 100%;}
+ .FarmContentInfo {width: 100%;}
+ .FarmContentInfo .ExtLinkButton {display: none;}
+ .FarmContentInfo p {font-size: 13px; text-align: center;}
+ .FarmContentTitle {width: 100%;}
+ .FarmContentTitle aside {width: 210px;margin-left: 15px;}
+ .FarmContentTitle figure {height: 70px;}
+ .FarmContentTitle figure img {height: 70px; max-height: 70px;object-fit: contain;}
+ .FarmContentTitle aside h6 {font-size: 13px;}
+
+
+ .ItemSingle {width: 155px;}
+ .CollectionSingle {width: 155px;}
+
+ .CreatePage {width: 95%; padding: 2%;}
+ .CreateBoxDesc {width: 95%;}
+ .CreationPageLabel {width: 95%; padding: 2%;}
+ .CreationPageLabelF {width: 95%; padding: 2%;}
+ .CreationPageLabelF input, .CreationPageLabelF textarea  {width: 95%; padding: 5% 2%;}
+ .proggressCreate {width: 250px;}
+
+
+ .OrgTitleEx {width: 228px;}
+ .OrgSingle figure {width: 70px; height: 70px;}
 }
 
 /* themes */
@@ -1231,6 +1258,7 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .light::-webkit-scrollbar, .dark::-webkit-scrollbar, .biz::-webkit-scrollbar, .sepia::-webkit-scrollbar, div::-webkit-scrollbar, span::-webkit-scrollbar, p::-webkit-scrollbar, aside::-webkit-scrollbar, input::-webkit-scrollbar {display: none !important;}
 .biz p,.biz b,.biz figure,.biz span,.biz a,.biz h6,.biz h5,.biz h4,.biz h3,.biz h2,.biz h1,.biz aside, .biz input, .biz div, .biz textarea  {color: #000000;-ms-overflow-style: none;scrollbar-width: none;}
 .dark p,.dark b,.dark figure,.dark span,.dark a,.dark h6,.dark h5,.dark h4,.dark h3,.dark h2,.dark h1,.dark aside, .dark input, .dark div, .dark textarea {color: #ffffff;-ms-overflow-style: none;scrollbar-width: none;}
+.matrix p,.matrix b,.matrix figure,.matrix span,.matrix a,.matrix h6,.matrix h5,.matrix h4,.matrix h3,.matrix h2,.matrix h1,.matrix aside, .matrix input, .matrix div, .matrix textarea {color: #008F11;-ms-overflow-style: none;scrollbar-width: none;}
 .sepia p,.sepia b,.sepia figure,.sepia span,.sepia a,.sepia h6,.sepia h5,.sepia h4,.sepia h3,.sepia h2,.sepia h1,.sepia aside,.sepia input, .sepia div, .sepia textarea {color: #49646a;-ms-overflow-style: none;scrollbar-width: none;}
 
 .light .ldio_f2vadqclpalj > div > div:nth-child(1) {background: #ffffff;}
@@ -1240,17 +1268,20 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 
 .biz a, .biz div,.biz figure, .biz input, .biz ul, .biz li, .biz nav, .biz select, .biz button, .biz span {border-radius: 20px !important;}
 
-.light, .dark, .biz, .sepia {height: 100vh; overflow: scroll;}
+.light, .dark, .biz, .sepia, .matrix {height: 100vh; overflow: scroll;}
 
 .light {background: rgb(255,255,255);background: linear-gradient(300deg, #fdf7f5 70%, rgba(120,111,255,1) 100%);}
 .biz {background: rgb(255,255,255);background: linear-gradient(0deg, #ffffff 20%, #6EC9C6 100%);}
 .dark {background-color: #000000; background: linear-gradient(300deg, #1a1a1a 70%, rgba(120,111,255,1) 100%);}
+.matrix {background-color: #000000; background: linear-gradient(320deg, #000000 90%, #008F11 100%);}
 .sepia {background-color: #FDF6E3; background: linear-gradient(320deg, #FDF6E3 90%, #49646a 100%);}
+
 
 
 .light .ActionInfoSection {background-color: #ffffff;}
 .biz .ActionInfoSection {background-color: #e4e4e4;}
 .dark .ActionInfoSection {background-color: #000000;}
+.matrix .ActionInfoSection {background-color: #000000;}
 .sepia .ActionInfoSection {background-color: #d9d2c2a3;}
 
 .light .ActionInfoSection .ActionInfoSectionAMM {background-color: #e9effc;}
