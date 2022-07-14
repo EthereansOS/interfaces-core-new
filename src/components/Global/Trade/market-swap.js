@@ -34,6 +34,8 @@ export default ({item, onTokens}) => {
 
     const [AMMs, setAMMs] = useState()
 
+    const switching = useRef(false)
+
     const other = useMemo(() => {
         if(!amm || !swapData) {
             return
@@ -97,6 +99,9 @@ export default ({item, onTokens}) => {
     }, [amm])
 
     function onOutput(token, balance, value) {
+        if(switching.current) {
+            return
+        }
         changer.current && clearTimeout(changer.current)
         if(output && output.token === token && output.value === value) {
             return
@@ -111,6 +116,9 @@ export default ({item, onTokens}) => {
     }
 
     function onInput(token, balance, value) {
+        if(switching.current) {
+            return
+        }
         changer.current && clearTimeout(changer.current)
         if(input && input.token === token && input.value === value) {
             return
@@ -129,10 +137,15 @@ export default ({item, onTokens}) => {
     }, [settings])
 
     function switchSide() {
-        var oldInput = {...input}
+        switching.current = true
+        var oldInput = {...input, value : '0'}
         var oldOutput = {...output}
         setInput(oldOutput)
         setOutput(oldInput)
+        setTimeout(async () => {
+            await calculate.current(/*oldToken?.address === newInput?.token?.address && amm*/undefined, oldOutput, oldInput)
+            switching.current = false
+        })
     }
 
     function swap() {
