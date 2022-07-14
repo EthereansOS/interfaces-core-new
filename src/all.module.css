@@ -122,7 +122,7 @@ body {
 .TradeMarketToken .TradeMarketTokenSelector figure {width: 100%; height: 50px; display: inline-block;}
 .TradeMarketToken .TradeMarketTokenSelector figure img {width: 100%; height: 100%; display: block;object-fit: contain;}
 .TradeMarketToken .TradeMarketTokenSelector span {font-size: 13px; font-weight: bold;}
-.TradeMarketTokenAmount {width: 170px;display: inline-block; text-align: right;}
+.TradeMarketTokenAmount {width: 130px;display: inline-block; text-align: right;}
 .TradeMarketTokenAmount input {width: 90%; height: 70px; font-size: 30px; border: none; text-align: right;}
 .TradeMarketTokenAmount input:focus{outline: none;}
 .TradeMarketTokenBalance {font-size: 10px; cursor: pointer;  margin: 5px; font-weight: bold; width: 100%; display: inline-block; text-align: center;}
@@ -165,14 +165,14 @@ body {
 
 .TradeMain {width: 660px;  margin-bottom: 30px; display: inline-block; text-align: center; padding: 10px; border-radius: 20px; }
 .TradeMain h4 {font-size: 16px; margin-bottom: 10px; display: inline-block; width: 100%; text-align: center;}
-.TradeMain h5 {font-size: 16px; display: inline-block; width: 100%; text-align: center;}
-.TradeMarketBox {width: 275px; vertical-align: top; display: inline-block; padding: 2% 2% 2% 0%; margin-right: 1%; border-right: 1px solid ; text-align: center;}
+.TradeMain h5 {font-size: 16px; display: inline-block; width: 100%; text-align: center; display: none;}
+.TradeMarketBox {width: 275px; vertical-align: top; display: inline-block; padding: 2% 2% 2% 0%; margin-right: 1%; border-right: 1px solid ; text-align: center; padding: 2%; border: none;width: 95%;}
 .TradeMarketBox h4 {width: 100%; text-align: center; display: inline-block; margin: 15px auto;}
-.TradeMarketBoxSwitch { width:20px; height: 20px;   display: inline-block; margin: 15px auto 15px auto; font-size: 17px; font-weight: bold; border-radius: 100%; cursor: pointer;}
+.TradeMarketBoxSwitch { width:20px; height: 20px;   display: inline-block; margin: 15px auto 15px auto; font-size: 17px; font-weight: bold; border-radius: 100%; cursor: pointer;margin: 35px 5px auto 5px; vertical-align: top;}
 .TradeMarketType {width: 90%; display: inline-block; margin: 20px auto 15px auto; border: 1px solid; border-radius: 30px; overflow: hidden;}
 .TradeMarketType a{display: inline-block; width: 50%; margin: 0; padding: 2%; font-size: 15px; font-weight: normal; text-align: center; cursor: pointer;}
 .TradeMarketType .selected {font-weight: bold;}
-.TradeOTCBox {width: 355px; display: inline-block;padding: 2% 0% 2% 2%; text-align: center; border-radius: 16px;}
+.TradeOTCBox {width: 355px; display: inline-block;padding: 2% 0% 2% 2%; text-align: center; border-radius: 16px; display: none;}
 .TradeOTCBoxOrders {overflow-y: scroll; height: 160px; display: inline-block;}
 .TradeOTCBoxOrder {width: 300px; display: inline-block; margin: 2px auto; text-align: left; padding: 2px 1%; border-top: 1px solid;}
 .TradeOTCBoxOrder p {display: inline-block; width: 40%; padding: 1%;}
@@ -181,6 +181,9 @@ body {
 .TradeOTCBoxOrder button {vertical-align: middle; margin-left: 2%; width: auto; text-align: center; border:none; padding: 4px 8px; border-radius: 15px; font-size: 11px; font-weight: bold;width: 80px;}
 .TradeOTCBoxOrdersBuy, .TradeOTCBoxOrdersSell {width: 100%; display: inline-block; padding: 1% 4% 2% 4%; margin: 5px auto 5px auto; border-radius: 20px;}
 .TradeOTCBoxOrdersBuy h6, .TradeOTCBoxOrdersSell h6 {font-size: 13px; width: 100%; text-align: center; padding: 10px 0;}
+.TradeInfoThings {width: 90%; display: inline-block; margin: 20px  0px auto;}
+.TradeInfoThings .ActionInfoSection {width: 300px; overflow: hidden; height: 50px;}
+.TradeInfoThings .LoaderA {width: 10px; height: 10px; display: inline-block; overflow: hidden;}
 
 .DeckMarketPlace {width: 970px;  margin-bottom: 150px; display: inline-block; text-align: center; padding: 5px; border-radius: 20px;}
 .DeckMarketPlace h6 {display: inline-block; width: 100%; margin: 20px auto 40px auto;}
@@ -1121,10 +1124,9 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .CollectionRight .exploreBanners {display: none;}
 .FarmingAsideInfoLP {display: inline-block;width: 215px; text-align: left;font-size: 12px; vertical-align: middle; margin-right: 10px;}
 
-
-
 .SuccessMessage {width: 100%; display: inline-block; position: fixed; top: 0px; left: 0px; right: 0px; padding: 40px; z-index: 2147483647; text-align: center;}
 .SuccessMessage a {text-decoration: underline; font-size: 13px;}
+
 @media only screen and (max-width: 990px) {
   .NavigationItem {font-size: 11px;width: 20%;overflow: hidden; }
   .Navigation .Selected img {display: none;}
@@ -1171,7 +1173,39 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 }
 
 @media only screen and (max-device-width: 990px) {
+ .RightMenu {top: auto; bottom: 0px; left: 0; right: 0; text-align: center; padding: 5px 0;}
+ .NetworkSelect {margin: 2px 4px; padding: 0px;}
+ .NetworkSelect a { padding: 0px;}
+ .NetworkSelect img {width: 12px; height: 12px;}
+ .Web3Connect {margin: 2px;}
+ .Web3ConnectWallet {height: 20px; max-width: 120px; width: 120px; padding: 0;}
+ .Web3ConnectWallet img {height: 20px; width: 20px; margin: 0;}
+ .Web3ConnectWallet p {max-width: 80px;}
+ .ThemeSelect {margin: 2px 4px;}
+ .ThemeSelect select {padding: 2px;}
+ .NavigationItem {width: 60px !important; margin: 2px 5px; padding: 5px;}
+ .NavigationItem p {font-size: 11px; vertical-align: middle;}
+ .logoMain {margin: 5px;}
+ .Navigation {width: 290px; margin: 0px 10px; padding: 0;}
+ .Navigation .selected {margin: 2px 5px;  padding: 5px;}
+ .Navigation .selected p {font-weight: bold;}
+ .Dapp_Menu, .DDapp_Menu a {font-size: 11px !important; padding: 10px !important;}
 
+ .TradeOTCBox {display: none;}
+ .TradeMain {width: 95%;}
+ .TradeMarketBox {width: 100%; border: none;padding: 2% 2% 2% 2%; margin: 0;}
+ .TradeMarketBox h5 {display: none;}
+ .TradeMarketTokenSelector {width: 60px !important; height: 55px !important;}
+ .TradeMarketTokenSelector figure {height: 30px !important;}
+ .TradeMarketTokenAmount {width: 215px;}
+ .TradeMarketTokenAmount input {height: 55px !important;}
+ .TradeMarketBoxSwitch {margin: 2px;}
+
+ .medium, .large, .small {width: 90%;}
+
+ .exploreBanners {display: none;}
+
+ .CovenantsMainBox {width: 95%; padding: 2%;}
 }
 
 /* themes */
@@ -2116,6 +2150,13 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .biz .SetupActions .RegularButtonDuo b {color: #ffffff;}
 .dark .SetupActions .RegularButtonDuo b {color: #000000;}
 
+.light .YourFarmingPositionsFarmingFarmingFarmingChiFarmaViveComeUnPAsha {background-color: #e9effc; border-color: #e0e2e6;}
+.dark .YourFarmingPositionsFarmingFarmingFarmingChiFarmaViveComeUnPAsha {background-color: #000000; border-color: #212121;}
+.biz .YourFarmingPositionsFarmingFarmingFarmingChiFarmaViveComeUnPAsha {background: linear-gradient(180deg, #ffffff 30%, #7474f752 100%); border-color: #e0e2e6;}
+.sepia .YourFarmingPositionsFarmingFarmingFarmingChiFarmaViveComeUnPAsha {background-color: #d9d2c2; border-color: #e0e2e6;}
+
+.sepia .FarmingDynamics {background-color: #d9d2c2;}
+
 
 /* Account Components */
 
@@ -2127,13 +2168,6 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 
 
 /* Others Components */
-
-.light .YourFarmingPositionsFarmingFarmingFarmingChiFarmaViveComeUnPAsha {background-color: #e9effc; border-color: #e0e2e6;}
-.dark .YourFarmingPositionsFarmingFarmingFarmingChiFarmaViveComeUnPAsha {background-color: #000000; border-color: #212121;}
-.biz .YourFarmingPositionsFarmingFarmingFarmingChiFarmaViveComeUnPAsha {background: linear-gradient(180deg, #ffffff 30%, #7474f752 100%); border-color: #e0e2e6;}
-.sepia .YourFarmingPositionsFarmingFarmingFarmingChiFarmaViveComeUnPAsha {background-color: #d9d2c2; border-color: #e0e2e6;}
-
-.sepia .FarmingDynamics {background-color: #d9d2c2;}
 
 .light .ThemeSelect select {background-color: #E4E4E4; color: #000000;}
 .biz .ThemeSelect select {background: linear-gradient(0deg, #8DB1FA 80%, #ffffff 100%);border: 4px solid;border-color: #8DB1FA;border-radius: 20px !important;}
@@ -2175,6 +2209,7 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .light input[type=range]::-webkit-slider-thumb {background: #7474F7;box-shadow: 0px 0px 0px #000000;border: 0px solid #000000;}
 .biz input[type=range]::-webkit-slider-thumb {background: linear-gradient(0deg, #849bbd 50%, #ffffff 100%);box-shadow: 0px 0px 0px #000000;border: 0px solid #000000;}
 .dark input[type=range]::-webkit-slider-thumb {background: #7474F7;box-shadow: 0px 0px 0px #ffffff;border: 0px solid #d9d2c2a3;}
+.sepia input[type=range]::-webkit-slider-thumb {background: #49646a;box-shadow: 0px 0px 0px #ffffff;border: 0px solid #49646a;}
 
 .light input[type=range]:focus::-webkit-slider-runnable-track {background: #ffffff;}
 .biz input[type=range]:focus::-webkit-slider-runnable-track {background: linear-gradient(0deg, #ffffff 50%, #bfc0ea 100%);}

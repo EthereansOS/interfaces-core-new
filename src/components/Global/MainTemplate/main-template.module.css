@@ -31,6 +31,7 @@
   .root { padding-top: 0px;}
 }
 @media only screen and (max-device-width: 990px) {
+  .container {min-width: 99%; width: 99%;}
   .root {display: none !important;}
   .OnlyMobile {display: inline-block; margin: 100px auto; width: 100%; padding: 50px; text-align: center;}
 }

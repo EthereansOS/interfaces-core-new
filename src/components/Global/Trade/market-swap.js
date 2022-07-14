@@ -175,25 +175,27 @@ export default ({item, onTokens}) => {
     return (
         <>
             <TokenInputRegular outputValue={input ? fromDecimals(input?.value, input?.token?.decimals, true) : undefined} tokens={input?.token === item && []} selected={input?.token} onElement={onInput}/>
-            <a className={style.TradeMarketBoxSwitch} onClick={switchSide}>&#xFFEC;</a>
+            <a className={style.TradeMarketBoxSwitch} onClick={switchSide}>🔁</a>
             <TokenInputRegular outputValue={output ? fromDecimals(output?.value, output?.token?.decimals, true) : undefined} tokens={output?.token === item && []} selected={output?.token} onElement={onOutput}/>
-            <ActionAWeb3Buttons other={other} buttonText="Swap" balance={input?.balance} value={input?.value} token={input?.token} onClick={swap}/>
-            <ActionInfoSection ammRecap={ammRecap} settings={settings} onSettingsToggle={setSettings} amm={amm} onAMM={setAMM} onAMMs={setAMMs}/>
-            {settings && <div className={style.SettingB}>
-                <div>
-                    <label className={style.SettingBLabPerch}>
-                        <p>Slippage</p>
-                        <input type="range" min="0" max="99" step="0.05" value={slippage} onChange={e => setSlippage(parseFloat(e.currentTarget.value))}/>
-                        <span>{slippage}%</span>
-                    </label>
-                </div>
-                {amm && amm.name !== 'Balancer' && amm.name !== 'Mooniswap' && <div>
-                    <label className={style.SettingBLabRegular}>
-                        <p>Receiver:</p>
-                        <input type="text" value={receiver} onChange={e => setReceiver(e.currentTarget.value)}/>
-                    </label>
+            <div className={style.TradeInfoThings}>
+                <ActionInfoSection ammRecap={ammRecap} settings={settings} onSettingsToggle={setSettings} amm={amm} onAMM={setAMM} onAMMs={setAMMs}/>
+                {settings && <div className={style.SettingB}>
+                    <div>
+                        <label className={style.SettingBLabPerch}>
+                            <p>Slippage</p>
+                            <input type="range" min="0" max="99" step="0.05" value={slippage} onChange={e => setSlippage(parseFloat(e.currentTarget.value))}/>
+                            <span>{slippage}%</span>
+                        </label>
+                    </div>
+                    {amm && amm.name !== 'Balancer' && amm.name !== 'Mooniswap' && <div>
+                        <label className={style.SettingBLabRegular}>
+                            <p>Receiver:</p>
+                            <input type="text" value={receiver} onChange={e => setReceiver(e.currentTarget.value)}/>
+                        </label>
+                    </div>}
                 </div>}
-            </div>}
+                <ActionAWeb3Buttons other={other} buttonText="Swap" balance={input?.balance} value={input?.value} token={input?.token} onClick={swap}/>
+            </div>
         </>
     )
 }
