@@ -113,7 +113,7 @@
         "ipfsUrlChanger": "https://gateway.ipfs.io/ipfs/",
         "ipfsUrlBase": "https://ipfs.io/ipfs",
         "uniswapV3PoolURLTemplate": "https://info.uniswap.org/#/{0}pools/{1}",
-        "uniswapV3NFTURLTemplate": "https://app.uniswap.org/#/{0}pool/{1}",
+        "uniswapV3NFTURLTemplate": "https://app.uniswap.org/#/pool/{1}",
         "deploySearchStart": 12000000,
         "deploySearchStartRinkeby": 9851551,
         "deploySearchStartOptimism": 13897200,
