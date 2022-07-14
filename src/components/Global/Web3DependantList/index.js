@@ -32,6 +32,7 @@ export default ({ discriminant, Renderer, emptyMessage, provider, searchText, re
           if(message.indexOf('header not found') === -1 && message.indexOf('response has no error') === -1) {
             return setError('Error while loading: ' + (e.message || e))
           }
+          await new Promise(ok => setTimeout(ok, 3000))
         }
       }
     })
