@@ -37,8 +37,8 @@ body {
 .ldio_f2vadqclpalj {width: 100%;height: 100%;position: relative;transform: translateZ(0) scale(0.48);backface-visibility: hidden;transform-origin: 0 0; /* see note above */}
 .ldio_f2vadqclpalj div { box-sizing: content-box; }
 
-.ActionInfoSection .LoaderA, .ActionAWeb3Buttons .LoaderA, .CartBTs .LoaderA, .TradeMarketBox .LoaderA, .OrgThingsInfoContent .LoaderA, .OrgPartInfo .LoaderA, .timeToFarm .LoaderA {display: none !important;}
-.ActionInfoSection .LoaderB, .ActionAWeb3Buttons .LoaderB, .CartBTs .LoaderB, .TradeMarketBox .LoaderB, .OrgThingsInfoContent .LoaderB, .OrgPartInfo .LoaderB, .timeToFarm .LoaderB {display: inline-block;}
+.ActionInfoSection .LoaderA, .ActionAWeb3Buttons .LoaderA, .CartBTs .LoaderA, .TradeMarketBox .LoaderA, .OrgThingsInfoContent .LoaderA, .OrgPartInfo .LoaderA, .timeToFarm .LoaderA, .RightMenu .LoaderA, .FinalizeSequenceBoxIn .LoaderA {display: none !important;}
+.ActionInfoSection .LoaderB, .ActionAWeb3Buttons .LoaderB, .CartBTs .LoaderB, .TradeMarketBox .LoaderB, .OrgThingsInfoContent .LoaderB, .OrgPartInfo .LoaderB, .timeToFarm .LoaderB, .RightMenu .LoaderB, .FinalizeSequenceBoxIn .LoaderB {display: inline-block;}
 
 .ActionAWeb3Button {width: 100%; margin: 15px auto; text-align: center;}
 .ActionAWeb3Button button {width: auto; margin: 0 auto; padding: 9px 15px; text-align: center; font-size: 15px; border-radius: 15px; border: none !important; cursor: pointer;background-color: #7474f7; color: #ffffff; font-weight: bold;}
@@ -509,7 +509,7 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .Web3ActionBTN:disabled {background-color: #5f5b53;}
 .FarmContract {background-color: #f7fafe;}
 .input-group-append {background-color: #e9effc;}
-.generationSelector {width: 48%; display: inline-block; margin: 10px 1%; padding: 50px; background-color: #f7fafe; border: 1px solid #e0e2e6; border-radius: 12px;}
+.generationSelector {width: 48%; display: inline-block; margin: 10px 1%; padding: 50px; border: 1px solid; border-radius: 12px;}
 .generationSelectorB {width: 92%;}
 .generationSelector h6, .FancyExplanationCreate h6 {font-size: 16px; font-weight: bold; margin-bottom: 10px;}
 .generationSelector p, .FancyExplanationCreate p {font-size: 11px; line-height: 1.2; text-align: left;}
@@ -546,9 +546,8 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .SetupActions .RegularButtonDuo {margin: 10px auto;}
 .medium .SetupINFORECAP {width: 100%;}
 
-.PriceRangeInput {border: 1px solid #ffffff; border-radius: 8px;width: 70%;height: 40px;text-align: center;font-size: 20px;font-weight: bold;}
-.tickerchanger {display: inline-block; width: 30%; margin: 5px 5%; background-color: #ffffff; color: #000000; border-radius: 8px; font-weight: bold; padding: 5px 1px;}
-.tickerchanger:hover {text-decoration: none;color: #ffffff}
+.PriceRangeInput {border: 1px solid; border-radius: 8px;width: 70%;height: 40px;text-align: center;font-size: 20px;font-weight: bold;}
+.tickerchanger {display: inline-block; width: 30%; margin: 5px 5%; border-radius: 8px; font-weight: bold; padding: 5px 1px;}
 .FancyExplanationCreate {width: 100%; display: inline-block; margin: 10px auto; padding: 2%; border: 1px solid; border-radius: 12px;}
 .GenerationTime {font-size: 15px; width: 500px; display: inline-block; margin: 15px auto; line-height: 1.2;}
 .InactiveSignalP {color: #ad0002; border: 2px solid #ad0002;padding: 2px 4px;border-radius: 6px;font-size: 13px;margin-left: 4px;}
@@ -2160,6 +2159,7 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .biz .generationSelectorULTRA,.biz .generationSelectorB,.biz .FinalizeSequenceBoxIn {background-color: #f7fafe; border-color: #e0e2e6;}
 .dark .generationSelectorULTRA,.dark .generationSelectorB {background-color: #1b1b1b; border-color: #212121;}
 .dark .FinalizeSequenceBoxIn {background-color: #000000; border-color: #212121;}
+.sepia .FinalizeSequenceBoxIn {background-color: #d9d2c2a3; border-color: #d9d2c2;}
 
 .light .SequenceStatusErrorBox {background-color: #ad0002;}
 .biz .SequenceStatusErrorBox {background-color: #ad0002;}
@@ -2169,7 +2169,20 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .biz .SequenceStatusErrorBox p {color: #ffffff;}
 .dark .SequenceStatusErrorBox p {color: #ffffff;}
 
+.light .generationSelector {background-color: #f7fafe; border-color: #e0e2e6;}
+.biz .generationSelector {background-color: #f7fafe; border-color: #e0e2e6;}
+.dark .generationSelector {background-color: #1f1f1f; border-color: #333333;}
+.sepia .generationSelector {background-color: #d9d2c2a3; border-color: #d9d2c2a3;}
 
+.light .PriceRangeInput {border-color: #ffffff; background-color: #ffffff;}
+.biz .PriceRangeInput {border-color: #ffffff; background-color: #ffffff;}
+.dark .PriceRangeInput {border-color: #000000; background-color: #000000;}
+.sepia .PriceRangeInput {border-color: #eee8d59c; background-color: #eee8d59c;}
+
+.light .tickerchanger {background-color: #ffffff;}
+.biz .tickerchanger {background-color: #ffffff;}
+.dark .tickerchanger {background-color: #000000;}
+.sepia .tickerchanger {background-color: #d9d2c2; color: #ffffff;}
 
 .light .SetupActions .RegularButtonDuo b {color: #ffffff;}
 .biz .SetupActions .RegularButtonDuo b {color: #ffffff;}

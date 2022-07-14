@@ -69,8 +69,8 @@ export default props => {
                     </>}
                 </div>
                 <div className={style.SetupActions}>
-                    {(!setup.editing || setup.lastSetup?.active) && <a className={style.RegularButtonDuo} onClick={() => onRemoveFarmingSetup(index)}><b>{setup.editing ? setup.disable ? "Cancel Disable" : "Disable" : "Delete"}</b></a>}
-                    {(!setup.editing || setup.lastSetup?.active || parseInt(setup.initialRenewTimes) > 0) && <a className={style.RegularButtonDuo} onClick={() => void(setEditSetup({...setup, index}))}><b>Edit</b></a>}
+                    {(!setup.editing || setup.lastSetup?.active) && <a className={style.RegularButtonDuo} onClick={() => onRemoveFarmingSetup(index)}>{setup.editing ? setup.disable ? "Cancel Disable" : "Disable" : "Delete"}</a>}
+                    {(!setup.editing || setup.lastSetup?.active || parseInt(setup.initialRenewTimes) > 0) && <a className={style.RegularButtonDuo} onClick={() => void(setEditSetup({...setup, index}))}>Edit</a>}
                 </div>
             </div>)}
             <div>
