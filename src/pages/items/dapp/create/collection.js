@@ -185,7 +185,7 @@ const Metadata = ({state, onStateEntry}) => {
             </div>
         </>}
         {state.metadataType === 'metadata' && <>
-            <MetadataField state={state} onStateEntry={onStateEntry} type='textarea' field='description' label='Description' mandatory description='A description of the collection' mandatory/>
+            <MetadataField state={state} onStateEntry={onStateEntry} type='textarea' field='description' label='Description' mandatory description='A description of the collection'/>
             <MetadataField state={state} onStateEntry={onStateEntry} field='discussion_url' label='Discussion Link' description='A link to a social hub and/or discussion channel for the collection (if any)'/>
             <MetadataField state={state} onStateEntry={onStateEntry} field='external_url' label='Website' description='A link to the official website of this project (if any)'/>
             <MetadataField state={state} onStateEntry={onStateEntry} field='github_url' label='Github Link' description='A link to the official repo of this project (if any)'/>

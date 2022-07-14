@@ -400,7 +400,7 @@ const components = [
     TraitTypes
 ]
 
-const CreateSuccess = ({success, state}) => {
+const CreateSuccess = ({success, state, close}) => {
 
     const context = useEthosContext()
 
@@ -414,7 +414,12 @@ const CreateSuccess = ({success, state}) => {
                 return history.push(('/items/dapp/collections/' + state.collectionId))
             }
             if(state.item !== 'new') {
-                return history.push(('/items/dapp/' + state.item))
+                var urlPath = '/items/dapp/' + state.item
+                var currentURL = window.location.href.toLowerCase()
+                if(currentURL.indexOf(urlPath.toLowerCase()) === -1) {
+                    return history.push(urlPath)
+                }
+                return close && close()
             }
             const receipt = await web3.eth.getTransactionReceipt(success.transactionHash)
             const log = receipt.logs.filter(it => it.topics[0] === web3Utils.sha3('CollectionItem(bytes32,bytes32,uint256)'))[0]
@@ -431,7 +436,7 @@ const CreateSuccess = ({success, state}) => {
       </div>)
   }
 
-const CreateItem = ({inputItem, mode}) => {
+const CreateItem = ({inputItem, mode, close}) => {
 
     const { pathname } = useLocation()
 
@@ -520,7 +525,7 @@ const CreateItem = ({inputItem, mode}) => {
     return (
         <div className={style.CreatePage}>
             {success && <RegularModal>
-                <CreateSuccess success={success} state={state}/>
+                <CreateSuccess success={success} state={state} close={close}/>
             </RegularModal>}
             <Component state={state} inputItem={inputItem} mode={mode} onStateEntry={onStateEntry} setComponentIndex={setComponentIndex}/>
             <div className={style.ActionDeploy}>

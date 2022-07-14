@@ -23,7 +23,7 @@ export default ({item}) => {
 
     return (<div className={style.ViewBasicsHost}>
         {mode && <RegularModal close={() => setMode()}>
-            <CreateItem inputItem={item} mode={mode}/>
+            <CreateItem inputItem={item} mode={mode} close={() => setMode()}/>
         </RegularModal>}
         <h5>Host Tools</h5>
         {account === item.collectionData.mintOperator && <a onClick={() => setMode("mintMore")}>Mint</a>}
