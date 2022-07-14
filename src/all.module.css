@@ -24,6 +24,11 @@ body {
 
 /* Global Components */
 
+.LoaderA {vertical-align: middle;width: 100%; height: 48px;}
+.LoaderB {vertical-align: middle; display: inline-block; width: 18px; height: 18px; margin: 2px;}
+.LoaderB img {width: 100%; height: 100%; display: inline-block;}
+.LoaderB {display: none;}
+
 @keyframes ldio_f2vadqclpalj {0% { transform: rotate(0deg) }100% { transform: rotate(360deg) }}
 .ldio_f2vadqclpalj > div > div {position: absolute;border-radius: 50%;}
 .ldio_f2vadqclpalj > div > div:nth-child(1) {top: 3px;left: 3px;width: 94px;height: 94px;background: #ffffff;}
@@ -31,6 +36,9 @@ body {
 .loadingio_spinner_disk_hn1zpmja0x6 {width: 48px;height: 48px;display: inline-block;overflow: hidden;background: none;}
 .ldio_f2vadqclpalj {width: 100%;height: 100%;position: relative;transform: translateZ(0) scale(0.48);backface-visibility: hidden;transform-origin: 0 0; /* see note above */}
 .ldio_f2vadqclpalj div { box-sizing: content-box; }
+
+.ActionInfoSection .LoaderA, .ActionAWeb3Buttons .LoaderA, .CartBTs .LoaderA, .TradeMarketBox .LoaderA, .OrgThingsInfoContent .LoaderA, .OrgPartInfo .LoaderA {display: none !important;}
+.ActionInfoSection .LoaderB, .ActionAWeb3Buttons .LoaderB, .CartBTs .LoaderB, .TradeMarketBox .LoaderB, .OrgThingsInfoContent .LoaderB, .OrgPartInfo .LoaderB {display: inline-block;}
 
 .ActionAWeb3Button {width: 100%; margin: 15px auto; text-align: center;}
 .ActionAWeb3Button button {width: auto; margin: 0 auto; padding: 9px 15px; text-align: center; font-size: 15px; border-radius: 15px; border: none !important; cursor: pointer;background-color: #7474f7; color: #ffffff; font-weight: bold;}
@@ -191,7 +199,7 @@ body {
 .TradeOTCBoxOrdersBuy h6, .TradeOTCBoxOrdersSell h6 {font-size: 13px; width: 100%; text-align: center; padding: 10px 0;}
 .TradeInfoThings {width: 90%; display: inline-block; margin: 20px  0px auto;}
 .TradeInfoThings .ActionInfoSection {width: 300px; overflow: hidden; height: 50px;}
-.TradeInfoThings .LoaderA {width: 10px; height: 10px; display: inline-block; display: absolute; left: 1px; top: 1px;}
+.TradeInfoThings .SettingB {width: 300px;}
 
 .DeckMarketPlace {width: 970px;  margin-bottom: 150px; display: inline-block; text-align: center; padding: 5px; border-radius: 20px;}
 .DeckMarketPlace h6 {display: inline-block; width: 100%; margin: 20px auto 40px auto;}
