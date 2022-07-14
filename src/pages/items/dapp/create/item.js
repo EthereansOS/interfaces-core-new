@@ -480,7 +480,11 @@ const CreateItem = ({inputItem, mode}) => {
             onStateEntry('name', item.header.name)
             onStateEntry('symbol', item.header.symbol)
             onStateEntry('metadataLink', item.header.uri)
-            inputItem && mode === 'changeMetadata' && onStateEntry('metadata', inputItem)
+            var metadata = inputItem
+            while(metadata.metadata) {
+                metadata = metadata.metadata
+            }
+            inputItem && mode === 'changeMetadata' && onStateEntry('metadata', metadata)
           }
 
           try {
