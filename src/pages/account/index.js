@@ -97,19 +97,7 @@ const Account = () => {
         {(!hostedItemList || hostedItemList.length > 0) && <div className={style.AccountSection}>
             <h4>Items Hosted</h4>
             <ExploreItems
-              provider={async () => {
-                  while(true) {
-                    try {
-                      return await hostedItems({context, chainId, web3, account, newContract, getGlobalContract})
-                    } catch(e) {
-                      var message = (e.message || e).toLowerCase()
-                      if(message.indexOf('header not found') === -1 && message.indexOf('response has no error') === -1) {
-                        throw e
-                      }
-                    }
-                  }
-                }
-              }
+              provider={() => hostedItems({context, chainId, web3, account, newContract, getGlobalContract})}
               discriminant={account}
               onResult={setHostedItemList}
             />
