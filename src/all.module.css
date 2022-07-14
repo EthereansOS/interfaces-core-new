@@ -37,8 +37,8 @@ body {
 .ldio_f2vadqclpalj {width: 100%;height: 100%;position: relative;transform: translateZ(0) scale(0.48);backface-visibility: hidden;transform-origin: 0 0; /* see note above */}
 .ldio_f2vadqclpalj div { box-sizing: content-box; }
 
-.ActionInfoSection .LoaderA, .ActionAWeb3Buttons .LoaderA, .CartBTs .LoaderA, .TradeMarketBox .LoaderA, .OrgThingsInfoContent .LoaderA, .OrgPartInfo .LoaderA {display: none !important;}
-.ActionInfoSection .LoaderB, .ActionAWeb3Buttons .LoaderB, .CartBTs .LoaderB, .TradeMarketBox .LoaderB, .OrgThingsInfoContent .LoaderB, .OrgPartInfo .LoaderB {display: inline-block;}
+.ActionInfoSection .LoaderA, .ActionAWeb3Buttons .LoaderA, .CartBTs .LoaderA, .TradeMarketBox .LoaderA, .OrgThingsInfoContent .LoaderA, .OrgPartInfo .LoaderA, .timeToFarm .LoaderA {display: none !important;}
+.ActionInfoSection .LoaderB, .ActionAWeb3Buttons .LoaderB, .CartBTs .LoaderB, .TradeMarketBox .LoaderB, .OrgThingsInfoContent .LoaderB, .OrgPartInfo .LoaderB, .timeToFarm .LoaderB {display: inline-block;}
 
 .ActionAWeb3Button {width: 100%; margin: 15px auto; text-align: center;}
 .ActionAWeb3Button button {width: auto; margin: 0 auto; padding: 9px 15px; text-align: center; font-size: 15px; border-radius: 15px; border: none !important; cursor: pointer;background-color: #7474f7; color: #ffffff; font-weight: bold;}
@@ -1228,11 +1228,11 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 
 /* Global Components */
 
-.light p,.light b,.light figure,.light span,.light a,.light h6,.light h5,.light h4,.light h3,.light h2,.light h1,.light aside,.light input, .light div {color: #000000;-ms-overflow-style: none;scrollbar-width: none;}
-.light::-webkit-scrollbar, .dark::-webkit-scrollbar, .biz::-webkit-scrollbar, div::-webkit-scrollbar, span::-webkit-scrollbar, p::-webkit-scrollbar, aside::-webkit-scrollbar, input::-webkit-scrollbar {display: none !important;}
-.biz p,.biz b,.biz figure,.biz span,.biz a,.biz h6,.biz h5,.biz h4,.biz h3,.biz h2,.biz h1,.biz aside, .biz input, .biz div  {color: #000000;-ms-overflow-style: none;scrollbar-width: none;}
-.dark p,.dark b,.dark figure,.dark span,.dark a,.dark h6,.dark h5,.dark h4,.dark h3,.dark h2,.dark h1,.dark aside, .dark input, .dark div {color: #ffffff;-ms-overflow-style: none;scrollbar-width: none;}
-.sepia p,.sepia b,.sepia figure,.sepia span,.sepia a,.sepia h6,.sepia h5,.sepia h4,.sepia h3,.sepia h2,.sepia h1,.sepia aside,.sepia input, .sepia div {color: #49646a;-ms-overflow-style: none;scrollbar-width: none;}
+.light p,.light b,.light figure,.light span,.light a,.light h6,.light h5,.light h4,.light h3,.light h2,.light h1,.light aside,.light input, .light div, .light textarea {color: #000000;-ms-overflow-style: none;scrollbar-width: none;}
+.light::-webkit-scrollbar, .dark::-webkit-scrollbar, .biz::-webkit-scrollbar, .sepia::-webkit-scrollbar, div::-webkit-scrollbar, span::-webkit-scrollbar, p::-webkit-scrollbar, aside::-webkit-scrollbar, input::-webkit-scrollbar {display: none !important;}
+.biz p,.biz b,.biz figure,.biz span,.biz a,.biz h6,.biz h5,.biz h4,.biz h3,.biz h2,.biz h1,.biz aside, .biz input, .biz div, .biz textarea  {color: #000000;-ms-overflow-style: none;scrollbar-width: none;}
+.dark p,.dark b,.dark figure,.dark span,.dark a,.dark h6,.dark h5,.dark h4,.dark h3,.dark h2,.dark h1,.dark aside, .dark input, .dark div, .dark textarea {color: #ffffff;-ms-overflow-style: none;scrollbar-width: none;}
+.sepia p,.sepia b,.sepia figure,.sepia span,.sepia a,.sepia h6,.sepia h5,.sepia h4,.sepia h3,.sepia h2,.sepia h1,.sepia aside,.sepia input, .sepia div, .sepia textarea {color: #49646a;-ms-overflow-style: none;scrollbar-width: none;}
 
 .light .ldio_f2vadqclpalj > div > div:nth-child(1) {background: #ffffff;}
 .dark .ldio_f2vadqclpalj > div > div:nth-child(1) {background: #000000;}
@@ -1838,6 +1838,7 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .light .CreationPageLabelFS {background-color: #e9effc; border-color: #e0e2e6;}
 .biz .CreationPageLabelFS {background-color: #e9effc; border-color: #e0e2e6;}
 .dark .CreationPageLabelFS {background-color: #383c42; border-color: #000000;}
+.sepia .CreationPageLabelFS {background-color: #d9d2c2a3; border-color: #d9d2c2a3;}
 
 .light .AndNowBox {background-color: #e9effc; border-color: #e0e2e6;}
 .biz .AndNowBox {background-color: #e9effc; border-color: #e0e2e6;}
@@ -1846,14 +1847,17 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .light .CreationPageLabelFS input {background-color: #fff;}
 .biz .CreationPageLabelFS input {background-color: #fff;}
 .dark .CreationPageLabelFS input {background-color: #000;}
+.sepia .CreationPageLabelFS input {background-color: #eee8d59c;}
 
 .light .TranferETHProp .AddAReceiver input {background-color: #fff;}
 .biz .TranferETHProp .AddAReceiver input {background-color: #fff; border: 1px solid #525252;}
 .dark .TranferETHProp .AddAReceiver input {background-color: #000;}
+.sepia .TranferETHProp .AddAReceiver input {background-color: #eee8d59c;}
 
 .light .CreationPageLabelFS textarea {background-color: #fff; color: #000000;}
 .biz .CreationPageLabelFS textarea {background-color: #fff; color: #000000;}
 .dark .CreationPageLabelFS textarea {background-color: #000; color: #ffffff;}
+.sepia .CreationPageLabelFS textarea {background-color: #eee8d59c;}
 
 .light .Proposal {background-color: #e9effc;}
 .biz .Proposal {background-color: #e9effc;}
