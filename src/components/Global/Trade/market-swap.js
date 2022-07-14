@@ -85,7 +85,7 @@ export default ({item, onTokens}) => {
         const element = calculateSwap[type || 'swapOutput']
         const sD = await element[0]({...web3Data, context}, inputIn, outputIn, amm || AMMs)
         setSwapData(sD)
-        element[1](oldValue => !sD || sD[type] === oldValue.value ? oldValue : ({...oldValue, value : sD[type]}))
+        element[1](oldValue => !sD || (oldValue && sD[type] === oldValue.value) ? oldValue : ({...oldValue, value : sD[type]}))
         sD && sD.amm && setAMM(sD.amm)
     }
 
