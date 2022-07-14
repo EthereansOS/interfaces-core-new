@@ -43,16 +43,22 @@ const TokenInputRegular = ({onElement, onlySelections, tokens, tokenOnly, noETH,
         element && element.contract && element.mainInterface && blockchainCall(element.contract.methods.balanceOf, account, element.id).then(setBalance)
     }, [account, element, block, noBalance])
 
-    useEffect(() => {
+    /*useEffect(() => {
         if(max && value === balance) {
             return
         }
         setMax(false)
-    }, [value])
+    }, [max, value])*/
 
     useEffect(() => {
+        try {
+            if(max && balance === toDecimals(value, element.decimals)) {
+                return
+            }
+        } catch(e) {
+        }
         onElement && onElement(element, balance || '0', (!element ? '' : max ? balance : value === '0' ? '' : toDecimals(value, element.decimals)) || '')
-    }, [balance, value, max])
+    }, [element, balance, value, max])
 
     var onClick = el => {
         onElement && onElement(el, '0', '0')
