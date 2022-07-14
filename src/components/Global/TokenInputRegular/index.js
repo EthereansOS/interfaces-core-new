@@ -43,13 +43,6 @@ const TokenInputRegular = ({onElement, onlySelections, tokens, tokenOnly, noETH,
         element && element.contract && element.mainInterface && blockchainCall(element.contract.methods.balanceOf, account, element.id).then(setBalance)
     }, [account, element, block, noBalance])
 
-    /*useEffect(() => {
-        if(max && value === balance) {
-            return
-        }
-        setMax(false)
-    }, [max, value])*/
-
     useEffect(() => {
         try {
             if(max && balance === toDecimals(value, element.decimals)) {
