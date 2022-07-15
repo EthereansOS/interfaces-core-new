@@ -1,11 +1,11 @@
 import React, { useCallback, useMemo } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import Navigation from '../Navigation'
 
 import style from '../../../all.module.css'
 import Web3Connect  from '../Web3Connect'
 
-import { useWeb3, useEthosContext } from '@ethereansos/interfaces-core'
+import { useWeb3, useEthosContext, sendAsync } from '@ethereansos/interfaces-core'
 
 import { useThemeSelector } from '../../../logic/uiUtilities'
 
@@ -17,12 +17,9 @@ const Header = (props) => {
   const web3Data = useWeb3()
   const { chainId, web3, dualChainId } = web3Data
 
-  const switchToNetwork = useCallback(() => {
-    return web3.currentProvider.request({
-      method : 'wallet_switchEthereumChain',
-      params: [{chainId : "0x" + parseInt(dualChainId || Object.entries(context.dualChainId).filter(it => parseInt(it[1]) === chainId)[0][0]).toString(16)}]
-    })
-  }, [chainId, dualChainId])
+  const history = useHistory()
+
+  const switchToNetwork = useCallback(() => sendAsync(web3.currentProvider, 'wallet_switchEthereumChain', {chainId : "0x" + parseInt(dualChainId || Object.entries(context.dualChainId).filter(it => parseInt(it[1]) === chainId)[0][0]).toString(16)}).then(() => history.push('/dapp')), [chainId, dualChainId, history])
 
   return (
       <header className={style.Header}>
