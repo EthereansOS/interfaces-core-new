@@ -2171,6 +2171,7 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .light .FarmSetupV3 {border-color: #e0e2e6;background-color: #f7fafe;}
 .biz .FarmSetupV3 {border-color: #e0e2e6;background-color: #f7fafe;}
 .dark .FarmSetupV3 {border-color: #161616;background-color: #1a1a1a;}
+.sepia .FarmSetupV3 {border-color: #d9d2c2;}
 
 .light .farmInfoCurve {background-color: #e9effc;}
 .biz .farmInfoCurve {background-color: #e9effc;}
