@@ -91,6 +91,8 @@ export default ({input, figureClassName, noFigure, title, defaultImage, noDotLin
         input && input.background_color && (figureProperties.style={backgroundColor : input.background_color})
         input && input.isDeck && (figureProperties.className = (figureProperties.className || '') + (figureProperties.className ? ' ' : '') + style.Deck)
         img = <figure {...figureProperties}>
+            <span className={style.BollinoEth}>L1</span>
+            <span className={style.BollinoOP}>L2</span>
             {img}
         </figure>
     }
