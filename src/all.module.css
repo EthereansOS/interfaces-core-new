@@ -164,7 +164,7 @@ body {
 .TradeMarketTokenAllS {display: inline-block;border-radius: 16px; text-align: left; margin: 5px auto;}
 .TradeMarketTokenS {width: 100%; padding: 5px; border-radius: 16px; text-align: left; border: 2px solid;}
 .TradeMarketTokenS .TradeMarketTokenSelector {width: 40px; height: 40px; display: inline-block; text-align: center; cursor: pointer; border-radius: 14px; overflow: hidden; vertical-align: top;}
-.TradeMarketTokenS .TradeMarketTokenSelector figure {width: 100%; height: 40px; display: inline-block;}
+.TradeMarketTokenS .TradeMarketTokenSelector figure {width: 100%; height: 40px; display: inline-block; position: relative;}
 .TradeMarketTokenS .TradeMarketTokenSelector figure img {width: 100%; height: 100%; display: block;}
 .TradeMarketTokenAmountS {width: 180px;display: inline-block; text-align: right;}
 .TradeMarketTokenAmountS input {width: 90%; height: 40px; font-size: 30px; background-color: transparent; border: none; text-align: right;}
@@ -342,7 +342,7 @@ body {
 .RutineBack {position: absolute; top: 0px; left: 0; text-align: left; width: 100%; display: inline-block; padding: 10px 10px;}
 .FarmContent {width: 100%;display: inline-block;margin: 10px auto;min-width: 600px;border-radius: 12px;padding: 3%;text-align: left;}
 .FarmContentTitle {width: 40%;display: inline-block;margin-right: 1%;text-align: left;}
-.FarmContentTitle figure {width: 40%;display: inline-block;text-align: center;-webkit-margin-before: 0;margin-block-start: 0;-webkit-margin-after: 0;margin-block-end: 0;-webkit-margin-start: 0;margin-inline-start: 0;-webkit-margin-end: 0;margin-inline-end: 0;margin-bottom: 5px;vertical-align: middle;}
+.FarmContentTitle figure {width: 40%;display: inline-block;text-align: center;-webkit-margin-before: 0;margin-block-start: 0;-webkit-margin-after: 0;margin-block-end: 0;-webkit-margin-start: 0;margin-inline-start: 0;-webkit-margin-end: 0;margin-inline-end: 0;margin-bottom: 5px;vertical-align: middle; position: relative;}
 .FarmContentTitle figure img {display: inline-block;width: 70px;max-height: 130px;vertical-align: middle;}
 .FarmContentTitle aside {width: 60%;margin-bottom: 5px;vertical-align: middle;    text-align: center;display: inline-block;}
 .FarmContentTitle aside h6 {font-size: 16px;width: 95%;text-align: center;display: inline-block;font-weight: bolder; margin-bottom: 10px;}
@@ -653,7 +653,7 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .ViewBasicsHost > a {border: 2px solid; border-radius: 12px;display: inline-block; width: 100%; margin: 5px auto; font-size: 12px; padding: 10px 0px; text-align: center; cursor: pointer; font-weight: bold;}
 .ViewBasicsHost h5 {font-size: 16px; display: inline-block; text-align: center; margin: 5px auto 15px auto; width: 100%;}
 
-.ICViewCover {width: 270px; min-height: 130px; display: inline-block;border-radius: 20px; overflow: hidden; vertical-align: middle;}
+.ICViewCover {width: 270px; min-height: 130px; display: inline-block;border-radius: 20px; overflow: hidden; vertical-align: middle; position: relative;}
 .ICViewCover img {display: block; width: 100%; height: 100%;}
 
 .ViewDescriptionL {width: 270px; display: inline-block; text-align: left; padding: 25px; margin-top: 45px; border-radius: 20px;overflow: hidden;overflow-wrap: break-word;}
@@ -892,7 +892,7 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .ContextualPool label {width: 47%; display: inline-block; margin: 5px 1%;}
 
 .ProposeContents .TradeMarketTokenSelector {width: 40px; height: 40px; display: inline-block; text-align: center; cursor: pointer; border-radius: 14px; overflow: hidden; vertical-align: top;}
-.ProposeContents .TradeMarketTokenSelector figure {width: 100%; height: 40px; display: inline-block;}
+.ProposeContents .TradeMarketTokenSelector figure {width: 100%; height: 40px; display: inline-block; position: relative;}
 .ProposeContents .TradeMarketTokenSelector figure img {width: 100%; height: 100%; display: block;}
 
 .AMMSelector {width: 100%; padding: 0px; display: inline-block;}
@@ -1145,7 +1145,7 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .SuccessMessage a {text-decoration: underline; font-size: 13px;}
 
 .BollinoEth, .BollinoOP {position: absolute; right: 5px; bottom: 5px; font-size: 12px; font-weight: bold; padding: 7px; border-radius: 50%; border: none; z-index: 1000;}
-.CollectionFolder .BollinoEth, .CollectionFolder .BollinoOP {font-size: 8px;padding:3px; right: 2px; bottom: 2px;}
+.CollectionFolder .BollinoEth, .CollectionFolder .BollinoOP, .TradeMarketTokenSelector .BollinoEth , .TradeMarketTokenSelector .BollinoOP {font-size: 8px;padding:3px; right: 2px; bottom: 2px;}
 
 
 @media only screen and (max-width: 990px) {
@@ -1217,7 +1217,7 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
  .TradeMarketBox {width: 100%; border: none;padding: 2% 2% 2% 2%; margin: 0;}
  .TradeMarketBox h5 {display: none;}
  .TradeMarketTokenSelector {width: 60px !important; height: 55px !important;}
- .TradeMarketTokenSelector figure {height: 30px !important;}
+ .TradeMarketTokenSelector figure {height: 30px !important; position: relative;}
  .TradeMarketTokenAmount {width: 215px;}
  .TradeMarketTokenAmount input {height: 55px !important;}
  .TradeMarketBoxSwitch {margin: 2px;}
@@ -2223,6 +2223,7 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .light .InfoBox {background-color: #ffffff; box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
 .biz .InfoBox {background-color: #ffffff;}
 .dark .InfoBox {background-color: #000000; box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
+.sepia .InfoBox {background-color: #eee8d59c;}
 
 .light .ViewProperties .ViewProperty {background-color: #ffffff;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
 .biz .ViewProperties .ViewProperty {background-color: #ffffff;border: 3px solid #D2CDF9; border-left: none; border-top: none;}
@@ -2231,6 +2232,7 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .light .InfoBoxaside {background-color: #e9effc;}
 .biz .InfoBoxaside {background: linear-gradient(180deg, #ffffff 30%, #7474f752 100%); border-radius: 0 0 20px 20px !important;}
 .dark .InfoBoxaside {background-color: #292929;}
+.sepia .InfoBoxaside {background-color: #d9d2c2a3;}
 
 /* Covenants Components */
 
