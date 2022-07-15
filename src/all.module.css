@@ -79,6 +79,8 @@ body {
 
 .BackButton {display: inline-block;padding: 4px 13px;border-radius: 20px;font-size: 14px;font-weight: 700;cursor: pointer; box-shadow: none; border:none;}
 .MetaBTN {border: 1px solid; font-weight: bold; border-radius: 5px;display: inline-block;width: 230px !important;margin: 5px;font-size: 11px;padding: 5px 2px !important;text-align: center;cursor: pointer;box-shadow: none;}
+.SendToL1 {border: 0px solid !important; font-weight: bold; border-radius: 5px;display: inline-block;width: 230px !important;margin: 5px;font-size: 11px;padding: 7px 2px !important;text-align: center;cursor: pointer;box-shadow: none;}
+.SendToL2 {border: 0px solid !important; ; font-weight: bold; border-radius: 5px;display: inline-block;width: 230px !important;margin: 5px;font-size: 11px;padding: 7px 2px !important;text-align: center;cursor: pointer;box-shadow: none;}
 
 
 .ModalBack {position: fixed; z-index: 2147483646; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; text-align: center;display: flex;flex-wrap: wrap;flex-direction: row;justify-content: center;align-items: center;align-content: center}
@@ -1215,6 +1217,7 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
  .TradeMarketTokenAmount {width: 215px;}
  .TradeMarketTokenAmount input {height: 55px !important;}
  .TradeMarketBoxSwitch {margin: 2px;}
+ .TradeInfoThings .ActionInfoSection {width: 245px;}
 
  .medium, .large, .small {width: 90%;}
 
@@ -1233,7 +1236,37 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
  .FarmContentTitle figure {height: 70px;}
  .FarmContentTitle figure img {height: 70px; max-height: 70px;object-fit: contain;}
  .FarmContentTitle aside h6 {font-size: 13px;}
+ .farmInfoCurve {width: 100% !important; padding: 8px 8px;}
+ .SetupFarmingInstructionsV3 {width: 100%; text-align: center;}
+ .TokenFarmV3InfoBox {width: 45%; margin: auto 2%; display: inline-block;}
+ .SetupFarmingInstructionsV3 .RegularButtonDuo, .SetupFarmingInstructionsV3 .RegularButtonDuoBack {width: 100%;}
+ .timeToFarm {width: 100%;}
+ .FarmingDynamics .ActionInfoSection {width: 90%;margin: 0px auto;}
+ .FarmingAsideInfoLP {width: 180px;}
+ .SettingFB {width: 90%;margin: 10px auto;}
+ .SettingBLabRegular input {width: auto;}
+ .SettingBLabRegular p {width: auto !important;}
+ .timeToFarm .ActionAWeb3Button {margin: 10px;}
+ .FarmToken .TradeMarketTokenAmount {width: 150px;}
+ .FarmToken {margin: 5px 10px;}
+ .YourFarmingPositionsFarmingFarmingFarmingChiFarmaViveComeUnPAsha {margin-top: 3px;}
+ .FarmYou .RegularButtonDuo {margin: 3px;}
+ .farmed .ActionAWeb3Button {text-align: right;}
+ .farmed .ActionInfoSection {display: none;}
+ .RemoveLiquiditytools input[type="range"] {width: 95%}
+ .FarmProtocolFee {width: 100%;}
+ .FarmProtocolFee span {min-height: 20px;}
 
+ .RoutineOperation {margin: 0px auto; padding: 5px;}
+ .RoutineOperation h6 {width: 100%;}
+ .RoutineOperation p {font-size: 12px;}
+ .RoutineOperationTB {width: 100%; padding: 10px;}
+ .OperationsBox {margin: 10px auto;}
+ .RoutineOperationSchedule {padding: 5px 0px;}
+ .RoutineOperationSchedule p figure {width: 15px; height: 15px;display: inline-block;}
+ .RoutineOperationSchedule p figure img {width: 15px; height: 15px;;object-fit: contain; margin: 0; padding: 0;display: inline-block;}
+ .OperationsTrigger {text-align: center;}
+ .OperationsTrigger h5 {font-size: 13px;}
 
  .ItemSingle {width: 155px;}
  .CollectionSingle {width: 155px;}
@@ -1381,6 +1414,16 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .biz .MetaBTN  {border-color:#e1b9be !important;background-color: #e1b9be !important; color: #ffffff !important;}
 .dark .MetaBTN  {border-color:#e1b9be !important;background-color: #e1b9be !important; color: #ffffff !important;}
 .sepia .MetaBTN  {border-color:#5E594E !important;background-color: #5E594E !important; color: #ffffff !important;}
+
+.light .SendToL1 {background-color: #627eeaa6 !important; color: #ffffff !important;}
+.biz .SendToL1 {background-color: #627eeaa6 !important; color: #ffffff !important;}
+.dark .SendToL1 {background-color: #627eeaa6 !important; color: #ffffff !important;}
+.sepia .SendToL1 {background-color: #627eeaa6 !important; color: #ffffff !important;}
+
+.light .SendToL2 {border-color:#ff0420 !important;background-color: #ff0420 !important; color: #ffffff !important;}
+.biz .SendToL2 {border-color:#ff0420 !important;background-color: #ff0420 !important; color: #ffffff !important;}
+.dark .SendToL2 {border-color:#ff0420 !important;background-color: #ff0420 !important; color: #ffffff !important;}
+.sepia .SendToL2 {border-color:#ff0420 !important;background-color: #ff0420 !important; color: #ffffff !important;}
 
 .light .CopyBTN {border-color:#e1b9be !important;background-color: #e1b9be !important; color: #ffffff !important;}
 .biz .CopyBTN {border-color:#e1b9be !important;background-color: #e1b9be !important; color: #ffffff !important;}
@@ -2167,6 +2210,9 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .dark .FarmContent {border-color: #000000;background-color: #000000;}
 .sepia .FarmContent {border-color: #eee8d59c;background-color: #eee8d59c;}
 
+.sepia .FarmingDynamics .ActionInfoSection {background-color: #eee8d59c;}
+.sepia .FarmingDynamics .SettingFB {background-color: #eee8d59c;}
+
 
 .light .FarmSetupV3 {border-color: #e0e2e6;background-color: #f7fafe;}
 .biz .FarmSetupV3 {border-color: #e0e2e6;background-color: #f7fafe;}
@@ -2234,7 +2280,7 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .light .AccountInfo {background-color: #ffffff; border-color: #aa9cfe;box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-webkit-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
 .biz .AccountInfo {background: linear-gradient(0deg, #D2CDF9 80%, #ffffff 100%); border: 4px solid; border-color: #D2CDF9; border-radius: 20px !important;}
 .dark .AccountInfo {background-color: #000000; border-color: #aa9cfe;box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
-
+.sepia .AccountInfo {background-color: #eee8d59c; border-color: #d9d2c2a3;}
 
 
 /* Others Components */

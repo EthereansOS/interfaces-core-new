@@ -7,6 +7,8 @@ import { useWeb3, getNetworkElement, useEthosContext, shortenWord, fromDecimals,
 
 import style from '../../../all.module.css'
 
+import SendToLayer from '../../Global/SendToLayer/index.js'
+
 export default ({item}) => {
   const context = useEthosContext()
 
@@ -32,6 +34,7 @@ export default ({item}) => {
         <h5>{shortenWord({ context, charsAmount : 15}, item.name)} ({shortenWord({ context, charsAmount : 15}, item.symbol)})</h5>
         <p>Supply: {fromDecimals(totalSupply, item.decimals)}</p>
         <p>{price ? ("Price: $" + formatMoney(price, 2)) : '-'}</p>
+        <SendToLayer item={item}/>
         <AddItemToMetamask item={item}/>
         <ExtLinkButton href={`${getNetworkElement({context, chainId}, "etherscanURL")}/token/${item.address}`} text="Contract"/>
         {item.collectionData && item.collectionData.slug && <ExtLinkButton href={`https://${chainId === 1 ? '' : 'testnets.'}opensea.io/collection/${item.collectionData.slug}`} text="Original"/>}

@@ -14,6 +14,7 @@ import { allFarmings } from '../../../logic/farming.js'
 
 import style from '../../../all.module.css'
 import OurCircularProgress from '../../Global/OurCircularProgress/index.js'
+import SendToLayer from '../../Global/SendToLayer/index.js'
 
 export default ({item}) => {
   const context = useEthosContext()
@@ -49,6 +50,7 @@ export default ({item}) => {
         <h5>{item.name} ({item.symbol})</h5>
         <p>Supply: {fromDecimals(item.totalSupply, item.decimals)}</p>
         <p>{price ? ("Price: $" + formatMoney(price, 2)) : '-'}</p>
+        <SendToLayer item={item}/>
         <AddItemToMetamask item={item}/>
         <ExtLinkButton href={`${getNetworkElement({context, chainId}, "etherscanURL")}/token/${item.address}`} text="Contract"/>
         <ExtLinkButton href={item.external_url} text="Website"/>
