@@ -183,7 +183,7 @@ body {
 
 .TradeMain {width: 660px;  margin-bottom: 30px; display: inline-block; text-align: center; padding: 10px; border-radius: 20px; }
 .TradeMain h4 {font-size: 16px; margin-bottom: 10px; display: inline-block; width: 100%; text-align: center;}
-.TradeMain h5 {font-size: 16px; display: inline-block; width: 100%; text-align: center; display: none;}
+.TradeMain h5 {font-size: 16px; display: inline-block; width: 100%; text-align: center;}
 .TradeMarketBox {width: 275px; vertical-align: top; display: inline-block; padding: 2% 2% 2% 0%; margin-right: 1%; border-right: 1px solid ; text-align: center; padding: 2%; border: none;width: 95%;}
 .TradeMarketBox h4 {width: 100%; text-align: center; display: inline-block; margin: 15px auto;}
 .TradeMarketBoxSwitch { width:20px; height: 20px;   display: inline-block; margin: 15px auto 15px auto; font-size: 17px; font-weight: bold; border-radius: 100%; cursor: pointer;margin: 35px 5px auto 5px; vertical-align: top;}
@@ -2384,6 +2384,11 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .biz .RightMenu {background-color: #8cd4d17a;border-radius:0px 0px 0px 12px !important;}
 .dark .RightMenu {background-color: #1a1a1a80;}
 .sepia .RightMenu {background-color: #fdf6e37d;}
+
+.light .ObjectInfoAndLink h5 {color: #000000 !important;}
+.biz .ObjectInfoAndLink h5 {color: #000000 !important;}
+.dark .ObjectInfoAndLink h5 {color: #ffffff !important;}
+.sepia .ObjectInfoAndLink h5 {color: #49646a !important;}
 
 
 @media only screen and (max-width: 1200px) {

@@ -7,7 +7,6 @@ import style from '../../../all.module.css'
 export default ({item, onTokens}) => {
     return (
         <div className={style.TradeMarketBox}>
-            <h5>Market</h5>
             {false && <div className={style.TradeMarketType}>
                 <a className={style.selected}>Swap</a>
                 {false && <a>Range Order</a>}
