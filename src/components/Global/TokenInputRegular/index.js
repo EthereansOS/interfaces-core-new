@@ -90,9 +90,9 @@ const TokenInputRegular = ({onElement, onlySelections, tokens, tokenOnly, noETH,
                 </div>}
             </div>
             {!noBalance && !tokenOnly && element && balance === null && <CircularProgress/>}
-            {element && balance !== null && !noBalance && !tokenOnly && <a onClick={() => !disabled && setMax(true)} className={style.TradeMarketTokenBalance}>
+            {(element && balance !== null && !noBalance && !tokenOnly) ? <a onClick={() => !disabled && setMax(true)} className={style.TradeMarketTokenBalance}>
                 Balance: {fromDecimals(balance, element.decimals, 8)} {shortenWord({ context, charsAmount : 15}, element.symbol)}
-            </a>}
+            </a> : <a className={style.TradeMarketTokenBalance}>{'\u00a0'}</a>}
         </div>
     )
 }
