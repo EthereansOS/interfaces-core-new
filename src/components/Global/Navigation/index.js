@@ -1,12 +1,16 @@
 import React from 'react'
-import { usePlaceholder } from '@ethereansos/interfaces-core'
+import { usePlaceholder, useWeb3 } from '@ethereansos/interfaces-core'
 import { Link } from 'react-router-dom'
 import { Typography } from '@ethereansos/interfaces-ui'
 
 import style from '../../../all.module.css'
 
 const Navigation = ({ menuName, isDapp, selected }) => {
-  const menuItems = usePlaceholder(menuName)
+
+  const web3Data = useWeb3()
+  const { dualChainId } = web3Data
+
+  const menuItems = usePlaceholder(menuName).filter(it => !dualChainId || (it.name !== 'Guilds' && it.name !== 'Factories'))
 
   const navItem = (item) => {
     return (
