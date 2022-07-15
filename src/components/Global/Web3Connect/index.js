@@ -19,7 +19,7 @@ const Web3Connect = () => {
   useEffect(() => {
     setTimeout(async () => {
       const address = account
-      if(ensData && ensData.account === account) {
+      if(ensData && ensData.account === account && ensData.chainId === chainId) {
         return
       }
       var name
@@ -33,7 +33,7 @@ const Web3Connect = () => {
           name = name.substring(0, name.indexOf("\""))
         }
       }
-      setEnsData(oldValue => ({...oldValue, name, account}))
+      setEnsData(oldValue => ({...oldValue, name, account, chainId}))
     })
   }, [account, chainId, ensData])
 
@@ -48,7 +48,7 @@ const Web3Connect = () => {
         </a>*/}
         <Link to="/account/dapp" className={style.Web3ConnectWallet}>
           <LogoRenderer noDotLink noFigure input={ensData?.name ? `//metadata.ens.domains/mainnet/avatar/${ensData?.name}` : blockie} defaultImage={blockie}/>
-          <p>{connectionStatus === web3States.NOT_CONNECTED ? "Connect" : truncatedWord({context, charsAmount : 8 }, ensData?.name || account)}</p>
+          <p>{connectionStatus === web3States.NOT_CONNECTED ? "Connect" : ensData?.name || truncatedWord({context, charsAmount : 8 }, account)}</p>
         </Link>
       </div>
   )

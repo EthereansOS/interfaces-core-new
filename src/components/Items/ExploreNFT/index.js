@@ -12,11 +12,13 @@ const ExploreNFT = ({ element, onClick }) => {
 
   const context = useEthosContext()
   const web3Data = useWeb3()
-  const { chainId, block, account } = web3Data
+  const { chainId, block, account, dualBlock } = web3Data
+
+  const currentBlock = useMemo(() => parseInt(dualBlock || block), [dualBlock, block])
 
   const [rarityScore, setRarityScore] = useState()
 
-  const remainingBlocks = useMemo(() => parseInt(element.reserveData?.timeout || 0) - parseInt(block), [element.reserveData?.timeout])
+  const remainingBlocks = useMemo(() => parseInt(element.reserveData?.timeout || 0) - parseInt(currentBlock), [element.reserveData?.timeout, currentBlock])
 
   const remainingDays = useMemo(() => {
 

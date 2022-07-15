@@ -1,6 +1,8 @@
-import { getNetworkElement, VOID_ETHEREUM_ADDRESS, blockchainCall, abi, web3Utils } from '@ethereansos/interfaces-core'
+import { getNetworkElement, VOID_ETHEREUM_ADDRESS, blockchainCall, abi, web3Utils, formatLink, memoryFetch } from '@ethereansos/interfaces-core'
 import { loadTokenFromAddress } from './erc20'
 import { OrderSide } from 'opensea-js/lib/types'
+import { getLogs } from './logger'
+import { getRawField } from './generalReader'
 
 export function loadAsset(tokenAddressOrKey, tokenId) {
     const key = tokenId ? `${web3Utils.toChecksumAddress(tokenAddressOrKey)}-${tokenId}` : tokenAddressOrKey
@@ -42,11 +44,17 @@ export async function getAsset(seaport, tokenAddress, tokenId) {
     return asset
 }
 
-export async function retrieveAsset({ context, seaport, newContract, account }, tokenAddress, tokenId) {
-    return await toItem({context, newContract, account}, await getAsset(seaport, tokenAddress, tokenId))
+export async function retrieveAsset({ context, dualChainId, seaport, newContract, account }, tokenAddress, tokenId) {
+    return await toItem({context, newContract, account}, !dualChainId && seaport ? await getAsset(seaport, tokenAddress, tokenId) : (await cleanTokens({context, web3 : window.web3}, {
+        [web3Utils.toChecksumAddress(tokenAddress)] : [{
+            id : tokenId,
+            owned : true
+        }]
+    }, 'ERC1155', ['uri(uint256)', 'uri', 'tokenURI(uint256)', 'tokenUri(uint256)']))[0])
 }
 
-export async function getOwnedTokens({ context, seaport, account, owner, newContract, getGlobalContract }, type, asset_contract_address) {
+export async function getOwnedTokens(web3Data, type, asset_contract_address) {
+    const { context, seaport, account, owner, newContract, getGlobalContract } = web3Data
     const toExclude = [
         await blockchainCall(getGlobalContract("itemProjectionFactory").methods.mainInterface),
         getGlobalContract('eRC20Wrapper'),
@@ -54,7 +62,15 @@ export async function getOwnedTokens({ context, seaport, account, owner, newCont
         getGlobalContract('eRC1155Wrapper'),
         getGlobalContract('eRC721WrapperDeck'),
         getGlobalContract('eRC1155WrapperDeck')
-    ].map(it => it.options ? it.options.address : it)
+    ].map(it => web3Utils.toChecksumAddress(it.options ? it.options.address : it))
+    var assets = await (asset_contract_address ? getOwnedTokensOnOpensea(web3Data, type, asset_contract_address, toExclude) : type === 'ERC721' ? getOwned721Tokens(web3Data, toExclude) : getOwned1155Tokens(web3Data, toExclude))
+    return await Promise.all(assets.map(it => toItem({context, newContract, account}, it)))
+}
+
+async function getOwnedTokensOnOpensea(web3Data, type, asset_contract_address, toExclude) {
+
+    var { seaport, account, owner } = web3Data
+
     var assets = []
     const length = 3
     const limit = 50
@@ -71,7 +87,138 @@ export async function getOwnedTokens({ context, seaport, account, owner, newCont
     }
     assets = assets.filter(it => it.assetContract.schemaName === type && toExclude.indexOf(web3Utils.toChecksumAddress(it.tokenAddress)) === -1)
     assets = assets.map(it => ({...it, name : it.name || it.assetContract.name, symbol : it.assetContract.tokenSymbol, image : it.imageUrl?.split('s120').join('s300')}))
-    return await Promise.all(assets.map(it => toItem({context, newContract, account}, it)))
+    return assets
+}
+
+async function getOwned721Tokens(web3Data, toExclude) {
+    const { web3, account, owner, context, chainId } = web3Data
+    const address = web3Utils.toChecksumAddress(owner || account)
+    var args = {
+        topics : [
+            web3Utils.sha3('Transfer(address,address,uint256)'),
+            [],
+            abi.encode(["address"], [address])
+        ],
+        fromBlock : getNetworkElement({ context, chainId }, 'deploySearchStart') || '0x0',
+        toBlock : 'latest'
+    }
+    var logs = await getLogs(web3.currentProvider, 'eth_getLogs', args)
+    var tokens = {}
+    await Promise.all(logs.map(async it => {
+        var addr = web3Utils.toChecksumAddress(it.address)
+        if(toExclude.indexOf(addr) !== -1 || tokens[addr] === null) {
+            return
+        }
+        var id
+        try {
+            id = abi.decode(["uint256"], it.topics[3])[0].toString()
+        } catch(e) {
+            id = abi.decode(["uint256"], it.data)[0].toString()
+            return tokens[addr] = null
+        }
+        if((tokens[addr] = tokens[addr] || []).filter(it => it.id === id).length !== 0) {
+            return
+        }
+        var index = tokens[addr].length
+        tokens[addr].push({
+            id
+        })
+        try {
+            tokens[addr][index].owned = address === web3Utils.toChecksumAddress(abi.decode(["address"], await getRawField({ provider : web3.currentProvider}, addr, 'ownerOf(uint256)', id))[0])
+        } catch(e) {
+            return tokens[addr] = null
+        }
+    }))
+    return await cleanTokens(web3Data, tokens, 'ERC721', ['tokenURI(uint256)', 'tokenUri(uint256)', 'uri(uint256)'])
+}
+
+async function getOwned1155Tokens(web3Data, toExclude) {
+    const { web3, account, owner, context, chainId } = web3Data
+    const address = web3Utils.toChecksumAddress(owner || account)
+    var args = {
+        topics : [
+            [
+                web3Utils.sha3('TransferSingle(address,address,address,uint256,uint256)'),
+                web3Utils.sha3('TransferBatch(address,address,address,uint256[],uint256[])')
+            ],
+            [],
+            [],
+            abi.encode(["address"], [address])
+        ],
+        fromBlock : getNetworkElement({ context, chainId }, 'deploySearchStart') || '0x0',
+        toBlock : 'latest'
+    }
+    var logs = await getLogs(web3.currentProvider, 'eth_getLogs', args)
+    var tokens = {}
+    await Promise.all(logs.map(async it => {
+        var addr = web3Utils.toChecksumAddress(it.address)
+        if(toExclude.indexOf(addr) !== -1 || tokens[addr] === null) {
+            return
+        }
+        var ids = []
+        try {
+            ids = [abi.decode(["uint256","uint256"], it.data)[0]]
+        } catch(e) {
+            ids = abi.decode(["uint256[]","uint256[]"], it.data)[0]
+        }
+        ids = ids.map(it => it.toString()).filter((it, i, arr) => arr.indexOf(it) === i)
+        for(var id of ids) {
+            if((tokens[addr] = tokens[addr] || []).filter(it => it.id === id).length !== 0) {
+                continue
+            }
+            var index = tokens[addr].length
+            tokens[addr].push({
+                id
+            })
+            tokens[addr][index].owned = '0' !== abi.decode(["uint256"], await getRawField({ provider : web3.currentProvider}, addr, 'balanceOf(address,uint256)', address, id))[0].toString()
+        }
+    }))
+    return await cleanTokens(web3Data, tokens, 'ERC1155', ['uri(uint256)', 'uri', 'tokenURI(uint256)', 'tokenUri(uint256)'])
+}
+
+async function cleanTokens(web3Data, tokens, type, uriLabels) {
+
+    const { web3, context } = web3Data
+
+    uriLabels = uriLabels instanceof Array ? uriLabels : [uriLabels]
+
+    var assets = Object.entries(tokens).filter(it => it[1]).map(entry => entry[1].filter(it => it.owned).map(it => ({
+        tokenAddress : entry[0],
+        tokenId : it.id,
+        assetContract : {
+            schemaName : type
+        }
+    }))).reduce((acc, it) => [...acc, ...it], [])
+    assets = await Promise.all(assets.map(async item => {
+        var uri
+        var metadata
+        for(var uriLabel of uriLabels) {
+            try {
+                uri = await getRawField({ provider : web3.currentProvider }, item.tokenAddress, uriLabel, item.tokenId)
+                uri = abi.decode(["string"], uri)[0]
+                uri = uri.split('0x{id}').join(web3Utils.numberToHex(item.tokenId))
+                uri = uri.split('{id}').join(item.tokenId)
+                uri = formatLink({ context }, uri)
+                metadata = await memoryFetch(uri)
+                if(metadata.image) {
+                    var image = metadata.image
+                    image = image.split('0x{id}').join(web3Utils.numberToHex(item.tokenId))
+                    image = image.split('{id}').join(image.tokenId)
+                    image = formatLink({ context }, image)
+                    metadata.image = image
+                }
+                break
+            } catch(e) {
+            }
+        }
+        return {
+            ...item,
+            uri,
+            metadata,
+            ...metadata
+        }
+    }))
+    return assets
 }
 
 async function toItem({context, newContract, account}, element) {
@@ -105,6 +252,9 @@ async function toItem({context, newContract, account}, element) {
             result.balance = await blockchainCall(result.contract.methods.balanceOf, account, result.id)
         }
     } catch(e) {}
+    result.collection = result.collection || {
+        imageUrl : result.image
+    }
     return result
 }
 
@@ -132,6 +282,9 @@ export async function getItemOrders({chainId, context, seaport, account, web3, n
             break
         } catch(e) {
             const message = (e.message || e).toLowerCase()
+            if(message.indexOf('for chain ethereum not found') !== -1) {
+                return []
+            }
             if(message.indexOf('429') !== -1) {
                 tries++
             } else {

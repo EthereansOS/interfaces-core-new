@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react"
 
 import CircularProgress from '../OurCircularProgress'
-import { useEthosContext, formatLink, web3Utils} from "@ethereansos/interfaces-core"
+import { useEthosContext, formatLink, web3Utils, useWeb3 } from "@ethereansos/interfaces-core"
+import { resolveToken } from "../../../logic/dualChain"
 
 import style from '../../../all.module.css'
 
@@ -15,9 +16,13 @@ export default ({input, figureClassName, noFigure, title, defaultImage, noDotLin
 
     const context = useEthosContext()
 
+    const web3Data = useWeb3()
+
+    const { dualChainId } = web3Data
+
     const [finalImage, setFinalImage] = useState(null)
     const [loading, setLoading] = useState(false)
-    const [error, setError] = useState()
+    const [tried, setTried] = useState()
 
     useEffect(() => {
         setFinalImage(null)
@@ -29,8 +34,32 @@ export default ({input, figureClassName, noFigure, title, defaultImage, noDotLin
     }, [image, finalImage])
 
     async function onLoadError() {
-        setLoading(onError ? true : false)
-        setFinalImage((onError && await onError()) || realDefaultImage)
+        setLoading((onError || dualChainId) ? true : false)
+        if(!onError && !tried && dualChainId) {
+            setTried(true)
+            if((typeof input).toLowerCase() === 'string' || input.tokenAddress || input.address) {
+                var token = await resolveToken({ context, ...web3Data}, input.tokenAddress || input.address || input)
+                var link = context.trustwalletImgURLTemplate.split('{0}').join(token)
+                var key = link + '_url'
+                try {
+                    var loc = window.localStorage[key]
+                    if(loc === undefined) {
+                        var result = await (await fetch(link)).text()
+                        loc = result.indexOf('404') === -1 ? 'true' : 'false'
+                    }
+                    if (loc === 'false') {
+                        link = realDefaultImage
+                    }
+                    window.localStorage.setItem(key, loc)
+                } catch(e) {
+                    link = realDefaultImage
+                    window.localStorage.setItem(key, 'false')
+                }
+                setFinalImage(link)
+            }
+        } else {
+            setFinalImage((onError && await onError()) || realDefaultImage)
+        }
         setLoading(false)
     }
 
@@ -42,7 +71,11 @@ export default ({input, figureClassName, noFigure, title, defaultImage, noDotLin
 
     if(src && src.indexOf('trustwallet') !== -1) {
         var split = src.split('/')
-        split[split.length - 2] = web3Utils.toChecksumAddress(split[split.length - 2])
+        try {
+            split[split.length - 2] = web3Utils.toChecksumAddress(split[split.length - 2])
+        } catch(e) {
+            console.error(e)
+        }
         src = split.join('/')
     }
 

@@ -50,8 +50,12 @@ export async function create({ context, ipfsHttpClient, newContract, chainId, fa
 }
 
 export async function all({ context, newContract, chainId, factoryOfFactories }) {
+    const factoryIndex = getNetworkElement({ context, chainId }, "factoryIndices").subdao
+    if(factoryIndex === undefined || factoryIndex === null) {
+        return []
+    }
     var args = {
-        address: (await blockchainCall(factoryOfFactories.methods.get, getNetworkElement({ context, chainId }, "factoryIndices").subdao)).factoryList,
+        address: (await blockchainCall(factoryOfFactories.methods.get, factoryIndex)).factoryList,
         topics: [
             web3Utils.sha3('Deployed(address,address,address,bytes)')
         ],

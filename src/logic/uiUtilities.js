@@ -5,7 +5,7 @@ import { loadTokenFromAddress } from './erc20'
 
 import MenuCapableComponent from "../components/Global/MenuCapableComponent"
 import { useLocation } from 'react-router'
-import { useWeb3, sendAsync } from '@ethereansos/interfaces-core'
+import { useWeb3, sendAsync, web3Utils } from '@ethereansos/interfaces-core'
 
 import TransactionResult from '../components/Global/TransactionResult'
 
@@ -300,4 +300,20 @@ export function copyToClipboard(value) {
         console.log(e)
     }
     document.body.removeChild(input)
+}
+
+export function toChecksumAddress(item) {
+    if(!item) {
+        return item
+    }
+    if(item.address) {
+        item.address = web3Utils.toChecksumAddress(item.address)
+    }
+    if(item.tokenAddress) {
+        item.tokenAddress = web3Utils.toChecksumAddress(item.tokenAddress)
+    }
+    if((typeof item).toLowerCase() === 'string') {
+        item = web3Utils.toChecksumAddress(item)
+    }
+    return item
 }

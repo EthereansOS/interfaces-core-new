@@ -88,13 +88,35 @@ const Host = ({state, onStateEntry}) => {
     </div>)
 }
 
+function extractFile(files) {
+
+    var file
+
+    try {
+        file = file || files.item(0)
+    } catch(e) {}
+
+    try {
+        file = file || files.get(0)
+    } catch(e) {}
+
+    try {
+        file = file || files[0]
+    } catch(e) {}
+
+    var container = new DataTransfer()
+    container.items.add(file)
+    var newList = container.files
+    return newList
+}
+
 const MetadataField = ({state, onStateEntry, field, type, label, description, accept, mandatory}) => {
     return (
             <label className={style.CreationPageLabelF}>
                 <h6>{label}{mandatory && <b>*</b>}:</h6>
                 {type === 'textarea'
                     ? <textarea onChange={e => onStateEntry('metadata', ({...state.metadata, [field] : e.currentTarget.value}))}>{state.metadata[field]}</textarea>
-                    : <input type={type || 'text'} accept={accept} ref={type !== 'file' ? undefined : ref => ref && (ref.files = state.metadata[field] || (window.DataTransfer ? new window.DataTransfer().files : null))} value={type === 'file' ? undefined : state.metadata[field]} onChange={e => onStateEntry('metadata', ({...state.metadata, [field] : type === 'file' ? e.currentTarget.files : e.currentTarget.value}))}/>}
+                    : <input type={type || 'text'} accept={accept} ref={type !== 'file' ? undefined : ref => ref && (ref.files = state.metadata[field] || (window.DataTransfer ? new window.DataTransfer().files : null))} value={type === 'file' ? undefined : state.metadata[field]} onChange={e => onStateEntry('metadata', ({...state.metadata, [field] : type === 'file' ? extractFile(e.currentTarget.files) : e.currentTarget.value}))}/>}
                 {description && <p>{description}</p>}
             </label>
     )
@@ -163,7 +185,7 @@ const Metadata = ({state, onStateEntry}) => {
             </div>
         </>}
         {state.metadataType === 'metadata' && <>
-            <MetadataField state={state} onStateEntry={onStateEntry} type='textarea' field='description' label='Description' mandatory description='A description of the collection' mandatory/>
+            <MetadataField state={state} onStateEntry={onStateEntry} type='textarea' field='description' label='Description' mandatory description='A description of the collection'/>
             <MetadataField state={state} onStateEntry={onStateEntry} field='discussion_url' label='Discussion Link' description='A link to a social hub and/or discussion channel for the collection (if any)'/>
             <MetadataField state={state} onStateEntry={onStateEntry} field='external_url' label='Website' description='A link to the official website of this project (if any)'/>
             <MetadataField state={state} onStateEntry={onStateEntry} field='github_url' label='Github Link' description='A link to the official repo of this project (if any)'/>

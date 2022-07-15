@@ -20,10 +20,37 @@ The __routing__ is performed inside the `router.js` file.
 It uses the same `usePlaceholder` hook to retrieve the routes.
 If the supplied route requires a connection to Ethereum and the connection is not yet established, it will show the `Connect` component, otherwise the route component will be rendered.
 
-It's recommended to keep using the plugin system for the menu and the routing and not write these items directly in the `app` package.  
+It's recommended to keep using the plugin system for the menu and the routing and not write these items directly in the `app` package.
 The `PluginsContextProvider` in the `App` component loads the plugins from the `sample-plugin` package, which can be considered as a reference implementation.
 
 The `src/data/context.json` file keeps the configuration to initialize web3.
+
+## Introduce support to Optimistic Rollup Network (Mainnet and Kovan)
+
+locate the file `node_modules/use-wallet/dist/esm/index.js`
+
+__DELETE__ line `1668` and paste
+
+```javacript
+}], [10, {
+  id: 10,
+  nativeCurrency: ETH,
+  type: 'main',
+  fullName: 'Optimism Mainnet',
+  shortName: 'Optimism',
+  explorerUrl: 'https://optimistic.etherscan.io',
+  testnet: false
+}], [69, {
+  id: 69,
+  nativeCurrency: ETH,
+  type: 'main',
+  fullName: 'Optimism Kovan',
+  shortName: 'Optimism Kovan',
+  explorerUrl: 'https://kovan-optimistic.etherscan.io',
+  testnet: true
+}]]);
+```
+save the file
 
 ## Build
 

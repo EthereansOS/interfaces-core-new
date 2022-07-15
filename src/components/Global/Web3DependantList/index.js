@@ -20,14 +20,20 @@ export default ({ discriminant, Renderer, emptyMessage, provider, searchText, re
     withLoader === true && setElements(null)
     setError("")
     setTimeout(async () => {
-      try {
-        var els = provider()
-        els = els.then ? await els : els
-        els = els instanceof Array ? els : [els]
-        setElements(els)
-      } catch(e) {
-        console.log(e)
-        setError('Error while loading: ' + (e.message || e))
+      while(true) {
+        try {
+          var els = provider()
+          els = els.then ? await els : els
+          els = els instanceof Array ? els : [els]
+          return setElements(els)
+        } catch(e) {
+          console.log(e)
+          var message = (e.stack || e.message || e).toLowerCase()
+          if(message.indexOf('header not found') === -1 && message.indexOf('response has no error') === -1) {
+            return setError('Error while loading: ' + (e.message || e))
+          }
+          await new Promise(ok => setTimeout(ok, 3000))
+        }
       }
     })
   }, [provider])

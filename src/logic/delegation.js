@@ -194,7 +194,11 @@ export async function finalizeDelegation({context, chainId, newContract, factory
 }
 
 export async function all({context, newContract, chainId, factoryOfFactories, account, mine}, metadata, organization) {
-    var factoryData = await blockchainCall(factoryOfFactories.methods.get, getNetworkElement({context, chainId}, "factoryIndices").delegation)
+    const factoryIndex = getNetworkElement({ context, chainId }, "factoryIndices").delegation
+    if(factoryIndex === undefined || factoryIndex === null) {
+        return []
+    }
+    var factoryData = await blockchainCall(factoryOfFactories.methods.get, factoryIndex)
 
     var args = {
         address : factoryData.factoryList,

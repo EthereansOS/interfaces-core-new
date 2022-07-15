@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 
 import style from '../../../all.module.css'
 import CircularProgress from '../OurCircularProgress'
@@ -44,15 +44,14 @@ const TokenInputRegular = ({onElement, onlySelections, tokens, tokenOnly, noETH,
     }, [account, element, block, noBalance])
 
     useEffect(() => {
-        if(max && value === balance) {
-            return
+        try {
+            if(max && balance === toDecimals(value, element.decimals)) {
+                return
+            }
+        } catch(e) {
         }
-        setMax(false)
-    }, [value])
-
-    useEffect(() => {
         onElement && onElement(element, balance || '0', (!element ? '' : max ? balance : value === '0' ? '' : toDecimals(value, element.decimals)) || '')
-    }, [balance, value, max])
+    }, [element, balance, value, max])
 
     var onClick = el => {
         onElement && onElement(el, '0', '0')
@@ -63,6 +62,13 @@ const TokenInputRegular = ({onElement, onlySelections, tokens, tokenOnly, noETH,
 
     const selections = onlySelections || ['ERC-20', 'Items']
     const properties = selections.reduce((acc, it) => ({...acc, [it] : {noETH : noETH === true, renderedProperties:{onClick, noBalance}}}), {})
+
+    const onValueChange = useCallback(e => {
+        setMax(false)
+        var v = e.currentTarget.value
+        v = v.indexOf('.') === 0 && v !== '.' ? ('0' + v) : v
+        setValue(v)
+    }, [])
 
     return modalIsOpen ? (
         <ModalStandard close={() => setModalIsOpen(false)}>
@@ -80,13 +86,13 @@ const TokenInputRegular = ({onElement, onlySelections, tokens, tokenOnly, noETH,
                     <span>{shortenWord({ context, charsAmount : 15}, element?.symbol || '')}{(!tokens || tokens.length > 1) ? <span> ▼</span> : ''}</span>
                 </a>
                 {!tokenOnly && <div className={style.TradeMarketTokenAmount}>
-                    <input onWheel={numberInputOnWheelPreventChange} disabled={disabled} type="number" placeholder="0.0" min="0.000000000000000001" value={element && max ? fromDecimals(balance, element.decimals, true) : value === '0' ? "" : value} onChange={e => void(setMax(false), setValue(e.currentTarget.value))}/>
+                    <input onWheel={numberInputOnWheelPreventChange} disabled={disabled} type="number" placeholder="0.0" min="0.000000000000000001" value={element && max ? fromDecimals(balance, element.decimals, true) : value === '0' ? "" : value} onChange={onValueChange}/>
                 </div>}
             </div>
             {!noBalance && !tokenOnly && element && balance === null && <CircularProgress/>}
-            {element && balance !== null && !noBalance && !tokenOnly && <a onClick={() => !disabled && setMax(true)} className={style.TradeMarketTokenBalance}>
+            {(element && balance !== null && !noBalance && !tokenOnly) ? <a onClick={() => !disabled && setMax(true)} className={style.TradeMarketTokenBalance}>
                 Balance: {fromDecimals(balance, element.decimals, 8)} {shortenWord({ context, charsAmount : 15}, element.symbol)}
-            </a>}
+            </a> : <a className={style.TradeMarketTokenBalance}>{'\u00a0'}</a>}
         </div>
     )
 }

@@ -38,8 +38,9 @@ const RoutineCard = ({ element, opened, setOpened }) => {
             </div>
             <div className={style.RoutineContentInfo}>
                 <p>
-                    <a className={style.ExtLinkButton} href={`${getNetworkElement({ context, chainId }, 'etherscanURL')}address/${element.extensionAddress}`} target="_blank">Host</a>
                     <a className={style.ExtLinkButton} href={`${getNetworkElement({ context, chainId }, 'etherscanURL')}address/${element.address}`} target="_blank">Contract</a>
+                    <a className={style.ExtLinkButton} href={`${getNetworkElement({ context, chainId }, 'etherscanURL')}address/${element.host}`} target="_blank">Host</a>
+                    <a className={style.ExtLinkButton} href={`${getNetworkElement({ context, chainId }, 'etherscanURL')}address/${element.extensionAddress}`} target="_blank">Extension</a>
                 </p>
                 {element.entry.callerRewardPercentage !== "0" && <p>Executor Reward: {formatMoney(parseFloat(fromDecimals(element.entry.callerRewardPercentage, 18, true)) * 100)}%</p>}
             </div>
