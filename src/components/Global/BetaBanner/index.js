@@ -15,12 +15,9 @@ export default ({close}) => {
         <div onClick={close} className={style.ModalBack}>
             <div onClick={preventClose} className={style.ModalBoxBanner}>
                 <h5><b>The EthereansOS interface is in BETA, and has limited features.</b></h5>
-                <h6>Currently missing are:</h6>
-                <p>Create an Organization</p>
-                <p>Create or View a Factory</p>
-                <p>Mobile View</p>
-                <h6>If you find any issues, or have cool ideas to share, please contact us <a target="_blank" href="https://discord.gg/5YNX74qNYj">here</a> Use it at your own risk.</h6>
+                <h6>If you find any issue, please contact us <a target="_blank" href="https://discord.gg/Eqf5xWBJsN">in our Discord Server</a></h6>
                 <a className={style.Enter} onClick={close}>Enter</a>
+                <span>By connecting to the App, you certify that you know all of the possible risks of using Ethereum Applications in Beta. Use EthereansOS at your own risk.</span>
             </div>
         </div>
     )
