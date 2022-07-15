@@ -1281,6 +1281,31 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 
  .OrgTitleEx {width: 228px;}
  .OrgSingle figure {width: 70px; height: 70px;}
+ .OrgHeadline {width: 95%; height: auto;}
+ .OrgHeadline figure {width: 80px; height: 80px;}
+ .OrgHeadline figure img {width: 80px; height: 80px;}
+ .OrgHeadlineSide {display: none;}
+ .OrgTitle {width: auto; height: auto;}
+ .OrgTitle p {display: none;}
+ .OrgTitle h6 {font-size: 16px;}
+ .GuildTagO, .GuildTagD {display: block;width: 120px;text-align: center; margin: 5px auto;}
+ .OrgLinks {display: inline-block; margin: 5px auto; padding: 3px; text-align: left; width: 95%;}
+ .OrgPartViewF, OrgMainThingsCard, .OrgPartView {width: 95%;}
+
+
+ .AccountAll {width: 95%;}
+ .AccountAvatar {width: 80px; height: 80px; margin: 30px auto 10px auto;}
+ .AccountAvatar img {width: 80px; height: 80px;}
+ .AccountInfo {padding: 10px;}
+ .AccountInfoL {width: 95%;}
+ .AccountInfoL h4 {font-size: 13px;}
+ .AccountInfoL h4 span {font-size: 11px;}
+ .CardsLayerS, .CardsFancy {height: 100px !important;}
+ .CardsLayerS {margin-top: 10px;}
+ .CardsLayerS figure {width: 30px; height: 30px;margin: 15px auto 20px auto;}
+ .CardsLayerS figure img {width: 30px; height: 30px;}
+
+ .SingleContentPage {max-width: 100%;}
 }
 
 /* themes */
