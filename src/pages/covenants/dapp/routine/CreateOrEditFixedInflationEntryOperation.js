@@ -10,7 +10,7 @@ import TokenInputRegular from '../../../../components/Global/TokenInputRegular'
 import { getRawField } from '../../../../logic/generalReader'
 import style from '../../../../all.module.css'
 
-export default(props) => {
+export default props => {
 
     const { entry, onCancel, onFinish, operation } = props
 
@@ -75,6 +75,9 @@ export default(props) => {
     // second step methods
     const onSelectInputToken = async address => {
         address = (address && address.address) || address
+        if(inputToken && inputToken.address === address) {
+            return
+        }
         setAmm(null)
         setPathTokens([])
         setExitInETH(false)

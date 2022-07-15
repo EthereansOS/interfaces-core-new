@@ -306,6 +306,9 @@ export function toChecksumAddress(item) {
     if(!item) {
         return item
     }
+    if(item.sourceAddress) {
+        item.sourceAddress = web3Utils.toChecksumAddress(item.sourceAddress)
+    }
     if(item.address) {
         item.address = web3Utils.toChecksumAddress(item.address)
     }
@@ -314,6 +317,28 @@ export function toChecksumAddress(item) {
     }
     if((typeof item).toLowerCase() === 'string') {
         item = web3Utils.toChecksumAddress(item)
+    }
+    return item
+}
+
+export function getAddress(item) {
+    if(!item) {
+        return item
+    }
+    if(item.sourceAddress) {
+        return web3Utils.toChecksumAddress(item.sourceAddress)
+    }
+    if(item.address) {
+        return web3Utils.toChecksumAddress(item.address)
+    }
+    if(item.sourceAddress) {
+        return web3Utils.toChecksumAddress(item.sourceAddress)
+    }
+    if(item.tokenAddress) {
+        return web3Utils.toChecksumAddress(item.tokenAddress)
+    }
+    if((typeof item).toLowerCase() === 'string') {
+        return web3Utils.toChecksumAddress(item)
     }
     return item
 }

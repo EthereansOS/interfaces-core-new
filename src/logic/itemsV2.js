@@ -259,9 +259,30 @@ export async function loadItem({seaport, context, chainId, account, newContract,
     }
 
     try {
+        result = !result.wrapper ? result : await loadWrappedData(result)
+    } catch(e) {
+    }
+
+    try {
         result = lightweight ? result : await loadItemDynamicInfo({seaport, chainId, context, account, newContract}, result, item)
     } catch(e) {
     }
+
+    return result
+}
+
+async function loadWrappedData(result) {
+
+    var source = await blockchainCall(result.wrapper.methods.source, result.id)
+
+    var sourceAddress = source
+    var sourceId
+    if((typeof sourceAddress).toLowerCase() !== 'string') {
+        sourceAddress = source[0]
+        sourceId = source[1].toString()
+    }
+    result.sourceAddress = sourceAddress
+    sourceId && (result.sourceId = sourceId)
 
     return result
 }

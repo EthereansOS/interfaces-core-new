@@ -20,7 +20,7 @@ export default ({element, onClick, noBalance}) => {
 
   return (
     <a className={style.TokenObject} onClick={() => onClick && onClick(element)}>
-      <LogoRenderer input={element}/>
+      <LogoRenderer badge input={element}/>
       <div className={style.ObjectInfo}>
         <div className={style.ObjectInfoAndLink}>
           <h5>{shortenWord({ context, charsAmount : 15}, element.name)} ({shortenWord({ context, charsAmount : 15}, element.symbol)})</h5>

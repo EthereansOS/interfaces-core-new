@@ -178,7 +178,7 @@ export default props => {
                     {loading ? <OurCircularProgress/> : <div className={style.LoadedPoolInfo}>
                         {liquidityPoolToken && liquidityPoolToken.tokens.length > 0 && <h6>
                             <b>{liquidityPoolToken.name} | {liquidityPoolToken.tokens.map((token) => <>{!token.isEth ? token.symbol : involvingETH ? 'ETH' : token.symbol} </>)}</b>
-                            {liquidityPoolToken.tokens.map(token => <LogoRenderer input={!token.isEth ? token.address : involvingETH ? {...token, image: `${process.env.PUBLIC_URL}/img/eth_logo.png`} : token.address} />)}
+                            {liquidityPoolToken.tokens.map(token => <LogoRenderer badge input={!token.isEth ? token.address : involvingETH ? {...token, image: `${process.env.PUBLIC_URL}/img/eth_logo.png`} : token.address} />)}
                         </h6>}
                     </div>}
                 </div>

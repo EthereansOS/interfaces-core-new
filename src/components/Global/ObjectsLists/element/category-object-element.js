@@ -7,7 +7,7 @@ export default ({element}) => {
     var context = useEthosContext()
     return (
         <a className={style.TokenObject}>
-            <LogoRenderer input={element}/>
+            <LogoRenderer badge input={element}/>
             <div className={style.ObjectInfo}>
                 <div className={style.ObjectInfoCategory}>
                     <h5>{shortenWord({ context, charsAmount : 15}, element.name)}</h5>

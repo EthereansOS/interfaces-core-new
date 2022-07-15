@@ -70,5 +70,5 @@ export default props => {
         return <OurCircularProgress/>
     }
 
-    return <LogoRenderer {...{...props, onError}}/>
+    return <LogoRenderer badge {...{...props, onError}}/>
 }
