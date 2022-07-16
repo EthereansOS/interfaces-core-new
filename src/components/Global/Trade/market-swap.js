@@ -103,12 +103,15 @@ export default ({item, onTokens}) => {
             return
         }
         changer.current && clearTimeout(changer.current)
-        if(output && output.token === token && output.value === value) {
+        if(output && output.token === token && output.value === value && output.balance === balance) {
             return
         }
         const oldToken = output?.token
         const newOutput = {token, balance, value}
         setOutput(newOutput)
+        if(output && output.token === token && output.value === value) {
+            return
+        }
         if(!value || value === '0') {
             return setInput({...input, value : undefined})
         }
@@ -120,12 +123,15 @@ export default ({item, onTokens}) => {
             return
         }
         changer.current && clearTimeout(changer.current)
-        if(input && input.token === token && input.value === value) {
+        if(input && input.token === token && input.value === value && input.balance === balance) {
             return
         }
         const oldToken = input?.token
         const newInput = {token, balance, value}
         setInput(newInput)
+        if(input && input.token === token && input.value === value) {
+            return
+        }
         if(!value || value === '0') {
             return setOutput({...output, value : undefined})
         }
