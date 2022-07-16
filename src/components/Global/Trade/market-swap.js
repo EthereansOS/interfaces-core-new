@@ -78,6 +78,13 @@ export default ({item, onTokens}) => {
         }
     }, [])
 
+    useEffect(() => {
+        if((!input?.value || input?.value === '0') && (!output?.value || output?.value === '0')) {
+            setSwapData()
+            setAMM()
+        }
+    }, [input, output])
+
     calculate.current = async function calculate(amm, inputIn, outputIn, type) {
         inputIn = inputIn || input
         outputIn = outputIn || output
