@@ -4,7 +4,7 @@ import RegularButtonDuo from '../../Global/RegularButtonDuo/index.js'
 import ExtLinkButton from '../../Global/ExtLinkButton/index.js'
 import LogoRenderer from '../../Global/LogoRenderer'
 import { HeaderOsInflationRateActiveSelection, HeaderStateManagerVariable } from './verticalizations'
-import { useEthosContext, useWeb3, getNetworkElement, fromDecimals, blockchainCall } from '@ethereansos/interfaces-core'
+import { useEthosContext, useWeb3, getNetworkElement, fromDecimals, blockchainCall, formatMoney } from '@ethereansos/interfaces-core'
 
 export default ({element, onToggle}) => {
 
@@ -49,7 +49,7 @@ export default ({element, onToggle}) => {
         <div className={style.GovCardHeadDelegation}>
           {element.delegationsManager && <LogoRenderer input={element}/>}
           <span>{element.name}</span>
-          {element.delegationsManager && <p><b>Supporters stake:</b><br></br> {fromDecimals(supportersStake, 18, true)} {element.delegationsManager.supportedToken.symbol}</p>}
+          {element.delegationsManager && <p><b>Supporters stake:</b><br></br> {formatMoney(fromDecimals(supportersStake, 18, true), 4)} {element.delegationsManager.supportedToken.symbol}</p>}
           <div className={style.DelegationWalletsCardBTN}>
             <RegularButtonDuo onClick={() => setOpened(!opened)}>{opened ? 'Close' : 'Open'}</RegularButtonDuo>
           </div>

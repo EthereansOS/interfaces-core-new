@@ -5,6 +5,7 @@ import style from '../../../../all.module.css'
 
 const Create = ({}) => {
     return (<>
+    <div className={style.OnlyDesktop}>
         <div className={style.CreatePage}>
             <div className={style.CreateBoxDesc}>
                 <h6>Routine</h6>
@@ -19,6 +20,12 @@ const Create = ({}) => {
                 <a target="_blank" href="https://docs.ethos.wiki/ethereansos-docs/organizations/organizations" className={style.ExtLinkButtonAlpha}>Learn</a>
             </div>
         </div>
+    </div>
+    <div className={style.OnlyMobile}>
+        <div className={style.CreateBoxDesc}>
+            <p>This function is not available for mobile devices.</p>
+        </div>
+    </div>
     </>)
 }
 
