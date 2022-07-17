@@ -1065,7 +1065,7 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .ObjectInfoCategory {width: 100%; display: inline-block; text-align: left; padding: 4% 0;}
 .ObjectInfoCategory h5 {width:100%; text-align:left;}
 .ObjectInfoCategory span {width: 100%; text-align: left; font-size:11px;}
-.TokensSelector {width: 100%; display: block; position: relative; border-radius: 20px;}
+.TokensSelector {width: 100%; display: block; position: relative; border-radius: 20px; height: 700px;}
 .TokensSelectorList {height: 90%; width: 100%; padding: 10px; display: block; border-radius: 20px 20px 0 0; overflow-y: scroll;}
 .TokensSelectorCategories {height: 60px;  border-top: 2px solid; width: 100%; display: block; border-radius: 0 0 20px 20px; position: absolute; left:0; bottom: 0; text-align: center; overflow: hidden;}
 .TokensSelectorCategories input {width: 40%;display: inline-block; vertical-align: top;height: 100%;border: none;border-radius: 0 0 0 20px;font-size: 16px;padding: 2%;}
@@ -1275,7 +1275,7 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
  .OperationsTrigger {text-align: center;}
  .OperationsTrigger h5 {font-size: 13px;}
 
- .ItemSingle {width: 155px;}
+ .ItemSingle {width: 145px;}
  .CollectionSingle {width: 155px;}
 
  .CreatePage {width: 95%; padding: 2%;}
@@ -1284,6 +1284,10 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
  .CreationPageLabelF {width: 95%; padding: 2%;}
  .CreationPageLabelF input, .CreationPageLabelF textarea  {width: 95%; padding: 5% 2%;}
  .proggressCreate {width: 250px;}
+ .CollectionRight .CovenantsMainBox {width: 95%;}
+ .InfoBox {width: 95%; margin: 10px auto; padding: 10px !important;}
+ .InfoBoxaside {display: none;}
+ .InfoBox h1 {width: 100%;}
 
 
  .OrgTitleEx {width: 228px;}
@@ -1324,7 +1328,8 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
  .ProposalVotesCount, .GovCardS .ProposalVotesCount  {width: 100%; display: inline-block; text-align: center;}
  .ProposalVotesCount span {width: 50%; display: inline-block; text-align: left;}
  .ProposalVotesCount .RegularButtonDuo {width: 50%; display: inline-block; text-align: center;}
- .Upshots {width: 100% !important;}
+ .Upshots {width: 100% !important; padding: 5px 0 !important;}
+ .Upshot {width: 125px;}
  .ProposalOpen .Upshots {padding: 5px auto;}
  .DescriptionBig {padding: 0;}
  .Vote {width: 100%; margin: 10px auto;}
@@ -1346,9 +1351,19 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
  .DelegationWrap {width: 100%; text-align: center;}
  .DelegationWrapBox {width: 95%; padding: 5px;}
  .DelegationWrap p {margin: 5px auto; font-size: 10px;}
+ .ObjectInfo {width: 240px !important;}
 
- .OnlyDesktop {display: none !important;}
- .OnlyMobile {display: inline-block !important;}
+ .CollectionLeft {width: 95%; padding: 5px 0;}
+ .ICViewCover {width: 95%;}
+ .ViewBasics {width: 95%;    margin-top: 10px;}
+ .ViewDescriptionL {display: none;}
+ .CollectionRight {width: 95%; margin: 10px auto;}
+ .SubCollectionInfo {width: 95%; margin: 10px auto; height: 90px;}
+ .SubCollectionInfoName {width: 180px; vertical-align: middle;}
+ .SubCollectionInfoCover {width: 90px; height: 90px; margin: 0px 10px 0px 0px;vertical-align: middle;}
+ .SubCollectionInfoCover img {width: 90px; height: 90px;}
+ .SendToL1, .SendToL2, .MetaBTN {width: 95% !important}
+ .CollectionRight .TradeMain .TradeMarketTokenAmount {width: 170px;}
 
  .AccountAll {width: 95%;}
  .AccountAvatar {width: 80px; height: 80px; margin: 30px auto 10px auto;}
@@ -1368,6 +1383,13 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
  .ModalBoxBanner h5 {font-size: 14px;}
 
  .Factories {display: none;}
+
+ .TradeMarketBoxSwitch {margin: 2px auto !important; display: block;}
+
+ .TokensSelector {height: 400px;}
+
+ .OnlyDesktop {display: none !important;}
+ .OnlyMobile {display: inline-block !important;}
 }
 
 /* themes */
