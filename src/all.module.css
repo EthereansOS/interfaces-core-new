@@ -1355,12 +1355,12 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
  .HostToolsDelegations {width: 95%;padding: 10px;}
  .medium .CreationPageLabelS {padding: 10px;}
  .medium .CreationPageLabelFS,.medium textarea  {padding: 1%; width: 95%;}
-.medium .OrgSingle {width: 95%;}
-.medium .OrgTitleEx {width: 170px;}
-.medium .OrgTitleEx h6 {font-size: 14px;}
+ .medium .OrgSingle {width: 95%;}
+ .medium .OrgTitleEx {width: 170px;}
+ .medium .OrgTitleEx h6 {font-size: 14px;}
 
-.CreationPageLabelF .TradeMarketTokenAmount {width: 200px;}
-.CreationPageLabelF > span {word-break: break-word; display: block; width: 95%; margin: 5px auto;}
+ .CreationPageLabelF .TradeMarketTokenAmount {width: 200px;}
+ .CreationPageLabelF > span {word-break: break-word; display: block; width: 95%; margin: 5px auto;}
 
  .CollectionLeft {width: 95%; padding: 5px 0;}
  .ICViewCover {width: 95%;}
@@ -1386,7 +1386,7 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
  .Cart .CartBuyBox p {display: none;}
  .Cart .CartBuyBox h4 {font-size: 13px; vertical-align: middle;}
  .CartBuyBoxPrice {width: 70px;}
-
+ .DeckMarketPlace {margin-bottom: 250px;}
 
  .AccountAll {width: 95%;}
  .AccountAvatar {width: 80px; height: 80px; margin: 30px auto 10px auto;}
@@ -1399,6 +1399,10 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
  .CardsLayerS {margin-top: 10px;}
  .CardsLayerS figure {width: 30px; height: 30px;margin: 15px auto 20px auto;}
  .CardsLayerS figure img {width: 30px; height: 30px;}
+ .generationSelector {width: 100%; padding: 10px; margin: 5px auto;}
+ .SetupINFORECAP {width: 100%;}
+ .SetupActions {width: 100%;}
+ .FinalizeSequenceBoxButtons .ActionAWeb3Button {display: inline-block; margin: 5px auto;}
 
  .SingleContentPage {max-width: 100%;}
 
@@ -1413,6 +1417,14 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 
  .OnlyDesktop {display: none !important;}
  .OnlyMobile {display: inline-block !important;}
+
+ .BreefRecapB {width: 95%; max-width: 95%;}
+ .FancyExplanationCreate .RegularButton {width: 95%; word-break: break-all;}
+ .medium .proggressCreate {width: 95%;}
+ .ViewProperties {display: none;}
+
+ .SuccessMessage {width: 100%;  padding: 10px; z-index: 2147483647; text-align: center;}
+ .SuccessMessage a {text-decoration: underline; font-size: 12px; word-break: break-all;}
 }
 
 /* themes */
@@ -2082,6 +2094,7 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .light .SuccessMessage {background-color: #99e9da;}
 .biz .SuccessMessage {background: linear-gradient(0deg, #ffffff 50%, #99e9da 100%);}
 .dark .SuccessMessage {background-color: #99e9da;}
+.sepia .SuccessMessage {background-color: #99e9da;}
 
 .light .ProposalOpen {border-color: #ffffff;}
 .biz .ProposalOpen {border-color: #ffffff;}
