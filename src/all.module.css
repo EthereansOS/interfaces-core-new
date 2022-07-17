@@ -1373,6 +1373,20 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
  .SubCollectionInfoCover img {width: 90px; height: 90px;}
  .SendToL1, .SendToL2, .MetaBTN {width: 95% !important}
  .CollectionRight .TradeMain .TradeMarketTokenAmount {width: 170px;}
+ .DeckMarketPlace {width: 95%;}
+ .NFTView, .NFTImage {width: 140px; height: 140px;}
+ .NFTView .RegularButtonDuo {left: 20px;bottom: 50px;}
+ .NFTView .NFTInfo {display: none !important;}
+ .Cart {width: 100%; min-width: 95%; left: 0%; bottom: 33px;}
+ .CartNFTs {width: 95%; display: block; margin: 5px auto; height: 90px; overflow-y: scroll;}
+ .CartBTs {width: 95%; display: block; margin: 2px auto; float: none;}
+ .CartBuyBox {width: 180px;}
+ .Cart .CartBuyBoxPrice h4  {font-size: 12px;}
+ .Cart .CartBuyBox p,.Cart .CartBuyBoxPrice p {font-size: 10px;}
+ .Cart .CartBuyBox p {display: none;}
+ .Cart .CartBuyBox h4 {font-size: 13px; vertical-align: middle;}
+ .CartBuyBoxPrice {width: 70px;}
+
 
  .AccountAll {width: 95%;}
  .AccountAvatar {width: 80px; height: 80px; margin: 30px auto 10px auto;}
