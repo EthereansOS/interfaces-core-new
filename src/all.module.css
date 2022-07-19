@@ -1526,6 +1526,7 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .biz .NFTView {background-color: #ffffff;}
 .dark .NFTView {background-color: #000000;box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
 .sepia .NFTView {background-color: #d9d2c2a3;}
+.matrix .NFTView {background-color: #008F11;}
 
 .light .NFTInfo {background-color: #ffffff; color: #000000;}
 .biz .NFTInfo {background-color: #ffffff; color: #000000;}
@@ -2146,6 +2147,10 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .biz .SuccessMessage {background: linear-gradient(0deg, #ffffff 50%, #99e9da 100%);}
 .dark .SuccessMessage {background-color: #99e9da;}
 .sepia .SuccessMessage {background-color: #99e9da;}
+.matrix .SuccessMessage {background-color: #008F11;}
+.matrix .SuccessMessage h4 {color: #000;}
+.matrix .SuccessMessage a {color: #000;}
+.matrix .SuccessMessage p {color: #000;}
 
 .light .ProposalOpen {border-color: #ffffff;}
 .biz .ProposalOpen {border-color: #ffffff;}
@@ -2658,7 +2663,7 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .matrix .SettingBLabRegular input::placeholder {color: #000;}
 .matrix .ActionAWeb3Button {background-color: #008F11; color: #000;}
 .matrix .CardsFancy {background-color: transparent; color: #008F11; border: 1px solid #008F11; box-shadow: none; border-radius: 0;}
-
+.matrix .Web3Connect img {border-radius: 0;}
 
 @media only screen and (max-width: 1200px) {
   .light .Header .BlurHeader {background: linear-gradient(-130deg,#c1befc4d,#fdf7f515 80%);}
