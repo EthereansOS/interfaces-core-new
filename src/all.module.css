@@ -1752,12 +1752,14 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .dark .CreationPageLabelF input {background-color: #000000;}
 .sepia .CreationPageLabelF input {background-color: #eee8d59c;}
 .matrix .CreationPageLabelF input {background-color: #008F11; color: #000; border-radius: 0;}
+.matrix .CreationPageLabelF input::placeholder { color: #000;}
 
 .light .CreationPageLabelF textarea {background-color: #ffffff;}
 .biz .CreationPageLabelF textarea {background-color: #ffffff; border: 1px solid #b7c5d9;}
 .dark .CreationPageLabelF textarea {background-color: #000000;}
 .sepia .CreationPageLabelF textarea {background-color: #eee8d59c;}
 .matrix .CreationPageLabelF textarea {background-color: #008F11; color: #000; border-radius: 0;}
+.matrix .CreationPageLabelF textarea::placeholder { color: #000;}
 
 .light .CreateBoxDesc {background-color: #e9effc; border-color: #e0e2e6;}
 .biz .CreateBoxDesc {background: linear-gradient(0deg, #ffffff 50%, #bfc0ea 100%); border: 1px solid #a7a7a7;}
@@ -2111,6 +2113,7 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .dark .CreationPageLabelFS input {background-color: #000;}
 .sepia .CreationPageLabelFS input {background-color: #eee8d59c;}
 .matrix .CreationPageLabelFS input {background-color: #008F11; color: #000; border-radius: 0;}
+.matrix .CreationPageLabelFS input::placeholder { color: #000;}
 
 .light .TranferETHProp .AddAReceiver input {background-color: #fff;}
 .biz .TranferETHProp .AddAReceiver input {background-color: #fff; border: 1px solid #525252;}
@@ -2122,6 +2125,7 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .dark .CreationPageLabelFS textarea {background-color: #000; color: #ffffff;}
 .sepia .CreationPageLabelFS textarea {background-color: #eee8d59c;}
 .matrix .CreationPageLabelFS textarea {background-color: #008F11; color: #000; border-radius: 0;}
+.matrix .CreationPageLabelFS textarea::placeholder { color: #000;}
 
 .light .Proposal {background-color: #e9effc;}
 .biz .Proposal {background-color: #e9effc;}
