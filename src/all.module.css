@@ -69,7 +69,7 @@ body {
 .ActionInfoSectionText p {font-size: 11px; line-height: 1.2;}
 
 .ActionInfoSectionS {width: 100%; display: inline-block; border-radius: 20px; padding: 5px; }
-.ActionInfoSectionS .ActionInfoSectionAMM {width: 40px; height: 40px; padding: 5px; display: inline-block; text-align: center; cursor: pointer; background-color: #F0F0F0;border-radius: 14px; overflow: hidden; vertical-align: middle;}
+.ActionInfoSectionS .ActionInfoSectionAMM {width: 40px; height: 40px; padding: 5px; display: inline-block; text-align: center; cursor: pointer; border-radius: 14px; overflow: hidden; vertical-align: middle;}
 .ActionInfoSectionS .ActionInfoSectionAMM figure {width: 25px; height: 25px; display: inline-block;}
 .ActionInfoSectionS .ActionInfoSectionAMM figure img {width: 100%; height: 100%; display: block;}
 .ActionInfoSectionS .ActionInfoSectionAMM span {font-size: 13px; font-weight: bold;margin-top: -5px;display: block;}
@@ -1461,18 +1461,6 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .matrix {background-color: #000000; background: linear-gradient(320deg, #000000 90%, #008F11 100%);}
 .sepia {background-color: #FDF6E3; background: linear-gradient(320deg, #FDF6E3 90%, #49646a 100%);}
 
-
-
-.light .ActionInfoSection {background-color: #ffffff;}
-.biz .ActionInfoSection {background-color: #e4e4e4;}
-.dark .ActionInfoSection {background-color: #000000;}
-.matrix .ActionInfoSection {background-color: #000000;}
-.sepia .ActionInfoSection {background-color: #d9d2c2a3;}
-
-.light .ActionInfoSection .ActionInfoSectionAMM {background-color: #e9effc;}
-.biz .ActionInfoSection .ActionInfoSectionAMM {background-color: #F0F0F0;}
-.dark .ActionInfoSection .ActionInfoSectionAMM {background-color: #525252;}
-
 .light .medium {background-color: #ffffff;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
 .biz .medium {background-color: #ffffff;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
 .dark .medium {background-color: #1b1b1b;box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
@@ -1488,30 +1476,41 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .dark .small {background-color: #1b1b1b;box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
 .sepia .small {background-color: #ffffff;}
 
+.light .ActionInfoSection {background-color: #ffffff;}
+.biz .ActionInfoSection {background: linear-gradient(0deg, #ffffff 50%, #bfc0ea 100%); border: 1px solid #a7a7a7;}
+.dark .ActionInfoSection {background-color: #000000;}
+.matrix .ActionInfoSection {background-color: #000000;}
+.sepia .ActionInfoSection {background-color: #d9d2c2a3;}
+
+.light .ActionInfoSection .ActionInfoSectionAMM {background-color: #e9effc;}
+.biz .ActionInfoSection .ActionInfoSectionAMM {background-color: #F0F0F0;}
+.dark .ActionInfoSection .ActionInfoSectionAMM {background-color: #525252;}
+.sepia .ActionInfoSection .ActionInfoSectionAMM {background-color: #eee8d59c;}
+
 .light .ActionInfoSection .ActionInfoSectionSettings {background-color: #e9effc;}
 .biz .ActionInfoSection .ActionInfoSectionSettings {background-color: #F0F0F0;}
 .dark .ActionInfoSection .ActionInfoSectionSettings {background-color: #525252;}
-
-.light .TokenSelectorListProposal > select {background-color: #ffffff; color: #000000;}
-.biz .TokenSelectorListProposal > select {background-color: #ffffff; color: #000000;}
-.dark .TokenSelectorListProposal > select {background-color: #000000; color: #ffffff;}
-.sepia .TokenSelectorListProposal > select {background-color: #d9d2c2a3;}
+.sepia .ActionInfoSection .ActionInfoSectionSettings {background-color: #eee8d59c;}
 
 .light .ActionInfoSectionS .ActionInfoSectionAMM {background-color: #F0F0F0;}
 .biz .ActionInfoSectionS .ActionInfoSectionAMM {background-color: #F0F0F0;}
 .dark .ActionInfoSectionS .ActionInfoSectionAMM {background-color: #1b1b1b;}
+.sepia .ActionInfoSectionS .ActionInfoSectionAMM {background-color: #eee8d59c;}
 
 .light .ActionInfoSectionS .ActionInfoSectionSettings {background-color: #F0F0F0;}
 .biz .ActionInfoSectionS .ActionInfoSectionSettings {background-color: #F0F0F0;}
 .dark .ActionInfoSectionS .ActionInfoSectionSettings {background-color: #1b1b1b;}
+.sepia .ActionInfoSectionS .ActionInfoSectionSettings {background-color: #eee8d59c;}
 
 .light .ActionInfoSectionText p {color: #000000;}
 .biz .ActionInfoSectionText p {color: #000000;}
 .dark .ActionInfoSectionText p {color: #ffffff;}
+.sepia .ActionInfoSectionText p {color: #e4e4e4;}
 
 .light .DescriptionBig {color: #000000;}
 .biz .DescriptionBig {color: #000000;}
 .dark .DescriptionBig {color: #ffffff;}
+.sepia .DescriptionBig {color: #e4e4e4;}
 
 .light .ActionInfoSectionS {background-color: #e4e4e4;}
 .biz .ActionInfoSectionS {background-color: #e4e4e4;}
@@ -1704,7 +1703,7 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .dark .MetadataSingle {background-color: #1b1b1b;box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
 
 .light .CreatePage {background-color: #ffffff;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
-.biz .CreatePage {background-color: #ffffff;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
+.biz .CreatePage {background: linear-gradient(0deg, #ffffff 50%, #e9effc 100%);}
 .dark .CreatePage {background-color: #000000;box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
 .sepia .CreatePage {background-color: #eee8d59c;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
 
@@ -1719,22 +1718,22 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .sepia .CreationSelectW {background-color: #eee8d59c;}
 
 .light .CreationPageLabelF {background-color: #e9effc;border: 1px solid #e0e2e6;}
-.biz .CreationPageLabelF {background-color: #e9effc;border: 1px solid #e0e2e6;}
+.biz .CreationPageLabelF {background: linear-gradient(0deg, #ffffff 50%, #bfc0ea 100%); border: 1px solid #a7a7a7;}
 .dark .CreationPageLabelF {background-color: #525252;border: 1px solid #010101;}
 .sepia .CreationPageLabelF {background-color: #d9d2c2a3;border: 1px solid #d9d2c2a3;}
 
 .light .CreationPageLabelF input {background-color: #ffffff;}
-.biz .CreationPageLabelF input {background-color: #ffffff;}
+.biz .CreationPageLabelF input {background-color: #ffffff; border: 1px solid #b7c5d9;}
 .dark .CreationPageLabelF input {background-color: #000000;}
 .sepia .CreationPageLabelF input {background-color: #eee8d59c;}
 
 .light .CreationPageLabelF textarea {background-color: #ffffff;}
-.biz .CreationPageLabelF textarea {background-color: #ffffff;}
+.biz .CreationPageLabelF textarea {background-color: #ffffff; border: 1px solid #b7c5d9;}
 .dark .CreationPageLabelF textarea {background-color: #000000;}
 .sepia .CreationPageLabelF textarea {background-color: #eee8d59c;}
 
 .light .CreateBoxDesc {background-color: #e9effc; border-color: #e0e2e6;}
-.biz .CreateBoxDesc {background-color: #e9effc;  border-color: #e0e2e6;}
+.biz .CreateBoxDesc {background: linear-gradient(0deg, #ffffff 50%, #bfc0ea 100%); border: 1px solid #a7a7a7;}
 .dark .CreateBoxDesc {background-color: #525252;  border-color: #010101;}
 .sepia .CreateBoxDesc {background-color: #d9d2c2a3;  border-color: #d9d2c2;}
 
@@ -1755,7 +1754,7 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .sepia .OperationsTrigger .SettingFB {background-color: #eee8d59c;}
 
 .light .TradeMarketToken {background-color: #ffffff; border-color: #ffffff;}
-.biz .TradeMarketToken {background-color: #ffffff;}
+.biz .TradeMarketToken {background-color: #ffffff; border-color: #e4e4e4;;}
 .dark .TradeMarketToken {background-color: #000000; border-color: #000000;}
 .sepia .TradeMarketToken {background-color: #eee8d59c; border-color: #eee8d59c;}
 
@@ -1873,6 +1872,11 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .light .TokensSelectorCategories input {color: #ffffff;background-color: #525252;}
 .biz .TokensSelectorCategories input {color: #ffffff;background-color: #525252;}
 .dark .TokensSelectorCategories input {color: #525252;background-color: #000000;}
+
+.light .TokenSelectorListProposal > select {background-color: #ffffff; color: #000000;}
+.biz .TokenSelectorListProposal > select {background-color: #ffffff; color: #000000;}
+.dark .TokenSelectorListProposal > select {background-color: #000000; color: #ffffff;}
+.sepia .TokenSelectorListProposal > select {background-color: #d9d2c2a3;}
 
 .light .TokensSelectorCategoriesList {background-color: #F0F0F0;}
 .biz .TokensSelectorCategoriesList {background-color: #F0F0F0;}
@@ -2038,7 +2042,7 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .dark .GovCard {background-color: #000000;box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
 
 .light .GovCardHead {background-color: #e9effc;}
-.biz .GovCardHead {    border: 3px solid #99e9daba;border-left: none;border-top: none;background-color: #ffffff;}
+.biz .GovCardHead {    border: 3px solid #99e9daba;border-left: none;border-top: none;background: linear-gradient(0deg, #ffffff 50%, #e9effc 100%);}
 .dark .GovCardHead {background-color: #383c42;}
 .sepia .GovCardHead {background-color: #d9d2c2a3;}
 
@@ -2047,7 +2051,7 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .dark .GovCardHeadDelegation span {border-color: #000000;}
 
 .light .GovCardOpened {background-color: #ffffff;}
-.biz .GovCardOpened {background-color: #ffffff;}
+.biz .GovCardOpened {background: linear-gradient(0deg, #ffffff 50%, #e9effc 100%);}
 .dark .GovCardOpened {background-color: #000000;}
 .sepia .GovCardOpened {background-color: #eee8d59c;}
 
@@ -2061,7 +2065,7 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .dark .HostToolsDelegations {background-color: #383c42; border-color: #ffffff;}
 
 .light .CreationPageLabelFS {background-color: #e9effc; border-color: #e0e2e6;}
-.biz .CreationPageLabelFS {background-color: #e9effc; border-color: #e0e2e6;}
+.biz .CreationPageLabelFS {background: linear-gradient(0deg, #ffffff 50%, #bfc0ea 100%); border: 1px solid #a7a7a7;}
 .dark .CreationPageLabelFS {background-color: #383c42; border-color: #000000;}
 .sepia .CreationPageLabelFS {background-color: #d9d2c2a3; border-color: #d9d2c2a3;}
 
@@ -2070,7 +2074,7 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .dark .AndNowBox {background-color: #161616; border-color: #e0e2e6;}
 
 .light .CreationPageLabelFS input {background-color: #fff;}
-.biz .CreationPageLabelFS input {background-color: #fff;}
+.biz .CreationPageLabelFS input {background-color: #fff; border: 1px solid #b7c5d9;}
 .dark .CreationPageLabelFS input {background-color: #000;}
 .sepia .CreationPageLabelFS input {background-color: #eee8d59c;}
 
@@ -2080,7 +2084,7 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .sepia .TranferETHProp .AddAReceiver input {background-color: #eee8d59c;}
 
 .light .CreationPageLabelFS textarea {background-color: #fff; color: #000000;}
-.biz .CreationPageLabelFS textarea {background-color: #fff; color: #000000;}
+.biz .CreationPageLabelFS textarea {background-color: #fff; color: #000000; border: 1px solid #b7c5d9;}
 .dark .CreationPageLabelFS textarea {background-color: #000; color: #ffffff;}
 .sepia .CreationPageLabelFS textarea {background-color: #eee8d59c;}
 
@@ -2179,12 +2183,12 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .sepia .OrgHeadlineSide {background-color: #d9d2c2a3;}
 
 .light .OrgMainThingsCard {background-color: #ffffff;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
-.biz .OrgMainThingsCard {border: 3px solid #99e9daba; border-left: none; border-top: none; background-color: #ffffff;}
+.biz .OrgMainThingsCard {border: 3px solid #99e9daba; border-left: none; border-top: none; background: linear-gradient(0deg, #ffffff 50%, #e9effc 100%);}
 .dark .OrgMainThingsCard {background-color: #000000;box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
 .sepia .OrgMainThingsCard {background-color: #eee8d59c;}
 
 .light .OrgMainThingsCardSL {background-color: #ffffff;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
-.biz .OrgMainThingsCardSL {border: 3px solid #99e9daba; border-left: none; border-top: none; background-color: #ffffff;}
+.biz .OrgMainThingsCardSL {border: 3px solid #99e9daba; border-left: none; border-top: none; background: linear-gradient(0deg, #ffffff 50%, #e9effc 100%);}
 .dark .OrgMainThingsCardSL {background-color: #000000;box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
 .sepia .OrgMainThingsCardSL {background-color: #eee8d59c;}
 
@@ -2194,7 +2198,7 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .sepia .OrgThingsInfoContent {background-color: #d9d2c2a3;}
 
 .light .OrgPartView {background-color: #ffffff;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
-.biz .OrgPartView {border: 3px solid #99e9daba; border-left: none; border-top: none; background-color: #ffffff;}
+.biz .OrgPartView {border: 3px solid #99e9daba; border-left: none; border-top: none; background: linear-gradient(0deg, #ffffff 50%, #e9effc 100%);}
 .dark .OrgPartView {background-color: #000000;box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
 .sepia .OrgPartView {background-color: #eee8d59c;}
 
@@ -2235,7 +2239,7 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .biz .OrgPartFarm p, .biz .OrgPartFarm b, .biz .OrgPartFarm span  {color: #ffffff !important;}
 
 .light .OrgThingsCardPics {background-color: #ffffff;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
-.biz .OrgThingsCardPics {border: 3px solid #99e9daba; border-left: none; border-top: none; background-color: #ffffff;}
+.biz .OrgThingsCardPics {border: 3px solid #99e9daba; border-left: none; border-top: none; background: linear-gradient(0deg, #ffffff 50%, #e9effc 100%);}
 .dark .OrgThingsCardPics {background-color: #000000;box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
 .sepia .OrgThingsCardPics {background-color: #eee8d59c;}
 
@@ -2370,7 +2374,7 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 
 
 .light .FarmSetupV3 {border-color: #e0e2e6;background-color: #f7fafe;}
-.biz .FarmSetupV3 {border-color: #e0e2e6;background-color: #f7fafe;}
+.biz .FarmSetupV3 {background: linear-gradient(0deg, #ffffff 50%, #e9effc 100%); border: 1px solid #a7a7a7;}
 .dark .FarmSetupV3 {border-color: #161616;background-color: #1a1a1a;}
 .sepia .FarmSetupV3 {border-color: #d9d2c2;}
 
