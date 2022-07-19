@@ -2434,6 +2434,7 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .biz .RoutineContent {background: linear-gradient(180deg, #ffffff 30%, #7474f752 100%); border-radius: 20px; border:none;}
 .dark .RoutineContent {border:1px solid #1a1a1a;background-color: #000000;}
 .sepia .RoutineContent {border-color: #eee8d59c;background-color: #eee8d59c;}
+.matrix .RoutineContent {border: 1px solid #008F11;background-color: transparent;}
 
 .light .RoutineOperation {background-color:#f7fafe;}
 .biz .RoutineOperation {background-color:#f7fafe;}
@@ -2462,6 +2463,8 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .biz .PriceRangeInput {border-color: #ffffff; background-color: #ffffff;}
 .dark .PriceRangeInput {border-color: #000000; background-color: #000000;}
 .sepia .PriceRangeInput {border-color: #eee8d59c; background-color: #eee8d59c;}
+.matrix .PriceRangeInput {border:none; background-color: #008F11; color: #000;}
+.matrix .PriceRangeInput::placeholder {color: #000;}
 
 .light .tickerchanger {background-color: #ffffff;}
 .biz .tickerchanger {background-color: #ffffff;}
@@ -2652,6 +2655,7 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .matrix .NextStep {background-color: #008F11; color: #000; border-radius: 0;}
 .matrix .SettingBLabRegular input {background-color: #008F11; color: #000;}
 .matrix .SettingBLabRegular input::placeholder {color: #000;}
+.matrix .ActionAWeb3Button {background-color: #008F11; color: #000;}
 
 @media only screen and (max-width: 1200px) {
   .light .Header .BlurHeader {background: linear-gradient(-130deg,#c1befc4d,#fdf7f515 80%);}
