@@ -1235,9 +1235,9 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 
  .CovenantsMainBox {width: 95%; padding: 2%;}
  .FarmContent {width: 100%; min-width: 100%;}
- .FarmContentInfo {width: 100%;}
+ .FarmContentInfo {width: 100%; margin: 2px auto;}
  .FarmContentInfo .ExtLinkButton {display: none;}
- .FarmContentInfo p {font-size: 13px; text-align: center;}
+ .FarmContentInfo p {font-size: 13px; text-align: center; width: 100%;}
  .FarmContentTitle {width: 100%;}
  .FarmContentTitle aside {width: 210px;margin-left: 15px;}
  .FarmContentTitle figure {height: 70px;}
@@ -1429,6 +1429,10 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
  .medium .TradeMarketTokenAmount {width:180px}
  .NothingToSee {padding: 15px;}
  .NothingToSee h4 {font-size: 12px;}
+
+ .CollectionRight .FarmContentTitle figure {width: 50px; height: 50px;}
+ .CollectionRight .FarmContentTitle figure img {width: 50px; height: 50px;}
+ .CollectionRight .FarmContentInfo .VersionFarm, .CollectionRight .FarmContentInfo .MetaBTN, .CollectionRight .FarmContentInfo .CopyBTN, .CollectionRight .FarmContentInfo .FarmActivityA {margin: 2px;}
 }
 
 /* themes */
