@@ -1461,7 +1461,7 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .light {background: rgb(255,255,255);background: linear-gradient(300deg, #fdf7f5 70%, rgba(120,111,255,1) 100%);}
 .biz {background: rgb(255,255,255);background: linear-gradient(0deg, #ffffff 20%, #6EC9C6 100%);}
 .dark {background-color: #000000; background: linear-gradient(300deg, #1a1a1a 70%, rgba(120,111,255,1) 100%);}
-.matrix {background-color: #000000; background: linear-gradient(320deg, #000000 90%, #008F11 100%);}
+.matrix {background-color: #000000; background: linear-gradient(320deg, #000000 87%, #008F11 100%);}
 .sepia {background-color: #FDF6E3; background: linear-gradient(320deg, #FDF6E3 90%, #49646a 100%);}
 
 .light .medium {background-color: #ffffff;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
@@ -1532,6 +1532,7 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .biz .NFTInfo {background-color: #ffffff; color: #000000;}
 .dark .NFTInfo {background-color: #000000; color: #ffffff;}
 .sepia .NFTInfo {background-color: #d9d2c2a3; color: #5E594E;}
+.matrix .NFTInfo {background-color: #000000;}
 
 .biz .ActionAWeb3Button button, .biz .ActionAWeb3ButtonExtraSmall button, .biz .ActionAWeb3Buttons button,.biz .FinalizeSequenceBoxButtons .ActionAWeb3Button, .biz .ActionAWeb3ButtonSmall button {background: linear-gradient(0deg, #7474f7 80%, #ffffff 100%) !important; border: 4px solid !important; border-color: #7474f7 !important; border-radius: 20px !important; color: #ffffff !important;}
 
@@ -1686,6 +1687,7 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .biz .Cart {background: linear-gradient(0deg, #ffffff 50%, #bfc0ea 100%); border: 1px solid #a7a7a7;}
 .dark .Cart {background-color: rgba(0, 0, 0, 0.829);-webkit-backdrop-filter: blur(6px);backdrop-filter: blur(6px); border: 1px solid #2e2e2e;}
 .sepia .Cart {background-color: #d9d2c280;-webkit-backdrop-filter: blur(6px);backdrop-filter: blur(6px); border: 1px solid #d9d2c280;}
+.matrix .Cart {background-color: #000;}
 
 
 .light .RoundedButton {background-color: #849bbd; color: #ffffff;}
@@ -2377,6 +2379,7 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .biz .ViewBasics {background-color: #ffffff; border: 3px solid #D2CDF9; border-left: none; border-top: none;}
 .dark .ViewBasics {background-color: #000000;box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
 .sepia .ViewBasics {background-color: #eee8d59c;}
+.matrix .ViewBasics {border: 1px solid #008F11;}
 
 .light .ViewBasicsHost {background-color: #ffffff;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);border-color: #000000;}
 .biz .ViewBasicsHost {background-color: #ffffff; border: 3px solid #D2CDF9; border-color: #e1b9be;}
@@ -2407,6 +2410,8 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .light .ViewProperties .ViewProperty {background-color: #ffffff;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
 .biz .ViewProperties .ViewProperty {background-color: #ffffff;border: 3px solid #D2CDF9; border-left: none; border-top: none;}
 .dark .ViewProperties .ViewProperty {background-color: #000000;box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
+.matrix .ViewProperties .ViewProperty {border: 1px solid #008F11;}
+.sepia .ViewProperties .ViewProperty {background-color: #eee8d59c;}
 
 .light .InfoBoxaside {background-color: #e9effc;}
 .biz .InfoBoxaside {background: linear-gradient(180deg, #ffffff 30%, #7474f752 100%); border-radius: 0 0 20px 20px !important;}
@@ -2664,6 +2669,8 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .matrix .ActionAWeb3Button {background-color: #008F11; color: #000;}
 .matrix .CardsFancy {background-color: transparent; color: #008F11; border: 1px solid #008F11; box-shadow: none; border-radius: 0;}
 .matrix .Web3Connect img {border-radius: 0;}
+.matrix .RegularButton {background-color: #008F11; color: #000; text-decoration: none;}
+.matrix .ViewDescriptionL {border: 1px solid #008F11;}
 
 @media only screen and (max-width: 1200px) {
   .light .Header .BlurHeader {background: linear-gradient(-130deg,#c1befc4d,#fdf7f515 80%);}
