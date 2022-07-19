@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback, useMemo } from 'react'
 
 import style from '../../../all.module.css'
 import CircularProgress from '../OurCircularProgress'
-import { blockchainCall, useWeb3, fromDecimals, toDecimals, shortenWord, useEthosContext, formatMoney } from '@ethereansos/interfaces-core'
+import { blockchainCall, useWeb3, fromDecimals, toDecimals, shortenWord, useEthosContext, formatMoney, numberToString } from '@ethereansos/interfaces-core'
 import ModalStandard from '../ModalStandard'
 import ObjectsLists from '../ObjectsLists'
 import LogoRenderer from '../LogoRenderer'
@@ -57,8 +57,18 @@ const TokenInputRegular = ({onElement, onlySelections, tokens, tokenOnly, noETH,
     const onValueChange = useCallback(e => {
         var v = e.currentTarget.value
         v = v.indexOf('.') === 0 && v !== '.' ? ('0' + v) : v
+        if(v !== '0.' && !v.endsWith('0')) {
+            v = numberToString(parseFloat(v))
+        }
         setValue(v)
     }, [])
+
+    const valueInput = useMemo(() => {
+        if(!element || isNaN(parseFloat(value)) || (parseFloat(value) === 0 && value === '0')) {
+            return ''
+        }
+        return value
+    }, [value, element])
 
     return modalIsOpen ? (
         <ModalStandard close={() => setModalIsOpen(false)}>
@@ -76,7 +86,7 @@ const TokenInputRegular = ({onElement, onlySelections, tokens, tokenOnly, noETH,
                     <span>{shortenWord({ context, charsAmount : 15}, element?.symbol || '')}{(!tokens || tokens.length > 1) ? <span> ▼</span> : ''}</span>
                 </a>
                 {!tokenOnly && <div className={style.TradeMarketTokenAmount}>
-                    <input onWheel={numberInputOnWheelPreventChange} disabled={disabled} type="number" placeholder="0.0" min="0.000000000000000001" value={element && parseFloat(value) !== 0 ? value : ''} onChange={onValueChange}/>
+                    <input onWheel={numberInputOnWheelPreventChange} disabled={disabled} type="number" placeholder="0.0" min="0.000000000000000001" step="0.001" value={valueInput} onChange={onValueChange}/>
                 </div>}
             </div>
             {!noBalance && !tokenOnly && element && balance === null && <CircularProgress/>}
