@@ -2621,6 +2621,7 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .biz .RightMenu {background-color: #8cd4d17a;border-radius:0px 0px 0px 12px !important;}
 .dark .RightMenu {background-color: #1a1a1a80;}
 .sepia .RightMenu {background-color: #fdf6e37d;}
+.matrix .RightMenu {background-color: #000; border-radius: 0; backdrop-filter: blur(0px);}
 
 .light .ObjectInfoAndLink h5 {color: #000000 !important;}
 .biz .ObjectInfoAndLink h5 {color: #000000 !important;}
@@ -2680,6 +2681,7 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
   .light .Navigation {background-color: #ffffff6e;}
   .biz .Navigation {background-color: #8cd4d17a;}
   .dark .Navigation {background-color: #1a1a1a80;}
+  .matrix .Navigation {background-color: #000; border-radius: 0;}
 
   .light .NavigationItem {background-color: transparent;}
   .biz .NavigationItem {background-color: transparent;}
