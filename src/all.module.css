@@ -58,7 +58,7 @@ body {
 .ActionAWeb3ButtonSmall button:disabled {font-weight: normal !important; color: #6e6e6e !important; cursor: default;}
 
 .ActionInfoSection {width: 100%; display: inline-block; border-radius: 20px; padding: 5px;}
-.ActionInfoSection .ActionInfoSectionAMM {width: 40px; height: 40px; padding: 5px; display: inline-block; text-align: center; cursor: pointer; background-color: #F0F0F0;border-radius: 14px; overflow: hidden; vertical-align: middle;}
+.ActionInfoSection .ActionInfoSectionAMM {width: 40px; height: 40px; padding: 5px; display: inline-block; text-align: center; cursor: pointer;border-radius: 14px; overflow: hidden; vertical-align: middle;}
 .ActionInfoSection .ActionInfoSectionAMM figure {width: 25px; height: 25px; display: inline-block;}
 .ActionInfoSection .ActionInfoSectionAMM figure img {width: 100%; height: 100%; display: block;}
 .ActionInfoSection .ActionInfoSectionAMM span {font-size: 13px; font-weight: bold;margin-top: -5px;display: block;}
@@ -1443,7 +1443,7 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .light::-webkit-scrollbar, .dark::-webkit-scrollbar, .biz::-webkit-scrollbar, .sepia::-webkit-scrollbar, div::-webkit-scrollbar, span::-webkit-scrollbar, p::-webkit-scrollbar, aside::-webkit-scrollbar, input::-webkit-scrollbar {display: none !important;}
 .biz p,.biz b,.biz figure,.biz span,.biz a,.biz h6,.biz h5,.biz h4,.biz h3,.biz h2,.biz h1,.biz aside, .biz input, .biz div, .biz textarea  {color: #000000;-ms-overflow-style: none;scrollbar-width: none;}
 .dark p,.dark b,.dark figure,.dark span,.dark a,.dark h6,.dark h5,.dark h4,.dark h3,.dark h2,.dark h1,.dark aside, .dark input, .dark div, .dark textarea {color: #ffffff;-ms-overflow-style: none;scrollbar-width: none;}
-.matrix p,.matrix b,.matrix figure,.matrix span,.matrix a,.matrix h6,.matrix h5,.matrix h4,.matrix h3,.matrix h2,.matrix h1,.matrix aside, .matrix input, .matrix div, .matrix textarea {color: #008F11;-ms-overflow-style: none;scrollbar-width: none;}
+.matrix p,.matrix b,.matrix figure,.matrix span,.matrix a,.matrix h6,.matrix h5,.matrix h4,.matrix h3,.matrix h2,.matrix h1,.matrix aside, .matrix input, .matrix div, .matrix textarea {color: #008F11;-ms-overflow-style: none;scrollbar-width: none; border-radius: 0px !important;}
 .sepia p,.sepia b,.sepia figure,.sepia span,.sepia a,.sepia h6,.sepia h5,.sepia h4,.sepia h3,.sepia h2,.sepia h1,.sepia aside,.sepia input, .sepia div, .sepia textarea {color: #49646a;-ms-overflow-style: none;scrollbar-width: none;}
 
 .light .ldio_f2vadqclpalj > div > div:nth-child(1) {background: #ffffff;}
@@ -1479,7 +1479,7 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .light .ActionInfoSection {background-color: #ffffff;}
 .biz .ActionInfoSection {background: linear-gradient(0deg, #ffffff 50%, #bfc0ea 100%); border: 1px solid #a7a7a7;}
 .dark .ActionInfoSection {background-color: #000000;}
-.matrix .ActionInfoSection {background-color: #000000;}
+.matrix .ActionInfoSection {background-color: #000000; border-radius: 0px !important; border-top: 0px !important; border-left: 0px !important;border-right: 0px !important; border-bottom: 1px solid #008F11;}
 .sepia .ActionInfoSection {background-color: #d9d2c2a3;}
 
 .light .ActionInfoSection .ActionInfoSectionAMM {background-color: #e9effc;}
@@ -1525,7 +1525,6 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .biz .NFTInfo {background-color: #ffffff; color: #000000;}
 .dark .NFTInfo {background-color: #000000; color: #ffffff;}
 .sepia .NFTInfo {background-color: #d9d2c2a3; color: #5E594E;}
-
 
 .biz .ActionAWeb3Button button, .biz .ActionAWeb3ButtonExtraSmall button, .biz .ActionAWeb3Buttons button,.biz .FinalizeSequenceBoxButtons .ActionAWeb3Button, .biz .ActionAWeb3ButtonSmall button {background: linear-gradient(0deg, #7474f7 80%, #ffffff 100%) !important; border: 4px solid !important; border-color: #7474f7 !important; border-radius: 20px !important; color: #ffffff !important;}
 
@@ -2560,6 +2559,14 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .sepia .ObjectInfoAndLink h5 {color: #49646a !important;}
 
 .opacity1 { opacity: 1 !important;}
+
+.matrix .exploreBanners {display: none;}
+.matrix .TradeMarketTokenAmount input {background-color: transparent !important;}
+.matrix .TradeMarketTokenAmount input {color: #008F11 !important;}
+.matrix .TradeMarketToken {border-top: 0px !important; border-left: 0px !important;border-right: 0px !important; border-radius: 0px !important;}
+.matrix .Dapp_Menu, .matrix .DappSubMenu, .DDapp_Menu1 {border-radius: 0px !important;}
+.matrix .DDapp_Menu2 {border-top: 0px !important; border-left: 0px !important;border-right: 0px !important; border-radius: 0px !important;}
+.matrix figure {background-color: #008F11 !important;}
 
 @media only screen and (max-width: 1200px) {
   .light .Header .BlurHeader {background: linear-gradient(-130deg,#c1befc4d,#fdf7f515 80%);}
