@@ -987,7 +987,7 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .CardSelectionSingle span {width: 100%; display: inline-block; font-size: 11px;}
 .CardSelectionSingle input {margin: 10px auto;}
 
-.VotingPowersObject {width: 85px; min-height: 85px; max-height: 130px; display: inline-block; margin: 5px; overflow: hidden; border-radius: 16px;}
+.VotingPowersObject {width: 85px; min-height: 85px; display: inline-block; margin: 5px; overflow: hidden; border-radius: 16px;}
 .VotingPowersObject img {width: 100%; height: 100%; display: inline-block; margin: 0;object-fit: contain;}
 .VotingPowersAmount {padding: 10px;text-align: center;}
 .VotingPowersAmount span {font-size: 13px;}
@@ -1450,6 +1450,9 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .dark .ldio_f2vadqclpalj > div > div:nth-child(1) {background: #000000;}
 .biz .ldio_f2vadqclpalj > div > div:nth-child(1) {background: #ffffff;}
 .sepia .ldio_f2vadqclpalj > div > div:nth-child(1) {background: #49646a;}
+.matrix .ldio_f2vadqclpalj > div > div:nth-child(1) {background: #008F11;}
+
+.matrix .ldio_f2vadqclpalj > div > div:nth-child(2) {background-color: #000;}
 
 .biz a, .biz div,.biz figure, .biz input, .biz ul, .biz li, .biz nav, .biz select, .biz button, .biz span {border-radius: 20px !important;}
 
@@ -1536,10 +1539,12 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .light .BackButton  {background-color: #e4e4e4; color: #6e6e6e;}
 .biz .BackButton  {background-color: #e4e4e4; color: #6e6e6e;}
 .dark .BackButton  {background-color: #525252; color: #6e6e6e;}
+.matrix .BackButton  {background-color: transparent; color: #008F11; text-decoration: underline;}
 
 .light .Web3CustomBTN  {background-color: #7474f7; color: #ffffff;}
 .biz .Web3CustomBTN  {background-color: #7474f7; color: #ffffff;}
 .dark .Web3CustomBTN  {background-color: #7474f7; color: #ffffff;}
+.matrix .Web3CustomBTN  {background-color: #008F11; color: #000000;}
 
 .light .Web3BackBTN  {background-color: #e4e4e4; color: #6e6e6e;}
 .biz .Web3BackBTN  {background-color: #e4e4e4; color: #6e6e6e;}
@@ -1549,6 +1554,7 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .biz .ModalBack  {background: linear-gradient(135deg,#655dfff5,#a0a0a05e 80%); -webkit-backdrop-filter: blur(6px);backdrop-filter: blur(6px);}
 .dark .ModalBack  {background: linear-gradient(135deg,#655dfff5,#1b1b1b48 80%); -webkit-backdrop-filter: blur(6px);backdrop-filter: blur(6px);}
 .sepia .ModalBack  {background: linear-gradient(135deg,#49646a76,#d9d2c280 80%); -webkit-backdrop-filter: blur(6px);backdrop-filter: blur(6px);}
+.matrix .ModalBack  {background-color: #000;}
 
 .light .ModalBoxBanner  {background-color: #ffffff; box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
 .biz .ModalBoxBanner  {background-color: #ffffff; box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
@@ -1559,41 +1565,51 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .biz .ExtLinkButton  {border-color:#849BBD;color: #849BBD; background-color: transparent;}
 .dark .ExtLinkButton  {border-color:#849BBD;color: #849BBD; background-color: transparent;}
 .sepia .ExtLinkButton  {border-color:#5E594E;color: #5E594E; background-color: transparent;}
+.matrix .ExtLinkButton  {background-color: transparent; color: #008F11; text-decoration: underline; border: none !important;}
 
 .light .MetaBTN  {border-color:#e1b9be !important;background-color: #e1b9be !important; color: #ffffff !important;}
 .biz .MetaBTN  {border-color:#e1b9be !important;background-color: #e1b9be !important; color: #ffffff !important;}
 .dark .MetaBTN  {border-color:#e1b9be !important;background-color: #e1b9be !important; color: #ffffff !important;}
 .sepia .MetaBTN  {border-color:#5E594E !important;background-color: #5E594E !important; color: #ffffff !important;}
+.matrix .MetaBTN  {background-color: transparent; color: #008F11; text-decoration: underline; border: none !important;}
 
 .light .SendToL1 {background-color: #627eeaa6 !important; color: #ffffff !important;}
 .biz .SendToL1 {background-color: #627eeaa6 !important; color: #ffffff !important;}
 .dark .SendToL1 {background-color: #627eeaa6 !important; color: #ffffff !important;}
 .sepia .SendToL1 {background-color: #627eeaa6 !important; color: #ffffff !important;}
+.matrix .SendToL1  {background-color: transparent; color: #008F11; text-decoration: underline; border: none !important;}
 
 .light .SendToL2 {border-color:#ff0420 !important;background-color: #ff0420 !important; color: #ffffff !important;}
 .biz .SendToL2 {border-color:#ff0420 !important;background-color: #ff0420 !important; color: #ffffff !important;}
 .dark .SendToL2 {border-color:#ff0420 !important;background-color: #ff0420 !important; color: #ffffff !important;}
 .sepia .SendToL2 {border-color:#ff0420 !important;background-color: #ff0420 !important; color: #ffffff !important;}
+.matrix .SendToL2  {background-color: transparent; color: #008F11; text-decoration: underline; border: none !important;}
 
 .light .CopyBTN {border-color:#e1b9be !important;background-color: #e1b9be !important; color: #ffffff !important;}
 .biz .CopyBTN {border-color:#e1b9be !important;background-color: #e1b9be !important; color: #ffffff !important;}
 .dark .CopyBTN {border-color:#e1b9be !important;background-color: #e1b9be !important; color: #ffffff !important;}
 .sepia .CopyBTN {border-color:#49646a !important;background-color: #49646a !important; color: #ffffff !important;}
+.matrix .CopyBTN  {background-color: transparent; color: #008F11; text-decoration: underline; border: none !important;}
 
 
 .light .ItemLinkButton  {border-color: #59b0fb; color: #59b0fb; background-color: transparent;}
 .biz .ItemLinkButton  {border-color: #59b0fb; color: #59b0fb; background-color: transparent;}
 .dark .ItemLinkButton  {border-color: #59b0fb; color: #59b0fb; background-color: transparent;}
 .sepia .ItemLinkButton  {border-color: #59b0fb; color: #59b0fb; background-color: transparent;}
+.matrix .ItemLinkButton  {background-color: transparent; color: #008F11; text-decoration: underline; border: none !important;}
+
 
 .light .RegularButton, .light .RegularButtonDuo, .light .RegularButtonDuoSmall, .light .RegularButtonDuoXSmall, .light .RegularMiniButton, .light .CreateBTN,.light .CreateBTN2, .light .SubCollectionInfoCover a, .light .PlusWallet  {background-color: #849bbd;color: #fff;}
 .biz .RegularButton, .biz .RegularButtonDuo, .biz .RegularButtonDuoSmall, .biz .RegularButtonDuoXSmall, .biz .RegularMiniButton, .biz .CreateBTN, .biz .CreateBTN2, .biz .SubCollectionInfoCover a, .biz .PlusWallet  {background: linear-gradient(0deg, #849bbd 80%, #ffffff 100%); border: 4px solid; border-color: #849bbd; border-radius: 20px !important; color: #ffffff;}
 .dark .RegularButton, .dark .RegularButtonDuo, .dark .RegularButtonDuoSmall, .dark .RegularButtonDuoXSmall, .dark .RegularMiniButton, .dark .CreateBTN, .dark .CreateBTN2, .dark .SubCollectionInfoCover a, .dark .PlusWallet  {background-color: #fff;color: #000000;}
 .sepia .RegularButton, .sepia .RegularButtonDuo, .sepia .RegularButtonDuoSmall, .sepia .RegularButtonDuoXSmall, .sepia .RegularMiniButton, .sepia .CreateBTN,.sepia .CreateBTN2, .sepia .SubCollectionInfoCover a, .sepia .PlusWallet  {background-color: #5E594E;color: #fff;}
+.matrix .RegularButton, .matrix .RegularButtonDuo, .matrix .RegularButtonDuoSmall, .matrix .RegularButtonDuoXSmall, .matrix .RegularMiniButton, .matrix .CreateBTN,.sepia .CreateBTN2, .matrix .SubCollectionInfoCover a, .matrix .PlusWallet  {background-color: transparent; color: #008F11; text-decoration: underline; border: none !important;}
+
 
 .light .RegularButtonDuoBack {border-color: #849bbd; border: 1px solid;color: #849bbd;}
 .biz .RegularButtonDuoBack {background: linear-gradient(0deg, #849bbd 80%, #ffffff 100%); border: 4px solid; border-color: #849bbd; border-radius: 20px !important; color: #ffffff;}
 .dark .RegularButtonDuoBack {border-color: #fff;color: #fff;border: 1px solid;}
+.matrix .RegularButtonDuoBack  {background-color: transparent; color: #008F11; text-decoration: underline; border: none !important;}
 
 .light .RegularButtonDuoSmallWhite {background-color: #ffffff;color: #849BBD;}
 .biz .RegularButtonDuoSmallWhite {background-color: #ffffff;color: #849BBD;}
@@ -1602,6 +1618,7 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .light .RegularButtonDuoSmallGray {background-color: #e2e0e0;color: #849BBD;}
 .biz .RegularButtonDuoSmallGray {background-color: #e2e0e0;color: #849BBD;}
 .dark .RegularButtonDuoSmallGray {background-color: #e2e0e0;color: #849BBD;}
+
 
 .light .RegularSelect select {border-color: #849bbd; background: transparent;color: #849bbd;}
 .biz .RegularSelect select {border-color: #849bbd; background: transparent;color: #849bbd;}
@@ -1688,6 +1705,9 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .light .banner1, .light .banner2, .light .banner3,.light .banner4,.light .banner5 {box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-webkit-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
 .biz .banner1, .biz .banner2, .biz .banner3,.biz .banner4,.biz .banner5 {box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-webkit-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
 .dark .banner1, .dark .banner2, .dark .banner3,.dark .banner4,.dark .banner5 {box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
+.matrix .banner1, .matrix .banner2, .matrix .banner3,.matrix .banner4,.matrix .banner5 {border: 1px solid #008F11; background-color: transparent; background-image: none !important; color: #008F11;}
+
+.matrix .banner1 h6, .matrix .banner2 h6, .matrix .banner3 h6,.matrix .banner4 h6,.matrix .banner5 h6, .matrix .banner1 p, .matrix .banner2 p, .matrix .banner3 p,.matrix .banner4 p,.matrix .banner5 p, .matrix .banner1 span, .matrix .banner2 span, .matrix .banner3 span,.matrix .banner4 span,.matrix .banner5 span {color: #008F11 !important;}
 
 .light .MetadataSingle .MetadataSingleToogle {color: #849BBD; border-color: #849BBD;}
 .biz .MetadataSingle .MetadataSingleToogle {color: #849BBD; border-color: #849BBD;}
@@ -2019,6 +2039,7 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .biz .OrgSingle {background-color: #ffffff; border: 3px solid #99e9daba;border-left: none;border-top: none;}
 .dark .OrgSingle {background-color: #000000;box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
 .sepia .OrgSingle {background-color: #eee8d59c;}
+.matrix .OrgSingle {border: 1px solid #008F11; border-radius: 0;}
 
 .light .OrgTitleEx { color: #000000;}
 .biz .OrgTitleEx {color: #000000;}
@@ -2044,6 +2065,7 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .biz .GovCardHead {    border: 3px solid #99e9daba;border-left: none;border-top: none;background: linear-gradient(0deg, #ffffff 50%, #e9effc 100%);}
 .dark .GovCardHead {background-color: #383c42;}
 .sepia .GovCardHead {background-color: #d9d2c2a3;}
+.matrix .GovCardHead {border: 1px solid #008F11;}
 
 .light .GovCardHeadDelegation span {border-color: #ffffff;}
 .biz .GovCardHeadDelegation span {border-color: #ffffff;}
@@ -2180,16 +2202,19 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .biz .OrgHeadlineSide {background: linear-gradient(180deg, #ffffff 30%, #99e9da 100%);}
 .dark .OrgHeadlineSide {background-color: #292929;}
 .sepia .OrgHeadlineSide {background-color: #d9d2c2a3;}
+.matrix .OrgHeadlineSide {border: 1px solid #008F11;}
 
 .light .OrgMainThingsCard {background-color: #ffffff;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
 .biz .OrgMainThingsCard {border: 3px solid #99e9daba; border-left: none; border-top: none; background: linear-gradient(0deg, #ffffff 50%, #e9effc 100%);}
 .dark .OrgMainThingsCard {background-color: #000000;box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
 .sepia .OrgMainThingsCard {background-color: #eee8d59c;}
+.matrix .OrgMainThingsCard {border: 1px solid #008F11;}
 
 .light .OrgMainThingsCardSL {background-color: #ffffff;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
 .biz .OrgMainThingsCardSL {border: 3px solid #99e9daba; border-left: none; border-top: none; background: linear-gradient(0deg, #ffffff 50%, #e9effc 100%);}
 .dark .OrgMainThingsCardSL {background-color: #000000;box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
 .sepia .OrgMainThingsCardSL {background-color: #eee8d59c;}
+.matrix .OrgMainThingsCardSL {border: 1px solid #008F11;}
 
 .light .OrgThingsInfoContent {background-color: #e9effc;}
 .biz .OrgThingsInfoContent {background-color: transparent;}
@@ -2200,6 +2225,7 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .biz .OrgPartView {border: 3px solid #99e9daba; border-left: none; border-top: none; background: linear-gradient(0deg, #ffffff 50%, #e9effc 100%);}
 .dark .OrgPartView {background-color: #000000;box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
 .sepia .OrgPartView {background-color: #eee8d59c;}
+.matrix .OrgPartView {border: 1px solid #008F11;}
 
 .light .OrgPartInfo {background-color: #e9effc;}
 .biz .OrgPartInfo {background-color: transparent;}
@@ -2234,6 +2260,7 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .biz .OrgPartFarm {background: linear-gradient(0deg, #FDA8C5 80%, #ffffff 100%); border: 4px solid; border-color: #FDA8C5; border-radius: 20px !important; color: #ffffff !important;}
 .dark .OrgPartFarm {background-color: #383c42;}
 .sepia .OrgPartFarm {background-color: #d9d2c2a3;}
+.matrix .OrgPartFarm {border: 1px solid #008F11;}
 
 .biz .OrgPartFarm p, .biz .OrgPartFarm b, .biz .OrgPartFarm span  {color: #ffffff !important;}
 
@@ -2241,6 +2268,7 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .biz .OrgThingsCardPics {border: 3px solid #99e9daba; border-left: none; border-top: none; background: linear-gradient(0deg, #ffffff 50%, #e9effc 100%);}
 .dark .OrgThingsCardPics {background-color: #000000;box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
 .sepia .OrgThingsCardPics {background-color: #eee8d59c;}
+.matrix .OrgThingsCardPics {border: 1px solid #008F11;}
 
 .light .RegularVoteBoxStaked {background-color: #ffffff;}
 .biz .RegularVoteBoxStaked {background-color: #ffffff;}
@@ -2264,6 +2292,7 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .biz .CardSelectionSingle {background: linear-gradient(0deg, #00F1C2 80%, #ffffff 100%); border: 4px solid; border-color: #00F1C2; border-radius: 20px !important;}
 .dark .CardSelectionSingle {background-color: #000000;}
 .sepia .CardSelectionSingle {background-color: #eee8d59c;}
+.matrix .CardSelectionSingle {border: 1px solid #008F11; border-radius: 0;}
 
 .light .CardSelectionSingleCurrent {background-color: #ffffff;}
 .biz .CardSelectionSingleCurrent {background-color: #ffffff;}
@@ -2381,6 +2410,7 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .biz .farmInfoCurve {background-color: #e9effc;}
 .dark .farmInfoCurve {background-color: #000000;}
 .sepia .farmInfoCurve {background-color: #d9d2c2a3;}
+.matrix .farmInfoCurve {background-color: transparent;}
 
 .light .RoutineContent {border-color: #ebebeb;background-color: #f7fafe;}
 .biz .RoutineContent {background: linear-gradient(180deg, #ffffff 30%, #7474f752 100%); border-radius: 20px; border:none;}
@@ -2474,21 +2504,25 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .biz input[type=range] {background-color: transparent;}
 .dark input[type=range] {background-color: transparent;}
 .sepia input[type=range] {background-color: transparent;}
+.matrix input[type=range] {background-color: transparent;}
 
 .light input[type=range]::-webkit-slider-runnable-track {border: 0px solid #000000;box-shadow: 0px 0px 0px #50555C; background: #ffffff;}
 .biz input[type=range]::-webkit-slider-runnable-track {border: 0px solid #000000;box-shadow: 0px 0px 0px #50555C; background: linear-gradient(0deg, #ffffff 50%, #bfc0ea 100%);}
 .dark input[type=range]::-webkit-slider-runnable-track {border: 0px solid #ffffff;box-shadow: 0px 0px 0px #50555C; background: #50555C;}
 .sepia input[type=range]::-webkit-slider-runnable-track {border: 0px solid #000000;box-shadow: 0px 0px 0px #50555C; background: #ffffff;}
+.matrix input[type=range]::-webkit-slider-runnable-track {border: 0px solid #000000;box-shadow: 0px 0px 0px #50555C; background: #008F11;border-radius: 0;}
 
 .light input[type=range]::-webkit-slider-thumb {background: #7474F7;box-shadow: 0px 0px 0px #000000;border: 0px solid #000000;}
 .biz input[type=range]::-webkit-slider-thumb {background: linear-gradient(0deg, #849bbd 50%, #ffffff 100%);box-shadow: 0px 0px 0px #000000;border: 0px solid #000000;}
 .dark input[type=range]::-webkit-slider-thumb {background: #7474F7;box-shadow: 0px 0px 0px #ffffff;border: 0px solid #d9d2c2a3;}
 .sepia input[type=range]::-webkit-slider-thumb {background: #49646a;box-shadow: 0px 0px 0px #ffffff;border: 0px solid #49646a;}
+.matrix input[type=range]::-webkit-slider-thumb {background: #000000;box-shadow: 0px 0px 0px #ffffff;border: 0px solid #49646a; border-radius: 0;}
 
 .light input[type=range]:focus::-webkit-slider-runnable-track {background: #ffffff;}
 .biz input[type=range]:focus::-webkit-slider-runnable-track {background: linear-gradient(0deg, #ffffff 50%, #bfc0ea 100%);}
 .dark input[type=range]:focus::-webkit-slider-runnable-track {background: #50555C;}
 .sepia input[type=range]:focus::-webkit-slider-runnable-track {background: #ffffff;}
+.matrix input[type=range]:focus::-webkit-slider-runnable-track {background: #008F11;}
 
 .light .SettingBLabPerch input[type=range]:focus::-webkit-slider-runnable-track, .light .SettingBLabPerch input[type=range]::-webkit-slider-runnable-track, .light .RemoveLiquiditytools input[type=range]:focus::-webkit-slider-runnable-track, .light .RemoveLiquiditytools input[type=range]::-webkit-slider-runnable-track {background: #e9effc;}
 
@@ -2560,13 +2594,39 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 
 .opacity1 { opacity: 1 !important;}
 
-.matrix .exploreBanners {display: none;}
 .matrix .TradeMarketTokenAmount input {background-color: transparent !important;}
 .matrix .TradeMarketTokenAmount input {color: #008F11 !important;}
+.matrix .TradeMarketTokenAmount input::placeholder {color: #008F11 !important;}
 .matrix .TradeMarketToken {border-top: 0px !important; border-left: 0px !important;border-right: 0px !important; border-radius: 0px !important;}
 .matrix .Dapp_Menu, .matrix .DappSubMenu, .DDapp_Menu1 {border-radius: 0px !important;}
 .matrix .DDapp_Menu2 {border-top: 0px !important; border-left: 0px !important;border-right: 0px !important; border-radius: 0px !important;}
 .matrix figure {background-color: #008F11 !important;}
+.matrix .ActionASide {background-color: #008F11; color: #000000 !important; font-weight: bold; border-radius: 0;}
+.matrix .ActionAMain {background-color: #008F11; color: #000000 !important; font-weight: bold; border-radius: 0px;}
+.matrix .FilterMenuSearch, .matrix .FilterSelect {background-color: #008F11; color: #000 !important; border-radius: 0px;}
+.matrix .VersionFarm  {background-color: transparent; color: #008F11 !important; border: none !important;}
+.matrix .FarmActivityA  {background-color: transparent; color: #008F11 !important; border: none !important;}
+.matrix .FarmActivityI  {background-color: transparent; color: #008F11 !important; border: none !important;}
+.matrix .FilterMenuSearch::placeholder {color: #000000;}
+.matrix .RegularButtonDuo {color: #000000 !important; background-color: #008F11 !important; border-radius: 0; text-decoration: none !important;}
+.matrix .UniV3CurveViewCurv {border-color: #008F11; color: #008F11;}
+.matrix .CircleRightV3Curve, .matrix .CircleLeftV3Curve  {border-color: #008F11; color: #008F11; background-color: #008F11;}
+.matrix hr {background-color: #008F11; color: #008F11; border-color: #008F11;}
+.matrix .CircleRightV3Actual img, .matrix .MAinTokensel a {display: none;}
+.matrix .ActionAWeb3Buttons button:disabled {background-color: transparent !important; text-decoration: underline !important; color: #008F11 !important; background-color: transparent !important;}
+.matrix .ActionAWeb3Button button:disabled {background-color: transparent !important; text-decoration: underline !important; color: #008F11 !important; background-color: transparent !important;}
+.matrix .SubCollectionInfoCover {display: none;}
+.matrix .NavigationItem img {display: none;}
+.matrix .Hand {filter: invert(100%);}
+.matrix .Enter {background-color: #008F11; color: #000;}
+.matrix .logoMain img {filter: invert(100%);}
+.matrix .UpshotBar figure {color: #000000;}
+.matrix.Upshot {border: 1px solid #008F11;}
+.matrix .Rule {border: 1px solid #008F11;}
+.matrix .GuildTagD, .matrix .GuildTagO {border: 2px solid #008F11 !important; color: #008F11 !important;}
+.matrix .OptionOpen input {background-color: #008F11; color: #000;}
+.matrix .OptionOpen input::placeholder {color: #000;}
+.matrix .FarmProtocolFee {border: 1px solid #008F11;}
 
 @media only screen and (max-width: 1200px) {
   .light .Header .BlurHeader {background: linear-gradient(-130deg,#c1befc4d,#fdf7f515 80%);}
@@ -2584,5 +2644,6 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
   .light .NavigationItem:hover, .light .Navigation .selected {background-color: #ffffff !important;}
   .biz .NavigationItem:hover, .biz .Navigation .selected {font-weight: bold !important;}
   .dark .NavigationItem:hover, .dark .Navigation .selected {background-color: #000000 !important;}
+  
 
 }
