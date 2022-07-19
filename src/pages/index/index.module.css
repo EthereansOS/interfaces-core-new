@@ -45,17 +45,19 @@ a {cursor: pointer; text-decoration: none;}
 .OnlyMobileIndexBanner {display: none;}
 
 @media only screen and (max-device-width: 990px) {
-    .IndexHeaderMenu {display: none;}
     .OnlyMobileIndexBanner {display: block; width: 90%; margin: 30px auto; text-align: center; background-color: #aa9cfe; color: #ffffff; border-radius: 20px; padding: 30px;}
     .OnlyMobileIndexBanner p {font-size: 12px; display: inline-block; color: #ffffff;}
-    .IndexHeaderLogo {display: none;}
-    .SuperTitle h1 {font-size: 70px; width: 100%;}
+    .IndexHeaderLogo {}
+    .SuperTitle h1 {font-size: 40px; width: 100%;}
     .SuperTitle {margin-top: 30px;}
     .Graphic {margin-top: 20px;}
+    .IndexHeaderMenu {width: 65%;margin: 5px; float: none;}
+    .IndexHeaderMenu a {font-size: 12px; display: inline-block;padding: 5px;}
+    .IndexHeaderDapp {min-width: auto; padding: 10px !important;}
     .Graphic figure, .Graphic figure img {width: 100%;}
     .TextPart, .TextPart h5, .TextPart h6 {width: 100%; padding: 10px;}
-    .TextPart h5 {font-size: 22px; font-weight: bold;}
-    .TextPart h6 {font-size: 16px; font-weight: normal;}
+    .TextPart h5 {font-size: 20px; font-weight: bold;}
+    .TextPart h6 {font-size: 12px; font-weight: normal;}
     .CardsLayer {display: none;}
     .Footer {margin-top: 100px;}
     .FooterLinks {width: 100%; position: absolute; left: 0; right: 0; margin: 0;top: -100px;}

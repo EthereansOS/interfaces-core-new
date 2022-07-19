@@ -1425,6 +1425,10 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 
  .SuccessMessage {width: 100%;  padding: 10px; z-index: 2147483647; text-align: center;}
  .SuccessMessage a {text-decoration: underline; font-size: 12px; word-break: break-all;}
+
+ .medium .TradeMarketTokenAmount {width:180px}
+ .NothingToSee {padding: 15px;}
+ .NothingToSee h4 {font-size: 12px;}
 }
 
 /* themes */

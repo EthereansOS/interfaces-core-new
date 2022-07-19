@@ -29,9 +29,6 @@ const IndexMain = () => {
       <div className={style.SuperTitle}>
         <h1>THE <span>ETHEREANS</span> OPERATING SYSTEM</h1>
       </div>
-      <div className={style.OnlyMobileIndexBanner}>
-        <p>This interface is not mobile ready at the moment.</p>
-      </div>
       <div className={style.Graphic}>
         <figure>
           <img src={`${process.env.PUBLIC_URL}/img/i-2.gif`}></img>
