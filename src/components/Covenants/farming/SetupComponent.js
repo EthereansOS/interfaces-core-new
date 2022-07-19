@@ -1493,7 +1493,7 @@ export default props => {
             <div className={style.FarmSetupMain}>
                 <div className={style.SetupFarmingInstructions}>
                     <div className={style.SetupFarmingInstructionsV3}>
-                        {setupTokens.map((token, i) => <div key={token.address} className={style.TokenFarmV3InfoBox}>{token.address !== VOID_ETHEREUM_ADDRESS ? <a target="_blank" href={`${getNetworkElement({ context, chainId }, "etherscanURL")}token/${token.address}`}><LogoRenderer input={token} /></a> : <LogoRenderer input={token} />}<span> {tickData && `${formatMoneyUniV3(i === 0 ? tickData.cursorNumber : 100 - tickData.cursorNumber, 2)}%`} <span>{token.symbol}</span></span> </div>)}
+                        {setupTokens.map((token, i) => <div key={token.address} className={style.TokenFarmV3InfoBox}>{token.address !== VOID_ETHEREUM_ADDRESS ? <a target="_blank" href={`${getNetworkElement({ context, chainId }, "etherscanURL")}token/${token.address}`}><LogoRenderer badge input={token} /></a> : <LogoRenderer badge input={token} />}<span> {tickData && `${formatMoneyUniV3(i === 0 ? tickData.cursorNumber : 100 - tickData.cursorNumber, 2)}%`} <span>{token.symbol}</span></span> </div>)}
                         {!endBlockReached &&
                             <p className={style.BlockInfoV3B}>
                             {setup.active && parseInt(setup.endBlock) > currentBlock && <span className={style.V3FarmStatusYEP}>Active</span>}

@@ -16,7 +16,7 @@ const ExploreCollections = ({element}) => (
       </div>
       <div className={style.CollectionFolder}>
         {element.items.map(item => <a key={item.id}>
-          <LogoRenderer input={item} figureClassName={style.CollectionFolderItem}/>
+          <LogoRenderer badge input={item} figureClassName={style.CollectionFolderItem}/>
         </a>)}
       </div>
    </div>

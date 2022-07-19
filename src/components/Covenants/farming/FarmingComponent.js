@@ -29,7 +29,7 @@ export default props => {
     const dailyReward = useMemo(() => element.rewardPerBlock.ethereansosMul(6400), [element && element.rewardPerBlock])
 
     const logoContainer = useMemo(() => {
-        var result = <LogoRenderer input={element.rewardToken}/>
+        var result = <LogoRenderer badge input={element.rewardToken}/>
         return element.rewardTokenAddress === VOID_ETHEREUM_ADDRESS ? result : element.rewardToken.mainInterface ? <Link to={`/items/dapp/items/${element.rewardToken.id}`}>{result}</Link> : <a target="_blank" href={`${getNetworkElement({ context, chainId}, 'etherscanURL')}token/${element.rewardToken.address}`}>{result}</a>
     }, [element && element.rewardTokenAddress])
 

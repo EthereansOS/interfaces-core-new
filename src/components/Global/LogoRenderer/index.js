@@ -3,12 +3,13 @@ import React, { useState, useEffect } from "react"
 import CircularProgress from '../OurCircularProgress'
 import { useEthosContext, formatLink, web3Utils, useWeb3 } from "@ethereansos/interfaces-core"
 import { resolveToken } from "../../../logic/dualChain"
+import { getAddress } from "../../../logic/uiUtilities"
 
 import style from '../../../all.module.css'
 
 const DEFAULT_IMAGE = `${process.env.PUBLIC_URL}/img/missingcoin.gif`
 
-export default ({input, figureClassName, noFigure, title, defaultImage, noDotLink, onError}) => {
+export default ({input, figureClassName, noFigure, title, defaultImage, noDotLink, onError, badge}) => {
 
     const realDefaultImage = defaultImage || DEFAULT_IMAGE
 
@@ -23,6 +24,7 @@ export default ({input, figureClassName, noFigure, title, defaultImage, noDotLin
     const [finalImage, setFinalImage] = useState(null)
     const [loading, setLoading] = useState(false)
     const [tried, setTried] = useState()
+    const [hasBadge, setHasBadge] = useState(false)
 
     useEffect(() => {
         setFinalImage(null)
@@ -33,12 +35,31 @@ export default ({input, figureClassName, noFigure, title, defaultImage, noDotLin
         !finalImage && setFinalImage(!image ? realDefaultImage : image.toLowerCase().indexOf('0x') === 0 ? context.trustwalletImgURLTemplate.split("{0}").join(image) : formatLink({context}, image))
     }, [image, finalImage])
 
+    useEffect(() => {
+        if(!dualChainId || !badge) {
+            return setHasBadge(false)
+        }
+        if(input.isL1) {
+            return setHasBadge(true)
+        }
+        setTimeout(async () => {
+            try {
+                var originalAddress = getAddress(input)
+                var tk = getAddress(await resolveToken({ context, ...web3Data }, originalAddress))
+                return setHasBadge(tk !== originalAddress)
+            } catch(e) {
+                console.error(e)
+            }
+            return setHasBadge(false)
+        })
+    }, [dualChainId, badge])
+
     async function onLoadError() {
         setLoading((onError || dualChainId) ? true : false)
         if(!onError && !tried && dualChainId) {
             setTried(true)
-            if((typeof input).toLowerCase() === 'string' || input.tokenAddress || input.address) {
-                var token = await resolveToken({ context, ...web3Data}, input.tokenAddress || input.address || input)
+            if((typeof input).toLowerCase() === 'string' || input.sourceAddress || input.tokenAddress || input.address) {
+                var token = await resolveToken({ context, ...web3Data}, input.sourceAddress || input.tokenAddress || input.address || input)
                 var link = context.trustwalletImgURLTemplate.split('{0}').join(token)
                 var key = link + '_url'
                 try {
@@ -91,8 +112,8 @@ export default ({input, figureClassName, noFigure, title, defaultImage, noDotLin
         input && input.background_color && (figureProperties.style={backgroundColor : input.background_color})
         input && input.isDeck && (figureProperties.className = (figureProperties.className || '') + (figureProperties.className ? ' ' : '') + style.Deck)
         img = <figure {...figureProperties}>
-            <span className={style.BollinoEth}>L1</span>
-            <span className={style.BollinoOP}>L2</span>
+            {hasBadge && <span className={style.BollinoEth}>L1</span>}
+            {false && <span className={style.BollinoOP}>L2</span>}
             {img}
         </figure>
     }

@@ -172,12 +172,12 @@ const ViewRoutine = ({ loadedElement, onBack }) => {
                     <div className={style.RoutineOperationSchedule}>
                         <p>
                             <b>{operation.inputTokenAmountIsByMint ? "Mint " : "Transfer "}</b>
-                            {formatMoney(amount) != '0' ? formatMoney(amount) : amount} {operation.inputTokenAmountIsPercentage ? "% of " : " "} {operation.inputToken.symbol} <LogoRenderer input={operation.inputToken} /> {operation.inputTokenAmountIsPercentage ? " Supply " : ""}
+                            {formatMoney(amount) != '0' ? formatMoney(amount) : amount} {operation.inputTokenAmountIsPercentage ? "% of " : " "} {operation.inputToken.symbol} <LogoRenderer badge input={operation.inputToken} /> {operation.inputTokenAmountIsPercentage ? " Supply " : ""}
                             {operation.ammPlugin !== VOID_ETHEREUM_ADDRESS && <>
                                 and <b>swap</b><span> {" > "} </span>
                                 {operation.swapTokens.map((swapToken, i) => <>
                                     {swapToken.symbol}
-                                    <LogoRenderer input={swapToken} />
+                                    <LogoRenderer badge input={swapToken} />
                                     {i !== operation.swapTokens.length - 1 && " > "}
                                 </>)}
                             </>}

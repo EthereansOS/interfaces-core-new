@@ -57,11 +57,13 @@ async function calculateUniswapV3PriceWithSlippage({ provider, context, chainId 
         path += (conversionEncode[pool[1].fee] + outputTokenAddress.substring(2))
     }
 
+    var swapPath = path
+
     if(method === 'quoteExactOutput') {
-        path = outputTokenAddress + conversionEncode[pool[0].fee] + inputTokenAddress.substring(2)
+        swapPath = outputTokenAddress + conversionEncode[pool[0].fee] + inputTokenAddress.substring(2)
 
         if(middleTokenAddress) {
-            path = outputTokenAddress + conversionEncode[pool[1].fee] + middleTokenAddress.substring(2) + conversionEncode[pool[0].fee] + inputTokenAddress.substring(2)
+            swapPath = outputTokenAddress + conversionEncode[pool[1].fee] + middleTokenAddress.substring(2) + conversionEncode[pool[0].fee] + inputTokenAddress.substring(2)
         }
     }
 
@@ -69,7 +71,7 @@ async function calculateUniswapV3PriceWithSlippage({ provider, context, chainId 
     try {
         output = await sendAsync(provider, 'eth_call', {
             to : getNetworkElement({ context, chainId }, 'uniswapV3QuoterAddress'),
-            data : (web3Utils.sha3((method || 'quoteExactInput') + '(bytes,uint256)').substring(0, 10)) + (abi.encode(["bytes", "uint256"], [path, value]).substring(2))
+            data : (web3Utils.sha3((method || 'quoteExactInput') + '(bytes,uint256)').substring(0, 10)) + (abi.encode(["bytes", "uint256"], [swapPath, value]).substring(2))
         }, 'latest')
     } catch(e) {
         return {
@@ -543,7 +545,7 @@ export async function calculateSwapInput(data, input, output, amm) {
         } catch(e) {
             liquidityPoolAddresses = []
         }
-        return { swapInput, priceImpact, middleTokenAddress, liquidityPoolAddresses, path, swapPath, inputTokenAddress }
+        return { swapInput, swapOutput : output.value, priceImpact, middleTokenAddress, liquidityPoolAddresses, path, swapPath, inputTokenAddress }
     }))
 
     var swapInputs = data.map(it => parseInt(it.swapInput))
