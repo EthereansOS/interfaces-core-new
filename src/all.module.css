@@ -1433,6 +1433,8 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
  .WrapBoxItem {width: 95% !important; margin: 0px auto;}
  .UnwrapBoxItem {width: 95% !important; margin: 10px auto;}
 
+ input[type="checkbox"] {text-align: center;}
+
  .CollectionRight .FarmContentTitle figure {width: 50px; height: 50px;}
  .CollectionRight .FarmContentTitle figure img {width: 50px; height: 50px;}
  .CollectionRight .FarmContentInfo .VersionFarm, .CollectionRight .FarmContentInfo .MetaBTN, .CollectionRight .FarmContentInfo .CopyBTN, .CollectionRight .FarmContentInfo .FarmActivityA {margin: 2px;}
@@ -2637,7 +2639,7 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .matrix .TradeMarketTokenAmount input {color: #008F11 !important;}
 .matrix .TradeMarketTokenAmount input::placeholder {color: #008F11 !important;}
 .matrix .TradeMarketToken {border-top: 0px !important; border-left: 0px !important;border-right: 0px !important; border-radius: 0px !important;}
-.matrix .Dapp_Menu, .matrix .DappSubMenu, .DDapp_Menu1 {border-radius: 0px !important;}
+.matrix .Dapp_Menu, .matrix .DappSubMenu, .matrix .DDapp_Menu1 {border-radius: 0px !important;}
 .matrix .DDapp_Menu2 {border-top: 0px !important; border-left: 0px !important;border-right: 0px !important; border-radius: 0px !important;}
 .matrix figure {background-color: #008F11 !important;}
 .matrix .ActionASide {background-color: #008F11; color: #000000 !important; font-weight: bold; border-radius: 0;}
@@ -2660,7 +2662,7 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .matrix .Enter {background-color: #008F11; color: #000;}
 .matrix .logoMain img {filter: invert(100%);}
 .matrix .UpshotBar figure {color: #000000;}
-.matrix.Upshot {border: 1px solid #008F11;}
+.matrix .Upshot {border: 1px solid #008F11;}
 .matrix .Rule {border: 1px solid #008F11;}
 .matrix .GuildTagD, .matrix .GuildTagO {border: 2px solid #008F11 !important; color: #008F11 !important;}
 .matrix .OptionOpen input {background-color: #008F11; color: #000;}
