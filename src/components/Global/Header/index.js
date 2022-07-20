@@ -35,7 +35,7 @@ const Header = (props) => {
                 <p>ETH</p>
               </a>
               <a className={style.NetworkSelectL2 + (dualChainId ? (' ' + style.opacity1) : '')} onClick={!dualChainId && switchToNetwork}>
-                <img src={`${process.env.PUBLIC_URL}/img/optimism.png`}/>
+                <img src={`${process.env.PUBLIC_URL}/img/Optimism.png`}/>
                 <p>OP</p>
               </a>
             </div>
