@@ -4,6 +4,7 @@ import style from '../../../../all.module.css'
 
 import { getNetworkElement, useEthosContext, useWeb3, fromDecimals, shortenWord, blockchainCall } from '@ethereansos/interfaces-core'
 import LogoRenderer from '../../LogoRenderer'
+import { Link } from 'react-router-dom'
 
 export default ({element, onClick, noBalance}) => {
 
@@ -20,12 +21,12 @@ export default ({element, onClick, noBalance}) => {
 
   return (
     <a className={style.TokenObject} onClick={() => onClick && onClick(element)}>
-      <LogoRenderer badge input={element}/>
+      <LogoRenderer input={element}/>
       <div className={style.ObjectInfo}>
         <div className={style.ObjectInfoAndLink}>
           <h5>{shortenWord({ context, charsAmount : 15}, element.name)} ({shortenWord({ context, charsAmount : 15}, element.symbol)})</h5>
-          <a>Etherscan</a>
-          <a className={style.LinkCool} target="_blank" href={`${getNetworkElement({context, chainId}, "etherscanURL")}/token/${element.address}`}>Item</a>
+          <a target="_blank" onClick={e => e.stopPropagation()} href={`${getNetworkElement({context, chainId}, "etherscanURL")}/token/${element.address}`}>Etherscan</a>
+          <Link className={style.LinkCool} onClick={e => e.stopPropagation()} to={'/items/dapp/' + element.address}>Item</Link>
         </div>
         <div style={{"visibility" : noBalance ? "hidden" : "visible"}} className={style.ObjectInfoBalance}>
           <p>{fromDecimals(balance, element.decimals || '0')}</p>
