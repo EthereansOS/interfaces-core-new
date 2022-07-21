@@ -25,9 +25,9 @@ export default props => {
     const [actionType, setActionType] = useState("")
     // second step
     const [inputToken, setInputToken] = useState(null)
-    const [inputTokenMethod, setInputTokenMethod] = useState("")
+    const [inputTokenMethod, setInputTokenMethod] = useState("reserve")
     // third step
-    const [transferType, setTransferType] = useState("")
+    const [transferType, setTransferType] = useState("amount")
     const [percentage, setPercentage] = useState(0)
     const [amount, setAmount] = useState(0)
     const [currentReceiver, setCurrentReceiver] = useState("")
