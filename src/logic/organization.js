@@ -534,9 +534,18 @@ async function getSurveysByModels({context}, organization) {
         ]
     })))
 
+    var allProposalIds = logArray.reduce((acc, it) => [...acc, ...it], []).map(it => it.topics[3]).filter((it, i, arr) => arr.indexOf(it) === i)
+
+    var data = await Promise.all(allProposalIds.map(it => blockchainCall(organization.contract.methods.isPersistent, it)))
+
+    allProposalIds = allProposalIds.filter((_, i) => !data[i][0] && !data[i][1])
+
     for(var logs of logArray) {
         for(var log of logs) {
             var proposalId = log.topics[3]
+            if(allProposalIds.indexOf(proposalId) === -1) {
+                continue;
+            }
             var modelIndex = parseInt(abi.decode(["uint256"], log.topics[1])[0].toString())
             var survey = surveys.filter(it => it.modelIndex === modelIndex)[0]
             !survey.proposalIds && (survey.proposalIds = [])
