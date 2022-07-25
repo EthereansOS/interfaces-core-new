@@ -1,5 +1,44 @@
-import { blockchainCall, web3Utils, sendAsync, getNetworkElement, numberToString, VOID_ETHEREUM_ADDRESS, formatLink } from "@ethereansos/interfaces-core"
+import { blockchainCall, web3Utils, abi, getNetworkElement, numberToString, VOID_ETHEREUM_ADDRESS, formatLink } from "@ethereansos/interfaces-core"
+import { getRawField } from "./generalReader"
 import { loadItem } from "./itemsV2"
+
+export async function getTokenBasicInfo(web3Data, tokenAddress) {
+
+    if(tokenAddress === VOID_ETHEREUM_ADDRESS) {
+        return {
+            name : 'Ethereum',
+            symbol : 'ETH',
+            decimals : '18'
+        }
+    }
+
+    const { web3 } = web3Data
+    const provider = web3.currentProvider
+
+    var name = await getRawField({ provider }, tokenAddress, 'name')
+    name = name !== '0x' ? name : await getRawField({ provider }, tokenAddress, 'NAME')
+    try {
+        name = abi.decode(["string"], name)[0].toString()
+    } catch(ex) {
+        name = web3.utils.hexToString(name)
+    }
+
+    var symbol = await getRawField({ provider }, tokenAddress, 'symbol')
+    symbol = symbol !== '0x' ? symbol : await getRawField({ provider }, tokenAddress, 'SYMBOL')
+    try {
+        symbol = abi.decode(["string"], symbol)[0].toString()
+    } catch(ex) {
+        symbol = web3.utils.hexToString(symbol)
+    }
+
+    var decimals = await getRawField({ provider }, tokenAddress, 'decimals')
+    decimals = decimals !== '0x' ? decimals : await getRawField({ provider }, tokenAddress, 'DECIMALS')
+    decimals = abi.decode(["uint256"], decimals)[0].toString()
+
+    return {
+        name, symbol, decimals
+    }
+}
 
 export async function getEthereum({account, web3}) {
     return {

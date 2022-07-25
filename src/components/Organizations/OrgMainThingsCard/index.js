@@ -8,10 +8,13 @@ import CircularProgress from '../../Global/OurCircularProgress'
 import ActionAWeb3Button from '../../Global/ActionAWeb3Button'
 import { Link } from 'react-router-dom'
 
-import { fromDecimals, useWeb3, useEthosContext, getNetworkElement, blockchainCall, numberToString, getEthereumPrice, formatNumber, formatMoney, formatMoneyUniV3, newContract, getTokenPriceInDollarsOnUniswapV3 } from '@ethereansos/interfaces-core'
+import { fromDecimals, useWeb3, abi, useEthosContext, getNetworkElement, blockchainCall, numberToString, getEthereumPrice, formatNumber, formatMoney, formatMoneyUniV3, newContract, getTokenPriceInDollarsOnUniswapV3, web3Utils } from '@ethereansos/interfaces-core'
 
 import style from '../../../all.module.css'
 import { getDelegationsOfOrganization } from '../../../logic/delegation.js'
+import { getRawField } from '../../../logic/generalReader.js'
+import { decodePrestoOperations } from '../../../logic/covenants.js'
+import { getAMMs } from '../../../logic/amm.js'
 
 const RootWallet = ({element}) => {
 
@@ -183,7 +186,8 @@ const Investments = ({element}) => {
 
   const context = useEthosContext()
 
-  const { web3, newContract, chainId } = useWeb3()
+  const web3Data = useWeb3()
+  const { web3, newContract, chainId } = web3Data
 
   const [open, setOpen] = useState(false)
 
@@ -192,8 +196,10 @@ const Investments = ({element}) => {
   const [value, setValue] = useState(null)
 
   const [tokensFromETH, setTokensFromETH] = useState(null)
+  const [tokensFromETHToBurn, setTokensFromETHToBurn] = useState(null)
+  const [tokensFromETHAMMs, setTokensFromETHAMMs] = useState()
   const [tokensToETH, setTokensToETH] = useState(null)
-
+  const [tokensToETHAMMs, setTokensToETHAMMs] = useState()
   const [totalValue, setTotalValue] = useState(null)
 
   const [swapFromETHBlock, setSwapFromETHBlock] = useState(null)
@@ -213,8 +219,42 @@ const Investments = ({element}) => {
   }
 
   async function getTokens() {
-    setTokensFromETH(await blockchainCall(element.organizations[0].components.investmentsManager.contract.methods.tokensFromETH))
-    var data = await blockchainCall(element.organizations[0].components.investmentsManager.contract.methods.tokensToETH)
+    setTokensFromETHAMMs()
+    setTokensToETHAMMs()
+    const amms = await getAMMs({ context, ...web3Data})
+    var fromETH = await getRawField({ provider : web3.currentProvider }, element.organizations[0].components.investmentsManager.address, 'tokensFromETH')
+    var tokensFromETHToBurn = []
+    try {
+      fromETH = decodePrestoOperations(fromETH)
+      var tokenAMMS = fromETH.map(it => amms.filter(amm => web3Utils.toChecksumAddress(amm.address) === web3Utils.toChecksumAddress(it.ammPlugin))[0])
+      setTokensFromETHAMMs(tokenAMMS)
+      tokensFromETHToBurn = fromETH.map(it => it.receivers.length === 0)
+      fromETH = fromETH.map(it => it.swapPath[it.swapPath.length - 1])
+    } catch(e) {
+      fromETH = abi.decode(["address[]"], fromETH)[0].map(web3Utils.toChecksumAddress)
+      var tokenFromETHToBurn = await getRawField({ provider : web3.currentProvider }, element.organizations[0].components.investmentsManager.address, 'tokenFromETHToBurn')
+      tokenFromETHToBurn = web3Utils.toChecksumAddress(abi.decode(["address"], tokenFromETHToBurn)[0])
+      fromETH.push(tokenFromETHToBurn)
+      tokensFromETHToBurn = fromETH.map(it => it === tokenFromETHToBurn)
+    }
+    setTokensFromETHToBurn(tokensFromETHToBurn)
+    setTokensFromETH(fromETH)
+    var data = await getRawField({ provider : web3.currentProvider }, element.organizations[0].components.investmentsManager.address, 'tokensToETH')
+    try {
+      data = decodePrestoOperations(data)
+      var tokenAMMS = data.map(it => amms.filter(amm => web3Utils.toChecksumAddress(amm.address) === web3Utils.toChecksumAddress(it.ammPlugin))[0])
+      setTokensToETHAMMs(tokenAMMS)
+      data = {
+        addresses : data.map(it => it.inputTokenAddress),
+        percentages : data.map(it => it.inputTokenAmount)
+      }
+    } catch(e) {
+      data = abi.decode(["address[]", "uint256[]"], data)
+      data = {
+        addresses : data[0],
+        percentages : data[1].map(it => it.toString())
+      }
+    }
     setTokensToETH(data.addresses)
 
     var balances = await Promise.all(data.addresses.map(it => blockchainCall(newContract(context.IERC20ABI, it).methods.balanceOf, element.organizations[0].components.investmentsManager.address)))
@@ -267,8 +307,15 @@ const Investments = ({element}) => {
           {tokensFromETH && <p>
             Estimated <b>{singleSwapFromETHValue}</b>
             <a><img src={`${process.env.PUBLIC_URL}/img/eth_logo.png`}></img></a> swap for
-            {tokensFromETH.map(it => <a key={it}><LogoRenderer noFigure input={it}/></a>)}
-            <a><img src={`${process.env.PUBLIC_URL}/img/tokentest/os.png`}></img><span>&#128293;</span></a>
+            {tokensFromETH.map((it, i) => <>
+              <a key={it}>
+                <LogoRenderer noFigure input={it}/>{tokensFromETHToBurn[i] && <span>&#128293;</span>}
+              </a>
+              {tokensFromETHAMMs && <>
+                on
+                <LogoRenderer noFigure input={tokensFromETHAMMs[i]}/>
+              </>}
+            </>)}
           </p>}
           <p>Every 3 months</p>
           <ExtLinkButton text="Next" href={`${getNetworkElement({context, chainId}, 'etherscanURL')}block/${swapFromETHBlock}`}/>
@@ -277,8 +324,16 @@ const Investments = ({element}) => {
           {!tokensToETH && <CircularProgress/>}
           {tokensToETH && <p>
             <b>Swap:</b>
-            {tokensToETH.map(it => <a key={it}><LogoRenderer noFigure input={it}/></a>)}
-            for <a><img src={`${process.env.PUBLIC_URL}/img/eth_logo.png`}></img></a>
+            {tokensToETH.map((it, i) => <>
+              <a key={it}>
+                <LogoRenderer noFigure input={it}/>
+              </a>
+              {tokensToETHAMMs && <>
+                on
+                <LogoRenderer noFigure input={tokensToETHAMMs[i]}/>
+              </>}
+            </>)}
+          for <a><img src={`${process.env.PUBLIC_URL}/img/eth_logo.png`}></img></a>
           </p>}
           <p>Weekly</p>
           <ExtLinkButton text="Next" href={`${getNetworkElement({context, chainId}, 'etherscanURL')}block/${swapToETHBlock}`}/>

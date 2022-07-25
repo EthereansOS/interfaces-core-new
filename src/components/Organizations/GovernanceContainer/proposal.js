@@ -24,12 +24,16 @@ import ProposalMetadata from '../ProposalMetadata/index.js'
 import BackButton from '../../Global/BackButton/index.js'
 import { generateItemKey } from '../../../logic/ballot.js'
 import { getLogs } from '../../../logic/logger.js'
+import { decodePrestoOperations } from '../../../logic/covenants.js'
+import { getAMMs } from '../../../logic/amm.js'
 
 export default ({element, refreshElements, forDelegationVote}) => {
 
   const context = useEthosContext()
 
-  const { newContract, block, account, web3, ipfsHttpClient, chainId } = useWeb3()
+  const web3Data = useWeb3()
+
+  const { newContract, block, account, web3, ipfsHttpClient, chainId } = web3Data
 
   const [value, setValue] = useState(null)
   const [accepts, setAccepts] = useState(null)
@@ -38,6 +42,7 @@ export default ({element, refreshElements, forDelegationVote}) => {
   const buyOrSell = element.name === 'Investment Fund Routine Buy' ? true : element.name === 'Investment Fund Routine Sell' ? false : null
 
   const [tokens, setTokens] = useState(null)
+  const [tokenAMMs, setTokenAMMs] = useState(null)
   const [open, setOpen] = useState(false)
   const [type, setType] = useState("accept")
   const [terminable, setTerminable] = useState(null)
@@ -129,10 +134,20 @@ export default ({element, refreshElements, forDelegationVote}) => {
     })
 
     buyOrSell !== null && !tokens && setTimeout(async () => {
-      var contract = newContract(context[buyOrSell ? "ChangeInvestmentsManagerFourTokensFromETHListABI" : "ChangeInvestmentsManagerFiveTokensToETHListABI"], proposalData[1][0])
+      setTokenAMMs()
+      var amms = await getAMMs({ context, ...web3Data })
       var t = [null, null, null, null]
       !buyOrSell && t.push(null)
-      t = await Promise.all(t.map((_, i) => blockchainCall(contract.methods.tokens, i)))
+      t = await Promise.all(t.map((_, i) => getRawField({ provider : web3.currentProvider}, proposalData[1][0], 'tokens(uint256)', i)))
+      if(t[0] !== '0x') {
+        t = t.map(it => abi.decode(["address"], it)[0].toString())
+      } else {
+        t = await getRawField({ provider : web3.currentProvider}, proposalData[1][0], 'operations')
+        t = decodePrestoOperations(t)
+        var tokenAMMS = t.map(it => amms.filter(amm => web3Utils.toChecksumAddress(amm.address) === web3Utils.toChecksumAddress(it.ammPlugin))[0])
+        setTokenAMMs(tokenAMMS)
+        t = t.map(it => buyOrSell ? it.swapPath[it.swapPath.length - 1] : it.inputTokenAddress)
+      }
       setTokens(t)
     })
   }, [element, buyOrSell, proposalData, succeeding, terminable])
@@ -212,7 +227,15 @@ export default ({element, refreshElements, forDelegationVote}) => {
       </> : <>
       {tokens && <h6>
         New selection:
-        {tokens.map(it => <a key={it}><LogoRenderer noFigure input={it}/></a>)}
+        {tokens.map((it, i) => <>
+            <a key={it}>
+              <LogoRenderer noFigure input={it}/>
+            </a>
+            {tokenAMMs && <>
+              on
+              <LogoRenderer noFigure input={tokenAMMs[i]}/>
+            </>}
+        </>)}
         </h6>}
       </>}
         <div className={style.ProposalResult}>

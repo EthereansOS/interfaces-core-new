@@ -4,8 +4,9 @@ import { encodeHeader } from "./itemsV2";
 
 import { decodeProposal, decodeProposalVotingToken, extractProposalVotingTokens, generateItemKey } from "./ballot";
 import { retrieveDelegationProposals } from "./delegation";
-import { getData } from "./generalReader"
+import { getData, getRawField } from "./generalReader"
 import { getLogs } from "./logger";
+import { getTokenBasicInfo } from "./erc20";
 
 export async function create({ context, ipfsHttpClient, newContract, chainId, factoryOfFactories }, metadata, organization) {
     var uri = await uploadMetadata({ context, ipfsHttpClient }, metadata)
@@ -848,7 +849,93 @@ var wellKnownLinks = {
     'QmVGor81bynT1GLQoWURiTSdPmPEDbe8eC5znNDHfTfkfT' : uint256EntryTypePercentage,
 }
 
-export async function proposeBuy({ context, ipfsHttpClient }, proposal, additionalMetadata, tokens) {
+async function getAMMDataUniV3(web3Data, amm, inputTokenAddress) {
+
+    const { web3 } = web3Data
+
+    var ammPlugin = amm.address
+    var liquidityPoolAddress
+
+    var factoryAddress = await blockchainCall(amm.contract.methods.factory)
+
+    var liquidityPoolAddress = await getRawField({ provider : web3.currentProvider }, factoryAddress, 'getPool(address,address,uint24)',
+        inputTokenAddress,
+        amm.ethereumAddress,
+        amm.uniswapV3PoolValue.value
+    )
+    liquidityPoolAddress = abi.decode(["address"], liquidityPoolAddress)[0]
+
+    if(liquidityPoolAddress === VOID_ETHEREUM_ADDRESS) {
+        var tokenBasicInfo = await getTokenBasicInfo(web3Data, inputTokenAddress)
+        throw `No liquidity pool address found for token ${tokenBasicInfo.name} (${tokenBasicInfo.symbol}) and fee ${amm.uniswapV3PoolValue.label} on ${amm.name}`
+    }
+
+    return {
+        ammPlugin,
+        liquidityPoolAddress
+    }
+}
+
+async function getAMMData(web3Data, amm, inputTokenAddress) {
+
+    if(!amm) {
+        throw "AMM is Mandatory"
+    }
+
+    if(amm.name === 'UniswapV3') {
+        return await getAMMDataUniV3(web3Data, amm, inputTokenAddress)
+    }
+
+    var ammPlugin = amm.address
+    var liquidityPoolAddress = await blockchainCall(amm.contract.methods.byTokens, [amm.ethereumAddress, inputTokenAddress])
+    liquidityPoolAddress = liquidityPoolAddress[2]
+
+    if(liquidityPoolAddress === VOID_ETHEREUM_ADDRESS) {
+        var tokenBasicInfo = await getTokenBasicInfo(web3Data, inputTokenAddress)
+        throw `No liquidity pool address found for token ${tokenBasicInfo.name} (${tokenBasicInfo.symbol}) on ${amm.name}`
+    }
+
+    return {
+        ammPlugin,
+        liquidityPoolAddress
+    }
+}
+
+async function getPrestoOperationSkeleton(web3Data, amm, inputTokenAddress, enterInETH) {
+    const { ammPlugin, liquidityPoolAddress } = await getAMMData(web3Data, amm, inputTokenAddress)
+    return {
+        inputTokenAddress : enterInETH ? VOID_ETHEREUM_ADDRESS : inputTokenAddress,
+        inputTokenAmount : '0',
+        ammPlugin,
+        liquidityPoolAddresses : [liquidityPoolAddress],
+        swapPath : [enterInETH ? inputTokenAddress : VOID_ETHEREUM_ADDRESS],
+        enterInETH : enterInETH === true,
+        exitInETH : enterInETH !== true,
+        tokenMins : [],
+        receivers : [],
+        receiversPercentages : []
+    }
+}
+
+function encodePrestoOperations(additionalMetadataUri, prestoOperations) {
+    const prestoOperationTypes = [
+        'address',
+        'uint256',
+        'address',
+        'address[]',
+        'address[]',
+        'bool',
+        'bool',
+        'uint256[]',
+        'address[]',
+        'uint256[]'
+    ]
+    return abi.encode(["string", `tuple(${prestoOperationTypes.join(',')})[]`], [additionalMetadataUri, prestoOperations.map(Object.values)])
+}
+
+export async function proposeBuy(web3Data, proposal, additionalMetadata, ammList, tokens) {
+
+    const { context, ipfsHttpClient } = web3Data
 
     var addresses = []
     try {
@@ -860,12 +947,15 @@ export async function proposeBuy({ context, ipfsHttpClient }, proposal, addition
         throw "You must choose 4 different ERC20 tokens"
     }
 
+    const prestoOperations = await Promise.all(addresses.map((it, i) => getPrestoOperationSkeleton(web3Data, ammList[i], it, true)))
+    prestoOperations.forEach(it => it.receivers = [VOID_ETHEREUM_ADDRESS])
+
     var additionalMetadataUri = await uploadMetadata({ context, ipfsHttpClient }, additionalMetadata)
 
     var create = [{
         codes : [{
             location : abi.decode(["address"], abi.encode(["uint256"], [proposal.modelIndex]))[0],
-            bytecode : abi.encode(["string", "address[]"], [additionalMetadataUri, addresses])
+            bytecode : encodePrestoOperations(additionalMetadataUri, prestoOperations)
         }],
         alsoTerminate : false
     }]
@@ -873,7 +963,9 @@ export async function proposeBuy({ context, ipfsHttpClient }, proposal, addition
     await blockchainCall(proposal.proposalsManager.methods.batchCreate, create)
 }
 
-export async function proposeSell({context, ipfsHttpClient, newContract}, proposal, additionalMetadata, tokens, percentages) {
+export async function proposeSell(web3Data, proposal, additionalMetadata, ammList, tokens, percentages) {
+
+    const {context, ipfsHttpClient, newContract} = web3Data
 
     var addresses = []
     try {
@@ -896,12 +988,15 @@ export async function proposeSell({context, ipfsHttpClient, newContract}, propos
         throw "Percentages must be 5 numbers greater than zero and less than or equal to 5%"
     }
 
+    const prestoOperations = await Promise.all(addresses.map((it, i) => getPrestoOperationSkeleton(web3Data, ammList[i], it, true)))
+    prestoOperations.forEach((it, i) => it.inputTokenAmount = realPercentages[i])
+
     var additionalMetadataUri = await uploadMetadata({ context, ipfsHttpClient }, additionalMetadata)
 
     var create = [{
         codes : [{
             location : abi.decode(["address"], abi.encode(["uint256"], [proposal.modelIndex]))[0],
-            bytecode : abi.encode(["string", "address[]", "uint256[]"], [additionalMetadataUri, addresses, percentages])
+            bytecode : encodePrestoOperations(additionalMetadataUri, prestoOperations)
         }],
         alsoTerminate : false
     }]
