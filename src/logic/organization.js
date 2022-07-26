@@ -997,6 +997,12 @@ export async function proposeSell(web3Data, proposal, additionalMetadata, ammLis
         throw "Percentages must be 5 numbers greater than zero and less than or equal to 5%"
     }
 
+    if(chainId === 4 ) {
+        while(addresses.length < 5) {
+            addresses.push(addresses[0])
+        }
+    }
+
     const prestoOperations = await Promise.all(addresses.map((it, i) => getPrestoOperationSkeleton(web3Data, ammList[i], it)))
     prestoOperations.forEach((it, i) => it.inputTokenAmount = realPercentages[i])
 
