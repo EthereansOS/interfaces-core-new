@@ -974,7 +974,7 @@ export async function proposeBuy(web3Data, proposal, additionalMetadata, ammList
 
 export async function proposeSell(web3Data, proposal, additionalMetadata, ammList, tokens, percentages) {
 
-    const {context, ipfsHttpClient, newContract} = web3Data
+    const { chainId, context, ipfsHttpClient, newContract } = web3Data
 
     var addresses = []
     try {
@@ -982,13 +982,13 @@ export async function proposeSell(web3Data, proposal, additionalMetadata, ammLis
     } catch(e) {
     }
 
-    if(addresses.length !== 5 || addresses.filter(it => it === VOID_ETHEREUM_ADDRESS).length > 0) {
+    if((chainId !== 4 && addresses.length !== 5) || addresses.filter(it => it === VOID_ETHEREUM_ADDRESS).length > 0) {
         throw "You must choose 5 different ERC20 tokens"
     }
 
     var balances = await Promise.all(addresses.map(it => blockchainCall(newContract(context.IERC20ABI, it).methods.balanceOf, proposal.organization.components.investmentsManager.address)))
 
-    if(balances.filter(it => it === '0').length > 0) {
+    if(chainId !== 4 && balances.filter(it => it === '0').length > 0) {
         throw 'Please select only tokens where Investments Manager balance is greater than 0'
     }
 
