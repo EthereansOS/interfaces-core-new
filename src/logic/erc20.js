@@ -40,7 +40,8 @@ export async function getTokenBasicInfo(web3Data, tokenAddress) {
     }
 }
 
-export async function getEthereum({account, web3}) {
+export async function getEthereum(data) {
+    const {account, web3} = data
     return {
         name: "Ethereum",
         symbol: "ETH",
@@ -136,12 +137,13 @@ export async function loadTokens({ context, chainId, web3, account, newContract,
     }
 }
 
-export async function loadTokenFromAddress({ context, chainId, account, web3, newContract, getGlobalContract, forceItem }, tokenAddress) {
+export async function loadTokenFromAddress(data, tokenAddress) {
+    const { context, account, newContract, forceItem } = data
     if(!tokenAddress || tokenAddress === VOID_ETHEREUM_ADDRESS) {
-        return await getEthereum({account, web3})
+        return await getEthereum(data)
     }
     try {
-        return await loadItem({ context, chainId, account, web3, newContract, getGlobalContract }, tokenAddress)
+        return await loadItem(data, tokenAddress)
     } catch(e) {
         if(forceItem) {
             return

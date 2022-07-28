@@ -18,7 +18,8 @@ import { useOpenSea } from '../../../../logic/uiUtilities'
 const CollectionView = () => {
   const location = useLocation()
   const context = useEthosContext()
-  const { chainId, web3, account, newContract, getGlobalContract } = useWeb3()
+  const web3Data = useWeb3()
+  const { chainId, account, getGlobalContract } = web3Data
   const [collection, setCollection] = useState(null)
 
   const seaport = useOpenSea()
@@ -27,7 +28,7 @@ const CollectionView = () => {
     setTimeout(async () => {
       var collectionId = location.pathname.substring(location.pathname.lastIndexOf('/') + 1)
       setCollection(null)
-      loadCollection({seaport, chainId, context, web3, account, newContract, getGlobalContract, deep : true}, collectionId, getGlobalContract("itemProjectionFactory")).then(setCollection).catch(() => setCollection(undefined))
+      loadCollection({seaport, context, ...web3Data, deep : true}, collectionId, getGlobalContract("itemProjectionFactory")).then(setCollection).catch(() => setCollection(undefined))
     })
   }, [chainId, account])
 

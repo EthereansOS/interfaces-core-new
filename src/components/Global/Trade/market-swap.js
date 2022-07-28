@@ -12,6 +12,7 @@ import { loadiETH } from '../../../logic/itemsV2.js'
 import { fromDecimals, useEthosContext, useWeb3, formatMoney } from '@ethereansos/interfaces-core'
 
 import style from '../../../all.module.css'
+import { useOpenSea } from '../../../logic/uiUtilities'
 
 export default ({item, onTokens}) => {
 
@@ -19,7 +20,9 @@ export default ({item, onTokens}) => {
 
     const web3Data = useWeb3()
 
-    const { chainId, account, web3, newContract, getGlobalContract } = web3Data
+    const { account, web3 } = web3Data
+
+    const seaport = useOpenSea()
 
     const [amm, setAMM] = useState(null)
     const [settings, setSettings] = useState(false)
@@ -74,7 +77,7 @@ export default ({item, onTokens}) => {
     useEffect(() => {
         getEthereum({account, web3}).then(token => setInput({token}))
         if(!item) {
-            loadiETH({context, chainId, account, newContract, getGlobalContract}).then(token => setOutput({token}))
+            loadiETH({context, seaport, ...web3Data}).then(token => setOutput({token}))
         }
     }, [])
 

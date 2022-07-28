@@ -119,7 +119,8 @@ const LoadCollection = ({inputItem, mode, state, onStateEntry, setComponentIndex
 const LoadItems = ({state, onStateEntry, setComponentIndex}) => {
     const context = useEthosContext()
 
-    const { web3, account, getGlobalContract, newContract, chainId } = useWeb3()
+    const web3Data = useWeb3()
+    const { account, getGlobalContract, newContract } = web3Data
 
     const [items, setItems] = useState(null)
 
@@ -134,7 +135,7 @@ const LoadItems = ({state, onStateEntry, setComponentIndex}) => {
         onStateEntry('amount')
       setTimeout(async () => {
         const itemProjectionFactory = getGlobalContract('itemProjectionFactory')
-        setItems(await loadItemsByFactories({seaport, chainId, context, web3, account, newContract, getGlobalContract, collectionData : await loadCollectionMetadata({context, newContract, getGlobalContract, deep : true}, state.collectionId, newContract(context.ItemMainInterfaceABI, await blockchainCall(itemProjectionFactory.methods.mainInterface)))}, itemProjectionFactory))
+        setItems(await loadItemsByFactories({seaport, context, ...web3Data, collectionData : await loadCollectionMetadata({context, ...web3Data, deep : true}, state.collectionId, newContract(context.ItemMainInterfaceABI, await blockchainCall(itemProjectionFactory.methods.mainInterface)))}, itemProjectionFactory))
       })
     }, [])
 

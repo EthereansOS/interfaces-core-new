@@ -27,7 +27,7 @@ const wrappedCollectionIds = {
 
 export async function loadWrappedCollectionIds(data) {
 
-    const { getGlobalContract, chainId } = data
+    var { getGlobalContract, chainId } = data
 
     if(chainId !== wrappedCollectionIds.chainId) {
         wrappedCollectionIds.chainId = chainId
@@ -43,7 +43,9 @@ export async function loadWrappedCollectionIds(data) {
     return await wrappedCollectionIds.collectionIds
 }
 
-export async function loadItemsByFactories({seaport, context, chainId, web3, account, newContract, getGlobalContract, collectionData, excluding, wrappedOnly, allMine}, factories) {
+export async function loadItemsByFactories(data, factories) {
+
+    var {context, chainId, web3, account, newContract, getGlobalContract, collectionData, excluding, wrappedOnly, allMine} = data
 
     try {
         var topics = collectionData ? [
@@ -52,9 +54,9 @@ export async function loadItemsByFactories({seaport, context, chainId, web3, acc
             collectionData.id
         ] : "CollectionItem(bytes32,bytes32,uint256)"
 
-        var { items, logs } = await getLogsFromFactories({chainId, context, web3, newContract}, factories, topics)
+        var { items, logs } = await getLogsFromFactories(data, factories, topics)
 
-        const wrappedCollectionIds = await loadWrappedCollectionIds({ chainId, getGlobalContract})
+        const wrappedCollectionIds = await loadWrappedCollectionIds(data)
         var exclusiveIncluding = []
 
         const noDecks = wrappedOnly !== 'Deck' ? [
@@ -67,14 +69,14 @@ export async function loadItemsByFactories({seaport, context, chainId, web3, acc
                 wrappedCollectionIds[wrappedOnly === true ? 3 : 1],
                 wrappedCollectionIds[wrappedOnly === true ? 4 : 2]
             ]
-            wrappedOnly === true && exclusiveIncluding.unshift(await loadWrappedCollectionIds({ chainId, getGlobalContract})[0])
+            wrappedOnly === true && exclusiveIncluding.unshift((await loadWrappedCollectionIds(data))[0])
         }
 
         var exclusiveIncluding = wrappedOnly && [
             await blockchainCall(getGlobalContract(`eRC721Wrapper${wrappedOnly === true ? '' : wrappedOnly}`).methods.collectionId),
             await blockchainCall(getGlobalContract(`eRC1155Wrapper${wrappedOnly === true ? '' : wrappedOnly}`).methods.collectionId)
         ]
-        wrappedOnly === true && exclusiveIncluding.unshift(await loadWrappedCollectionIds({ chainId, getGlobalContract})[0])
+        wrappedOnly === true && exclusiveIncluding.unshift((await loadWrappedCollectionIds(data))[0])
 
         var itemIds = logs.reduce((acc, log) => {
             var collectionId = log.topics[2]
@@ -128,7 +130,7 @@ export async function loadItemsByFactories({seaport, context, chainId, web3, acc
             itemIds = itemIds.filter(it => logs.indexOf(it.itemId) !== -1)
         }
 
-        var vals = await Promise.all(itemIds.map(it => loadItem({ seaport, context, chainId, account, newContract, collectionData, getGlobalContract, lightweight : true }, it.itemId, it.item)))
+        var vals = await Promise.all(itemIds.map(it => loadItem({...data, collectionData, lightweight : true }, it.itemId, it.item)))
         //vals = await Promise.all(vals.map(it => loadItemDynamicInfo({ seaport, chainId, context, account, newContract }, it)))
 
         if(allMine) {
@@ -139,15 +141,17 @@ export async function loadItemsByFactories({seaport, context, chainId, web3, acc
         const message = (e.message || e).toLowerCase()
         if(message.indexOf('header not found') !== -1) {
             await new Promise(ok => setTimeout(ok, 3000))
-            return await loadItemsByFactories({seaport, context, chainId, web3, account, newContract, getGlobalContract, collectionData, excluding, wrappedOnly, allMine}, factories)
+            return await loadItemsByFactories(data, factories)
         }
         throw e
     }
 }
 
-export async function loadCollectionsByFactories({seaport, chainId, context, web3, account, newContract, getGlobalContract}, factories) {
+export async function loadCollectionsByFactories(data, factories) {
 
-    var { items, logs } = await getLogsFromFactories({chainId, context, web3, newContract}, factories, "Collection(address,address,bytes32)")
+    var {context} = data
+
+    var { items, logs } = await getLogsFromFactories(data, factories, "Collection(address,address,bytes32)")
 
     var collectionIds = logs.reduce((acc, log) => {
         var collectionId = log.topics[3]
@@ -172,7 +176,7 @@ export async function loadCollectionsByFactories({seaport, chainId, context, web
         collectionIds.map(it => it.collectionId)
     ]
 
-    var itemLogs = await getLogsFromFactories({chainId, context, web3, newContract}, factories, topics)
+    var itemLogs = await getLogsFromFactories(data, factories, topics)
 
     var nonEmptyCollections = {}
 
@@ -180,9 +184,9 @@ export async function loadCollectionsByFactories({seaport, chainId, context, web
 
     var toExclude = collectionIds.filter(it => !nonEmptyCollections[it.collectionId])
 
-    var collections = await Promise.all(collectionIds.map(it => loadCollection({seaport, chainId, context, web3, account, newContract, getGlobalContract, deep : true}, it.collectionId, factories, it.item)))
+    var collections = await Promise.all(collectionIds.map(it => loadCollection({...data, deep : true}, it.collectionId, factories, it.item)))
 
-    var wrapperCollectionIds = await loadWrappedCollectionIds({getGlobalContract, chainId})
+    var wrapperCollectionIds = await loadWrappedCollectionIds(data)
     const wrapperCollectionsItems = [
         ...collections.filter(it => it.id === wrapperCollectionIds[3])[0].items,
         ...collections.filter(it => it.id === wrapperCollectionIds[4])[0].items
@@ -199,7 +203,8 @@ export async function loadCollectionsByFactories({seaport, chainId, context, web
     return collections
 }
 
-export async function getLogsFromFactories({context, web3, newContract, chainId}, factories, topics) {
+export async function getLogsFromFactories(data, factories, topics) {
+    var {context, web3, newContract, chainId} = data
     var array = factories instanceof Array ? factories : [factories]
 
     var address = await Promise.all(array.map(it => blockchainCall(it.methods.mainInterface)))
@@ -224,11 +229,15 @@ export async function getLogsFromFactories({context, web3, newContract, chainId}
     }
 }
 
-export async function loadiETH({context, chainId, account, newContract, getGlobalContract}) {
-    return await loadItem({context, chainId, account, newContract, getGlobalContract}, await blockchainCall(getGlobalContract('eRC20Wrapper').methods.itemIdOf, VOID_ETHEREUM_ADDRESS))
+export async function loadiETH(data) {
+    var {getGlobalContract} = data
+    return await loadItem(data, await blockchainCall(getGlobalContract('eRC20Wrapper').methods.itemIdOf, VOID_ETHEREUM_ADDRESS))
 }
 
-export async function loadItem({seaport, context, chainId, account, newContract, getGlobalContract, collectionData, lightweight }, itemId, item) {
+export async function loadItem(data, itemId, item) {
+
+    var {seaport, context, chainId, account, newContract, getGlobalContract, collectionData, lightweight } = data
+
     var address = item ? await blockchainCall(item.methods.interoperableOf, itemId) : itemId.indexOf('0x') === 0 ? itemId : abi.decode(["address"], abi.encode(["uint256"], [itemId]))[0]
     var contract = newContract(context.ItemInteroperableInterfaceABI, address)
     itemId = item ? itemId : await blockchainCall(contract.methods.itemId)
@@ -237,7 +246,7 @@ export async function loadItem({seaport, context, chainId, account, newContract,
     collectionData = collectionData || await loadCollectionMetadata({chainId, context, newContract, getGlobalContract}, itemData.collectionId, item)
     var index = -1
     try {
-        index = (await loadWrappedCollectionIds({ chainId, getGlobalContract })).indexOf(itemData.collectionId)
+        index = (await loadWrappedCollectionIds(data)).indexOf(itemData.collectionId)
     } catch(e) {}
 
     var result = {
@@ -264,7 +273,7 @@ export async function loadItem({seaport, context, chainId, account, newContract,
     }
 
     try {
-        result = lightweight ? result : await loadItemDynamicInfo({seaport, chainId, context, account, newContract}, result, item)
+        result = lightweight ? result : await loadItemDynamicInfo(data, result, item)
     } catch(e) {
     }
 
@@ -287,7 +296,9 @@ async function loadWrappedData(result) {
     return result
 }
 
-export async function loadDeckMetadata({chainId, context, account, newContract, seaport}, itemData) {
+export async function loadDeckMetadata(data, itemData) {
+
+    var {chainId, context, account, newContract, seaport} = data
 
     var asset = loadAsset(itemData.id)
 
@@ -322,12 +333,15 @@ export async function loadDeckMetadata({chainId, context, account, newContract, 
             console.log(e)
         }
     }
-    return asset.collection.imageUrl?.split('s120').join('s300')
+    return asset && asset.collection.imageUrl?.split('s120').join('s300')
 }
 
-export async function loadItemDynamicInfo({chainId, context, account, newContract, seaport}, itemData, item) {
+export async function loadItemDynamicInfo(data, itemData, item) {
+
+    var {chainId, context, seaport} = data
+
     if(typeof itemData === 'string') {
-        return await loadItem({context, chainId, account, newContract}, itemData, item)
+        return await loadItem(data, itemData, item)
     }
 
     const oldData = {...itemData}
@@ -336,7 +350,7 @@ export async function loadItemDynamicInfo({chainId, context, account, newContrac
     var delegation
 
     if(itemData.wrapper && itemData.isDeck && seaport) {
-        metadata.image = await loadDeckMetadata({chainId, context, account, newContract, seaport}, itemData)
+        metadata.image = await loadDeckMetadata(data, itemData)
     } else {
         const key = `${web3Utils.toChecksumAddress(itemData.mainInterfaceAddress)}-${itemData.id}`
         var asset = loadAsset(key)
@@ -380,7 +394,10 @@ export async function loadItemDynamicInfo({chainId, context, account, newContrac
     return result
 }
 
-export async function loadCollectionMetadata({chainId, context, newContract, getGlobalContract, deep}, collectionId, mainInterface) {
+export async function loadCollectionMetadata(dataInput, collectionId, mainInterface) {
+
+    var {context, newContract, deep} = dataInput
+
     var data = {...await blockchainCall(mainInterface.methods.collection, collectionId)}
     data.hostContract = newContract(context.MultiOperatorHostABI, data.host)
     try {
@@ -403,17 +420,18 @@ export async function loadCollectionMetadata({chainId, context, newContract, get
         metadata.image = 'https://gateway.ipfs.io/ipfs/QmYpYpHVNtvPYJsuDcjfGEXc9y5FozERzQ92JaRcAcfq3h'
     }
     var wrappers
-    var index = (await loadWrappedCollectionIds({ chainId, getGlobalContract })).indexOf(collectionId)
+    var index = (await loadWrappedCollectionIds(dataInput)).indexOf(collectionId)
 
     metadata = {...metadata, ...itemProjectionsMetadata[index]}
     return metadata
 }
 
-export async function loadCollection({seaport, chainId, context, web3, newContract, account, getGlobalContract, deep}, collectionId, factory, item) {
-    var collectionData = await loadCollectionMetadata({chainId, context, newContract, getGlobalContract, deep}, collectionId, item = item || newContract(context.ItemMainInterfaceABI, await blockchainCall(factory.methods.mainInterface)))
+export async function loadCollection(data, collectionId, factory, item) {
+    var {context, newContract} = data
+    var collectionData = await loadCollectionMetadata(data, collectionId, item = item || newContract(context.ItemMainInterfaceABI, await blockchainCall(factory.methods.mainInterface)))
     return {
         ...collectionData,
-        items : await loadItemsByFactories({seaport, chainId, context, web3, account, newContract, collectionData, getGlobalContract}, factory)
+        items : await loadItemsByFactories(data, factory)
     }
 }
 
@@ -666,18 +684,20 @@ export async function deployItem({ context, ipfsHttpClient, projectionFactory, n
     return await blockchainCall(projection.methods.mintItems, createItems)
 }
 
-export async function loadToken({context, chainId, web3, account, newContract, getGlobalContract}, collectionAddress, objectId) {
+export async function loadToken(data, collectionAddress, objectId) {
     if(!objectId || collectionAddress === VOID_ETHEREUM_ADDRESS) {
         var tokenAddress = objectId || collectionAddress
         tokenAddress = tokenAddress.toLowerCase().indexOf('0x') === 0 ? tokenAddress : abi.decode(["address"], abi.encode(["uint256"], [objectId]))[0]
         tokenAddress = web3Utils.toChecksumAddress(tokenAddress)
-        await loadTokenFromAddress({ context, account, web3, newContract }, tokenAddress)
+        return await loadTokenFromAddress(data, tokenAddress)
     }
 
-    return await loadItem({context, chainId, web3, account, newContract, getGlobalContract}, objectId)
+    return await loadItem(data, objectId)
 }
 
-export async function hostedItems({context, chainId, web3, account, newContract, getGlobalContract}) {
+export async function hostedItems(data) {
+
+    var {context, chainId, web3, account, newContract, getGlobalContract} = data
 
     const factories = [getGlobalContract("itemProjectionFactory")]
 
@@ -720,15 +740,15 @@ export async function hostedItems({context, chainId, web3, account, newContract,
         collectionIds
     ]
 
-    var itemLogs = await getLogsFromFactories({chainId, context, web3, newContract}, factories, topics)
+    var itemLogs = await getLogsFromFactories(data, factories, topics)
     itemLogs = itemLogs.logs.map(it => abi.decode(["uint256"], it.topics[3])[0].toString())
 
-    return await Promise.all(itemLogs.map(it => loadItem({context, chainId, web3, account, newContract, getGlobalContract}, it)))
+    return await Promise.all(itemLogs.map(it => loadItem(data, it)))
 }
 
 export async function loadDeckWrapper(data, item) {
 
-    const { getGlobalContract } = data
+    var { getGlobalContract } = data
 
     const wrappers = [
         getGlobalContract('eRC721WrapperDeck'),
@@ -771,9 +791,9 @@ export async function loadTokens(data, item) {
 
 export async function loadDeckItem(data, itemId, item) {
 
-    item = await loadItem(data, itemId, item)
-
     var { getGlobalContract, wrapper, is721, seaport, context, newContract, chainId, dualChainId } = data
+
+    item = await loadItem(data, itemId, item)
 
     wrapper = wrapper || await loadDeckWrapper(data, item)
 
@@ -863,7 +883,7 @@ export async function load721DeckItemsForWrap(data, item) {
 
 export async function load721ItemsFromAddress(data, originalAddress) {
 
-    const { context, account, web3, newContract, chainId } = data
+    var { context, account, web3, newContract, chainId } = data
 
     const args = {
         address : originalAddress,
@@ -1094,7 +1114,7 @@ export async function load1155DeckItemsForUnwrap(data, item) {
 
 export async function load721(data, contract, id) {
 
-    const { context, chainId, wrapper } = data
+    var { context, chainId, wrapper } = data
 
     const token = {
         address : contract.options.address,
@@ -1175,7 +1195,7 @@ export async function load721(data, contract, id) {
 
 export async function load1155(data, contract, id) {
 
-    const { wrapper, context, chainId } = data
+    var { wrapper, context, chainId } = data
 
     const token = {
         address : contract.options.address,
@@ -1250,7 +1270,7 @@ export function cartAction(data, mode, item, cart, inputType, selectedAmount, re
 
 export function wrap(data, item, cart, inputType, selectedAmount, reserveAll) {
 
-    const { account } = data
+    var { account } = data
 
     if(item.wrapType === 'ERC1155') {
         var data = cart.map((_, i) => abi.encode(['uint256[]', 'address[]', 'bool'], [[selectedAmount[i]], [account], reserveAll === true]))
@@ -1281,7 +1301,7 @@ function tryGetReserves(data, item, element, selectedAmount, decimals, buy) {
         return []
     }
 
-    const { account, block } = data
+    var { account, block } = data
 
     var am = parseInt(fromDecimals(selectedAmount, decimals, true).split('.')[0])
 
@@ -1302,7 +1322,7 @@ function tryGetReserves(data, item, element, selectedAmount, decimals, buy) {
 
 export function unwrap(data, item, cart, inputType, selectedAmount, reserveAll, decimals) {
 
-    const { account } = data
+    var { account } = data
 
     var reserves = item.wrapType === 'ERC1155' && cart.map((it, i) => tryGetReserves(data, item, it, selectedAmount[i], decimals))
 
@@ -1318,7 +1338,7 @@ export function secondaryCartAction(data, mode, item, cart, itemValue, ETHValue,
 
 export async function wrapAndSell(data, item, cart, itemValue, ETHValue, slippage, amm, swapData, inputType, selectedAmount, reserveAll) {
 
-    const { getGlobalContract, account, context, newContract } = data
+    var { getGlobalContract, account, context, newContract } = data
     const prestoDeck = getGlobalContract("deckPresto")
 
     const is721 = item.wrapType === 'ERC721'
@@ -1384,7 +1404,7 @@ export async function wrapAndSell(data, item, cart, itemValue, ETHValue, slippag
 }
 
 export async function buyAndUnrwap(data, item, cart, itemValue, ETHValue, slippage, amm, swapData, inputType, selectedAmount, reserveAll, decimals) {
-    const { getGlobalContract, account } = data
+    var { getGlobalContract, account } = data
     const prestoDeck = getGlobalContract("deckPresto")
 
     var operation = {
@@ -1419,7 +1439,7 @@ async function decodeString(provider, to, name, id) {
 
 export async function loadMetadata(data, address, id) {
 
-    const { provider, context, newContract, chainId } = data
+    var { provider, context, newContract, chainId } = data
 
     var metadata
 

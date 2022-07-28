@@ -11,12 +11,16 @@ import OurCircularProgress from '../OurCircularProgress/index.js'
 
 import WrapERC20 from '../../Items/Wrap/ERC20'
 import RegularModal from '../RegularModal/index.js'
+import { useOpenSea } from '../../../logic/uiUtilities.js'
 
 export default ({item}) => {
 
     const context = useEthosContext()
 
-    const { account, newContract, getGlobalContract, chainId } = useWeb3()
+    const seaport = useOpenSea()
+
+    const web3Data = useWeb3()
+    const { getGlobalContract } = web3Data
 
     const [itemInput, setItemInput] = useState(null)
     const [buyModal, setBuyModal] = useState(false)
@@ -34,11 +38,11 @@ export default ({item}) => {
         var itemId = await blockchainCall(w20.methods.itemIdOf, item.address)
         if(itemId !== '0') {
             itemId = abi.decode(["address"], abi.encode(["uint256"], [itemId]))[0].toString()
-            return setItemInput(await loadItem({ chainId, context, account, newContract, getGlobalContract }, itemId))
+            return setItemInput(await loadItem({ context, seaport, ...web3Data}, itemId))
         }
         try {
             const itemId = abi.decode(['uint256'], abi.encode(['address'], [item.address]))[0].toString()
-            const loadedItem = await loadItem({context, chainId, account, newContract, getGlobalContract}, itemId)
+            const loadedItem = await loadItem({ context, seaport, ...web3Data}, itemId)
             if(loadedItem && loadedItem.id === itemId) {
                 return setItemInput(loadedItem)
             }
@@ -57,7 +61,7 @@ export default ({item}) => {
             </RegularModal>}
             <div className={style.TradeOTCBox}>
                 <h4>{shortenWord({ context, charsAmount : 15}, (itemInput || item)?.symbol)} Orders</h4>
-                
+
                 <p>Orders are currently unavailable</p> {/*
                 {!itemInput && <a onClick={() => setWrap(true)}>Be the first to wrap this token</a>}
                 {itemInput && !itemInput.mainInterface && <OurCircularProgress/>}

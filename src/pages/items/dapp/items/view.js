@@ -19,6 +19,7 @@ import ViewFarmings from '../../../covenants/dapp/farming/index'
 import DappSubMenu from '../../../../components/Global/DappSubMenu'
 
 import style from '../../../../all.module.css'
+import { useOpenSea } from '../../../../logic/uiUtilities'
 
 const itemSubmenuVoices = [
   {
@@ -37,7 +38,10 @@ const ItemView = () => {
 
   const context = useEthosContext()
 
-  const { chainId, web3, account, newContract, getGlobalContract } = useWeb3()
+  const seaport = useOpenSea()
+
+  const web3Data = useWeb3()
+  const { newContract, getGlobalContract } = web3Data
 
   const [item, setItem] = useState(null)
 
@@ -55,7 +59,7 @@ const ItemView = () => {
 
       async function bypassOpenSeaEvilness() {
         try {
-            const loadedItem = await loadItem({chainId, context, web3, account, newContract, getGlobalContract}, itemId, item)
+            const loadedItem = await loadItem({context, seaport, ...web3Data}, itemId, item)
             return setItem(loadedItem)
         } catch(e) {
           const message = (e.message || e).toLowerCase()
