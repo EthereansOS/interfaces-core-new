@@ -39,6 +39,9 @@ export async function getAMMs({context, chainId, newContract}) {
     }))
 
     amms.unshift(await getUniswapV3AMMForSwap({context, chainId, newContract}))
+
+    amms = amms.filter(it => it.name !== 'Balancer')
+
     return amms
 }
 
@@ -400,10 +403,10 @@ const swapActions = {
         const args = [
             newContract(context.uniswapV2RouterABI, address).methods[methodName]
         ]
-        !swapData.enterInETH && args.push(swapData.inputTokenAmount)
+        !swapData.enterInETH && args.push(swapData.amount)
         args.push(...[
             amountOutMinimum,
-            [swapData.inputTokenAddress, ...swapData.path],
+            [swapData.inputToken, ...swapData.path],
             swapData.receiver,
             new Date().getTime() + 10000,
             {value}
@@ -419,12 +422,12 @@ const swapActions = {
     Balancer(data, swapData, amountOutMinimum, value) {
         const { context, newContract } = data
         const contract = newContract(context.BPoolABI, swapData.liquidityPoolAddresses[0])
-        return blockchainCall(contract.methods.swapExactAmountIn, swapData.inputTokenAddress, swapData.inputTokenAmount, swapData.path[0], amountOutMinimum, MAX_UINT256, { value })
+        return blockchainCall(contract.methods.swapExactAmountIn, swapData.inputToken, swapData.amount, swapData.path[0], amountOutMinimum, MAX_UINT256, { value })
     },
-    MooniSwap(data, swapData, amountOutMinimum, value) {
+    Mooniswap(data, swapData, amountOutMinimum, value) {
         const { context, newContract } = data
         const contract = newContract(context.MooniswapABI, swapData.liquidityPoolAddresses[0])
-        return blockchainCall(contract.methods.swap, swapData.inputTokenAddress, swapData.path[0], swapData.inputTokenAmount, amountOutMinimum, VOID_ETHEREUM_ADDRESS, { value })
+        return blockchainCall(contract.methods.swap, swapData.inputToken, swapData.path[0], swapData.amount, amountOutMinimum, VOID_ETHEREUM_ADDRESS, { value })
     }
 }
 
