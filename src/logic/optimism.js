@@ -1,4 +1,4 @@
-import { web3Utils, abi, getNetworkElement } from "@ethereansos/interfaces-core"
+import { web3Utils, abi, getNetworkElement, blockchainCall } from "@ethereansos/interfaces-core"
 import { getRawField } from "./generalReader"
 
 import { getLogs } from "./logger"
@@ -50,8 +50,10 @@ export async function tryRetrieveL2Address(data, tokenAddress) {
     }
 }
 
-export async function createL2Token(data, tokenAddress) {
-    const { web3, dualProvider, dualChainId, chainId, context } = data
+export async function createL2Token(data, element) {
+    const { getGlobalContract } = data
 
+    const tokenFactory = getGlobalContract('L2StandardTokenFactory')
 
+    await blockchainCall(tokenFactory.methods.createStandardL2Token, element.address, element.name, element.symbol)
 }

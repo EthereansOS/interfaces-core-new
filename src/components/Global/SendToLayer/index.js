@@ -81,7 +81,7 @@ const TransferToL2 = props => {
     if(!l2Address && dualChainId) {
         return (<>
             <div>This token has been never transfered to Optimism</div>
-            <ActionAWeb3Button onSuccess={() => tryRetrieveL2Address(data, item.address).then(setL2Address)} onClick={() => createL2Token(data, item.address)} className={style.SendToL2}>Create L2 Token</ActionAWeb3Button>
+            <ActionAWeb3Button onSuccess={() => tryRetrieveL2Address(data, item.address).then(setL2Address)} onClick={() => createL2Token(data, item)} className={style.SendToL2}>Create L2 Token</ActionAWeb3Button>
         </>)
     }
 
