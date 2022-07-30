@@ -1149,6 +1149,10 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .BollinoEth, .BollinoOP {position: absolute; right: 5px; bottom: 5px; font-size: 12px; font-weight: bold; padding: 7px; border-radius: 50%; border: none; z-index: 1000;}
 .CollectionFolder .BollinoEth, .CollectionFolder .BollinoOP, .TradeMarketTokenSelector .BollinoEth , .TradeMarketTokenSelector .BollinoOP {font-size: 8px;padding:3px; right: 2px; bottom: 2px;}
 
+.TokenSelectorListProposal .ActionInfoSectionAMM {width: 100px; margin: 10px auto; display: inline-block;}
+.TokenSelectorListProposal .ActionInfoSectionAMM figure {width: 90px; height: 90px;}
+.TokenSelectorListProposal .ActionInfoSectionAMM figure img {width: 90px; height: 90px;}
+
 .OnlyMobile {display: none;}
 
 @media only screen and (max-width: 990px) {
@@ -1516,12 +1520,12 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .light .ActionInfoSectionText p {color: #000000;}
 .biz .ActionInfoSectionText p {color: #000000;}
 .dark .ActionInfoSectionText p {color: #ffffff;}
-.sepia .ActionInfoSectionText p {color: #e4e4e4;}
+.sepia .ActionInfoSectionText p {color: #49646a;}
 
 .light .DescriptionBig {color: #000000;}
 .biz .DescriptionBig {color: #000000;}
 .dark .DescriptionBig {color: #ffffff;}
-.sepia .DescriptionBig {color: #e4e4e4;}
+.sepia .DescriptionBig {color: #49646a;}
 
 .light .ActionInfoSectionS {background-color: #e4e4e4;}
 .biz .ActionInfoSectionS {background-color: #e4e4e4;}
