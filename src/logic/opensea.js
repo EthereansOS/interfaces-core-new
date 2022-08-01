@@ -24,6 +24,7 @@ export async function getAsset(seaport, tokenAddress, tokenId) {
     var asset = loadAsset(key)
 
     if(asset) {
+        asset.image = (asset.image || asset.imagePreviewUrl).split('s250').join('s300')
         return asset
     }
 
@@ -31,6 +32,7 @@ export async function getAsset(seaport, tokenAddress, tokenId) {
     while(times-- > 0) {
         try {
             asset = await seaport.api.getAsset({tokenAddress, tokenId})
+            asset.image = (asset.image || asset.imagePreviewUrl).split('s250').join('s300')
         } catch(e) {
             await new Promise(ok => setTimeout(ok, 6000))
         }
@@ -178,7 +180,7 @@ async function getOwned1155Tokens(web3Data, toExclude) {
 
 async function cleanTokens(web3Data, tokens, type, uriLabels) {
 
-    const { web3, context } = web3Data
+    const { web3, context, seaport } = web3Data
 
     uriLabels = uriLabels instanceof Array ? uriLabels : [uriLabels]
 
@@ -198,8 +200,12 @@ async function cleanTokens(web3Data, tokens, type, uriLabels) {
                 uri = abi.decode(["string"], uri)[0]
                 uri = uri.split('0x{id}').join(web3Utils.numberToHex(item.tokenId))
                 uri = uri.split('{id}').join(item.tokenId)
-                uri = formatLink({ context }, uri)
-                metadata = await memoryFetch(uri)
+                if(uri.indexOf('data') === 0) {
+                    metadata = await (await fetch(uri)).json()
+                } else {
+                    uri = formatLink({ context }, uri)
+                    metadata = await memoryFetch(uri)
+                }
                 if(metadata.image) {
                     var image = metadata.image
                     image = image.split('0x{id}').join(web3Utils.numberToHex(item.tokenId))
@@ -210,6 +216,14 @@ async function cleanTokens(web3Data, tokens, type, uriLabels) {
                 break
             } catch(e) {
             }
+        }
+        if(!metadata) {
+            try {
+                metadata = await getAsset(seaport, item.tokenAddress, item.tokenId);
+            } catch(e) {
+                console.error(e);
+            }
+            console.log(metadata);
         }
         return {
             ...item,
