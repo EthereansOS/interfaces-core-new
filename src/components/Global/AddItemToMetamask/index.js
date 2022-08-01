@@ -19,7 +19,7 @@ export default ({item}) => {
                     name : item.name,
                     symbol : item.symbol,
                     decimals : item.decimals,
-                    image : item.image.indexOf('data:') === 0 ? item.image : 'https:' + (formatLink({ context }, item.image))
+                    image : item.image ? item.image.indexOf('data:') === 0 ? item.image : 'https:' + (formatLink({ context }, item.image)) : ''
                 },
             },
             id: Math.round(Math.random() * 100000),
