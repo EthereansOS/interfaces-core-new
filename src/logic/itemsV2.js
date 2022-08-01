@@ -431,7 +431,7 @@ export async function loadCollection(data, collectionId, factory, item) {
     var collectionData = await loadCollectionMetadata(data, collectionId, item = item || newContract(context.ItemMainInterfaceABI, await blockchainCall(factory.methods.mainInterface)))
     return {
         ...collectionData,
-        items : await loadItemsByFactories(data, factory)
+        items : await loadItemsByFactories({...data, collectionData}, factory)
     }
 }
 
