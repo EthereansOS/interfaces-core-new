@@ -971,7 +971,7 @@ export async function load1155ItemsFromAddress(data, originalAddress) {
         const data = abi.decode(args, it.topics.length === 4 ? it.data : it.topics[5])[0]
         tokenIds.push(data instanceof Array ? data.map(it => it.toString()) : data.toString())
     })
-    tokenIds = tokenIds.filter((it, i, arr) => arr.indexOf(it) === i)
+    tokenIds = tokenIds.reduce((acc, it) => [...acc, ...(Array.isArray(it) ? it : [it])], []).filter((it, i, arr) => arr.indexOf(it) === i)
 
     const contract = newContract(context.IERC1155ABI, originalAddress)
 
