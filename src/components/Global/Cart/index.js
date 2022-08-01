@@ -56,7 +56,7 @@ export default props => {
 
     useEffect(() => setTimeout(async function calculateInput() {
         var length = cart.length
-        var start = '0'
+        var start = selectedAmount.reduce((acc, it) => acc.ethereansosAdd(it), "0")
         const totalSupply = await blockchainCall(item.mainInterface.methods.totalSupply, item.id)
         if(parseInt(totalSupply) < 1e18) {
             start = numberToString(1e18 - parseInt(totalSupply))
@@ -122,7 +122,7 @@ export default props => {
             selectedAmount[i] = inputType[i][0]
         }
         setInputType(() => inputType)
-        if(balance && cart.length === 1 && parseInt(balance) < parseInt(selectedAmount[0])) {
+        if(mode === 'unwrap' && balance && cart.length === 1 && parseInt(balance) < parseInt(selectedAmount[0])) {
             selectedAmount[0] = balance
         }
         setSelectedAmount(() => selectedAmount)
