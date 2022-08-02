@@ -19,7 +19,7 @@ const SingleOpenseaElement = ({element, onClick}) => {
       <div className={style.ObjectInfo}>
         <div className={style.ObjectInfoAndLink}>
           <h5>{shortenWord({ context, charsAmount : 15}, element.name)}</h5>
-          <a target="_blank" href={`https://${chainId === 4 ? 'testnets.' : ''}opensea.io/assets/${element.tokenAddress}/${element.tokenId}`}>Opensea</a>
+          <a target="_blank" onClick={e => e.stopPropagation()} href={`https://${chainId === 4 ? 'testnets.' : ''}opensea.io/assets/${element.tokenAddress}/${element.tokenId}`}>Opensea</a>
           <a className={style.LinkCool}>{element.assetContract.schemaName.split('ERC').join('ERC-')}</a>
         </div>
         <div style={{"visibility" : "visible"}} className={style.ObjectInfoBalance}>
