@@ -143,21 +143,18 @@ export async function loadTokenFromAddress(data, tokenAddress) {
     if(!tokenAddress || tokenAddress === VOID_ETHEREUM_ADDRESS) {
         return await getEthereum(data)
     }
+    tokenAddress = web3Utils.toChecksumAddress(tokenAddress)
     try {
         var tkAddr = web3Utils.toChecksumAddress(tokenAddress)
         var dataInput = data
-        if(dualChainId) {
-            var resolvedToken = await resolveToken(data, tkAddr)
-            if(resolvedToken !== tkAddr) {
-                tkAddr = resolvedToken
-                dataInput = await dualChainAsMainChain(dataInput)
-            }
+        if(dualChainId && (tkAddr = await resolveToken(data, tkAddr)) !== tokenAddress) {
+            dataInput = await dualChainAsMainChain(dataInput)
         }
         var item = await loadItem(dataInput, tkAddr)
-        if(dualChainId) {
+        if(dualChainId && tkAddr !== tokenAddress) {
             item = {
                 ...item,
-                l2Address : tokenAddress
+                originalAddress : tokenAddress
             }
         }
         return item

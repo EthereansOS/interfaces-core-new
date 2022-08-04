@@ -32,7 +32,7 @@ export default ({item}) => {
   const [totalSupply, setTotalSupply] = useState(item.totalSupply)
 
   useEffect(() => {
-    var address = item.l2Address || item.address
+    var address = item.originalAddress || item.address
 
     getRawField({ provider : web3.currentProvider }, address, 'totalSupply').then(it => setTotalSupply(abi.decode(["uint256"], it)[0].toString()))
 

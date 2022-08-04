@@ -134,12 +134,12 @@ export async function loadItemsByFactories(data, factories) {
                     [itemId] : acc[itemId] || {
                         itemId,
                         l1Address : abi.decode(["address"], it.topics[1])[0].toString(),
-                        l2Address : abi.decode(["address"], it.topics[2])[0].toString()
+                        originalAddress : abi.decode(["address"], it.topics[2])[0].toString()
                     }
                 }
             }, {}))
             l2Tokens = (await Promise.all(l2Tokens.map(async it => {
-                var value = await getRawField({ provider : originalWeb3.currentProvider }, it.l2Address, allMine ? 'balanceOf(address)' : 'totalSupply', account)
+                var value = await getRawField({ provider : originalWeb3.currentProvider }, it.originalAddress, allMine ? 'balanceOf(address)' : 'totalSupply', account)
                 value = abi.decode(["uint256"], value)[0].toString()
                 return value !== '0' && it
             }))).filter(it => it)
@@ -171,7 +171,7 @@ export async function loadItemsByFactories(data, factories) {
 
         var vals = await Promise.all(itemIds.map(it => loadItem({...data, collectionData, lightweight : true }, it.itemId, it.item)))
         //vals = await Promise.all(vals.map(it => loadItemDynamicInfo({ seaport, chainId, context, account, newContract }, it)))
-        vals = !l2Tokens ? vals : vals.map(it => ({...it, l2Address : l2Tokens[it.tokenId || it.id].l2Address}))
+        vals = !l2Tokens ? vals : vals.map(it => ({...it, originalAddress : l2Tokens[it.tokenId || it.id].originalAddress}))
 
         if(dualChainId && !wrappedOnly && !collectionData) {
             vals = [
@@ -848,7 +848,7 @@ export async function loadDeckItemFromAddress(data, tokenAddress) {
     if(dualChainId) {
         deckItem = {
             ...deckItem,
-            l2Address : tokenAddress
+            originalAddress : tokenAddress
         }
     }
     return deckItem

@@ -24,7 +24,7 @@ export default ({input, figureClassName, noFigure, title, defaultImage, noDotLin
     const [finalImage, setFinalImage] = useState(null)
     const [loading, setLoading] = useState(false)
     const [tried, setTried] = useState()
-    const [hasBadge, setHasBadge] = useState(badge && input?.l2Address !== undefined)
+    const [hasBadge, setHasBadge] = useState(badge && input?.originalAddress !== undefined)
 
     useEffect(() => {
         setFinalImage(null)
@@ -59,7 +59,7 @@ export default ({input, figureClassName, noFigure, title, defaultImage, noDotLin
         if(!onError && !tried && dualChainId) {
             setTried(true)
             if((typeof input).toLowerCase() === 'string' || input.sourceAddress || input.tokenAddress || input.address) {
-                var token = await resolveToken({ context, ...web3Data}, input.sourceAddress || input.tokenAddress || input.address || input)
+                var token = await resolveToken({ context, ...web3Data}, input?.sourceAddress || input?.tokenAddress || input?.address || input)
                 var link = context.trustwalletImgURLTemplate.split('{0}').join(token)
                 var key = link + '_url'
                 try {
