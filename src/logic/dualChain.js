@@ -1,4 +1,4 @@
-import { VOID_ETHEREUM_ADDRESS, abi, web3Utils } from "@ethereansos/interfaces-core"
+import { VOID_ETHEREUM_ADDRESS, abi, web3Utils, getNetworkElement } from "@ethereansos/interfaces-core"
 import { getRawField } from "./generalReader"
 
 import { toChecksumAddress } from "./uiUtilities"
@@ -64,4 +64,33 @@ export async function resolveToken(web3Data, tokenAddress) {
         return toChecksumAddress(tokenAddress)
     }
     return toChecksumAddress(await resolver(web3Data, tokenAddress))
+}
+
+export async function dualChainAsMainChain(data) {
+    var { context, dualChainId, dualChainWeb3, web3, chainId } = data
+
+    function getGlobalContract(name) {
+        var address = getNetworkElement({ context, chainId : dualChainId}, name)
+        var ABI = context[name + 'ABI']
+        return new dualChainWeb3.eth.Contract(ABI, address);
+    }
+
+    function newContract(ABI, address) {
+        if(!address) {
+            return new dualChainWeb3.eth.Contract(ABI)
+        }
+        return new dualChainWeb3.eth.Contract(ABI, address)
+    }
+
+    return {
+        ...data,
+        chainId : dualChainId,
+        web3 : dualChainWeb3,
+        originalChainId : chainId,
+        originalWeb3 : web3,
+        dualChainId : undefined,
+        dualChainWeb3 : undefined,
+        getGlobalContract,
+        newContract
+    }
 }

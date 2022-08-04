@@ -1,4 +1,5 @@
 import { blockchainCall, web3Utils, abi, getNetworkElement, numberToString, VOID_ETHEREUM_ADDRESS, formatLink } from "@ethereansos/interfaces-core"
+import { dualChainAsMainChain, resolveToken } from "./dualChain"
 import { getRawField } from "./generalReader"
 import { loadItem } from "./itemsV2"
 
@@ -138,12 +139,21 @@ export async function loadTokens({ context, chainId, web3, account, newContract,
 }
 
 export async function loadTokenFromAddress(data, tokenAddress) {
-    const { context, account, newContract, forceItem } = data
+    const { context, account, newContract, forceItem, dualChainId } = data
     if(!tokenAddress || tokenAddress === VOID_ETHEREUM_ADDRESS) {
         return await getEthereum(data)
     }
     try {
-        return await loadItem(data, tokenAddress)
+        var tkAddr = tokenAddress
+        var dataInput = data
+        if(dualChainId) {
+            var resolvedToken = await resolveToken(data, tkAddr)
+            if(resolvedToken) {
+                tkAddr = resolvedToken
+                dataInput = dualChainAsMainChain(dataInput)
+            }
+        }
+        return await loadItem(dataInput, tkAddr)
     } catch(e) {
         if(forceItem) {
             return

@@ -112,14 +112,16 @@ const OpenSeaContext = React.createContext('openSea')
 
 export const OpenSeaContextProvider = ({ children }) => {
 
-    const { chainId, web3 } = useWeb3()
+    const { chainId, web3, dualChainId, dualChainWeb3 } = useWeb3()
 
     const seaport = useMemo(() => {
-        return web3 && web3.currentProvider ? new OpenSeaPort(web3.currentProvider, {
-            networkName: chainId === 4 ? Network.Rinkeby : Network.Main,
-            apiKey: chainId === 4 ? undefined : require('./frankSwet.json')
+        var theWeb3 = dualChainWeb3 || web3
+        var theChainId = dualChainId || chainId
+        return theWeb3 && theWeb3.currentProvider ? new OpenSeaPort(theWeb3.currentProvider, {
+            networkName: theChainId === 4 ? Network.Rinkeby : Network.Main,
+            apiKey: theChainId === 4 ? undefined : require('./frankSwet.json')
         }) : null
-    }, [chainId, web3])
+    }, [chainId, web3, dualChainId, dualChainWeb3])
 
     return (<OpenSeaContext.Provider value={seaport}>{children}</OpenSeaContext.Provider>)
 }
