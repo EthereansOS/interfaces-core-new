@@ -26,11 +26,11 @@ export async function getLogs(provider, _, args) {
                 try {
                     return await sendAsync(provider, _, { ...args, fromBlock : web3Utils.toHex(start), toBlock : web3Utils.toHex(end)})
                 } catch(e) {
-                    var message = (e.message || e).toLowerCase()
-                    if(message.indexOf('response has no error') === -1) {
-                        return []
+                    var message = (e.stack || e.message || e).toLowerCase()
+                    if(chainId === 10 && message.indexOf('response has no error') !== -1) {
+                        await sleep(600)
                     } else {
-                        await sleep(800)
+                        throw e
                     }
                 }
             }
