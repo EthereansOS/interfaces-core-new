@@ -1,4 +1,5 @@
 import { sendAsync, web3Utils } from "@ethereansos/interfaces-core"
+import { sleep } from "./uiUtilities"
 
 export async function getLogs(provider, _, args) {
 
@@ -21,10 +22,17 @@ export async function getLogs(provider, _, args) {
     var logs = []
     while(start < end) {
         logs.push((async () => {
-            try {
-                return await sendAsync(provider, _, { ...args, fromBlock : web3Utils.toHex(start), toBlock : web3Utils.toHex(end)})
-            } catch(e) {
-                return []
+            while(true) {
+                try {
+                    return await sendAsync(provider, _, { ...args, fromBlock : web3Utils.toHex(start), toBlock : web3Utils.toHex(end)})
+                } catch(e) {
+                    var message = (e.message || e).toLowerCase()
+                    if(message.indexOf('response has no error') === -1) {
+                        return []
+                    } else {
+                        await sleep(800)
+                    }
+                }
             }
         })())
         if(end === lastBlock) {

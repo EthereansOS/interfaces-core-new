@@ -345,3 +345,6 @@ export function getAddress(item) {
     }
     return item
 }
+
+export function sleep(millis) {
+    return new Promise(ok => setTimeout(ok), millis || 500)}

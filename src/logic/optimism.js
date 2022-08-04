@@ -40,7 +40,7 @@ export async function tryRetrieveL2Address(data, tokenAddress) {
                 web3Utils.sha3('StandardL2TokenCreated(address,address)'),
                 abi.encode(["address"], [tokenAddress])
             ],
-            fromBlock : web3Utils.toHex(getNetworkElement({ context, chainId : dualChainId }, 'deploySearchStart')) || "0x0",
+            fromBlock : web3Utils.toHex(getNetworkElement({ context, chainId }, 'deploySearchStart')) || "0x0",
             toBlock : 'latest'
         })
 

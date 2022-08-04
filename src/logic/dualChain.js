@@ -69,21 +69,32 @@ export async function resolveToken(web3Data, tokenAddress) {
 export async function dualChainAsMainChain(data) {
     var { context, dualChainId, dualChainWeb3, web3, chainId } = data
 
-    function getGlobalContract(name) {
-        var address = getNetworkElement({ context, chainId : dualChainId}, name)
-        var ABI = context[name + 'ABI']
-        return new dualChainWeb3.eth.Contract(ABI, address);
+    var contracts = {}
+
+    var newContract = function newContract(ABI, address) {
+        var key = web3Utils.sha3(JSON.stringify(ABI) + (address || ''))
+        if(contracts[key]) {
+            return contracts[key]
+        }
+        var contract
+        if(!address) {
+            contract = new dualChainWeb3.eth.Contract(ABI)
+        } else {
+            contract = new dualChainWeb3.eth.Contract(ABI, address)
+        }
+        return contracts[key] = contract
     }
 
-    function newContract(ABI, address) {
-        if(!address) {
-            return new dualChainWeb3.eth.Contract(ABI)
-        }
-        return new dualChainWeb3.eth.Contract(ABI, address)
+    var getGlobalContract = function getGlobalContract(contractName) {
+        return newContract(
+            context[contractName[0].toUpperCase() + contractName.substring(1) + 'ABI'],
+            getNetworkElement({ context, chainId: dualChainId },contractName + 'Address')
+          )
     }
 
     return {
         ...data,
+        dualMode : undefined,
         chainId : dualChainId,
         web3 : dualChainWeb3,
         originalChainId : chainId,

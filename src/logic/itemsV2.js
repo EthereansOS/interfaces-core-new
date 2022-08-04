@@ -46,9 +46,9 @@ export async function loadWrappedCollectionIds(data) {
 
 export async function loadItemsByFactories(data, factories) {
 
-    data = data.dualMode && data.dualChainId ? dualChainAsMainChain(data) : data
+    data = data.dualMode && data.dualChainId ? await dualChainAsMainChain(data) : data
 
-    var {context, chainId, originalWeb3, dualChainId, web3, account, newContract, getGlobalContract, collectionData, excluding, wrappedOnly, allMine} = data
+    var {context, chainId, originalChainId, originalWeb3, dualChainId, web3, account, newContract, getGlobalContract, collectionData, excluding, wrappedOnly, allMine} = data
 
     factories = factories || getGlobalContract('itemProjectionFactory')
 
@@ -116,28 +116,34 @@ export async function loadItemsByFactories(data, factories) {
 
         var l2Tokens
         if(originalWeb3) {
-            var logs = await getLogs(web3.currentProvider, 'eth_getLogs', {
-                address : getNetworkElement({ context, chainId }, 'L1StandardBridgeAddress'),
+            var logs = await getLogs(originalWeb3.currentProvider, 'eth_getLogs', {
+                address : getNetworkElement({ context, chainId : originalChainId}, 'L2StandardTokenFactoryAddress'),
                 topics : [
-                    web3Utils.sha3('ERC20DepositInitiated(address,address,address,address,uint256,bytes)'),
-                    itemIds.map(it => abi.encode(["address"], [it.itemId])).filter((it, i, arr) => arr.indexOf(it) === i)
+                    web3Utils.sha3('StandardL2TokenCreated(address,address)'),
+                    itemIds.map(it => abi.encode(["uint256"], [it.itemId])).filter((it, i, arr) => arr.indexOf(it) === i)
                 ],
-                fromBlock : web3Utils.toHex(getNetworkElement({ context, chainId }, 'deploySearchStart')) || "0x0",
+                fromBlock : web3Utils.toHex(getNetworkElement({ context, chainId : originalChainId }, 'deploySearchStart')) || "0x0",
                 toBlock : 'latest'
             })
-            logs = (await Promise.all(logs.map(async it => {
-                var l2Address = abi.decode(["uint256", it.topics[2]])[0].toString()
-                var totalSupply = allMine ? await getRawField({ provider : originalWeb3.currentProvider }, l2Address, 'balanceOf(address)', account) : await getRawField({ provider : originalWeb3.currentProvider }, l2Address, 'totalSupply')
-                totalSupply = abi.decode(["uint256"], totalSupply)[0].toString()
-                return totalSupply === '0' ? undefined : {
-                    tokenId : abi.decode(["uint256", it.topics[1]])[0].toString(),
-                    l1Address : abi.decode(["address", it.topics[1]])[0].toString(),
-                    l2Address
+            l2Tokens = Object.values(logs.reduce((acc, it) => {
+                var itemId = abi.decode(["uint256"], it.topics[1])[0].toString()
+                return {
+                    ...acc,
+                    [itemId] : acc[itemId] || {
+                        itemId,
+                        l1Address : abi.decode(["address"], it.topics[1])[0].toString(),
+                        l2Address : abi.decode(["address"], it.topics[2])[0].toString()
+                    }
                 }
+            }, {}))
+            l2Tokens = (await Promise.all(l2Tokens.map(async it => {
+                var value = await getRawField({ provider : originalWeb3.currentProvider }, it.l2Address, allMine ? 'balanceOf(address)' : 'totalSupply', account)
+                value = abi.decode(["uint256"], value)[0].toString()
+                return value !== '0' && it
             }))).filter(it => it)
-            l2Tokens = logs.reduce((acc, it) => {
-                acc[it.tokenId] = acc[it.tokenId] || it.l2Address
-            }, {})
+            l2Tokens = l2Tokens.reduce((acc, it) => ({ ...acc, [it.itemId] : it}), {})
+            var keys = Object.keys(l2Tokens)
+            itemIds = itemIds.filter(it => keys.indexOf(it.itemId) !== -1)
         }
 
         if(allMine && !originalWeb3) {
