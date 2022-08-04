@@ -28,7 +28,7 @@ const Item = ({element, allMine, wrappedOnly}) => {
 
   useEffect(() => {
 
-    var address = element.originalAddress || element.address
+    var address = element.l2Address || element.address
 
     getRawField({ provider : web3.currentProvider }, address, 'balanceOf(address)', account).then(it => setBalance(abi.decode(["uint256"], it)[0].toString()))
     getRawField({ provider : web3.currentProvider }, address, 'totalSupply').then(it => setTotalSupply(abi.decode(["uint256"], it)[0].toString()))
@@ -49,7 +49,7 @@ const Item = ({element, allMine, wrappedOnly}) => {
 
   return (
     <div className={style.ItemSingle}>
-      <Link to={`/items/dapp/${wrappedOnly === 'Deck' || element.isDeck ? 'decks/' : ''}${element.originalAddress || element.address}`}>
+      <Link to={`/items/dapp/${wrappedOnly === 'Deck' || element.isDeck ? 'decks/' : ''}${element.l2Address || element.address}`}>
         {!loadedData && <OurCircularProgress/>}
         {loadedData && <ItemImage input={{...element, ...loadedData}}/>}
         <div className={style.ItemTitle}>

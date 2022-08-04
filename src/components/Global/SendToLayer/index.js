@@ -57,35 +57,35 @@ const TransferToL2 = props => {
 
     const switchToNetwork = useCallback(() => sendAsync(web3.currentProvider, 'wallet_switchEthereumChain', {chainId : "0x" + parseInt(dualChainId || Object.entries(context.dualChainId).filter(it => parseInt(it[1]) === chainId)[0][0]).toString(16)}), [chainId, dualChainId])
 
-    const [originalAddress, setOriginalAddress] = useState(null)
+    const [l2Address, setL2Address] = useState(null)
 
-    useEffect(() => !originalAddress && void(setOriginalAddress(null), tryRetrieveL2Address(data, item.address).then(setOriginalAddress)), [dualChainId])
+    useEffect(() => !l2Address && void(setL2Address(null), tryRetrieveL2Address(data, item.address).then(setL2Address)), [dualChainId])
 
     const [element, setElemet] = useState({token : item, balance : '0', value : '0'})
 
     const onElement = useCallback((token, balance, value) => setElemet({ token, balance, value }), [])
 
-    const onClick = useCallback(() => blockchainCall(getGlobalContract('L1StandardBridge').methods.depositERC20, element.token.address, originalAddress, element.value, 8_000_000, '0x'), [data, element, originalAddress])
+    const onClick = useCallback(() => blockchainCall(getGlobalContract('L1StandardBridge').methods.depositERC20, element.token.address, l2Address, element.value, 8_000_000, '0x'), [data, element, l2Address])
 
-    if(originalAddress === null) {
+    if(l2Address === null) {
         return <OurCircularProgress/>
     }
 
-    if(!originalAddress && !dualChainId) {
+    if(!l2Address && !dualChainId) {
         return (<>
             <div>In order to find the L2 Token address</div>
             <a onClick={switchToNetwork} className={style.SendToL2}>Switch to Optimism</a>
         </>)
     }
 
-    if(!originalAddress && dualChainId) {
+    if(!l2Address && dualChainId) {
         return (<>
             <div>This token has been never transfered to Optimism</div>
-            <ActionAWeb3Button onSuccess={() => tryRetrieveL2Address(data, item.address).then(setOriginalAddress)} onClick={() => createL2Token(data, item)} className={style.SendToL2}>Create L2 Token</ActionAWeb3Button>
+            <ActionAWeb3Button onSuccess={() => tryRetrieveL2Address(data, item.address).then(setL2Address)} onClick={() => createL2Token(data, item)} className={style.SendToL2}>Create L2 Token</ActionAWeb3Button>
         </>)
     }
 
-    if(originalAddress && dualChainId) {
+    if(l2Address && dualChainId) {
         return (<>
             <div>L2 Token address found!</div>
             <a onClick={switchToNetwork} className={style.SendToL1}>Switch back to Ethereum</a>
@@ -129,7 +129,7 @@ export default ({item}) => {
         if(!dualChainId) {
             return setFlag(false)
         }
-        if(item.originalAddress) {
+        if(item.l2Address) {
             return setFlag(true)
         }
         setFlag(null)
@@ -140,7 +140,7 @@ export default ({item}) => {
 
     return <>
         {Component && <RegularModal close={close}>
-            <Component item={{...item, address : item.originalAddress || item.address}} close={close}/>
+            <Component item={{...item, address : item.l2Address || item.address}} close={close}/>
         </RegularModal>}
         {flag === null && <OurCircularProgress/>}
         {flag === true && <a className={style.SendToL1} onClick={onClick}>Send to Ethereum</a>}

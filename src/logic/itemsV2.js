@@ -134,12 +134,12 @@ export async function loadItemsByFactories(data, factories) {
                     [itemId] : acc[itemId] || {
                         itemId,
                         l1Address : abi.decode(["address"], it.topics[1])[0].toString(),
-                        originalAddress : abi.decode(["address"], it.topics[2])[0].toString()
+                        l2Address : abi.decode(["address"], it.topics[2])[0].toString()
                     }
                 }
             }, {}))
             l2Tokens = (await Promise.all(l2Tokens.map(async it => {
-                var value = await getRawField({ provider : originalWeb3.currentProvider }, it.originalAddress, allMine ? 'balanceOf(address)' : 'totalSupply', account)
+                var value = await getRawField({ provider : originalWeb3.currentProvider }, it.l2Address, allMine ? 'balanceOf(address)' : 'totalSupply', account)
                 value = abi.decode(["uint256"], value)[0].toString()
                 return value !== '0' && it
             }))).filter(it => it)
@@ -171,7 +171,7 @@ export async function loadItemsByFactories(data, factories) {
 
         var vals = await Promise.all(itemIds.map(it => loadItem({...data, collectionData, lightweight : true }, it.itemId, it.item)))
         //vals = await Promise.all(vals.map(it => loadItemDynamicInfo({ seaport, chainId, context, account, newContract }, it)))
-        vals = !l2Tokens ? vals : vals.map(it => ({...it, originalAddress : l2Tokens[it.tokenId || it.id].originalAddress}))
+        vals = !l2Tokens ? vals : vals.map(it => ({...it, l2Address : l2Tokens[it.tokenId || it.id].l2Address}))
 
         if(dualChainId && !wrappedOnly && !collectionData) {
             vals = [
@@ -835,20 +835,16 @@ export async function loadTokens(data, item) {
 export async function loadDeckItemFromAddress(data, tokenAddress) {
     const { dualChainId } = data
 
-    var tkAddr = web3Utils.toChecksumAddress(tokenAddress)
+    var tkAddr = tokenAddress = web3Utils.toChecksumAddress(tokenAddress)
     var dataInput = data
-    if(dualChainId) {
-        var resolvedToken = await resolveToken(data, tkAddr)
-        if(resolvedToken !== tkAddr) {
-            tkAddr = resolvedToken
-            dataInput = await dualChainAsMainChain(dataInput)
-        }
+    if(dualChainId && (tkAddr = await resolveToken(data, tkAddr)) !== tokenAddress) {
+        dataInput = await dualChainAsMainChain(dataInput)
     }
     var deckItem = await loadDeckItem(dataInput, tkAddr)
-    if(dualChainId) {
+    if(dualChainId && tkAddr !== tokenAddress) {
         deckItem = {
             ...deckItem,
-            originalAddress : tokenAddress
+            l2Address : tokenAddress
         }
     }
     return deckItem

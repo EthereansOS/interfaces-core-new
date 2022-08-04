@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useMemo } from "react"
 
 import CircularProgress from '../OurCircularProgress'
 import { useEthosContext, formatLink, web3Utils, useWeb3 } from "@ethereansos/interfaces-core"
@@ -24,7 +24,8 @@ export default ({input, figureClassName, noFigure, title, defaultImage, noDotLin
     const [finalImage, setFinalImage] = useState(null)
     const [loading, setLoading] = useState(false)
     const [tried, setTried] = useState()
-    const [hasBadge, setHasBadge] = useState(badge && input?.originalAddress !== undefined)
+
+    const hasBadge = useMemo(() => badge && input?.l2Address !== undefined, [badge, input])
 
     useEffect(() => {
         setFinalImage(null)
@@ -34,25 +35,6 @@ export default ({input, figureClassName, noFigure, title, defaultImage, noDotLin
         setLoading(finalImage ? false : image === undefined || image === null)
         !finalImage && setFinalImage(!image ? realDefaultImage : image.toLowerCase().indexOf('0x') === 0 ? context.trustwalletImgURLTemplate.split("{0}").join(image) : formatLink({context}, image))
     }, [image, finalImage])
-
-    /*useEffect(() => {
-        if(!dualChainId || !badge) {
-            return setHasBadge(false)
-        }
-        if(input.isL1) {
-            return setHasBadge(true)
-        }
-        setTimeout(async () => {
-            try {
-                var originalAddress = getAddress(input)
-                var tk = getAddress(await resolveToken({ context, ...web3Data }, originalAddress))
-                return setHasBadge(tk !== originalAddress)
-            } catch(e) {
-                console.error(e)
-            }
-            return setHasBadge(false)
-        })
-    }, [dualChainId, badge])*/
 
     async function onLoadError() {
         setLoading((onError || dualChainId) ? true : false)

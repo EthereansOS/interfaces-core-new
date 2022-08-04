@@ -88,8 +88,8 @@ const ItemView = () => {
           <ViewProperties item={item}/>
         </div>
         <div className={style.CollectionRight}>
-          <SubTrade item={{...item, address : item.originalAddress || item.address}}/>
-          {!item.originalAddress && <>
+          <SubTrade item={{...item, address : item.l2Address || item.address}}/>
+          {!item.l2Address && <>
             {item?.wrapper && <div className={style.WrapUnwrapBox}>
               <Wrap item={item}/>
               <Unwrap item={item} wrapper={item.wrapper}/>
