@@ -4,7 +4,7 @@ import { useLocation } from 'react-router'
 
 import { blockchainCall, useEthosContext, useWeb3 } from '@ethereansos/interfaces-core'
 
-import { loadDeckItem, loadDeckItems, cartAction, secondaryCartAction } from '../../../../logic/itemsV2'
+import { loadDeckItems, cartAction, secondaryCartAction, loadDeckItemFromAddress } from '../../../../logic/itemsV2'
 
 import CircularProgress from '../../../../components/Global/OurCircularProgress'
 import DappSubMenu from '../../../../components/Global/DappSubMenu'
@@ -65,7 +65,7 @@ const DeckView = () => {
             }
             async function bypassOpenSeaEvilness() {
                 try {
-                    const loadedItem = await loadDeckItem({context, ...web3Data, seaport}, itemId, item)
+                    const loadedItem = await loadDeckItemFromAddress({context, ...web3Data, seaport}, itemId, item)
                     return setItem(loadedItem)
                 } catch(e) {
                     const message = (e.message || e).toLowerCase()

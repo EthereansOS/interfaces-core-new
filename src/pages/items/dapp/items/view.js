@@ -20,6 +20,7 @@ import DappSubMenu from '../../../../components/Global/DappSubMenu'
 
 import style from '../../../../all.module.css'
 import { useOpenSea } from '../../../../logic/uiUtilities'
+import { loadTokenFromAddress } from '../../../../logic/erc20'
 
 const itemSubmenuVoices = [
   {
@@ -59,7 +60,7 @@ const ItemView = () => {
 
       async function bypassOpenSeaEvilness() {
         try {
-            const loadedItem = await loadItem({context, seaport, ...web3Data}, itemId, item)
+            const loadedItem = await loadTokenFromAddress({context, seaport, ...web3Data, forceItem : true}, itemId, item)
             return setItem(loadedItem)
         } catch(e) {
           const message = (e.message || e).toLowerCase()
@@ -87,14 +88,16 @@ const ItemView = () => {
           <ViewProperties item={item}/>
         </div>
         <div className={style.CollectionRight}>
-          <SubTrade item={item}/>
-          {item?.wrapper && <div className={style.WrapUnwrapBox}>
-            <Wrap item={item}/>
-            <Unwrap item={item} wrapper={item.wrapper}/>
-          </div>}
-          <DappSubMenu isSelected={it => it.id === submenuSelection} voices={itemSubmenuVoices.map(it => ({...it, onClick : () => submenuSelection !== it.id && setSubmenuSelection(it.id)}))}/>
-          {submenuSelection === itemSubmenuVoices[0].id && <SubCollectionExplore item={item}/>}
-          {submenuSelection === itemSubmenuVoices[1].id && <ViewFarmings rewardTokenAddress={item.address}/>}
+          <SubTrade item={{...item, address : item.l2Address || item.address}}/>
+          {!item.l2Address && <>
+            {item?.wrapper && <div className={style.WrapUnwrapBox}>
+              <Wrap item={item}/>
+              <Unwrap item={item} wrapper={item.wrapper}/>
+            </div>}
+            <DappSubMenu isSelected={it => it.id === submenuSelection} voices={itemSubmenuVoices.map(it => ({...it, onClick : () => submenuSelection !== it.id && setSubmenuSelection(it.id)}))}/>
+            {submenuSelection === itemSubmenuVoices[0].id && <SubCollectionExplore item={item}/>}
+            {submenuSelection === itemSubmenuVoices[1].id && <ViewFarmings rewardTokenAddress={item.address}/>}
+          </>}
         </div>
       </>}
     </div>

@@ -129,6 +129,9 @@ export default ({item}) => {
         if(!dualChainId) {
             return setFlag(false)
         }
+        if(item.l2Address) {
+            return setFlag(true)
+        }
         setFlag(null)
         tryRetrieveL1Address(data, item.address).then(result => setFlag(result ? true : undefined))
     }, [dualChainId])
@@ -137,7 +140,7 @@ export default ({item}) => {
 
     return <>
         {Component && <RegularModal close={close}>
-            <Component item={item} close={close}/>
+            <Component item={{...item, address : item.l2Address || item.address}} close={close}/>
         </RegularModal>}
         {flag === null && <OurCircularProgress/>}
         {flag === true && <a className={style.SendToL1} onClick={onClick}>Send to Ethereum</a>}

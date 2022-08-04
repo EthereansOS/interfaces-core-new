@@ -10,6 +10,8 @@ import { dualChainAsMainChain } from "./dualChain"
 
 import { getLogs } from "./logger"
 
+import { resolveToken } from "./dualChain"
+
 const MAX_UINT128 = '0x' + web3Utils.toBN(2).pow(web3Utils.toBN(128)).sub(web3Utils.toBN(1)).toString('hex')
 const MAX_UINT256 = '0x' + web3Utils.toBN(2).pow(web3Utils.toBN(256)).sub(web3Utils.toBN(1)).toString('hex')
 
@@ -169,7 +171,7 @@ export async function loadItemsByFactories(data, factories) {
 
         var vals = await Promise.all(itemIds.map(it => loadItem({...data, collectionData, lightweight : true }, it.itemId, it.item)))
         //vals = await Promise.all(vals.map(it => loadItemDynamicInfo({ seaport, chainId, context, account, newContract }, it)))
-        vals = !l2Tokens ? vals : vals.map(it => ({...it, l2Address : l2Tokens[it.tokenId || it.id]}))
+        vals = !l2Tokens ? vals : vals.map(it => ({...it, l2Address : l2Tokens[it.tokenId || it.id].l2Address}))
 
         if(dualChainId && !wrappedOnly && !collectionData) {
             vals = [
@@ -828,6 +830,28 @@ export async function loadTokens(data, item) {
         tokenAddress : abi.decode(["address"], logs[0].topics[1])[0],
         ids : logs.map(it => abi.decode(["uint256"], it.topics[2])[0].toString()).filter((it, i, arr) => arr.indexOf(it) === i)
     }
+}
+
+export async function loadDeckItemFromAddress(data, tokenAddress) {
+    const { dualChainId } = data
+
+    var tkAddr = web3Utils.toChecksumAddress(tokenAddress)
+    var dataInput = data
+    if(dualChainId) {
+        var resolvedToken = await resolveToken(data, tkAddr)
+        if(resolvedToken !== tkAddr) {
+            tkAddr = resolvedToken
+            dataInput = await dualChainAsMainChain(dataInput)
+        }
+    }
+    var deckItem = await loadDeckItem(dataInput, tkAddr)
+    if(dualChainId) {
+        deckItem = {
+            ...deckItem,
+            l2Address : tokenAddress
+        }
+    }
+    return deckItem
 }
 
 export async function loadDeckItem(data, itemId, item) {

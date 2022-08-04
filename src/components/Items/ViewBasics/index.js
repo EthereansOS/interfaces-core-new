@@ -8,9 +8,10 @@ import RegularModal from '../../Global/RegularModal/index.js'
 
 import ViewFarmings from '../../../pages/covenants/dapp/farming/index'
 
-import { useWeb3, getNetworkElement, useEthosContext, fromDecimals, VOID_ETHEREUM_ADDRESS, formatMoney, getTokenPriceInDollarsOnUniswap, getTokenPriceInDollarsOnSushiSwap, getTokenPriceInDollarsOnUniswapV3, blockchainCall } from '@ethereansos/interfaces-core'
+import { abi, useWeb3, getNetworkElement, useEthosContext, fromDecimals, VOID_ETHEREUM_ADDRESS, formatMoney, getTokenPriceInDollarsOnUniswap, getTokenPriceInDollarsOnSushiSwap, getTokenPriceInDollarsOnUniswapV3, blockchainCall } from '@ethereansos/interfaces-core'
 
 import { allFarmings } from '../../../logic/farming.js'
+import { getRawField } from '../../../logic/generalReader'
 
 import style from '../../../all.module.css'
 import OurCircularProgress from '../../Global/OurCircularProgress/index.js'
@@ -21,7 +22,7 @@ export default ({item}) => {
 
   const web3Data = useWeb3()
 
-  const { chainId } = web3Data
+  const { chainId, web3 } = web3Data
 
   const [farming, setFarming] = useState()
 
@@ -31,12 +32,14 @@ export default ({item}) => {
   const [totalSupply, setTotalSupply] = useState(item.totalSupply)
 
   useEffect(() => {
-    blockchainCall(item.mainInterface.methods.totalSupply, item.id).then(setTotalSupply)
+    var address = item.l2Address || item.address
+
+    getRawField({ provider : web3.currentProvider }, address, 'totalSupply').then(it => setTotalSupply(abi.decode(["uint256"], it)[0].toString()))
 
     Promise.all([
-      getTokenPriceInDollarsOnUniswapV3({ context, ...web3Data}, item.address, item.decimals),
-      getTokenPriceInDollarsOnUniswap({ context, ...web3Data}, item.address, item.decimals),
-      getTokenPriceInDollarsOnSushiSwap({ context, ...web3Data}, item.address, item.decimals)
+      getTokenPriceInDollarsOnUniswapV3({ context, ...web3Data}, address, item.decimals),
+      getTokenPriceInDollarsOnUniswap({ context, ...web3Data}, address, item.decimals),
+      getTokenPriceInDollarsOnSushiSwap({ context, ...web3Data}, address, item.decimals)
     ]).then(prices => setPrice(Math.max.apply(window, prices)))
   }, [])
 
@@ -48,7 +51,7 @@ export default ({item}) => {
           <ViewFarmings rewardTokenAddress={item.address}/>
         </RegularModal>}
         <h5>{item.name} ({item.symbol})</h5>
-        <p>Supply: {fromDecimals(item.totalSupply, item.decimals)}</p>
+        <p>Supply: {fromDecimals(totalSupply, item.decimals)}</p>
         <p>{price ? ("Price: $" + formatMoney(price, 2)) : '-'}</p>
         <SendToLayer item={item}/>
         <AddItemToMetamask item={item}/>

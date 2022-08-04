@@ -24,7 +24,7 @@ export default ({input, figureClassName, noFigure, title, defaultImage, noDotLin
     const [finalImage, setFinalImage] = useState(null)
     const [loading, setLoading] = useState(false)
     const [tried, setTried] = useState()
-    const [hasBadge, setHasBadge] = useState(false)
+    const [hasBadge, setHasBadge] = useState(badge && input?.l2Address !== undefined)
 
     useEffect(() => {
         setFinalImage(null)
@@ -35,7 +35,7 @@ export default ({input, figureClassName, noFigure, title, defaultImage, noDotLin
         !finalImage && setFinalImage(!image ? realDefaultImage : image.toLowerCase().indexOf('0x') === 0 ? context.trustwalletImgURLTemplate.split("{0}").join(image) : formatLink({context}, image))
     }, [image, finalImage])
 
-    useEffect(() => {
+    /*useEffect(() => {
         if(!dualChainId || !badge) {
             return setHasBadge(false)
         }
@@ -52,7 +52,7 @@ export default ({input, figureClassName, noFigure, title, defaultImage, noDotLin
             }
             return setHasBadge(false)
         })
-    }, [dualChainId, badge])
+    }, [dualChainId, badge])*/
 
     async function onLoadError() {
         setLoading((onError || dualChainId) ? true : false)

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { shortenWord, formatMoney, fromDecimals, blockchainCall, useEthosContext, useWeb3, getTokenPriceInDollarsOnUniswap, getTokenPriceInDollarsOnUniswapV3, getTokenPriceInDollarsOnSushiSwap } from '@ethereansos/interfaces-core'
+import { abi, shortenWord, formatMoney, fromDecimals, blockchainCall, useEthosContext, useWeb3, getTokenPriceInDollarsOnUniswap, getTokenPriceInDollarsOnUniswapV3, getTokenPriceInDollarsOnSushiSwap } from '@ethereansos/interfaces-core'
 import style from '../../../all.module.css'
 import ItemObject from '../../Global/ObjectsLists/item-object'
 import ItemImage from '../ItemImage'
@@ -8,6 +8,7 @@ import { loadAsset } from '../../../logic/opensea'
 import { loadItemDynamicInfo } from '../../../logic/itemsV2'
 import OurCircularProgress from '../../Global/OurCircularProgress'
 import { useOpenSea } from '../../../logic/uiUtilities'
+import { getRawField } from '../../../logic/generalReader'
 
 const Item = ({element, allMine, wrappedOnly}) => {
 
@@ -15,7 +16,7 @@ const Item = ({element, allMine, wrappedOnly}) => {
 
   const web3Data = useWeb3()
 
-  const { account } = web3Data
+  const { account, web3 } = web3Data
 
   const seaport = useOpenSea()
 
@@ -26,13 +27,16 @@ const Item = ({element, allMine, wrappedOnly}) => {
   const [loadedData, setLoadedData] = useState()
 
   useEffect(() => {
-    blockchainCall(element.mainInterface.methods.balanceOf, account, element.id).then(setBalance)
-    blockchainCall(element.mainInterface.methods.totalSupply, element.id).then(setTotalSupply)
+
+    var address = element.l2Address || element.address
+
+    getRawField({ provider : web3.currentProvider }, address, 'balanceOf(address)', account).then(it => setBalance(abi.decode(["uint256"], it)[0].toString()))
+    getRawField({ provider : web3.currentProvider }, address, 'totalSupply').then(it => setTotalSupply(abi.decode(["uint256"], it)[0].toString()))
 
     Promise.all([
-      getTokenPriceInDollarsOnUniswapV3({ context, ...web3Data}, element.address, element.decimals),
-      getTokenPriceInDollarsOnUniswap({ context, ...web3Data}, element.address, element.decimals),
-      getTokenPriceInDollarsOnSushiSwap({ context, ...web3Data}, element.address, element.decimals)
+      getTokenPriceInDollarsOnUniswapV3({ context, ...web3Data}, address, element.decimals),
+      getTokenPriceInDollarsOnUniswap({ context, ...web3Data}, address, element.decimals),
+      getTokenPriceInDollarsOnSushiSwap({ context, ...web3Data}, address, element.decimals)
     ]).then(prices => setPrice(Math.max.apply(window, prices)))
 
     const loadedAsset = loadAsset(element.mainInterfaceAddress, element.id)
@@ -45,7 +49,7 @@ const Item = ({element, allMine, wrappedOnly}) => {
 
   return (
     <div className={style.ItemSingle}>
-      <Link to={`/items/dapp/${wrappedOnly === 'Deck' || element.isDeck ? 'decks/' : ''}${element.address}`}>
+      <Link to={`/items/dapp/${wrappedOnly === 'Deck' || element.isDeck ? 'decks/' : ''}${element.l2Address || element.address}`}>
         {!loadedData && <OurCircularProgress/>}
         {loadedData && <ItemImage input={{...element, ...loadedData}}/>}
         <div className={style.ItemTitle}>
