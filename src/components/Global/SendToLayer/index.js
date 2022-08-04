@@ -95,7 +95,7 @@ const TransferToL2 = props => {
     return (<>
         <div>
             <TokenInputRegular tokens={[item]} onElement={onElement} element={element} />
-            <ActionAWeb3Buttons other={getNetworkElement(data, 'L1StandardBridgeAddress')} buttonText={"Swap"} onClick={onClick} onSuccess={close}/>
+            <ActionAWeb3Buttons token={element?.token} value={element?.value} balance={element?.balance} other={getNetworkElement(data, 'L1StandardBridgeAddress')} buttonText={"Swap"} onClick={onClick} onSuccess={close}/>
         </div>
     </>)
 }
