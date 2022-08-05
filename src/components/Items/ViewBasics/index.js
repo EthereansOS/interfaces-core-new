@@ -22,7 +22,7 @@ export default ({item}) => {
 
   const web3Data = useWeb3()
 
-  const { chainId, web3 } = web3Data
+  const { chainId, web3, dualChainId } = web3Data
 
   const [farming, setFarming] = useState()
 
@@ -55,9 +55,9 @@ export default ({item}) => {
         <p>{price ? ("Price: $" + formatMoney(price, 2)) : '-'}</p>
         <SendToLayer item={item}/>
         <AddItemToMetamask item={item}/>
-        <ExtLinkButton href={`${getNetworkElement({context, chainId}, "etherscanURL")}/token/${item.address}`} text="Contract"/>
+        <ExtLinkButton href={`${getNetworkElement({context, chainId : item.l2Address ? dualChainId : chainId}, "etherscanURL")}/${dualChainId && !item.l2Address ? 'address' : 'token'}/${item.address}`} text="Contract"/>
         <ExtLinkButton href={item.external_url} text="Website"/>
-        <ExtLinkButton href={`https://opensea.io/assets/${item.mainInterface.options.address}/${item.id}`} text="OpenSea"/>
+        {(!dualChainId || item.l2Address) && <ExtLinkButton href={`https://${(chainId || dualChainId) === 1 ? '' : 'testnets.'}.io/assets/${item.mainInterface.options.address}/${item.id}`} text="OpenSea"/>}
         <ExtLinkButton href={`https://info.uniswap.org/#/tokens/${item.address}`} text="Uniswap"/>
         <ExtLinkButton href={item.discord_url} text="Share"/>
         {item.collectionData.mintOperator && item.collectionData.mintOperator !== VOID_ETHEREUM_ADDRESS && <ExtLinkButton href={getNetworkElement({context, chainId}, 'etherscanURL') + 'address/' + item.collectionData.mintOperator} text="Mintable"/>}
