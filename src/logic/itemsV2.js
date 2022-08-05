@@ -419,7 +419,7 @@ export async function loadItemDynamicInfo(data, itemData, item) {
             console.log(e)
         }
 
-        delegation = lightweight ? undefined : await tryRetrieveDelegationAddressFromItem({context, chainId}, itemData)
+        delegation = lightweight === true ? undefined : await tryRetrieveDelegationAddressFromItem({context, chainId}, itemData)
     }
 
     metadata.id = oldData.id

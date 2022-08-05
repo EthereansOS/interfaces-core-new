@@ -25,6 +25,10 @@ export async function getLogs(provider, _, args) {
                 try {
                     return await sendAsync(provider, _, { ...args, fromBlock : web3Utils.toHex(start), toBlock : web3Utils.toHex(end)})
                 } catch(e) {
+                    var message = (e.stack || e.message || e).toLowerCase()
+                    if(message.indexOf("response has no error") === -1) {
+                        throw e
+                    }
                     return []
                 }
             }
