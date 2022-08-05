@@ -31,12 +31,20 @@ export async function getRawField({provider}, to, fieldName) {
         fields = abi.encode(fields, [...arguments].slice(3, arguments.length))
         data = (web3Utils.sha3(fieldName).substring(0, 10)) + fields.substring(2)
     }
-    try {
-        response = await sendAsync(provider, 'eth_call', {
-            to,
-            data
-        }, 'latest')
-    } catch(e) {
+    while(true) {
+        try {
+            response = await sendAsync(provider, 'eth_call', {
+                to,
+                data
+            }, 'latest')
+            break;
+        } catch(e) {
+            var message = (e.stack || e.message || e).toLowerCase()
+            if(message.indexOf("response has no error") === -1) {
+                throw e
+            }
+        }
     }
+
     return response
 }
