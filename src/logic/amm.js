@@ -296,10 +296,15 @@ async function calculateAMMBasedSwap(data, input, output, amm, middleTokenAddres
         return { swapInput : '0', priceImpact : '0', liquidityPoolAddresses }
     }
 
-    var token0Decimals = tokens[0] === VOID_ETHEREUM_ADDRESS ? '18' : abi.decode(['uint256'], await getRawField({ provider }, tokens[0], 'decimals'))[0]
-    var token1Decimals = tokens[1] === VOID_ETHEREUM_ADDRESS ? '18' : abi.decode(['uint256'], await getRawField({ provider }, tokens[1], 'decimals'))[0]
+    var token0Decimals = tokens[0] === VOID_ETHEREUM_ADDRESS ? '18' : abi.decode(['uint256'], await getRawField({ provider }, tokens[0], 'decimals'))[0].toString()
+    var token1Decimals = tokens[1] === VOID_ETHEREUM_ADDRESS ? '18' : abi.decode(['uint256'], await getRawField({ provider }, tokens[1], 'decimals'))[0].toString()
 
-    var normalizedInputAmount = parseFloat(fromDecimals(dataArray[dataArray.length - 2], token0Decimals, true))
+    var tokenDecimals = [
+        token0Decimals,
+        token1Decimals
+    ]
+
+    var normalizedInputAmount = parseFloat(fromDecimals(dataArray[dataArray.length - 2], tokenDecimals[inputPosition], true))
 
     var normalizedAmounts = [
         parseFloat(fromDecimals(amounts[0], token0Decimals, true)),
