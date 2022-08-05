@@ -50,7 +50,7 @@ export async function loadItemsByFactories(data, factories) {
 
     data = data.dualMode && data.dualChainId ? await dualChainAsMainChain(data) : data
 
-    var {context, chainId, originalChainId, originalWeb3, dualChainId, web3, account, newContract, getGlobalContract, collectionData, excluding, wrappedOnly, allMine} = data
+    var {context, chainId, originalChainId, originalWeb3, dualChainId, web3, account, newContract, getGlobalContract, collectionData, excluding, wrappedOnly, allMine, lightweight} = data
 
     factories = factories || getGlobalContract('itemProjectionFactory')
 
@@ -169,7 +169,7 @@ export async function loadItemsByFactories(data, factories) {
             itemIds = itemIds.filter(it => logs.indexOf(it.itemId) !== -1)
         }
 
-        var vals = await Promise.all(itemIds.map(it => loadItem({...data, collectionData, lightweight : true }, it.itemId, it.item)))
+        var vals = await Promise.all(itemIds.map(it => loadItem({...data, collectionData, lightweight : lightweight !== false }, it.itemId, it.item)))
         //vals = await Promise.all(vals.map(it => loadItemDynamicInfo({ seaport, chainId, context, account, newContract }, it)))
         vals = !l2Tokens ? vals : vals.map(it => ({...it, l2Address : l2Tokens[it.tokenId || it.id].l2Address}))
 
@@ -279,7 +279,7 @@ export async function loadiETH(data) {
 
 export async function loadItem(data, itemId, item) {
 
-    var {seaport, context, chainId, account, newContract, getGlobalContract, collectionData } = data
+    var {seaport, context, chainId, account, newContract, getGlobalContract, collectionData, lightweight } = data
 
     var address = item ? await blockchainCall(item.methods.interoperableOf, itemId) : itemId.indexOf('0x') === 0 ? itemId : abi.decode(["address"], abi.encode(["uint256"], [itemId]))[0]
     var contract = newContract(context.ItemInteroperableInterfaceABI, address)
@@ -316,7 +316,7 @@ export async function loadItem(data, itemId, item) {
     }
 
     try {
-        result = await loadItemDynamicInfo(data, result, item)
+        result = lightweight !== true ? await loadItemDynamicInfo(data, result, item) : result
     } catch(e) {
     }
 
@@ -381,7 +381,7 @@ export async function loadDeckMetadata(data, itemData) {
 
 export async function loadItemDynamicInfo(data, itemData, item) {
 
-    var {chainId, context, seaport, lightweight } = data
+    var {chainId, context, seaport} = data
 
     if(typeof itemData === 'string') {
         return await loadItem(data, itemData, item)
@@ -419,7 +419,9 @@ export async function loadItemDynamicInfo(data, itemData, item) {
             console.log(e)
         }
 
-        delegation = lightweight === true ? undefined : await tryRetrieveDelegationAddressFromItem({context, chainId}, itemData)
+        try {
+            delegation = await tryRetrieveDelegationAddressFromItem({context, chainId}, itemData)
+        } catch(e) {}
     }
 
     metadata.id = oldData.id

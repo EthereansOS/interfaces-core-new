@@ -40,7 +40,7 @@ export default ({onResult, provider, discriminant, allMine, forCollection, exclu
   return <Web3DependantList
     Renderer={element}
     renderedProperties={{...renderedProperties, wrappedOnly, allMine}}
-    provider={() => (tokenAddress ? loadTokenFromAddress({ context, ...web3Data, forceItem : true }, tokenAddress) : provider ? provider() : hardCabledList ? loadTokens({context, chainId, web3, account, newContract, alsoETH : false, listName : hardCabledList}) : loadItemsByFactories({seaport, context, ...web3Data, collectionData : forCollection, excluding, wrappedOnly, allMine}, getGlobalContract("itemProjectionFactory"))).then(r => {
+    provider={() => (tokenAddress ? loadTokenFromAddress({ context, ...web3Data, forceItem : true }, tokenAddress) : provider ? provider() : hardCabledList ? loadTokens({context, chainId, web3, account, newContract, alsoETH : false, listName : hardCabledList}) : loadItemsByFactories({seaport, context, ...web3Data, collectionData : forCollection, excluding, wrappedOnly, allMine, lightweight : false}, getGlobalContract("itemProjectionFactory"))).then(r => {
       onResult && onResult(r)
       return r
     }) }

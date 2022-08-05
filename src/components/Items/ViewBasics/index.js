@@ -34,7 +34,7 @@ export default ({item}) => {
   useEffect(() => {
     var address = item.l2Address || item.address
 
-    getRawField({ provider : web3.currentProvider }, address, 'totalSupply').then(it => setTotalSupply(abi.decode(["uint256"], it)[0].toString()))
+    getRawField({ provider : web3.currentProvider }, address, 'totalSupply').then(it => setTotalSupply(it === '0x' ? '0' : abi.decode(["uint256"], it)[0].toString()))
 
     Promise.all([
       getTokenPriceInDollarsOnUniswapV3({ context, ...web3Data}, address, item.decimals),

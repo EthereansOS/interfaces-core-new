@@ -37,11 +37,11 @@ export async function getRawField({provider}, to, fieldName) {
                 to,
                 data
             }, 'latest')
-            break;
+            break
         } catch(e) {
             var message = (e.stack || e.message || e).toLowerCase()
             if(message.indexOf("response has no error") === -1) {
-                throw e
+                break
             }
         }
     }

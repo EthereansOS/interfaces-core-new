@@ -30,8 +30,8 @@ const Item = ({element, allMine, wrappedOnly}) => {
 
     var address = element.l2Address || element.address
 
-    getRawField({ provider : web3.currentProvider }, address, 'balanceOf(address)', account).then(it => setBalance(abi.decode(["uint256"], it)[0].toString()))
-    getRawField({ provider : web3.currentProvider }, address, 'totalSupply').then(it => setTotalSupply(abi.decode(["uint256"], it)[0].toString()))
+    getRawField({ provider : web3.currentProvider }, address, 'balanceOf(address)', account).then(it => setBalance(it === '0x' ? '0' : abi.decode(["uint256"], it)[0].toString()))
+    getRawField({ provider : web3.currentProvider }, address, 'totalSupply').then(it => setTotalSupply(it === '0x' ? '0' : abi.decode(["uint256"], it)[0].toString()))
 
     Promise.all([
       getTokenPriceInDollarsOnUniswapV3({ context, ...web3Data}, address, element.decimals),
