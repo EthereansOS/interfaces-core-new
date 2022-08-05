@@ -279,7 +279,7 @@ export async function loadiETH(data) {
 
 export async function loadItem(data, itemId, item) {
 
-    var {seaport, context, chainId, account, newContract, getGlobalContract, collectionData, lightweight } = data
+    var {seaport, context, chainId, account, newContract, getGlobalContract, collectionData } = data
 
     var address = item ? await blockchainCall(item.methods.interoperableOf, itemId) : itemId.indexOf('0x') === 0 ? itemId : abi.decode(["address"], abi.encode(["uint256"], [itemId]))[0]
     var contract = newContract(context.ItemInteroperableInterfaceABI, address)
@@ -316,7 +316,7 @@ export async function loadItem(data, itemId, item) {
     }
 
     try {
-        result = lightweight ? result : await loadItemDynamicInfo(data, result, item)
+        result = await loadItemDynamicInfo(data, result, item)
     } catch(e) {
     }
 
@@ -381,7 +381,7 @@ export async function loadDeckMetadata(data, itemData) {
 
 export async function loadItemDynamicInfo(data, itemData, item) {
 
-    var {chainId, context, seaport} = data
+    var {chainId, context, seaport, lightweight } = data
 
     if(typeof itemData === 'string') {
         return await loadItem(data, itemData, item)
@@ -419,7 +419,7 @@ export async function loadItemDynamicInfo(data, itemData, item) {
             console.log(e)
         }
 
-        delegation = await tryRetrieveDelegationAddressFromItem({context, chainId}, itemData)
+        delegation = lightweight ? undefined : await tryRetrieveDelegationAddressFromItem({context, chainId}, itemData)
     }
 
     metadata.id = oldData.id
