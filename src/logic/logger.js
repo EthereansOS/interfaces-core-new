@@ -21,18 +21,27 @@ export async function getLogs(provider, _, args) {
     var logs = []
     while(start < end) {
         logs.push((async () => {
-            for(var i = 0; i < 5; i++) {
-                try {
-                    return await sendAsync(provider, _, { ...args, fromBlock : web3Utils.toHex(start), toBlock : web3Utils.toHex(end)})
-                } catch(e) {
-                    var message = (e.stack || e.message || e).toLowerCase()
-                    if(message.indexOf("response has no error") === -1) {
-                        throw e
-                    }
-                    return []
+            var newArgs = { ...args, fromBlock : web3Utils.toHex(start), toBlock : web3Utils.toHex(end)}
+            var key = web3Utils.sha3(JSON.stringify(newArgs))
+            var value
+            try {
+                value = JSON.parse(window.localStorage.getItem(key))
+                if(value) {
+                    return value
+                }
+            } catch(e) {}
+            try {
+                value = await sendAsync(provider, _, newArgs)
+            } catch(e) {
+                var message = (e.stack || e.message || e).toLowerCase()
+                if(message.indexOf("response has no error") !== -1) {
+                    value = []
                 }
             }
-            return []
+
+            value && window.localStorage.setItem(key, JSON.stringify(value))
+
+            return value || []
         })())
         if(end === lastBlock) {
             break
