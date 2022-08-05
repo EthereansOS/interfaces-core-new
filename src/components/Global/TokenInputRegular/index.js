@@ -2,10 +2,11 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react'
 
 import style from '../../../all.module.css'
 import CircularProgress from '../OurCircularProgress'
-import { blockchainCall, useWeb3, fromDecimals, toDecimals, shortenWord, useEthosContext, formatMoney, numberToString } from '@ethereansos/interfaces-core'
+import { abi, blockchainCall, useWeb3, fromDecimals, toDecimals, shortenWord, useEthosContext, formatMoney, numberToString } from '@ethereansos/interfaces-core'
 import ModalStandard from '../ModalStandard'
 import ObjectsLists from '../ObjectsLists'
 import LogoRenderer from '../LogoRenderer'
+import { getRawField } from '../../../logic/generalReader'
 
 function numberInputOnWheelPreventChange (e) {
     const target = e.currentTarget
@@ -18,7 +19,7 @@ const TokenInputRegular = ({onElement, onlySelections, tokens, tokenOnly, noETH,
 
     const context = useEthosContext()
 
-    const { block, account } = useWeb3()
+    const { block, account, web3 } = useWeb3()
 
     const element = tokens && tokens.length === 1 ? tokens[0] : selected || null
 
@@ -38,7 +39,8 @@ const TokenInputRegular = ({onElement, onlySelections, tokens, tokenOnly, noETH,
             return setBalance(null)
         }
         element && element.contract && !element.mainInterface && blockchainCall(element.contract.methods.balanceOf, account).then(setBalance)
-        element && element.contract && element.mainInterface && blockchainCall(element.contract.methods.balanceOf, account, element.id).then(setBalance)
+        element && element.contract && element.mainInterface && !element.l2Address && blockchainCall(element.contract.methods.balanceOf, account, element.id).then(setBalance)
+        element && element.contract && element.mainInterface && element.l2Address && getRawField({ provider : web3.currentProvider}, element.l2Address, 'balanceOf(address)', account).then(it => setBalance(abi.decode(['uint256'], it)[0].toString()))
     }, [account, element, block, noBalance])
 
     useEffect(() => {
