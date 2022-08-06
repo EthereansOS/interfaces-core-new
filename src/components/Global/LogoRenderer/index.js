@@ -37,32 +37,8 @@ export default ({input, figureClassName, noFigure, title, defaultImage, noDotLin
     }, [image, finalImage])
 
     async function onLoadError() {
-        setLoading((onError || dualChainId) ? true : false)
-        if(!onError && !tried && dualChainId) {
-            setTried(true)
-            if((typeof input).toLowerCase() === 'string' || input.sourceAddress || input.tokenAddress || input.address) {
-                var token = await resolveToken({ context, ...web3Data}, input?.sourceAddress || input?.tokenAddress || input?.address || input)
-                var link = context.trustwalletImgURLTemplate.split('{0}').join(token)
-                var key = link + '_url'
-                try {
-                    var loc = window.localStorage[key]
-                    if(loc === undefined) {
-                        var result = await (await fetch(link)).text()
-                        loc = result.indexOf('404') === -1 ? 'true' : 'false'
-                    }
-                    if (loc === 'false') {
-                        link = realDefaultImage
-                    }
-                    window.localStorage.setItem(key, loc)
-                } catch(e) {
-                    link = realDefaultImage
-                    window.localStorage.setItem(key, 'false')
-                }
-                setFinalImage(link)
-            }
-        } else {
-            setFinalImage((onError && await onError()) || realDefaultImage)
-        }
+        setLoading(onError ? true : false)
+        setFinalImage((onError && await onError()) || realDefaultImage)
         setLoading(false)
     }
 

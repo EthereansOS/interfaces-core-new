@@ -1,14 +1,14 @@
-import { getNetworkElement, VOID_ETHEREUM_ADDRESS, blockchainCall, abi, web3Utils, formatLink, memoryFetch } from '@ethereansos/interfaces-core'
+import { cache, getNetworkElement, VOID_ETHEREUM_ADDRESS, blockchainCall, abi, web3Utils, formatLink, memoryFetch } from '@ethereansos/interfaces-core'
 import { loadTokenFromAddress } from './erc20'
 import { OrderSide } from 'opensea-js/lib/types'
 import { getLogs } from './logger'
 import { getRawField } from './generalReader'
 
-export function loadAsset(tokenAddressOrKey, tokenId) {
+export async function loadAsset(tokenAddressOrKey, tokenId) {
     const key = tokenId ? `${web3Utils.toChecksumAddress(tokenAddressOrKey)}-${tokenId}` : tokenAddressOrKey
 
     try {
-        var asset = window.localStorage.getItem(key)
+        var asset = await cache.getItem(key)
         if(asset) {
             asset = JSON.parse(asset)
         }
@@ -21,7 +21,7 @@ export function loadAsset(tokenAddressOrKey, tokenId) {
 export async function getAsset(seaport, tokenAddress, tokenId) {
     const key = `${web3Utils.toChecksumAddress(tokenAddress)}-${tokenId}`
 
-    var asset = loadAsset(key)
+    var asset = await loadAsset(key)
 
     if(asset) {
         asset.image = (asset.image || asset.imagePreviewUrl).split('s250').join('s300')
@@ -39,7 +39,7 @@ export async function getAsset(seaport, tokenAddress, tokenId) {
     }
 
     try {
-        window.localStorage.setItem(key, JSON.stringify(asset))
+        await cache.setItem(key, JSON.stringify(asset))
     } catch(e) {
     }
 
@@ -211,7 +211,7 @@ async function cleanTokens(web3Data, tokens, type, uriLabels) {
                     var image = metadata.image
                     image = decodeURI(image)
                     image = image.split('0x{id}').join(web3Utils.numberToHex(item.tokenId))
-                    image = image.split('{id}').join(image.tokenId)
+                    image = image.split('{id}').join(item.tokenId)
                     image = formatLink({ context }, image)
                     metadata.image = image
                 }
@@ -240,8 +240,8 @@ async function cleanTokens(web3Data, tokens, type, uriLabels) {
 async function toItem({context, newContract, account}, element) {
     var result = {
         ...element,
-        mainInterface : newContract(context[`I${element.assetContract.schemaName}ABI`], element.tokenAddress),
-        contract : newContract(context[`I${element.assetContract.schemaName}ABI`], element.tokenAddress),
+        mainInterface : newContract(context[`I${element?.assetContract?.schemaName || 'ERC1155'}ABI`], element.tokenAddress),
+        contract : newContract(context[`I${element?.assetContract?.schemaName || 'ERC1155'}ABI`], element.tokenAddress),
         id : element.tokenId,
         mainInterfaceAddress : element.tokenAddress,
         address : element.tokenAddress,

@@ -1,4 +1,4 @@
-import { sendAsync, web3Utils } from "@ethereansos/interfaces-core"
+import { cache, sendAsync, web3Utils } from "@ethereansos/interfaces-core"
 
 export async function getLogs(provider, _, args) {
 
@@ -25,7 +25,7 @@ export async function getLogs(provider, _, args) {
             var key = web3Utils.sha3(JSON.stringify(newArgs))
             var value
             try {
-                value = JSON.parse(window.localStorage.getItem(key))
+                value = JSON.parse(await cache.getItem(key))
                 if(value) {
                     return value
                 }
@@ -39,7 +39,7 @@ export async function getLogs(provider, _, args) {
                 }
             }
 
-            value && window.localStorage.setItem(key, JSON.stringify(value))
+            value && await cache.setItem(key, JSON.stringify(value))
 
             return value || []
         })())

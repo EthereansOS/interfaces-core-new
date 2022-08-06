@@ -39,12 +39,7 @@ const Item = ({element, allMine, wrappedOnly}) => {
       getTokenPriceInDollarsOnSushiSwap({ context, ...web3Data}, address, element.decimals)
     ]).then(prices => setPrice(Math.max.apply(window, prices)))
 
-    const loadedAsset = loadAsset(element.mainInterfaceAddress, element.id)
-    if(loadedAsset) {
-      setLoadedData(loadedAsset)
-    } else {
-      loadItemDynamicInfo({...web3Data, context, seaport}, element).then(setLoadedData)
-    }
+    loadItemDynamicInfo({...web3Data, context, seaport}, element).then(setLoadedData)
   }, [])
 
   return (

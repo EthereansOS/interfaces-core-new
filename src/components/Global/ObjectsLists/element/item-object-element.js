@@ -5,8 +5,13 @@ import style from '../../../../all.module.css'
 import { getNetworkElement, useEthosContext, useWeb3, fromDecimals, shortenWord, blockchainCall } from '@ethereansos/interfaces-core'
 import LogoRenderer from '../../LogoRenderer'
 import { Link } from 'react-router-dom'
+import { loadItemDynamicInfo } from '../../../../logic/itemsV2'
+import { useOpenSea } from '../../../../logic/uiUtilities'
+import OurCircularProgress from '../../OurCircularProgress'
 
 export default ({element, onClick, noBalance}) => {
+
+  const seaport = useOpenSea()
 
   const context = useEthosContext()
 
@@ -15,13 +20,17 @@ export default ({element, onClick, noBalance}) => {
 
   const [balance, setBalance] = useState(element.balance)
 
+  const [loadedData, setLoadedData] = useState()
+
   useEffect(() => {
     blockchainCall((element.contract = element.contract || newContract(context.IERC1155ABI, element.address)).methods.balanceOf, account, element.id).then(bal => setBalance(element.balance = bal))
+    loadItemDynamicInfo({...web3Data, context, seaport}, element).then(setLoadedData)
   }, [element.address, account, element.id])
 
   return (
     <a className={style.TokenObject} onClick={() => onClick && onClick(element)}>
-      <LogoRenderer input={element}/>
+      {!loadedData && <OurCircularProgress/>}
+      {loadedData && <LogoRenderer input={{...element, ...loadedData}}/>}
       <div className={style.ObjectInfo}>
         <div className={style.ObjectInfoAndLink}>
           <h5>{shortenWord({ context, charsAmount : 15}, element.name)} ({shortenWord({ context, charsAmount : 15}, element.symbol)})</h5>

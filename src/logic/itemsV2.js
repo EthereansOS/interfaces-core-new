@@ -1,4 +1,4 @@
-import { getTokenPriceInDollarsOnUniswapV3, memoryFetch, VOID_ETHEREUM_ADDRESS, web3Utils, sendAsync, blockchainCall, abi, tryRetrieveMetadata, uploadMetadata, formatLink, VOID_BYTES32, toDecimals, getNetworkElement, async, newContract, numberToString, swap, fromDecimals } from "@ethereansos/interfaces-core"
+import { cache, memoryFetch, VOID_ETHEREUM_ADDRESS, web3Utils, sendAsync, blockchainCall, abi, tryRetrieveMetadata, uploadMetadata, formatLink, VOID_BYTES32, toDecimals, getNetworkElement, async, newContract, numberToString, swap, fromDecimals } from "@ethereansos/interfaces-core"
 
 import itemProjectionsMetadata from './itemProjectionsMetadata.json'
 
@@ -11,6 +11,8 @@ import { dualChainAsMainChain } from "./dualChain"
 import { getLogs } from "./logger"
 
 import { resolveToken } from "./dualChain"
+
+import { getAsset } from './opensea'
 
 const MAX_UINT128 = '0x' + web3Utils.toBN(2).pow(web3Utils.toBN(128)).sub(web3Utils.toBN(1)).toString('hex')
 const MAX_UINT256 = '0x' + web3Utils.toBN(2).pow(web3Utils.toBN(256)).sub(web3Utils.toBN(1)).toString('hex')
@@ -170,7 +172,6 @@ export async function loadItemsByFactories(data, factories) {
         }
 
         var vals = await Promise.all(itemIds.map(it => loadItem({...data, collectionData, lightweight : lightweight !== false }, it.itemId, it.item)))
-        //vals = await Promise.all(vals.map(it => loadItemDynamicInfo({ seaport, chainId, context, account, newContract }, it)))
         vals = !l2Tokens ? vals : vals.map(it => ({...it, l2Address : l2Tokens[it.tokenId || it.id].l2Address}))
 
         if(dualChainId && !wrappedOnly && !collectionData) {
@@ -279,7 +280,7 @@ export async function loadiETH(data) {
 
 export async function loadItem(data, itemId, item) {
 
-    var {seaport, context, chainId, account, newContract, getGlobalContract, collectionData, lightweight } = data
+    var {context, chainId, newContract, getGlobalContract, collectionData, lightweight } = data
 
     var address = item ? await blockchainCall(item.methods.interoperableOf, itemId) : itemId.indexOf('0x') === 0 ? itemId : abi.decode(["address"], abi.encode(["uint256"], [itemId]))[0]
     var contract = newContract(context.ItemInteroperableInterfaceABI, address)
@@ -305,8 +306,6 @@ export async function loadItem(data, itemId, item) {
         decimals : "18",
         wrapType : wrappedCollectionIds.wrapTypes[index],
         wrapper : wrappedCollectionIds.wrappers[index],
-        /*balance : await blockchainCall(contract.methods.balanceOf, account),
-        price : await getTokenPriceInDollarsOnUniswapV3({context, newContract, chainId}, address, 18),*/
         isDeck : index > 2
     }
 
@@ -319,6 +318,15 @@ export async function loadItem(data, itemId, item) {
         result = lightweight !== true ? await loadItemDynamicInfo(data, result, item) : result
     } catch(e) {
     }
+
+    try {
+        var delegation = lightweight !== true && await tryRetrieveDelegationAddressFromItem({context, chainId}, itemData)
+        result = delegation ? {
+            ...result,
+            image : delegation?.tokenURI || delegation?.image || result.image,
+            delegation
+        } : result
+    } catch(e) {}
 
     return result
 }
@@ -343,7 +351,7 @@ export async function loadDeckMetadata(data, itemData) {
 
     var {chainId, context, account, newContract, seaport} = data
 
-    var asset = loadAsset(itemData.id)
+    var asset = await loadAsset(itemData.id)
 
     if(!asset) {
         try {
@@ -370,7 +378,7 @@ export async function loadDeckMetadata(data, itemData) {
                 }
                 asset = await retrieveAsset({context, seaport : chainId === 10 ? null : seaport, newContract, account}, element.mainInterface.options.address, element.id)
 
-                window.localStorage.setItem(itemData.id, JSON.stringify({ collection : asset.collection }))
+                await window.ethereansOSCache.setItem(itemData.id, JSON.stringify({ collection : asset.collection }))
             }
         } catch(e) {
             console.log(e)
@@ -379,9 +387,110 @@ export async function loadDeckMetadata(data, itemData) {
     return asset && asset.collection.imageUrl?.split('s120').join('s300')
 }
 
-export async function loadItemDynamicInfo(data, itemData, item) {
+var metadataFields = [
+    'name',
+    'symbol',
+    'uri',
+    'description',
+    'image',
+    'trait_types'
+]
 
-    var {chainId, context, seaport} = data
+function composeAsset(asset) {
+    if(!asset) {
+        return {}
+    }
+    var newData = {}
+
+    for(var metadataField of metadataFields) {
+        asset[metadataField] && (newData[metadataField] = asset[metadataField])
+    }
+
+    return newData
+}
+
+async function tryRetrieveImage(data, itemData, asset) {
+    var uri = cleanUri(data, itemData, asset.image)
+
+    if(itemData.wrapper && !itemData.isDeck) {
+        var source = await blockchainCall(itemData.wrapper.methods.source, itemData.id)
+        source = source.length ? [source] : source
+        if(source.length === 1) {
+            var address = await resolveToken(data, source[0])
+            uri = address === VOID_ETHEREUM_ADDRESS ? `${process.env.PUBLIC_URL}/img/eth_logo.png` :  data.context.trustwalletImgURLTemplate.split('{0}').join(web3Utils.toChecksumAddress(address))
+        } else {
+            uri = await getAsset(data.seaport, source[0], source[1])
+            uri = uri.imageUrl.split('s250').join('s300')
+        }
+    } else if(itemData.isDeck) {
+        uri = await loadDeckMetadata(data, itemData)
+    }
+
+    uri = cleanUri(data, itemData, uri)
+
+    return uri
+}
+
+function cleanUri(data, itemData, uri) {
+    uri = decodeURI(uri)
+    uri = uri.split('0x{id}').join(web3Utils.numberToHex(itemData.id || itemData.tokenId))
+    uri = uri.split('{id}').join(itemData.id || itemData.tokenId)
+    if(uri.toLowerCase().indexOf('ipfs') !== -1) {
+        uri = 'ipfs://' + (uri.substring(uri.toLowerCase().indexOf('/ipfs/') + ('/ipfs/').length))
+    }
+    uri = uri.indexOf('data') === 0 ? uri : formatLink({ context : data.context }, uri)
+
+    if(uri.indexOf('trustwallet') !== -1 && uri.indexOf('/logo.png') !== -1) {
+        var split = uri.split('/logo.png')
+        var split0 = split[0].split('/')
+        var addr = split0[split0.length - 1]
+        addr = web3Utils.toChecksumAddress(addr)
+        if(addr === VOID_ETHEREUM_ADDRESS) {
+            return `${process.env.PUBLIC_URL}/img/eth_logo.png`
+        }
+        split0[split0.length - 1] = addr
+        split0 = split0.join('/')
+        split[0] = split0
+        uri = split.join('/logo.png')
+    }
+
+    return uri
+}
+
+async function imageToBase64(url) {
+    for(var i = 0; i < 20; i++) {
+        try {
+            return await new Promise(async (ok, ko) => {
+                try {
+                    const response = await fetch(url)
+                    const blob = await response.blob()
+                    const reader = new FileReader()
+                    reader.onload = function() {
+                        var response = this.result
+                        try {
+                            const json = JSON.parse(Buffer.from(response.substring(response.indexOf('base64,') + ('base64,').length), 'base64').toString())
+                            if(json.success === false || json.success === true) {
+                                response = json
+                            }
+                        } catch(e) {
+                        }
+                        return ok(response)
+                    }
+                    reader.readAsDataURL(blob)
+                } catch(e) {
+                    return ko(e)
+                }
+            })
+        } catch(e) {
+            if(url.toLowerCase().indexOf('ipfs') === -1) {
+                throw e
+            }
+            await new Promise(ok => setTimeout(ok, 1200))
+        }
+    }
+  };
+
+export async function loadItemDynamicInfo(data, itemData, item) {
 
     if(typeof itemData === 'string') {
         return await loadItem(data, itemData, item)
@@ -392,49 +501,47 @@ export async function loadItemDynamicInfo(data, itemData, item) {
 
     var delegation
 
-    if(itemData.wrapper && itemData.isDeck && seaport) {
-        metadata.image = await loadDeckMetadata(data, itemData)
-    } else {
-        const key = `${web3Utils.toChecksumAddress(itemData.mainInterfaceAddress)}-${itemData.id}`
-        var asset = loadAsset(key)
+    const key = `${web3Utils.toChecksumAddress(itemData.mainInterfaceAddress)}-${itemData.id}`
+    var asset = await loadAsset(key)
 
-        if(asset && Object.keys(asset).length === 0) {
-            asset = undefined
-        }
-
-        try {
-            metadata = asset || {...(await tryRetrieveMetadata({context}, itemData))}
-            metadata.image = metadata.image || `${process.env.PUBLIC_URL}/img/missingcoin.gif`
-            //metadata = asset || {...(await loadMetadata({ context, provider : itemData.contract.currentProvider, newContract }, itemData.mainInterfaceAddress, itemData.id))}
-            if(!asset) {
-                try {
-                    asset = { ...metadata.metadata }
-                    if(asset && Object.keys(asset).length > 0) {
-                        window.localStorage.setItem(key, JSON.stringify(asset))
-                    }
-                } catch(e) {
-                }
-            }
-            metadata = {...metadata, ...asset, metadata : asset }
-        } catch(e) {
-            console.log(e)
-        }
-
-        try {
-            delegation = await tryRetrieveDelegationAddressFromItem({context, chainId}, itemData)
-        } catch(e) {}
+    if(asset && !asset.cached) {
+        asset = undefined
     }
 
-    metadata.id = oldData.id
-    metadata.address = oldData.address
+    metadata = asset || {...(await tryRetrieveMetadata(data, itemData))}
+    if(!asset) {
+        try {
+            asset = {
+                ...composeAsset(metadata),
+                ...composeAsset(metadata.metadata)
+            }
+            try {
+                delegation = await tryRetrieveDelegationAddressFromItem(data, itemData)
+                asset.image = delegation?.tokenURI || delegation?.image || asset.image
+            } catch(e) {}
+            try {
+                asset.image = await tryRetrieveImage(data, itemData, asset)
+            } catch(ex) {}
+            asset.cached = true
+            if(asset && Object.keys(asset).length > 0) {
+                await cache.setItem(key, JSON.stringify(asset))
+            }
+        } catch(e) {
+        }
+    }
+
+    metadata = {
+        ...metadata,
+        ...asset,
+        metadata : asset,
+        id : oldData.id,
+        address : oldData.address
+    }
 
     var result = {
         ...itemData,
         ...metadata,
-        image : delegation?.tokenURI || delegation?.image || metadata.image,
-        delegation,
-        metadata,
-        //balance : await blockchainCall(itemData.mainInterface.methods.balanceOf, account, itemData.id)
+        metadata
     }
 
     return result
@@ -457,11 +564,11 @@ export async function loadCollectionMetadata(dataInput, collectionId, mainInterf
         mainInterface,
         id : collectionId
     }
-    metadata = !deep ? metadata : await tryRetrieveMetadata({context}, {
+    /*metadata = !deep ? metadata : await tryRetrieveMetadata({context}, {
         ...data,
         mainInterface,
         id : collectionId
-    })
+    })*/
     if(collectionId === '0xc8ae2302153c696a508f505d7a046ff5fa78dcf79478eea09c682d0101f02252') {
         metadata.image = 'https://gateway.ipfs.io/ipfs/QmYpYpHVNtvPYJsuDcjfGEXc9y5FozERzQ92JaRcAcfq3h'
     }
