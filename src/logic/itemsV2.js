@@ -404,6 +404,7 @@ export async function loadItemDynamicInfo(data, itemData, item) {
 
         try {
             metadata = asset || {...(await tryRetrieveMetadata({context}, itemData))}
+            metadata.image = metadata.image || `${process.env.PUBLIC_URL}/img/missingcoin.gif`
             //metadata = asset || {...(await loadMetadata({ context, provider : itemData.contract.currentProvider, newContract }, itemData.mainInterfaceAddress, itemData.id))}
             if(!asset) {
                 try {
@@ -1213,6 +1214,7 @@ export async function load721(data, contract, id) {
 
     var metadata
 
+    metadataLink = metadataLink && decodeURI(metadataLink)
     metadataLink = metadataLink && metadataLink.split('{id}').join(id)
     metadataLink = metadataLink && formatLink({ context, chainId }, metadataLink)
 
@@ -1284,7 +1286,7 @@ export async function load1155(data, contract, id) {
         } catch(e) {
         }
     }
-
+    metadataLink = metadataLink && decodeURI(metadataLink)
     metadataLink = metadataLink && metadataLink.split('{id}').join(id)
     metadataLink = metadataLink && formatLink({ context, chainId }, metadataLink)
     var metadata
@@ -1522,6 +1524,7 @@ export async function loadMetadata(data, address, id) {
 
     var originalUri = uri
 
+    uri = decodeURI(uri)
     uri && uri.indexOf('0x{id}') !== -1 && (uri = uri.split('0x{id}').join(web3Utils.toHex(id)))
     uri && uri.indexOf('{id}') !== -1 && (uri = uri.split('{id}').join(id))
 

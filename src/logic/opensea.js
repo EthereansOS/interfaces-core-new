@@ -198,6 +198,7 @@ async function cleanTokens(web3Data, tokens, type, uriLabels) {
             try {
                 uri = await getRawField({ provider : web3.currentProvider }, item.tokenAddress, uriLabel, item.tokenId)
                 uri = abi.decode(["string"], uri)[0]
+                uri = decodeURI(uri)
                 uri = uri.split('0x{id}').join(web3Utils.numberToHex(item.tokenId))
                 uri = uri.split('{id}').join(item.tokenId)
                 if(uri.indexOf('data') === 0) {
@@ -208,6 +209,7 @@ async function cleanTokens(web3Data, tokens, type, uriLabels) {
                 }
                 if(metadata.image) {
                     var image = metadata.image
+                    image = decodeURI(image)
                     image = image.split('0x{id}').join(web3Utils.numberToHex(item.tokenId))
                     image = image.split('{id}').join(image.tokenId)
                     image = formatLink({ context }, image)
