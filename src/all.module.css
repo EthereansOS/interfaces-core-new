@@ -1155,6 +1155,10 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 
 .OnlyMobile {display: none;}
 
+.SubMiniBanner { padding: 10px 10px; width: 100%; display: inline-block; margin: 10px auto; font-size: 15px !important; line-height: 1.3; text-align: left !important;}
+.SubMiniBanner b {font-size: 15px;}
+
+
 @media only screen and (max-width: 990px) {
   .NavigationItem {font-size: 11px;width: 20%;overflow: hidden; }
   .Navigation .Selected img {display: none;}
@@ -2019,6 +2023,20 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .biz .proggressCreate {border-color: #e0e2e6;}
 .dark .proggressCreate {border-color: #000000;}
 .sepia .proggressCreate {border-color: #49646a;}
+
+.light .SubMiniBanner {background-color: #ad0002; color: #ffffff !important; border-radius: 12px;}
+.dark .SubMiniBanner {background-color: #ad0002; color: #ffffff !important; border-radius: 12px;}
+.biz .SubMiniBanner {background-color: #ad0002; color: #ffffff !important; border-radius: 12px;}
+.sepia .SubMiniBanner {background-color: #ad0002; color: #ffffff !important; border-radius: 12px;}
+.matrix .SubMiniBanner {background-color: #008F11; color: #ffffff !important; border-radius: 0px;}
+
+.light .SubMiniBanner b {color: #ffffff;}
+.dark .SubMiniBanner b {color: #ffffff;}
+.biz .SubMiniBanner b {color: #ffffff;}
+.sepia .SubMiniBanner b {color: #ffffff;}
+.matrix .SubMiniBanner b {color: #ffffff;}
+
+
 
 .light .proggressCreatePerch {background-color: #e9effc; color: #000000;}
 .biz .proggressCreatePerch {background-color: #e9effc; color: #000000;}

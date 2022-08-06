@@ -35,6 +35,7 @@ const TransferToL1 = props => {
 
     return (<>
         <div>
+        <p className={style.SubMiniBanner}><b>Please note:</b> We're using the Official Optimism Bridge. Bridging tokens back to L1 can take more than a week after the Network confirms the transaction.</p>
             <TokenInputRegular tokens={[item]} onElement={onElement} element={element} />
             <ActionAWeb3Button onClick={onClick} onSuccess={close}>Transfer</ActionAWeb3Button>
         </div>
@@ -80,7 +81,7 @@ const TransferToL2 = props => {
 
     if(!l2Address && dualChainId) {
         return (<>
-            <div>This token has been never transfered to Optimism</div>
+            <div>Be the first to tranfer this Item to Optimism! To start the procedure switch the network with the button below and deploy it on Optimism.</div>
             <ActionAWeb3Button onSuccess={() => tryRetrieveL2Address(data, item.address).then(setL2Address)} onClick={() => createL2Token(data, item)} className={style.SendToL2}>Create L2 Token</ActionAWeb3Button>
         </>)
     }
@@ -94,8 +95,9 @@ const TransferToL2 = props => {
 
     return (<>
         <div>
+        <p className={style.SubMiniBanner}><b>Please note:</b> We're using the Official Optimism Bridge. Bridging tokens to Optimism can take up to 20 minutes after the Network confirms the transaction.</p>
             <TokenInputRegular tokens={[item]} onElement={onElement} element={element} />
-            <ActionAWeb3Buttons token={element?.token} value={element?.value} balance={element?.balance} other={getNetworkElement(data, 'L1StandardBridgeAddress')} buttonText={"Swap"} onClick={onClick} onSuccess={close}/>
+            <ActionAWeb3Buttons token={element?.token} value={element?.value} balance={element?.balance} other={getNetworkElement(data, 'L1StandardBridgeAddress')} buttonText={"Bridge"} onClick={onClick} onSuccess={close}/>
         </div>
     </>)
 }
