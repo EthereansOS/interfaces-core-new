@@ -181,13 +181,14 @@ export async function loadItemsByFactories(data, factories) {
             ]
         }
         return vals
-    } catch(e) {
-        const message = (e.message || e).toLowerCase()
-        if(message.indexOf('header not found') !== -1) {
+    } catch(exception) {
+        console.error(exception)
+        const message = (exception?.stack || exception?.message || exception?.toString()).toLowerCase()
+        if(message.indexOf('header not found') !== -1 || message.indexOf('429') !== -1) {
             await new Promise(ok => setTimeout(ok, 3000))
             return await loadItemsByFactories(data, factories)
         }
-        throw e
+        throw exception
     }
 }
 
