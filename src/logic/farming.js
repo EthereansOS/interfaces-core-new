@@ -101,7 +101,7 @@ export async function allFarmings(data, factoryAddress, generation) {
 
 export async function getFarming(data, address, generation) {
 
-    const { context, chainId, newContract, lightweight, positionIds, account, mode, block, dualBlock } = data
+    const { web3, context, chainId, newContract, lightweight, positionIds, account, mode, block, dualBlock } = data
 
     const currentBlock = parseInt(dualBlock || block)
 
@@ -163,11 +163,19 @@ export async function getFarming(data, address, generation) {
             }
         }
         if (farmTokenCollection) {
-            const farmTokenEvents = await contract.getPastEvents('FarmToken', { fromBlock: web3Utils.toHex(getNetworkElement({ context, chainId }, 'deploySearchStart') || '0x0') })
+            const args = {
+                address : contract.options.address,
+                topics : [
+                    web3Utils.sha3('FarmToken(uint256,address,uint256,uint256)')
+                ],
+                fromBlock : web3Utils.toHex(getNetworkElement({ context, chainId }, 'deploySearchStart') || '0x0'),
+                toBlock : 'latest'
+            }
+            const farmTokenEvents = await getLogs(web3.currentProvider, 'eth_getLogs', args)
             for (const farmTokenEvent of farmTokenEvents) {
                 try {
-                    const { returnValues } = farmTokenEvent
-                    const { objectId, setupIndex } = returnValues
+                    const objectId = abi.decode(["uint256"], farmTokenEvent.topics[1])[0].toString()
+                    const setupIndex = abi.decode(["uint256"], farmTokenEvent.data)[0].toString()
                     if (positions.filter(it => it.setupIndex === setupIndex).length !== 0) {
                         continue
                     }
@@ -234,7 +242,7 @@ export async function getFarmingContractGenerationByAddress(data, address) {
             [],
             abi.encode(["address"], [address])
         ],
-        fromBlock : web3Utils.toHex(getNetworkElement({ context, chainId }, 'deploySearchStart')) || "0x0",
+        fromBlock: web3Utils.toHex(getNetworkElement({ context, chainId }, 'deploySearchStart')) || "0x0",
         toBlock: 'latest'
     }
 

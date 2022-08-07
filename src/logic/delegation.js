@@ -65,7 +65,7 @@ export async function getDelegationsManagers({ context, chainId, getGlobalContra
         topics : [
             web3Utils.sha3('Deployed(address,address,address,bytes)')
         ],
-        fromBlock : '0x0',
+        fromBlock: web3Utils.toHex(getNetworkElement({ context, chainId }, 'deploySearchStart')) || "0x0",
         toBlock : 'latest'
     }
 
@@ -81,7 +81,7 @@ export async function getDelegationsManagers({ context, chainId, getGlobalContra
             web3Utils.sha3('ComponentSet(bytes32,address,address,bool)'),
             COMPONENT_KEY_DELEGATIONS_MANAGER
         ],
-        fromBlock : '0x0',
+        fromBlock: web3Utils.toHex(getNetworkElement({ context, chainId }, 'deploySearchStart')) || "0x0",
         toBlock : 'latest'
     }
     var logs = await getLogs(web3.currentProvider, 'eth_getLogs', args)
@@ -205,7 +205,7 @@ export async function all({context, newContract, chainId, factoryOfFactories, ac
         topics : [
             web3Utils.sha3('Deployed(address,address,address,bytes)')
         ],
-        fromBlock : '0x0',
+        fromBlock: web3Utils.toHex(getNetworkElement({ context, chainId }, 'deploySearchStart')) || "0x0",
         toBlock : 'latest'
     }
 
@@ -428,7 +428,7 @@ export async function refreshProposals({ context, web3, account, chainId, getGlo
 
     var args = {
         address : element.organization.address,
-        fromBlock : '0x0',
+        fromBlock: web3Utils.toHex(getNetworkElement({ context, chainId }, 'deploySearchStart')) || "0x0",
         toBlock : 'latest',
         topics : [
             web3Utils.sha3('Proposed(uint256,uint256,bytes32)'),
@@ -685,7 +685,7 @@ export async function tryRetrieveDelegationAddressFromItem({ context, chainId },
             [],
             abi.encode(["uint256"], [item.id])
         ],
-        fromBlock : '0x0',
+        fromBlock: web3Utils.toHex(getNetworkElement({ context, chainId }, 'deploySearchStart')) || "0x0",
         toBlock : 'latest'
     }
     var logs = await getLogs(item.mainInterface.currentProvider, "eth_getLogs", args)

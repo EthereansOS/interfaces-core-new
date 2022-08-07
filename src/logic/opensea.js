@@ -19,17 +19,17 @@ export async function loadAsset(tokenAddressOrKey, tokenId) {
 }
 
 export async function getAsset(seaport, tokenAddress, tokenId) {
-    const key = `${web3Utils.toChecksumAddress(tokenAddress)}-${tokenId}`
+
+    const key = web3Utils.sha3(`opensea-${web3Utils.toChecksumAddress(tokenAddress)}-${tokenId}`)
 
     var asset = await loadAsset(key)
 
     if(asset) {
-        asset.image = (asset.image || asset.imagePreviewUrl).split('s250').join('s300')
         return asset
     }
 
     var times = 12
-    while(times-- > 0) {
+    for(var i = 0; i < times; i++) {
         try {
             asset = await seaport.api.getAsset({tokenAddress, tokenId})
             asset.image = (asset.image || asset.imagePreviewUrl).split('s250').join('s300')
@@ -39,7 +39,7 @@ export async function getAsset(seaport, tokenAddress, tokenId) {
     }
 
     try {
-        await cache.setItem(key, JSON.stringify(asset))
+        asset && await cache.setItem(key, JSON.stringify(asset))
     } catch(e) {
     }
 
@@ -101,7 +101,7 @@ async function getOwned721Tokens(web3Data, toExclude) {
             [],
             abi.encode(["address"], [address])
         ],
-        fromBlock : getNetworkElement({ context, chainId }, 'deploySearchStart') || '0x0',
+        fromBlock: web3Utils.toHex(getNetworkElement({ context, chainId }, 'deploySearchStart')) || "0x0",
         toBlock : 'latest'
     }
     var logs = await getLogs(web3.currentProvider, 'eth_getLogs', args)
@@ -147,7 +147,7 @@ async function getOwned1155Tokens(web3Data, toExclude) {
             [],
             abi.encode(["address"], [address])
         ],
-        fromBlock : getNetworkElement({ context, chainId }, 'deploySearchStart') || '0x0',
+        fromBlock: web3Utils.toHex(getNetworkElement({ context, chainId }, 'deploySearchStart')) || "0x0",
         toBlock : 'latest'
     }
     var logs = await getLogs(web3.currentProvider, 'eth_getLogs', args)

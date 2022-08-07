@@ -126,7 +126,7 @@ export async function loadItemsByFactories(data, factories) {
                     web3Utils.sha3('StandardL2TokenCreated(address,address)'),
                     itemIds.map(it => abi.encode(["uint256"], [it.itemId])).filter((it, i, arr) => arr.indexOf(it) === i)
                 ],
-                fromBlock : web3Utils.toHex(getNetworkElement({ context, chainId : originalChainId }, 'deploySearchStart')) || "0x0",
+                fromBlock: web3Utils.toHex(getNetworkElement({ context, chainId : originalChainId }, 'deploySearchStart')) || "0x0",
                 toBlock : 'latest'
             })
             l2Tokens = Object.values(logs.reduce((acc, it) => {
@@ -158,7 +158,7 @@ export async function loadItemsByFactories(data, factories) {
                     [],
                     abi.encode(['address'], [account])
                 ],
-                fromBlock : web3Utils.toHex(getNetworkElement({ context, chainId }, 'deploySearchStart')) || "0x0",
+                fromBlock: web3Utils.toHex(getNetworkElement({ context, chainId }, 'deploySearchStart')) || "0x0",
                 toBlock : 'latest'
             }
             var logs = await getLogs(web3.currentProvider, 'eth_getLogs', args)
@@ -262,7 +262,7 @@ export async function getLogsFromFactories(data, factories, topics) {
         topics : typeof topics === 'string' ? [
             web3Utils.sha3(topics)
         ] : topics,
-        fromBlock : web3Utils.toHex(getNetworkElement({ context, chainId }, 'deploySearchStart')) || "0x0",
+        fromBlock: web3Utils.toHex(getNetworkElement({ context, chainId }, 'deploySearchStart')) || "0x0",
         toBlock : 'latest'
     }
 
@@ -364,7 +364,7 @@ export async function loadDeckMetadata(data, itemData) {
                     [],
                     abi.encode(["uint256"], [itemData.id])
                 ],
-                fromBlock : web3Utils.toHex(getNetworkElement({ context, chainId }, 'deploySearchStart')) || "0x0",
+                fromBlock: web3Utils.toHex(getNetworkElement({ context, chainId }, 'deploySearchStart')) || "0x0",
                 toBlock : 'latest'
             }
             const logs = await getLogs(itemData.contract.currentProvider, 'eth_getLogs', args)
@@ -420,8 +420,8 @@ async function tryRetrieveImage(data, itemData, asset) {
             var address = await resolveToken(data, source[0])
             uri = address === VOID_ETHEREUM_ADDRESS ? `${process.env.PUBLIC_URL}/img/eth_logo.png` :  data.context.trustwalletImgURLTemplate.split('{0}').join(web3Utils.toChecksumAddress(address))
         } else {
-            uri = await getAsset(data.seaport, source[0], source[1])
-            uri = uri.imageUrl.split('s250').join('s300')
+            var asset = await getAsset(data.seaport, source[0], source[1])
+            uri = asset.image
         }
     } else if(itemData.isDeck) {
         uri = await loadDeckMetadata(data, itemData)
@@ -502,7 +502,8 @@ export async function loadItemDynamicInfo(data, itemData, item) {
 
     var delegation
 
-    const key = `${web3Utils.toChecksumAddress(itemData.mainInterfaceAddress)}-${itemData.id}`
+    const key = web3Utils.sha3(`item-${web3Utils.toChecksumAddress(itemData.mainInterfaceAddress)}-${itemData.id}`)
+
     var asset = await loadAsset(key)
 
     if(asset && !asset.cached) {
@@ -522,11 +523,12 @@ export async function loadItemDynamicInfo(data, itemData, item) {
             } catch(e) {}
             try {
                 asset.image = await tryRetrieveImage(data, itemData, asset)
+                asset.cached = true
+                if(asset && Object.keys(asset).length > 0) {
+                    await cache.setItem(key, JSON.stringify(asset))
+                }
             } catch(ex) {}
-            asset.cached = true
-            if(asset && Object.keys(asset).length > 0) {
-                await cache.setItem(key, JSON.stringify(asset))
-            }
+
         } catch(e) {
         }
     }
@@ -859,7 +861,7 @@ export async function hostedItems(data) {
 
     var args = {
         address : factories.map(it => it.options.address),
-        fromBlock : web3Utils.toHex(getNetworkElement({ context, chainId }, 'deploySearchStart')) || "0x0",
+        fromBlock: web3Utils.toHex(getNetworkElement({ context, chainId }, 'deploySearchStart')) || "0x0",
         toBlock : 'latest',
         topics : [
             web3Utils.sha3('Deployed(address,address,address,bytes)')
@@ -927,7 +929,7 @@ export async function loadTokens(data, item) {
             [],
             abi.encode(["uint256"], [item.id])
         ],
-        fromBlock : web3Utils.toHex(getNetworkElement({ context, chainId }, 'deploySearchStart')) || "0x0",
+        fromBlock: web3Utils.toHex(getNetworkElement({ context, chainId }, 'deploySearchStart')) || "0x0",
         toBlock : 'latest'
     }
 
@@ -982,7 +984,7 @@ export async function loadDeckItem(data, itemId, item) {
             [],
             abi.encode(["uint256"], [item.id])
         ],
-        fromBlock : web3Utils.toHex(getNetworkElement({ context, chainId }, 'deploySearchStart')) || "0x0",
+        fromBlock: web3Utils.toHex(getNetworkElement({ context, chainId }, 'deploySearchStart')) || "0x0",
         toBlock : 'latest'
     }
 
@@ -1064,7 +1066,7 @@ export async function load721ItemsFromAddress(data, originalAddress) {
             [],
             [abi.encode(["address"], [account])]
         ],
-        fromBlock : web3Utils.toHex(getNetworkElement({ context, chainId }, 'deploySearchStart')) || "0x0",
+        fromBlock: web3Utils.toHex(getNetworkElement({ context, chainId }, 'deploySearchStart')) || "0x0",
         toBlock : 'latest'
     }
     const logs = await getLogs(web3.currentProvider, 'eth_getLogs', args)
@@ -1125,7 +1127,7 @@ export async function load1155ItemsFromAddress(data, originalAddress) {
             [],
             [abi.encode(["address"], [account])]
         ],
-        fromBlock : web3Utils.toHex(getNetworkElement({ context, chainId }, 'deploySearchStart')) || "0x0",
+        fromBlock: web3Utils.toHex(getNetworkElement({ context, chainId }, 'deploySearchStart')) || "0x0",
         toBlock : 'latest'
     }
     const logs = await getLogs(web3.currentProvider, 'eth_getLogs', args)
@@ -1247,7 +1249,7 @@ export async function load1155DeckItemsForUnwrap(data, item) {
             abi.encode(['address'], [tokens.tokenAddress]),
             tokens.ids.map(it => abi.encode(['uint256'], [it]))
         ],
-        fromBlock : web3Utils.toHex(getNetworkElement({ context, chainId }, 'deploySearchStart')) || "0x0",
+        fromBlock: web3Utils.toHex(getNetworkElement({ context, chainId }, 'deploySearchStart')) || "0x0",
         toBlock : 'latest'
     }
     var logs = await getLogs(wrapper.currentProvider, 'eth_getLogs', args)
@@ -1257,7 +1259,7 @@ export async function load1155DeckItemsForUnwrap(data, item) {
             web3Utils.sha3('ReserveDataUnlocked(address,bytes32,address,uint256,address,uint256,uint256)'),
             logs.map(it => it.topics[3])
         ],
-        fromBlock : web3Utils.toHex(getNetworkElement({ context, chainId }, 'deploySearchStart')) || "0x0",
+        fromBlock: web3Utils.toHex(getNetworkElement({ context, chainId }, 'deploySearchStart')) || "0x0",
         toBlock : 'latest'
     }
     var released = await getLogs(wrapper.currentProvider, 'eth_getLogs', args)
@@ -1665,7 +1667,7 @@ export async function loadMetadata(data, address, id) {
                 [],
                 abi.encode(['uint256'], [id])
             ],
-            fromBlock : web3Utils.toHex(getNetworkElement({ context, chainId }, 'deploySearchStart')) || "0x0",
+            fromBlock: web3Utils.toHex(getNetworkElement({ context, chainId }, 'deploySearchStart')) || "0x0",
             toBlock : 'latest'
         }
         var logs = await getLogs(provider, 'eth_getLogs', args)

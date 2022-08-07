@@ -16,7 +16,7 @@ export async function create({ context, ipfsHttpClient, newContract, chainId, ba
     await blockchainCall(ballotMaker.methods.createBallot, ballotMaker.options.address, uri, values, duration, [votingToken], [tokenId], [weight])
 }
 
-export async function all({ context, ballotMaker }) {
+export async function all({ context, ballotMaker, chainId }) {
 
     var proposalIds = {}
 
@@ -25,7 +25,7 @@ export async function all({ context, ballotMaker }) {
         topics: [
             web3Utils.sha3('Ballot(address,bytes32)')
         ],
-        fromBlock: '0x0',
+        fromBlock: web3Utils.toHex(getNetworkElement({ context, chainId }, 'deploySearchStart')) || "0x0",
         toBlock: 'latest'
     }
 

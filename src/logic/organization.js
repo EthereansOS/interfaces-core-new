@@ -60,7 +60,7 @@ export async function all({ context, newContract, chainId, factoryOfFactories })
         topics: [
             web3Utils.sha3('Deployed(address,address,address,bytes)')
         ],
-        fromBlock: '0x0',
+        fromBlock: web3Utils.toHex(getNetworkElement({ context, chainId }, 'deploySearchStart')) || "0x0",
         toBlock: 'latest'
     }
     var logs = await getLogs(factoryOfFactories.currentProvider, "eth_getLogs", args)
@@ -116,13 +116,13 @@ export async function getOrganizationMetadata({ context }, organization) {
     return {}
 }
 
-export async function getInitializationData({newContract, context}, contract) {
+export async function getInitializationData({newContract, context, chainId}, contract) {
     var initializerAddress = await blockchainCall(contract.methods.initializer)
     var factory = newContract(context.SubDAOFactoryABI, initializerAddress)
 
     var args = {
         address : initializerAddress,
-        fromBlock : '0x0',
+        fromBlock: web3Utils.toHex(getNetworkElement({ context, chainId }, 'deploySearchStart')) || "0x0",
         toBlock : 'latest',
         topics : [
             web3Utils.sha3('Deployed(address,address,address,bytes)'),
@@ -350,7 +350,7 @@ function toEntryType({ context }, key) {
     }
 }
 
-export async function allProposals({ account, web3, context, newContract }, proposalsManager) {
+export async function allProposals({ account, web3, context, newContract, chainId }, proposalsManager) {
 
     var topics = [
         web3Utils.sha3('ProposalCreated(address,address,bytes32)')
@@ -359,7 +359,7 @@ export async function allProposals({ account, web3, context, newContract }, prop
     var logs = await getLogs(proposalsManager.currentProvider, 'eth_getLogs', {
         address: proposalsManager.options.address,
         topics,
-        fromBlock: '0x0',
+        fromBlock: web3Utils.toHex(getNetworkElement({ context, chainId }, 'deploySearchStart')) || "0x0",
         toBlock: 'latest'
     })
 
@@ -384,14 +384,14 @@ async function getProposalsConfiguration({ account, web3, context, newContract }
     return {...configuration, votingTokens };
 }
 
-async function getAllOrganizations({ account, web3, context, newContract }, organization) {
+async function getAllOrganizations({ account, web3, context, newContract, chainId }, organization) {
     try {
         var args = {
             address: organization.components.subDAOsManager.address,
             topics: [
                 web3Utils.sha3('SubDAOSet(bytes32,address,address)')
             ],
-            fromBlock: '0x0',
+            fromBlock: web3Utils.toHex(getNetworkElement({ context, chainId }, 'deploySearchStart')) || "0x0",
             toBlock: 'latest'
         }
 
@@ -506,7 +506,7 @@ export var wellknownPresets = {
     }
 }
 
-async function getSurveysByModels({context}, organization) {
+async function getSurveysByModels({context, chainId}, organization) {
     if(!organization || organization.proposalModels.length === 0) {
         return []
     }
@@ -526,7 +526,7 @@ async function getSurveysByModels({context}, organization) {
 
     var logArray = await Promise.all(surveys.map(it => getLogs(organization.contract.currentProvider, 'eth_getLogs', {
         address : organization.address,
-        fromBlock : '0x0',
+        fromBlock: web3Utils.toHex(getNetworkElement({ context, chainId }, 'deploySearchStart')) || "0x0",
         toBlock : 'latest',
         topics : [
             web3Utils.sha3('Proposed(uint256,uint256,bytes32)'),
@@ -581,7 +581,7 @@ async function getSurveysByModels({context}, organization) {
     return surveysProposals
 }
 
-async function getProposals({account, web3, newContract, context}, organization) {
+async function getProposals({account, web3, newContract, context, chainId}, organization) {
     var proposals = [
         ...(await getSurveylessProposals({context}, organization)),
         ...(await getSurveysByModels({context}, organization))
@@ -597,7 +597,7 @@ async function getProposals({account, web3, newContract, context}, organization)
         topics : [
             web3Utils.sha3('ProposalCreated(address,address,bytes32)')
         ],
-        fromBlock : '0x0',
+        fromBlock: web3Utils.toHex(getNetworkElement({ context, chainId }, 'deploySearchStart')) || "0x0",
         toBlock : 'latest'
     }
     var logs = await getLogs(provider, 'eth_getLogs', args)
@@ -1019,12 +1019,12 @@ export async function proposeSell(web3Data, proposal, additionalMetadata, ammLis
     await blockchainCall(proposal.proposalsManager.methods.batchCreate, create)
 }
 
-export async function retrieveSurveyByModel({}, proposal) {
+export async function retrieveSurveyByModel({context, chainId}, proposal) {
     var index = proposal.modelIndex
 
     var args = {
         address: proposal.organization.address,
-        fromBlock : '0x0',
+        fromBlock: web3Utils.toHex(getNetworkElement({ context, chainId }, 'deploySearchStart')) || "0x0",
         toBlock : 'latest',
         topics : [
             web3Utils.sha3('Proposed(uint256,uint256,bytes32)'),

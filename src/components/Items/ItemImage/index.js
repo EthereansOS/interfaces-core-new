@@ -30,7 +30,7 @@ export default props => {
                     [],
                     abi.encode(["uint256"], [element.id])
                 ],
-                fromBlock : web3Utils.toHex(getNetworkElement({ context, chainId }, 'deploySearchStart')) || "0x0",
+                fromBlock: web3Utils.toHex(getNetworkElement({ context, chainId }, 'deploySearchStart')) || "0x0",
                 toBlock : 'latest'
             }
             const logs = await getLogs(web3.currentProvider, 'eth_getLogs', args)

@@ -86,7 +86,7 @@ export default ({element, refreshElements, forDelegationVote}) => {
             web3Utils.sha3('ProposalTerminated(bytes32,bool,bytes)'),
             element.id
           ],
-          fromBlock : web3Utils.toHex(getNetworkElement({ context, chainId }, 'deploySearchStart')) || "0x0",
+          fromBlock: web3Utils.toHex(getNetworkElement({ context, chainId }, 'deploySearchStart')) || "0x0",
           toBlock : 'latest'
         })
         if(logs.length > 0) {
