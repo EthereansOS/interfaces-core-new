@@ -4,39 +4,41 @@ import { OrderSide } from 'opensea-js/lib/types'
 import { getLogs } from './logger'
 import { getRawField } from './generalReader'
 
-var promiseCache = {}
+const sleepMillis = 350
+
+var retrieveCache = {}
 var semaphore
-
-async function consumePromise(key, seaport, tokenAddress, tokenId) {
-
-    var asset = JSON.parse(await cache.getItem(key))
-
-    if(asset) {
-        return asset
-    }
-
-    while(semaphore) {
-        await new Promise(ok => setTimeout(ok, 600))
-    }
-
-    semaphore = true
-
-    while(true) {
-        try {
-            asset = await seaport.api.getAsset({tokenAddress, tokenId})
-            asset.image = (asset.image || asset.imagePreviewUrl).split('s250').join('s300')
-            await cache.setItem(key, JSON.stringify(asset))
-            semaphore = false
-            return asset
-        } catch(e) {
-            await new Promise(ok => setTimeout(ok, 600))
-        }
-    }
-}
 
 export function getAsset(seaport, tokenAddress, tokenId) {
     const key = web3Utils.sha3(`asset-${web3Utils.toChecksumAddress(tokenAddress)}-${tokenId}`)
-    return (promiseCache[key] = promiseCache[key] || consumePromise(key, seaport, tokenAddress, tokenId))
+    return retrieveCache[key] = retrieveCache[key] || (async () => {
+        var asset = JSON.parse(await cache.getItem(key))
+
+        if(asset) {
+            return asset
+        }
+
+        while(semaphore) {
+            await new Promise(ok => setTimeout(ok, sleepMillis))
+        }
+
+        semaphore = true
+
+        while(true) {
+            try {
+                asset = await seaport.api.getAsset({tokenAddress, tokenId})
+                asset.image = (asset.image || asset.imagePreviewUrl).split('s250').join('s300')
+                if(asset.collection && asset.collection.imageUrl) {
+                    asset.collection.imageUrl = asset.collection.imageUrl.split('s120').join('s300')
+                }
+                await cache.setItem(key, JSON.stringify(asset))
+                semaphore = false
+                return asset
+            } catch(e) {
+                await new Promise(ok => setTimeout(ok, sleepMillis))
+            }
+        }
+    })()
 }
 
 export async function retrieveAsset({ context, dualChainId, seaport, newContract, account }, tokenAddress, tokenId) {

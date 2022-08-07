@@ -310,31 +310,16 @@ export async function loadItem(data, itemId, item) {
         isDeck : index > 2
     }
 
-    try {
-        result = !result.wrapper ? result : await loadWrappedData(result)
-    } catch(e) {
-    }
+    result = result.wrapper ? await loadWrappedData(data, result) : result
 
-    try {
-        result = lightweight !== true ? await loadItemDynamicInfo(data, result, item) : result
-    } catch(e) {
-    }
-
-    try {
-        var delegation = lightweight !== true && await tryRetrieveDelegationAddressFromItem({context, chainId}, itemData)
-        result = delegation ? {
-            ...result,
-            image : delegation?.tokenURI || delegation?.image || result.image,
-            delegation
-        } : result
-    } catch(e) {}
+    result = lightweight !== true ? await loadItemDynamicInfo(data, result, item) : result
 
     return result
 }
 
-async function loadWrappedData(result) {
+async function loadWrappedData(data, itemData) {
 
-    var source = await blockchainCall(result.wrapper.methods.source, result.id)
+    var source = await blockchainCall(itemData.wrapper.methods.source, itemData.id)
 
     var sourceAddress = source
     var sourceId
@@ -342,52 +327,42 @@ async function loadWrappedData(result) {
         sourceAddress = source[0]
         sourceId = source[1].toString()
     }
-    result.sourceAddress = sourceAddress
-    sourceId && (result.sourceId = sourceId)
+    itemData.sourceAddress = sourceAddress
 
-    return result
+    if(itemData.isDeck) {
+        var result = await loadDeckSource(data, itemData)
+        sourceId = result.sourceId
+    }
+
+    sourceId && (itemData.sourceId = sourceId)
+
+    return itemData
 }
 
-export async function loadDeckMetadata(data, itemData) {
+export async function loadDeckSource(data, itemData) {
 
-    var {chainId, context, account, newContract, seaport} = data
+    var {chainId, context, account, newContract, seaport, web3} = data
 
-    const key = itemData.id
+    var element = {}
 
-    var asset = JSON.parse(await cache.getItem(key))
+    const logs = await getLogs(web3.currentProvider, 'eth_getLogs', {
+        address : itemData.wrapper.options.address,
+        topics : [
+            web3Utils.sha3('Token(address,uint256,uint256)'),
+            [],
+            [],
+            abi.encode(["uint256"], [itemData.id])
+        ],
+        fromBlock: web3Utils.toHex(getNetworkElement({ context, chainId }, 'deploySearchStart')) || "0x0",
+        toBlock : 'latest'
+    })
 
-    if(!asset) {
-        try {
-            const args = {
-                address : itemData.wrapper.options.address,
-                topics : [
-                    web3Utils.sha3('Token(address,uint256,uint256)'),
-                    [],
-                    [],
-                    abi.encode(["uint256"], [itemData.id])
-                ],
-                fromBlock: web3Utils.toHex(getNetworkElement({ context, chainId }, 'deploySearchStart')) || "0x0",
-                toBlock : 'latest'
-            }
-            const logs = await getLogs(itemData.contract.currentProvider, 'eth_getLogs', args)
-            if(logs.length !== 0) {
-                var element = {
-                    id : abi.decode(["uint256"], logs[0].topics[2])[0].toString(),
-                    mainInterface : {
-                        options : {
-                            address : abi.decode(["address"], logs[0].topics[1])[0].toString()
-                        }
-                    }
-                }
-                asset = await retrieveAsset({context, seaport : chainId === 10 ? null : seaport, newContract, account}, element.mainInterface.options.address, element.id)
-
-                await window.ethereansOSCache.setItem(itemData.id, JSON.stringify({ collection : asset.collection }))
-            }
-        } catch(e) {
-            console.log(e)
-        }
+    element = logs.length === 0 ? element : {
+        sourceAddress : abi.decode(["address"], logs[0].topics[1])[0].toString(),
+        sourceId : abi.decode(["uint256"], logs[0].topics[2])[0].toString()
     }
-    return asset && asset.collection.imageUrl?.split('s120').join('s300')
+
+    return element
 }
 
 var metadataFields = [
@@ -422,24 +397,18 @@ async function tryRetrieveMetadata2(data, itemData, image) {
 
     image && (metadata.image = cleanUri(data, itemData, image))
 
-    if(itemData.isDeck) {
-        metadata = {
-            ...metadata,
-            ...(await loadDeckMetadata(data, itemData))
-        }
+    if(itemData.sourceAddress && !itemData.sourceId) {
+        var address = await resolveToken(data, itemData.sourceAddress)
+        metadata.image = address === VOID_ETHEREUM_ADDRESS ? `${process.env.PUBLIC_URL}/img/eth_logo.png` :  data.context.trustwalletImgURLTemplate.split('{0}').join(web3Utils.toChecksumAddress(address))
     }
 
-    if(itemData.wrapper && !itemData.isDeck) {
-        var source = await blockchainCall(itemData.wrapper.methods.source, itemData.id)
-        source = source.length ? [source] : source
-        if(source.length === 1) {
-            var address = await resolveToken(data, source[0])
-            metadata.image = address === VOID_ETHEREUM_ADDRESS ? `${process.env.PUBLIC_URL}/img/eth_logo.png` :  data.context.trustwalletImgURLTemplate.split('{0}').join(web3Utils.toChecksumAddress(address))
-        } else {
-            metadata = {
-                ...metadata,
-                ...(await getAsset(data.seaport, source[0], source[1]))
-            }
+    if(itemData.sourceAddress && itemData.sourceId) {
+        var asset = await getAsset(data.seaport, itemData.sourceAddress, itemData.sourceId)
+
+        metadata = {
+            ...metadata,
+            ...asset,
+            image : itemData.isDeck ? asset.collection.imageUrl : asset.image
         }
     }
 
