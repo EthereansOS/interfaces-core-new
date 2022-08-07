@@ -4,7 +4,6 @@ import { abi, shortenWord, formatMoney, fromDecimals, blockchainCall, useEthosCo
 import style from '../../../all.module.css'
 import ItemObject from '../../Global/ObjectsLists/item-object'
 import ItemImage from '../ItemImage'
-import { loadAsset } from '../../../logic/opensea'
 import { loadItemDynamicInfo } from '../../../logic/itemsV2'
 import OurCircularProgress from '../../Global/OurCircularProgress'
 import { useOpenSea } from '../../../logic/uiUtilities'

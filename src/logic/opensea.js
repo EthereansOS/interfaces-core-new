@@ -4,38 +4,32 @@ import { OrderSide } from 'opensea-js/lib/types'
 import { getLogs } from './logger'
 import { getRawField } from './generalReader'
 
-export async function loadAsset(tokenAddressOrKey, tokenId) {
-    const key = tokenId ? `${web3Utils.toChecksumAddress(tokenAddressOrKey)}-${tokenId}` : tokenAddressOrKey
-
-    try {
-        var asset = await cache.getItem(key)
-        if(asset) {
-            asset = JSON.parse(asset)
-        }
-        if(asset) {
-            return asset
-        }
-    } catch(e) {}
-}
-
 var promiseCache = {}
+var semaphore
 
 async function consumePromise(key, seaport, tokenAddress, tokenId) {
 
-    var asset = await loadAsset(key)
+    var asset = JSON.parse(await cache.getItem(key))
 
     if(asset) {
         return asset
     }
+
+    while(semaphore) {
+        await new Promise(ok => setTimeout(ok, 600))
+    }
+
+    semaphore = true
 
     while(true) {
         try {
             asset = await seaport.api.getAsset({tokenAddress, tokenId})
             asset.image = (asset.image || asset.imagePreviewUrl).split('s250').join('s300')
             await cache.setItem(key, JSON.stringify(asset))
+            semaphore = false
             return asset
         } catch(e) {
-            await new Promise(ok => setTimeout(ok, 6000))
+            await new Promise(ok => setTimeout(ok, 600))
         }
     }
 }

@@ -4,7 +4,7 @@ import itemProjectionsMetadata from './itemProjectionsMetadata.json'
 
 import { loadTokenFromAddress } from "./erc20"
 import { tryRetrieveDelegationAddressFromItem } from "./delegation"
-import { getOwnedTokens, loadAsset, retrieveAsset } from './opensea'
+import { getOwnedTokens, retrieveAsset } from './opensea'
 import { getRawField } from './generalReader'
 import { dualChainAsMainChain } from "./dualChain"
 
@@ -352,7 +352,9 @@ export async function loadDeckMetadata(data, itemData) {
 
     var {chainId, context, account, newContract, seaport} = data
 
-    var asset = await loadAsset(itemData.id)
+    const key = itemData.id
+
+    var asset = JSON.parse(await cache.getItem(key))
 
     if(!asset) {
         try {
@@ -497,7 +499,7 @@ export async function loadItemDynamicInfo(data, itemData, item) {
     }
 
     const key = web3Utils.sha3(`item-${web3Utils.toChecksumAddress(itemData.mainInterfaceAddress)}-${itemData.id}`)
-    var metadata = await loadAsset(key)
+    var metadata = JSON.parse(await cache.getItem(key))
 
     if(!metadata || !metadata.cached) {
         metadata = undefined
