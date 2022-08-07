@@ -31,8 +31,8 @@ export function getAsset(seaport, tokenAddress, tokenId) {
                 if(asset.collection && asset.collection.imageUrl) {
                     asset.collection.imageUrl = asset.collection.imageUrl.split('s120').join('s300')
                 }
-                await cache.setItem(key, JSON.stringify(asset))
                 semaphore = false
+                await cache.setItem(key, JSON.stringify(asset))
                 return asset
             } catch(e) {
                 await new Promise(ok => setTimeout(ok, sleepMillis))

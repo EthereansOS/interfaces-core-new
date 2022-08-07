@@ -365,28 +365,6 @@ export async function loadDeckSource(data, itemData) {
     return element
 }
 
-var metadataFields = [
-    'name',
-    'symbol',
-    'uri',
-    'description',
-    'image',
-    'trait_types'
-]
-
-function composeAsset(asset) {
-    if(!asset) {
-        return {}
-    }
-    var newData = {}
-
-    for(var metadataField of metadataFields) {
-        asset[metadataField] && (newData[metadataField] = asset[metadataField])
-    }
-
-    return newData
-}
-
 async function tryRetrieveMetadata2(data, itemData, image) {
 
     var metadata = {
