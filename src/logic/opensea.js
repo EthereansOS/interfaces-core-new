@@ -18,9 +18,9 @@ export async function loadAsset(tokenAddressOrKey, tokenId) {
     } catch(e) {}
 }
 
-export async function getAsset(seaport, tokenAddress, tokenId) {
+var promiseCache = {}
 
-    const key = web3Utils.sha3(`opensea-${web3Utils.toChecksumAddress(tokenAddress)}-${tokenId}`)
+async function consumePromise(key, seaport, tokenAddress, tokenId) {
 
     var asset = await loadAsset(key)
 
@@ -28,22 +28,21 @@ export async function getAsset(seaport, tokenAddress, tokenId) {
         return asset
     }
 
-    var times = 12
-    for(var i = 0; i < times; i++) {
+    while(true) {
         try {
             asset = await seaport.api.getAsset({tokenAddress, tokenId})
             asset.image = (asset.image || asset.imagePreviewUrl).split('s250').join('s300')
+            await cache.setItem(key, JSON.stringify(asset))
+            return asset
         } catch(e) {
             await new Promise(ok => setTimeout(ok, 6000))
         }
     }
+}
 
-    try {
-        asset && await cache.setItem(key, JSON.stringify(asset))
-    } catch(e) {
-    }
-
-    return asset
+export function getAsset(seaport, tokenAddress, tokenId) {
+    const key = web3Utils.sha3(`asset-${web3Utils.toChecksumAddress(tokenAddress)}-${tokenId}`)
+    return (promiseCache[key] = promiseCache[key] || consumePromise(key, seaport, tokenAddress, tokenId))
 }
 
 export async function retrieveAsset({ context, dualChainId, seaport, newContract, account }, tokenAddress, tokenId) {

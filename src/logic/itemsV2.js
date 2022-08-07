@@ -410,29 +410,61 @@ function composeAsset(asset) {
     return newData
 }
 
-async function tryRetrieveImage(data, itemData, asset) {
-    var uri = cleanUri(data, itemData, asset.image)
+async function tryRetrieveMetadata2(data, itemData, image) {
+
+    var metadata = {
+        name : itemData.name,
+        symbol : itemData.symbol,
+        uri : cleanUri(data, itemData, itemData.uri)
+    }
+
+    image && (metadata.image = cleanUri(data, itemData, image))
+
+    if(itemData.isDeck) {
+        metadata = {
+            ...metadata,
+            ...(await loadDeckMetadata(data, itemData))
+        }
+    }
 
     if(itemData.wrapper && !itemData.isDeck) {
         var source = await blockchainCall(itemData.wrapper.methods.source, itemData.id)
         source = source.length ? [source] : source
         if(source.length === 1) {
             var address = await resolveToken(data, source[0])
-            uri = address === VOID_ETHEREUM_ADDRESS ? `${process.env.PUBLIC_URL}/img/eth_logo.png` :  data.context.trustwalletImgURLTemplate.split('{0}').join(web3Utils.toChecksumAddress(address))
+            metadata.image = address === VOID_ETHEREUM_ADDRESS ? `${process.env.PUBLIC_URL}/img/eth_logo.png` :  data.context.trustwalletImgURLTemplate.split('{0}').join(web3Utils.toChecksumAddress(address))
         } else {
-            var asset = await getAsset(data.seaport, source[0], source[1])
-            uri = asset.image
+            metadata = {
+                ...metadata,
+                ...(await getAsset(data.seaport, source[0], source[1]))
+            }
         }
-    } else if(itemData.isDeck) {
-        uri = await loadDeckMetadata(data, itemData)
     }
 
-    uri = cleanUri(data, itemData, uri)
+    if(!itemData.wrapper && !metadata.image) {
+        for(var i = 0; i < 15; i++) {
+            try {
+                metadata = {
+                    ...metadata,
+                    ...(await (await fetch(metadata.uri)).json())
+                }
+                break
+            } catch(e) {
+                console.error(e)
+                await new Promise(ok => setTimeout(ok, 1500))
+            }
+        }
+    }
 
-    return uri
+    metadata.image = cleanUri(data, itemData, metadata.image)
+
+    return metadata
 }
 
 function cleanUri(data, itemData, uri) {
+    if(uri.toLowerCase().indexOf('0x') === 0) {
+        return uri
+    }
     uri = decodeURI(uri)
     uri = uri.split('0x{id}').join(web3Utils.numberToHex(itemData.id || itemData.tokenId))
     uri = uri.split('{id}').join(itemData.id || itemData.tokenId)
@@ -458,96 +490,55 @@ function cleanUri(data, itemData, uri) {
     return uri
 }
 
-async function imageToBase64(url) {
-    for(var i = 0; i < 20; i++) {
-        try {
-            return await new Promise(async (ok, ko) => {
-                try {
-                    const response = await fetch(url)
-                    const blob = await response.blob()
-                    const reader = new FileReader()
-                    reader.onload = function() {
-                        var response = this.result
-                        try {
-                            const json = JSON.parse(Buffer.from(response.substring(response.indexOf('base64,') + ('base64,').length), 'base64').toString())
-                            if(json.success === false || json.success === true) {
-                                response = json
-                            }
-                        } catch(e) {
-                        }
-                        return ok(response)
-                    }
-                    reader.readAsDataURL(blob)
-                } catch(e) {
-                    return ko(e)
-                }
-            })
-        } catch(e) {
-            if(url.toLowerCase().indexOf('ipfs') === -1) {
-                throw e
-            }
-            await new Promise(ok => setTimeout(ok, 1200))
-        }
-    }
-  };
-
 export async function loadItemDynamicInfo(data, itemData, item) {
 
     if(typeof itemData === 'string') {
-        return await loadItem({ ...data, lightweight : false}, itemData, item)
+        return await loadItem({ ...data, lightweight : false }, itemData, item)
     }
-
-    const oldData = {...itemData}
-    var metadata = { ...oldData }
-
-    var delegation
 
     const key = web3Utils.sha3(`item-${web3Utils.toChecksumAddress(itemData.mainInterfaceAddress)}-${itemData.id}`)
+    var metadata = await loadAsset(key)
 
-    var asset = await loadAsset(key)
-
-    if(asset && !asset.cached) {
-        asset = undefined
+    if(!metadata || !metadata.cached) {
+        metadata = undefined
     }
 
-    metadata = asset || {...(await tryRetrieveMetadata(data, itemData))}
-    if(!asset) {
-        try {
-            asset = {
-                ...composeAsset(metadata),
-                ...composeAsset(metadata.metadata)
-            }
-            try {
-                delegation = await tryRetrieveDelegationAddressFromItem(data, itemData)
-                asset.image = delegation?.tokenURI || delegation?.image || asset.image
-            } catch(e) {}
-            try {
-                asset.image = await tryRetrieveImage(data, itemData, asset)
-                asset.cached = true
-                if(asset && Object.keys(asset).length > 0) {
-                    await cache.setItem(key, JSON.stringify(asset))
-                }
-            } catch(ex) {}
-
-        } catch(e) {
+    if(metadata) {
+        return {
+            ...itemData,
+            ...metadata
         }
     }
 
+    var image
+    try {
+        const delegation = await tryRetrieveDelegationAddressFromItem(data, itemData)
+        image = delegation?.tokenURI || delegation?.image || undefined
+    } catch(e) {}
+
     metadata = {
-        ...metadata,
-        ...asset,
-        metadata : asset,
-        id : oldData.id,
-        address : oldData.address
+        ...(await tryRetrieveMetadata2(data, itemData, image)),
+        id : itemData.id,
+        address : itemData.address
     }
 
-    var result = {
-        ...itemData,
+    metadata.image = cleanUri(data, itemData, metadata.image)
+
+    metadata.cached = true
+
+    metadata = {
         ...metadata,
         metadata
     }
 
-    return result
+    if(metadata && metadata.cached) {
+        await cache.setItem(key, JSON.stringify(metadata))
+    }
+
+    return {
+        ...itemData,
+        ...metadata
+    }
 }
 
 export async function loadCollectionMetadata(dataInput, collectionId, mainInterface) {
