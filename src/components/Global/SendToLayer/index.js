@@ -81,7 +81,7 @@ const TransferToL2 = props => {
 
     if(!l2Address && dualChainId) {
         return (<>
-            <div>Be the first to tranfer this Item to Optimism! To start the procedure switch the network with the button below and deploy it on Optimism.</div>
+            <div>Be the first to tranfer this Item to Optimism.</div>
             <ActionAWeb3Button onSuccess={() => tryRetrieveL2Address(data, item.address).then(setL2Address)} onClick={() => createL2Token(data, item)} className={style.SendToL2}>Create L2 Token</ActionAWeb3Button>
         </>)
     }
