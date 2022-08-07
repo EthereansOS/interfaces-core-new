@@ -189,7 +189,7 @@ const Metadata = ({state, onStateEntry}) => {
             <MetadataField state={state} onStateEntry={onStateEntry} field='discussion_url' label='Discussion Link' description='A link to a social hub and/or discussion channel for the collection (if any)'/>
             <MetadataField state={state} onStateEntry={onStateEntry} field='external_url' label='Website' description='A link to the official website of this project (if any)'/>
             <MetadataField state={state} onStateEntry={onStateEntry} field='github_url' label='Github Link' description='A link to the official repo of this project (if any)'/>
-            <MetadataField state={state} onStateEntry={onStateEntry} type='file' accept='.png,.gif' field='image' label='Logo' mandatory description='A valid IPFS link for your logo. Please upload a square picture (.png, .gif or .jpg, max size 1mb) so that it fits perfectly with the EthereansOS interface style.'/>
+            <MetadataField state={state} onStateEntry={onStateEntry} type='file' accept='.png,.gif,.jpeg,.jpg' field='image' label='Logo' mandatory description='A valid IPFS link for your logo. Please upload a square picture (.png, .gif or .jpg, max size 1mb) so that it fits perfectly with the EthereansOS interface style.'/>
             <MetadataField state={state} onStateEntry={onStateEntry} type='color' field='background_color' label='Background Color' mandatory description='The background color of your collection logo. This color will fill any empty space that the logo leaves if it doesn’t match any standard box in the interface.'/>
         </>}
     </>)
