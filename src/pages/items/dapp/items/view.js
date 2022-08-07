@@ -20,7 +20,6 @@ import DappSubMenu from '../../../../components/Global/DappSubMenu'
 
 import style from '../../../../all.module.css'
 import { useOpenSea } from '../../../../logic/uiUtilities'
-import { loadTokenFromAddress } from '../../../../logic/erc20'
 
 const itemSubmenuVoices = [
   {
@@ -60,7 +59,7 @@ const ItemView = () => {
 
       async function bypassOpenSeaEvilness() {
         try {
-            const loadedItem = await loadTokenFromAddress({context, seaport, ...web3Data, forceItem : true}, itemId, item)
+            const loadedItem = await loadItem({context, seaport, ...web3Data, lightweight : false}, itemId, item)
             return setItem(loadedItem)
         } catch(e) {
           const message = (e.message || e).toLowerCase()
