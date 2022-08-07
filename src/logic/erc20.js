@@ -149,7 +149,7 @@ export async function loadTokenFromAddress(data, tokenAddress) {
         if(dualChainId && (tkAddr = await resolveToken(data, tkAddr)) !== tokenAddress) {
             dataInput = await dualChainAsMainChain(dataInput)
         }
-        var item = await loadItem(dataInput, tkAddr)
+        var item = await loadItem({ ...dataInput, lightweight : false }, tkAddr)
         if(dualChainId && tkAddr !== tokenAddress) {
             item = {
                 ...item,

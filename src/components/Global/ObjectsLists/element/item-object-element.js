@@ -28,7 +28,7 @@ export default ({element, onClick, noBalance}) => {
   }, [element.address, account, element.id])
 
   return (
-    <a className={style.TokenObject} onClick={() => onClick && onClick(element)}>
+    <a className={style.TokenObject} onClick={() => onClick && loadedData && onClick({...element, ...loadedData})}>
       {!loadedData && <OurCircularProgress/>}
       {loadedData && <LogoRenderer input={{...element, ...loadedData}}/>}
       <div className={style.ObjectInfo}>

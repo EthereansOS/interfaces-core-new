@@ -92,7 +92,7 @@ export async function allFarmings(data, factoryAddress, generation) {
         farmingContractAddresses = Object.keys(positionIds)
     }
 
-    var farmingContracts = await Promise.all(farmingContractAddresses.map(it => getFarming({ ...data, lightweight : true, positionIds : positionIds[it] }, it, generation)))
+    var farmingContracts = await Promise.all(farmingContractAddresses.map(it => getFarming({ ...data, positionIds : positionIds[it] }, it, generation)))
 
     farmingContracts = farmingContracts.filter(it => it)
 

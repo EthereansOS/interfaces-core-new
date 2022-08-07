@@ -494,7 +494,7 @@ async function imageToBase64(url) {
 export async function loadItemDynamicInfo(data, itemData, item) {
 
     if(typeof itemData === 'string') {
-        return await loadItem(data, itemData, item)
+        return await loadItem({ ...data, lightweight : false}, itemData, item)
     }
 
     const oldData = {...itemData}
