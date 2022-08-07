@@ -1,8 +1,8 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { useLocation } from 'react-router'
 
-import { blockchainCall, useEthosContext, useWeb3 } from '@ethereansos/interfaces-core'
+import { useEthosContext, useWeb3, web3Utils } from '@ethereansos/interfaces-core'
 
 import { loadDeckItems, cartAction, secondaryCartAction, loadDeckItemFromAddress } from '../../../../logic/itemsV2'
 
@@ -39,7 +39,7 @@ const DeckView = () => {
 
     const seaport = useOpenSea()
 
-    const { chainId, web3, account, newContract, getGlobalContract } = web3Data
+    const { account } = web3Data
 
     const [item, setItem] = useState(null)
     const [submenuSelection, setSubmenuSelection] = useState(deckSubmenuVoices[1].id)
@@ -50,34 +50,18 @@ const DeckView = () => {
     const onCartSecondaryAction = (itemValue, ETHValue, slippage, amm, swapData, inputType, selectedAmount, reserveAll, decimals) => secondaryCartAction({context, seaport, ...web3Data}, submenuSelection, item, cart, itemValue, ETHValue, slippage, amm, swapData, inputType, selectedAmount, reserveAll, decimals)
 
     useEffect(() => {
-        setTimeout(async () => {
-            var itemId = pathname.split('/')
-            if(itemId[itemId.length - 1].toLowerCase().indexOf("0x") === -1 && isNaN(parseInt(itemId[itemId.length - 1]))) {
-                setSubmenuSelection(itemId[itemId.length - 1])
-                itemId = itemId[itemId.length - 2]
-            } else {
-                itemId = itemId[itemId.length - 1]
-            }
-            setItem(null)
-            var item
-            if(itemId.toLowerCase().indexOf('0x') === -1) {
-                item = newContract(context.ItemMainInterfaceABI, await blockchainCall(getGlobalContract("itemProjectionFactory").methods.mainInterface))
-            }
-            async function bypassOpenSeaEvilness() {
-                try {
-                    const loadedItem = await loadDeckItemFromAddress({context, ...web3Data, seaport}, itemId, item)
-                    return setItem(loadedItem)
-                } catch(e) {
-                    const message = (e.message || e).toLowerCase()
-                    if(message.indexOf('header not found') !== -1 || message.indexOf('429') !== -1 || message.indexOf('failed to fetch') !== -1) {
-                        await new Promise(ok => setTimeout(ok, 3000))
-                        return bypassOpenSeaEvilness()
-                    }
-                }
-                setItem(undefined)
-            }
-            bypassOpenSeaEvilness()
-        })
+        setItem(null)
+        var itemId = pathname.split('/')
+        if(itemId[itemId.length - 1].toLowerCase().indexOf("0x") === -1 && isNaN(parseInt(itemId[itemId.length - 1]))) {
+            setSubmenuSelection(itemId[itemId.length - 1])
+            itemId = itemId[itemId.length - 2]
+        } else {
+            itemId = itemId[itemId.length - 1]
+        }
+        try {
+            itemId = itemId.toLowerCase().indexOf('0x') === 0 ? itemId : web3Utils.numberToHex(itemId)
+            loadDeckItemFromAddress({context, ...web3Data, seaport}, itemId).then(setItem)
+        } catch(e) {}
     }, [pathname])
 
     return (

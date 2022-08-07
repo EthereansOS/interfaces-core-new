@@ -310,6 +310,8 @@ export async function loadItem(data, itemId, item) {
         isDeck : index > 2
     }
 
+    result.uri = result.uri.toLowerCase().indexOf('0x') === 0 ? await blockchainCall((result.wrapper || result.mainInterface).methods.uri, result.id) : result.uri
+
     result = result.wrapper ? await loadWrappedData(data, result) : result
 
     result = lightweight !== true ? await loadItemDynamicInfo(data, result, item) : result
@@ -341,7 +343,7 @@ async function loadWrappedData(data, itemData) {
 
 export async function loadDeckSource(data, itemData) {
 
-    var {chainId, context, account, newContract, seaport, web3} = data
+    var {chainId, context, web3} = data
 
     var element = {}
 
@@ -381,12 +383,13 @@ async function tryRetrieveMetadata2(data, itemData, image) {
     }
 
     if(itemData.sourceAddress && itemData.sourceId) {
-        var asset = await getAsset(data.seaport, itemData.sourceAddress, itemData.sourceId)
+        var asset = await getAsset(data, itemData.sourceAddress, itemData.sourceId)
+
+        asset && (asset.image = (itemData.isDeck && asset.collection?.imageUrl) || asset.image)
 
         metadata = {
             ...metadata,
-            ...asset,
-            image : itemData.isDeck ? asset.collection.imageUrl : asset.image
+            ...asset
         }
     }
 
@@ -399,18 +402,17 @@ async function tryRetrieveMetadata2(data, itemData, image) {
                 }
                 break
             } catch(e) {
-                console.error(e)
                 await new Promise(ok => setTimeout(ok, 1500))
             }
         }
     }
 
-    metadata.image = cleanUri(data, itemData, metadata.image)
+    metadata.image = cleanUri(data, itemData, metadata.image || `${process.env.PUBLIC_URL}/img/missingcoin.png`)
 
     return metadata
 }
 
-function cleanUri(data, itemData, uri) {
+export function cleanUri(data, itemData, uri) {
     if(uri.toLowerCase().indexOf('0x') === 0) {
         return uri
     }

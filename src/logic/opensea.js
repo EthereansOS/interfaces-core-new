@@ -3,13 +3,86 @@ import { loadTokenFromAddress } from './erc20'
 import { OrderSide } from 'opensea-js/lib/types'
 import { getLogs } from './logger'
 import { getRawField } from './generalReader'
+import { cleanUri } from './itemsV2'
 
 const sleepMillis = 350
 
-var retrieveCache = {}
 var semaphore
+async function seaportAsset(data, tokenAddress, tokenId) {
 
-export function getAsset(seaport, tokenAddress, tokenId) {
+    const { seaport } = data
+
+    if(!seaport) {
+        return
+    }
+
+    while(semaphore) {
+        await new Promise(ok => setTimeout(ok, sleepMillis))
+    }
+
+    semaphore = true
+
+    while(true) {
+        try {
+            var asset = await seaport.api.getAsset({tokenAddress, tokenId})
+            asset.image = (asset.image || asset.imagePreviewUrl).split('s250').join('s300')
+            if(asset.collection && asset.collection.imageUrl) {
+                asset.collection.imageUrl = asset.collection.imageUrl.split('s120').join('s300')
+            }
+            semaphore = false
+            return asset
+        } catch(e) {
+            var message = (e.stack || e.message || e.toString()).toLowerCase()
+            if(message.indexOf('404') !== -1) {
+                semaphore = false
+                return
+            }
+            await new Promise(ok => setTimeout(ok, sleepMillis))
+        }
+    }
+}
+
+var uriLabels = ['uri(uint256)', 'tokenURI(uint256)', 'tokenUri(uint256)', 'uri']
+
+async function rawAsset(data, tokenAddress, tokenId) {
+
+    try {
+        var uris = await Promise.all(uriLabels.map(it => getRawField({ provider : data.web3.currentProvider }, tokenAddress, it, tokenId)))
+        data.dualChainWeb3 && uris.push(...(await Promise.all(uriLabels.map(it => getRawField({ provider : data.dualChainWeb3.currentProvider }, tokenAddress, it, tokenId)))))
+        uris = uris.filter(it => it !== '0x')
+        var uri = uris[0]
+        uri = abi.decode(["string"], uri)[0].toString()
+        uri = cleanUri(data, { tokenId }, uri)
+        var metadata
+        if(uri.toLowerCase().indexOf('ipfs') !== -1) {
+            for(var i = 0; i < 15; i++) {
+                try {
+                    metadata = await (await fetch(uri)).json()
+                    break
+                } catch(e) {
+                    await new Promise(ok => setTimeout(ok, 1200))
+                }
+            }
+        } else {
+            metadata = await (await fetch(uri)).json()
+        }
+        if(metadata.success === true || metadata.success === false) {
+            throw new Error('success')
+        }
+        return metadata
+    } catch(e) {
+        if(data.dualChainId) {
+            try {
+                return await seaportAsset(data, tokenAddress, tokenId)
+            } catch(ex) {
+            }
+        }
+        console.log(e)
+    }
+}
+
+var retrieveCache = {}
+export function getAsset(data, tokenAddress, tokenId, uri) {
     const key = web3Utils.sha3(`asset-${web3Utils.toChecksumAddress(tokenAddress)}-${tokenId}`)
     return retrieveCache[key] = retrieveCache[key] || (async () => {
         var asset = JSON.parse(await cache.getItem(key))
@@ -18,31 +91,19 @@ export function getAsset(seaport, tokenAddress, tokenId) {
             return asset
         }
 
-        while(semaphore) {
-            await new Promise(ok => setTimeout(ok, sleepMillis))
-        }
+        const { dualChainId } = data
 
-        semaphore = true
+        asset = await (dualChainId ? rawAsset : seaportAsset)(data, tokenAddress, tokenId)
 
-        while(true) {
-            try {
-                asset = await seaport.api.getAsset({tokenAddress, tokenId})
-                asset.image = (asset.image || asset.imagePreviewUrl).split('s250').join('s300')
-                if(asset.collection && asset.collection.imageUrl) {
-                    asset.collection.imageUrl = asset.collection.imageUrl.split('s120').join('s300')
-                }
-                semaphore = false
-                await cache.setItem(key, JSON.stringify(asset))
-                return asset
-            } catch(e) {
-                await new Promise(ok => setTimeout(ok, sleepMillis))
-            }
-        }
+        asset && await cache.setItem(key, JSON.stringify(asset))
+
+        return asset
+
     })()
 }
 
-export async function retrieveAsset({ context, dualChainId, seaport, newContract, account }, tokenAddress, tokenId) {
-    return await toItem({context, newContract, account}, !dualChainId && seaport ? await getAsset(seaport, tokenAddress, tokenId) : (await cleanTokens({context, web3 : window.web3}, {
+export async function retrieveAsset(data, tokenAddress, tokenId) {
+    return await toItem(data, !data.dualChainId && data.seaport ? await getAsset(data, tokenAddress, tokenId) : (await cleanTokens(data, {
         [web3Utils.toChecksumAddress(tokenAddress)] : [{
             id : tokenId,
             owned : true
@@ -216,11 +277,9 @@ async function cleanTokens(web3Data, tokens, type, uriLabels) {
         }
         if(!metadata) {
             try {
-                metadata = await getAsset(seaport, item.tokenAddress, item.tokenId);
+                metadata = await getAsset(web3Data, item.tokenAddress, item.tokenId);
             } catch(e) {
-                console.error(e);
             }
-            console.log(metadata);
         }
         return {
             ...item,

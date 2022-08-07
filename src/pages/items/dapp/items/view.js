@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from 'react'
-
 import { useLocation } from 'react-router'
-import { useEthosContext, useWeb3 } from '@ethereansos/interfaces-core'
-import { loadItem } from '../../../../logic/itemsV2'
+import { useEthosContext, useWeb3, web3Utils } from '@ethereansos/interfaces-core'
 import CircularProgress from '../../../../components/Global/OurCircularProgress'
-import { blockchainCall } from '@ethereansos/interfaces-core'
-
 import ViewCover from '../../../../components/Items/ViewCover'
 import ViewDescription from '../../../../components/Items/ViewDescription'
 import Unwrap from '../../../../components/Items/Unwrap'
@@ -17,95 +13,79 @@ import Wrap from '../../../../components/Items/Wrap'
 import ViewManageItem from '../../../../components/Items/ViewManageItem'
 import ViewFarmings from '../../../covenants/dapp/farming/index'
 import DappSubMenu from '../../../../components/Global/DappSubMenu'
-
 import style from '../../../../all.module.css'
 import { useOpenSea } from '../../../../logic/uiUtilities'
+import { loadTokenFromAddress } from '../../../../logic/erc20'
 
 const itemSubmenuVoices = [
-  {
-      id : 'collection',
-      label : 'Collection'
-  },
-  {
-      id : 'farming',
-      label : 'Farming'
-  }
-]
-
-const ItemView = () => {
-
-  const { pathname } = useLocation()
-
-  const context = useEthosContext()
-
-  const seaport = useOpenSea()
-
-  const web3Data = useWeb3()
-  const { newContract, getGlobalContract } = web3Data
-
-  const [item, setItem] = useState(null)
-
-  const [submenuSelection, setSubmenuSelection] = useState(itemSubmenuVoices[0].id)
-
-
-  useEffect(() => {
-    setTimeout(async () => {
-      var itemId = pathname.substring(pathname.lastIndexOf('/') + 1)
-      setItem(null)
-      var item;
-      if(itemId.toLowerCase().indexOf('0x') === -1) {
-        item = newContract(context.ItemMainInterfaceABI, await blockchainCall(getGlobalContract("itemProjectionFactory").methods.mainInterface))
-      }
-
-      async function bypassOpenSeaEvilness() {
-        try {
-            const loadedItem = await loadItem({context, seaport, ...web3Data, lightweight : false}, itemId, item)
-            return setItem(loadedItem)
-        } catch(e) {
-          const message = (e.message || e).toLowerCase()
-          if(message.indexOf('header not found') !== -1 || message.indexOf('429') !== -1 || message.indexOf('failed to fetch') !== -1) {
-                await new Promise(ok => setTimeout(ok, 3000))
-                return bypassOpenSeaEvilness()
-            }
-        }
-        setItem(undefined)
+    {
+        id : 'collection',
+        label : 'Collection'
+    },
+    {
+        id : 'farming',
+        label : 'Farming'
     }
-    bypassOpenSeaEvilness()
-    })
-  }, [pathname])
+]
+const ItemView = () => {
+    const { pathname } = useLocation()
 
-  return (
-    <div className={style.SingleContentPage}>
-      {item === null && <CircularProgress/>}
-      {item === undefined && <h1>No item found. 👀 Wrong network? 👀 </h1>}
-      {item && <>
-        <div className={style.CollectionLeft}>
-          <ViewCover item={item}/>
-          <ViewBasics item={item}/>
-          <ViewManageItem item={item}/>
-          <ViewDescription item={item}/>
-          <ViewProperties item={item}/>
+    const context = useEthosContext()
+
+    const seaport = useOpenSea()
+
+    const web3Data = useWeb3()
+
+    const [item, setItem] = useState(null)
+    const [submenuSelection, setSubmenuSelection] = useState(itemSubmenuVoices[0].id)
+
+    useEffect(() => {
+        setItem(null)
+        var itemId = pathname.split('/')
+        if(itemId[itemId.length - 1].toLowerCase().indexOf("0x") === -1 && isNaN(parseInt(itemId[itemId.length - 1]))) {
+            setSubmenuSelection(itemId[itemId.length - 1])
+            itemId = itemId[itemId.length - 2]
+        } else {
+            itemId = itemId[itemId.length - 1]
+        }
+        try {
+            itemId = itemId.toLowerCase().indexOf('0x') === 0 ? itemId : web3Utils.numberToHex(itemId)
+            loadTokenFromAddress({context, ...web3Data, seaport}, itemId).then(setItem)
+        } catch(e) {}
+    }, [pathname])
+
+    return (
+        <div className={style.SingleContentPage}>
+        {item === null && <CircularProgress/>}
+        {item === undefined && <h1>No item found. 👀 Wrong network? 👀 </h1>}
+        {item && <>
+            <div className={style.CollectionLeft}>
+            <ViewCover item={item}/>
+            <ViewBasics item={item}/>
+            <ViewManageItem item={item}/>
+            <ViewDescription item={item}/>
+            <ViewProperties item={item}/>
+            </div>
+            <div className={style.CollectionRight}>
+            <SubTrade item={{...item, address : item.l2Address || item.address}}/>
+            {!item.l2Address && <>
+                {item?.wrapper && <div className={style.WrapUnwrapBox}>
+                <Wrap item={item}/>
+                <Unwrap item={item} wrapper={item.wrapper}/>
+                </div>}
+                <DappSubMenu isSelected={it => it.id === submenuSelection} voices={itemSubmenuVoices.map(it => ({...it, onClick : () => submenuSelection !== it.id && setSubmenuSelection(it.id)}))}/>
+                {submenuSelection === itemSubmenuVoices[0].id && <SubCollectionExplore item={item}/>}
+                {submenuSelection === itemSubmenuVoices[1].id && <ViewFarmings rewardTokenAddress={item.address}/>}
+            </>}
+            </div>
+        </>}
         </div>
-        <div className={style.CollectionRight}>
-          <SubTrade item={{...item, address : item.l2Address || item.address}}/>
-          {!item.l2Address && <>
-            {item?.wrapper && <div className={style.WrapUnwrapBox}>
-              <Wrap item={item}/>
-              <Unwrap item={item} wrapper={item.wrapper}/>
-            </div>}
-            <DappSubMenu isSelected={it => it.id === submenuSelection} voices={itemSubmenuVoices.map(it => ({...it, onClick : () => submenuSelection !== it.id && setSubmenuSelection(it.id)}))}/>
-            {submenuSelection === itemSubmenuVoices[0].id && <SubCollectionExplore item={item}/>}
-            {submenuSelection === itemSubmenuVoices[1].id && <ViewFarmings rewardTokenAddress={item.address}/>}
-          </>}
-        </div>
-      </>}
-    </div>
-  )
+    )
 }
 
 ItemView.menuVoice = {
-  path : '/items/dapp/:id',
-  exact: false
+    path : '/items/dapp/:id',
+    exact: false
 }
 
 export default ItemView
