@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useMemo } from "react"
+import React, { useState, useEffect, useMemo, useRef } from "react"
 
 import CircularProgress from '../OurCircularProgress'
-import { useEthosContext, formatLink, web3Utils, useWeb3 } from "@ethereansos/interfaces-core"
+import { useEthosContext, formatLink, web3Utils, useWeb3, normalizeValue } from "@ethereansos/interfaces-core"
 import { resolveToken } from "../../../logic/dualChain"
 import { getAddress } from "../../../logic/uiUtilities"
 
@@ -26,6 +26,9 @@ export default ({input, figureClassName, noFigure, title, defaultImage, noDotLin
     const [tried, setTried] = useState()
 
     const hasBadge = useMemo(() => badge && input?.l2Address !== undefined, [badge, input])
+
+    const imgRef = useRef(null)
+    const previewRef = useRef(null)
 
     useEffect(() => {
         setFinalImage(null)
@@ -64,6 +67,8 @@ export default ({input, figureClassName, noFigure, title, defaultImage, noDotLin
 
     var img = <img title={title} style={ (finalImage === null || loading) ? {"display" : "none"} : {}} src={src} onLoad={() => setLoading(false)} onError={onLoadError}/>
 
+    //img = instrumentImg(img, imgRef, previewRef, noFigure)
+
     if(!noFigure) {
         var figureProperties = {}
         figureClassName && (figureProperties.className = figureClassName)
@@ -81,4 +86,74 @@ export default ({input, figureClassName, noFigure, title, defaultImage, noDotLin
     }
 
     return img
+}
+
+function instrumentImg(img, imgRef, previewRef, noFigure) {
+
+    var oldOnLoad = img.props.onLoad
+    img = <img {...{
+        ...img.props,
+        onLoad : () => void(oldOnLoad(), getSnapshot(imgRef.current, previewRef.current)),
+        ref : imgRef
+    }}/>
+    return (<>
+        <div
+            style={{
+                "position" : "relative",
+                "display" : noFigure ? "inline-block" : undefined,
+                "height" : "100%"
+            }}
+            onMouseEnter={() => {
+                imgRef.current && (imgRef.current.style.visibility = 'visible')
+                previewRef.current && (previewRef.current.style.visibility = 'hidden')
+            }}
+            onMouseLeave={() => {
+                getSnapshot(imgRef.current, previewRef.current)
+            }}
+        >
+            <img
+                ref={previewRef}
+                style={{
+                    "position" : "absolute",
+                    "left" : "0",
+                    "top" : "0"
+                }}
+            />
+            {img}
+        </div>
+    </>)
+}
+
+function getSnapshot(img, preview) {
+    try {
+        if(img.src.indexOf('/img/') === 0) {
+            return
+        }
+        if(!preview.src) {
+            const { src, naturalWidth, naturalHeight } = img
+
+            preview.src = src
+
+            const newImage = document.createElement('img')
+            newImage.width = naturalWidth
+            newImage.height = naturalHeight
+            newImage.crossOrigin = 'anonymous'
+
+            newImage.onload = function() {
+                const canvas = document.createElement('canvas')
+                const context = canvas.getContext('2d')
+                context.clearRect(0, 0, canvas.width = naturalWidth, canvas.height = naturalHeight)
+                context.drawImage(newImage, 0, 0, canvas.width, canvas.height)
+                preview.src = canvas.toDataURL()
+                preview.style.visibility = 'visible'
+                img.style.visibility = 'hidden'
+            }
+            newImage.src = src
+            return
+        }
+        preview.style.visibility = 'visible'
+        img.style.visibility = 'hidden'
+    } catch(e) {
+        console.log(e)
+    }
 }
