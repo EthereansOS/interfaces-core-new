@@ -27,7 +27,7 @@ async function seaportAsset(data, tokenAddress, tokenId) {
             var asset = await seaport.api.getAsset({tokenAddress, tokenId})
             asset.image = (asset.image || asset.imagePreviewUrl).split('s250').join('s300')
             if(asset.collection && asset.collection.imageUrl) {
-                asset.collection.imageUrl = asset.collection.imageUrl.split('s120').join('s300')
+                asset.collection.imageUrl = (asset.collection.imageUrl || asset.image).split('s120').join('s300')
             }
             semaphore = false
             return asset
