@@ -52,7 +52,11 @@ export async function allFarmings(data, factoryAddress, generation) {
         return []
     }
 
-    var farmingContractAddresses = (await getLogs(web3.currentProvider, 'eth_getLogs', args)).map(it => abi.decode(["address"], it.topics[2])[0])
+    var farmingContractAddresses = (await getLogs(web3.currentProvider, 'eth_getLogs', args)).map(it => web3Utils.toChecksumAddress(abi.decode(["address"], it.topics[2])[0]))
+
+    var deployedFarmingsToExclude = [...context.deployedFarmingsToExclude].map(web3Utils.toChecksumAddress)
+
+    farmingContractAddresses = farmingContractAddresses.filter(it => deployedFarmingsToExclude.indexOf(it) === -1)
 
     if(farmingContractAddresses.length === 0) {
         return []
