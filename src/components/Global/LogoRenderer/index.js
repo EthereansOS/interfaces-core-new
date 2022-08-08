@@ -95,6 +95,11 @@ function instrumentImg(img, imgRef, previewRef, noFigure) {
     if(!src) {
         return img
     }
+
+    if(src.indexOf('/img/') === 0) {
+        return img
+    }
+
     if(src.indexOf('opensea') !== -1) {
         return img
     }
@@ -136,9 +141,6 @@ function instrumentImg(img, imgRef, previewRef, noFigure) {
 
 function getSnapshot(img, preview) {
     try {
-        if(img.src.indexOf('/img/') === 0) {
-            return
-        }
         if(!preview.src) {
             const { naturalWidth, naturalHeight } = img
 
@@ -147,27 +149,9 @@ function getSnapshot(img, preview) {
             context.clearRect(0, 0, canvas.width = naturalWidth, canvas.height = naturalHeight)
             context.drawImage(img, 0, 0, canvas.width, canvas.height)
             preview.src = canvas.toDataURL()
-
-            /*const newImage = document.createElement('img')
-            newImage.width = naturalWidth
-            newImage.height = naturalHeight
-            newImage.crossOrigin = 'anonymous'
-
-            newImage.onload = function() {
-                const canvas = document.createElement('canvas')
-                const context = canvas.getContext('2d')
-                context.clearRect(0, 0, canvas.width = naturalWidth, canvas.height = naturalHeight)
-                context.drawImage(newImage, 0, 0, canvas.width, canvas.height)
-                preview.src = canvas.toDataURL()
-                preview.style.visibility = 'visible'
-                img.style.visibility = 'hidden'
-            }
-            newImage.src = preview.src = img.src
-            return*/
         }
         preview.style.visibility = 'visible'
         img.style.visibility = 'hidden'
     } catch(e) {
-        console.log(e)
     }
 }
