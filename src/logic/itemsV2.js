@@ -1,4 +1,4 @@
-import { cache, memoryFetch, VOID_ETHEREUM_ADDRESS, web3Utils, sendAsync, blockchainCall, abi, tryRetrieveMetadata, uploadMetadata, formatLink, VOID_BYTES32, toDecimals, getNetworkElement, async, newContract, numberToString, swap, fromDecimals } from "@ethereansos/interfaces-core"
+import { getTokenPriceInDollarsOnUniswapV3, getTokenPriceInDollarsOnSushiSwap, getTokenPriceInDollarsOnUniswap, cache, memoryFetch, VOID_ETHEREUM_ADDRESS, web3Utils, sendAsync, blockchainCall, abi, tryRetrieveMetadata, uploadMetadata, formatLink, VOID_BYTES32, toDecimals, getNetworkElement, async, newContract, numberToString, swap, fromDecimals } from "@ethereansos/interfaces-core"
 
 import itemProjectionsMetadata from './itemProjectionsMetadata.json'
 
@@ -425,6 +425,8 @@ export function cleanUri(data, itemData, uri) {
         uri = 'ipfs://' + (uri.substring(uri.toLowerCase().indexOf('/ipfs/') + ('/ipfs/').length))
     }
     uri = uri.indexOf('data') === 0 ? uri : formatLink({ context : data.context }, uri)
+
+    uri = uri.split('gateway.ipfs.io').join('ipfs.io')
 
     if(uri.indexOf('trustwallet') !== -1 && uri.indexOf('/logo.png') !== -1) {
         var split = uri.split('/logo.png')
@@ -1643,5 +1645,41 @@ export async function loadMetadata(data, address, id) {
         symbol,
         uri,
         metadata
+    }
+}
+
+const sleepMillis = 350
+var coigeckoSemaphore
+
+export async function usdPrice(data, address, decimals) {
+    const { seaport } = data
+
+    if(!seaport) {
+        return
+    }
+
+    while(coigeckoSemaphore) {
+        await new Promise(ok => setTimeout(ok, sleepMillis))
+    }
+
+    coigeckoSemaphore = true
+
+    while(true) {
+        try {
+            var result = await Promise.all([
+                getTokenPriceInDollarsOnUniswapV3(data, address, decimals),
+                getTokenPriceInDollarsOnUniswap(data, address, decimals),
+                getTokenPriceInDollarsOnSushiSwap(data, address, decimals)
+              ]).then(prices => Math.max.apply(window, prices))
+            coigeckoSemaphore = false
+            return result
+        } catch(e) {
+            var message = (e.stack || e.message || e.toString()).toLowerCase()
+            if(message.indexOf('404') !== -1) {
+                coigeckoSemaphore = false
+                return
+            }
+            await new Promise(ok => setTimeout(ok, sleepMillis))
+        }
     }
 }

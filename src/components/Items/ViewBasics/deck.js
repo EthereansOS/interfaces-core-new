@@ -9,6 +9,7 @@ import style from '../../../all.module.css'
 
 import SendToLayer from '../../Global/SendToLayer/index.js'
 import { getRawField } from '../../../logic/generalReader.js'
+import { usdPrice } from '../../../logic/itemsV2.js'
 
 export default ({item}) => {
   const context = useEthosContext()
@@ -25,11 +26,7 @@ export default ({item}) => {
 
     getRawField({ provider : web3.currentProvider }, address, 'totalSupply').then(it => setTotalSupply(it === '0x' ? '0' : abi.decode(["uint256"], it)[0].toString()))
 
-    Promise.all([
-      getTokenPriceInDollarsOnUniswapV3({ context, ...web3Data}, address, item.decimals),
-      getTokenPriceInDollarsOnUniswap({ context, ...web3Data}, address, item.decimals),
-      getTokenPriceInDollarsOnSushiSwap({ context, ...web3Data}, address, item.decimals)
-    ]).then(prices => setPrice(Math.max.apply(window, prices)))
+    usdPrice({...web3Data, context }, address, item.decimals).then(setPrice)
   }, [])
 
   return (

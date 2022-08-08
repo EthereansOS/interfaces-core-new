@@ -67,7 +67,7 @@ export default ({input, figureClassName, noFigure, title, defaultImage, noDotLin
 
     var img = <img title={title} style={ (finalImage === null || loading) ? {"display" : "none"} : {}} src={src} onLoad={() => setLoading(false)} onError={onLoadError}/>
 
-    //img = instrumentImg(img, imgRef, previewRef, noFigure)
+    img = instrumentImg(img, imgRef, previewRef, noFigure)
 
     if(!noFigure) {
         var figureProperties = {}
@@ -90,11 +90,21 @@ export default ({input, figureClassName, noFigure, title, defaultImage, noDotLin
 
 function instrumentImg(img, imgRef, previewRef, noFigure) {
 
+    var src = img?.props?.src?.toLowerCase() || ''
+
+    if(!src) {
+        return img
+    }
+    if(src.indexOf('opensea') !== -1) {
+        return img
+    }
+
     var oldOnLoad = img.props.onLoad
     img = <img {...{
         ...img.props,
         onLoad : () => void(oldOnLoad(), getSnapshot(imgRef.current, previewRef.current)),
-        ref : imgRef
+        ref : imgRef,
+        crossOrigin : 'anonymous'
     }}/>
     return (<>
         <div
@@ -130,11 +140,15 @@ function getSnapshot(img, preview) {
             return
         }
         if(!preview.src) {
-            const { src, naturalWidth, naturalHeight } = img
+            const { naturalWidth, naturalHeight } = img
 
-            preview.src = src
+            const canvas = document.createElement('canvas')
+            const context = canvas.getContext('2d')
+            context.clearRect(0, 0, canvas.width = naturalWidth, canvas.height = naturalHeight)
+            context.drawImage(img, 0, 0, canvas.width, canvas.height)
+            preview.src = canvas.toDataURL()
 
-            const newImage = document.createElement('img')
+            /*const newImage = document.createElement('img')
             newImage.width = naturalWidth
             newImage.height = naturalHeight
             newImage.crossOrigin = 'anonymous'
@@ -148,8 +162,8 @@ function getSnapshot(img, preview) {
                 preview.style.visibility = 'visible'
                 img.style.visibility = 'hidden'
             }
-            newImage.src = src
-            return
+            newImage.src = preview.src = img.src
+            return*/
         }
         preview.style.visibility = 'visible'
         img.style.visibility = 'hidden'

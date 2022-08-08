@@ -4,7 +4,7 @@ import { abi, shortenWord, formatMoney, fromDecimals, blockchainCall, useEthosCo
 import style from '../../../all.module.css'
 import ItemObject from '../../Global/ObjectsLists/item-object'
 import ItemImage from '../ItemImage'
-import { loadItemDynamicInfo } from '../../../logic/itemsV2'
+import { loadItemDynamicInfo, usdPrice } from '../../../logic/itemsV2'
 import OurCircularProgress from '../../Global/OurCircularProgress'
 import { useOpenSea } from '../../../logic/uiUtilities'
 import { getRawField } from '../../../logic/generalReader'
@@ -32,11 +32,7 @@ const Item = ({element, allMine, wrappedOnly}) => {
     getRawField({ provider : web3.currentProvider }, address, 'balanceOf(address)', account).then(it => setBalance(it === '0x' ? '0' : abi.decode(["uint256"], it)[0].toString()))
     getRawField({ provider : web3.currentProvider }, address, 'totalSupply').then(it => setTotalSupply(it === '0x' ? '0' : abi.decode(["uint256"], it)[0].toString()))
 
-    Promise.all([
-      getTokenPriceInDollarsOnUniswapV3({ context, ...web3Data}, address, element.decimals),
-      getTokenPriceInDollarsOnUniswap({ context, ...web3Data}, address, element.decimals),
-      getTokenPriceInDollarsOnSushiSwap({ context, ...web3Data}, address, element.decimals)
-    ]).then(prices => setPrice(Math.max.apply(window, prices)))
+    usdPrice({...web3Data, context, seaport}, address, element.decimals).then(setPrice)
 
     loadItemDynamicInfo({...web3Data, context, seaport}, element).then(setLoadedData)
   }, [])
