@@ -87,13 +87,15 @@ export async function loadItemsByFactories(data, factories) {
         ]
         wrappedOnly === true && exclusiveIncluding.unshift((await loadWrappedCollectionIds(data))[0])
 
+        const deployedItemsToExclude = [...context.deployedItemsToExclude].map(it => it.indexOf('0x') === 0 ? abi.decode(["uint256"], abi.encode(["address"], [it]))[0].toString() : it)
+
         var itemIds = logs.reduce((acc, log) => {
             var collectionId = log.topics[2]
             var itemId = abi.decode(["uint256"], log.topics[3])[0].toString()
             if(context.deployedCollectionsToExclude && context.deployedCollectionsToExclude.indexOf(collectionId) !== - 1) {
                 return acc
             }
-            if(context.deployedItemsToExclude && context.deployedItemsToExclude.indexOf(itemId) !== - 1) {
+            if(deployedItemsToExclude && deployedItemsToExclude.indexOf(itemId) !== - 1) {
                 return acc
             }
             if(exclusiveIncluding && exclusiveIncluding.indexOf(collectionId) === -1) {

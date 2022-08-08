@@ -420,6 +420,12 @@
             "0x7d6994fa4cf18f86e5c15c4ccc30de0f12edb90c2cdabb4629f3c0cb4f7f812e",
             "0xc119633d4efae6a0c3439141fe36479acb37dd9cb169588f25b8d835ea6fff15"
         ],
+        "deployedItemsToExclude" : [
+            "0xB3dBeffCA1DC5176b98EA2cb9187A6C7C7f946a9",
+            "0x0eee083078075b3A672E196CA96b0f5EeCb1e86B",
+            "0x8ce8050b70f4845a245CF87A0bc6a27FdD902515",
+            "0xB3dBeffCA1DC5176b98EA2cb9187A6C7C7f946a9"
+        ],
         "x2USDAddress": "0xa4d9c768e1c6cabb127a6326c0668b49235639e8",
         "x5USDAddress": "0x0473f6ea742448ec9433b87ac410d79c08198abe",
         "x2USDNoteControllerAddress": "0x88a012e4d2b8600cf82e21f0685ec2ebcf643847",
