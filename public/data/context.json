@@ -121,7 +121,7 @@
         "uniswapV3PoolURLTemplate": "https://info.uniswap.org/#/{0}pools/{1}",
         "uniswapV3NFTURLTemplate": "https://app.uniswap.org/#/pool/{1}",
         "deploySearchStart": 12000000,
-        "deploySearchStartRinkeby": 9851551,
+        "deploySearchStartRinkeby": 9567013,
         "deploySearchStartOptimism": 13897200,
         "blockSearchSection": 0,
         "transactionConfirmations": 0,

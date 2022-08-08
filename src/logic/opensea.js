@@ -83,7 +83,7 @@ async function rawAsset(data, tokenAddress, tokenId) {
 
 var retrieveCache = {}
 export function getAsset(data, tokenAddress, tokenId, uri) {
-    const key = web3Utils.sha3(`asset-${web3Utils.toChecksumAddress(tokenAddress)}-${tokenId}`)
+    const key = web3Utils.sha3(`asset-${data.chainId}-${web3Utils.toChecksumAddress(tokenAddress)}-${tokenId}`)
     return retrieveCache[key] = retrieveCache[key] || (async () => {
         var asset = JSON.parse(await cache.getItem(key))
 

@@ -87,14 +87,14 @@ export async function hasNoHost({ context, newContract }, organizationAddress) {
     return organizationAddress
 }
 
-export async function tryExtractHost({ context, web3, account, getGlobalContract, newContract }, contract) {
+export async function tryExtractHost({ chainId, context, web3, account, getGlobalContract, newContract }, contract) {
     var hostAddress = await blockchainCall(contract.methods.host)
     var host;
     if (hostAddress && hostAddress !== VOID_ETHEREUM_ADDRESS) {
         try {
             var subDAOsManager = newContract(context.SubDAOsManagerABI, hostAddress)
             hostAddress = await blockchainCall(subDAOsManager.methods.host)
-            host = await getOrganization({ context, web3, account, getGlobalContract, newContract }, hostAddress)
+            host = await getOrganization({ chainId, context, web3, account, getGlobalContract, newContract }, hostAddress)
         } catch (e) {}
     }
     return {
@@ -158,15 +158,15 @@ export async function getInitializationData({newContract, context, chainId}, con
     }
 }
 
-export async function getOrganization({ context, web3, account, getGlobalContract, newContract }, organizationAddress, host) {
+export async function getOrganization({ chainId, context, web3, account, getGlobalContract, newContract }, organizationAddress, host) {
     var contract = newContract(context.SubDAOABI, organizationAddress)
     var organization = {
         address: organizationAddress,
         contract,
-        ...(await getInitializationData({newContract, context}, contract))
+        ...(await getInitializationData({chainId, newContract, context}, contract))
     }
 
-    var hostData = host ? host : await tryExtractHost({ context, web3, account, getGlobalContract, newContract }, contract)
+    var hostData = host ? host : await tryExtractHost({ chainId, context, web3, account, getGlobalContract, newContract }, contract)
 
     if (!host && hostData.contract) {
         return hostData
@@ -175,15 +175,15 @@ export async function getOrganization({ context, web3, account, getGlobalContrac
     organization = {
         ...organization,
         host,
-        ...(await getOrganizationMetadata({ context }, organization)),
-        components: await getOrganizationComponents({ newContract, context }, contract)
+        ...(await getOrganizationMetadata({ chainId, context }, organization)),
+        components: await getOrganizationComponents({ chainId, newContract, context }, contract)
     }
     //organization.stateVars = await getStateVars({ context }, organization)
     organization.proposalModels = await getProposalModels({ context }, contract)
     organization.type = organization.proposalModels.length === 0 ? 'root' : 'organization'
-    organization.proposalsConfiguration = await getProposalsConfiguration({ context, web3, account, getGlobalContract, newContract }, organization.components.proposalsManager)
+    organization.proposalsConfiguration = await getProposalsConfiguration({ chainId, context, web3, account, getGlobalContract, newContract }, organization.components.proposalsManager)
 
-    organization.organizations = await getAllOrganizations({ context, web3, account, getGlobalContract, newContract }, organization)
+    organization.organizations = await getAllOrganizations({ chainId, context, web3, account, getGlobalContract, newContract }, organization)
 
     //organization.proposals = await getProposals({ account, web3, context, newContract }, organization)
 

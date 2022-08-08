@@ -19,7 +19,7 @@ const SubDAOView = () => {
 
   const location = useLocation()
   const context = useEthosContext()
-  const {account, newContract, web3, blockchainCall} = useWeb3()
+  const {account, newContract, web3, blockchainCall, chainId} = useWeb3()
 
   const [organization, setOrganization] = useState(null)
 
@@ -27,7 +27,7 @@ const SubDAOView = () => {
     setOrganization(null)
     var organizationAddress= location.pathname.split('/')
     organizationAddress = organizationAddress[organizationAddress.length -1]
-    organizationAddress.indexOf("0x") === 0 && getOrganization({context, account, newContract, blockchainCall, web3}, organizationAddress).then(setOrganization)
+    organizationAddress.indexOf("0x") === 0 && getOrganization({chainId, context, account, newContract, blockchainCall, web3}, organizationAddress).then(setOrganization)
   }, [location.pathname])
 
   const [currentView, setCurrentView] = useState('overview')
