@@ -145,7 +145,7 @@ export async function loadItemsByFactories(data, factories) {
             l2Tokens = (await Promise.all(l2Tokens.map(async it => {
                 var value = await getRawField({ provider : originalWeb3.currentProvider }, it.l2Address, allMine ? 'balanceOf(address)' : 'totalSupply', account)
                 value = abi.decode(["uint256"], value)[0].toString()
-                return value !== '0' && it
+                return /*value !== '0' &&*/ it
             }))).filter(it => it)
             l2Tokens = l2Tokens.reduce((acc, it) => ({ ...acc, [it.itemId] : it}), {})
             var keys = Object.keys(l2Tokens)
@@ -516,11 +516,11 @@ export async function loadCollectionMetadata(dataInput, collectionId, mainInterf
         mainInterface,
         id : collectionId
     }
-    /*metadata = !deep ? metadata : await tryRetrieveMetadata({context}, {
+    metadata = !deep ? metadata : await tryRetrieveMetadata({context}, {
         ...data,
         mainInterface,
         id : collectionId
-    })*/
+    })
     if(collectionId === '0xc8ae2302153c696a508f505d7a046ff5fa78dcf79478eea09c682d0101f02252') {
         metadata.image = 'https://gateway.ipfs.io/ipfs/QmYpYpHVNtvPYJsuDcjfGEXc9y5FozERzQ92JaRcAcfq3h'
     }

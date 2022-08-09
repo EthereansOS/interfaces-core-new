@@ -15,7 +15,14 @@ export async function allRoutines(data) {
         toBlock: 'latest'
     }
     const logs = await getLogs(web3.currentProvider, 'eth_getLogs', args)
-    const routines = await Promise.all(logs.map(it => getRoutine({ ...data, lightweight : true }, abi.decode(["address"], it.topics[2])[0])))
+
+    var routineContractsAddresses = logs.map(it => abi.decode(["address"], it.topics[2])[0])
+
+    var deployedRoutinesToExclude = [...context.deployedRoutinesToExclude].map(web3Utils.toChecksumAddress)
+
+    routineContractsAddresses = routineContractsAddresses.filter(it => deployedRoutinesToExclude.indexOf(it) === -1)
+
+    const routines = await Promise.all(routineContractsAddresses.map(it => getRoutine({ ...data, lightweight : true }, it)))
     return chainId !== 1 ? routines : [await getRoutine({...data, lightweight : true}, getNetworkElement({ context, chainId }, 'hardcabledRoutineAddress')), ...routines]
 }
 

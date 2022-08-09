@@ -428,6 +428,9 @@
         "deployedFarmingsToExclude" : [
             "0x9DCcD9b2034652AF13Ad0dd424FE4EB046e7E659"
         ],
+        "deployedRoutinesToExclude" : [
+            "0x10FfbBdC33b5150c0D24F994c3fF37FfDd790984"
+        ],
         "x2USDAddress": "0xa4d9c768e1c6cabb127a6326c0668b49235639e8",
         "x5USDAddress": "0x0473f6ea742448ec9433b87ac410d79c08198abe",
         "x2USDNoteControllerAddress": "0x88a012e4d2b8600cf82e21f0685ec2ebcf643847",
