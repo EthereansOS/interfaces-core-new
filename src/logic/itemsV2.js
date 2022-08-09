@@ -477,6 +477,9 @@ export async function loadItemDynamicInfo(data, itemData, item) {
         address : itemData.address
     }
 
+    metadata.name = itemData.name || metadata.name
+    metadata.symbol = itemData.symbol || metadata.symbol
+
     metadata.image = cleanUri(data, itemData, metadata.image)
 
     metadata.cached = true

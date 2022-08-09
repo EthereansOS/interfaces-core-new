@@ -96,7 +96,7 @@ function instrumentImg(img, imgRef, previewRef, noFigure) {
         return img
     }
 
-    if(src.indexOf('/img/') === 0) {
+    if(src.indexOf(`${process.env.PUBLIC_URL}/img/`) === 0) {
         return img
     }
 
