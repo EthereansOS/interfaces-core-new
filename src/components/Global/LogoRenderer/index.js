@@ -119,11 +119,16 @@ function instrumentImg(img, imgRef, previewRef, noFigure) {
                 "height" : "100%"
             }}
             onMouseEnter={() => {
-                imgRef.current && (imgRef.current.style.visibility = 'visible')
-                previewRef.current && (previewRef.current.style.visibility = 'hidden')
+                if(imgRef.current && previewRef.current && previewRef.current.loaded) {
+                    imgRef.current.style.visibility = 'visible'
+                    previewRef.current.style.visibility = 'hidden'
+                }
             }}
             onMouseLeave={() => {
-                getSnapshot(imgRef.current, previewRef.current)
+                if(imgRef.current && previewRef.current && previewRef.current.loaded) {
+                    previewRef.current.style.visibility = 'visible'
+                    imgRef.current.style.visibility = 'hidden'
+                }
             }}
         >
             <img
@@ -133,6 +138,13 @@ function instrumentImg(img, imgRef, previewRef, noFigure) {
                     "left" : "0",
                     "top" : "0"
                 }}
+                onLoad={() => {
+                    if(imgRef.current && previewRef.current) {
+                        previewRef.current.style.visibility = 'visible'
+                        imgRef.current.style.visibility = 'hidden'
+                        previewRef.current.loaded = true
+                    }
+                }}
             />
             {img}
         </div>
@@ -141,17 +153,13 @@ function instrumentImg(img, imgRef, previewRef, noFigure) {
 
 function getSnapshot(img, preview) {
     try {
-        if(!preview.src) {
-            const { naturalWidth, naturalHeight } = img
+        const { naturalWidth, naturalHeight } = img
 
-            const canvas = document.createElement('canvas')
-            const context = canvas.getContext('2d')
-            context.clearRect(0, 0, canvas.width = naturalWidth, canvas.height = naturalHeight)
-            context.drawImage(img, 0, 0, canvas.width, canvas.height)
-            preview.src = canvas.toDataURL()
-        }
-        preview.style.visibility = 'visible'
-        img.style.visibility = 'hidden'
+        const canvas = document.createElement('canvas')
+        const context = canvas.getContext('2d')
+        context.clearRect(0, 0, canvas.width = naturalWidth, canvas.height = naturalHeight)
+        context.drawImage(img, 0, 0, canvas.width, canvas.height)
+        preview.src = canvas.toDataURL()
     } catch(e) {
     }
 }
