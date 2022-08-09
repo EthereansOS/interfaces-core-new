@@ -451,7 +451,7 @@ export async function loadItemDynamicInfo(data, itemData, item) {
         return await loadItem({ ...data, lightweight : false }, itemData, item)
     }
 
-    const key = web3Utils.sha3(`item-${data.chainId}-${web3Utils.toChecksumAddress(itemData.mainInterfaceAddress)}-${itemData.id}`)
+    const key = web3Utils.sha3(`item-${web3Utils.toChecksumAddress(itemData.mainInterfaceAddress)}-${itemData.id}`)
     var metadata = JSON.parse(await cache.getItem(key))
 
     if(!metadata || !metadata.cached) {

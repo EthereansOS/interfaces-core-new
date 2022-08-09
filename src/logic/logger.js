@@ -1,13 +1,13 @@
 import { cache, sendAsync, web3Utils } from "@ethereansos/interfaces-core"
 
-function getLogKey(chainId, args) {
+function getLogKey(args) {
     var key = {
         ...args
     }
     delete key.fromBlock
     delete key.toBlock
     key = JSON.stringify(key)
-    key = web3Utils.sha3('log-' + chainId + '-' + key)
+    key = web3Utils.sha3('log-' + key)
     return key
 }
 
@@ -30,7 +30,7 @@ export async function getLogs(provider, _, args) {
     firstBlock = parseInt(firstBlock)
     lastBlock = parseInt(lastBlock)
 
-    const logKey = getLogKey(chainId, args)
+    const logKey = getLogKey(args)
     const cached = JSON.parse(await cache.getItem(logKey)) || {
         logs : []
     }

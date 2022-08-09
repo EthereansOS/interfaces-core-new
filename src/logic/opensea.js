@@ -82,8 +82,8 @@ async function rawAsset(data, tokenAddress, tokenId) {
 }
 
 var retrieveCache = {}
-export function getAsset(data, tokenAddress, tokenId, uri) {
-    const key = web3Utils.sha3(`asset-${data.chainId}-${web3Utils.toChecksumAddress(tokenAddress)}-${tokenId}`)
+export function getAsset(data, tokenAddress, tokenId) {
+    const key = web3Utils.sha3(`asset-${web3Utils.toChecksumAddress(tokenAddress)}-${tokenId}`)
     return retrieveCache[key] = retrieveCache[key] || (async () => {
         var asset = JSON.parse(await cache.getItem(key))
 
@@ -91,9 +91,9 @@ export function getAsset(data, tokenAddress, tokenId, uri) {
             return asset
         }
 
-        const { dualChainId } = data
+        asset = await seaportAsset(data, tokenAddress, tokenId)
 
-        asset = await (dualChainId ? rawAsset : seaportAsset)(data, tokenAddress, tokenId)
+        asset = asset || await rawAsset(data, tokenAddress, tokenId)
 
         asset && await cache.setItem(key, JSON.stringify(asset))
 
