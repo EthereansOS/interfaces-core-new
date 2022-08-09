@@ -122,7 +122,7 @@ export default props => {
             selectedAmount[i] = inputType[i][0]
         }
         setInputType(() => inputType)
-        if(mode === 'unwrap' && balance && cart.length === 1 && parseInt(balance) < parseInt(selectedAmount[0]) && parseInt(fromDecimals(balance, 18)) > 0) {
+        if(mode === 'unwrap' && balance && cart.length === 1 && parseInt(balance) < parseInt(selectedAmount[0]) && parseFloat(fromDecimals(balance, 18, true)) > 0) {
             selectedAmount[0] = balance
         }
         setSelectedAmount(() => selectedAmount)
