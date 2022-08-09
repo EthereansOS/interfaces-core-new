@@ -142,11 +142,11 @@ export async function loadItemsByFactories(data, factories) {
                     }
                 }
             }, {}))
-            l2Tokens = (await Promise.all(l2Tokens.map(async it => {
+            /*l2Tokens = (await Promise.all(l2Tokens.map(async it => {
                 var value = await getRawField({ provider : originalWeb3.currentProvider }, it.l2Address, allMine ? 'balanceOf(address)' : 'totalSupply', account)
                 value = abi.decode(["uint256"], value)[0].toString()
-                return /*value !== '0' &&*/ it
-            }))).filter(it => it)
+                return value !== '0' && it
+            }))).filter(it => it)*/
             l2Tokens = l2Tokens.reduce((acc, it) => ({ ...acc, [it.itemId] : it}), {})
             var keys = Object.keys(l2Tokens)
             itemIds = itemIds.filter(it => keys.indexOf(it.itemId) !== -1)
