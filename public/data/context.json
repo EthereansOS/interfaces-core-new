@@ -12,8 +12,7 @@
         },
         "chainProvider" : {
             "1" : "https://eth-mainnet.g.alchemy.com/v2/Zd4dCIEp-LHNZHX4ni2vJ67c58gYsB18",
-            "10" : "https://opt-mainnet.g.alchemy.com/v2/n7RB1WD8al75IGI-5d15ttII4vNBOCEO",
-            "42" : "https://kovan.infura.io/v3/2eddecc384554c7b8fce50f068a1232d"
+            "10" : "https://opt-mainnet.g.alchemy.com/v2/n7RB1WD8al75IGI-5d15ttII4vNBOCEO"
         },
         "useWalletSettings": [
             {
