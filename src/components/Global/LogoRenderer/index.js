@@ -104,6 +104,10 @@ function instrumentImg(img, imgRef, previewRef, noFigure) {
         return img
     }
 
+    if(src.indexOf('metadata.ens.domains') !== -1) {
+        return img
+    }
+
     var oldOnLoad = img.props.onLoad
     img = <img {...{
         ...img.props,
