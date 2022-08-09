@@ -23,8 +23,8 @@ export default ({element, onClick, noBalance}) => {
   const [loadedData, setLoadedData] = useState()
 
   useEffect(() => {
-    blockchainCall((element.contract = element.contract || newContract(context.IERC1155ABI, element.address)).methods.balanceOf, account, element.id).then(bal => setBalance(element.balance = bal))
     loadItemDynamicInfo({...web3Data, context, seaport}, element).then(setLoadedData)
+    blockchainCall((element.contract = element.contract || newContract(context.IERC1155ABI, element.address)).methods.balanceOf, account, element.id).then(bal => setBalance(element.balance = bal))
   }, [element.address, account, element.id])
 
   return (

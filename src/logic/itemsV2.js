@@ -338,11 +338,11 @@ async function loadWrappedData(data, itemData) {
     return itemData
 }
 
-export async function loadDeckSource(data, itemData) {
+async function loadDeckSource(data, itemData) {
 
     var {chainId, context, web3} = data
 
-    var element = {}
+    var element
 
     const logs = await getLogs(web3.currentProvider, 'eth_getLogs', {
         address : itemData.wrapper.options.address,
@@ -356,7 +356,11 @@ export async function loadDeckSource(data, itemData) {
         toBlock : 'latest'
     })
 
-    element = logs.length === 0 ? element : {
+    if(logs.length === 0) {
+        throw new Error('logs')
+    }
+
+    element = logs.length > 0 && {
         sourceAddress : abi.decode(["address"], logs[0].topics[1])[0].toString(),
         sourceId : abi.decode(["uint256"], logs[0].topics[2])[0].toString()
     }
@@ -449,10 +453,6 @@ export async function loadItemDynamicInfo(data, itemData, item) {
     const key = web3Utils.sha3(`item-${web3Utils.toChecksumAddress(itemData.mainInterfaceAddress)}-${itemData.id}`)
     var metadata = JSON.parse(await cache.getItem(key))
 
-    if(!metadata || !metadata.cached) {
-        metadata = undefined
-    }
-
     if(metadata) {
         return {
             ...itemData,
@@ -477,16 +477,12 @@ export async function loadItemDynamicInfo(data, itemData, item) {
 
     metadata.image = cleanUri(data, itemData, metadata.image)
 
-    metadata.cached = true
-
     metadata = {
         ...metadata,
         metadata
     }
 
-    if(metadata && metadata.cached) {
-        await cache.setItem(key, JSON.stringify(metadata))
-    }
+    metadata && await cache.setItem(key, JSON.stringify(metadata))
 
     return {
         ...itemData,
@@ -526,7 +522,7 @@ export async function loadCollectionMetadata(dataInput, collectionId, mainInterf
         })
         delete metadata.mainInterface
         metadata = (metadata && cleanMetadataUris(dataInput, metadata)) || metadata
-        metadata && await cache.setItem(key, metadata)
+        metadata && await cache.setItem(key, JSON.stringify(metadata))
     }
 
     metadata.hostContract = newContract(context.MultiOperatorHostABI, metadata.host)

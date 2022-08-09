@@ -27,14 +27,14 @@ const Item = ({element, allMine, wrappedOnly}) => {
 
   useEffect(() => {
 
+    loadItemDynamicInfo({...web3Data, context, seaport}, element).then(setLoadedData)
+
     var address = element.l2Address || element.address
 
     getRawField({ provider : web3.currentProvider }, address, 'balanceOf(address)', account).then(it => setBalance(it === '0x' ? '0' : abi.decode(["uint256"], it)[0].toString()))
     getRawField({ provider : web3.currentProvider }, address, 'totalSupply').then(it => setTotalSupply(it === '0x' ? '0' : abi.decode(["uint256"], it)[0].toString()))
 
     usdPrice({...web3Data, context, seaport}, address, element.decimals).then(setPrice)
-
-    loadItemDynamicInfo({...web3Data, context, seaport}, element).then(setLoadedData)
   }, [])
 
   return (
