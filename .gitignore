@@ -30,3 +30,4 @@ ale.sh
 package-lock.json
 
 /**/**/*context.local.json
+/**/**/*version.txt

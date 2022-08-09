@@ -8,6 +8,7 @@ import {
   Web3ContextProvider,
   InitContextProvider,
   GlobalContextsProvider,
+  cache,
 } from '@ethereansos/interfaces-core'
 
 import { ThemeSelectorContextProvider, GlobalModalContextProvider, TransactionModalContextProvider, OpenSeaContextProvider } from './logic/uiUtilities'
@@ -39,6 +40,16 @@ function App() {
             )
             const localContext = await response.json()
             context = { ...context, ...localContext, localContext }
+          } catch(e) {
+          }
+
+          try {
+            var version = await (await fetch(
+              `${process.env.PUBLIC_URL}/data/version.txt`
+            )).text()
+            version = version.indexOf('<!DOCTYPE html>') === 0 ? '' : version
+            localStorage.version !== version && await cache.clear()
+            localStorage.setItem('version', version)
           } catch(e) {
           }
 
