@@ -485,7 +485,7 @@ export async function loadItemDynamicInfo(data, itemData, item) {
 async function cleanItemData(data, itemData, metadata) {
 
     if(itemData.l2Address) {
-        var l2Contract = ((await dualChainAsMainChain(data)).newContract)(data.context.ItemInteroperableInterfaceABI, itemData.l2Address)
+        var l2Contract = (data.dualChainId ? data : await dualChainAsMainChain(data)).newContract(data.context.ItemInteroperableInterfaceABI, itemData.l2Address)
         return {
             address : itemData.l2Address,
             contract : l2Contract,
