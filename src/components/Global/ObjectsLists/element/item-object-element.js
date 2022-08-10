@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react'
 
 import style from '../../../../all.module.css'
 
-import { getNetworkElement, useEthosContext, useWeb3, fromDecimals, shortenWord, blockchainCall } from '@ethereansos/interfaces-core'
+import { abi, getNetworkElement, useEthosContext, useWeb3, fromDecimals, shortenWord } from '@ethereansos/interfaces-core'
 import LogoRenderer from '../../LogoRenderer'
 import { Link } from 'react-router-dom'
 import { loadItemDynamicInfo } from '../../../../logic/itemsV2'
 import { useOpenSea } from '../../../../logic/uiUtilities'
 import OurCircularProgress from '../../OurCircularProgress'
+import { getRawField } from '../../../../logic/generalReader'
 
 export default ({element, onClick, noBalance}) => {
 
@@ -16,7 +17,7 @@ export default ({element, onClick, noBalance}) => {
   const context = useEthosContext()
 
   const web3Data = useWeb3()
-  const { chainId, account, newContract } = web3Data
+  const { chainId, account, web3 } = web3Data
 
   const [balance, setBalance] = useState(element.balance)
 
@@ -24,13 +25,16 @@ export default ({element, onClick, noBalance}) => {
 
   useEffect(() => {
     loadItemDynamicInfo({...web3Data, context, seaport}, element).then(setLoadedData)
-    blockchainCall((element.contract = element.contract || newContract(context.IERC1155ABI, element.address)).methods.balanceOf, account, element.id).then(bal => setBalance(element.balance = bal))
-  }, [element.address, account, element.id])
+  }, [element])
+
+  useEffect(() => {
+    getRawField({provider : web3.currentProvider}, element.l2Address || element.address, 'balanceOf(address)', account).then(val => val !== '0x' && setBalance(abi.decode(["address"], val)[0].toString()))
+  }, [element, account])
 
   return (
-    <a className={style.TokenObject} onClick={() => onClick && loadedData && onClick({...element, ...loadedData})}>
+    <a className={style.TokenObject} onClick={() => onClick && loadedData && onClick(loadedData)}>
       {!loadedData && <OurCircularProgress/>}
-      {loadedData && <LogoRenderer input={{...element, ...loadedData}}/>}
+      {loadedData && <LogoRenderer input={loadedData}/>}
       <div className={style.ObjectInfo}>
         <div className={style.ObjectInfoAndLink}>
           <h5>{shortenWord({ context, charsAmount : 15}, element.name)} ({shortenWord({ context, charsAmount : 15}, element.symbol)})</h5>

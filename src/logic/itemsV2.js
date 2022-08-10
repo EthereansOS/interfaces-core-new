@@ -2,7 +2,7 @@ import { getTokenPriceInDollarsOnUniswapV3, getTokenPriceInDollarsOnSushiSwap, g
 
 import itemProjectionsMetadata from './itemProjectionsMetadata.json'
 
-import { loadTokenFromAddress } from "./erc20"
+import { getTokenImage, loadTokenFromAddress } from "./erc20"
 import { tryRetrieveDelegationAddressFromItem } from "./delegation"
 import { getOwnedTokens, retrieveAsset } from './opensea'
 import { getRawField } from './generalReader'
@@ -52,7 +52,7 @@ export async function loadItemsByFactories(data, factories) {
 
     data = data.dualMode && data.dualChainId ? await dualChainAsMainChain(data) : data
 
-    var {context, chainId, originalChainId, originalWeb3, dualChainId, web3, account, newContract, getGlobalContract, collectionData, excluding, wrappedOnly, allMine, lightweight} = data
+    var {context, chainId, originalChainId, originalWeb3, originalNewContract, dualChainId, web3, account, newContract, getGlobalContract, collectionData, excluding, wrappedOnly, allMine, lightweight} = data
 
     factories = factories || getGlobalContract('itemProjectionFactory')
 
@@ -132,17 +132,16 @@ export async function loadItemsByFactories(data, factories) {
                 toBlock : 'latest'
             })
             l2Tokens = Object.values(logs.reduce((acc, it) => {
-                var itemId = abi.decode(["uint256"], it.topics[1])[0].toString()
+                var id = abi.decode(["uint256"], it.topics[1])[0].toString()
                 return {
                     ...acc,
-                    [itemId] : acc[itemId] || {
-                        itemId,
-                        l1Address : abi.decode(["address"], it.topics[1])[0].toString(),
+                    [id] : acc[id] || {
+                        id,
                         l2Address : abi.decode(["address"], it.topics[2])[0].toString()
                     }
                 }
             }, {}))
-            l2Tokens = l2Tokens.reduce((acc, it) => ({ ...acc, [it.itemId] : it}), {})
+            l2Tokens = l2Tokens.reduce((acc, it) => ({ ...acc, [it.id] : it}), {})
             var keys = Object.keys(l2Tokens)
             itemIds = itemIds.filter(it => keys.indexOf(it.itemId) !== -1)
         }
@@ -169,7 +168,7 @@ export async function loadItemsByFactories(data, factories) {
         }
 
         var vals = await Promise.all(itemIds.map(it => loadItem({...data, collectionData, lightweight : lightweight !== false }, it.itemId, it.item)))
-        vals = !l2Tokens ? vals : vals.map(it => ({...it, l2Address : l2Tokens[it.tokenId || it.id].l2Address}))
+        vals = !l2Tokens ? vals : vals.map(it => ({...it, ...l2Tokens[it.id]}))
 
         if(dualChainId && !wrappedOnly && !collectionData) {
             vals = [
@@ -373,14 +372,19 @@ async function tryRetrieveMetadata2(data, itemData, image) {
     var metadata = {
         name : itemData.name,
         symbol : itemData.symbol,
-        uri : cleanUri(data, itemData, itemData.uri)
+        uri : cleanUri(data, itemData.uri, itemData.id || itemData.itemId || itemData.tokenId)
     }
 
-    image && (metadata.image = cleanUri(data, itemData, image))
+    image && (metadata.image = cleanUri(data, image, itemData.id || itemData.itemId || itemData.tokenId))
 
     if(itemData.sourceAddress && !itemData.sourceId) {
-        var address = await resolveToken(data, itemData.sourceAddress)
-        metadata.image = address === VOID_ETHEREUM_ADDRESS ? `${process.env.PUBLIC_URL}/img/eth_logo.png` :  data.context.trustwalletImgURLTemplate.split('{0}').join(web3Utils.toChecksumAddress(address))
+        try {
+            metadata = {
+                ...metadata,
+                ...(await (await fetch(metadata.uri)).json())
+            }
+        } catch(e) {}
+        metadata.image = await getTokenImage(data, itemData.sourceAddress)
     }
 
     if(itemData.sourceAddress && itemData.sourceId) {
@@ -408,18 +412,18 @@ async function tryRetrieveMetadata2(data, itemData, image) {
         }
     }
 
-    metadata.image = cleanUri(data, itemData, metadata.image || `${process.env.PUBLIC_URL}/img/missingcoin.png`)
+    metadata.image = cleanUri(data, metadata.image || `${process.env.PUBLIC_URL}/img/missingcoin.png`, itemData.id || itemData.itemId || itemData.tokenId)
 
     return metadata
 }
 
-export function cleanUri(data, itemData, uri) {
+export function cleanUri(data, uri, id) {
     if(uri.toLowerCase().indexOf('0x') === 0) {
         return uri
     }
     uri = decodeURI(uri)
-    uri = uri.split('0x{id}').join(web3Utils.numberToHex(itemData.id || itemData.tokenId))
-    uri = uri.split('{id}').join(itemData.id || itemData.tokenId)
+    uri = id ? uri.split('0x{id}').join(web3Utils.numberToHex(id)) : uri
+    uri = id ? uri.split('{id}').join(id) : uri
     if(uri.toLowerCase().indexOf('ipfs') !== -1) {
         uri = 'ipfs://' + (uri.substring(uri.toLowerCase().indexOf('/ipfs/') + ('/ipfs/').length))
     }
@@ -454,10 +458,7 @@ export async function loadItemDynamicInfo(data, itemData, item) {
     var metadata = JSON.parse(await cache.getItem(key))
 
     if(metadata) {
-        return {
-            ...itemData,
-            ...metadata
-        }
+        return await cleanItemData(data, itemData, metadata)
     }
 
     var image
@@ -466,27 +467,44 @@ export async function loadItemDynamicInfo(data, itemData, item) {
         image = delegation?.tokenURI || delegation?.image || undefined
     } catch(e) {}
 
-    metadata = {
-        ...(await tryRetrieveMetadata2(data, itemData, image)),
-        id : itemData.id,
-        address : itemData.address
-    }
-
-    metadata.name = itemData.name || metadata.name
-    metadata.symbol = itemData.symbol || metadata.symbol
-
-    metadata.image = cleanUri(data, itemData, metadata.image)
+    metadata = await tryRetrieveMetadata2(data, itemData, image)
 
     metadata = {
         ...metadata,
-        metadata
+        name : itemData.name || metadata.name,
+        symbol : itemData.symbol || metadata.symbol,
+        image : cleanUri(data, metadata.image, itemData.id || itemData.itemId || itemData.tokenId)
     }
 
     metadata && await cache.setItem(key, JSON.stringify(metadata))
 
+    return await cleanItemData(data, itemData, metadata)
+
+}
+
+async function cleanItemData(data, itemData, metadata) {
+
+    if(itemData.l2Address) {
+        var l2Contract = ((await dualChainAsMainChain(data)).newContract)(data.context.ItemInteroperableInterfaceABI, itemData.l2Address)
+        return {
+            address : itemData.l2Address,
+            contract : l2Contract,
+            l2Address : itemData.l2Address,
+            l2Contract,
+            l1Address : itemData.address,
+            l1Contract : itemData.contract,
+            ...metadata,
+            metadata,
+            decimals : '18'
+        }
+    }
+
     return {
         ...itemData,
-        ...metadata
+        ...metadata,
+        metadata,
+        address : itemData.address,
+        id : itemData.id
     }
 }
 
@@ -496,7 +514,7 @@ function cleanMetadataUris(dataInput, metadata) {
         var value = metadata[key]
         if(key !== 'description' && value.indexOf && (value.indexOf('://') !== -1 || value.indexOf('//') === 0)) {
             try {
-                value = cleanUri(dataInput, metadata, value)
+                value = cleanUri(dataInput, value, metadata.id || metadata.itemId || metadata.tokenId)
             } catch(e) {
                 console.log('METADATA VALUE', key, value, (e.stack || e.message || e))
             }
@@ -910,7 +928,7 @@ export async function loadTokens(data, item) {
 }
 
 export async function loadDeckItemFromAddress(data, tokenAddress) {
-    const { dualChainId } = data
+    const { context, dualChainId, newContract } = data
 
     var tkAddr = tokenAddress = web3Utils.toChecksumAddress(tokenAddress)
     var dataInput = data
@@ -919,9 +937,15 @@ export async function loadDeckItemFromAddress(data, tokenAddress) {
     }
     var deckItem = await loadDeckItem(dataInput, tkAddr)
     if(dualChainId && tkAddr !== tokenAddress) {
+        var contract = newContract(context.IERC20ABI, tokenAddress)
         deckItem = {
             ...deckItem,
-            l2Address : tokenAddress
+            address : tokenAddress,
+            contract,
+            l1Address : deckItem.address,
+            l2Address : tokenAddress,
+            l1Contract : deckItem.contract,
+            l2Contract : contract
         }
     }
     return deckItem
@@ -1669,7 +1693,7 @@ export async function loadMetadata(data, address, id) {
 const sleepMillis = 350
 var coigeckoSemaphore
 
-export async function usdPrice(data, address, decimals) {
+export async function usdPrice(data, tokenAddress) {
     const { seaport } = data
 
     if(!seaport) {
@@ -1682,18 +1706,24 @@ export async function usdPrice(data, address, decimals) {
 
     coigeckoSemaphore = true
 
+    var tkAddr = await resolveToken(data, tokenAddress = web3Utils.toChecksumAddress(tokenAddress))
+    var dataInput = tkAddr !== tokenAddress ? await dualChainAsMainChain(data) : data
+    var decimals = await getRawField({ provider : dataInput.web3.currentProvider }, tkAddr, 'decimals')
+
+    decimals = abi.decode(["uint256"], decimals)[0].toString()
+
     while(true) {
         try {
             var result = await Promise.all([
-                getTokenPriceInDollarsOnUniswapV3(data, address, decimals),
-                getTokenPriceInDollarsOnUniswap(data, address, decimals),
-                getTokenPriceInDollarsOnSushiSwap(data, address, decimals)
+                getTokenPriceInDollarsOnUniswapV3(dataInput, tkAddr, decimals),
+                getTokenPriceInDollarsOnUniswap(dataInput, tkAddr, decimals),
+                getTokenPriceInDollarsOnSushiSwap(dataInput, tkAddr, decimals)
               ]).then(prices => Math.max.apply(window, prices))
             coigeckoSemaphore = false
             return result
         } catch(e) {
             var message = (e.stack || e.message || e.toString()).toLowerCase()
-            if(message.indexOf('404') !== -1) {
+            if(message.indexOf('404') !== -1 || message.indexOf('did you run out of gas')) {
                 coigeckoSemaphore = false
                 return
             }

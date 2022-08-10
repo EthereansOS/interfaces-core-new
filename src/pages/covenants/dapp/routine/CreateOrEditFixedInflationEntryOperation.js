@@ -9,12 +9,15 @@ import { loadTokenFromAddress } from '../../../../logic/erc20'
 import TokenInputRegular from '../../../../components/Global/TokenInputRegular'
 import { getRawField } from '../../../../logic/generalReader'
 import style from '../../../../all.module.css'
+import { useOpenSea } from '../../../../logic/uiUtilities'
 
 export default props => {
 
     const { entry, onCancel, onFinish, operation } = props
 
     const context = useEthosContext()
+
+    const seaport = useOpenSea()
 
     const web3Data = useWeb3()
 
@@ -83,7 +86,7 @@ export default props => {
         setExitInETH(false)
         if (!address) return setInputToken(null)
         setLoading(true)
-        setInputToken(await loadTokenFromAddress({ context, ...web3Data}, address))
+        setInputToken(await loadTokenFromAddress({ context, ...web3Data, seaport}, address))
         setEnterInETH(address === VOID_ETHEREUM_ADDRESS)
         address === VOID_ETHEREUM_ADDRESS && setInputTokenMethod("reserve")
         address === VOID_ETHEREUM_ADDRESS && setTransferType("amount")

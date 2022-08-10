@@ -7,8 +7,8 @@ import { cleanUri } from './itemsV2'
 
 const sleepMillis = 350
 
-var semaphore
-async function seaportAsset(data, tokenAddress, tokenId) {
+var openseaAssetMutex
+async function openseaAsset(data, tokenAddress, tokenId) {
 
     const { seaport } = data
 
@@ -16,25 +16,23 @@ async function seaportAsset(data, tokenAddress, tokenId) {
         return
     }
 
-    while(semaphore) {
+    while(openseaAssetMutex) {
         await new Promise(ok => setTimeout(ok, sleepMillis))
     }
 
-    semaphore = true
+    openseaAssetMutex = true
 
     while(true) {
         try {
             var asset = await seaport.api.getAsset({tokenAddress, tokenId})
-            asset.image = (asset.image || asset.imagePreviewUrl).split('s250').join('s300')
-            if(asset.collection && asset.collection.imageUrl) {
-                asset.collection.imageUrl = (asset.collection.imageUrl || asset.image).split('s120').join('s300')
-            }
-            semaphore = false
+            asset && (asset.image = (asset.image || asset.imagePreviewUrl).split('s250').join('s300'))
+            asset && ((asset.collection = asset.collection || {}).imageUrl = (asset.collection?.imageUrl || asset.image).split('s120').join('s300'))
+            openseaAssetMutex = false
             return asset
         } catch(e) {
             var message = (e.stack || e.message || e.toString()).toLowerCase()
             if(message.indexOf('404') !== -1) {
-                semaphore = false
+                openseaAssetMutex = false
                 return
             }
             await new Promise(ok => setTimeout(ok, sleepMillis))
@@ -52,7 +50,7 @@ async function rawAsset(data, tokenAddress, tokenId) {
         uris = uris.filter(it => it !== '0x')
         var uri = uris[0]
         uri = abi.decode(["string"], uri)[0].toString()
-        uri = cleanUri(data, { tokenId }, uri)
+        uri = cleanUri(data, uri, tokenId)
         var metadata
         if(uri.toLowerCase().indexOf('ipfs') !== -1) {
             for(var i = 0; i < 15; i++) {
@@ -73,7 +71,7 @@ async function rawAsset(data, tokenAddress, tokenId) {
     } catch(e) {
         if(data.dualChainId) {
             try {
-                return await seaportAsset(data, tokenAddress, tokenId)
+                return await openseaAsset(data, tokenAddress, tokenId)
             } catch(ex) {
             }
         }
@@ -91,7 +89,7 @@ export function getAsset(data, tokenAddress, tokenId) {
             return asset
         }
 
-        asset = await seaportAsset(data, tokenAddress, tokenId)
+        asset = await openseaAsset(data, tokenAddress, tokenId)
 
         asset = asset || await rawAsset(data, tokenAddress, tokenId)
 

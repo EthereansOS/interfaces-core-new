@@ -26,22 +26,20 @@ const Item = ({element, allMine, wrappedOnly}) => {
   const [loadedData, setLoadedData] = useState()
 
   useEffect(() => {
-
+    usdPrice({...web3Data, context, seaport}, element.l2Address || element.address).then(setPrice)
     loadItemDynamicInfo({...web3Data, context, seaport}, element).then(setLoadedData)
+  }, [element])
 
-    var address = element.l2Address || element.address
-
-    getRawField({ provider : web3.currentProvider }, address, 'balanceOf(address)', account).then(it => setBalance(it === '0x' ? '0' : abi.decode(["uint256"], it)[0].toString()))
-    getRawField({ provider : web3.currentProvider }, address, 'totalSupply').then(it => setTotalSupply(it === '0x' ? '0' : abi.decode(["uint256"], it)[0].toString()))
-
-    usdPrice({...web3Data, context, seaport}, address, element.decimals).then(setPrice)
-  }, [])
+  useEffect(() => {
+    !allMine && getRawField({provider : web3.currentProvider}, element.l2Address || element.address, 'totalSupply').then(val => val !== '0x' && setTotalSupply(abi.decode(["address"], val)[0].toString()))
+    allMine && getRawField({provider : web3.currentProvider}, element.l2Address || element.address, 'balanceOf(address)', account).then(val => val !== '0x' && setBalance(abi.decode(["address"], val)[0].toString()))
+  }, [element, account, allMine])
 
   return (
     <div className={style.ItemSingle}>
-      <Link to={`/items/dapp/${wrappedOnly === 'Deck' || element.isDeck ? 'decks/' : ''}${element.l2Address || element.address}`}>
+      <Link to={`/items/dapp/${wrappedOnly === 'Deck' || element.isDeck ? 'decks/' : ''}${element.address}`}>
         {!loadedData && <OurCircularProgress/>}
-        {loadedData && <ItemImage input={{...element, ...loadedData}}/>}
+        {loadedData && <ItemImage input={loadedData}/>}
         <div className={style.ItemTitle}>
           <h6>{shortenWord({ context, charsAmount : 15}, element.name)}</h6>
         </div>

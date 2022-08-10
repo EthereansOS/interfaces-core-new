@@ -18,6 +18,7 @@ import { enqueue, dequeue } from '../../../logic/interval'
 
 import style from '../../../all.module.css'
 import { resolveToken } from '../../../logic/dualChain'
+import { useOpenSea } from '../../../logic/uiUtilities'
 
 const MAX_UINT128 = '0x' + web3Utils.toBN(2).pow(web3Utils.toBN(128)).sub(web3Utils.toBN(1)).toString('hex')
 const MAX_UINT256 = '0x' + web3Utils.toBN(2).pow(web3Utils.toBN(256)).sub(web3Utils.toBN(1)).toString('hex')
@@ -32,6 +33,8 @@ export default props => {
     const { element, setupInput, refresh, noInternalRefetch } = props
 
     const context = useEthosContext()
+
+    const seaport = useOpenSea()
 
     const web3Data = useWeb3()
 
@@ -268,8 +271,8 @@ export default props => {
 
     useEffect(() => {
         feeData && !feeData.transferOrBurnTypeInApplication && !feeData.transferOrBurnTypeInCreation && setTimeout(async () => {
-            const tokenToTransferOrBurnInApplication = feeData.tokenToTransferOrBurnAddressInApplication !== VOID_ETHEREUM_ADDRESS && await loadTokenFromAddress({context, ...web3Data}, feeData.tokenToTransferOrBurnAddressInApplication)
-            const tokenToTransferOrBurnInCreation = feeData.tokenToTransferOrBurnAddressInCreation !== VOID_ETHEREUM_ADDRESS && await loadTokenFromAddress({context, ...web3Data}, feeData.tokenToTransferOrBurnAddressInCreation)
+            const tokenToTransferOrBurnInApplication = feeData.tokenToTransferOrBurnAddressInApplication !== VOID_ETHEREUM_ADDRESS && await loadTokenFromAddress({context, ...web3Data, seaport}, feeData.tokenToTransferOrBurnAddressInApplication)
+            const tokenToTransferOrBurnInCreation = feeData.tokenToTransferOrBurnAddressInCreation !== VOID_ETHEREUM_ADDRESS && await loadTokenFromAddress({context, ...web3Data, seaport}, feeData.tokenToTransferOrBurnAddressInCreation)
             const transferOrBurnTypeInApplication = feeData.transferOrBurnReceiverInApplication === VOID_ETHEREUM_ADDRESS ? 'burn' : 'transfer'
             const transferOrBurnTypeInCreation = feeData.transferOrBurnReceiverInCreation === VOID_ETHEREUM_ADDRESS ? 'burn' : 'transfer'
             setFeeData(oldValue => ({...oldValue, tokenToTransferOrBurnInApplication, tokenToTransferOrBurnInCreation, transferOrBurnTypeInApplication, transferOrBurnTypeInCreation}))
@@ -389,7 +392,7 @@ export default props => {
             setWithdrawOpen(false)
         }
         !extensionContract && setExtensionContract(element.extensionContract)
-        const rewardToken = rewardTokenInfo || await loadTokenFromAddress({ context, ...web3Data }, await blockchainCall(element.contract.methods._rewardTokenAddress))
+        const rewardToken = rewardTokenInfo || await loadTokenFromAddress({ context, ...web3Data, seaport }, await blockchainCall(element.contract.methods._rewardTokenAddress))
         const rewardTokenApproval = await blockchainCall(rewardToken.contract.methods.allowance, account, element.address)
         setRewardTokenInfo(oldValue => ({ ...oldValue, ...rewardToken, approval: parseInt(rewardTokenApproval) !== 0 && parseInt(rewardTokenApproval) >= parseInt(rewardToken.balance) }))
 
@@ -412,7 +415,7 @@ export default props => {
 
                 const originalTokenAddresses = info[2].map(web3Utils.toChecksumAddress)
                 const tokenAddresses = originalTokenAddresses.map(it => farmSetupInfo.involvingETH && it === amm.ethereumAddress ? VOID_ETHEREUM_ADDRESS : it)
-                const tokens = await Promise.all(tokenAddresses.map(it => loadTokenFromAddress({ context, ...web3Data }, it)))
+                const tokens = await Promise.all(tokenAddresses.map(it => loadTokenFromAddress({ context, ...web3Data, seaport }, it)))
 
                 const tokenValues = (await blockchainCall(amm.contract.methods.byLiquidityPoolAmount, farmSetupInfo.liquidityPoolTokenAddress, farmSetup.totalSupply))[0]
 
@@ -428,7 +431,7 @@ export default props => {
                     await blockchainCall(lpToken.methods.token0),
                     await blockchainCall(lpToken.methods.token1)
                 ].map(async tkAddress => {
-                    const currentToken = await loadTokenFromAddress({ context, ...web3Data }, tkAddress)
+                    const currentToken = await loadTokenFromAddress({ context, ...web3Data, seaport }, tkAddress)
                     return new Token(chainId, tkAddress, parseInt(currentToken.decimals), currentToken.symbol, currentToken.name)
                 }))
                 console.log("Slot", farmSetup.infoIndex, {
@@ -485,7 +488,7 @@ export default props => {
             ]) : (await blockchainCall((await ammAggregatorPromise).ammAggregator.methods.findByLiquidityPool, tokenAddress))[2]
             for (var i in liquidityPoolTokens) {
                 const address = liquidityPoolTokens[i]
-                const token = await loadTokenFromAddress({context, ...web3Data}, isWeth(farmSetupInfo, address) ? VOID_ETHEREUM_ADDRESS : address)
+                const token = await loadTokenFromAddress({context, ...web3Data, seaport}, isWeth(farmSetupInfo, address) ? VOID_ETHEREUM_ADDRESS : address)
                 tokens.push(token)
             }
             setSetupTokens(oldValue => (oldValue && oldValue.length > 0 && oldValue) || tokens)
@@ -1493,7 +1496,7 @@ export default props => {
             <div className={style.FarmSetupMain}>
                 <div className={style.SetupFarmingInstructions}>
                     <div className={style.SetupFarmingInstructionsV3}>
-                        {setupTokens.map((token, i) => <div key={token.address} className={style.TokenFarmV3InfoBox}>{token.address !== VOID_ETHEREUM_ADDRESS ? <a target="_blank" href={`${getNetworkElement({ context, chainId }, "etherscanURL")}token/${token.address}`}><LogoRenderer badge input={token} /></a> : <LogoRenderer badge input={token} />}<span> {tickData && `${formatMoneyUniV3(i === 0 ? tickData.cursorNumber : 100 - tickData.cursorNumber, 2)}%`} <span>{token.symbol}</span></span> </div>)}
+                        {setupTokens.map((token, i) => <div key={token.address} className={style.TokenFarmV3InfoBox}>{token.address !== VOID_ETHEREUM_ADDRESS ? <a target="_blank" href={`${getNetworkElement({ context, chainId }, "etherscanURL")}token/${token.address}`}><LogoRenderer input={token} /></a> : <LogoRenderer input={token} />}<span> {tickData && `${formatMoneyUniV3(i === 0 ? tickData.cursorNumber : 100 - tickData.cursorNumber, 2)}%`} <span>{token.symbol}</span></span> </div>)}
                         {!endBlockReached &&
                             <p className={style.BlockInfoV3B}>
                             {setup.active && parseInt(setup.endBlock) > currentBlock && <span className={style.V3FarmStatusYEP}>Active</span>}

@@ -12,7 +12,7 @@ import { getRoutine } from '../../../../logic/routines'
 import { loadTokenFromAddress } from '../../../../logic/erc20'
 
 import LogoRenderer from '../../../../components/Global/LogoRenderer'
-import { copyToClipboard } from '../../../../logic/uiUtilities'
+import { copyToClipboard, useOpenSea } from '../../../../logic/uiUtilities'
 
 import RegularModal from '../../../../components/Global/RegularModal'
 import Create from './create'
@@ -22,6 +22,8 @@ import style from '../../../../all.module.css'
 const ViewRoutine = ({ loadedElement, onBack }) => {
 
     const context = useEthosContext()
+
+    const seaport = useOpenSea()
 
     const web3Data = useWeb3()
 
@@ -79,14 +81,14 @@ const ViewRoutine = ({ loadedElement, onBack }) => {
                         }
                     }
                 }
-                operation.inputToken = await loadTokenFromAddress({context, ...web3Data}, operation.inputTokenAddress === VOID_ETHEREUM_ADDRESS || (operation.amm && operation.enterInETH && web3Utils.toChecksumAddress(operation.inputTokenAddress) === web3Utils.toChecksumAddress(operation.amm.data[0])) ? VOID_ETHEREUM_ADDRESS : operation.inputTokenAddress)
+                operation.inputToken = await loadTokenFromAddress({context, ...web3Data, seaport}, operation.inputTokenAddress === VOID_ETHEREUM_ADDRESS || (operation.amm && operation.enterInETH && web3Utils.toChecksumAddress(operation.inputTokenAddress) === web3Utils.toChecksumAddress(operation.amm.data[0])) ? VOID_ETHEREUM_ADDRESS : operation.inputTokenAddress)
                 for (var swapTokenIndex in operation.swapPath) {
                     var swapToken = operation.swapPath[swapTokenIndex = parseInt(swapTokenIndex)]
                     var data
                     if (operation.amm && operation.exitInETH && swapTokenIndex === operation.swapPath.length - 1) {
-                        data = await loadTokenFromAddress({context, ...web3Data}, web3Utils.toChecksumAddress(swapToken) === web3Utils.toChecksumAddress(operation.amm.data[0]) ? VOID_ETHEREUM_ADDRESS : swapToken)
+                        data = await loadTokenFromAddress({context, ...web3Data, seaport}, web3Utils.toChecksumAddress(swapToken) === web3Utils.toChecksumAddress(operation.amm.data[0]) ? VOID_ETHEREUM_ADDRESS : swapToken)
                     } else {
-                        data = await loadTokenFromAddress({context, ...web3Data}, swapToken)
+                        data = await loadTokenFromAddress({context, ...web3Data, seaport}, swapToken)
                     }
                     (operation.swapTokens = operation.swapTokens || []).push(data)
                 }

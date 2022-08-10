@@ -1,7 +1,7 @@
 import { blockchainCall, web3Utils, abi, getNetworkElement, numberToString, VOID_ETHEREUM_ADDRESS, formatLink } from "@ethereansos/interfaces-core"
 import { dualChainAsMainChain, resolveToken } from "./dualChain"
 import { getRawField } from "./generalReader"
-import { loadItem } from "./itemsV2"
+import { cleanUri, loadItem, loadItemDynamicInfo } from "./itemsV2"
 
 export async function getTokenBasicInfo(web3Data, tokenAddress) {
 
@@ -139,23 +139,14 @@ export async function loadTokens({ context, chainId, web3, account, newContract,
 }
 
 export async function loadTokenFromAddress(data, tokenAddress) {
-    const { context, account, newContract, forceItem, dualChainId } = data
+    const { context, account, newContract, forceItem } = data
     if(!tokenAddress || tokenAddress === VOID_ETHEREUM_ADDRESS) {
         return await getEthereum(data)
     }
     try {
-        var tkAddr = tokenAddress = web3Utils.toChecksumAddress(tokenAddress)
-        var dataInput = data
-        if(dualChainId && (tkAddr = await resolveToken(data, tkAddr)) !== tokenAddress) {
-            dataInput = await dualChainAsMainChain(dataInput)
-        }
-        var item = await loadItem({ ...dataInput, lightweight : false }, tkAddr)
-        if(dualChainId && tkAddr !== tokenAddress) {
-            item = {
-                ...item,
-                l2Address : tokenAddress
-            }
-        }
+        var tkAddr = await resolveToken(data, tokenAddress = web3Utils.toChecksumAddress(tokenAddress))
+        var item = await loadItem({...(tkAddr !== tokenAddress ? await dualChainAsMainChain(data) : data), lightweight : tkAddr !== tokenAddress }, tkAddr)
+        item = tkAddr === tokenAddress ? item : await loadItemDynamicInfo(data, {...item, l2Address : tokenAddress})
         return item
     } catch(e) {
         if(forceItem) {
@@ -163,15 +154,45 @@ export async function loadTokenFromAddress(data, tokenAddress) {
         }
     }
     try {
+        var tkAddr = await resolveToken(data, tokenAddress = web3Utils.toChecksumAddress(tokenAddress))
+        var dataInput = tkAddr !== tokenAddress ? await dualChainAsMainChain(data) : data
         var contract = newContract(context.ItemInteroperableInterfaceABI, tokenAddress)
-        return {
+        var token = {
             name : await blockchainCall(contract.methods.name),
             symbol : await blockchainCall(contract.methods.symbol),
             decimals : await blockchainCall(contract.methods.decimals),
             address : tokenAddress,
             contract,
-            balance : await blockchainCall(contract.methods.balanceOf, account)
+            balance : await blockchainCall(contract.methods.balanceOf, account),
+            image : await getTokenImage(dataInput, tkAddr)
         }
+        if(tkAddr !== tokenAddress) {
+            token = {
+                ...token,
+                l1Address : tkAddr,
+                l1Contract : dataInput.newContract(context.ItemInteroperableInterfaceABI, tkAddr),
+                l2Address : tokenAddress,
+                l2Contract : contract
+            }
+        }
+        return token
     } catch(e) {
     }
+}
+
+export async function getTokenImage(data, tokenAddress) {
+    if(tokenAddress === VOID_ETHEREUM_ADDRESS) {
+        return `${process.env.PUBLIC_URL}/img/eth_logo.png`
+    }
+
+    var tkAddr = await resolveToken(data, tokenAddress = web3Utils.toChecksumAddress(tokenAddress))
+    var dataInput = tkAddr !== tokenAddress ? await dualChainAsMainChain(data) : data
+
+    var tokens = await loadTokens(dataInput)
+
+    var filter = tokens.filter(it => tkAddr === web3Utils.toChecksumAddress(it.address))[0]
+
+    var image = await cleanUri(data, filter?.logoURI || filter?.image || data.context.trustwalletImgURLTemplate.split('{0}').join(tkAddr))
+
+    return image
 }

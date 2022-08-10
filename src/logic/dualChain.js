@@ -102,6 +102,8 @@ export async function dualChainAsMainChain(data) {
         dualChainId : undefined,
         dualChainWeb3 : undefined,
         getGlobalContract,
-        newContract
+        newContract,
+        originalGetGlobalContract : data.getGlobalContract,
+        originalNewContract : data.newContract
     }
 }
