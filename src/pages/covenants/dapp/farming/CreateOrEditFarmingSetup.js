@@ -12,11 +12,14 @@ import TokenInputRegular from '../../../../components/Global/TokenInputRegular'
 import { findLiquidityPoolToken } from '../../../../logic/farming'
 
 import style from '../../../../all.module.css'
+import { useOpenSea } from '../../../../logic/uiUtilities'
 
 export default props => {
     const { rewardToken, generation, gen2SetupType, editSetup, onAddFarmingSetup, onEditFarmingSetup, onCancel } = props
 
     const context = useEthosContext()
+
+    const seaport = useOpenSea()
 
     const web3Data = useWeb3()
 
@@ -79,7 +82,7 @@ export default props => {
         }
         setLoading(true)
         try {
-            const data = await findLiquidityPoolToken({ context, ...web3Data }, generation, address, gen2SetupType)
+            const data = await findLiquidityPoolToken({ context, seaport, ...web3Data }, generation, address, gen2SetupType)
             if(data) {
                 setTickUpper(data.realTickUpper)
                 setTickLower(data.realTickLower)

@@ -18,12 +18,15 @@ import { getFarmingSetupInfo } from '../../../../logic/farming'
 
 import style from '../../../../all.module.css'
 import { getRawField } from '../../../../logic/generalReader'
+import { useOpenSea } from '../../../../logic/uiUtilities'
 
 export default props => {
 
     const { element, onEditSuccess } = props
 
     const context = useEthosContext()
+
+    const seaport = useOpenSea()
 
     const web3Data = useWeb3()
 
@@ -143,7 +146,7 @@ export default props => {
     useEffect(() => setByMint(element?.byMint === true), [selectedRewardToken, element])
 
     useEffect(() => element && setTimeout(async function() {
-        setFarmingSetups(await getFarmingSetupInfo({context, ...web3Data}, element))
+        setFarmingSetups(await getFarmingSetupInfo({context, seaport, ...web3Data}, element))
         setSelectedRewardToken(element.rewardToken)
         setDeployStep(0)
         setGeneration(element.generation)

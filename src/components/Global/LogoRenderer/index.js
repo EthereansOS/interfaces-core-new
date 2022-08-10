@@ -3,9 +3,10 @@ import React, { useState, useEffect, useMemo, useRef } from "react"
 import CircularProgress from '../OurCircularProgress'
 import { useEthosContext, formatLink, web3Utils, useWeb3, normalizeValue } from "@ethereansos/interfaces-core"
 import { resolveToken } from "../../../logic/dualChain"
-import { getAddress } from "../../../logic/uiUtilities"
+import { getAddress, useOpenSea } from "../../../logic/uiUtilities"
 
 import style from '../../../all.module.css'
+import { loadTokenFromAddress } from "../../../logic/erc20"
 
 const DEFAULT_IMAGE = `${process.env.PUBLIC_URL}/img/missingcoin.gif`
 
@@ -16,6 +17,8 @@ export default ({input, figureClassName, noFigure, title, defaultImage, noDotLin
     const image = input && (typeof input === "string" ? input : input.image ? input.image : input.logoURI ? input.logoURI : input.image_url ? input.image_url : input.address)
 
     const context = useEthosContext()
+
+    const seaport = useOpenSea()
 
     const web3Data = useWeb3()
 
@@ -40,8 +43,18 @@ export default ({input, figureClassName, noFigure, title, defaultImage, noDotLin
     }, [image, finalImage])
 
     async function onLoadError() {
-        setLoading(onError ? true : false)
-        setFinalImage((onError && await onError()) || realDefaultImage)
+        setLoading(true)
+        var val = realDefaultImage
+        try {
+            if(onError) {
+                val = await onError()
+            } else {
+                try {
+                    val = (await loadTokenFromAddress({ ...web3Data, seaport, context }, input.address || input)).image
+                } catch(e) {}
+            }
+        } catch(e) {}
+        setFinalImage(val)
         setLoading(false)
     }
 
@@ -67,7 +80,7 @@ export default ({input, figureClassName, noFigure, title, defaultImage, noDotLin
 
     var img = <img title={title} style={ (finalImage === null || loading) ? {"display" : "none"} : {}} src={src} onLoad={() => setLoading(false)} onError={onLoadError}/>
 
-    img = instrumentImg(img, imgRef, previewRef, noFigure)
+    img = tryInstrumentImg(input, img, imgRef, previewRef, noFigure) || img
 
     if(!noFigure) {
         var figureProperties = {}
@@ -88,28 +101,36 @@ export default ({input, figureClassName, noFigure, title, defaultImage, noDotLin
     return img
 }
 
-function instrumentImg(img, imgRef, previewRef, noFigure) {
+function tryInstrumentImg(input, img, imgRef, previewRef, noFigure) {
+
+    if(!input?.id && !input?.tokenId && !input?.itemId) {
+        return
+    }
 
     var src = img?.props?.src?.toLowerCase() || ''
 
     if(!src) {
-        return img
+        return
     }
 
     if(src.indexOf(`${process.env.PUBLIC_URL}/img/`) === 0) {
-        return img
+        return
     }
 
     if(src.indexOf('opensea') !== -1) {
-        return img
+        return
     }
 
     if(src.indexOf('metadata.ens.domains') !== -1) {
-        return img
+        return
     }
 
     if(src.indexOf('tokens.1inch.io') !== -1) {
-        return img
+        return
+    }
+
+    if(src.indexOf('github.io') !== -1) {
+        return
     }
 
     var oldOnLoad = img.props.onLoad

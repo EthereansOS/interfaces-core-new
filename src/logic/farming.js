@@ -537,11 +537,9 @@ export async function findLiquidityPoolTokenGen1(data, address) {
                 ethSelectData = { symbol: notEthTokenSymbol }
             }
         }
-        const currentToken = newContract(context.ERC20ABI, tkAddress)
-        const symbol = tkAddress === VOID_ETHEREUM_ADDRESS || tkAddress === ammData[0] ? "ETH" : await blockchainCall(currentToken.methods.symbol)
-        var name = tkAddress === VOID_ETHEREUM_ADDRESS || tkAddress === ammData[0] ? "Ethereum" : await blockchainCall(currentToken.methods.name)
-        var decimals = parseInt(tkAddress === VOID_ETHEREUM_ADDRESS ? "18" : await blockchainCall(currentToken.methods.decimals))
-        tokens.push({ symbol, name, decimals, address: tkAddress, isEth: tkAddress.toLowerCase() === ammData[0].toLowerCase() })
+        var token = await loadTokenFromAddress(data, tkAddress)
+        token.isEth = tkAddress.toLowerCase() === ammData[0].toLowerCase()
+        tokens.push(token)
     }))
     ethSelectData = ethTokenFound ? ethSelectData : null
     return {
