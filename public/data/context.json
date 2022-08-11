@@ -91,6 +91,12 @@
             "https://api.coingecko.com/api/v3/simple/token_price/ethereum?vs_currencies=usd&contract_addresses=",
             "https://api.coingecko.com/api/v3/simple/token_price/optimistic-ethereum?vs_currencies=usd&contract_addresses="
         ],
+        "infuraIPFSOptions" : {
+            "host" : "ipfs.infura.io",
+            "port" : 5001,
+            "protocol" : "https"
+        },
+        "infuraAPIKey" : "MkRDdGQwZlJKT0IzaUNINFJITnpab1RjTmdTOjhlZThhNzU0YWUzNjU0ZWViMDhkMGVjOTYyMzBjOGVj",
         "trustwalletImgURLTemplate": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/{0}/logo.png",
         "defaultOcelotTokenAddress": "0x9784b427ecb5275c9300ea34adef57923ab170af",
         "defaultOcelotTokenAddressRopsten": "0x6ae6cf934b2bd8c84d932aee75102ca2ef1bf2ce",
