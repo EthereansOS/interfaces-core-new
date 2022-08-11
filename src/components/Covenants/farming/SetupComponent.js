@@ -619,7 +619,7 @@ export default props => {
             const ethPrice = await getEthereumPrice({ context })
             const wusdAddress = getNetworkElement({ context, chainId }, "WUSDAddress") || ""
             const realRewardTokenAddress = await resolveToken({ context, ...web3Data }, rewardTokenAddress)
-            const realSetupTokens = await Promise.all(setupTokens.map(it => resolveToken({ context, ...web3Data }, it)))
+            const realSetupTokens = await Promise.all(setupTokens.map(it => resolveToken({ context, ...web3Data }, {...it})))
             if (setupInfo.free) {
                 const searchTokens = [realRewardTokenAddress, ...realSetupTokens.map(it => it.address || it)].filter(it => it).map(web3Utils.toChecksumAddress).filter((it, i, arr) => arr.indexOf(it) === i)
                 const res = await getTokenPricesInDollarsOnCoingecko({ context, web3Data }, searchTokens, { tickToPrice, Token, Pool, Position, nearestUsableTick, TICK_SPACINGS, TickMath, maxLiquidityForAmounts })
