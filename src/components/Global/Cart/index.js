@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react'
 
-import { abi, blockchainCall, formatMoney, fromDecimals, numberToString, useWeb3, toDecimals, shortenWord, useEthosContext } from '@ethereansos/interfaces-core'
+import { web3Utils, abi, blockchainCall, formatMoney, fromDecimals, numberToString, useWeb3, toDecimals, shortenWord, useEthosContext } from '@ethereansos/interfaces-core'
 
 import { getEthereum } from '../../../logic/erc20'
 import { calculateSwapOutput, calculateSwapInput } from '../../../logic/amm'
@@ -122,7 +122,7 @@ export default props => {
             selectedAmount[i] = inputType[i][0]
         }
         setInputType(() => inputType)
-        if(mode === 'unwrap' && balance && cart.length === 1 && parseInt(balance) < parseInt(selectedAmount[0]) && parseFloat(fromDecimals(balance, 18, true)) > 0) {
+        if(mode === 'unwrap' && balance && cart.length === 1 && web3Utils.toBN(balance).lt(web3Utils.toBN(selectedAmount[0])) && parseFloat(fromDecimals(balance, 18, true)) > 0) {
             selectedAmount[0] = balance
         }
         setSelectedAmount(() => selectedAmount)
