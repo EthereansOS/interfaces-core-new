@@ -211,48 +211,32 @@ export async function retrieveAllProposals({ context, web3, account, chainId, ge
 
 export async function getOrganizationComponents({ newContract, context }, contract) {
 
-    var componentsKey = [
-        context.grimoire.COMPONENT_KEY_TREASURY_MANAGER,
-        context.grimoire.COMPONENT_KEY_MICROSERVICES_MANAGER,
-        context.grimoire.COMPONENT_KEY_PROPOSALS_MANAGER,
-        context.grimoire.COMPONENT_KEY_STATE_MANAGER,
-        context.grimoire.COMPONENT_KEY_INVESTMENTS_MANAGER,
-        context.grimoire.COMPONENT_KEY_TREASURY_SPLITTER_MANAGER,
-        context.grimoire.COMPONENT_KEY_DELEGATIONS_MANAGER,
-        context.grimoire.COMPONENT_KEY_SUBDAOS_MANAGER,
-        context.grimoire.COMPONENT_KEY_DELEGATIONS_MANAGER,
-        context.grimoire.COMPONENT_KEY_TOKENS_MANAGER,
-        context.grimoire.COMPONENT_KEY_OS_FARMING,
-        context.grimoire.COMPONENT_KEY_DIVIDENDS_FARMING,
-        context.grimoire.COMPONENT_KEY_TOKEN_MINTER_AUTH,
-        context.grimoire.COMPONENT_KEY_TOKEN_MINTER
-    ]
+    var componentsKey = {
+        [context.grimoire.COMPONENT_KEY_TREASURY_MANAGER] : "TreasuryManager",
+        [context.grimoire.COMPONENT_KEY_MICROSERVICES_MANAGER] : "MicroservicesManager",
+        [context.grimoire.COMPONENT_KEY_PROPOSALS_MANAGER] : "ProposalsManager",
+        [context.grimoire.COMPONENT_KEY_STATE_MANAGER] : "StateManager",
+        [context.grimoire.COMPONENT_KEY_INVESTMENTS_MANAGER] : "InvestmentsManager",
+        [context.grimoire.COMPONENT_KEY_TREASURY_SPLITTER_MANAGER] : "TreasurySplitterManager",
+        [context.grimoire.COMPONENT_KEY_SUBDAOS_MANAGER] : "SubDAOsManager",
+        [context.grimoire.COMPONENT_KEY_DELEGATIONS_MANAGER] : "DelegationsManager",
+        [context.grimoire.COMPONENT_KEY_TOKENS_MANAGER] : "DelegationTokensManager",
+        [context.grimoire.COMPONENT_KEY_OS_FARMING] : "OSFarming",
+        [context.grimoire.COMPONENT_KEY_DIVIDENDS_FARMING] : "DividendsFarming",
+        [context.grimoire.COMPONENT_KEY_TOKEN_MINTER_AUTH] : "OSFixedInflationManager",
+        [context.grimoire.COMPONENT_KEY_TOKEN_MINTER] : "OSMinter"
+    }
 
-    var componentNames = [
-        "TreasuryManager",
-        "MicroservicesManager",
-        "ProposalsManager",
-        "StateManager",
-        "InvestmentsManager",
-        "TreasurySplitterManager",
-        "DelegationsManager",
-        "SubDAOsManager",
-        "DelegationsManager",
-        "DelegationTokensManager",
-        "OSFarming",
-        "DividendsFarming",
-        "OSFixedInflationManager",
-        "OSMinter"
-    ]
+    var componentsAddress = await blockchainCall(contract.methods.list, Object.keys(componentsKey))
 
-    var componentsAddress = await blockchainCall(contract.methods.list, componentsKey)
+    var number = 0
 
-    return componentsKey.reduce((acc, key, i) => {
+    return Object.keys(componentsKey).reduce((acc, key, i) => {
         var item
         var addr = componentsAddress[i]
-        var componentName = componentNames[i]
+        var componentName = componentsKey[key]
         if (addr != VOID_ETHEREUM_ADDRESS) {
-            console.log(componentName, addr)
+            console.log(contract.options.address, componentName, addr, number++)
             item = {
                 address: addr,
                 key,
