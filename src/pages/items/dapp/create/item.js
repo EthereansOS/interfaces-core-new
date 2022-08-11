@@ -336,10 +336,14 @@ const Metadata = ({state, onStateEntry}) => {
             return
         }
         setTimeout(async () => {
-            if(!await checkCoverSize({ context }, state.metadata.image)) {
+            try {
+                if(!await checkCoverSize({ context }, state.metadata.image, true)) {
+                    throw "Cover size does not match requirements"
+                }
+            } catch(e) {
                 var newMetadata = { ...state.metadata }
                 delete newMetadata.image
-                alert("Cover size does not match requirements")
+                alert(e.message || e)
                 onStateEntry('metadata', newMetadata)
             }
         })

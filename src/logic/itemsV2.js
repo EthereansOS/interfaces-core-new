@@ -640,30 +640,40 @@ export async function checkCoverSize({context}, file, mandatory) {
     if(!file && mandatory) {
         throw "Cover is Mandatory"
     }
-    var cover
-    if ((typeof file).toLowerCase() === "string") {
-        cover = await (await fetch(formatLink({context}, file))).blob()
-    } else {
+    var cover = file
+    if ((typeof file).toLowerCase() !== "string") {
         cover = file.size ? file : file.item ? file.item(0) : file.get ? file.get(0) : file[0]
     }
     if(!cover && mandatory) {
         throw "Cover is Mandatory"
     }
+    function toImage(src, ok, ko, reader) {
+        var image = new Image()
+        image.onload = function onload() {
+            var result = image.width <= context.metadataCoverMaxWidth
+            if(result && reader) {
+                var byteLength = parseInt(reader.result.substring(reader.result.indexOf(',') + 1).replace(/=/g, "").length * 0.75)
+                var mBLength = byteLength / 1024 / 1024
+                result = mBLength <= (context.metadataCoverMaxWeightInMB || 100000)
+            }
+            return ok(result)
+        }
+        image.onerror = ko
+        image.src = src
+    }
     return await new Promise(function(ok, ko) {
         try {
             var reader = new FileReader()
             reader.addEventListener("load", function() {
-                var image = new Image()
-                image.onload = function onload() {
-                    var byteLength = parseInt(reader.result.substring(reader.result.indexOf(',') + 1).replace(/=/g, "").length * 0.75)
-                    var mBLength = byteLength / 1024 / 1024
-                    return ok(image.width <= context.metadataCoverMaxWidth && mBLength <= (context.metadataCoverMaxWeightInMB || 100000))
-                }
-                image.src = (window.URL || window.webkitURL).createObjectURL(cover)
+                toImage((window.URL || window.webkitURL).createObjectURL(cover), ok, ko, reader)
             }, false)
             reader.readAsDataURL(cover)
         } catch(e) {
-            return ko(e)
+            try {
+                toImage(cover, ok, ko)
+            } catch(e) {
+                return ko(e)
+            }
         }
     })
 }

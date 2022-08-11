@@ -9,27 +9,27 @@
         "description" : "The description of this new awesome Item"
     }, {
         "field" : "image",
-        "type" : "file",
+        "type" : "url",
         "label" : "Cover",
         "accept" : ".png,.gif",
         "mandatory" : true,
         "description" : "The cover img must be .png or .gif and at max 5mb lenght, due to users experience in IPFS download speed limitations (recommended size 350 x 200, 350 x 350 or 350 x 500)"
     }, {
         "field" : "image_data",
-        "type" : "file",
+        "type" : "url",
         "label" : "Cover HD",
         "accept" : ".png,.jpeg,.gif",
         "description" : "No limitations for the HQ version of the image"
     },
     {
         "field" : "defi_cover",
-        "type" : "file",
+        "type" : "url",
         "label" : "DeFi Cover",
         "accept" : ".png,.jpeg",
         "description" : "A square .png or .jpeg cover 250px for DeFi standard applications."
     }, {
         "field" : "animation_url",
-        "type" : "file",
+        "type" : "url",
         "label" : "Animation",
         "accept" : ".mp4",
         "description" : "An mp4, mp3 or gif file as a fancy animated version of your ITEM"
@@ -41,7 +41,7 @@
         "description" : "The background color used in most of the dapps behind your cover if not fixed with their standard image sizes"
     }, {
         "field" : "licence_url",
-        "type" : "file",
+        "type" : "url",
         "label" : "Licence File",
         "accept" : ".pdf,.html,.md,.txt",
         "description" : "A file that represent the legal licence of the ITEM (if Any). Accepted file: .pdf, .html, .md, .txt"
@@ -67,33 +67,33 @@
         "description" : "The description of this new awesome Item"
     }, {
         "field" : "image",
-        "type" : "file",
+        "type" : "url",
         "label" : "Cover",
         "accept" : ".png,.gif",
         "mandatory" : true,
         "description" : "The cover img must be .png or .gif and at max 5mb lenght, due to users experience in IPFS download speed limitations (recommended size 350 x 200, 350 x 350 or 350 x 500)"
     }, {
         "field" : "image_data",
-        "type" : "file",
+        "type" : "url",
         "label" : "Cover HD",
         "accept" : ".png,.jpeg,.gif",
         "description" : "No limitations for the HQ version of the Artwork"
-    }, 
+    },
     {
         "field" : "defi_cover",
-        "type" : "file",
+        "type" : "url",
         "label" : "DeFi Cover",
         "accept" : ".png,.jpeg",
         "description" : "A square .png or .jpeg cover 250px for DeFi standard applications."
     },{
         "field" : "animation_url",
-        "type" : "file",
+        "type" : "url",
         "label" : "Animation",
         "accept" : ".mp4",
         "description" : "An mp4 file as a fancy animated version of your Artwork"
     }, {
         "field" : "content_url",
-        "type" : "file",
+        "type" : "url",
         "label" : "Professional File",
         "description" : "Enter the professional/Raw file version of the Artwork (.psd, .ai...)"
     }, {
@@ -104,7 +104,7 @@
         "description" : "The background color used in most of the dapps behind your cover if not fixed with their standard image sizes"
     }, {
         "field" : "licence_url",
-        "type" : "file",
+        "type" : "url",
         "label" : "Licence File",
         "accept" : ".pdf,.html,.md,.txt",
         "description" : "A file that represent the legal licence of the ITEM (if Any). Accepted file: .pdf, .html, .md, .txt"
@@ -130,33 +130,33 @@
         "description" : "The description of this new awesome Item"
     }, {
         "field" : "image",
-        "type" : "file",
+        "type" : "url",
         "label" : "Cover",
         "accept" : ".png,.gif",
         "mandatory" : true,
         "description" : "The cover img must be .png or .gif and at max 5mb lenght, due to users experience in IPFS download speed limitations (recommended size 350 x 200, 350 x 350 or 350 x 500)"
     }, {
         "field" : "image_data",
-        "type" : "file",
+        "type" : "url",
         "label" : "Cover HD",
         "accept" : ".png,.jpeg,.gif",
         "description" : "No limitations for the HQ version of the Artwork"
     }, {
         "field" : "defi_cover",
-        "type" : "file",
+        "type" : "url",
         "label" : "DeFi Cover",
         "accept" : ".png,.jpeg",
         "description" : "A square .png or .jpeg cover 250px for DeFi standard applications."
     },{
         "field" : "animation_url",
-        "type" : "file",
+        "type" : "url",
         "label" : "Intro",
         "accept" : ".mp4",
         "description" : "The mp4 file of the Movie / Video intro"
     },
     {
         "field" : "content_url",
-        "type" : "file",
+        "type" : "url",
         "label" : "Movie / Video",
         "accept" : ".mp4",
         "description" : "The mp4 file of the Movie / Video"
@@ -168,7 +168,7 @@
         "description" : "The background color used in most of the dapps behind your cover if not fixed with their standard image sizes"
     }, {
         "field" : "licence_url",
-        "type" : "file",
+        "type" : "url",
         "label" : "Licence File",
         "accept" : ".pdf,.html,.md,.txt",
         "description" : "A file that represent the legal licence of the ITEM (if Any). Accepted file: .pdf, .html, .md, .txt"
@@ -194,33 +194,33 @@
         "description" : "The description of this new awesome Item"
     }, {
         "field" : "image",
-        "type" : "file",
+        "type" : "url",
         "label" : "Cover",
         "accept" : ".png,.gif",
         "mandatory" : true,
         "description" : "The cover img must be .png or .gif and at max 5mb lenght, due to users experience in IPFS download speed limitations (recommended size 350 x 200, 350 x 350 or 350 x 500)"
     }, {
         "field" : "image_data",
-        "type" : "file",
+        "type" : "url",
         "label" : "Cover HD",
         "accept" : ".png,.jpeg,.gif",
         "description" : "No limitations for the HQ version of the Artwork"
     }, {
         "field" : "defi_cover",
-        "type" : "file",
+        "type" : "url",
         "label" : "DeFi Cover",
         "accept" : ".png,.jpeg",
         "description" : "A square .png or .jpeg cover 250px for DeFi standard applications."
     },{
         "field" : "animation_url",
-        "type" : "file",
+        "type" : "url",
         "label" : "File",
         "accept" : ".mp4",
         "description" : "The mp4 file of the Song"
     },
     {
         "field" : "content_url",
-        "type" : "file",
+        "type" : "url",
         "label" : "Audio / Song",
         "accept" : ".mp3",
         "description" : "The mp3 file of the Audio / Song"
@@ -233,7 +233,7 @@
         "description" : "The background color used in most of the dapps behind your cover if not fixed with their standard image sizes"
     }, {
         "field" : "licence_url",
-        "type" : "file",
+        "type" : "url",
         "label" : "Licence File",
         "accept" : ".pdf,.html,.md,.txt",
         "description" : "A file that represent the legal licence of the ITEM (if Any). Accepted file: .pdf, .html, .md, .txt"
@@ -259,26 +259,26 @@
         "description" : "The description of this new awesome Item"
     }, {
         "field" : "image",
-        "type" : "file",
+        "type" : "url",
         "label" : "Cover",
         "accept" : ".png,.gif",
         "mandatory" : true,
         "description" : "The cover img must be .png or .gif and at max 5mb lenght, due to users experience in IPFS download speed limitations (recommended size 350 x 200, 350 x 350 or 350 x 500)"
     }, {
         "field" : "image_data",
-        "type" : "file",
+        "type" : "url",
         "label" : "Cover HD",
         "accept" : ".png,.jpeg,.gif",
         "description" : "No limitations for the HQ version of the Artwork"
     }, {
         "field" : "defi_cover",
-        "type" : "file",
+        "type" : "url",
         "label" : "DeFi Cover",
         "accept" : ".png,.jpeg",
         "description" : "A square .png or .jpeg cover 250px for DeFi standard applications."
     },{
         "field" : "animation_url",
-        "type" : "file",
+        "type" : "url",
         "label" : "Animation",
         "accept" : ".mp4",
         "description" : "An mp4, mp3 or gif file as a fancy animated version of your ITEM"
@@ -291,7 +291,7 @@
         "description" : "The background color used in most of the dapps behind your cover if not fixed with their standard image sizes"
     }, {
         "field" : "licence_url",
-        "type" : "file",
+        "type" : "url",
         "label" : "Licence File",
         "accept" : ".pdf,.html,.md,.txt",
         "description" : "A file that represent the legal licence of the ITEM (if Any). Accepted file: .pdf, .html, .md, .txt"
@@ -317,33 +317,33 @@
         "description" : "The description of this new awesome Item"
     }, {
         "field" : "image",
-        "type" : "file",
+        "type" : "url",
         "label" : "Cover",
         "accept" : ".png,.gif",
         "mandatory" : true,
         "description" : "The cover img must be .png or .gif and at max 5mb lenght, due to users experience in IPFS download speed limitations (recommended size 350 x 200, 350 x 350 or 350 x 500)"
     }, {
         "field" : "image_data",
-        "type" : "file",
+        "type" : "url",
         "label" : "Cover HD",
         "accept" : ".png,.jpeg,.gif",
         "description" : "No limitations for the HQ version of the Artwork"
     }, {
         "field" : "defi_cover",
-        "type" : "file",
+        "type" : "url",
         "label" : "DeFi Cover",
         "accept" : ".png,.jpeg",
         "description" : "A square .png or .jpeg cover 250px for DeFi standard applications."
     },{
         "field" : "animation_url",
-        "type" : "file",
+        "type" : "url",
         "label" : "Animation",
         "accept" : ".mp4",
         "description" : "An mp4, mp3 or gif file as a fancy animated version of your ITEM"
     },
     {
         "field" : "content_url",
-        "type" : "file",
+        "type" : "url",
         "label" : "Voxel",
         "accept" : ".vox",
         "description" : "The .vox file"
@@ -356,7 +356,7 @@
         "description" : "The background color used in most of the dapps behind your cover if not fixed with their standard image sizes"
     }, {
         "field" : "licence_url",
-        "type" : "file",
+        "type" : "url",
         "label" : "Licence File",
         "accept" : ".pdf,.html,.md,.txt",
         "description" : "A file that represent the legal licence of the ITEM (if Any). Accepted file: .pdf, .html, .md, .txt"
@@ -382,33 +382,33 @@
         "description" : "The description of this new awesome Item"
     }, {
         "field" : "image",
-        "type" : "file",
+        "type" : "url",
         "label" : "Cover",
         "accept" : ".png,.gif",
         "mandatory" : true,
         "description" : "The cover img must be .png or .gif and at max 5mb lenght, due to users experience in IPFS download speed limitations (recommended size 350 x 200, 350 x 350 or 350 x 500)"
     }, {
         "field" : "image_data",
-        "type" : "file",
+        "type" : "url",
         "label" : "Cover HD",
         "accept" : ".png,.jpeg,.gif",
         "description" : "No limitations for the HQ version of the Artwork"
     }, {
         "field" : "defi_cover",
-        "type" : "file",
+        "type" : "url",
         "label" : "DeFi Cover",
         "accept" : ".png,.jpeg",
         "description" : "A square .png or .jpeg cover 250px for DeFi standard applications."
     },{
         "field" : "animation_url",
-        "type" : "file",
+        "type" : "url",
         "label" : "Animation",
         "accept" : ".mp4",
         "description" : "An mp4, mp3 or gif file as a fancy animated version of your ITEM"
     },
     {
         "field" : "content_url",
-        "type" : "file",
+        "type" : "url",
         "label" : "Document",
         "accept" : ".pdf",
         "description" : "The .pdf file"
@@ -421,7 +421,7 @@
         "description" : "The background color used in most of the dapps behind your cover if not fixed with their standard image sizes"
     }, {
         "field" : "licence_url",
-        "type" : "file",
+        "type" : "url",
         "label" : "Licence File",
         "accept" : ".pdf,.html,.md,.txt",
         "description" : "A file that represent the legal licence of the ITEM (if Any). Accepted file: .pdf, .html, .md, .txt"
