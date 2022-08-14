@@ -313,7 +313,9 @@ const Investments = ({element}) => {
               </a>
               {tokensFromETHAMMs && <>
                 on
-                <LogoRenderer noFigure input={tokensFromETHAMMs[i]}/>
+                <a>
+                  <LogoRenderer noFigure input={tokensFromETHAMMs[i]}/>
+                </a>
               </>}
             </>)}
           </p>}
@@ -330,7 +332,9 @@ const Investments = ({element}) => {
               </a>
               {tokensToETHAMMs && <>
                 on
-                <LogoRenderer noFigure input={tokensToETHAMMs[i]}/>
+                <a>
+                  <LogoRenderer noFigure input={tokensToETHAMMs[i]}/>
+                </a>
               </>}
             </>)}
           for <a><img src={`${process.env.PUBLIC_URL}/img/eth_logo.png`}></img></a>
