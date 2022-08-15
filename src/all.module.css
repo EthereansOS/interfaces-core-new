@@ -1149,9 +1149,10 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .BollinoEth, .BollinoOP {position: absolute; right: 5px; bottom: 5px; font-size: 12px; font-weight: bold; padding: 7px; border-radius: 50%; border: none; z-index: 1000;}
 .CollectionFolder .BollinoEth, .CollectionFolder .BollinoOP, .TradeMarketTokenSelector .BollinoEth , .TradeMarketTokenSelector .BollinoOP {font-size: 8px;padding:3px; right: 2px; bottom: 2px;}
 
-.TokenSelectorListProposal .ActionInfoSectionAMM {width: 100px; margin: 10px auto; display: inline-block;}
-.TokenSelectorListProposal .ActionInfoSectionAMM figure {width: 90px; height: 90px;}
-.TokenSelectorListProposal .ActionInfoSectionAMM figure img {width: 90px; height: 90px;}
+.TokenSelectorListProposal .ActionInfoSectionAMM {width: 60px; margin: 10px; padding: 5px; border-radius: 12px; display: inline-block; vertical-align: top; text-align: center;}
+.TokenSelectorListProposal .ActionInfoSectionAMM figure {width: 40px; height: 40px; display: inline-block;}
+.TokenSelectorListProposal .ActionInfoSectionAMM figure img {width: 40px; height: 40px;}
+.selectorTok {width: 90% !important;}
 
 .OnlyMobile {display: none;}
 
@@ -2659,6 +2660,8 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .biz .ObjectInfoAndLink h5 {color: #000000 !important;}
 .dark .ObjectInfoAndLink h5 {color: #ffffff !important;}
 .sepia .ObjectInfoAndLink h5 {color: #49646a !important;}
+
+.light .TokenSelectorListProposal .ActionInfoSectionAMM {background-color: #ffffff;}
 
 .opacity1 { opacity: 1 !important;}
 
