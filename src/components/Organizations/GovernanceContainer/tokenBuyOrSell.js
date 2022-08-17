@@ -105,10 +105,12 @@ const AMMSelector = ({stateProvider, index}) => {
             <span>▼</span>
         </a>}
         {state && state.ammList && state.ammList[index] && state.ammList[index].name === 'UniswapV3' && <>
-            <span>Pool %</span>
-            <select value={state.ammList[index].uniswapV3PoolValue.value} onChange={onUniswapV3PoolValueChange}>
-                {uniswapV3PoolValues.map(it => <option key={it.value} value={it.value}>{it.label}</option>)}
-            </select>
+            <div className={style.UniV3SelectPerch}>
+                <p>Pool:</p>
+                <select value={state.ammList[index].uniswapV3PoolValue.value} onChange={onUniswapV3PoolValueChange}>
+                    {uniswapV3PoolValues.map(it => <option key={it.value} value={it.value}>{it.label}</option>)}
+                </select>
+            </div>
         </>}
     </>)
 }

@@ -1153,6 +1153,8 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .TokenSelectorListProposal .ActionInfoSectionAMM figure {width: 40px; height: 40px; display: inline-block;}
 .TokenSelectorListProposal .ActionInfoSectionAMM figure img {width: 40px; height: 40px;}
 .selectorTok {width: 90% !important;}
+.UniV3SelectPerch {width: 100%; text-align: center; padding: 10px;}
+.UniV3SelectPerch select {padding: 10px; display: block; margin: 5px auto; border-radius: 12px;}
 
 .OnlyMobile {display: none;}
 
@@ -1757,11 +1759,11 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .sepia .CreationSelect {background-color: #d9d2c2a3;}
 .matrix .CreationSelect {background-color: #008F11; color: #000; border-radius: 0;}
 
-.light .CreationSelectW {background-color: #ffffff;}
-.biz .CreationSelectW {background-color: #ffffff;}
-.dark .CreationSelectW {background-color: #000000; color: #ffffff;}
-.sepia .CreationSelectW {background-color: #eee8d59c;}
-.matrix .CreationSelectW {background-color: #008F11; color: #000; border-radius: 0;}
+.light .CreationSelectW,.light .UniV3SelectPerch select {background-color: #ffffff;}
+.biz .CreationSelectW, .biz .UniV3SelectPerch select {background-color: #ffffff;}
+.dark .CreationSelectW, .dark .UniV3SelectPerch select {background-color: #000000; color: #ffffff;}
+.sepia .CreationSelectW, .sepia .UniV3SelectPerch select {background-color: #eee8d59c;}
+.matrix .CreationSelectW, .matrix .UniV3SelectPerch select {background-color: #008F11; color: #000; border-radius: 0;}
 
 .light .CreationPageLabelF {background-color: #e9effc;border: 1px solid #e0e2e6;}
 .biz .CreationPageLabelF {background: linear-gradient(0deg, #ffffff 50%, #bfc0ea 100%); border: 1px solid #a7a7a7;}
