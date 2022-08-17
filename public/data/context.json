@@ -64,6 +64,7 @@
             "eth_getLogs",
             "eth_estimateGas"
         ],
+        "discordLink" : "https://discord.gg/Eqf5xWBJsN",
         "ourSubDAO" : "0xc28FfD843DCA86565597A1b82265df29A1642262",
         "ourSubDAORinkeby" : "0xe016Cc0B9cDd895E7e28163F1d0125Bd4d034cC5",
         "ourDFORinkeby" : "0xe016Cc0B9cDd895E7e28163F1d0125Bd4d034cC5",
@@ -121,7 +122,7 @@
             "ipfs://ipfs/",
             "ipfs://"
         ],
-        "ipfsUrlChanger": "https://gateway.ipfs.io/ipfs/",
+        "ipfsUrlChanger": "https://ipfs.io/ipfs/",
         "ipfsUrlBase": "https://ipfs.io/ipfs",
         "uniswapV3PoolURLTemplate": "https://info.uniswap.org/#/{0}pools/{1}",
         "uniswapV3NFTURLTemplate": "https://app.uniswap.org/#/pool/{1}",

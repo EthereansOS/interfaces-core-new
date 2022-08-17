@@ -644,6 +644,9 @@ export async function checkCoverSize({context}, file, mandatory) {
     if ((typeof file).toLowerCase() !== "string") {
         cover = file.size ? file : file.item ? file.item(0) : file.get ? file.get(0) : file[0]
     }
+    if ((typeof cover).toLowerCase() === "string") {
+        cover = formatLink({ context }, cover)
+    }
     if(!cover && mandatory) {
         throw "Cover is Mandatory"
     }
