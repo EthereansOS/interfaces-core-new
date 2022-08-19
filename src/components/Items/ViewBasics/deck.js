@@ -37,10 +37,10 @@ export default ({item}) => {
         <SendToLayer item={item}/>
         <AddItemToMetamask item={item}/>
         <ExtLinkButton href={`${getNetworkElement({context, chainId : item.l2Address ? dualChainId : chainId}, "etherscanURL")}/${dualChainId && !item.l2Address ? 'address' : 'token'}/${item.address}`} text="Contract"/>
-        {item.collectionData && item.collectionData.slug && <ExtLinkButton href={`https://${chainId === 1 ? '' : 'testnets.'}opensea.io/collection/${item.collectionData.slug}`} text="Original"/>}
+        {item.collectionData && item.collectionData.slug && <ExtLinkButton href={`https://${(dualChainId || chainId) === 1 ? '' : 'testnets.'}opensea.io/collection/${item.collectionData.slug}`} text="Original"/>}
         <ExtLinkButton href={item.external_url} text="Website"/>
-        {(!dualChainId || item.l2Address) && <ExtLinkButton href={`https://${(chainId || dualChainId) === 1 ? '' : 'testnets.'}opensea.io/assets/${item.mainInterface.options.address}/${item.id}`} text="OpenSea"/>}
-        <ExtLinkButton href={`https://info.uniswap.org/#/tokens/${item.address}`} text="Uniswap"/>
+        {(!dualChainId || item.l2Address) && <ExtLinkButton href={`https://${(dualChainId || chainId) === 1 ? '' : 'testnets.'}opensea.io/assets/${item.mainInterface.options.address}/${item.id}`} text="OpenSea"/>}
+        {!dualChainId && <ExtLinkButton href={`https://info.uniswap.org/#/tokens/${item.address}`} text="Uniswap"/>}
         <ExtLinkButton href={item.discord_url} text="Share"/>
     </div>
   )
