@@ -29,10 +29,9 @@ export default ({item}) => {
         setToken(null)
         setTimeout(async () => {
             var source = await blockchainCall(item.wrapper.methods.source, item.id)
-            //source = await resolveToken({ context, ...web3Data }, source)
             if(item.wrapType === 'ERC20') {
                 try {
-                    return setToken(await loadTokenFromAddress({account, context, newContract, web3}, source))
+                    return setToken(await loadTokenFromAddress({context, seaport, ...web3Data}, source))
                 } catch(e) {
                     console.log(e)
                 }

@@ -14,15 +14,15 @@ export default ({item}) => {
 
   const context = useEthosContext()
 
-  const { chainId } = useWeb3()
+  const { chainId, dualChainId } = useWeb3()
 
   const [delegation, setDelegation] = useState()
 
-  useEffect(() => tryRetrieveDelegationAddressFromItem({ context, chainId }, item).then(setDelegation), [])
+  useEffect(() => !dualChainId && tryRetrieveDelegationAddressFromItem({ context, chainId }, item).then(setDelegation), [dualChainId])
 
   return (
     <div className={style.ViewDescriptionL}>
-      {delegation && 
+      {delegation &&
       <div className={style.SpecialDesc}>
         <h4>Delegation Item</h4>
         <div className={style.OrgAllSingle}>

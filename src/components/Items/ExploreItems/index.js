@@ -37,7 +37,7 @@ const Item = ({element, allMine, wrappedOnly}) => {
 
   return (
     <div className={style.ItemSingle}>
-      <Link to={`/items/dapp/${wrappedOnly === 'Deck' || element.isDeck ? 'decks/' : ''}${element.address}`}>
+      <Link to={`/items/dapp/${wrappedOnly === 'Deck' || element.isDeck ? 'decks/' : ''}${element.l2Address || element.address}`}>
         {!loadedData && <OurCircularProgress/>}
         {loadedData && <ItemImage input={loadedData}/>}
         <div className={style.ItemTitle}>

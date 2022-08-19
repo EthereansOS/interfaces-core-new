@@ -495,7 +495,9 @@ async function cleanItemData(data, itemData, metadata) {
             l1Contract : itemData.contract,
             ...metadata,
             metadata,
-            decimals : '18'
+            decimals : '18',
+            collectionData : itemData.collectionData,
+            l1Data : itemData
         }
     }
 

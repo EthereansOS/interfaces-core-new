@@ -54,11 +54,11 @@ export default ({item}) => {
         <AddItemToMetamask item={item}/>
         <ExtLinkButton href={`${getNetworkElement({context, chainId : item.l2Address ? dualChainId : chainId}, "etherscanURL")}/${dualChainId && !item.l2Address ? 'address' : 'token'}/${item.address}`} text="Contract"/>
         <ExtLinkButton href={item.external_url} text="Website"/>
-        {(!dualChainId || item.l2Address) && <ExtLinkButton href={`https://${(chainId || dualChainId) === 1 ? '' : 'testnets.'}.io/assets/${item.mainInterface.options.address}/${item.id}`} text="OpenSea"/>}
+        {(!dualChainId || item.l2Address) && <ExtLinkButton href={`https://${(dualChainId || chainId) === 1 ? '' : 'testnets.'}opensea.io/assets/${(item.mainInterface || item.l1Data.mainInterface).options.address}/${item.id || item.l1Data.id}`} text="OpenSea"/>}
         <ExtLinkButton href={`https://info.uniswap.org/#/tokens/${item.address}`} text="Uniswap"/>
         <ExtLinkButton href={item.discord_url} text="Share"/>
-        {item.collectionData.mintOperator && item.collectionData.mintOperator !== VOID_ETHEREUM_ADDRESS && <ExtLinkButton href={getNetworkElement({context, chainId}, 'etherscanURL') + 'address/' + item.collectionData.mintOperator} text="Mintable"/>}
-        <ExtLinkButton className={(!item.collectionData.metadataOperator || item.collectionData.metadataOperator === VOID_ETHEREUM_ADDRESS) && 'Disabled'} href={item.collectionData.metadataOperator && item.collectionData.metadataOperator !== VOID_ETHEREUM_ADDRESS ? (getNetworkElement({context, chainId}, 'etherscanURL') + 'address/' + item.collectionData.metadataOperator) : undefined} text={`Metadata ${item.collectionData.metadataOperator && item.collectionData.metadataOperator !== VOID_ETHEREUM_ADDRESS ? 'Host' : 'Frozen'}`}/>
+        {item.collectionData.mintOperator && item.collectionData.mintOperator !== VOID_ETHEREUM_ADDRESS && <ExtLinkButton href={getNetworkElement({context, chainId : dualChainId || chainId}, 'etherscanURL') + 'address/' + item.collectionData.mintOperator} text="Mintable"/>}
+        <ExtLinkButton className={(!item.collectionData.metadataOperator || item.collectionData.metadataOperator === VOID_ETHEREUM_ADDRESS) && 'Disabled'} href={item.collectionData.metadataOperator && item.collectionData.metadataOperator !== VOID_ETHEREUM_ADDRESS ? (getNetworkElement({context, chainId : dualChainId || chainId }, 'etherscanURL') + 'address/' + item.collectionData.metadataOperator) : undefined} text={`Metadata ${item.collectionData.metadataOperator && item.collectionData.metadataOperator !== VOID_ETHEREUM_ADDRESS ? 'Host' : 'Frozen'}`}/>
         {false && hasFarming === null && <OurCircularProgress/>}
         {false && hasFarming !== null && <RegularButtonDuo onClick={() => setFarming(true)}>Farming Contracts</RegularButtonDuo>}
     </div>
