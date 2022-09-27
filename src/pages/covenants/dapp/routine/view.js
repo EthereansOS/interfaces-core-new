@@ -124,6 +124,9 @@ const ViewRoutine = ({ loadedElement, onBack }) => {
     }
 
     async function execute() {
+        if(element.execute) {
+            return await element.execute(account)
+        }
         var minInputs = (await blockchainCall(element.contract.methods.entry))[1].map(() => 0)
         minInputs = await element.contract.methods.executeWithMinAmounts(earnByInput === true, minInputs).call()
         minInputs = minInputs[1].map(it => numberToString(parseInt(it) * parseFloat(100 - slippage) / 100).split('.')[0])

@@ -65,7 +65,7 @@ export async function getHardcabledRoutine(data) {
 
     const address = getNetworkElement({ context, chainId }, 'hardcabledRoutineAddress')
 
-    const contract = newContract(context.NewFixedInflationABI, address)
+    const contract = newContract(context.OSFixedInflationManagerABI, address)
     const extensionAddress = await blockchainCall(contract.methods.host)
     const extension = newContract(context.FixedInflationExtensionABI, extensionAddress)
     const host = extensionAddress
@@ -169,7 +169,10 @@ export async function getHardcabledRoutine(data) {
         active : true,
         contract,
         oneHundred,
-        nextBlock
+        nextBlock,
+        async execute(addr) {
+            return await blockchainCall(contract.methods.swapToETH, await contract.methods.swapToETH('1', VOID_ETHEREUM_ADDRESS).call(), addr)
+        }
     }
 
 }

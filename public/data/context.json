@@ -116,7 +116,7 @@
         "sushiSwapRouterAddress": "0xd9e1cE17f2641f24aE83637ab66a2cca9C378B9F",
         "quickScopeAddress": "0x99b0c942f12b85df3f5e2a5b0af2c437da31cb85",
         "quickScopeAddressRopsten": "0xf67e59E377d070841C5057b67Cfe27F5d341905b",
-        "hardcabledRoutineAddress" : "0xf12984f3b4Fd4415fCeA1cfD5886A2cC27963063",
+        "hardcabledRoutineAddress" : "0xC40b51598A1C20afc5EA6f130C8447EaE445c613",
         "hardcabledRoutineAddressRinkeby" : "0xf67e59E377d070841C5057b67Cfe27F5d341905b",
         "ipfsUrlTemplates": [
             "ipfs://ipfs/",
