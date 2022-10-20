@@ -42,7 +42,7 @@ export async function loadWrappedCollectionIds(data) {
             getGlobalContract('eRC1155Wrapper'),
             getGlobalContract('eRC721WrapperDeck'),
             getGlobalContract('eRC1155WrapperDeck')
-        ]).map(it => blockchainCall(it.methods.collectionId)))
+        ]).map(it => blockchainCall(it.methods.collectionId).catch((() => VOID_BYTES32))))
     }
 
     return await wrappedCollectionIds.collectionIds
