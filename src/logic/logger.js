@@ -1,5 +1,27 @@
 import { cache, sendAsync, web3Utils } from "@ethereansos/interfaces-core"
 
+function destroyUniqueKey(it, uniqueKeyName) {
+    var d = {
+        ...it
+    }
+    delete d[uniqueKeyName]
+    return d
+}
+
+function cleanDuplicates(array, uniqueKey) {
+    var uniqueKeyName = (typeof uniqueKey).toLowerCase() === 'string' ? uniqueKey : ("uniqueKey_" + new Date().getTime() + "_" + Math.random())
+    var dups = [...(array.map(it => ({...it})))]
+    dups = dups.map(it => ({
+        ...it,
+        [uniqueKeyName] : uniqueKey instanceof Function ? uniqueKey(it) : it[uniqueKeyName]
+    }))
+
+    var uniq = {}
+    dups = dups.filter(it => !uniq[it[uniqueKeyName]] && (uniq[it[uniqueKeyName]] = true))
+    dups = (typeof uniqueKey).toLowerCase() === 'string' ? dups : dups.map(it => destroyUniqueKey(it, uniqueKeyName))
+    return dups
+}
+
 function getLogKey(args) {
     var key = {
         ...args
@@ -31,9 +53,11 @@ export async function getLogs(provider, _, args) {
     lastBlock = parseInt(lastBlock)
 
     const logKey = getLogKey(args)
-    const cached = JSON.parse(await cache.getItem(logKey)) || {
+    const cached = (!args.clear && JSON.parse(await cache.getItem(logKey))) || {
         logs : []
     }
+
+    delete args.clear
 
     var cachedLogs = cached.logs.filter(it => parseInt(it.blockNumber) >= firstBlock && parseInt(it.blockNumber) <= lastBlock)
 
@@ -91,10 +115,10 @@ export async function getLogs(provider, _, args) {
         ...logs.filter(it => cached.logs.filter(stored => stored.transactionHash.toLowerCase() === it.transactionHash.toLowerCase()).length === 0)
     ].sort(ascending)
 
-    logs = [
+    logs = cleanDuplicates([
         ...logs,
         ...cachedLogs
-    ].sort(ascending)
+    ], it => web3Utils.sha3(it.transactionHash + it.address + JSON.stringify(it.topics) + (it.data || "0x"))).sort(ascending)
 
     cached.fromBlock = (cached.fromBlock = cached.fromBlock || firstBlock) > firstBlock ? firstBlock : cached.fromBlock
     cached.toBlock = (cached.toBlock = cached.toBlock || lastBlock) > lastBlock ? lastBlock : cached.toBlock

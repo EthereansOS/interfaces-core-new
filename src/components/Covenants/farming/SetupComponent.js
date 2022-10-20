@@ -1011,7 +1011,8 @@ export default props => {
         try {
             await blockchainCall(element.contract.methods["withdrawReward(uint256,bytes)"], currentPosition.positionId, burnData)
         } catch(e) {
-            if((e.message || e).toLowerCase().indexOf('user denied') === -1) {
+            var msg = (e.message || e).toLowerCase()
+            if(msg.indexOf('user denied') === -1 && msg.indexOf("allowance") === -1) {
                 await blockchainCall(element.contract.methods["withdrawReward(uint256)"], currentPosition.positionId)
             } else {
                 throw e
@@ -1096,12 +1097,12 @@ export default props => {
         }
         */
 
-    const ApproveButton = ({ contract, text, onApproval, spender }) => {
+    const ApproveButton = ({ contract, text, onApproval, spender, value }) => {
 
         const approve = useCallback(async () => {
             setApproveLoading(true)
             try {
-                await blockchainCall(contract.methods.approve, spender, MAX_UINT256)
+                await blockchainCall(contract.methods.approve, spender, value || MAX_UINT256)
             } catch(e) {
                 setApproveLoading(false)
                 throw e
@@ -1128,7 +1129,7 @@ export default props => {
         if(!burnFeeAllowance) {
             return <ActionAWeb3Button onSuccess={reloadData} onClick={withdrawReward}>Claim</ActionAWeb3Button>
         }
-        return <ApproveButton contract={feeData.tokenToTransferOrBurnInApplication.contract} spender={feeData.operator} onApproval={setBurnFeeAllowance} text={`Approve ${feeData.tokenToTransferOrBurnInApplication.symbol} to transfer/burn fees`}/>
+        return <ApproveButton contract={feeData.tokenToTransferOrBurnInApplication.contract} spender={feeData.operator} onApproval={setBurnFeeAllowance} text={`Approve ${feeData.tokenToTransferOrBurnInApplication.symbol} to transfer/burn fees`} value={feeData && feeData.transferOrBurnAmountInApplication}/>
     }, [feeData, burnFeeAllowance, currentPosition])
 
     const onInputTypeChange = async (e) => {

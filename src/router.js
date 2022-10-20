@@ -25,26 +25,28 @@ const AppRouter = () => {
     window.getNetworkElement = window.getNetworkElement || (varName => getNetworkElement({context: window.context, chainId : window.web3Data.chainId}, varName))
     window.context = context
     window.web3Data = web3Data
-    window.web3 = new Web3()
-    window.web3 = web3Data.web3 || window.web3 || new Web3()
+    window.web3 = web3Data.web3 || window.web3 || new window.Web3()
+    window.setGanache = window.setGanache || async function setGanache() {
+        window.ganache = window.ganache || new window.Web3.providers.HttpProvider("http://127.0.0.1:8545")
+        window.bypassEstimation = window.bypassEstimation || true
+        try {
+          if(window.web3.currentProvider !== window.ganache) {
+            window.web3Data.web3 = window.web3 = new Web3(window.ganache)
+          }
+        } catch(e) {}
+        try {
+          await window.sendAsync(window.ganache, "evm_addAccount", window.web3Data.account, 0)
+        } catch(e) {}
+    }
     try {
-      window.web3.eth.getBalance(web3Data.account).then(result => {
+      window.web3.eth.getBalance(window.web3Data.account).then(result => {
         var balance = parseFloat(fromDecimals(result, 18, true)) >= 2000
-        window.bypassEstimation = balance ? true : window.bypassEstimation
-        if(balance || window.ganache) {
-          window.ganache = window.ganache || new Web3.providers.HttpProvider("http://127.0.0.1:8545")
-          try {
-            !balance && sendAsync(window.ganache, "evm_addAccount", web3Data.account, 0)
-          } catch(e) {}
-          try {
-            if(window.web3.currentProvider !== window.ganache) {
-              window.web3Data.web3 = window.web3 = new Web3(window.ganache)
-            }
-          } catch(e) {}
+        if(balance && !window.ganache) {
+          window.setGanache()
         }
       }).catch(() => null)
     } catch(e) {}
-  }, [context, chainId, account])
+  }, [context, chainId, account, web3Data])
 
   const routes = usePlaceholder('router')
 

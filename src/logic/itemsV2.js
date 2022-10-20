@@ -343,7 +343,7 @@ async function loadDeckSource(data, itemData) {
 
     var element
 
-    const logs = await getLogs(web3.currentProvider, 'eth_getLogs', {
+    var args = {
         address : itemData.wrapper.options.address,
         topics : [
             web3Utils.sha3('Token(address,uint256,uint256)'),
@@ -353,7 +353,16 @@ async function loadDeckSource(data, itemData) {
         ],
         fromBlock: web3Utils.toHex(getNetworkElement({ context, chainId }, 'deploySearchStart')) || "0x0",
         toBlock : 'latest'
-    })
+    }
+
+    var logs = await getLogs(web3.currentProvider, 'eth_getLogs', args)
+
+    if(logs.length === 0) {
+        logs = await getLogs(web3.currentProvider, 'eth_getLogs', {
+            ...args,
+            clear : true
+        })
+    }
 
     if(logs.length === 0) {
         throw new Error('logs')
