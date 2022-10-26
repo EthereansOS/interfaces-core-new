@@ -148,7 +148,7 @@
         ],
         "factoryOfFactoriesAddress": "0xf68db1F9A5B224f6687FC56e74a224DcB6913221",
         "factoryOfFactoriesAddressRinkeby": "0xff6bd9dfAA47f51Bb7bfDd95F8bBB3C020166eEA",
-        "factoryOfFactoriesAddressGoerli": "0xff6bd9dfAA47f51Bb7bfDd95F8bBB3C020166eEA",
+        "factoryOfFactoriesAddressGoerli": "0xCC98784D2cF8423FD876270Aec675c683a780EFa",
         "factoryOfFactoriesAddressOptimism": "0x241c5FAd7e3Dc73a0c8303F37a3Ecf43f9f4e1E9",
         "L2StandardTokenFactoryAddressOptimism" : "0x4200000000000000000000000000000000000012",
         "L2StandardBridgeAddressOptimism" : "0x4200000000000000000000000000000000000010",
@@ -170,12 +170,12 @@
             "farmingGen1": 5
         },
         "factoryIndicesGoerli": {
-            "dfo": 0,
-            "subdao": 1,
-            "farming": 2,
-            "fixedInflation": 3,
-            "delegation": 4,
-            "farmingGen1": 5
+            "farming": "0",
+            "farmingGen1": "1",
+            "fixedInflation": "2",
+            "dfo": "3",
+            "subdao": "4",
+            "delegation": "5"
         },
         "factoryIndicesOptimism": {
             "farming": "0",
