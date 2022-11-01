@@ -158,9 +158,7 @@ export async function loadTokenFromAddress(data, tokenAddress) {
         var dataInput = tkAddr !== tokenAddress ? await dualChainAsMainChain(data) : data
         var contract = newContract(context.ItemInteroperableInterfaceABI, tokenAddress)
         var token = {
-            name : await blockchainCall(contract.methods.name),
-            symbol : await blockchainCall(contract.methods.symbol),
-            decimals : await blockchainCall(contract.methods.decimals),
+            ...(await getTokenBasicInfo(data, tokenAddress)),
             address : tokenAddress,
             contract,
             balance : await blockchainCall(contract.methods.balanceOf, account),

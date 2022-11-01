@@ -43,6 +43,11 @@ export default ({input, figureClassName, noFigure, title, defaultImage, noDotLin
     }, [image, finalImage])
 
     async function onLoadError() {
+        try {
+            if(image === input.logoURI) {
+                return setFinalImage(realDefaultImage)
+            }
+        } catch(e) {}
         setLoading(true)
         var val = realDefaultImage
         try {
