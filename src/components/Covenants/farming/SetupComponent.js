@@ -694,7 +694,21 @@ export default props => {
         }
     }
 
+    function cleanSlippage(slippage) {
+        slippage = numberToString(parseFloat(slippage || 0))
+        if(slippage === '0') {
+            return 0
+        }
+        var arr = slippage.split('.')
+        if(arr.length > 1) {
+            var n = parseFloat('0.' + arr[1])
+            slippage = numberToString(parseInt(arr[0]) + (n >= 0.5 ? 1 : 0))
+        }
+        return parseInt(slippage)
+    }
+
     async function calculateSlippageAmounts(slippage, liquidity, type) {
+        slippage = cleanSlippage(slippage)
         if(slippage == 0) {
             return ['0', '0']
         }
