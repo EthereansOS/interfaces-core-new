@@ -85,7 +85,7 @@ const Routines = ({selectedSubvoice}) => {
 
 Routines.menuVoice = {
     label : 'Routines',
-    path : '/covenants/dapp/routines',
+    path : '/covenants/routines',
     index : 2,
     contextualRequire : () => require.context('./', false, /.js$/),
     subMenuvoices : ['Explore', 'Hosted']

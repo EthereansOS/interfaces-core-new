@@ -20,7 +20,7 @@ const VotingPowersList = ({votingTokens}) => {
       </div>
     </>)
     if(it.mainInterface) {
-      return (<Link key={it.address} className={style.VotingPowersObject} to={`/items/dapp/${it.interoperableInterface?.options.address || it.address}`}>
+      return (<Link key={it.address} className={style.VotingPowersObject} to={`/items/${it.interoperableInterface?.options.address || it.address}`}>
         {children}
       </Link>)
     }

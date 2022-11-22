@@ -164,7 +164,7 @@ const Farming = ({selectedSubvoice, rewardTokenAddress}) => {
 
 Farming.menuVoice = {
     label : 'Farming',
-    path : '/covenants/dapp/farming',
+    path : '/covenants/farming',
     index : 1,
     contextualRequire : () => require.context('./', false, /.js$/),
     subMenuvoices : ['Explore', 'Positions', 'Hosted']

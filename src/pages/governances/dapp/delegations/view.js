@@ -45,7 +45,7 @@ const DelegationView = () => {
       <DelegationHeadline element={element}/>
       {!element?.host && <>
         <h4>This Delegation must be finalized</h4>
-        {element.deployer === account && <Link to={`/guilds/dapp/create/${element.address}`}>Finalize Delegation</Link>}
+        {element.deployer === account && <Link to={`/guilds/create/${element.address}`}>Finalize Delegation</Link>}
       </>}
       {element?.host === account && <HostOptions refresh={refresh} element={element}/>}
       {element?.host && <GovernanceContainer element={element}/>}
@@ -55,7 +55,7 @@ const DelegationView = () => {
 }
 
 DelegationView.menuVoice = {
-  path : '/guilds/dapp/delegations/:id'
+  path : '/guilds/delegations/:id'
 }
 
 export default DelegationView

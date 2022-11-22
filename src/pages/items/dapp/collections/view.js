@@ -52,7 +52,7 @@ const CollectionView = () => {
 }
 
 CollectionView.menuVoice = {
-  path : '/items/dapp/collections/:id',
+  path : '/items/collections/:id',
   exact: false
 }
 

@@ -427,10 +427,10 @@ const CreateSuccess = ({success, state, close}) => {
     useEffect(() => {
         setTimeout(async function() {
             if(!state.item) {
-                return history.push(('/items/dapp/collections/' + state.collectionId))
+                return history.push(('/items/collections/' + state.collectionId))
             }
             if(state.item !== 'new') {
-                var urlPath = '/items/dapp/' + state.item
+                var urlPath = '/items/' + state.item
                 var currentURL = window.location.href.toLowerCase()
                 if(currentURL.indexOf(urlPath.toLowerCase()) === -1) {
                     return history.push(urlPath)
@@ -440,7 +440,7 @@ const CreateSuccess = ({success, state, close}) => {
             const receipt = await web3.eth.getTransactionReceipt(success.transactionHash)
             const log = receipt.logs.filter(it => it.topics[0] === web3Utils.sha3('CollectionItem(bytes32,bytes32,uint256)'))[0]
             const itemAddress = abi.decode(['address'], log.topics[3])[0]
-            history.push(('/items/dapp/' + itemAddress))
+            history.push(('/items/' + itemAddress))
         })
     }, [success, state])
 
@@ -555,7 +555,7 @@ const CreateItem = ({inputItem, mode, close}) => {
 }
 
 CreateItem.menuVoice = {
-  path : '/items/dapp/create/item/:id'
+  path : '/items/create/item/:id'
 }
 
 export default CreateItem

@@ -229,7 +229,7 @@ const CreateSuccess = ({success}) => {
             const receipt = await web3.eth.getTransactionReceipt(success.transactionHash)
             const log = receipt.logs.filter(it => it.topics[0] === web3Utils.sha3('Collection(address,address,bytes32)'))[0]
             setCollectionId(log.topics[3])
-            history.push(('/items/dapp/collections/' + log.topics[3]))
+            history.push(('/items/collections/' + log.topics[3]))
         })
     }, [success])
 
@@ -240,8 +240,8 @@ const CreateSuccess = ({success}) => {
         <a target="_blank" href={`${getNetworkElement({chainId, context}, "etherscanURL")}/tx/${success.transactionHash}`}>Transaction</a>
         {!collectionId && <OurCircularProgress/>}
         {collectionId && <>
-            <Link to={"/items/dapp/collections/" + collectionId}>View Collection</Link>
-            <Link to={"/items/dapp/create/item/" + collectionId}>Mint Items</Link>
+            <Link to={"/items/collections/" + collectionId}>View Collection</Link>
+            <Link to={"/items/create/item/" + collectionId}>Mint Items</Link>
         </>}
       </div>)
   }
@@ -287,7 +287,7 @@ const CreateCollection = ({}) => {
 }
 
 CreateCollection.menuVoice = {
-  path : '/items/dapp/create/collection'
+  path : '/items/create/collection'
 }
 
 export default CreateCollection

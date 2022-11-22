@@ -23,7 +23,7 @@ const IndexMain = () => {
           <a target="_blank" href="https://docs.ethos.wiki/ethereansos-docs/grimoire/ethereansos-governance">Governance</a>
           <a target="_blank" href={context.discordLink}>Community</a>
           <a target="_blank" href="https://ethereanslabs.com">The Lab</a>
-          <Link className={style.IndexHeaderDapp} to="/dapp">Launch App</Link>
+          <Link className={style.IndexHeaderDapp} to="">Launch App</Link>
         </div>
       </div>
       <div className={style.SuperTitle}>
@@ -78,7 +78,7 @@ const IndexMain = () => {
         <h5>A Codebase of Contracts, Secure to the Core</h5>
         <h6>Everything on EthOS—and EthOS itself—is powered by Factories, and the model contracts they deploy. With tamper-proof cores, these contracts can be cloned and customized by anyone to meet any variety of needs. Any developer can make a Factory, and even code it to earn them revenue. All Factories are part of a shared codebase and listed in a public marketplace here on the platform.</h6>
         <div className={style.TextPartBTN}>
-          <Link className={style.IndexHeaderDapp} to="/dapp">Launch App</Link>
+          <Link className={style.IndexHeaderDapp} to="">Launch App</Link>
           <a target="_blank" href="https://docs.ethos.wiki/ethereansos-docs/" className={style.IndexHeaderDappL}>Learn</a>
         </div>
       </div>
@@ -104,7 +104,7 @@ const IndexMain = () => {
         <h5>Purely On-Chain, Truly Decentralized and Governed by $OS</h5>
         <h6>Governed by $OS, the very first v2 Item, EthOS itself is the debut Organization of the platform. And like everything built on top of it, for the first ever time on Ethereum, it is entirely free from dependence on anything off-chain or centralized.</h6>
         <div className={style.TextPartBTN}>
-          <Link to={"/guilds/dapp/organizations/" + context.ourSubDAO} className={style.IndexHeaderDapp}>EthOS Organization</Link>
+          <Link to={"/guilds/organizations/" + context.ourSubDAO} className={style.IndexHeaderDapp}>EthOS Organization</Link>
           <a target="_blank" href="https://docs.ethos.wiki/ethereansos-docs/grimoire/ethereansos-governance" className={style.IndexHeaderDappL}>EthOS Governance</a>
           <a target="_blank" href="https://docs.ethos.wiki/ethereansos-docs/grimoire/os-economics" className={style.IndexHeaderDappL}>$OS Economics</a>
         </div>
@@ -123,7 +123,7 @@ const IndexMain = () => {
   )
 }
 
-IndexMain.addToPlugin =
+/*IndexMain.addToPlugin =
   ({index}) =>
     ({addElement}) => {
       addElement('router', {
@@ -138,6 +138,6 @@ IndexMain.addToPlugin =
           componentOnly: true,
         },
       })
-    }
+    }*/
 
 export default IndexMain

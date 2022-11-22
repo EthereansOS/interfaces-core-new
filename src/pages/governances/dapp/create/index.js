@@ -12,7 +12,7 @@ const Create = (props) => {
 
 Create.menuVoice = {
   label : 'Create',
-  path : '/guilds/dapp/create/:id',
+  path : '/guilds/create/:id',
 }
 
 export default Create

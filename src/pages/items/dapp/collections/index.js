@@ -15,7 +15,7 @@ const Collections = () => (<>
 
 Collections.menuVoice = {
   label : 'Collections',
-  path : '/items/dapp/collections',
+  path : '/items/collections',
   contextualRequire : () => require.context('./', false, /.js$/)
 }
 

@@ -155,7 +155,7 @@ const Farmings = ({element}) => {
   }
 
   return (<div className={style.OrgPartViewF}>
-    <Link to={`/covenants/dapp/farming/${dividendsFarmingAddress}`} className={style.OrgPartFarm}>
+    <Link to={`/covenants/farming/${dividendsFarmingAddress}`} className={style.OrgPartFarm}>
       <a>
         <img src={`${process.env.PUBLIC_URL}/img/eth_logo.png`}/>
       </a>
@@ -168,7 +168,7 @@ const Farmings = ({element}) => {
         {dividendsDailyRate && <span>Daily reward rate: {dividendsDailyRate} ETH</span>}
       </p>
     </Link>
-    <Link to={`/covenants/dapp/farming/${osFarmingAddress}`} className={style.OrgPartFarm}>
+    <Link to={`/covenants/farming/${osFarmingAddress}`} className={style.OrgPartFarm}>
       <a>
         <img src={`${process.env.PUBLIC_URL}/img/tokentest/os.png`}/>
       </a>
@@ -397,7 +397,7 @@ const Delegations = ({element}) => {
      <h6>Grant chart</h6>
      {!list && <CircularProgress/>}
      {list && list.length === 0 && <h4>No Delegations right now!</h4>}
-     {list && list.length > 0 && list.map(it => <Link key={it.key} to={`/guilds/dapp/delegations/${it.delegationAddress}`}>
+     {list && list.length > 0 && list.map(it => <Link key={it.key} to={`/guilds/delegations/${it.delegationAddress}`}>
         <div className={style.DelegationsSectionOne}>
           <LogoRenderer input={it}/>
           <Upshots title={it.name} total={total} value={it.percentage}/>

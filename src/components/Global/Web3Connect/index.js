@@ -46,7 +46,7 @@ const Web3Connect = () => {
           <img src={`${process.env.PUBLIC_URL}/img/ethereum.png`}></img>
           <p>Ethereum <span>▼</span></p>
         </a>*/}
-        <Link to="/account/dapp" className={style.Web3ConnectWallet}>
+        <Link to="/account" className={style.Web3ConnectWallet}>
           <LogoRenderer noDotLink noFigure input={ensData?.name ? `//metadata.ens.domains/mainnet/avatar/${ensData?.name}` : blockie} defaultImage={blockie}/>
           <p>{connectionStatus === web3States.NOT_CONNECTED ? "Connect" : ensData?.name || truncatedWord({context, charsAmount : 8 }, account)}</p>
         </Link>

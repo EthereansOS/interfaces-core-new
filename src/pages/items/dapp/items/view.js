@@ -84,7 +84,7 @@ const ItemView = () => {
 }
 
 ItemView.menuVoice = {
-    path : '/items/dapp/:id',
+    path : '/items/:id',
     exact: false
 }
 

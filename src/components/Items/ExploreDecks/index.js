@@ -25,7 +25,7 @@ const Item = ({element, allMine}) => {
 
   return (
     <div className={style.DeckSingle}>
-      <Link to={`/items/dapp/${element.address}`}>
+      <Link to={`/items/${element.address}`}>
         <ItemImage input={element}/>
         <div className={style.ItemTitle}>
           <h6>{element.name}</h6>

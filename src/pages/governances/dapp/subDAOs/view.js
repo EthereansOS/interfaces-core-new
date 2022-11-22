@@ -68,7 +68,7 @@ const SubDAOView = () => {
 }
 
 SubDAOView.menuVoice = {
-  path : '/guilds/dapp/organizations/:id'
+  path : '/guilds/organizations/:id'
 }
 
 export default SubDAOView

@@ -20,21 +20,21 @@ FactoriesMain.addToPlugin =
     ({addElement}) => {
       addElement('router', {
         index,
-        path: '/factories/dapp',
+        path: '/factories',
         Component: FactoriesMain,
         exact: true,
         requireConnection: true,
         templateProps: {
           menuName: 'appMenu',
           isDapp: true,
-          link: '/factories/dapp'
+          link: '/factories'
         },
       })
 
       addElement('appMenu', {
         name: 'Factories',
         label: 'Factories',
-        link: '/factories/dapp',
+        link: '/factories',
         index,
         image : `${process.env.PUBLIC_URL}/img/is4.png`,
       })

@@ -15,7 +15,7 @@ const ItemsList = ({wrappedOnly}) => (<>
 
 ItemsList.menuVoice = {
   label : 'Items',
-  path : '/items/dapp',
+  path : '/items',
   index : 0,
   contextualRequire : () => require.context('./', false, /.js$/)
 }

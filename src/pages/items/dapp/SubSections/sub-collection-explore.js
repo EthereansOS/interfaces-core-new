@@ -14,7 +14,7 @@ const SubCollectionExplore = ({item}) => {
 
   return (
       <div className={style.SubCollectionExplore}>
-        <Link to={`/items/dapp/collections/${item.collectionId}`} className={style.SubCollectionInfo}>
+        <Link to={`/items/collections/${item.collectionId}`} className={style.SubCollectionInfo}>
           <LogoRenderer input={item.collectionData} figureClassName={style.SubCollectionInfoCover}/>
           <div className={style.SubCollectionInfoName}>
             <h5>More From {item.collectionData.name} Collection</h5>

@@ -26,7 +26,7 @@ export default ({item}) => {
       <div className={style.SpecialDesc}>
         <h4>Delegation Item</h4>
         <div className={style.OrgAllSingle}>
-          <Link className={style.OrgSingle} to={`/guilds/dapp/delegations/${delegation.address}`}>
+          <Link className={style.OrgSingle} to={`/guilds/delegations/${delegation.address}`}>
             <LogoRenderer input={delegation}/>
             <div className={style.OrgTitleEx}>
               <h6>{delegation.name}</h6>

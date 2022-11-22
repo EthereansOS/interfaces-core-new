@@ -19,21 +19,21 @@ ItemsMain.addToPlugin =
     ({addElement}) => {
       addElement('router', {
         index,
-        path: '/items/dapp',
+        path: '/items',
         Component: ItemsMain,
         exact: true,
         requireConnection: true,
         templateProps: {
           menuName: 'appMenu',
           isDapp: true,
-          link: '/items/dapp'
+          link: '/items'
         },
       })
 
       addElement('appMenu', {
         name: 'Items',
         label: 'Items',
-        link: '/items/dapp',
+        link: '/items',
         index,
         image : `${process.env.PUBLIC_URL}/img/is2.png`,
       })
@@ -45,7 +45,7 @@ export default prepareAddToPlugin(
   require.context('./', true, /index.js$/),
   require.context('./', true, /.js$/),
   "Items",
-  "/items/dapp",
+  "/items",
   style.Web3PagesRoot,
   10,
   `${process.env.PUBLIC_URL}/img/is2.png`,

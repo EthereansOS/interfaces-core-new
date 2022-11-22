@@ -39,7 +39,7 @@ export default ({element, onClick, noBalance}) => {
         <div className={style.ObjectInfoAndLink}>
           <h5>{shortenWord({ context, charsAmount : 15}, element.name)} ({shortenWord({ context, charsAmount : 15}, element.symbol)})</h5>
           <a target="_blank" onClick={e => e.stopPropagation()} href={`${getNetworkElement({context, chainId}, "etherscanURL")}/token/${element.address}`}>Etherscan</a>
-          <Link className={style.LinkCool} onClick={e => e.stopPropagation()} to={'/items/dapp/' + element.address}>Item</Link>
+          <Link className={style.LinkCool} onClick={e => e.stopPropagation()} to={'/items/' + element.address}>Item</Link>
         </div>
         <div style={{"visibility" : noBalance ? "hidden" : "visible"}} className={style.ObjectInfoBalance}>
           <p>{fromDecimals(balance, element.decimals || '0')}</p>

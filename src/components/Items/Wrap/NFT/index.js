@@ -53,7 +53,7 @@ export default props => {
                 setData()
                 const tokenAddress = abi.decode(["address"], abi.encode(["uint256"], [itemId]))[0]
                 setDeckAlreadyWrapped(tokenAddress)
-                history.push('/items/dapp/decks/' + tokenAddress)
+                history.push('/items/decks/' + tokenAddress)
             }
         }
         setData({token, balance : type.indexOf("721") !== -1 ? token?.id || '1' : balance, value : type.indexOf("721") !== -1 ? token?.id || '1' : value})
@@ -66,7 +66,7 @@ export default props => {
         const mint = logs.filter(it => it.topics[0] === topic)[0]
         if(mint) {
             const tokenAddress = abi.decode(["address"], mint.topics[3])[0]
-            var link = '/items/dapp/'
+            var link = '/items/'
             if(originalType.indexOf('Deck') !== -1) {
                 link += 'decks/'
             }
@@ -83,7 +83,7 @@ export default props => {
             {data && data.token && <ActionAWeb3Buttons onSuccess={onSuccess} noApproveNeeded={type.indexOf("721") === -1} token={data.token} other={wrapper} balance={data.balance} value={data.value} buttonText="Wrap" onClick={() => wrapNFT({ account }, data.token, data.balance, data.value, wrapper, originalType, reserve)}/>}
             {deckAlreadyWrapped && <div className={style.FancyExplanationCreate}>
                 <p>This token has been already wrapped</p>
-                <Link to={`/items/dapp/decks/${deckAlreadyWrapped}/wrap`}>Navigate to Deck page</Link>
+                <Link to={`/items/decks/${deckAlreadyWrapped}/wrap`}>Navigate to Deck page</Link>
             </div>}
             {deckMode && <div>
                 <label className={style.SettingBLabPerch}>

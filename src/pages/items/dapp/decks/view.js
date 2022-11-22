@@ -95,7 +95,7 @@ const DeckView = () => {
 }
 
 DeckView.menuVoice = {
-  path : '/items/dapp/decks/:id',
+  path : '/items/decks/:id',
   exact: false
 }
 

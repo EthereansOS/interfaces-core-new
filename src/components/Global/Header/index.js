@@ -19,12 +19,12 @@ const Header = (props) => {
 
   const history = useHistory()
 
-  const switchToNetwork = useCallback(() => sendAsync(web3.currentProvider, 'wallet_switchEthereumChain', {chainId : "0x" + parseInt(dualChainId || Object.entries(context.dualChainId).filter(it => parseInt(it[1]) === chainId)[0][0]).toString(16)}).then(() => history.push('/dapp')), [chainId, dualChainId, history])
+  const switchToNetwork = useCallback(() => sendAsync(web3.currentProvider, 'wallet_switchEthereumChain', {chainId : "0x" + parseInt(dualChainId || Object.entries(context.dualChainId).filter(it => parseInt(it[1]) === chainId)[0][0]).toString(16)}).then(() => history.push('')), [chainId, dualChainId, history])
 
   return (
       <header className={style.Header}>
         <div className={style.FixedHeader}>
-          <Link to="/dapp" className={style.logoMain}><img src={`${process.env.PUBLIC_URL}/img/logo_main.png`}/></Link>
+          <Link to="" className={style.logoMain}><img src={`${process.env.PUBLIC_URL}/img/logo_main.png`}/></Link>
           <Navigation menuName={props.menuName} isDapp={props.isDapp} selected={props.link}/>
         </div>
         <div className={style.RightMenu}>

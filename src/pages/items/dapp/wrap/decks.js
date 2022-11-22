@@ -22,7 +22,7 @@ const WrapDecks = () => {
 }
 
 WrapDecks.menuVoice = {
-  path : '/items/dapp/wrap/decks',
+  path : '/items/wrap/decks',
 }
 
 export default WrapDecks

@@ -12,26 +12,26 @@ const IndexMain = () => {
 
   return (
       <div className={style.CardsLayerS}>
-        {!dualChainId && <Link to="/factories/dapp" className={style.CardsFancy}>
+        {!dualChainId && <Link to="/factories" className={style.CardsFancy}>
           <figure>
             <img src={`${process.env.PUBLIC_URL}/img/c-2.png`}></img>
           </figure>
           <p>Factories</p>
         </Link>}
-        <Link to="/items/dapp" className={style.CardsFancy}>
+        <Link to="/items" className={style.CardsFancy}>
           <figure>
             <img src={`${process.env.PUBLIC_URL}/img/c-1.png`}></img>
           </figure>
           <p>Items</p>
         </Link>
         <br></br>
-        {!dualChainId && <Link to="/guilds/dapp" className={style.CardsFancy}>
+        {!dualChainId && <Link to="/guilds" className={style.CardsFancy}>
           <figure>
             <img src={`${process.env.PUBLIC_URL}/img/c-3.png`}></img>
           </figure>
           <p>Guilds</p>
         </Link>}
-        <Link to="/covenants/dapp" className={style.CardsFancy}>
+        <Link to="/covenants" className={style.CardsFancy}>
           <figure>
             <img src={`${process.env.PUBLIC_URL}/img/c-4.png`}></img>
           </figure>
@@ -46,7 +46,7 @@ IndexMain.addToPlugin =
     ({addElement}) => {
       addElement('router', {
         index,
-        path: '/dapp',
+        path: '/',
         Component: IndexMain,
         exact: true,
         requireConnection: true,

@@ -10,7 +10,7 @@ const OrganizationsMain = () => {
       <Typography className={style.title} variant="h3" color="black">
         Qua ci scrivo le zozzerie offiCéin di Organizations
       </Typography>
-      <Link to="governances/dapp">
+      <Link to="governances">
         Andiamo Onnicéin che è meglio valà
       </Link>
     </>

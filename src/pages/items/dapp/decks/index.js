@@ -15,7 +15,7 @@ const DecksList = ({}) => (<>
 
 DecksList.menuVoice = {
   label : 'Decks',
-  path : '/items/dapp/decks',
+  path : '/items/decks',
   index : 1,
   contextualRequire : () => require.context('./', false, /.js$/)
 }

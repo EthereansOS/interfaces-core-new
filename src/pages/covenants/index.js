@@ -10,7 +10,7 @@ const CovenantsMain = () => {
       <Typography className={style.title} variant="h3" color="black">
         Qua ci scrivo le zozzerie offiCéin di Covenants
       </Typography>
-      <Link to="covenants/dapp">
+      <Link to="covenants">
         Andiamo Onnicéin che è meglio valà
       </Link>
     </div>

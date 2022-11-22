@@ -85,7 +85,7 @@ const BallotCreate = () => {
 
 BallotCreate.menuVoice = {
   label : 'Create',
-  path : '/guilds/dapp/ballots/create',
+  path : '/guilds/ballots/create',
   index : 4
 }
 

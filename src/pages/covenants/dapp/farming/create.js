@@ -707,7 +707,7 @@ export default props => {
                 </>}
                 <div className={style.FancyExplanationCreate}>
                     <p className={style.BreefRecapB}>Yuor Farming Contract is available via this link: </p>
-                    <Link className={style.RegularButton} to={"/covenants/dapp/farming/" + farmingContract}>{process.env.PUBLIC_URL + "#/covenants/dapp/farming/" + farmingContract}</Link>
+                    <Link className={style.RegularButton} to={"/covenants/farming/" + farmingContract}>{process.env.PUBLIC_URL + "#/covenants/farming/" + farmingContract}</Link>
                     <p className={style.BreefRecapB}>If you have selected the “Repeat” function for a setup, don’t forget to keep track of how many tokens are in the extension. If one cycle ends and the extension doesn’t have the required amount of tokens for the next, it won’t be able to send them to the contract, and the setup will not repeat and instead deactivate. For more information on this, read the <a target="_blank" href="https://docs.ethos.wiki/covenants/">Documentation</a>.</p>
                 </div>
             </div>

@@ -6,7 +6,7 @@ export default prepareAddToPlugin(
   require.context('./', true, /index.js$/),
   require.context('./', true, /.js$/),
   "Covenants",
-  "/covenants/dapp",
+  "/covenants",
   style.Web3PagesRoot,
   30,
   `${process.env.PUBLIC_URL}/img/is3.png`,

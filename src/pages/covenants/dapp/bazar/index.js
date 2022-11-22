@@ -10,7 +10,7 @@ const Bazar = () => {
 
 Bazar.menuVoice = {
     label : 'Bazar',
-    path : '/covenants/dapp',
+    path : '/covenants',
     index : 0
 }
 

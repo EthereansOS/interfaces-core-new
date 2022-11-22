@@ -9,7 +9,7 @@ const FactoriesMain = () => {
     <>
       <Typography className={style.title} variant="h3" color="black">
       </Typography>
-      <Link to="factories/dapp">
+      <Link to="factories">
       </Link>
     </>
   )

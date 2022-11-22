@@ -24,7 +24,7 @@ const wrapVoices = [
 const WrapItems = () => <Wrap.Wrap voices={wrapVoices}/>
 
 WrapItems.menuVoice = {
-  path : '/items/dapp/wrap/items',
+  path : '/items/wrap/items',
 }
 
 export default WrapItems

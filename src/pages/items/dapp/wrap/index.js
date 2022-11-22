@@ -23,13 +23,13 @@ const WrapIndex = ({}) => {
             <div className={style.CreateBoxDesc}>
                 <h6>Items</h6>
                 <p>Wrap any ERC20, ERC721 or ERC1155 as an Item, allowing it to act as an ERC20, ERC1155 and as a token with unprecedented capabilities.</p>
-                <Link className={style.NextStep} to='/items/dapp/wrap/items'>Start</Link>
+                <Link className={style.NextStep} to='/items/wrap/items'>Start</Link>
                 <a target="_blank" href="https://docs.ethos.wiki/ethereansos-docs/organizations/organizations" className={style.ExtLinkButtonAlpha}>Learn</a>
             </div>
             <div className={style.CreateBoxDesc}>
                 <h6>Decks</h6>
                 <p>Wrap any ERC721 or ERC1155 into a Deck, a suite of tokens from an ERC721 or ERC1155 Collection wrapped into a fungible supply of Items.</p>
-                <Link className={style.NextStep} to='/items/dapp/wrap/decks'>Start</Link>
+                <Link className={style.NextStep} to='/items/wrap/decks'>Start</Link>
                 <a target="_blank" href="https://docs.ethos.wiki/ethereansos-docs/organizations/organizations" className={style.ExtLinkButtonAlpha}>Learn</a>
             </div>
         </div>
@@ -40,7 +40,7 @@ WrapIndex.Wrap = Wrap
 
 WrapIndex.menuVoice = {
   label : 'Wrap',
-  path : '/items/dapp/wrap',
+  path : '/items/wrap',
   contextualRequire : () => require.context('./', false, /.js$/)
 }
 

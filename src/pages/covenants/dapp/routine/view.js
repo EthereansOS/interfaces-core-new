@@ -231,7 +231,7 @@ const ViewRoutine = ({ loadedElement, onBack }) => {
 }
 
 ViewRoutine.menuVoice = {
-    path : '/covenants/dapp/routines/:id',
+    path : '/covenants/routines/:id',
     exact : false
 }
 

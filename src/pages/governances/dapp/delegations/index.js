@@ -38,7 +38,7 @@ const DelegationsList = ({ mine, onList }) => {
 
 DelegationsList.menuVoice = {
   label : 'Delegations',
-  path : '/guilds/dapp/delegations/',
+  path : '/guilds/delegations/',
   contextualRequire : () => require.context('./', false, /.js$/),
   index : 1
 }

@@ -580,7 +580,7 @@ export default props => {
             </>}
             <div className={style.FancyExplanationCreate}>
                 <p className={style.BreefRecapB}>Fixed Inflation Contract Address: {fixedInflationAddress} <a target="_blank" href={`${getNetworkElement({ chainId, context}, "etherscanURL")}/address/${fixedInflationAddress}`}>(Etherscan)</a></p>
-                <Link className={style.RegularButton} to={"/covenants/dapp/routines/" + fixedInflationAddress}>{process.env.PUBLIC_URL + "#/inflation/dapp/" + fixedInflationAddress}</Link>
+                <Link className={style.RegularButton} to={"/covenants/routines/" + fixedInflationAddress}>{process.env.PUBLIC_URL + "#/inflation/" + fixedInflationAddress}</Link>
             </div>
         </div>
     }

@@ -38,7 +38,7 @@ const ViewFarming = ({}) => {
 }
 
 ViewFarming.menuVoice = {
-    path : '/covenants/dapp/farming/:id',
+    path : '/covenants/farming/:id',
     exact : false
 }
 

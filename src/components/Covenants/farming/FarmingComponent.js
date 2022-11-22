@@ -30,7 +30,7 @@ export default props => {
 
     const logoContainer = useMemo(() => {
         var result = <LogoRenderer badge input={element.rewardToken}/>
-        return element.rewardTokenAddress === VOID_ETHEREUM_ADDRESS ? result : element.rewardToken.mainInterface ? <Link to={`/items/dapp/items/${element.rewardToken.id}`}>{result}</Link> : <a target="_blank" href={`${getNetworkElement({ context, chainId}, 'etherscanURL')}token/${element.rewardToken.address}`}>{result}</a>
+        return element.rewardTokenAddress === VOID_ETHEREUM_ADDRESS ? result : element.rewardToken.mainInterface ? <Link to={`/items/items/${element.rewardToken.id}`}>{result}</Link> : <a target="_blank" href={`${getNetworkElement({ context, chainId}, 'etherscanURL')}token/${element.rewardToken.address}`}>{result}</a>
     }, [element && element.rewardTokenAddress])
 
     const [edit, setEdit] = useState()
