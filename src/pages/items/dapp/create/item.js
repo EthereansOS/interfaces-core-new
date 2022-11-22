@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import ActionAWeb3Button from '../../../../components/Global/ActionAWeb3Button'
 import { useLocation, useHistory } from 'react-router-dom'
 import { useEthosContext, web3Utils, useWeb3, getNetworkElement, blockchainCall, abi, sendAsync, VOID_BYTES32, VOID_ETHEREUM_ADDRESS } from '@ethereansos/interfaces-core'
+import { getRawField } from '../../../../logic/generalReader'
 
 import RegularModal from '../../../../components/Global/RegularModal'
 
@@ -20,7 +21,7 @@ const LoadCollection = ({inputItem, mode, state, onStateEntry, setComponentIndex
 
     const context = useEthosContext()
 
-    const { getGlobalContract, newContract, account } = useWeb3()
+    const { web3, getGlobalContract, newContract, account } = useWeb3()
 
     const [collection, setCollection] = useState()
 
@@ -96,12 +97,22 @@ const LoadCollection = ({inputItem, mode, state, onStateEntry, setComponentIndex
         setComponentIndex(components.indexOf(Host))
     }
 
+    async function onCollectionId(e) {
+        var collectionId = e.currentTarget.value
+        try {
+            var rawData = await getRawField({ provider : web3.currentProvider }, rawData, 'collectionId')
+            rawData && rawData !== '0x' && (collectionId = abi.decode(["bytes32"], rawData)[0])
+        } catch(e) {
+        }
+        onStateEntry("collectionId", collectionId)
+    }
+
     return (
     <>
         <div>
             <label className={style.CreationPageLabelF}>
                 <h6>Collection address</h6>
-                <input type="text" value={state.collectionId} onChange={e => onStateEntry("collectionId", e.currentTarget.value)}/>
+                <input type="text" value={state.collectionId} onChange={onCollectionId}/>
                 <p>Insert the address of the collection.</p>
             </label>
         </div>

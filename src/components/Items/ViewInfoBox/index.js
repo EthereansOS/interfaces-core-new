@@ -16,7 +16,7 @@ export default ({collection}) => {
     <div className={style.InfoBox}>
       <h1>{collection.name + (collection.symbol ? ` (${collection.symbol})` : "")}</h1>
       <div className={style.InfoBoxBtns}>
-        <ExtLinkButton href={getNetworkElement({context, chainId}, 'etherscanURL') + 'address/' + collection.mainInterface.options.address} text="Contract"/> {/* Contract - Contract Link */}
+        <ExtLinkButton href={getNetworkElement({context, chainId}, 'etherscanURL') + 'address/' + collection.hostContract.options.address} text="Contract"/> {/* Contract - Contract Link */}
         <ExtLinkButton href={collection.external_url} text="Website"/> {/* Website - Website Link */}
         {collection.mintOperator && collection.mintOperator !== VOID_ETHEREUM_ADDRESS && <ExtLinkButton href={getNetworkElement({context, chainId}, 'etherscanURL') + 'address/' + collection.mintOperator} text="Mintable"/>}
         <ExtLinkButton className={(!collection.metadataOperator || collection.metadataOperator === VOID_ETHEREUM_ADDRESS) && 'Disabled'} href={collection.metadataOperator && collection.metadataOperator !== VOID_ETHEREUM_ADDRESS ? (getNetworkElement({context, chainId}, 'etherscanURL') + 'address/' + collection.metadataOperator) : undefined} text={`Metadata ${collection.metadataOperator && collection.metadataOperator !== VOID_ETHEREUM_ADDRESS ? 'Host' : 'Frozen'}`}/>
