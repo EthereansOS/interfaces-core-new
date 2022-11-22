@@ -104,7 +104,7 @@ const Farming = ({selectedSubvoice, rewardTokenAddress}) => {
         if(address && isEthereumAddress(address) && web3Utils.toChecksumAddress(address) !== web3Utils.toChecksumAddress(element.rewardTokenAddress)) {
             return false
         }
-        if(activeOnly && element.setups.filter(it => it.active || it.canActivateSetup).length === 0) {
+        if(mode === 'explore' && activeOnly && element.setups.filter(it => it.active || it.canActivateSetup).length === 0) {
             return false
         }
         if(opened && opened !== element) {
@@ -152,7 +152,7 @@ const Farming = ({selectedSubvoice, rewardTokenAddress}) => {
             </div>
             <Web3DependantList
                 provider={() => allFarmings({context, ...web3Data, mode, rewardTokenAddress})}
-                renderedProperties={{refresh, mode, activeOnly : mode !== 'positions' && activeOnly, opened, setOpened, rewardTokenAddress}}
+                renderedProperties={{refresh, mode, activeOnly : mode === 'explore' ? activeOnly : false, opened, setOpened, rewardTokenAddress}}
                 Renderer={FarmingCard}
                 discriminant={discriminant}
                 filter={filter}
