@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 
 import ExtLinkButton from '../../Global/ExtLinkButton/index.js'
 import RegularButtonDuo from '../../Global/RegularButtonDuo/index.js'
@@ -14,7 +14,7 @@ import style from '../../../all.module.css'
 import { getDelegationsOfOrganization } from '../../../logic/delegation.js'
 import { getRawField } from '../../../logic/generalReader.js'
 import { decodePrestoOperations } from '../../../logic/covenants.js'
-import { getAMMs } from '../../../logic/amm.js'
+import { getAMMs, getAmmPoolLink } from '../../../logic/amm.js'
 
 const RootWallet = ({element}) => {
 
@@ -198,8 +198,10 @@ const Investments = ({element}) => {
   const [tokensFromETH, setTokensFromETH] = useState(null)
   const [tokensFromETHToBurn, setTokensFromETHToBurn] = useState(null)
   const [tokensFromETHAMMs, setTokensFromETHAMMs] = useState()
+  const [tokensFromETHAMMPoolLinks, setTokensFromETHAMMPoolLinks] = useState()
   const [tokensToETH, setTokensToETH] = useState(null)
   const [tokensToETHAMMs, setTokensToETHAMMs] = useState()
+  const [tokensToETHAMMPoolLinks, setTokensToETHAMMPoolLinks] = useState()
   const [totalValue, setTotalValue] = useState(null)
 
   const [swapFromETHBlock, setSwapFromETHBlock] = useState(null)
@@ -226,6 +228,7 @@ const Investments = ({element}) => {
     var tokensFromETHToBurn = []
     try {
       fromETH = decodePrestoOperations(fromETH)
+      setTokensFromETHAMMPoolLinks(fromETH.map(it => it.liquidityPoolAddresses[0]))
       var tokenAMMS = fromETH.map(it => amms.filter(amm => web3Utils.toChecksumAddress(amm.address) === web3Utils.toChecksumAddress(it.ammPlugin))[0])
       setTokensFromETHAMMs(tokenAMMS)
       tokensFromETHToBurn = fromETH.map(it => it.receivers.length === 0)
@@ -242,6 +245,7 @@ const Investments = ({element}) => {
     var data = await getRawField({ provider : web3.currentProvider }, element.organizations[0].components.investmentsManager.address, 'tokensToETH')
     try {
       data = decodePrestoOperations(data)
+      setTokensToETHAMMPoolLinks(data.map(it => it.liquidityPoolAddresses[0]))
       var tokenAMMS = data.map(it => amms.filter(amm => web3Utils.toChecksumAddress(amm.address) === web3Utils.toChecksumAddress(it.ammPlugin))[0])
       setTokensToETHAMMs(tokenAMMS)
       data = {
@@ -307,17 +311,17 @@ const Investments = ({element}) => {
           {tokensFromETH && <p>
             Estimated <b>{singleSwapFromETHValue}</b>
             <a><img src={`${process.env.PUBLIC_URL}/img/eth_logo.png`}></img></a> swap for
-            {tokensFromETH.map((it, i) => <>
-              <a key={it}>
+            {tokensFromETH.map((it, i) => <Fragment key={it}>
+              <a>
                 <LogoRenderer noFigure input={it}/>{tokensFromETHToBurn[i] && <span>&#128293;</span>}
               </a>
-              {tokensFromETHAMMs && <>
+              {tokensFromETHAMMs && tokensFromETHAMMPoolLinks && <>
                 on
-                <a>
+                <a target="_blank" href={getAmmPoolLink({context, ...web3Data}, tokensFromETHAMMs[i], tokensFromETHAMMPoolLinks[i])}>
                   <LogoRenderer noFigure input={tokensFromETHAMMs[i]}/>
                 </a>
               </>}
-            </>)}
+            </Fragment>)}
           </p>}
           <p>Every 3 months</p>
           <ExtLinkButton text="Next" href={`${getNetworkElement({context, chainId}, 'etherscanURL')}block/${swapFromETHBlock}`}/>
@@ -326,17 +330,17 @@ const Investments = ({element}) => {
           {!tokensToETH && <CircularProgress/>}
           {tokensToETH && <p>
             <b>Swap:</b>
-            {tokensToETH.map((it, i) => <>
-              <a key={it}>
+            {tokensToETH.map((it, i) => <Fragment key={it}>
+              <a>
                 <LogoRenderer noFigure input={it}/>
               </a>
-              {tokensToETHAMMs && <>
+              {tokensToETHAMMs && tokensToETHAMMPoolLinks && <>
                 on
-                <a>
+                <a target="_blank" href={getAmmPoolLink({context, ...web3Data}, tokensToETHAMMs[i], tokensToETHAMMPoolLinks[i])}>
                   <LogoRenderer noFigure input={tokensToETHAMMs[i]}/>
                 </a>
               </>}
-            </>)}
+            </Fragment>)}
           for <a><img src={`${process.env.PUBLIC_URL}/img/eth_logo.png`}></img></a>
           </p>}
           <p>Weekly</p>

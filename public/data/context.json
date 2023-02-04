@@ -529,6 +529,13 @@
         "deckPrestoAddressGoerli" : "0x9C61332A625A6D59AF82aca94293712Ff289816f",
         "deckPrestoAddressRinkeby2" : "0x45c0B7cA2B0ECcdbb6e8f164D2aCcba35Ca78B95",
         "deckPrestoAddressOptimism" : "0xb4F0DbF6e8eC9e55E4be88e96350975B211E8713",
+        "ammPoolLinkTemplates" : {
+            "UniswapV3" : "https://info.uniswap.org/#/pools/{0}",
+            "UniswapV2" : "https://v2.info.uniswap.org/pair/{0}",
+            "Mooniswap" : "https://mooniswap.info/pair/{0}",
+            "SushiSwap" : "https://www.sushi.com/earn/eth:{0}",
+            "Balancer" : "https://info.balancer.xeonus.io/#/pools/{0}"
+        },
         "metadataCoverMaxWidth" : 5000000,
         "oldFarmingPrestoContractsRinkeby" : [],
         "oldFarmingPrestoContractsGoerli" : [],

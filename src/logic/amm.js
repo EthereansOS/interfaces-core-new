@@ -17,7 +17,8 @@ export async function getUniswapV3AMMForSwap({context, chainId, newContract}) {
         name : 'UniswapV3',
         version : '1',
         ethereumAddress : getNetworkElement({ context, chainId }, 'wethTokenAddress'),
-        image : `${process.env.PUBLIC_URL}/img/amms/UniswapV3.png`
+        image : `${process.env.PUBLIC_URL}/img/amms/UniswapV3.png`,
+        poolLinkTemplate : context.ammPoolLinkTemplates['UniswapV3']
     }
     return amm
 }
@@ -35,7 +36,7 @@ export async function getAMMs({context, chainId, newContract}) {
             data : {...await blockchainCall(contract.methods.data)},
             info : {...await blockchainCall(contract.methods.info)}
         }
-        return {...amm, ...amm.data, ethereumAddress : amm.data[0], name : amm.info[0], version : amm.info[1], image : `${process.env.PUBLIC_URL}/img/amms/${amm.info[0]}.png`}
+        return {...amm, ...amm.data, ethereumAddress : amm.data[0], name : amm.info[0], version : amm.info[1], image : `${process.env.PUBLIC_URL}/img/amms/${amm.info[0]}.png`, poolLinkTemplate : context.ammPoolLinkTemplates[amm.info[0]]}
     }))
 
     amms.unshift(await getUniswapV3AMMForSwap({context, chainId, newContract}))
@@ -43,6 +44,13 @@ export async function getAMMs({context, chainId, newContract}) {
     amms = amms.filter(it => it.name !== 'Balancer')
 
     return amms
+}
+
+export function getAmmPoolLink(data, amm, prestoOperation) {
+    var liquidityPoolAddress = web3Utils.toChecksumAddress(prestoOperation.liquidityPoolAddresse ? prestoOperation.liquidityPoolAddresses[0] : prestoOperation)
+    var poolLinkTemplate = amm.poolLinkTemplate || ""
+    var link = poolLinkTemplate.split("{0}").join(liquidityPoolAddress)
+    return link
 }
 
 var conversionEncode = {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, Fragment } from 'react'
 import RegularButtonDuo from '../../Global/RegularButtonDuo/index.js'
 import ExtLinkButton from '../../Global/ExtLinkButton/index.js'
 import Upshots from '../../Organizations/Upshots/index.js'
@@ -25,7 +25,7 @@ import BackButton from '../../Global/BackButton/index.js'
 import { generateItemKey } from '../../../logic/ballot.js'
 import { getLogs } from '../../../logic/logger.js'
 import { decodePrestoOperations } from '../../../logic/covenants.js'
-import { getAMMs } from '../../../logic/amm.js'
+import { getAMMs, getAmmPoolLink } from '../../../logic/amm.js'
 
 export default ({element, refreshElements, forDelegationVote}) => {
 
@@ -43,6 +43,7 @@ export default ({element, refreshElements, forDelegationVote}) => {
 
   const [tokens, setTokens] = useState(null)
   const [tokenAMMs, setTokenAMMs] = useState(null)
+  const [tokenPools, setTokenPools] = useState(null)
   const [open, setOpen] = useState(false)
   const [type, setType] = useState("accept")
   const [terminable, setTerminable] = useState(null)
@@ -144,6 +145,7 @@ export default ({element, refreshElements, forDelegationVote}) => {
       } else {
         t = await getRawField({ provider : web3.currentProvider}, proposalData[1][0], 'operations')
         t = decodePrestoOperations(t)
+        setTokenPools(t.map(it => it.liquidityPoolAddresses[0]))
         var tokenAMMS = t.map(it => amms.filter(amm => web3Utils.toChecksumAddress(amm.address) === web3Utils.toChecksumAddress(it.ammPlugin))[0])
         setTokenAMMs(tokenAMMS)
         t = t.map(it => buyOrSell ? it.swapPath[it.swapPath.length - 1] : it.inputTokenAddress)
@@ -227,15 +229,17 @@ export default ({element, refreshElements, forDelegationVote}) => {
       </> : <>
       {tokens && <h6>
         New selection:
-        {tokens.map((it, i) => <>
-            <a key={it}>
+        {tokens.map((it, i) => <Fragment key={it}>
+            <a>
               <LogoRenderer noFigure input={it}/>
             </a>
-            {tokenAMMs && <>
+            {tokenAMMs && tokenPools && <>
               on
-              <LogoRenderer noFigure input={tokenAMMs[i]}/>
+              <a target="_blank" href={getAmmPoolLink({context, ...web3Data}, tokenAMMs[i], tokenPools[i])}>
+                <LogoRenderer noFigure input={tokenAMMs[i]}/>
+              </a>
             </>}
-        </>)}
+        </Fragment>)}
         </h6>}
       </>}
         <div className={style.ProposalResult}>
