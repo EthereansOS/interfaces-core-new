@@ -454,8 +454,13 @@ export default props => {
 
         if(!loop) {
             const extensionBalance = await blockchainCall(rewardToken.contract.methods.balanceOf, element.extensionAddress)
-            const isSetupReady = element.byMint || parseInt(extensionBalance) >= (parseInt(farmSetup.rewardPerBlock) * parseInt(farmSetupInfo.blockDuration))
-            setSetupReady(isSetupReady)
+            var extB = web3Utils.toBN(extensionBalance)
+            var rwPB = web3Utils.toBN(farmSetup.rewardPerBlock)
+            var bD = web3Utils.toBN(farmSetupInfo.blockDuration)
+            var mul = rwPB.mul(bD)
+            var ready = extB.gte(mul)
+            ready = element.byMint || ready
+            setSetupReady(ready)
         }
 
         var balances = ['0', '0']
