@@ -173,7 +173,7 @@ const Farmings = ({element}) => {
         <img src={`${process.env.PUBLIC_URL}/img/tokentest/os.png`}/>
       </a>
       <p>
-        <b>Farm OS</b>
+        <b>Farm SOON</b>
         <br/>
         {!oSDailyRate && <CircularProgress/>}
         {oSDailyRate && <span>Daily reward rate: {oSDailyRate} OS</span>}
