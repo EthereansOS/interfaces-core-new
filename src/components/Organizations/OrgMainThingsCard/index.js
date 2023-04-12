@@ -162,7 +162,7 @@ const Farmings = ({element}) => {
       <p>
         <b>Dividends</b>
         <br/>
-        <span>Minimum to Stake: 5,000 OS</span>
+        <span>Minimum to Stake: 5,000 SOON</span>
         <br/>
         {!dividendsDailyRate && <CircularProgress/>}
         {dividendsDailyRate && <span>Daily reward rate: {dividendsDailyRate} ETH</span>}
@@ -176,7 +176,7 @@ const Farmings = ({element}) => {
         <b>Farm SOON</b>
         <br/>
         {!oSDailyRate && <CircularProgress/>}
-        {oSDailyRate && <span>Daily reward rate: {oSDailyRate} OS</span>}
+        {oSDailyRate && <span>Daily reward rate: {oSDailyRate} SOON</span>}
       </p>
     </Link>
   </div>)
@@ -433,7 +433,7 @@ const Inflation = ({element}) => {
 
   return (<div className={style.OrgPartView}>
     <div className={style.OrgPartTitle}>
-      <h6>Ethereans (OS) Inflation</h6>
+      <h6>Ethereans (SOON) Inflation</h6>
       <ExtLinkButton text="Etherscan" href={`${getNetworkElement({context, chainId}, 'etherscanURL')}/tokenholdings?a=${element.organizations[0].components.oSFixedInflationManager.address}`}/>
     </div>
     <div className={style.OrgPartInfo}>
@@ -450,11 +450,11 @@ const Inflation = ({element}) => {
       <p>
         <b>Daily Mint</b><br/>
         {dailyMint === null && <CircularProgress/>}
-        {dailyMint && <span>{dailyMint} OS</span>}
+        {dailyMint && <span>{dailyMint} SOON</span>}
       </p>
     </div>
     <div className={style.OrgPartInfo}>
-      <p><b>OS Farming</b><br></br>30%</p>
+      <p><b>SOON Farming</b><br></br>30%</p>
     </div>
     <div className={style.OrgPartInfo}>
       <p><b>Operations Treasury</b><br></br>25%</p>

@@ -30,7 +30,7 @@ const AddLiquidity = (props) => {
         <div className={style.TimetoFarmOutput}>
           <div className={style.TimetoFarmOutputI}>
             <p>Estimated reward per day</p>
-            <p><b>22.098 OS</b></p>
+            <p><b>22.098 SOON</b></p>
           </div>
           <div className={style.FarmBoxSettings}>
             <ActionInfoSectionS></ActionInfoSectionS>

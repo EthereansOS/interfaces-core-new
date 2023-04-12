@@ -17,13 +17,13 @@ const PositionOpen = (props) => {
   return (
       <div className={style.YourFarmingPositionsFarmingFarmingFarmingChiFarmaViveComeUnPAsha}>
         <div className={style.FarmingYouInfoPart}>
-          <span><b>Deposited</b>: 56 ETH - 3000 OS</span>
-          <span><b>Daily Earnings</b>: 200 OS</span>
+          <span><b>Deposited</b>: 56 ETH - 3000 SOON</span>
+          <span><b>Daily Earnings</b>: 200 SOON</span>
           <RegularButtonsSmallWhite></RegularButtonsSmallWhite>
         </div>
         <div className={style.FarmingYouInfoPart}>
-          <span><b>Earned</b>: 56.436234 OS</span>
-          <span><b>Fees</b>: 56.436234 OS - 1444 ETH</span>
+          <span><b>Earned</b>: 56.436234 SOON</span>
+          <span><b>Fees</b>: 56.436234 SOON - 1444 ETH</span>
           <ActionAWeb3ButtonSmall></ActionAWeb3ButtonSmall>
         </div>
       </div>

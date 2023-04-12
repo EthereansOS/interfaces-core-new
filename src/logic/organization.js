@@ -476,23 +476,23 @@ export var wellknownPresets = {
     'QmR3S8cPGb4Tm9dr7sVx5meUPMsptV6vBbCCP96e2cZeAL' : percentages,
     'QmesA2MjYEjdsC2wFRSfqDmThDASftNZThwWMuhZ7vKQaV' : {
         presetValues : [
-            "0.05 OS",
-            "0.1 OS",
-            "1 OS",
-            "5 OS",
-            "10 OS",
-            "100 OS"
+            "0.05 SOON",
+            "0.1 SOON",
+            "1 SOON",
+            "5 SOON",
+            "10 SOON",
+            "100 SOON"
         ]
     },
     'QmVGor81bynT1GLQoWURiTSdPmPEDbe8eC5znNDHfTfkfT' : percentages,
     'QmUMFxQjd3zj7oVGpDPGDom6ogYu1b9o6CnKAYFSaCsmuU' : {
         presetValues : [
-            "0.05 OS",
-            "0.1 OS",
-            "1 OS",
-            "5 OS",
-            "10 OS",
-            "100 OS"
+            "0.05 SOON",
+            "0.1 SOON",
+            "1 SOON",
+            "5 SOON",
+            "10 SOON",
+            "100 SOON"
         ]
     }
 }
@@ -633,7 +633,7 @@ async function getProposals({account, web3, newContract, context, chainId}, orga
     }))
 
     proposals = [{
-        name : "OS-UP",
+        name : "SOON-UP",
         proposalType : "normal",
         type : "survey",
         subProposals : proposals,
@@ -813,7 +813,7 @@ var uint256EntryTypePercentage = {
 var uint256EntryType = {
     decodePreset : {
         toDisplay : [1],
-        suffix : ' OS',
+        suffix : ' SOON',
         types : [{
             rawType : 'string',
             name : 'entryName',

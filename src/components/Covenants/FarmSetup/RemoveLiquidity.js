@@ -39,7 +39,7 @@ const AddLiquidity = (props) => {
               <div className={style.TimetoFarmOutput}>
                 <div className={style.TimetoFarmOutputI}>
                   <p>Withdraw:</p>
-                  <p><b>22.098 OS - 550 ETH</b></p>
+                  <p><b>22.098 SOON - 550 ETH</b></p>
                 </div>
                 <div className={style.FarmBoxSettings}>
                   <ActionInfoSectionS></ActionInfoSectionS>

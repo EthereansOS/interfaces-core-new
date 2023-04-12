@@ -35,14 +35,14 @@ export default ({element, onToggle}) => {
 
   var Component;
 
-  element.name === 'OS Inflation Rate' && (Component = <HeaderOsInflationRateActiveSelection element={element}/>)
+  element.name === 'SOON Inflation Rate' && (Component = <HeaderOsInflationRateActiveSelection element={element}/>)
   element.name === 'FoF Fee (Transaction)' && (Component = <HeaderStateManagerVariable element={element} name="factoryOfFactoriesFeePercentageTransacted" decimals="16" suffix=" %"/>)
   element.name === 'FoF Fee (Token)' && (Component = <HeaderStateManagerVariable element={element} name="factoryOfFactoriesFeePercentageBurn"  decimals="16" suffix=" %"/>)
   element.name === 'Covenants Farming Fee (Transaction)' && (Component = <HeaderStateManagerVariable element={element} name="farmingFeePercentageTransacted" decimals="16" suffix=" %"/>)
-  element.name === 'Covenants Farming Fee (Burn)' && (Component = <HeaderStateManagerVariable element={element} name="farmingFeeBurnOS" decimals="18" suffix=" OS"/>)
+  element.name === 'Covenants Farming Fee (Burn)' && (Component = <HeaderStateManagerVariable element={element} name="farmingFeeBurnOS" decimals="18" suffix=" SOON"/>)
   element.name === 'Covenants Routine Fee (Transaction)' && (Component = <HeaderStateManagerVariable element={element} name="inflationFeePercentageTransacted" decimals="16" suffix=" %"/>)
   if(element.name === 'Delegations Grants Insurance' || element.name === 'Change Delegation Attachment Tax') {
-    (Component = <HeaderStateManagerVariable element={element} name="delegationsAttachInsurance" decimals="18" suffix=" OS"/>)
+    (Component = <HeaderStateManagerVariable element={element} name="delegationsAttachInsurance" decimals="18" suffix=" SOON"/>)
   }
 
   return (

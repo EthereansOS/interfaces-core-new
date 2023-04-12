@@ -651,14 +651,14 @@ const proposalResolvers = {
         }
 
         var votes = fromDecimals(originalProposalData.accept !== '0' ? originalProposalData.accept : originalProposalData.refuse, 18, true)
-        var symbol = 'OS'
+        var symbol = 'SOON'
 
         var ctx = ''
 
         if(codeData.label === 'setUint256' || codeData.label === 'changeOSInflationRate') {
             if(!codeData.presetValue) {
                 var presetValues = wellknownPresets[codeData.uri.split('ipfs://ipfs/').join('')].presetValues
-                var cleanedValues = presetValues.map(it => toDecimals(it.split(' OS').join('').split('%').join(''), it.indexOf('OS') !== -1 ? 18 : 16))
+                var cleanedValues = presetValues.map(it => toDecimals(it.split(' SOON').join('').split('%').join(''), it.indexOf('SOON') !== -1 ? 18 : 16))
                 var presetValue = presetValues[cleanedValues.indexOf(codeData.valueUint256)]
                 codeData.presetValue = presetValue
             }

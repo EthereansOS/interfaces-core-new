@@ -26,7 +26,7 @@ const FarmSetup = (props) => {
               <figure>
                 <a target="_blank" href="https://etherscan.io/token/0x6100dd79fCAA88420750DceE3F735d168aBcB771">
                   <img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x6100dd79fCAA88420750DceE3F735d168aBcB771/logo.png"></img>
-                </a>     
+                </a>
               </figure>
               <span>50%</span>
             </div>
@@ -43,7 +43,7 @@ const FarmSetup = (props) => {
               <b>APR:</b> 500%
             </p>
             <p className={style.FarmInfoDetailS}>
-              <b>Daily Rate:</b> 50000 OS
+              <b>Daily Rate:</b> 50000 SOON
             </p>
             <p className={style.FarmInfoDetailS}>
               <b>End:</b> <a>31467951397</a>
@@ -52,14 +52,14 @@ const FarmSetup = (props) => {
               <RegularButtonDuo></RegularButtonDuo>
             </p>
           </div>
-          
+
           <div className={style.farmInfoCurve}>
             <p className={style.farmInfoCurveL}>
               <p className={style.MAinTokensel}>
                 <a>
                   <img src={`${process.env.PUBLIC_URL}/img/switch.png`}></img>
-                </a> 
-                OS per ETH
+                </a>
+                SOON per ETH
               </p>
             </p>
             <p className={style.farmInfoCurveR}>
@@ -67,7 +67,7 @@ const FarmSetup = (props) => {
                 <VioletLinkButton></VioletLinkButton>
                 <VioletLinkButton></VioletLinkButton>
               </p>
-            
+
             </p>
             <div className={style.UniV3CurveView}>
               <div className={style.UniV3CurveViewCurv}>
@@ -83,7 +83,7 @@ const FarmSetup = (props) => {
                   </div>
                 </div>
               </div>
-              <span className={style.UniV3TVLFIV}><b>TVL</b>: 56.436234 OS - 1444 ETH</span>
+              <span className={style.UniV3TVLFIV}><b>TVL</b>: 56.436234 SOON - 1444 ETH</span>
           </div>
         </div>
 
@@ -101,7 +101,7 @@ const FarmSetup = (props) => {
               <figure>
                 <a target="_blank" href="https://etherscan.io/token/0x6100dd79fCAA88420750DceE3F735d168aBcB771">
                   <img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x6100dd79fCAA88420750DceE3F735d168aBcB771/logo.png"></img>
-                </a>     
+                </a>
               </figure>
               <span>50%</span>
             </div>
@@ -118,21 +118,21 @@ const FarmSetup = (props) => {
               <b>APR:</b> 500%
             </p>
             <p className={style.FarmInfoDetailS}>
-              <b>Daily Rate:</b> 50000 OS
+              <b>Daily Rate:</b> 50000 SOON
             </p>
             <p className={style.FarmInfoDetailS}>
               <b>End:</b> <a>31467951397</a>
             </p>
 
           </div>
-          
+
           <div className={style.farmInfoCurve}>
             <p className={style.farmInfoCurveL}>
               <p className={style.MAinTokensel}>
                 <a>
                   <img src={`${process.env.PUBLIC_URL}/img/switch.png`}></img>
-                </a> 
-                OS per ETH
+                </a>
+                SOON per ETH
               </p>
             </p>
             <p className={style.farmInfoCurveR}>
@@ -140,7 +140,7 @@ const FarmSetup = (props) => {
                 <VioletLinkButton></VioletLinkButton>
                 <VioletLinkButton></VioletLinkButton>
               </p>
-            
+
             </p>
             <div className={style.UniV3CurveView}>
               <div className={style.UniV3CurveViewCurv}>
@@ -156,7 +156,7 @@ const FarmSetup = (props) => {
                   </div>
                 </div>
               </div>
-              <span className={style.UniV3TVLFIV}><b>TVL</b>: 56.436234 OS - 1444 ETH</span>
+              <span className={style.UniV3TVLFIV}><b>TVL</b>: 56.436234 SOON - 1444 ETH</span>
           </div>
           <PositionOpen></PositionOpen>
         </div>
@@ -171,7 +171,7 @@ const FarmSetup = (props) => {
               <figure>
                 <a target="_blank" href="https://etherscan.io/token/0x6100dd79fCAA88420750DceE3F735d168aBcB771">
                   <img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x6100dd79fCAA88420750DceE3F735d168aBcB771/logo.png"></img>
-                </a>     
+                </a>
               </figure>
               <span>50%</span>
             </div>
@@ -188,7 +188,7 @@ const FarmSetup = (props) => {
               <b>APR:</b> 500%
             </p>
             <p className={style.FarmInfoDetailS}>
-              <b>Daily Rate:</b> 50000 OS
+              <b>Daily Rate:</b> 50000 SOON
             </p>
             <p className={style.FarmInfoDetailS}>
               <b>End:</b> <a>31467951397</a>
@@ -197,14 +197,14 @@ const FarmSetup = (props) => {
               <RegularButtonDuo></RegularButtonDuo>
             </p>
           </div>
-          
+
           <div className={style.farmInfoCurve}>
             <p className={style.farmInfoCurveL}>
               <p className={style.MAinTokensel}>
                 <a>
                   <img src={`${process.env.PUBLIC_URL}/img/switch.png`}></img>
-                </a> 
-                OS per ETH
+                </a>
+                SOON per ETH
               </p>
             </p>
             <p className={style.farmInfoCurveR}>
@@ -212,7 +212,7 @@ const FarmSetup = (props) => {
                 <VioletLinkButton></VioletLinkButton>
                 <VioletLinkButton></VioletLinkButton>
               </p>
-            
+
             </p>
             <div className={style.UniV3CurveView}>
               <div className={style.UniV3CurveViewCurv}>
@@ -228,14 +228,14 @@ const FarmSetup = (props) => {
                   </div>
                 </div>
               </div>
-              <span className={style.UniV3TVLFIV}><b>TVL</b>: 56.436234 OS - 1444 ETH</span>
+              <span className={style.UniV3TVLFIV}><b>TVL</b>: 56.436234 SOON - 1444 ETH</span>
           </div>
         </div>
         <AdLiquidity></AdLiquidity>
 
       </div>
       {/*Single setup Open  End*/}
-     
+
       {/*Single setup Open Withdraw START*/}
       <div className={style.FarmSetup}>
         <div className={style.FarmMain}>
@@ -244,7 +244,7 @@ const FarmSetup = (props) => {
               <figure>
                 <a target="_blank" href="https://etherscan.io/token/0x6100dd79fCAA88420750DceE3F735d168aBcB771">
                   <img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x6100dd79fCAA88420750DceE3F735d168aBcB771/logo.png"></img>
-                </a>     
+                </a>
               </figure>
               <span>50%</span>
             </div>
@@ -261,21 +261,21 @@ const FarmSetup = (props) => {
               <b>APR:</b> 500%
             </p>
             <p className={style.FarmInfoDetailS}>
-              <b>Daily Rate:</b> 50000 OS
+              <b>Daily Rate:</b> 50000 SOON
             </p>
             <p className={style.FarmInfoDetailS}>
               <b>End:</b> <a>31467951397</a>
             </p>
 
           </div>
-          
+
           <div className={style.farmInfoCurve}>
             <p className={style.farmInfoCurveL}>
               <p className={style.MAinTokensel}>
                 <a>
                   <img src={`${process.env.PUBLIC_URL}/img/switch.png`}></img>
-                </a> 
-                OS per ETH
+                </a>
+                SOON per ETH
               </p>
             </p>
             <p className={style.farmInfoCurveR}>
@@ -283,7 +283,7 @@ const FarmSetup = (props) => {
                 <VioletLinkButton></VioletLinkButton>
                 <VioletLinkButton></VioletLinkButton>
               </p>
-            
+
             </p>
             <div className={style.UniV3CurveView}>
               <div className={style.UniV3CurveViewCurv}>
@@ -299,7 +299,7 @@ const FarmSetup = (props) => {
                   </div>
                 </div>
               </div>
-              <span className={style.UniV3TVLFIV}><b>TVL</b>: 56.436234 OS - 1444 ETH</span>
+              <span className={style.UniV3TVLFIV}><b>TVL</b>: 56.436234 SOON - 1444 ETH</span>
           </div>
           <PositionOpen></PositionOpen>
         </div>

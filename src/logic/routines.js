@@ -71,7 +71,7 @@ export async function getHardcabledRoutine(data) {
     const host = extensionAddress
 
     const entry = {
-        name : "Ethereans (OS) Inflation",
+        name : "Ethereans (SOON) Inflation",
         blockInterval : abi.decode(["uint256"], await getRawField({ provider : web3.currentProvider }, address, 'swapToETHInterval'))[0].toString(),
         lastBlock : abi.decode(["uint256"], await getRawField({ provider : web3.currentProvider }, address, 'lastSwapToETHBlock'))[0].toString(),
         callerRewardPercentage : abi.decode(["uint256"], await getRawField({ provider : web3.currentProvider }, address, 'executorRewardPercentage'))[0].toString()
