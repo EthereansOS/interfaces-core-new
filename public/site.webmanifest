@@ -1,6 +1,6 @@
 {
-    "name": "EthereansOS Interface",
-    "short_name": "The Ethereans Operating System is a layer for building any kind of application on Ethereum, powered by extendable factories for DeFi, NFTs and on-chain governance.",
+    "name": "NONbeta Interface",
+    "short_name": "NONbeta",
     "icons": [
         {
             "src": "/android-chrome-192x192.png",
