@@ -24,7 +24,7 @@ const OrgHeadline = ({element}) => {
       </div>
       <div className={style.OrgLinks}>
        <ExtLinkButton text="Website" href={element.external_url}/>
-       <ExtLinkButton text="Discussion" href={element.discord_url}/>
+       <ExtLinkButton text="Discussion" href={element.discussion_url || element.discord_url}/>
        <ExtLinkButton text="News" href={element.twitter_url}/>
        <ExtLinkButton text="Address" href={`${getNetworkElement({context, chainId}, 'etherscanURL')}/address/${element.address}`}/>
       </div>

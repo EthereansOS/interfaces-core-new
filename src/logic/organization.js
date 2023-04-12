@@ -71,7 +71,7 @@ export async function all({ context, newContract, chainId, factoryOfFactories })
     logs = await getLogs(factoryOfFactories.currentProvider, "eth_getLogs", args)
     organizations = [...organizations, ...logs.map(it => abi.decode(["address"], it.topics[2])[0])]
 
-    return await Promise.all(organizations.map(it => (tryRetrieveMetadata({ context }, { contract: newContract(context.SubDAOABI, it), address: it, type: 'organizations' }))))
+    return await Promise.all(organizations.map(it => (getOrganizationMetadata({ context }, { contract: newContract(context.SubDAOABI, it), address: it, type: 'organizations' }, true))))
 }
 
 export async function hasNoHost({ context, newContract }, organizationAddress) {
@@ -103,17 +103,24 @@ export async function tryExtractHost({ chainId, context, web3, account, getGloba
     }
 }
 
-export async function getOrganizationMetadata({ context }, organization) {
+export async function getOrganizationMetadata({ context }, organization, merge) {
     if (organization.uri) {
         return {}
     }
     try {
-        organization.uri = await blockchainCall(organization.contract.methods.uri)
+        organization.uri = await getManipulatedUri(organization)
         organization.formattedUri = formatLink({ context }, organization.uri)
         var metadata = await (await fetch(organization.formattedUri)).json()
-        return metadata
+        return merge ? { ...organization, ...metadata } : metadata
     } catch (e) {}
-    return {}
+    return merge ? organization : {}
+}
+
+async function getManipulatedUri(organization) {
+    if(web3Utils.toChecksumAddress(organization.address) === web3Utils.toChecksumAddress("0xc28FfD843DCA86565597A1b82265df29A1642262")) {
+        return 'ipfs://ipfs/QmZjF5qbS4RCMDpioC3nSQtJm4fEiKqLz4MZGrTZF9BGCQ'
+    }
+    return await blockchainCall(organization.contract.methods.uri)
 }
 
 export async function getInitializationData({newContract, context, chainId}, contract) {

@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useLocation } from 'react-router'
-import { useEthosContext, useWeb3, web3Utils } from '@ethereansos/interfaces-core'
+import { useEthosContext, useWeb3, web3Utils, abi } from '@ethereansos/interfaces-core'
 import CircularProgress from '../../../../components/Global/OurCircularProgress'
 import ViewCover from '../../../../components/Items/ViewCover'
 import ViewDescription from '../../../../components/Items/ViewDescription'
@@ -16,6 +16,7 @@ import DappSubMenu from '../../../../components/Global/DappSubMenu'
 import style from '../../../../all.module.css'
 import { useOpenSea } from '../../../../logic/uiUtilities'
 import { loadTokenFromAddress } from '../../../../logic/erc20'
+import { getRawField } from '../../../../logic/generalReader'
 
 const itemSubmenuVoices = [
     {
@@ -39,7 +40,7 @@ const ItemView = () => {
     const [item, setItem] = useState(null)
     const [submenuSelection, setSubmenuSelection] = useState(itemSubmenuVoices[0].id)
 
-    useEffect(() => {
+    const refresh = useCallback(() => {
         setItem(null)
         var itemId = pathname.split('/')
         if(itemId[itemId.length - 1].toLowerCase().indexOf("0x") === -1 && isNaN(parseInt(itemId[itemId.length - 1]))) {
@@ -54,6 +55,18 @@ const ItemView = () => {
         } catch(e) {}
     }, [pathname])
 
+    useEffect(refresh, [pathname])
+
+    useEffect(() => item && setTimeout(async () => {
+        var name = await getRawField({ provider : web3Data.web3.currentProvider }, item.address, 'name')
+        name = abi.decode(['string'], name)[0].toString()
+        var symbol = await getRawField({ provider : web3Data.web3.currentProvider }, item.address, 'symbol')
+        symbol = abi.decode(['string'], symbol)[0].toString()
+        console.log({
+            address : item.address, name, symbol, uri : item.uri
+        })
+    }), [item])
+
     return (
         <div className={style.SingleContentPage}>
         {item === null && <CircularProgress/>}
@@ -62,7 +75,7 @@ const ItemView = () => {
             <div className={style.CollectionLeft}>
             <ViewCover item={item}/>
             <ViewBasics item={item}/>
-            <ViewManageItem item={item}/>
+            <ViewManageItem item={item} onRefresh={refresh}/>
             <ViewDescription item={item}/>
             <ViewProperties item={item}/>
             </div>

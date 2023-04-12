@@ -7,7 +7,7 @@ import CreateItem from '../../../pages/items/dapp/create/item'
 
 import style from '../../../all.module.css'
 
-export default ({item}) => {
+export default ({item, onRefresh}) => {
 
     const context = useEthosContext()
 
@@ -23,7 +23,7 @@ export default ({item}) => {
 
     return (<div className={style.ViewBasicsHost}>
         {mode && <RegularModal close={() => setMode()}>
-            <CreateItem inputItem={item} mode={mode} close={() => setMode()}/>
+            <CreateItem inputItem={item} mode={mode} close={() => void(onRefresh(), setMode())}/>
         </RegularModal>}
         <h5>Host Tools</h5>
         {account === item.collectionData.mintOperator && <a onClick={() => setMode("mintMore")}>Mint</a>}

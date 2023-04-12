@@ -368,6 +368,21 @@ const Metadata = ({state, onStateEntry}) => {
                 <div className={style.proggressCreatePerch} style={{width: "66%"}}>Step 2 of 3</div>
             </div>
         </div>}
+        {state.modal && state.mode === 'changeMetadata' && <>
+            <h6>Name and Symbol</h6>
+            <div className={style.CreationPageLabel}>
+                <label className={style.CreationPageLabelF}>
+                    <h6>Name</h6>
+                    <input type="text" value={state.name} onChange={e => onStateEntry("name", e.currentTarget.value)}/>
+                    <p>Insert a name for yout Item (example: Ethereum). You can change it later, With Metadata hosting permissions.</p>
+                </label>
+                <label className={style.CreationPageLabelF}>
+                    <h6>Symbol</h6>
+                    <input type="text" value={state.symbol} onChange={e => onStateEntry("symbol", e.currentTarget.value)}/>
+                    <p>Insert a symbol for yout Item (example: ETH). You can change it later, With Metadata hosting permissions.</p>
+                </label>
+            </div>
+        </>}
         {state.modal && <h6>Change Item Metadata</h6>}
         <select className={style.CreationSelect} value={state.metadataType} onChange={e => onStateEntry('metadataType', e.currentTarget.value)}>
             {itemMetadataTypes.map(it => <option key={it.name} value={it.name}>{it.label}</option>)}
@@ -468,7 +483,7 @@ const CreateItem = ({inputItem, mode, close}) => {
 
     function onStateEntry(key, value) {
         setState(oldState => {
-            var newState = {...oldState, [key] : value}
+            var newState = {...oldState, [key] : value, mode}
             value === undefined && delete newState[key]
             return newState
         })

@@ -62,7 +62,7 @@ export default ({element, onToggle}) => {
           <div className={style.GovCardHeadOrganizationTitle}>
             <h6>{element.name}</h6>
             <ExtLinkButton text="Etherscan" href={`${getNetworkElement({context, chainId}, 'etherscanURL')}/tokenholdings?a=${element.organization.address}`}/>
-            <ExtLinkButton text="Discussion" href={element.discord_url}/>
+            <ExtLinkButton text="Discussion" href={element.discussion_url || element.discord_url}/>
           </div>
           <div className={style.GovCardHeadOrganizationInfo}>
               <p><b>Type:</b><br></br> {element.isSurveyless ? "Surveyless" : type === 'organization' ? "Survey" : "Poll"}</p>

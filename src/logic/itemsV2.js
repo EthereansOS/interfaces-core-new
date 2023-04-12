@@ -807,6 +807,8 @@ export async function deployItem({ context, ipfsHttpClient, projectionFactory, n
 
     const mainInterface = newContract(context.ItemMainInterfaceABI, await blockchainCall(projectionFactory.methods.mainInterface))
 
+    const itemHeader = await blockchainCall(mainInterface.methods.item, web3Utils.toBN(state.item).toString())
+
     const header = await blockchainCall(mainInterface.methods.collection, state.collectionId)
 
     const projection = newContract(context.MultiOperatorHostABI, header.host)
@@ -819,7 +821,10 @@ export async function deployItem({ context, ipfsHttpClient, projectionFactory, n
         return await blockchainCall(projection.methods.setOperator, 1, state.host)
     }
 
-    var uri = state.metadataLink || await uploadMetadata({ context, ipfsHttpClient }, {...state.metadata, attributes : state.attributes || [], name : state.name, symbol : state.symbol})
+    var metadataContent = {...state.metadata, attributes : state.attributes || [], name : state.name, symbol : state.symbol}
+    delete metadataContent.uri
+
+    var uri = state.metadataLink || await uploadMetadata({ context, ipfsHttpClient }, metadataContent)
 
     console.log(uri)
 
@@ -832,7 +837,12 @@ export async function deployItem({ context, ipfsHttpClient, projectionFactory, n
 
     if(state.item !== 'new' && !state.amount) {
         var id = abi.decode(['uint256'], abi.encode(['address'], [state.item]))[0].toString()
-        return await blockchainCall(projection.methods.setItemsMetadata, [id], [newHeader])
+        var transaction = await blockchainCall(projection.methods.setItemsMetadata, [id], [newHeader])
+        metadataContent = formatLink({ context }, uri)
+        metadataContent = await (await fetch(metadataContent)).json()
+        const key = web3Utils.sha3(`item-${web3Utils.toChecksumAddress(mainInterface.options.address)}-${id}`)
+        await cache.setItem(key, metadataContent)
+        return transaction
     }
 
     const createItems = [{
