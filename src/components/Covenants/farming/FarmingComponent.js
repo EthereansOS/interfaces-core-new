@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react'
 
 import { Link } from 'react-router-dom'
 
-import { formatMoney, useEthosContext, useWeb3, getNetworkElement, fromDecimals, VOID_ETHEREUM_ADDRESS } from '@ethereansos/interfaces-core'
+import { formatMoney, useEthosContext, useWeb3, getNetworkElement, fromDecimals, VOID_ETHEREUM_ADDRESS, numberToString } from '@ethereansos/interfaces-core'
 
 import LogoRenderer from '../../Global/LogoRenderer'
 import SetupComponent from './SetupComponent'
@@ -26,7 +26,7 @@ export default props => {
 
     const [showOldSetups, setShowOldSetups] = useState()
 
-    const dailyReward = useMemo(() => element.rewardPerBlock.ethereansosMul(6400), [element && element.rewardPerBlock])
+    const dailyReward = useMemo(() => numberToString(element.rewardPerBlock).ethereansosMul(6400), [element && element.rewardPerBlock])
 
     const logoContainer = useMemo(() => {
         var result = <LogoRenderer badge input={element.rewardToken}/>
