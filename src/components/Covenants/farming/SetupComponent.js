@@ -19,6 +19,7 @@ import { enqueue, dequeue } from '../../../logic/interval'
 import style from '../../../all.module.css'
 import { resolveToken } from '../../../logic/dualChain'
 import { useOpenSea } from '../../../logic/uiUtilities'
+import { getRawField } from '../../../logic/generalReader'
 
 const MAX_UINT128 = '0x' + web3Utils.toBN(2).pow(web3Utils.toBN(128)).sub(web3Utils.toBN(1)).toString('hex')
 const MAX_UINT256 = '0x' + web3Utils.toBN(2).pow(web3Utils.toBN(256)).sub(web3Utils.toBN(1)).toString('hex')
@@ -806,8 +807,8 @@ export default props => {
                     tokenAddress = lpTokenInfo.originalTokenAddresses[currentIndex]
                     const ammContract = lpTokenInfo.amm.contract
                     var result = await blockchainCall(ammContract.methods.byTokenAmount, setupInfo.liquidityPoolTokenAddress, tokenAddress, val.ethereansosAdd(surplus))
-                    liquidityPoolAmount = result.liquidityPoolAmount
-                    result = await blockchainCall(ammContract.methods.byLiquidityPoolAmount, setupInfo.liquidityPoolTokenAddress, liquidityPoolAmount)
+                    //liquidityPoolAmount = result.liquidityPoolAmount
+                    //result = await blockchainCall(ammContract.methods.byLiquidityPoolAmount, setupInfo.liquidityPoolTokenAddress, liquidityPoolAmount)
                     var ams = result.tokensAmounts
                     if(fullValue !== ams[index] && setupTokens[index].decimals !== '18') {
                         result = await blockchainCall(ammContract.methods.byTokenAmount, setupInfo.liquidityPoolTokenAddress, tokenAddress, ams[index])
@@ -889,7 +890,7 @@ export default props => {
                 var val = parseInt(liquidityPoolAmount) * 6400 * parseInt(setup.rewardPerBlock) / (parseInt(setup.totalSupply) + parseInt(liquidityPoolAmount))
                 val = numberToString(val).split('.')[0]
                 if (!isNaN(val)) {
-                    setFreeEstimatedReward(fromDecimals(val, rewardTokenInfo.decimals))
+                    setFreeEstimatedReward(fromDecimals(val, rewardTokenInfo.decimals, true))
                 }
             }
         }, 300)
@@ -924,7 +925,7 @@ export default props => {
                 } else {
                     const val = parseInt(fromDecimals(value, parseInt(lpTokenInfo.decimals))) * 6400 * parseInt(setup.rewardPerBlock) / (parseInt(setup.totalSupply) + parseInt(fromDecimals(value, parseInt(lpTokenInfo.decimals))))
                     if (!isNaN(val)) {
-                        setFreeEstimatedReward(fromDecimals(numberToString(val), rewardTokenInfo.decimals))
+                        setFreeEstimatedReward(fromDecimals(numberToString(val), rewardTokenInfo.decimals, true))
                     }
                 }
             } catch (error) {
@@ -934,12 +935,28 @@ export default props => {
         // setFreeEstimatedReward(dfoCore.toDecimals(dfoCore.toFixed(parseInt(dfoCore.toFixed(dfoCore.fromDecimals(value, parseInt(lpTokenInfo.decimals)))) * 6400 * parseInt(setup.rewardPerBlock) / (parseInt(setup.totalSupply) + parseInt(value))), rewardTokenInfo.decimals))
     }
 
+    async function fixGen1MinAmount(stake) {
+        if(setupInfo.ammPlugin !== "0xFC1665BD717dB247CDFB3a08b1d496D1588a6340" || !setupInfo.involvingETH) {
+            return stake
+        }
+        var data = await getRawField({provider:web3Data.web3.currentProvider}, setupInfo.liquidityPoolTokenAddress, "token0")
+        data = web3Utils.toChecksumAddress(abi.decode(["address"], data)[0].toString())
+
+        if(data === "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2") {
+            var change = stake.amount1Min
+            stake.amount1Min = stake.amount0Min
+            stake.amount0Min = change
+        }
+
+        return stake
+    }
+
     async function addLiquidity(data) {
         if(element.generation === 'gen2') {
             return await addLiquidityGen2({setup, lpTokenAmount, receiver, setupTokens, inputType, setupInfo, ethereumAddress, tokenAmounts, element, currentPosition, prestoData, amountsMin, context, ...web3Data, ...data })
         }
 
-        const stake = {
+        var stake = {
             setupIndex : setup.setupIndex,
             amount: 0,
             amountIsLiquidityPool: inputType === 'add-lp' ? true : false,
@@ -947,6 +964,8 @@ export default props => {
             amount0Min : amountsMin[0],
             amount1Min : amountsMin[1]
         }
+
+        stake = await fixGen1MinAmount(stake)
 
         var ethTokenIndex = null
         var ethTokenValue = 0
@@ -1321,7 +1340,7 @@ export default props => {
             } else {
                 const val = parseInt(lpAmount) * 6400 * parseInt(setup.rewardPerBlock) / (parseInt(setup.totalSupply) + parseInt(lpAmount))
                 if (!isNaN(val)) {
-                    setFreeEstimatedReward(fromDecimals(val, rewardTokenInfo.decimals))
+                    setFreeEstimatedReward(fromDecimals(val, rewardTokenInfo.decimals, true))
                 }
             }
 
