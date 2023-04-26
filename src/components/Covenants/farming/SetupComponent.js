@@ -720,9 +720,10 @@ export default props => {
         }
         if(element.generation === 'gen1') {
             const amm = (await ammAggregatorPromise).amms.filter(it => web3Utils.toChecksumAddress(it.address) === web3Utils.toChecksumAddress(setupInfo.ammPlugin))[0]
-            const result = [...(await blockchainCall(amm.contract.methods.byLiquidityPoolAmount, setupInfo.liquidityPoolTokenAddress, liquidity))[0]]
+            var result = [...(await blockchainCall(amm.contract.methods.byLiquidityPoolAmount, setupInfo.liquidityPoolTokenAddress, liquidity))[0]]
             result[0] = numberToString(parseInt(result[0]) * (1 - (slippage / 100))).split('.')[0]
             result[1] = numberToString(parseInt(result[1]) * (1 - (slippage / 100))).split('.')[0]
+            result = await fixGen1MinAmount(result)
             return result
         }
         try {
@@ -736,13 +737,14 @@ export default props => {
             var { amount0: amount0Min, amount1: amount1Min } = partialPosition[`${type || 'mint'}AmountsWithSlippage`](toler)
             amount0Min = amount0Min.toString().split('.')[0]
             amount1Min = amount1Min.toString().split('.')[0]
-            return [{
+            var minAmounts = [{
                 full : amount0Min,
                 value : fromDecimals(amount0Min, setupTokens[0].decimals, true)
             }, {
                 full : amount1Min,
                 value : fromDecimals(amount1Min, setupTokens[1].decimals, true)
             }]
+            return minAmounts
         } catch(e) {
             return ['0', '0']
         }
@@ -807,8 +809,8 @@ export default props => {
                     tokenAddress = lpTokenInfo.originalTokenAddresses[currentIndex]
                     const ammContract = lpTokenInfo.amm.contract
                     var result = await blockchainCall(ammContract.methods.byTokenAmount, setupInfo.liquidityPoolTokenAddress, tokenAddress, val.ethereansosAdd(surplus))
-                    //liquidityPoolAmount = result.liquidityPoolAmount
-                    //result = await blockchainCall(ammContract.methods.byLiquidityPoolAmount, setupInfo.liquidityPoolTokenAddress, liquidityPoolAmount)
+                    liquidityPoolAmount = result.liquidityPoolAmount
+                    result = await blockchainCall(ammContract.methods.byLiquidityPoolAmount, setupInfo.liquidityPoolTokenAddress, liquidityPoolAmount)
                     var ams = result.tokensAmounts
                     if(fullValue !== ams[index] && setupTokens[index].decimals !== '18') {
                         result = await blockchainCall(ammContract.methods.byTokenAmount, setupInfo.liquidityPoolTokenAddress, tokenAddress, ams[index])
@@ -936,6 +938,10 @@ export default props => {
     }
 
     async function fixGen1MinAmount(stake) {
+        return stake;
+        if(element.generation !== 'gen1') {
+            return stake
+        }
         if(setupInfo.ammPlugin !== "0xFC1665BD717dB247CDFB3a08b1d496D1588a6340" || !setupInfo.involvingETH) {
             return stake
         }
@@ -943,9 +949,15 @@ export default props => {
         data = web3Utils.toChecksumAddress(abi.decode(["address"], data)[0].toString())
 
         if(data === "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2") {
-            var change = stake.amount1Min
-            stake.amount1Min = stake.amount0Min
-            stake.amount0Min = change
+            if(stake.amount1Min) {
+                var change = stake.amount1Min
+                stake.amount1Min = stake.amount0Min
+                stake.amount0Min = change
+            } else {
+                var change = stake[1]
+                stake[1] = stake[0]
+                stake[0] = change
+            }
         }
 
         return stake
