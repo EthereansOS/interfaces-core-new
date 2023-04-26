@@ -45,6 +45,8 @@ export default props => {
 
     const ethersProvider = useMemo(() => new ethers.providers.Web3Provider(web3.currentProvider), [web3])
 
+    const flag = useMemo(() => web3Utils.toChecksumAddress(element.address) === web3Utils.toChecksumAddress('0x4992e4c2fb8F8aa8aE38bF30ACA69ff24410edf1'), [element])
+
     // general info and setup data
     const [setup, setSetup] = useState(setupInput)
     const [setupInfo, setSetupInfo] = useState(setupInput.setupInfo)
@@ -1532,7 +1534,7 @@ export default props => {
                 </div>)}
                 <div className={style.timeToFarm}>
                     {tokensApprovals.some(value => !value) && approveButton}
-                    <ActionAWeb3Button onSuccess={reloadData} onClick={addLiquidity} disabled={tokensApprovals.some(value => !value) || tokenAmounts.some(value => value === 0)}>Add Liquidity</ActionAWeb3Button>
+                    <ActionAWeb3Button onSuccess={flag ? undefined : reloadData} onClick={flag ? undefined : addLiquidity} disabled={flag || tokensApprovals.some(value => !value) || tokenAmounts.some(value => value === 0)}>Add Liquidity</ActionAWeb3Button>
                 </div>
             </div>
         )
