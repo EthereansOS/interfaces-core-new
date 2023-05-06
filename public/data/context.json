@@ -450,6 +450,7 @@
         ],
         "deployedFarmingsToExclude" : [
             "0x9DCcD9b2034652AF13Ad0dd424FE4EB046e7E659",
+            "0xd158FD2186B07fb7C26aFcB7f00DB5b2eB6F2d8d",
             "0x4992e4c2fb8F8aa8aE38bF30ACA69ff24410edf1"
         ],
         "deployedRoutinesToExclude" : [
