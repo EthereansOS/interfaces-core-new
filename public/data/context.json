@@ -449,7 +449,8 @@
             "0xdD66A428A2a1E6f9b5b6A0bD5f557fa62bc8c5c9"
         ],
         "deployedFarmingsToExclude" : [
-            "0x9DCcD9b2034652AF13Ad0dd424FE4EB046e7E659"
+            "0x9DCcD9b2034652AF13Ad0dd424FE4EB046e7E659",
+            "0xd158FD2186B07fb7C26aFcB7f00DB5b2eB6F2d8d"
         ],
         "deployedRoutinesToExclude" : [
             "0x10FfbBdC33b5150c0D24F994c3fF37FfDd790984"

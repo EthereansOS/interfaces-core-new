@@ -107,6 +107,8 @@ export async function getFarming(data, address, generation) {
 
     const { web3, context, chainId, newContract, lightweight, positionIds, account, mode, block, dualBlock } = data
 
+    if([...context.deployedFarmingsToExclude].map(web3Utils.toChecksumAddress).indexOf(address) !== -1) { return }
+
     const currentBlock = parseInt(dualBlock || block)
 
     generation = generation || await getFarmingContractGenerationByAddress(data, address)
