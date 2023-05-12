@@ -717,15 +717,11 @@ export default props => {
 
     async function calculateSlippageAmounts(slippage, liquidity, type) {
         slippage = cleanSlippage(slippage)
-        if(slippage == 0) {
-            return ['0', '0']
-        }
         if(element.generation === 'gen1') {
             const amm = (await ammAggregatorPromise).amms.filter(it => web3Utils.toChecksumAddress(it.address) === web3Utils.toChecksumAddress(setupInfo.ammPlugin))[0]
             var result = [...(await blockchainCall(amm.contract.methods.byLiquidityPoolAmount, setupInfo.liquidityPoolTokenAddress, liquidity))[0]]
             result[0] = numberToString(parseInt(result[0]) * (1 - (slippage / 100))).split('.')[0]
             result[1] = numberToString(parseInt(result[1]) * (1 - (slippage / 100))).split('.')[0]
-            result = await fixGen1MinAmount(result)
             return result
         }
         try {
@@ -939,32 +935,6 @@ export default props => {
         // setFreeEstimatedReward(dfoCore.toDecimals(dfoCore.toFixed(parseInt(dfoCore.toFixed(dfoCore.fromDecimals(value, parseInt(lpTokenInfo.decimals)))) * 6400 * parseInt(setup.rewardPerBlock) / (parseInt(setup.totalSupply) + parseInt(value))), rewardTokenInfo.decimals))
     }
 
-    async function fixGen1MinAmount(stake) {
-        return stake;
-        if(element.generation !== 'gen1') {
-            return stake
-        }
-        if(setupInfo.ammPlugin !== "0xFC1665BD717dB247CDFB3a08b1d496D1588a6340" || !setupInfo.involvingETH) {
-            return stake
-        }
-        var data = await getRawField({provider:web3Data.web3.currentProvider}, setupInfo.liquidityPoolTokenAddress, "token0")
-        data = web3Utils.toChecksumAddress(abi.decode(["address"], data)[0].toString())
-
-        if(data === "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2") {
-            if(stake.amount1Min) {
-                var change = stake.amount1Min
-                stake.amount1Min = stake.amount0Min
-                stake.amount0Min = change
-            } else {
-                var change = stake[1]
-                stake[1] = stake[0]
-                stake[0] = change
-            }
-        }
-
-        return stake
-    }
-
     async function addLiquidity(data) {
         if(element.generation === 'gen2') {
             return await addLiquidityGen2({setup, lpTokenAmount, receiver, setupTokens, inputType, setupInfo, ethereumAddress, tokenAmounts, element, currentPosition, prestoData, amountsMin, context, ...web3Data, ...data })
@@ -978,8 +948,6 @@ export default props => {
             amount0Min : amountsMin[0],
             amount1Min : amountsMin[1]
         }
-
-        stake = await fixGen1MinAmount(stake)
 
         var ethTokenIndex = null
         var ethTokenValue = 0
