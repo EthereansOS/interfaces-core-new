@@ -807,8 +807,6 @@ export async function deployItem({ context, ipfsHttpClient, projectionFactory, n
 
     const mainInterface = newContract(context.ItemMainInterfaceABI, await blockchainCall(projectionFactory.methods.mainInterface))
 
-    const itemHeader = await blockchainCall(mainInterface.methods.item, web3Utils.toBN(state.item).toString())
-
     const header = await blockchainCall(mainInterface.methods.collection, state.collectionId)
 
     const projection = newContract(context.MultiOperatorHostABI, header.host)

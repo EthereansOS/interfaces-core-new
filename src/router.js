@@ -2,7 +2,7 @@ import React, { useMemo, useState, useEffect } from 'react'
 import { Switch, Route } from 'react-router-dom'
 
 import Web3 from 'web3'
-import { useEthosContext, usePlaceholder, useWeb3, abi, getNetworkElement, web3Utils, sendAsync, fromDecimals, blockchainCall } from '@ethereansos/interfaces-core'
+import { useEthosContext, usePlaceholder, useWeb3, abi, getNetworkElement, web3Utils, sendAsync, fromDecimals, toDecimals, blockchainCall } from '@ethereansos/interfaces-core'
 import Connect from './components/Global/Connect'
 import MainTemplate from './components/Global/MainTemplate'
 import BetaBanner from './components/Global/BetaBanner'
@@ -25,6 +25,8 @@ const AppRouter = () => {
     window.getNetworkElement = window.getNetworkElement || (varName => getNetworkElement({context: window.context, chainId : window.web3Data.chainId}, varName))
     window.context = context
     window.web3Data = web3Data
+    window.toDecimals = window.toDecimals
+    window.fromDecimals = window.fromDecimals
     window.web3 = web3Data.web3 || window.web3 || new window.Web3()
     window.setGanache = window.setGanache || async function setGanache() {
         window.ganache = window.ganache || new window.Web3.providers.HttpProvider("http://127.0.0.1:8545")

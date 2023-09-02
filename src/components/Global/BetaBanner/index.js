@@ -18,7 +18,7 @@ export default ({close}) => {
     return (
         <div onClick={close} className={style.ModalBack}>
             <div onClick={preventClose} className={style.ModalBoxBanner}>
-                <h5><b>Welcome to NONbeta.</b></h5>
+                <h5><b>Welcome to EthereansOS.</b></h5>
                 <h6>If you find any issue, please contact us <a target="_blank" href={context.discordLink}>in our Discord Server</a></h6>
                 <a className={style.Enter} onClick={close}>Enter</a>
                 <span>By connecting to the App, you certify that you know all of the possible risks of using Ethereum Applications in Beta. Use EthereansOS at your own risk.</span>
