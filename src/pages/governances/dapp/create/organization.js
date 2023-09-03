@@ -240,7 +240,7 @@ const TreasurySplitterManager = ({value, onChange}) => {
     return (
         <div className={style.CreationPageLabel}>
             <div className={style.FancyExplanationCreate}>
-                <h6>Fixed Inflation</h6>
+                <h6>Treasury Splitter</h6>
             </div>
             <label className={style.CreationPageLabelF}>
                 <h6>Split interval</h6>
@@ -289,7 +289,7 @@ const InvestmentsManager = ({value, onChange}) => {
     return (
         <div className={style.CreationPageLabel}>
             <div className={style.FancyExplanationCreate}>
-                <h6>Fixed Inflation</h6>
+                <h6>Investments Manager</h6>
             </div>
             <label className={style.CreationPageLabelF}>
                 <h6>Swap interval</h6>
@@ -300,21 +300,24 @@ const InvestmentsManager = ({value, onChange}) => {
                 <input type="datetime-local" value={firstSwapToEtherEvent} onChange={e => setFirstSwapToEtherEvent(e.currentTarget.value)}/>
             </label>
             <label className={style.CreationPageLabelF}>
-                <h6>From ETH</h6>
-                <ComponentPercentage value={fromETH} onChange={setFromETH}/>
+                <h6>Sell ETH buying</h6>
+                <InvestmentsManagerOperation value={fromETH} onChange={setFromETH} ethIsInput/>
             </label>
             <label className={style.CreationPageLabelF}>
-                <h6>To ETH</h6>
-                <ComponentPercentage value={toETH} onChange={setToETH}/>
+                <h6>Buy ETH selling</h6>
+                <InvestmentsManagerOperation value={toETH} onChange={setToETH}/>
             </label>
         </div>
     )
 }
 
-const Operation = () => {
+const InvestmentsManagerOperation = ({value, onChange, ethIsInput}) => {
+
+    const addMore = useMemo(() => !value || value.length < 5, [value])
+
     return (
         <div>
-            Tutto sommato son nato
+            WIP
         </div>
     )
 }
@@ -336,7 +339,7 @@ const CreateOrganization = () => {
         if(!state?.metadata?.image) return true
         if(!state?.metadata?.url) return true
         if(!state?.governance?.token) return true
-        return false
+        return true
     }, [state])
 
     return (

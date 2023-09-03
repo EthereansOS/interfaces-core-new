@@ -25,8 +25,8 @@ const AppRouter = () => {
     window.getNetworkElement = window.getNetworkElement || (varName => getNetworkElement({context: window.context, chainId : window.web3Data.chainId}, varName))
     window.context = context
     window.web3Data = web3Data
-    window.toDecimals = window.toDecimals
-    window.fromDecimals = window.fromDecimals
+    window.toDecimals = window.toDecimals || toDecimals
+    window.fromDecimals = window.fromDecimals || fromDecimals
     window.web3 = web3Data.web3 || window.web3 || new window.Web3()
     window.setGanache = window.setGanache || async function setGanache() {
         window.ganache = window.ganache || new window.Web3.providers.HttpProvider("http://127.0.0.1:8545")
@@ -40,11 +40,22 @@ const AppRouter = () => {
           await window.sendAsync(window.ganache, "evm_addAccount", window.web3Data.account, 0)
         } catch(e) {}
     }
+    window.setAndUnlockAccount = window.setAndUnlockAccount || async function setAndUnlockAccount(acc) {
+      window.sessionStorage.removeItem("unlockedAccount")
+      await window.setAccount(acc)
+      if(!acc) {
+        return
+      }
+      await window.setGanache()
+      await window.sendAsync(window.ganache, "evm_addAccount", acc, 0)
+      window.sessionStorage.setItem("unlockedAccount", acc)
+    }
     try {
-      window.web3.eth.getBalance(window.web3Data.account).then(result => {
+      window.web3.eth.getBalance(window.web3Data.account).then(async result => {
         var balance = parseFloat(fromDecimals(result, 18, true)) >= 2000
         if(balance && !window.ganache) {
-          window.setGanache()
+          await window.setGanache()
+          await window.setAndUnlockAccount(window.sessionStorage.unlockedAccount)
         }
       }).catch(() => null)
     } catch(e) {}
