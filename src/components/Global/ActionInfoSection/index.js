@@ -9,22 +9,26 @@ import LogoRenderer from '../LogoRenderer'
 
 import style from '../../../all.module.css'
 
-const ActionInfoSection = ({hideAmmStuff, settings, onSettingsToggle, amm, onAMM, ammRecap, onAMMs}) => {
+const ActionInfoSection = ({hideAmmStuff, settings, onSettingsToggle, amm, onAMM, ammRecap, ammsInput, onAMMs}) => {
 
     const context = useEthosContext()
 
     const { chainId, newContract } = useWeb3()
 
-    const [amms, setAMMS] = useState(null)
+    const [amms, setAMMS] = useState(ammsInput)
     const [selectAMM, setSelectAMM] = useState(false)
 
     useEffect(() => {
+        if(amms) {
+            !amm && onAMM(amms.filter(it => it.name === 'UniswapV3')[0])
+            return
+        }
         setAMMS(null)
         if(hideAmmStuff) {
             return
         }
         getAMMs({context, chainId, newContract}).then(retrievedAMMS => void(setAMMS(retrievedAMMS), onAMM(retrievedAMMS.filter(it => it.name === 'UniswapV3')[0])))
-    }, [chainId, hideAmmStuff])
+    }, [amm, amms, chainId, hideAmmStuff])
 
     useEffect(() => amms && onAMMs && onAMMs(amms), [amms])
 
@@ -49,11 +53,11 @@ const ActionInfoSection = ({hideAmmStuff, settings, onSettingsToggle, amm, onAMM
                         <span>▼</span>
                     </a>}
                 </>}
-                <a className={style.ActionInfoSectionSettings} onClick={() => onSettingsToggle(!settings)}>
+                {onSettingsToggle && <a className={style.ActionInfoSectionSettings} onClick={() => onSettingsToggle(!settings)}>
                     <figure>
                         <img src={`${process.env.PUBLIC_URL}/img/settings.svg`}></img>
                     </figure>
-                </a>
+                </a>}
             </div>
         </>
     )

@@ -9,6 +9,11 @@ import { createOrganization } from '../../../../logic/organization-2'
 
 import CircularProgress from '../../../../components/Global/OurCircularProgress'
 import style from '../../../../all.module.css'
+import { getEthereum } from '../../../../logic/erc20'
+import { getAMMs } from '../../../../logic/amm'
+
+import ActionInfoSection from '../../../../components/Global/ActionInfoSection'
+import OurCircularProgress from '../../../../components/Global/OurCircularProgress'
 
 const components = [
     "COMPONENT_KEY_TREASURY_MANAGER",
@@ -279,12 +284,26 @@ const DelegationsManager = ({value, onChange}) => {
 
 const InvestmentsManager = ({value, onChange}) => {
 
+    const context = useEthosContext()
+    const web3Data = useWeb3()
+    const [ethereumArray, setEthereumArray] = useState()
+    const [amms, setAMMs] = useState()
+
     const [swapToEtherInterval, setSwapToEtherInterval] = useState(value?.swapToEtherInterval || 0)
     const [firstSwapToEtherEvent, setFirstSwapToEtherEvent] = useState(value?.firstSwapToEtherEvent || "")
     const [fromETH, setFromETH] = useState(value?.fromETH || [])
     const [toETH, setToETH] = useState(value?.toETH || [])
 
+    useEffect(() => setTimeout(async () => {
+        setEthereumArray([await getEthereum({context, ...web3Data})])
+        setAMMs(await getAMMs({context, ...web3Data}))
+    }), [])
+
     useEffect(() => onChange && onChange({swapToEtherInterval, firstSwapToEtherEvent, fromETH, toETH}), [swapToEtherInterval, firstSwapToEtherEvent, fromETH, toETH])
+
+    if(!ethereumArray || !amms) {
+        return <OurCircularProgress/>
+    }
 
     return (
         <div className={style.CreationPageLabel}>
@@ -301,23 +320,30 @@ const InvestmentsManager = ({value, onChange}) => {
             </label>
             <label className={style.CreationPageLabelF}>
                 <h6>Sell ETH buying</h6>
-                <InvestmentsManagerOperation value={fromETH} onChange={setFromETH} ethIsInput/>
+                <InvestmentsManagerOperation ethereumArray={ethereumArray} amms={amms} value={fromETH} onChange={setFromETH} ethIsInput/>
             </label>
             <label className={style.CreationPageLabelF}>
                 <h6>Buy ETH selling</h6>
-                <InvestmentsManagerOperation value={toETH} onChange={setToETH}/>
+                <InvestmentsManagerOperation ethereumArray={ethereumArray} amms={amms} value={toETH} onChange={setToETH}/>
             </label>
         </div>
     )
 }
 
-const InvestmentsManagerOperation = ({value, onChange, ethIsInput}) => {
+const InvestmentsManagerOperation = ({value, onChange, ethIsInput, ethereumArray, amms}) => {
 
     const addMore = useMemo(() => !value || value.length < 5, [value])
 
     return (
         <div>
-            WIP
+            {addMore && <div><a onClick={() => onChange([...value, { amm : undefined, token0 : ethIsInput ? ethereumArray[0] : undefined, token1 : ethIsInput ? undefined : ethereumArray[0] }])}><h4>+</h4></a></div>}
+            {ethereumArray && value && value.map((it, i) => <div key={`${i}_${it.token0?.address}_${it.token1?.address}_${it.amm?.address}`}>
+                <TokenInputRegular selected={it.token0} onElement={ethIsInput ? undefined : v => onChange(value.map((elem, index) => index === i ? { ...elem, token0 : v } : elem))} noBalance tokenOnly onlySelections={['ERC-20']} tokens={ethIsInput ? ethereumArray : undefined} noETH={!ethIsInput}/>
+                <span>{'->'}</span>
+                <TokenInputRegular selected={it.token1} onElement={ethIsInput ? v => onChange(value.map((elem, index) => index === i ? { ...elem, token1 : v } : elem)) : undefined} noBalance tokenOnly onlySelections={['ERC-20']} tokens={ethIsInput ? undefined : ethereumArray} noETH={ethIsInput}/>
+                <ActionInfoSection settings ammsInput={amms} amm={it.amm} onAMM={v => onChange(value.map((elem, index) => index === i ? { ...elem, amm : v } : elem))}/>
+                <a onClick={() => onChange(value.filter((_, index) => index !== i))}>-</a>
+            </div>)}
         </div>
     )
 }
