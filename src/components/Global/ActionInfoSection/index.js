@@ -54,6 +54,7 @@ const ActionInfoSection = ({hideAmmStuff, settings, onSettingsToggle, amm, onAMM
                         <span>▼</span>
                     </a>}
                     {amm && amm.name === 'UniswapV3' && onUniV3Pool && <div>
+                        <h4>Uniswap V3 Pools:</h4>
                         {Object.entries(amm.pools).map(it => <div key={it[0]}>
                             <label>
                                 <span>{it[1].label}</span>
