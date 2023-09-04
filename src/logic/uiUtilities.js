@@ -68,10 +68,7 @@ const ThemeSelectorContext = React.createContext('themeSelector')
 
 const themes = [
     {name : '💡', value:'light'},
-    {name : '👓', value:'sepia'},
-    {name : '🕶', value:'dark'},
-    {name : '🍀', value:'biz'},
-    {name : '💾', value:'matrix'}
+    {name : '👓', value:'sepia'}
 ]
 
 export const ThemeSelectorContextProvider = ({children}) => {
