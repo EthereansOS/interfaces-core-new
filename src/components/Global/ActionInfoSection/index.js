@@ -9,7 +9,7 @@ import LogoRenderer from '../LogoRenderer'
 
 import style from '../../../all.module.css'
 
-const ActionInfoSection = ({hideAmmStuff, settings, onSettingsToggle, amm, onAMM, ammRecap, ammsInput, onAMMs}) => {
+const ActionInfoSection = ({hideAmmStuff, settings, onSettingsToggle, amm, onAMM, ammRecap, ammsInput, onAMMs, uniV3Pool, onUniV3Pool}) => {
 
     const context = useEthosContext()
 
@@ -21,6 +21,7 @@ const ActionInfoSection = ({hideAmmStuff, settings, onSettingsToggle, amm, onAMM
     useEffect(() => {
         if(amms) {
             !amm && onAMM(amms.filter(it => it.name === 'UniswapV3')[0])
+            amm && amm.name === 'UniswapV3' && !uniV3Pool && onUniV3Pool && onUniV3Pool(Object.keys(amm.pools)[0])
             return
         }
         setAMMS(null)
@@ -28,7 +29,7 @@ const ActionInfoSection = ({hideAmmStuff, settings, onSettingsToggle, amm, onAMM
             return
         }
         getAMMs({context, chainId, newContract}).then(retrievedAMMS => void(setAMMS(retrievedAMMS), onAMM(retrievedAMMS.filter(it => it.name === 'UniswapV3')[0])))
-    }, [amm, amms, chainId, hideAmmStuff])
+    }, [amm, amms, chainId, hideAmmStuff, uniV3Pool])
 
     useEffect(() => amms && onAMMs && onAMMs(amms), [amms])
 
@@ -52,6 +53,14 @@ const ActionInfoSection = ({hideAmmStuff, settings, onSettingsToggle, amm, onAMM
                         <LogoRenderer input={amm} title={amm?.name}/>
                         <span>▼</span>
                     </a>}
+                    {amm && amm.name === 'UniswapV3' && onUniV3Pool && <div>
+                        {Object.entries(amm.pools).map(it => <div key={it[0]}>
+                            <label>
+                                <span>{it[1].label}</span>
+                                <input type="radio" checked={uniV3Pool === it[0]} onClick={e => void(e.stopPropagation(), onUniV3Pool(it[0]))}/>
+                            </label>
+                        </div>)}
+                    </div>}
                 </>}
                 {onSettingsToggle && <a className={style.ActionInfoSectionSettings} onClick={() => onSettingsToggle(!settings)}>
                     <figure>

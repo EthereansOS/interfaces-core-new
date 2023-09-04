@@ -336,7 +336,7 @@ const InvestmentsManagerOperation = ({value, onChange, amms, burn}) => {
             {value && value.map((it, i) => <div key={`${i}_${it.token?.address}_${it.amm?.address}`}>
                 <TokenInputRegular selected={it.token} onElement={v => onChange(value.map((elem, index) => index === i ? { ...elem, token : v } : elem))} noBalance tokenOnly noETH onlySelections={['ERC-20']}/>
                 <span>On</span>
-                <ActionInfoSection settings ammsInput={amms} amm={it.amm} onAMM={v => onChange(value.map((elem, index) => index === i ? { ...elem, amm : v } : elem))}/>
+                <ActionInfoSection settings uniV3Pool={it.uniV3Pool} onUniV3Pool={v => onChange(value.map((elem, index) => index === i ? { ...elem, uniV3Pool : v } : elem))} ammsInput={amms} amm={it.amm} onAMM={v => onChange(value.map((elem, index) => index === i ? { ...elem, amm : v } : elem))}/>
                 {burn && <label>
                     <span>Then burn</span>
                     <input type="checkbox" checked={it.burn} onChange={v => onChange(value.map((elem, index) => index === i ? { ...elem, burn : v.currentTarget.checked } : elem))}/>

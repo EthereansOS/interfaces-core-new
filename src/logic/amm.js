@@ -18,7 +18,29 @@ export async function getUniswapV3AMMForSwap({context, chainId, newContract}) {
         version : '1',
         ethereumAddress : getNetworkElement({ context, chainId }, 'wethTokenAddress'),
         image : `${process.env.PUBLIC_URL}/img/amms/UniswapV3.png`,
-        poolLinkTemplate : context.ammPoolLinkTemplates['UniswapV3']
+        poolLinkTemplate : context.ammPoolLinkTemplates['UniswapV3'],
+        pools : {
+            "100" : {
+                value : "100",
+                label : "0.01%",
+                hex : "000064"
+            },
+            "500" : {
+                value : "500",
+                label : "0.05%",
+                hex : "0001f4"
+            },
+            "3000" : {
+                value : "3000",
+                label : "0.3%",
+                hex : "000bb8"
+            },
+            "10000" : {
+                value : "10000",
+                label : "1%",
+                hex : "002710"
+            }
+        }
     }
     return amm
 }
