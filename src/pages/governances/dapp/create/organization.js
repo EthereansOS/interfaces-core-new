@@ -286,7 +286,6 @@ const InvestmentsManager = ({value, onChange}) => {
 
     const context = useEthosContext()
     const web3Data = useWeb3()
-    const [ethereumArray, setEthereumArray] = useState()
     const [amms, setAMMs] = useState()
 
     const [swapToEtherInterval, setSwapToEtherInterval] = useState(value?.swapToEtherInterval || 0)
@@ -294,14 +293,11 @@ const InvestmentsManager = ({value, onChange}) => {
     const [fromETH, setFromETH] = useState(value?.fromETH || [])
     const [toETH, setToETH] = useState(value?.toETH || [])
 
-    useEffect(() => setTimeout(async () => {
-        setEthereumArray([await getEthereum({context, ...web3Data})])
-        setAMMs(await getAMMs({context, ...web3Data}))
-    }), [])
+    useEffect(() => getAMMs({context, ...web3Data}).then(setAMMs), [])
 
     useEffect(() => onChange && onChange({swapToEtherInterval, firstSwapToEtherEvent, fromETH, toETH}), [swapToEtherInterval, firstSwapToEtherEvent, fromETH, toETH])
 
-    if(!ethereumArray || !amms) {
+    if(!amms) {
         return <OurCircularProgress/>
     }
 
@@ -319,30 +315,33 @@ const InvestmentsManager = ({value, onChange}) => {
                 <input type="datetime-local" value={firstSwapToEtherEvent} onChange={e => setFirstSwapToEtherEvent(e.currentTarget.value)}/>
             </label>
             <label className={style.CreationPageLabelF}>
-                <h6>Sell ETH buying</h6>
-                <InvestmentsManagerOperation ethereumArray={ethereumArray} amms={amms} value={fromETH} onChange={setFromETH} ethIsInput/>
+                <h6>Sell ETH to buy</h6>
+                <InvestmentsManagerOperation amms={amms} value={fromETH} onChange={setFromETH} burn/>
             </label>
             <label className={style.CreationPageLabelF}>
                 <h6>Buy ETH selling</h6>
-                <InvestmentsManagerOperation ethereumArray={ethereumArray} amms={amms} value={toETH} onChange={setToETH}/>
+                <InvestmentsManagerOperation amms={amms} value={toETH} onChange={setToETH}/>
             </label>
         </div>
     )
 }
 
-const InvestmentsManagerOperation = ({value, onChange, ethIsInput, ethereumArray, amms}) => {
+const InvestmentsManagerOperation = ({value, onChange, amms, burn}) => {
 
     const addMore = useMemo(() => !value || value.length < 5, [value])
 
     return (
         <div>
-            {addMore && <div><a onClick={() => onChange([...value, { amm : undefined, token0 : ethIsInput ? ethereumArray[0] : undefined, token1 : ethIsInput ? undefined : ethereumArray[0] }])}><h4>+</h4></a></div>}
-            {ethereumArray && value && value.map((it, i) => <div key={`${i}_${it.token0?.address}_${it.token1?.address}_${it.amm?.address}`}>
-                <TokenInputRegular selected={it.token0} onElement={ethIsInput ? undefined : v => onChange(value.map((elem, index) => index === i ? { ...elem, token0 : v } : elem))} noBalance tokenOnly onlySelections={['ERC-20']} tokens={ethIsInput ? ethereumArray : undefined} noETH={!ethIsInput}/>
-                <span>{'->'}</span>
-                <TokenInputRegular selected={it.token1} onElement={ethIsInput ? v => onChange(value.map((elem, index) => index === i ? { ...elem, token1 : v } : elem)) : undefined} noBalance tokenOnly onlySelections={['ERC-20']} tokens={ethIsInput ? undefined : ethereumArray} noETH={ethIsInput}/>
+            {addMore && <div><a onClick={() => onChange([...value, { amm : undefined, token : undefined, burn : false }])}><h4>+</h4></a></div>}
+            {value && value.map((it, i) => <div key={`${i}_${it.token?.address}_${it.amm?.address}`}>
+                <TokenInputRegular selected={it.token} onElement={v => onChange(value.map((elem, index) => index === i ? { ...elem, token : v } : elem))} noBalance tokenOnly noETH onlySelections={['ERC-20']}/>
+                <span>On</span>
                 <ActionInfoSection settings ammsInput={amms} amm={it.amm} onAMM={v => onChange(value.map((elem, index) => index === i ? { ...elem, amm : v } : elem))}/>
-                <a onClick={() => onChange(value.filter((_, index) => index !== i))}>-</a>
+                {burn && <label>
+                    <span>Then burn</span>
+                    <input type="checkbox" checked={it.burn} onChange={v => onChange(value.map((elem, index) => index === i ? { ...elem, burn : v.currentTarget.checked } : elem))}/>
+                </label>}
+                <div><a onClick={() => onChange(value.filter((_, index) => index !== i))}><h4>-</h4></a></div>
             </div>)}
         </div>
     )
