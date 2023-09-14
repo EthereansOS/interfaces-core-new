@@ -1,17 +1,33 @@
 import { abi, VOID_ETHEREUM_ADDRESS, uploadMetadata, formatLink, fromDecimals, toDecimals, getNetworkElement, blockchainCall, web3Utils, sendAsync, tryRetrieveMetadata, VOID_BYTES32, numberToString } from "@ethereansos/interfaces-core"
 
-export async function createOrganization(initialData, organizationDeployData) {
+export async function createOrganization(initialData, inputData) {
+
+    var organizationDeployData
+    try {
+        organizationDeployData = await buildOrganizationDeployData(initialData, inputData)
+        console.log(organizationDeployData)
+    } catch(e) {
+        console.log(e)
+    }
+
+    var deployData
+    try {
+        deployData = await createOrganizationDeployData(initialData, organizationDeployData)
+        console.log(deployData)
+    } catch(e) {
+        console.log(e)
+    }
 
     var { context, chainId, web3 } = initialData
 
     var factoryIndex = getNetworkElement({ context, chainId }, "factoryIndices").organization
     var factoryOfFactories = new web3.eth.Contract(context.FactoryOfFactoriesABI, getNetworkElement({ context, chainId}, "factoryOfFactoriesAddress"))
     var organizationFactoryAddress = await blockchainCall(factoryOfFactories.methods.get, factoryIndex)
+    organizationFactoryAddress = organizationFactoryAddress.factoryList
     organizationFactoryAddress = organizationFactoryAddress[organizationFactoryAddress.length -1]
 
     var organizationFactory = new web3.eth.Contract(context.IDFOFactoryABI, organizationFactoryAddress)
 
-    var deployData = await createOrganizationDeployData(initialData, organizationDeployData)
 
     var transaction = await blockchainCall(organizationFactory.methods.deploy, deployData)
 
@@ -21,6 +37,130 @@ export async function createOrganization(initialData, organizationDeployData) {
     address = abi.decode(["address"], address)[0].toString()
 
     return address
+}
+
+async function buildOrganizationDeployData(initialData, inputData) {
+    console.log(inputData)
+
+    var { context } = initialData
+
+    var tokenAddress = web3Utils.toChecksumAddress(inputData.governance.token.address)
+    var organizationUri = await uploadOrganizationMetadata(initialData, inputData.metadata)
+    var proposalsManagerLazyInitData = inputData.governance
+    var fixedInflationManagerLazyInitData
+    if(inputData.fixedInflation) {
+        fixedInflationManagerLazyInitData = {
+            tokenMinterOwner : inputData.fixedInflation.tokenMinterOwner,
+            _bootstrapFundWalletAddress : inputData.fixedInflation._bootstrapFundWalletAddress,
+            _bootstrapFundIsRaw : inputData.fixedInflation._bootstrapFundIsRaw,
+            _bootstrapFundWalletPercentage : inputData.fixedInflation._bootstrapFundWalletPercentage,
+            firstExecution : stringToDate(inputData.fixedInflation.firstExecution),
+            ammPlugin : inputData.fixedInflation.amm.address,
+            inflationPercentage : inputData.fixedInflation.inflationPercentage0,
+            swapPath : [inputData.fixedInflation.amm.ethereumAddress],
+            liquidityPoolAddresses : [
+                await retrieveLiquidityPoolAddress(initialData, [tokenAddress, inputData.fixedInflation.amm.ethereumAddress], inputData.fixedInflation.amm, inputData.fixedInflation.uniV3Pool)
+            ],
+            inflationPercentages : [
+                inputData.fixedInflation.inflationPercentage0,
+                inputData.fixedInflation.inflationPercentage1,
+                inputData.fixedInflation.inflationPercentage2,
+                inputData.fixedInflation.inflationPercentage3,
+                inputData.fixedInflation.inflationPercentage4
+            ]
+        }
+        fixedInflationManagerLazyInitData._rawTokenComponentKeys = inputData.fixedInflation._rawTokenComponents.map(it => context.grimoire[it.component])
+        fixedInflationManagerLazyInitData._rawTokenComponentsPercentages = inputData.fixedInflation._rawTokenComponents.map(it => it.percentage)
+        fixedInflationManagerLazyInitData._swappedTokenComponentKeys = inputData.fixedInflation._swappedTokenComponents.map(it => context.grimoire[it.component])
+        fixedInflationManagerLazyInitData._swappedTokenComponentsPercentages = inputData.fixedInflation._swappedTokenComponents.map(it => it.percentage)
+        fixedInflationManagerLazyInitData._swappedTokenComponentsPercentages.pop()
+    }
+    var treasurySplitterManagerLazyInitData = {
+        splitInterval : inputData.treasurySplitter.splitInterval,
+        firstSplitEvent : stringToDate(inputData.treasurySplitter.firstSplitEvent),
+        keys : inputData.treasurySplitter.components.map(it => context.grimoire[it.component]),
+        percentages : inputData.treasurySplitter.components.map(it => it.percentage)
+    }
+    treasurySplitterManagerLazyInitData.percentages.pop()
+
+    var delegationsManagerLazyInitData = {
+        attachInsurance : inputData.delegationsManager.attachInsurance
+    }
+
+    var investmentsManagerLazyInitData = {
+        swapToEtherInterval : inputData.investmentsManager.swapToEtherInterval,
+        firstSwapToEtherEvent : stringToDate(inputData.investmentsManager.firstSwapToEtherEvent),
+        operations : [...(await Promise.all(inputData.investmentsManager.fromETH.map(async it => ({
+            ammPlugin : it.amm.address,
+            liquidityPoolAddresses : [
+                await retrieveLiquidityPoolAddress(initialData, [it.token.address, it.amm.ethereumAddress], it.amm, it.uniV3Pool)
+            ],
+            swapPath : [it.token.address],
+            receivers : it.burn ? [] : [VOID_ETHEREUM_ADDRESS]
+        })))), ...(await Promise.all(inputData.investmentsManager.toETH.map(async it => ({
+            inputTokenAddress : it.token.address,
+            inputTokenAmount : toDecimals(it.percentage / 100, 18),
+            ammPlugin : it.amm.address,
+            liquidityPoolAddresses : [
+                await retrieveLiquidityPoolAddress(initialData, [it.token.address, it.amm.ethereumAddress], it.amm, it.uniV3Pool)
+            ],
+            swapPath : [it.amm.ethereumAddress]
+        }))))]
+    }
+
+    var proposalModelsData = {
+        fixedInflation : fixedInflationManagerLazyInitData ? {
+            ...inputData.fixedInflation.proposalRules,
+            presetValues : fixedInflationManagerLazyInitData.inflationPercentages
+        } : undefined,
+        transferManager : {...inputData.transferManager.proposalRules, maxPercentagePerToken : inputData.transferManager.maxPercentagePerToken},
+        delegationsManager : {...inputData.delegationsManager.proposalRules},
+        changeInvestmentsManagerTokensFromETHList : {...inputData.investmentsManager.proposalRules},
+        changeInvestmentsManagerTokensToETHList : {...inputData.investmentsManager.proposalRules, maxPercentagePerToken : inputData.investmentsManager.maxPercentagePerToken}
+    }
+
+    return {
+        tokenAddress,
+        organizationUri,
+        proposalsManagerLazyInitData,
+        fixedInflationManagerLazyInitData,
+        treasurySplitterManagerLazyInitData,
+        delegationsManagerLazyInitData,
+        investmentsManagerLazyInitData,
+        proposalModelsData
+    }
+}
+
+async function uploadOrganizationMetadata(initialData, metadata) {
+    var organizationUri
+
+    organizationUri = await uploadMetadata(initialData, metadata)
+
+    return organizationUri
+}
+
+export function stringToDate(str) {
+    var date = new Date()
+
+    date = date.getTime()
+    date = date / 1000
+    date = parseInt(date)
+
+    return date
+}
+
+export function dateToString(date) {
+    var str
+    return str
+}
+
+async function retrieveLiquidityPoolAddress(initialData, tokens, amm, uniV3Pool) {
+
+    tokens = tokens.map(it => web3Utils.toChecksumAddress(it.address || it))
+    if(amm.name !== 'UniswapV3') {
+        return (await blockchainCall(amm.contract.methods.byTokens, tokens))[2]
+    }
+    return await blockchainCall(amm.factory.methods.getPool, tokens[0], tokens[1], uniV3Pool)
 }
 
 async function createOrganizationDeployData(initialData, organizationDeployData) {
@@ -146,7 +286,7 @@ async function createFixedInflationManagerLazyInitData(initialData, data) {
 
     var { context, chainId } = initialData
 
-    var { tokenAddress, tokenMinterOwner, inflationPercentage, _bootstrapFundWalletAddress, _bootstrapFundWalletPercentage, _rawTokenComponentKeys, _rawTokenComponentsPercentages, _swappedTokenComponentKeys, _swappedTokenComponentsPercentages, ammPlugin, liquidityPoolAddresses, swapPath, executionInterval, firstExecution } = data
+    var { tokenAddress, tokenMinterOwner, inflationPercentage, _bootstrapFundWalletAddress, _bootstrapFundIsRaw, _bootstrapFundWalletPercentage, _rawTokenComponentKeys, _rawTokenComponentsPercentages, _swappedTokenComponentKeys, _swappedTokenComponentsPercentages, ammPlugin, liquidityPoolAddresses, swapPath, firstExecution } = data
 
     var executorRewardPercentage = context.executorRewardPercentage
     var prestoAddress = getNetworkElement({ context, chainId}, "prestoAddress")
@@ -155,15 +295,15 @@ async function createFixedInflationManagerLazyInitData(initialData, data) {
     inflationPercentage = toDecimals(inflationPercentage / 100, 18)
     _bootstrapFundWalletPercentage = toDecimals(_bootstrapFundWalletPercentage / 100, 18)
     var _bootstrapFundWalletOwner = _bootstrapFundWalletAddress
-    var _bootstrapFundIsRaw = false
     var _defaultBootstrapFundComponentKey = VOID_BYTES32
+    var executionInterval = getNetworkElement({context, chainId}, "fixedInflationExecutionInterval")
     _rawTokenComponentKeys = _rawTokenComponentKeys || []
     _rawTokenComponentsPercentages = (_rawTokenComponentsPercentages || []).map(it => toDecimals(it / 100, 18))
     _swappedTokenComponentKeys = _swappedTokenComponentKeys || []
     _swappedTokenComponentsPercentages = (_swappedTokenComponentsPercentages || []).map(it => toDecimals(it / 100, 18))
     lazyInitData.push(abi.encode(["address", "uint256", "address", "bytes"], [prestoAddress, executorRewardPercentage, tokenAddress, tokenMinter]))
     lazyInitData.push(abi.encode(["uint256", "uint256", "uint256"], [inflationPercentage, executionInterval, firstExecution || 0]))
-    lazyInitData.push(abi.encode(["address", "address", "uint256", "bool", "bytes32"], [_bootstrapFundWalletOwner, _bootstrapFundWalletAddress, _bootstrapFundWalletPercentage, _bootstrapFundIsRaw, _defaultBootstrapFundComponentKey]))
+    lazyInitData.push(abi.encode(["address", "address", "uint256", "bool", "bytes32"], [_bootstrapFundWalletOwner, _bootstrapFundWalletAddress, _bootstrapFundWalletPercentage, _bootstrapFundIsRaw || false, _defaultBootstrapFundComponentKey]))
     lazyInitData.push(abi.encode(["bytes32[]", "uint256[]", "bytes32[]", "uint256[]"], [_rawTokenComponentKeys, _rawTokenComponentsPercentages, _swappedTokenComponentKeys, _swappedTokenComponentsPercentages]))
     lazyInitData.push(abi.encode(["address", "address[]", "address[]"], [ammPlugin, liquidityPoolAddresses, swapPath]))
     lazyInitData = abi.encode(["bytes[]"], [lazyInitData])
@@ -203,9 +343,10 @@ async function createDelegationsManagerLazyInitData(initialData, data) {
 
     var { chainId, context, web3 } = initialData
 
-    var { tokenAddress, attachInsurance, executorRewardPercentage } = data
+    var { tokenAddress, attachInsurance } = data
 
     var flusherKey = context.grimoire.COMPONENT_KEY_TREASURY_SPLITTER_MANAGER
+    var executorRewardPercentage = context.executorRewardPercentage
 
     var factoryOfFactories = new web3.eth.Contract(context.FactoryOfFactoriesABI, getNetworkElement({context, chainId}, "factoryOfFactoriesAddress"))
 
@@ -230,14 +371,14 @@ async function createInvestmentsManagerLazyInitData(initialData, data) {
 
     operations = operations.map(it => ({
         inputTokenAddress : it.inputTokenAddress || VOID_ETHEREUM_ADDRESS,
-        inputTokenAmount : 0,
+        inputTokenAmount : it.inputTokenAmount || 0,
         ammPlugin : it.ammPlugin,
         liquidityPoolAddresses : it.liquidityPoolAddresses,
         swapPath : it.swapPath,
         enterInETH : false,
         exitInETH : false,
         tokenMins : [],
-        receivers : [],
+        receivers : it.receivers || [],
         receiversPercentages : []
     }))
 
@@ -254,13 +395,81 @@ async function createInvestmentsManagerLazyInitData(initialData, data) {
 
 async function createSubDAOProposalModels(initialData, proposalModelsData) {
 
-    var { context, chainId } = initialData
+    var { context } = initialData
 
     Object.values(proposalModelsData).forEach(it => it && (it.proposalRules = createProposalRules(it)))
     var subDAOProposalModels = []
+    subDAOProposalModels = [...subDAOProposalModels, {
+        source: VOID_ETHEREUM_ADDRESS,
+        uri : '',
+        isPreset : false,
+        presetValues : [
+            abi.encode(["uint256"], [toDecimals(proposalModelsData.transferManager.maxPercentagePerToken / 100, 18)])
+        ],
+        presetProposals : [],
+        creationRules : VOID_ETHEREUM_ADDRESS,
+        triggeringRules : VOID_ETHEREUM_ADDRESS,
+        votingRulesIndex : 0,
+        canTerminateAddresses : [proposalModelsData.transferManager.proposalRules.canTerminateAddresses],
+        validatorsAddresses : [proposalModelsData.transferManager.proposalRules.validatorsAddresses],
+        creationData : '0x',
+        triggeringData : '0x',
+        canTerminateData : [proposalModelsData.transferManager.proposalRules.canTerminateData],
+        validatorsData : [proposalModelsData.transferManager.proposalRules.validatorsData]
+    }, {
+        source: VOID_ETHEREUM_ADDRESS,
+        uri : '',
+        isPreset : false,
+        presetValues : [],
+        presetProposals : [],
+        creationRules : VOID_ETHEREUM_ADDRESS,
+        triggeringRules : VOID_ETHEREUM_ADDRESS,
+        votingRulesIndex : 0,
+        canTerminateAddresses : [proposalModelsData.delegationsManager.proposalRules.canTerminateAddresses],
+        validatorsAddresses : [proposalModelsData.delegationsManager.proposalRules.validatorsAddresses],
+        creationData : '0x',
+        triggeringData : '0x',
+        canTerminateData : [proposalModelsData.delegationsManager.proposalRules.canTerminateData],
+        validatorsData : [proposalModelsData.delegationsManager.proposalRules.validatorsData]
+    }, {
+        source: VOID_ETHEREUM_ADDRESS,
+        uri : '',
+        isPreset : false,
+        presetValues : [
+            abi.encode(["uint256"], [context.investmentsManagerMaxTokens])
+        ],
+        presetProposals : [],
+        creationRules : VOID_ETHEREUM_ADDRESS,
+        triggeringRules : VOID_ETHEREUM_ADDRESS,
+        votingRulesIndex : 0,
+        canTerminateAddresses : [proposalModelsData.changeInvestmentsManagerTokensFromETHList.proposalRules.canTerminateAddresses],
+        validatorsAddresses : [proposalModelsData.changeInvestmentsManagerTokensFromETHList.proposalRules.validatorsAddresses],
+        creationData : '0x',
+        triggeringData : '0x',
+        canTerminateData : [proposalModelsData.changeInvestmentsManagerTokensFromETHList.proposalRules.canTerminateData],
+        validatorsData : [proposalModelsData.changeInvestmentsManagerTokensFromETHList.proposalRules.validatorsData]
+    }, {
+        source: VOID_ETHEREUM_ADDRESS,
+        uri : '',
+        isPreset : false,
+        presetValues : [
+            abi.encode(["uint256", "uint256"], [context.investmentsManagerMaxTokens, toDecimals(proposalModelsData.changeInvestmentsManagerTokensToETHList.maxPercentagePerToken / 100, 18)])
+        ],
+        presetProposals : [],
+        creationRules : VOID_ETHEREUM_ADDRESS,
+        triggeringRules : VOID_ETHEREUM_ADDRESS,
+        votingRulesIndex : 0,
+        canTerminateAddresses : [proposalModelsData.changeInvestmentsManagerTokensToETHList.proposalRules.canTerminateAddresses],
+        validatorsAddresses : [proposalModelsData.changeInvestmentsManagerTokensToETHList.proposalRules.validatorsAddresses],
+        creationData : '0x',
+        triggeringData : '0x',
+        canTerminateData : [proposalModelsData.changeInvestmentsManagerTokensToETHList.proposalRules.canTerminateData],
+        validatorsData : [proposalModelsData.changeInvestmentsManagerTokensToETHList.proposalRules.validatorsData]
+    }]
+
     if(proposalModelsData.fixedInflation) {
         subDAOProposalModels = [...subDAOProposalModels, {
-            source: getNetworkElement({ context, chainId }, "proposalModels").FixedInflationManagerChangeDailyInflationPercentage,
+            source: VOID_ETHEREUM_ADDRESS,
             uri : '',
             isPreset : true,
             presetValues : proposalModelsData.fixedInflation.presetValues.map(it => abi.encode(["uint256"], [toDecimals(it / 100, 18)])),
@@ -276,52 +485,6 @@ async function createSubDAOProposalModels(initialData, proposalModelsData) {
             validatorsData : [proposalModelsData.fixedInflation.proposalRules.validatorsData]
         }]
     }
-    subDAOProposalModels = [...subDAOProposalModels, {
-        source: getNetworkElement({ context, chainId }, "proposalModels").TransferManagerProposal,
-        uri : '',
-        isPreset : true,
-        presetValues : [],
-        presetProposals : [],
-        creationRules : VOID_ETHEREUM_ADDRESS,
-        triggeringRules : VOID_ETHEREUM_ADDRESS,
-        votingRulesIndex : 0,
-        canTerminateAddresses : [proposalModelsData.transferManager.proposalRules.canTerminateAddresses],
-        validatorsAddresses : [proposalModelsData.transferManager.proposalRules.validatorsAddresses],
-        creationData : '0x',
-        triggeringData : '0x',
-        canTerminateData : [proposalModelsData.transferManager.proposalRules.canTerminateData],
-        validatorsData : [proposalModelsData.transferManager.proposalRules.validatorsData]
-    }, {
-        source: getNetworkElement({ context, chainId }, "proposalModels").ChangeInvestmentsManagerFourTokensFromETHList,
-        uri : '',
-        isPreset : true,
-        presetValues : [],
-        presetProposals : [],
-        creationRules : VOID_ETHEREUM_ADDRESS,
-        triggeringRules : VOID_ETHEREUM_ADDRESS,
-        votingRulesIndex : 0,
-        canTerminateAddresses : [proposalModelsData.changeInvestmentsManagerFourTokensFromETHList.proposalRules.canTerminateAddresses],
-        validatorsAddresses : [proposalModelsData.changeInvestmentsManagerFourTokensFromETHList.proposalRules.validatorsAddresses],
-        creationData : '0x',
-        triggeringData : '0x',
-        canTerminateData : [proposalModelsData.changeInvestmentsManagerFourTokensFromETHList.proposalRules.canTerminateData],
-        validatorsData : [proposalModelsData.changeInvestmentsManagerFourTokensFromETHList.proposalRules.validatorsData]
-    }, {
-        source: getNetworkElement({ context, chainId }, "proposalModels").ChangeInvestmentsManagerFiveTokensToETHList,
-        uri : '',
-        isPreset : true,
-        presetValues : [],
-        presetProposals : [],
-        creationRules : VOID_ETHEREUM_ADDRESS,
-        triggeringRules : VOID_ETHEREUM_ADDRESS,
-        votingRulesIndex : 0,
-        canTerminateAddresses : [proposalModelsData.changeInvestmentsManagerFiveTokensToETHList.proposalRules.canTerminateAddresses],
-        validatorsAddresses : [proposalModelsData.changeInvestmentsManagerFiveTokensToETHList.proposalRules.validatorsAddresses],
-        creationData : '0x',
-        triggeringData : '0x',
-        canTerminateData : [proposalModelsData.changeInvestmentsManagerFiveTokensToETHList.proposalRules.canTerminateData],
-        validatorsData : [proposalModelsData.changeInvestmentsManagerFiveTokensToETHList.proposalRules.validatorsData]
-    }]
 
     var type = 'tuple(address,string,bool,bytes[],bytes32[],address,address,uint256,address[][],address[][],bytes,bytes,bytes[][],bytes[][])[]'
 

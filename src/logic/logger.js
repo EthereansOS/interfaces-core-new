@@ -53,7 +53,7 @@ export async function getLogs(provider, _, args) {
     lastBlock = parseInt(lastBlock)
 
     const logKey = getLogKey(args)
-    const cached = (!args.clear && JSON.parse(await cache.getItem(logKey))) || {
+    const cached = (!args.clear && !window.ganache && JSON.parse(await cache.getItem(logKey))) || {
         logs : []
     }
 

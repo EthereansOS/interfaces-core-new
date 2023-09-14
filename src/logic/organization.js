@@ -51,7 +51,7 @@ export async function create({ context, ipfsHttpClient, newContract, chainId, fa
 }
 
 export async function all({ context, newContract, chainId, factoryOfFactories }) {
-    const factoryIndex = getNetworkElement({ context, chainId }, "factoryIndices").subdao
+    const factoryIndex = getNetworkElement({ context, chainId }, "factoryIndices").organization
     if(factoryIndex === undefined || factoryIndex === null) {
         return []
     }
@@ -134,13 +134,13 @@ export async function getInitializationData({newContract, context, chainId}, con
         topics : [
             web3Utils.sha3('Deployed(address,address,address,bytes)'),
             [],
-            [abi.encode(["uint256"], [contract.options.address])]
+            [abi.encode(["address"], [contract.options.address])]
         ]
     }
 
     var logs = await getLogs(contract.currentProvider, 'eth_getLogs', args)
 
-    var creationBlock = logs[0].blockNumber
+    var creationBlock = logs[0]?.blockNumber || "0"
 
     var fofAddress = await blockchainCall(factory.methods.initializer)
     var fof = newContract(context.FactoryOfFactoriesABI, fofAddress)

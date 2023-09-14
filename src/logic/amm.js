@@ -12,6 +12,7 @@ export async function getUniswapV3AMMForSwap({context, chainId, newContract}) {
     var amm = {
         address,
         contract,
+        factory : newContract(context.UniswapV3FactoryABI, await blockchainCall(contract.methods.factory)),
         ammAggregatorAddress,
         ammAggregator,
         name : 'UniswapV3',

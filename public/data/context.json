@@ -540,6 +540,8 @@
             "SushiSwap" : "https://www.sushi.com/earn/eth:{0}",
             "Balancer" : "https://info.balancer.xeonus.io/#/pools/{0}"
         },
+        "investmentsManagerMaxTokens" : 5,
+        "fixedInflationExecutionInterval" : 86400,
         "metadataCoverMaxWidth" : 5000000,
         "executorRewardPercentage": "50000000000000000",
         "oldFarmingPrestoContractsRinkeby" : [],

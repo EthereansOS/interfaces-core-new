@@ -9,7 +9,6 @@ import { createOrganization } from '../../../../logic/organization-2'
 
 import CircularProgress from '../../../../components/Global/OurCircularProgress'
 import style from '../../../../all.module.css'
-import { getEthereum } from '../../../../logic/erc20'
 import { getAMMs } from '../../../../logic/amm'
 
 import ActionInfoSection from '../../../../components/Global/ActionInfoSection'
@@ -24,12 +23,14 @@ const components = [
 
 const Metadata = ({value, onChange}) => {
 
-    const [name, setName] = useState(value?.name || "")
-    const [description, setDescription] = useState(value?.description || "")
-    const [image, setImage] = useState(value?.image || "")
-    const [url, setUrl] = useState(value?.url || "")
+    useEffect(() => setTimeout(async () => {
+        if(!value) {
+            return
+        }
+        var error
 
-    useEffect(() => onChange && onChange({name, description, image, url}), [name, description, image, url])
+        JSON.stringify(error) !== JSON.stringify(value.error) && onChange({...value, error})
+    }), [value])
 
     return (
       <div className={style.CreationPageLabel}>
@@ -38,21 +39,25 @@ const Metadata = ({value, onChange}) => {
         </div>
         <label className={style.CreationPageLabelF}>
           <h6>Name</h6>
-          <input type="text" value={name} onChange={e => setName(e.currentTarget.value)}/>
+          <input type="text" value={value?.name} onChange={e => onChange({...value, name : e.currentTarget.value})}/>
+          {value?.error?.name && <p>{value.error.name}</p>}
         </label>
         <label className={style.CreationPageLabelF}>
           <h6>Description</h6>
-          <textarea value={description} onChange={e => setDescription(e.currentTarget.value)}/>
+          <textarea value={value?.description} onChange={e => onChange({...value, description : e.currentTarget.value})}/>
+          {value?.error?.description && <p>{value.error.description}</p>}
         </label>
         <label className={style.CreationPageLabelF}>
           <h6>Logo</h6>
-          <input type="link" value={image} onChange={e => setImage(e.currentTarget.value)}/>
+          <input type="link" value={value?.image} onChange={e => onChange({...value, image : e.currentTarget.value})}/>
           <p>A valid link for your Organization's logo. Please upload a square picture (.png, .gif or .jpg;) so that it fits perfectly with the EthereansOS interface style.</p>
+          {value?.error?.image && <p>{value.error.image}</p>}
         </label>
         <label className={style.CreationPageLabelF}>
           <h6>Website</h6>
-          <input type="link" value={url} onChange={e => setUrl(e.currentTarget.value)}/>
+          <input type="link" value={value?.url} onChange={e => onChange({...value, url : e.currentTarget.value})}/>
           <p>The official website of your Organization.</p>
+          {value?.error?.url && <p>{value.error.url}</p>}
         </label>
       </div>
     )
@@ -61,15 +66,9 @@ const Metadata = ({value, onChange}) => {
 const Governance = ({value, onChange}) => {
 
     const [token, setToken] = useState(value?.token)
-    const [host, setHost] = useState(value?.host)
-    const [proposalDuration, setProposalDuration] = useState(value?.proposalDuration || 0)
-    const [hardCapPercentage, setHardCapPercentage] = useState(value?.hardCapPercentage || 0)
-    const [quorumPercentage, setQuorumPercentage] = useState(value?.quorumPercentage || 0)
-    const [validationBomb, setValidationBomb] = useState(value?.validationBomb || 0)
+    const [proposalRules, setProposalRules] = useState(value?.proposalRules)
 
-    useEffect(() => onChange && onChange({token, host, proposalDuration, hardCapPercentage, quorumPercentage, validationBomb}), [token, host, proposalDuration, hardCapPercentage, quorumPercentage, validationBomb])
-
-    const showValidationBombWarning = useMemo(() => validationBomb && proposalDuration ? validationBomb <= proposalDuration : undefined, [proposalDuration, validationBomb])
+    useEffect(() => onChange && onChange({token, proposalRules}), [token, proposalRules])
 
     return (
       <div className={style.CreationPageLabel}>
@@ -78,13 +77,33 @@ const Governance = ({value, onChange}) => {
         </div>
         <label className={style.CreationPageLabelF}>
           <h6>Voting Token</h6>
-          <TokenInputRegular selected={token} onElement={setToken} noBalance noETH tokenOnly/>
+          <TokenInputRegular selected={token} onElement={setToken} noBalance noETH tokenOnly onlySelections={['ERC-20']}/>
         </label>
-        <label className={style.CreationPageLabelF}>
-          <h6>Root host address</h6>
+        <ProposalRules value={proposalRules} onChange={setProposalRules} showHost/>
+      </div>
+    )
+}
+
+const ProposalRules = ({value, onChange, showHost}) => {
+    const [host, setHost] = useState(value?.host)
+    const [proposalDuration, setProposalDuration] = useState(value?.proposalDuration || 0)
+    const [hardCapPercentage, setHardCapPercentage] = useState(value?.hardCapPercentage || 0)
+    const [quorumPercentage, setQuorumPercentage] = useState(value?.quorumPercentage || 0)
+    const [validationBomb, setValidationBomb] = useState(value?.validationBomb || 0)
+
+    useEffect(() => onChange && onChange({host, proposalDuration, hardCapPercentage, quorumPercentage, validationBomb}), [host, proposalDuration, hardCapPercentage, quorumPercentage, validationBomb])
+
+    const showValidationBombWarning = useMemo(() => validationBomb && proposalDuration ? validationBomb <= proposalDuration : undefined, [proposalDuration, validationBomb])
+
+    return (
+      <div className={style.CreationPageLabel}>
+        <div className={style.FancyExplanationCreate}>
+          <h6>Voting Rules</h6>
+        </div>
+        {showHost && <label className={style.CreationPageLabelF}>
+          <h6>Host address</h6>
           <input type="text" value={host} onChange={e => setHost(e.currentTarget.value)}/>
-          <p>Leaving blank means no root proposals</p>
-        </label>
+        </label>}
         <label className={style.CreationPageLabelF}>
           <h6>Proposal duration</h6>
           <input type="number" value={proposalDuration} onChange={e => setProposalDuration(parseInt(e.currentTarget.value))}/>
@@ -112,7 +131,7 @@ const Governance = ({value, onChange}) => {
     )
 }
 
-const FixedInflation = ({value, onChange}) => {
+const FixedInflation = ({amms, value, onChange}) => {
 
     const defaultInflationPercentage = useMemo(() => 0.05)
 
@@ -122,13 +141,19 @@ const FixedInflation = ({value, onChange}) => {
     const [inflationPercentage2, setInflationPercentage2] = useState(value?.inflationPercentage2 || defaultInflationPercentage)
     const [inflationPercentage3, setInflationPercentage3] = useState(value?.inflationPercentage3 || defaultInflationPercentage)
     const [inflationPercentage4, setInflationPercentage4] = useState(value?.inflationPercentage4 || defaultInflationPercentage)
+    const [firstExecution, setFirstExecution] = useState(value?.firstExecution)
+
+    const [amm, setAMM] = useState(value?.amm)
+    const [uniV3Pool, setUniV3Pool] = useState(value?.uniV3Pool)
     const [_bootstrapFundWalletAddress, set_bootstrapFundWalletAddress] = useState(value?._bootstrapFundWalletAddress)
     const [_bootstrapFundWalletPercentage, set_bootstrapFundWalletPercentage] = useState(value?._bootstrapFundWalletPercentage || 0)
     const [_bootstrapFundIsRaw, set_bootstrapFundIsRaw] = useState(value?._bootstrapFundIsRaw || false)
     const [_rawTokenComponents, set_rawTokenComponents] = useState(value?._rawTokenComponents || [])
     const [_swappedTokenComponents, set_swappedTokenComponents] = useState(value?._swappedTokenComponents || [])
 
-    useEffect(() => value === true && onChange && onChange({tokenMinterOwner, inflationPercentage0, inflationPercentage1, inflationPercentage2, inflationPercentage3, inflationPercentage4, _bootstrapFundWalletAddress, _bootstrapFundWalletPercentage, _bootstrapFundIsRaw, _rawTokenComponents, _swappedTokenComponents}), [value, tokenMinterOwner, inflationPercentage0, inflationPercentage1, inflationPercentage2, inflationPercentage3, inflationPercentage4, _bootstrapFundWalletAddress, _bootstrapFundWalletPercentage, _bootstrapFundIsRaw, _rawTokenComponents, _swappedTokenComponents])
+    const [proposalRules, setProposalRules] = useState(value?.proposalRules)
+
+    useEffect(() => onChange && onChange({tokenMinterOwner, inflationPercentage0, inflationPercentage1, inflationPercentage2, inflationPercentage3, inflationPercentage4, amm, uniV3Pool, _bootstrapFundWalletAddress, _bootstrapFundWalletPercentage, _bootstrapFundIsRaw, _rawTokenComponents, _swappedTokenComponents, firstExecution, proposalRules}), [tokenMinterOwner, inflationPercentage0, inflationPercentage1, inflationPercentage2, inflationPercentage3, inflationPercentage4, amm, uniV3Pool, _bootstrapFundWalletAddress, _bootstrapFundWalletPercentage, _bootstrapFundIsRaw, _rawTokenComponents, _swappedTokenComponents, firstExecution, proposalRules])
 
     return (
       <div className={style.CreationPageLabel}>
@@ -137,7 +162,7 @@ const FixedInflation = ({value, onChange}) => {
         </div>
         <label>
             Yes
-            <input type="radio" checked={value !== undefined && value !== null} onClick={() => onChange(true)}/>
+            <input type="radio" checked={value !== undefined && value !== null} onClick={() => onChange({tokenMinterOwner, inflationPercentage0, inflationPercentage1, inflationPercentage2, inflationPercentage3, inflationPercentage4, amm, uniV3Pool, _bootstrapFundWalletAddress, _bootstrapFundWalletPercentage, _bootstrapFundIsRaw, _rawTokenComponents, _swappedTokenComponents, firstExecution, proposalRules})}/>
         </label>
         {'\u00a0'}
         <label>
@@ -184,6 +209,14 @@ const FixedInflation = ({value, onChange}) => {
                 </label>
             </label>
             <label className={style.CreationPageLabelF}>
+                <h6>First Execution</h6>
+                <input type="datetime-local" value={firstExecution} onChange={e => setFirstExecution(e.currentTarget.value)}/>
+            </label>
+            <label className={style.CreationPageLabelF}>
+                <h6>Swap for ETH AMM</h6>
+                <ActionInfoSection settings ammsInput={amms} amm={amm} onAMM={setAMM} uniV3Pool={uniV3Pool} onUniV3Pool={setUniV3Pool}/>
+            </label>
+            <label className={style.CreationPageLabelF}>
                 <h6>Boostrap Fund wallet</h6>
                 <input type="text" value={_bootstrapFundWalletAddress} onChange={e => set_bootstrapFundWalletAddress(e.currentTarget.value)}/>
             </label>
@@ -206,7 +239,7 @@ const FixedInflation = ({value, onChange}) => {
                 <h6>Components that will receive ETH</h6>
                 <ComponentPercentage value={_swappedTokenComponents} onChange={set_swappedTokenComponents} firstPercentage={_bootstrapFundIsRaw ? 0 : _bootstrapFundWalletPercentage || 0}/>
             </label>
-
+            <ProposalRules value={proposalRules} onChange={setProposalRules}/>
         </>}
       </div>
     )
@@ -230,6 +263,28 @@ const ComponentPercentage = ({value, onChange, firstPercentage, lastHasPercentag
                 {(lastHasPercentage || i < value.length - 1) && <input type="range" min="0" max="100" step="0.05" value={it.percentage} onChange={e => onChange(value.map((elem, index) => ({...elem, percentage : i === index ? parseFloat(e.currentTarget.value) : elem.percentage})))}/>}
                 <a onClick={() => onChange(value.filter((_, index) => index !== i))}>-</a>
             </div>)}
+        </div>
+    )
+}
+
+const TreasuryManager = ({value, onChange}) => {
+
+    const [maxPercentagePerToken, setMaxPercentagePerToken] = useState(value?.maxPercentagePerToken || 0)
+    const [proposalRules, setProposalRules] = useState(value?.proposalRules)
+
+    useEffect(() => onChange && onChange({proposalRules, maxPercentagePerToken}), [proposalRules, maxPercentagePerToken])
+
+    return (
+        <div className={style.CreationPageLabel}>
+            <div className={style.FancyExplanationCreate}>
+                <h6>Organization Treasury</h6>
+            </div>
+            <label className={style.CreationPageLabelF}>
+                <h6>Percentage to move</h6>
+                <input type="range" min="0" max="100" step="0.05" value={maxPercentagePerToken} onChange={e => setMaxPercentagePerToken(parseFloat(e.currentTarget.value))}/>
+                <span>{maxPercentagePerToken} %</span>
+            </label>
+            <ProposalRules value={proposalRules} onChange={setProposalRules}/>
         </div>
     )
 }
@@ -266,8 +321,9 @@ const TreasurySplitterManager = ({value, onChange}) => {
 const DelegationsManager = ({value, onChange}) => {
 
     const [attachInsurance, setAttachInsurance] = useState(value?.attachInsurance || 0)
+    const [proposalRules, setProposalRules] = useState(value?.proposalRules)
 
-    useEffect(() => onChange && onChange({attachInsurance}), [attachInsurance])
+    useEffect(() => onChange && onChange({proposalRules, attachInsurance}), [proposalRules, attachInsurance])
 
     return (
         <div className={style.CreationPageLabel}>
@@ -278,28 +334,22 @@ const DelegationsManager = ({value, onChange}) => {
                 <h6>Attach Insurance</h6>
                 <input type="number" value={attachInsurance} onChange={e => setAttachInsurance(parseInt(e.currentTarget.value))}/>
             </label>
+            <ProposalRules value={proposalRules} onChange={setProposalRules}/>
         </div>
     )
 }
 
-const InvestmentsManager = ({value, onChange}) => {
-
-    const context = useEthosContext()
-    const web3Data = useWeb3()
-    const [amms, setAMMs] = useState()
+const InvestmentsManager = ({amms, value, onChange}) => {
 
     const [swapToEtherInterval, setSwapToEtherInterval] = useState(value?.swapToEtherInterval || 0)
     const [firstSwapToEtherEvent, setFirstSwapToEtherEvent] = useState(value?.firstSwapToEtherEvent || "")
     const [fromETH, setFromETH] = useState(value?.fromETH || [])
     const [toETH, setToETH] = useState(value?.toETH || [])
+    const [maxPercentagePerToken, setMaxPercentagePerToken] = useState(value?.maxPercentagePerToken || 0)
 
-    useEffect(() => getAMMs({context, ...web3Data}).then(setAMMs), [])
+    const [proposalRules, setProposalRules] = useState(value?.proposalRules)
 
-    useEffect(() => onChange && onChange({swapToEtherInterval, firstSwapToEtherEvent, fromETH, toETH}), [swapToEtherInterval, firstSwapToEtherEvent, fromETH, toETH])
-
-    if(!amms) {
-        return <OurCircularProgress/>
-    }
+    useEffect(() => onChange && onChange({swapToEtherInterval, firstSwapToEtherEvent, fromETH, toETH, maxPercentagePerToken, proposalRules}), [swapToEtherInterval, firstSwapToEtherEvent, fromETH, toETH, maxPercentagePerToken, proposalRules])
 
     return (
         <div className={style.CreationPageLabel}>
@@ -319,20 +369,33 @@ const InvestmentsManager = ({value, onChange}) => {
                 <InvestmentsManagerOperation amms={amms} value={fromETH} onChange={setFromETH} burn/>
             </label>
             <label className={style.CreationPageLabelF}>
-                <h6>Buy ETH selling</h6>
-                <InvestmentsManagerOperation amms={amms} value={toETH} onChange={setToETH}/>
+                <h6>Max Percentage per Token</h6>
+                <input type="range" min="0" max="100" step="0.05" value={maxPercentagePerToken} onChange={e => setMaxPercentagePerToken(parseFloat(e.currentTarget.value))}/>
+                <span>{maxPercentagePerToken} %</span>
             </label>
+            <label className={style.CreationPageLabelF}>
+                <h6>Buy ETH selling</h6>
+                <InvestmentsManagerOperation amms={amms} value={toETH} onChange={setToETH} maxPercentagePerToken={maxPercentagePerToken}/>
+            </label>
+            <ProposalRules value={proposalRules} onChange={setProposalRules}/>
         </div>
     )
 }
 
-const InvestmentsManagerOperation = ({value, onChange, amms, burn}) => {
+const InvestmentsManagerOperation = ({value, onChange, amms, burn, maxPercentagePerToken}) => {
 
     const addMore = useMemo(() => !value || value.length < 5, [value])
 
+    useEffect(() => {
+        if(!value || isNaN(maxPercentagePerToken) || (value && !isNaN(maxPercentagePerToken) && value.filter(it => it.percentage > maxPercentagePerToken).length == 0)) {
+            return
+        }
+        onChange(value.map(it => ({...it, percentage : it.percentage > maxPercentagePerToken ? maxPercentagePerToken : it.percentage})))
+    }, [value, maxPercentagePerToken])
+
     return (
         <div>
-            {addMore && <div><a onClick={() => onChange([...value, { amm : undefined, token : undefined, burn : false }])}><h4>+</h4></a></div>}
+            {addMore && <div><a onClick={() => onChange([...value, { amm : undefined, token : undefined, burn : false, percentage : maxPercentagePerToken }])}><h4>+</h4></a></div>}
             {value && value.map((it, i) => <div key={`${i}_${it.token?.address}_${it.amm?.address}`}>
                 <TokenInputRegular selected={it.token} onElement={v => onChange(value.map((elem, index) => index === i ? { ...elem, token : v } : elem))} noBalance tokenOnly noETH onlySelections={['ERC-20']}/>
                 <span>On</span>
@@ -340,6 +403,11 @@ const InvestmentsManagerOperation = ({value, onChange, amms, burn}) => {
                 {burn && <label>
                     <span>Then burn</span>
                     <input type="checkbox" checked={it.burn} onChange={v => onChange(value.map((elem, index) => index === i ? { ...elem, burn : v.currentTarget.checked } : elem))}/>
+                </label>}
+                {!isNaN(maxPercentagePerToken) && <label>
+                    <span>Percentage</span>
+                    <input type="range" min="0" max={maxPercentagePerToken} step="0.05" checked={it.percentage} onChange={v => onChange(value.map((elem, index) => index === i ? { ...elem, percentage : parseFloat(v.currentTarget.value) } : elem))}/>
+                    <span>{it.percentage} %</span>
                 </label>}
                 <div><a onClick={() => onChange(value.filter((_, index) => index !== i))}><h4>-</h4></a></div>
             </div>)}
@@ -358,26 +426,29 @@ const CreateOrganization = () => {
 
     const [state, setState] = useState()
 
-    const disabled = useMemo(() => {
-        if(!state?.metadata?.name) return true
-        if(!state?.metadata?.description) return true
-        if(!state?.metadata?.image) return true
-        if(!state?.metadata?.url) return true
-        if(!state?.governance?.token) return true
-        return true
-    }, [state])
+    const [amms, setAMMs] = useState()
 
+    const disabled = useMemo(() => !state || Object.values(state).filter(it => it && it.errors).length > 0, [state])
+
+    const onClick = useCallback(() => !disabled && createOrganization(initialData, state), [disabled, state])
+
+    useEffect(() => getAMMs({context, ...web3Data}).then(setAMMs), [])
+
+    if(!amms) {
+        return <OurCircularProgress/>
+    }
     return (
       <div className={style.CreatePage}>
         <Metadata value={state?.metadata} onChange={value => setState({...state, metadata : value})}/>
         <Governance value={state?.governance} onChange={value => setState({...state, governance : value})}/>
-        <FixedInflation value={state?.fixedInflation} onChange={value => setState({...state, fixedInflation : value})}/>
+        <TreasuryManager value={state?.treasuryManager} onChange={value => setState({...state, treasuryManager : value})}/>
+        <FixedInflation amms={amms} value={state?.fixedInflation} onChange={value => setState({...state, fixedInflation : value})}/>
         <TreasurySplitterManager value={state?.treasurySplitter} onChange={value => setState({...state, treasurySplitter : value})}/>
         <DelegationsManager value={state?.delegationsManager} onChange={value => setState({...state, delegationsManager : value})}/>
-        <InvestmentsManager value={state?.investmentsManager} onChange={value => setState({...state, investmentsManager : value})}/>
+        <InvestmentsManager amms={amms} value={state?.investmentsManager} onChange={value => setState({...state, investmentsManager : value})}/>
         <div className={style.ActionDeploy}>
             {loading && <CircularProgress/>}
-            {!loading && <ActionAWeb3Button onClick={() => createOrganization(initialData, state)} disabled={disabled}>Deploy</ActionAWeb3Button>}
+            {!loading && <ActionAWeb3Button onClick={onClick} disabled={disabled}>Deploy</ActionAWeb3Button>}
         </div>
       </div>
     )
