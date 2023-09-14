@@ -113,7 +113,7 @@ async function buildOrganizationDeployData(initialData, inputData) {
             ...inputData.fixedInflation.proposalRules,
             presetValues : fixedInflationManagerLazyInitData.inflationPercentages
         } : undefined,
-        transferManager : {...inputData.transferManager.proposalRules, maxPercentagePerToken : inputData.transferManager.maxPercentagePerToken},
+        treasuryManager : {...inputData.treasuryManager.proposalRules, maxPercentagePerToken : inputData.treasuryManager.maxPercentagePerToken},
         delegationsManager : {...inputData.delegationsManager.proposalRules},
         changeInvestmentsManagerTokensFromETHList : {...inputData.investmentsManager.proposalRules},
         changeInvestmentsManagerTokensToETHList : {...inputData.investmentsManager.proposalRules, maxPercentagePerToken : inputData.investmentsManager.maxPercentagePerToken}
@@ -404,18 +404,18 @@ async function createSubDAOProposalModels(initialData, proposalModelsData) {
         uri : '',
         isPreset : false,
         presetValues : [
-            abi.encode(["uint256"], [toDecimals(proposalModelsData.transferManager.maxPercentagePerToken / 100, 18)])
+            abi.encode(["uint256"], [toDecimals(proposalModelsData.treasuryManager.maxPercentagePerToken / 100, 18)])
         ],
         presetProposals : [],
         creationRules : VOID_ETHEREUM_ADDRESS,
         triggeringRules : VOID_ETHEREUM_ADDRESS,
         votingRulesIndex : 0,
-        canTerminateAddresses : [proposalModelsData.transferManager.proposalRules.canTerminateAddresses],
-        validatorsAddresses : [proposalModelsData.transferManager.proposalRules.validatorsAddresses],
+        canTerminateAddresses : [proposalModelsData.treasuryManager.proposalRules.canTerminateAddresses],
+        validatorsAddresses : [proposalModelsData.treasuryManager.proposalRules.validatorsAddresses],
         creationData : '0x',
         triggeringData : '0x',
-        canTerminateData : [proposalModelsData.transferManager.proposalRules.canTerminateData],
-        validatorsData : [proposalModelsData.transferManager.proposalRules.validatorsData]
+        canTerminateData : [proposalModelsData.treasuryManager.proposalRules.canTerminateData],
+        validatorsData : [proposalModelsData.treasuryManager.proposalRules.validatorsData]
     }, {
         source: VOID_ETHEREUM_ADDRESS,
         uri : '',
