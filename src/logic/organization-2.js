@@ -45,6 +45,7 @@ async function buildOrganizationDeployData(initialData, inputData) {
     var { context } = initialData
 
     var tokenAddress = web3Utils.toChecksumAddress(inputData.governance.token.address)
+    var decimals = await getTokenDecimals(initialData, tokenAddress)
     var organizationUri = await uploadOrganizationMetadata(initialData, inputData.metadata)
     var proposalsManagerLazyInitData = inputData.governance
     var fixedInflationManagerLazyInitData
@@ -66,7 +67,8 @@ async function buildOrganizationDeployData(initialData, inputData) {
                 inputData.fixedInflation.inflationPercentage1,
                 inputData.fixedInflation.inflationPercentage2,
                 inputData.fixedInflation.inflationPercentage3,
-                inputData.fixedInflation.inflationPercentage4
+                inputData.fixedInflation.inflationPercentage4,
+                inputData.fixedInflation.inflationPercentage5
             ]
         }
         fixedInflationManagerLazyInitData._rawTokenComponentKeys = inputData.fixedInflation._rawTokenComponents.map(it => context.grimoire[it.component])
@@ -84,7 +86,7 @@ async function buildOrganizationDeployData(initialData, inputData) {
     treasurySplitterManagerLazyInitData.percentages.pop()
 
     var delegationsManagerLazyInitData = {
-        attachInsurance : inputData.delegationsManager.attachInsurance
+        attachInsurance : inputData.delegationsManager.attachInsurance0
     }
 
     var investmentsManagerLazyInitData = {
@@ -114,7 +116,8 @@ async function buildOrganizationDeployData(initialData, inputData) {
             presetValues : fixedInflationManagerLazyInitData.inflationPercentages
         } : undefined,
         treasuryManager : {...inputData.treasuryManager.proposalRules, maxPercentagePerToken : inputData.treasuryManager.maxPercentagePerToken},
-        delegationsManager : {...inputData.delegationsManager.proposalRules},
+        delegationsManagerBan : {...inputData.delegationsManager.proposalRulesToBan},
+        delegationsManagerInsurance : {...inputData.delegationsManager.proposalRulesForInsurance, presetValues : [inputData.delegationsManager.attachInsurance0, inputData.delegationsManager.attachInsurance1, inputData.delegationsManager.attachInsurance2, inputData.delegationsManager.attachInsurance3, inputData.delegationsManager.attachInsurance4, inputData.delegationsManager.attachInsurance5].map(it => toDecimals(it, decimals))},
         changeInvestmentsManagerTokensFromETHList : {...inputData.investmentsManager.proposalRules},
         changeInvestmentsManagerTokensToETHList : {...inputData.investmentsManager.proposalRules, maxPercentagePerToken : inputData.investmentsManager.maxPercentagePerToken}
     }
@@ -425,12 +428,27 @@ async function createSubDAOProposalModels(initialData, proposalModelsData) {
         creationRules : VOID_ETHEREUM_ADDRESS,
         triggeringRules : VOID_ETHEREUM_ADDRESS,
         votingRulesIndex : 0,
-        canTerminateAddresses : [proposalModelsData.delegationsManager.proposalRules.canTerminateAddresses],
-        validatorsAddresses : [proposalModelsData.delegationsManager.proposalRules.validatorsAddresses],
+        canTerminateAddresses : [proposalModelsData.delegationsManagerBan.proposalRules.canTerminateAddresses],
+        validatorsAddresses : [proposalModelsData.delegationsManagerBan.proposalRules.validatorsAddresses],
         creationData : '0x',
         triggeringData : '0x',
-        canTerminateData : [proposalModelsData.delegationsManager.proposalRules.canTerminateData],
-        validatorsData : [proposalModelsData.delegationsManager.proposalRules.validatorsData]
+        canTerminateData : [proposalModelsData.delegationsManagerBan.proposalRules.canTerminateData],
+        validatorsData : [proposalModelsData.delegationsManagerBan.proposalRules.validatorsData]
+    }, {
+        source: VOID_ETHEREUM_ADDRESS,
+        uri : '',
+        isPreset : true,
+        presetValues : proposalModelsData.delegationsManagerInsurance.presetValues.map(it => abi.encode(["uint256"], [it])),
+        presetProposals : [],
+        creationRules : VOID_ETHEREUM_ADDRESS,
+        triggeringRules : VOID_ETHEREUM_ADDRESS,
+        votingRulesIndex : 0,
+        canTerminateAddresses : [proposalModelsData.delegationsManagerInsurance.proposalRules.canTerminateAddresses],
+        validatorsAddresses : [proposalModelsData.delegationsManagerInsurance.proposalRules.validatorsAddresses],
+        creationData : '0x',
+        triggeringData : '0x',
+        canTerminateData : [proposalModelsData.delegationsManagerInsurance.proposalRules.canTerminateData],
+        validatorsData : [proposalModelsData.delegationsManagerInsurance.proposalRules.validatorsData]
     }, {
         source: VOID_ETHEREUM_ADDRESS,
         uri : '',

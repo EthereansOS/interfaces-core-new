@@ -51,12 +51,18 @@ export async function create({ context, ipfsHttpClient, newContract, chainId, fa
 }
 
 export async function all({ context, newContract, chainId, factoryOfFactories }) {
-    const factoryIndex = getNetworkElement({ context, chainId }, "factoryIndices").organization
-    if(factoryIndex === undefined || factoryIndex === null) {
+    var factoryIndices = getNetworkElement({ context, chainId }, "factoryIndices")
+    factoryIndices = [
+        factoryIndices?.subdao,
+        factoryIndices?.organization
+    ]
+    factoryIndices = factoryIndices.filter(it => it)
+    if(factoryIndices.length === 0) {
         return []
     }
+    var address = (await Promise.all(factoryIndices.map(async factoryIndex => (await blockchainCall(factoryOfFactories.methods.get, factoryIndex)).factoryList))).reduce((acc, it) => [...acc, ...it], [])
     var args = {
-        address: (await blockchainCall(factoryOfFactories.methods.get, factoryIndex)).factoryList,
+        address,
         topics: [
             web3Utils.sha3('Deployed(address,address,address,bytes)')
         ],
@@ -111,6 +117,9 @@ export async function getOrganizationMetadata({ context }, organization, merge) 
         organization.uri = await getManipulatedUri(organization)
         organization.formattedUri = formatLink({ context }, organization.uri)
         var metadata = await (await fetch(organization.formattedUri)).json()
+        if(web3Utils.toChecksumAddress(organization.address) === web3Utils.toChecksumAddress("0xc28FfD843DCA86565597A1b82265df29A1642262")) {
+            metadata.image = 'ipfs://ipfs/QmVBvcb4W5AMFHAu2GNsa4uAn6VhV9NGNV3PLLyJbwNmn7'
+        }
         return merge ? { ...organization, ...metadata } : metadata
     } catch (e) {}
     return merge ? organization : {}
@@ -118,7 +127,7 @@ export async function getOrganizationMetadata({ context }, organization, merge) 
 
 async function getManipulatedUri(organization) {
     if(web3Utils.toChecksumAddress(organization.address) === web3Utils.toChecksumAddress("0xc28FfD843DCA86565597A1b82265df29A1642262")) {
-        return 'ipfs://ipfs/QmZjF5qbS4RCMDpioC3nSQtJm4fEiKqLz4MZGrTZF9BGCQ'
+        //return 'ipfs://ipfs/QmZjF5qbS4RCMDpioC3nSQtJm4fEiKqLz4MZGrTZF9BGCQ'
     }
     return await blockchainCall(organization.contract.methods.uri)
 }
@@ -154,6 +163,10 @@ export async function getInitializationData({newContract, context, chainId}, con
         for(var i in list) {
             if(list[i] === initializerAddress) {
                 version = i;
+                break;
+            }
+            if(version != undefined && version != null) {
+                break;
             }
         }
     }
@@ -633,7 +646,7 @@ async function getProposals({account, web3, newContract, context, chainId}, orga
     }))
 
     proposals = [{
-        name : "SOON-UP",
+        name : "OS-UP",
         proposalType : "normal",
         type : "survey",
         subProposals : proposals,
@@ -813,7 +826,7 @@ var uint256EntryTypePercentage = {
 var uint256EntryType = {
     decodePreset : {
         toDisplay : [1],
-        suffix : ' SOON',
+        suffix : ' OS',
         types : [{
             rawType : 'string',
             name : 'entryName',

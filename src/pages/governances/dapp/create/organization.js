@@ -84,7 +84,16 @@ const Governance = ({value, onChange}) => {
     )
 }
 
-const ProposalRules = ({value, onChange, showHost}) => {
+const Duration = ({value, onChange}) => {
+
+    const context = useEthosContext()
+
+    return <select value={value} onChange={e => onChange(parseInt(e.currentTarget.value))}>
+        {Object.entries(context.timeIntervals).map(it => <option key={it[0]} value={it[1]}>{it[0]}</option>)}
+    </select>
+}
+
+const ProposalRules = ({value, onChange, showHost, title}) => {
     const [host, setHost] = useState(value?.host)
     const [proposalDuration, setProposalDuration] = useState(value?.proposalDuration || 0)
     const [hardCapPercentage, setHardCapPercentage] = useState(value?.hardCapPercentage || 0)
@@ -98,7 +107,7 @@ const ProposalRules = ({value, onChange, showHost}) => {
     return (
       <div className={style.CreationPageLabel}>
         <div className={style.FancyExplanationCreate}>
-          <h6>Voting Rules</h6>
+          <h6>{title || "Voting Rules"}</h6>
         </div>
         {showHost && <label className={style.CreationPageLabelF}>
           <h6>Host address</h6>
@@ -106,7 +115,7 @@ const ProposalRules = ({value, onChange, showHost}) => {
         </label>}
         <label className={style.CreationPageLabelF}>
           <h6>Proposal duration</h6>
-          <input type="number" value={proposalDuration} onChange={e => setProposalDuration(parseInt(e.currentTarget.value))}/>
+          <Duration value={proposalDuration} onChange={setProposalDuration}/>
         </label>
         <label className={style.CreationPageLabelF}>
           <h6>Hard cap percentage</h6>
@@ -124,7 +133,7 @@ const ProposalRules = ({value, onChange, showHost}) => {
         </label>
         <label className={style.CreationPageLabelF}>
           <h6>Validation bomb</h6>
-          <input type="number" value={validationBomb} onChange={e => setValidationBomb(parseInt(e.currentTarget.value))}/>
+          <Duration value={validationBomb} onChange={setValidationBomb}/>
           {showValidationBombWarning && <p>WARNING: Validation bomb must be higher than Proposal durration</p>}
         </label>
       </div>
@@ -141,6 +150,7 @@ const FixedInflation = ({amms, value, onChange}) => {
     const [inflationPercentage2, setInflationPercentage2] = useState(value?.inflationPercentage2 || defaultInflationPercentage)
     const [inflationPercentage3, setInflationPercentage3] = useState(value?.inflationPercentage3 || defaultInflationPercentage)
     const [inflationPercentage4, setInflationPercentage4] = useState(value?.inflationPercentage4 || defaultInflationPercentage)
+    const [inflationPercentage5, setInflationPercentage5] = useState(value?.inflationPercentage5 || defaultInflationPercentage)
     const [firstExecution, setFirstExecution] = useState(value?.firstExecution)
 
     const [amm, setAMM] = useState(value?.amm)
@@ -153,7 +163,7 @@ const FixedInflation = ({amms, value, onChange}) => {
 
     const [proposalRules, setProposalRules] = useState(value?.proposalRules)
 
-    useEffect(() => onChange && onChange({tokenMinterOwner, inflationPercentage0, inflationPercentage1, inflationPercentage2, inflationPercentage3, inflationPercentage4, amm, uniV3Pool, _bootstrapFundWalletAddress, _bootstrapFundWalletPercentage, _bootstrapFundIsRaw, _rawTokenComponents, _swappedTokenComponents, firstExecution, proposalRules}), [tokenMinterOwner, inflationPercentage0, inflationPercentage1, inflationPercentage2, inflationPercentage3, inflationPercentage4, amm, uniV3Pool, _bootstrapFundWalletAddress, _bootstrapFundWalletPercentage, _bootstrapFundIsRaw, _rawTokenComponents, _swappedTokenComponents, firstExecution, proposalRules])
+    useEffect(() => onChange && onChange({tokenMinterOwner, inflationPercentage0, inflationPercentage1, inflationPercentage2, inflationPercentage3, inflationPercentage4, inflationPercentage5, amm, uniV3Pool, _bootstrapFundWalletAddress, _bootstrapFundWalletPercentage, _bootstrapFundIsRaw, _rawTokenComponents, _swappedTokenComponents, firstExecution, proposalRules}), [tokenMinterOwner, inflationPercentage0, inflationPercentage1, inflationPercentage2, inflationPercentage3, inflationPercentage4, inflationPercentage5, amm, uniV3Pool, _bootstrapFundWalletAddress, _bootstrapFundWalletPercentage, _bootstrapFundIsRaw, _rawTokenComponents, _swappedTokenComponents, firstExecution, proposalRules])
 
     return (
       <div className={style.CreationPageLabel}>
@@ -162,7 +172,7 @@ const FixedInflation = ({amms, value, onChange}) => {
         </div>
         <label>
             Yes
-            <input type="radio" checked={value !== undefined && value !== null} onClick={() => onChange({tokenMinterOwner, inflationPercentage0, inflationPercentage1, inflationPercentage2, inflationPercentage3, inflationPercentage4, amm, uniV3Pool, _bootstrapFundWalletAddress, _bootstrapFundWalletPercentage, _bootstrapFundIsRaw, _rawTokenComponents, _swappedTokenComponents, firstExecution, proposalRules})}/>
+            <input type="radio" checked={value !== undefined && value !== null} onClick={() => onChange({tokenMinterOwner, inflationPercentage0, inflationPercentage1, inflationPercentage2, inflationPercentage3, inflationPercentage4, inflationPercentage5, amm, uniV3Pool, _bootstrapFundWalletAddress, _bootstrapFundWalletPercentage, _bootstrapFundIsRaw, _rawTokenComponents, _swappedTokenComponents, firstExecution, proposalRules})}/>
         </label>
         {'\u00a0'}
         <label>
@@ -206,6 +216,12 @@ const FixedInflation = ({amms, value, onChange}) => {
                         <h8>{inflationPercentage4} %</h8>
                     </p>
                     <input type="range" min="0.05" max="100" step="0.05" value={inflationPercentage4} onChange={e => setInflationPercentage4(parseFloat(e.currentTarget.value))}/>
+                </label>
+                <label>
+                    <p>
+                        <h8>{inflationPercentage5} %</h8>
+                    </p>
+                    <input type="range" min="0.05" max="100" step="0.05" value={inflationPercentage5} onChange={e => setInflationPercentage5(parseFloat(e.currentTarget.value))}/>
                 </label>
             </label>
             <label className={style.CreationPageLabelF}>
@@ -304,7 +320,7 @@ const TreasurySplitterManager = ({value, onChange}) => {
             </div>
             <label className={style.CreationPageLabelF}>
                 <h6>Split interval</h6>
-                <input type="number" value={splitInterval} onChange={e => setSplitInterval(parseInt(e.currentTarget.value))}/>
+                <Duration value={splitInterval} onChange={setSplitInterval}/>
             </label>
             <label className={style.CreationPageLabelF}>
                 <h6>First split event</h6>
@@ -320,21 +336,45 @@ const TreasurySplitterManager = ({value, onChange}) => {
 
 const DelegationsManager = ({value, onChange}) => {
 
-    const [attachInsurance, setAttachInsurance] = useState(value?.attachInsurance || 0)
-    const [proposalRules, setProposalRules] = useState(value?.proposalRules)
-
-    useEffect(() => onChange && onChange({proposalRules, attachInsurance}), [proposalRules, attachInsurance])
+    const [proposalRulesToBan, setProposalRulesToBan] = useState(value?.proposalRulesToBan)
+    const [attachInsurance0, setAttachInsurance0] = useState(value?.attachInsurance0 || 0)
+    const [attachInsurance1, setAttachInsurance1] = useState(value?.attachInsurance1 || 0)
+    const [attachInsurance2, setAttachInsurance2] = useState(value?.attachInsurance2 || 0)
+    const [attachInsurance3, setAttachInsurance3] = useState(value?.attachInsurance3 || 0)
+    const [attachInsurance4, setAttachInsurance4] = useState(value?.attachInsurance4 || 0)
+    const [attachInsurance5, setAttachInsurance5] = useState(value?.attachInsurance5 || 0)
+    const [proposalRulesForInsurance, setProposalRulesForInsurance] = useState(value?.proposalRulesForInsurance)
+    useEffect(() => onChange && onChange({proposalRulesToBan, attachInsurance0, attachInsurance1, attachInsurance2, attachInsurance3, attachInsurance4, attachInsurance5, proposalRulesForInsurance}), [proposalRulesToBan, attachInsurance0, attachInsurance1, attachInsurance2, attachInsurance3, attachInsurance4, attachInsurance5, proposalRulesForInsurance])
 
     return (
         <div className={style.CreationPageLabel}>
             <div className={style.FancyExplanationCreate}>
                 <h6>Delegations Manager</h6>
             </div>
+            <ProposalRules value={proposalRulesToBan} onChange={setProposalRulesToBan} title="Proposal Rules to ban bad delegations"/>
             <label className={style.CreationPageLabelF}>
                 <h6>Attach Insurance</h6>
-                <input type="number" value={attachInsurance} onChange={e => setAttachInsurance(parseInt(e.currentTarget.value))}/>
+                <input type="number" value={attachInsurance0} onChange={e => setAttachInsurance0(parseInt(e.currentTarget.value))}/>
             </label>
-            <ProposalRules value={proposalRules} onChange={setProposalRules}/>
+            <label className={style.CreationPageLabelF}>
+                <h6>Other Attach Insurance values</h6>
+                <label>
+                    <input type="number" value={attachInsurance1} onChange={e => setAttachInsurance1(parseInt(e.currentTarget.value))}/>
+                </label>
+                <label>
+                    <input type="number" value={attachInsurance2} onChange={e => setAttachInsurance2(parseInt(e.currentTarget.value))}/>
+                </label>
+                <label>
+                    <input type="number" value={attachInsurance3} onChange={e => setAttachInsurance3(parseInt(e.currentTarget.value))}/>
+                </label>
+                <label>
+                    <input type="number" value={attachInsurance4} onChange={e => setAttachInsurance4(parseInt(e.currentTarget.value))}/>
+                </label>
+                <label>
+                    <input type="number" value={attachInsurance5} onChange={e => setAttachInsurance5(parseInt(e.currentTarget.value))}/>
+                </label>
+            </label>
+            <ProposalRules value={proposalRulesForInsurance} onChange={setProposalRulesForInsurance}/>
         </div>
     )
 }
@@ -358,7 +398,7 @@ const InvestmentsManager = ({amms, value, onChange}) => {
             </div>
             <label className={style.CreationPageLabelF}>
                 <h6>Swap interval</h6>
-                <input type="number" value={swapToEtherInterval} onChange={e => setSwapToEtherInterval(parseInt(e.currentTarget.value))}/>
+                <Duration value={swapToEtherInterval} onChange={setSwapToEtherInterval}/>
             </label>
             <label className={style.CreationPageLabelF}>
                 <h6>First swap event</h6>
@@ -448,7 +488,7 @@ const CreateOrganization = () => {
         <InvestmentsManager amms={amms} value={state?.investmentsManager} onChange={value => setState({...state, investmentsManager : value})}/>
         <div className={style.ActionDeploy}>
             {loading && <CircularProgress/>}
-            {!loading && <ActionAWeb3Button onClick={onClick} disabled={disabled}>Deploy</ActionAWeb3Button>}
+            {!loading && <ActionAWeb3Button onClick={onClick} disabled>Deploy</ActionAWeb3Button>}
         </div>
       </div>
     )
