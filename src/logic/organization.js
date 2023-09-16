@@ -6,7 +6,7 @@ import { decodeProposal, decodeProposalVotingToken, extractProposalVotingTokens,
 import { retrieveDelegationProposals } from "./delegation";
 import { getData, getRawField } from "./generalReader"
 import { getLogs } from "./logger";
-import { getTokenBasicInfo } from "./erc20";
+import { getTokenBasicInfo, loadTokenFromAddress } from "./erc20";
 
 export async function create({ context, ipfsHttpClient, newContract, chainId, factoryOfFactories }, metadata, organization) {
     var uri = await uploadMetadata({ context, ipfsHttpClient }, metadata)
@@ -154,7 +154,7 @@ export async function getInitializationData({newContract, context, chainId}, con
     var fofAddress = await blockchainCall(factory.methods.initializer)
     var fof = newContract(context.FactoryOfFactoriesABI, fofAddress)
 
-    var partialList = await blockchainCall(fof.methods.partialList, 0, 4)
+    var partialList = await blockchainCall(fof.methods.partialList, 0, 15)
 
     partialList = partialList[1]
 
@@ -194,6 +194,7 @@ export async function getOrganization({ chainId, context, web3, account, getGlob
 
     organization = {
         ...organization,
+        old : ["0xc28FfD843DCA86565597A1b82265df29A1642262", "0x0227aD4E1D28fcae2d91397896Ed0eF26fcEc4c0"].map(web3Utils.toChecksumAddress).indexOf(web3Utils.toChecksumAddress(organization.address)) !== -1,
         host,
         ...(await getOrganizationMetadata({ chainId, context }, organization)),
         components: await getOrganizationComponents({ chainId, newContract, context }, contract)
@@ -202,6 +203,10 @@ export async function getOrganization({ chainId, context, web3, account, getGlob
     organization.proposalModels = await getProposalModels({ context }, contract)
     organization.type = organization.proposalModels.length === 0 ? 'root' : 'organization'
     organization.proposalsConfiguration = await getProposalsConfiguration({ chainId, context, web3, account, getGlobalContract, newContract }, organization.components.proposalsManager)
+
+    var tokenAddress = abi.decode(["address"], abi.encode(["uint256"], [organization.proposalsConfiguration.objectIds[0]]))[0]
+
+    organization.votingToken = await loadTokenFromAddress({context, account, newContract}, tokenAddress)
 
     organization.organizations = await getAllOrganizations({ chainId, context, web3, account, getGlobalContract, newContract }, organization)
 
@@ -244,7 +249,8 @@ export async function getOrganizationComponents({ newContract, context }, contra
         [context.grimoire.COMPONENT_KEY_OS_FARMING] : "OSFarming",
         [context.grimoire.COMPONENT_KEY_DIVIDENDS_FARMING] : "DividendsFarming",
         [context.grimoire.COMPONENT_KEY_TOKEN_MINTER_AUTH] : "OSFixedInflationManager",
-        [context.grimoire.COMPONENT_KEY_TOKEN_MINTER] : "OSMinter"
+        [context.grimoire.COMPONENT_KEY_TOKEN_MINTER] : "OSMinter",
+        [context.grimoire.COMPONENT_KEY_FIXED_INFLATION_MANAGER] : "IFixedInflationManager"
     }
 
     var componentsAddress = await blockchainCall(contract.methods.list, Object.keys(componentsKey))
@@ -265,7 +271,8 @@ export async function getOrganizationComponents({ newContract, context }, contra
             }
         }
         var newObject = {...acc}
-        item && (newObject[(componentName[0].toLowerCase() + componentName.substring(1))] = item)
+        var label = componentName.startsWith("I") ? componentName.substring(1) : componentName
+        item && (newObject[(label[0].toLowerCase() + label.substring(1))] = item)
         return newObject
     }, {})
 }

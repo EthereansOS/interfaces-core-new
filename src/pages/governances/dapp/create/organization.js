@@ -488,7 +488,7 @@ const CreateOrganization = () => {
         <InvestmentsManager amms={amms} value={state?.investmentsManager} onChange={value => setState({...state, investmentsManager : value})}/>
         <div className={style.ActionDeploy}>
             {loading && <CircularProgress/>}
-            {!loading && <ActionAWeb3Button onClick={onClick} disabled>Deploy</ActionAWeb3Button>}
+            {!loading && <ActionAWeb3Button onClick={onClick} disabled={disabled}>Deploy</ActionAWeb3Button>}
         </div>
       </div>
     )

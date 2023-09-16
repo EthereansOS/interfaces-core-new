@@ -124,7 +124,7 @@ export async function getLogs(provider, _, args) {
     cached.toBlock = (cached.toBlock = cached.toBlock || lastBlock) > lastBlock ? lastBlock : cached.toBlock
 
     try {
-        await cache.setItem(logKey, JSON.stringify(cached))
+        !window.ganache && await cache.setItem(logKey, JSON.stringify(cached))
     } catch(e) {
         console.error(e)
     }

@@ -2,20 +2,19 @@ import React, { Fragment, useEffect, useState } from 'react'
 
 import ExtLinkButton from '../../Global/ExtLinkButton/index.js'
 import RegularButtonDuo from '../../Global/RegularButtonDuo/index.js'
-import Upshots from '../../Organizations/Upshots/index.js'
+import Upshots from '../Upshots/index.js'
 import LogoRenderer from '../../Global/LogoRenderer'
 import CircularProgress from '../../Global/OurCircularProgress'
 import ActionAWeb3Button from '../../Global/ActionAWeb3Button'
 import { Link } from 'react-router-dom'
 
-import { VOID_ETHEREUM_ADDRESS, VOID_BYTES32, fromDecimals, useWeb3, abi, useEthosContext, getNetworkElement, blockchainCall, numberToString, getEthereumPrice, formatNumber, formatMoney, formatMoneyUniV3, newContract, getTokenPriceInDollarsOnUniswapV3, web3Utils } from '@ethereansos/interfaces-core'
+import { fromDecimals, useWeb3, abi, useEthosContext, getNetworkElement, blockchainCall, numberToString, getEthereumPrice, formatNumber, formatMoney, formatMoneyUniV3, newContract, getTokenPriceInDollarsOnUniswapV3, web3Utils } from '@ethereansos/interfaces-core'
 
 import style from '../../../all.module.css'
 import { getDelegationsOfOrganization } from '../../../logic/delegation.js'
 import { getRawField } from '../../../logic/generalReader.js'
 import { decodePrestoOperations } from '../../../logic/covenants.js'
 import { getAMMs, getAmmPoolLink } from '../../../logic/amm.js'
-import OurCircularProgress from '../../Global/OurCircularProgress'
 
 const RootWallet = ({element}) => {
 
@@ -39,7 +38,7 @@ const RootWallet = ({element}) => {
   return (
     <div className={style.OrgMainThingsCardSL}>
       <div className={style.OrgThingsRegularTitle}>
-        <h6>Treasury Manager</h6>
+        <h6>Root Wallet</h6>
       </div>
       <div className={style.OrgThingsInfoContent}>
         <b>Balance</b>
@@ -57,92 +56,130 @@ const TreasurySplitter = ({element}) => {
   const [value, setValue] = useState(null)
   const [nextBlock, setNextBlock] = useState(null)
 
-  const [receivers, setReceivers] = useState(null)
-
-  const [splitInterval, setSplitInterval] = useState()
-
   useEffect(() => {
     setTimeout(async () => {
-      var treasurySplitterManager = element.components.treasurySplitterManager
+      var treasurySplitterManager = element.organizations[0].components.treasurySplitterManager
       var val = await web3.eth.getBalance(treasurySplitterManager.address)
       val = parseFloat(fromDecimals(val, 18, true))
       var ethereumPrice = formatNumber(await getEthereumPrice({context}))
       val = ethereumPrice * val
-      setValue("$ " + formatMoney(val, 2))
-      var next = await getRawField({provider : web3.currentProvider}, treasurySplitterManager.address, 'nextSplitEvent')
-      next = abi.decode(["uint256"], next)[0].toString()
-      next = parseInt(next)
-      next = next * 1000
-      next = (next && new Date(next)) || new Date()
-      next = next.toISOString()
-      setNextBlock(next)
-
-      var receiversAndPercentages = await blockchainCall(treasurySplitterManager.contract.methods.receiversAndPercentages)
-
-      var rec = receiversAndPercentages.keys.map((it, i) => ({
-        key : it,
-        address : receiversAndPercentages.addresses[i],
-        percentage : i < receiversAndPercentages.percentages.length ? receiversAndPercentages.percentages[i] : '0'
-      }))
-
-      rec[rec.length - 1].percentage = web3Utils.toBN(1e18).sub(rec.reduce((acc, it) => acc.add(web3Utils.toBN(it.percentage)), web3Utils.toBN("0"))).toString()
-
-      rec.forEach(it => {
-        it.value = formatMoney((parseFloat(fromDecimals(it.percentage, 16, true)) * val), 2)
-        it.percentage = (fromDecimals(it.percentage, 16) + "%")
-      })
-
-      rec.forEach(it => {
-        if(it.key.indexOf('0x') === -1) {
-          return
-        }
-        it.key = Object.entries(context.grimoire).filter(grimoire => grimoire[1] === it.key )[0][0]
-        it.key = it.key.split('COMPONENT_KEY_').join('').split('_').join(" ")
-      })
-      setReceivers(rec)
-
-      var interval = await getRawField({ provider : web3.currentProvider}, treasurySplitterManager.address, 'splitInterval')
-      interval = abi.decode(["uint256"], interval)[0].toString()
-      interval = parseInt(interval)
-
-      var label = Object.entries(context.timeIntervals).filter(it => it[1] === interval)[0]
-      setSplitInterval(label ? label[0] : `${interval} seconds`)
+      val = "$ " + formatMoney(val, 2)
+      setValue(val)
+      setNextBlock(await blockchainCall(treasurySplitterManager.contract.methods.nextSplitBlock))
     })
   }, [element])
 
   async function executeSplit() {
-    return blockchainCall(element.components.treasurySplitterManager.contract.methods.splitTreasury, account)
+    return blockchainCall(element.organizations[0].components.treasurySplitterManager.contract.methods.splitTreasury, account)
   }
 
   return (
     <div className={style.OrgMainThingsCard}>
       <div className={style.OrgThingsTitle}>
-        <h6>Treasury Splitter</h6>
+        <h6>Earnings Splitter</h6>
       </div>
       <div className={style.OrgThingsInfoContent}>
         <b>Current Period</b>
         {value === null && <CircularProgress/>}
-        {value !== null && <p><a target="_blank" href={`${getNetworkElement({context, chainId}, 'etherscanURL')}/tokenholdings?a=${element.components.treasurySplitterManager.address}`}>{value}</a></p>}
+        {value !== null && <p><a target="_blank" href={`${getNetworkElement({context, chainId}, 'etherscanURL')}/tokenholdings?a=${element.organizations[0].components.treasurySplitterManager.address}`}>{value}</a></p>}
       </div>
       <div className={style.OrgThingsInfoContent}>
         <b>Rebalance</b>
-        {!splitInterval && <OurCircularProgress/>}
-        {splitInterval && <p>Every {splitInterval}</p>}
+        <p>3 Months</p>
       </div>
       <div className={style.OrgThingsInfoContent}>
         <b>Next</b>
         {nextBlock === null && <CircularProgress/>}
-        {nextBlock && <p>{nextBlock}</p>}
+        {nextBlock !== null && parseInt(block) < parseInt(nextBlock) && <p><a href={getNetworkElement({context, chainId}, "etherscanURL") + "block/" + nextBlock} target="_blank">#{nextBlock}</a></p>}
+        {nextBlock !== null && parseInt(block) >= parseInt(nextBlock) && <p><ActionAWeb3Button onClick={executeSplit}>Split Treasury</ActionAWeb3Button></p>}
       </div>
       <div className={style.OrgThingsTitle}>
         <h6>Distribution</h6>
       </div>
-      {!receivers && <OurCircularProgress/>}
-      {receivers && receivers.map(it => <div key={it.key} className={style.OrgThingsInfoContent}>
-        <a href={`${getNetworkElement({context, chainId}, 'etherscanURL')}/tokenholdings?a=${it.address}`} target="_blank"><b>{it.key}</b></a>
-        <p>{it.percentage} ({it.value} ETH)</p>
-      </div>)}
+      <div className={style.OrgThingsInfoContent}>
+        <b>Dividends</b>
+        <p>27%</p>
+      </div>
+      <div className={style.OrgThingsInfoContent}>
+        <b>Investments Fund</b>
+        <p>25%</p>
+      </div>
+      <div className={style.OrgThingsInfoContent}>
+        <b>Delegations Grants</b>
+        <p>40%</p>
+      </div>
+      <div className={style.OrgThingsInfoContent}>
+        <b>Root Wallet</b>
+        <p>8%</p>
+      </div>
     </div>)
+}
+
+const Farmings = ({element}) => {
+
+  const context = useEthosContext()
+  const { newContract } = useWeb3()
+
+  const [oSDailyRate, setOSDailyRate] = useState(null)
+  const [dividendsDailyRate, setDividendsDailyRate] = useState(null)
+
+  const [osFarmingAddress, setOSFarmingAddress] = useState(null)
+  const [dividendsFarmingAddress, setDividendsFarmingAddress] = useState(null)
+
+  useEffect(() => {
+    setTimeout(async () => {
+
+      var osFarmingAddress = (await blockchainCall(element.organizations[0].components.oSFarming.contract.methods.data))[0]
+      setOSFarmingAddress(osFarmingAddress)
+      var osFarming = newContract(context.FarmMainRegularMinStakeABI, osFarmingAddress)
+      var osFarmingDailyRate = await getDailyRateRaw(osFarming)
+      setOSDailyRate(osFarmingDailyRate)
+
+      var dividendsFarmingAddress = (await blockchainCall(element.organizations[0].components.dividendsFarming.contract.methods.data))[0]
+      setDividendsFarmingAddress(dividendsFarmingAddress)
+      var dividendsFarming = newContract(context.FarmMainRegularMinStakeABI, dividendsFarmingAddress)
+      var dividendsFarmingDailyRate = await getDailyRateRaw(dividendsFarming)
+      setDividendsDailyRate(dividendsFarmingDailyRate)
+
+    })
+  }, [])
+
+  async function getDailyRateRaw(contract) {
+    try {
+      var setup = await blockchainCall(contract.methods.setups)
+      setup = setup[setup.length - 1]
+      return formatMoneyUniV3(fromDecimals(parseInt(setup.rewardPerBlock) * 6400, 18, true), 4)
+    } catch(e) {
+      return "0"
+    }
+  }
+
+  return (<div className={style.OrgPartViewF}>
+    <Link to={`/covenants/farming/${dividendsFarmingAddress}`} className={style.OrgPartFarm}>
+      <a>
+        <img src={`${process.env.PUBLIC_URL}/img/eth_logo.png`}/>
+      </a>
+      <p>
+        <b>Dividends</b>
+        <br/>
+        <span>Minimum to Stake: 5,000 SOON</span>
+        <br/>
+        {!dividendsDailyRate && <CircularProgress/>}
+        {dividendsDailyRate && <span>Daily reward rate: {dividendsDailyRate} ETH</span>}
+      </p>
+    </Link>
+    <Link to={`/covenants/farming/${osFarmingAddress}`} className={style.OrgPartFarm}>
+      <a>
+        <img src={`${process.env.PUBLIC_URL}/img/tokentest/os.png`}/>
+      </a>
+      <p>
+        <b>Farm SOON</b>
+        <br/>
+        {!oSDailyRate && <CircularProgress/>}
+        {oSDailyRate && <span>Daily reward rate: {oSDailyRate} SOON</span>}
+      </p>
+    </Link>
+  </div>)
 }
 
 const Investments = ({element}) => {
@@ -172,7 +209,7 @@ const Investments = ({element}) => {
 
   async function calculateNextBuy() {
     var ethereumPrice = formatNumber(await getEthereumPrice({context}))
-    var val = await web3.eth.getBalance(element.components.treasurySplitterManager.address)
+    var val = await web3.eth.getBalance(element.organizations[0].components.treasurySplitterManager.address)
     val = parseFloat(fromDecimals(val, 18, true))
 
     setSingleSwapFromETHValue(formatMoney(val / 5, 2))
@@ -187,7 +224,7 @@ const Investments = ({element}) => {
     setTokensFromETHAMMs()
     setTokensToETHAMMs()
     const amms = await getAMMs({ context, ...web3Data})
-    var fromETH = await getRawField({ provider : web3.currentProvider }, element.components.investmentsManager.address, 'tokensFromETH')
+    var fromETH = await getRawField({ provider : web3.currentProvider }, element.organizations[0].components.investmentsManager.address, 'tokensFromETH')
     var tokensFromETHToBurn = []
     try {
       fromETH = decodePrestoOperations(fromETH)
@@ -198,14 +235,14 @@ const Investments = ({element}) => {
       fromETH = fromETH.map(it => it.swapPath[it.swapPath.length - 1])
     } catch(e) {
       fromETH = abi.decode(["address[]"], fromETH)[0].map(web3Utils.toChecksumAddress)
-      var tokenFromETHToBurn = await getRawField({ provider : web3.currentProvider }, element.components.investmentsManager.address, 'tokenFromETHToBurn')
+      var tokenFromETHToBurn = await getRawField({ provider : web3.currentProvider }, element.organizations[0].components.investmentsManager.address, 'tokenFromETHToBurn')
       tokenFromETHToBurn = web3Utils.toChecksumAddress(abi.decode(["address"], tokenFromETHToBurn)[0])
       fromETH.push(tokenFromETHToBurn)
       tokensFromETHToBurn = fromETH.map(it => it === tokenFromETHToBurn)
     }
     setTokensFromETHToBurn(tokensFromETHToBurn)
     setTokensFromETH(fromETH)
-    var data = await getRawField({ provider : web3.currentProvider }, element.components.investmentsManager.address, 'tokensToETH')
+    var data = await getRawField({ provider : web3.currentProvider }, element.organizations[0].components.investmentsManager.address, 'tokensToETH')
     try {
       data = decodePrestoOperations(data)
       setTokensToETHAMMPoolLinks(data.map(it => it.liquidityPoolAddresses[0]))
@@ -224,7 +261,7 @@ const Investments = ({element}) => {
     }
     setTokensToETH(data.addresses)
 
-    var balances = await Promise.all(data.addresses.map(it => blockchainCall(newContract(context.IERC20ABI, it).methods.balanceOf, element.components.investmentsManager.address)))
+    var balances = await Promise.all(data.addresses.map(it => blockchainCall(newContract(context.IERC20ABI, it).methods.balanceOf, element.organizations[0].components.investmentsManager.address)))
     var decimals = await Promise.all(data.addresses.map(it => blockchainCall(newContract(context.IERC20ABI, it).methods.decimals)))
     var dollars = await Promise.all(data.addresses.map((it, i) => getTokenPriceInDollarsOnUniswapV3({context, newContract, chainId}, it, decimals[i])))
     balances = balances.map((it, i) => parseFloat(fromDecimals(it, decimals[i], true)))
@@ -233,8 +270,8 @@ const Investments = ({element}) => {
     amount = formatMoney(numberToString(amount), 2)
     setTotalValue(amount)
 
-    setSwapFromETHBlock(await blockchainCall(element.components.treasurySplitterManager.contract.methods.nextSplitBlock))
-    setSwapToETHBlock(await blockchainCall(element.components.investmentsManager.contract.methods.nextSwapToETHBlock))
+    setSwapFromETHBlock(await blockchainCall(element.organizations[0].components.treasurySplitterManager.contract.methods.nextSplitBlock))
+    setSwapToETHBlock(await blockchainCall(element.organizations[0].components.investmentsManager.contract.methods.nextSwapToETHBlock))
   }
 
   useEffect(() => {
@@ -248,7 +285,7 @@ const Investments = ({element}) => {
     <div className={style.OrgPartView}>
       <div className={style.OrgPartTitle}>
         <h6>Investments Fund</h6>
-        <ExtLinkButton text="Etherscan" href={`${getNetworkElement({context, chainId}, 'etherscanURL')}/tokenholdings?a=${element.components.investmentsManager.address}`}/>
+        <ExtLinkButton text="Etherscan" href={`${getNetworkElement({context, chainId}, 'etherscanURL')}/tokenholdings?a=${element.organizations[0].components.investmentsManager.address}`}/>
       </div>
       <div className={style.OrgPartInfo}>
         <p>
@@ -330,7 +367,7 @@ const Delegations = ({element}) => {
   useEffect(() => {
     setTimeout(async function() {
         var ethereumPrice = formatNumber(await getEthereumPrice({context}))
-        var val = await web3.eth.getBalance(element.components.treasurySplitterManager.address)
+        var val = await web3.eth.getBalance(element.organizations[0].components.treasurySplitterManager.address)
         val = parseFloat(fromDecimals(val, 18, true))
 
         val = val * 0.4
@@ -339,7 +376,7 @@ const Delegations = ({element}) => {
         setVal(val)
     })
     setTimeout(async function() {
-      window.delegationsManager = await element.components.delegationsManager.contract
+      window.delegationsManager = await element.organizations[0].components.delegationsManager.contract
       setList(await getDelegationsOfOrganization({...useWeb3Data, context}, element))
     })
   }, [])
@@ -383,77 +420,21 @@ const Inflation = ({element}) => {
   const [dailyMint, setDailyMint] = useState(null)
   const [annualInflationRate, setAnnualInflationRate] = useState(null)
 
-  const [rawList, setRawList] = useState()
-  const [swappedList, setSwappedList] = useState()
-
   useEffect(() => {
     setTimeout(async () => {
-      var dM = await blockchainCall(element.components.fixedInflationManager.contract.methods.lastDailyInflation)
-      setDailyMint(fromDecimals(dM, element.votingToken.decimals))
+      var dM = await blockchainCall(element.organizations[0].components.oSFixedInflationManager.contract.methods.lastInflationPerDay)
+      setDailyMint(fromDecimals(dM, 18))
 
-      var percentage = await blockchainCall(element.components.fixedInflationManager.contract.methods.lastTokenPercentage)
+      var percentage = await blockchainCall(element.organizations[0].components.oSFixedInflationManager.contract.methods.lastTokenPercentage)
       percentage = fromDecimals(percentage, 16)
       setAnnualInflationRate(percentage + " %")
-
-      var bootstrapFund = await blockchainCall(element.components.fixedInflationManager.contract.methods.bootstrapFund)
-
-      var rawTokenComponents = await blockchainCall(element.components.fixedInflationManager.contract.methods.rawTokenComponents)
-
-      var swappedTokenComponents = await blockchainCall(element.components.fixedInflationManager.contract.methods.swappedTokenComponents)
-
-      var raw = []
-      var swapped = []
-
-      if(bootstrapFund.bootstrapFundWalletPercentage !== '0' && (bootstrapFund.bootstrapFundWalletAddress !== VOID_ETHEREUM_ADDRESS || bootstrapFund.defaultBootstrapFundComponentKey !== VOID_BYTES32)) {
-        (bootstrapFund.bootstrapFundIsRaw ? raw : swapped).push({
-          key : bootstrapFund.bootstrapFundWalletAddress !== VOID_ETHEREUM_ADDRESS ? "Bootstrap Fund" : bootstrapFund.defaultBootstrapFundComponentKey,
-          address : bootstrapFund.bootstrapFundWalletAddress,
-          percentage : bootstrapFund.bootstrapFundWalletPercentage
-        })
-      }
-
-      rawTokenComponents.componentKeys.forEach((it, i) => raw.push({
-        key : it,
-        address: rawTokenComponents.components[i],
-        percentage : rawTokenComponents.percentages[i]
-      }))
-
-      swappedTokenComponents.componentKeys.forEach((it, i) => swapped.push({
-        key : it,
-        address: swappedTokenComponents.components[i],
-        percentage : i < swappedTokenComponents.percentages.length ? swappedTokenComponents.percentages[i] : "0"
-      }))
-
-      swapped[swapped.length - 1].percentage = web3Utils.toBN(1e18).sub(swapped.reduce((acc, it) => acc.add(web3Utils.toBN(it.percentage)), web3Utils.toBN("0"))).toString()
-
-      raw.forEach(it => it.percentage = (fromDecimals(it.percentage, 16) + "%"))
-      swapped.forEach(it => it.percentage = (fromDecimals(it.percentage, 16) + "%"))
-
-      raw.forEach(it => {
-        if(it.key.indexOf('0x') === -1) {
-          return
-        }
-        it.key = Object.entries(context.grimoire).filter(grimoire => grimoire[1] === it.key )[0][0]
-        it.key = it.key.split('COMPONENT_KEY_').join('').split('_').join(" ")
-      })
-
-      swapped.forEach(it => {
-        if(it.key.indexOf('0x') === -1) {
-          return
-        }
-        it.key = Object.entries(context.grimoire).filter(grimoire => grimoire[1] === it.key )[0][0]
-        it.key = it.key.split('COMPONENT_KEY_').join('').split('_').join(" ")
-      })
-
-      setRawList(raw)
-      setSwappedList(swapped)
     })
   }, [])
 
   return (<div className={style.OrgPartView}>
     <div className={style.OrgPartTitle}>
-      <h6>{element.votingToken.name} ({element.votingToken.symbol}) Inflation</h6>
-      <ExtLinkButton text="Etherscan" href={`${getNetworkElement({context, chainId}, 'etherscanURL')}/tokenholdings?a=${element.components.fixedInflationManager.address}`}/>
+      <h6>Ethereans (SOON) Inflation</h6>
+      <ExtLinkButton text="Etherscan" href={`${getNetworkElement({context, chainId}, 'etherscanURL')}/tokenholdings?a=${element.organizations[0].components.oSFixedInflationManager.address}`}/>
     </div>
     <div className={style.OrgPartInfo}>
       <p>
@@ -469,40 +450,28 @@ const Inflation = ({element}) => {
       <p>
         <b>Daily Mint</b><br/>
         {dailyMint === null && <CircularProgress/>}
-        {dailyMint && <span>{dailyMint} {element.votingToken.symbol}</span>}
+        {dailyMint && <span>{dailyMint} SOON</span>}
       </p>
     </div>
-    {!rawList && <CircularProgress/>}
-    {rawList && rawList.length > 0 && <>
-      <div className={style.OrgThingsTitle}>
-        <h6>Components that will receive minted Tokens</h6>
-      </div>
-      {rawList.map(it =>
-        <div key={it.key} className={style.OrgPartInfo}>
-          <p><a href={`${getNetworkElement({context, chainId}, 'etherscanURL')}/tokenholdings?a=${it.address}`} target="_blank"><b>{it.key}</b></a><br/>{it.percentage}</p>
-        </div>
-      )}
-    </>}
-    {!swappedList && <CircularProgress/>}
-    {swappedList && swappedList.length > 0 && <>
-      <div className={style.OrgThingsTitle}>
-        <h6>Components that will receive ETH</h6>
-      </div>
-      {swappedList.map(it =>
-        <div key={it.key} className={style.OrgPartInfo}>
-          <p><a href={`${getNetworkElement({context, chainId}, 'etherscanURL')}/tokenholdings?a=${it.address}`} target="_blank"><b>{it.key}</b></a><br/>{it.percentage}</p>
-        </div>
-      )}
-    </>}
+    <div className={style.OrgPartInfo}>
+      <p><b>SOON Farming</b><br></br>30%</p>
+    </div>
+    <div className={style.OrgPartInfo}>
+      <p><b>Operations Treasury</b><br></br>25%</p>
+    </div>
+    <div className={style.OrgPartInfo}>
+      <p><b>Public Treasury</b><br></br>45%</p>
+    </div>
   </div>)
 }
 
 export default ({element}) => {
   return (<>
     <RootWallet element={element}/>
-    {element.components.fixedInflationManager && <Inflation element={element}/>}
-    {element.components.treasurySplitterManager && <TreasurySplitter element={element}/>}
-    {element.components.investmentsManager && <Investments element={element}/>}
-    {element.components.delegationsManager && <Delegations element={element}/>}
+    <TreasurySplitter element={element}/>
+    <Farmings element={element}/>
+    <Investments element={element}/>
+    <Delegations element={element}/>
+    <Inflation element={element}/>
   </>)
 }

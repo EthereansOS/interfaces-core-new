@@ -4,6 +4,7 @@ import { Typography } from '@ethereansos/interfaces-ui'
 
 import style from '../../../../all.module.css'
 import RegularMiniButton from '../../../../components/Global/RegularMiniButton'
+import OrgMainThingsCardOld from '../../../../components/Organizations/OrgMainThingsCardOld'
 import OrgMainThingsCard from '../../../../components/Organizations/OrgMainThingsCard'
 import OrgThingsCardConnected from '../../../../components/Organizations/OrgThingsCardConnected'
 import Web3DependantList from '../../../../components/Global/Web3DependantList'
@@ -29,7 +30,8 @@ export default ({element}) => {
     <div className={style.OrgThingsCards}>
       <GovernanceItems element={element}/>
       <Delegations element={element}/>
-      <OrgMainThingsCard element={element}/>
+      {element.old && <OrgMainThingsCardOld element={element}/>}
+      {!element.old && <OrgMainThingsCard element={element}/>}
     </div>
   )
 }
