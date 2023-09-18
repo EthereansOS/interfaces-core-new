@@ -388,12 +388,22 @@ const Inflation = ({element}) => {
 
   useEffect(() => {
     setTimeout(async () => {
-      var dM = await blockchainCall(element.components.fixedInflationManager.contract.methods.lastDailyInflation)
-      setDailyMint(fromDecimals(dM, element.votingToken.decimals))
 
       var percentage = await blockchainCall(element.components.fixedInflationManager.contract.methods.lastTokenPercentage)
-      percentage = fromDecimals(percentage, 16)
-      setAnnualInflationRate(percentage + " %")
+      setAnnualInflationRate(fromDecimals(percentage, 16) + " %")
+
+      var dM = await blockchainCall(element.components.fixedInflationManager.contract.methods.lastDailyInflation)
+
+      if(dM === '0') {
+        var perc = parseFloat(fromDecimals(percentage, 18, true))
+        var dailyInflation = await blockchainCall(element.votingToken.contract.methods.totalSupply)
+        dailyInflation = parseFloat(fromDecimals(dailyInflation, element.votingToken.decimals, true))
+        dailyInflation = dailyInflation * perc
+        dailyInflation = formatMoney(dailyInflation)
+        setDailyMint(dailyInflation)
+      } else {
+        setDailyMint(fromDecimals(dM, element.votingToken.decimals))
+      }
 
       var bootstrapFund = await blockchainCall(element.components.fixedInflationManager.contract.methods.bootstrapFund)
 

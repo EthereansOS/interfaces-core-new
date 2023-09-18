@@ -271,7 +271,7 @@ export async function getOrganizationComponents({ newContract, context }, contra
             }
         }
         var newObject = {...acc}
-        var label = componentName.startsWith("I") ? componentName.substring(1) : componentName
+        var label = componentName.split('IFixedInflationManager').join('FixedInflationManager')
         item && (newObject[(label[0].toLowerCase() + label.substring(1))] = item)
         return newObject
     }, {})
