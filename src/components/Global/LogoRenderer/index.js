@@ -77,7 +77,7 @@ export default ({input, figureClassName, noFigure, title, defaultImage, noDotLin
         try {
             split[split.length - 2] = web3Utils.toChecksumAddress(split[split.length - 2])
         } catch(e) {
-            console.error(e)
+            console.log(e)
         }
         src = split.join('/')
     }

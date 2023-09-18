@@ -178,7 +178,7 @@ export default props => {
             setPathTokens(pathTokens.concat({ symbol, address, decimals, output: null, outputTokenAddress, lpTokensAddresses, symbols }))
             setExitInETH(web3Utils.toChecksumAddress(outputTokenAddress) === web3Utils.toChecksumAddress(ethAddress))
         } catch (error) {
-            console.error(error)
+            console.log(error)
         } finally {
             setLoading(false)
         }

@@ -992,7 +992,7 @@ export default props => {
         try {
             await blockchainCall(element.contract.methods.withdrawLiquidity, currentPosition.positionId, removedLiquidity, amMin[0].full || amMin[0], amMin[1].full || amMin[1], burnData)
         } catch(e) {
-            console.error(e.message)
+            console.log(e.message)
             const message = (e.message || e).toLowerCase()
             if(message.indexOf('user denied') === -1 && message.indexOf('price slippage') === -1) {
                 await blockchainCall(element.contract.methods.withdrawLiquidity, currentPosition.positionId, removedLiquidity, burnData)
@@ -1011,12 +1011,12 @@ export default props => {
         try {
             await element.contract.methods.withdrawLiquidity(currentPosition.positionId, manageStatus.liquidityPoolAmount, amMin[0].full || amMin[0], amMin[1].full || amMin[1], burnData).call({from : account})
         } catch(e) {
-            console.error(e.message)
+            console.log(e.message)
         }
         try {
             await blockchainCall(element.contract.methods.withdrawLiquidity, currentPosition.positionId, manageStatus.liquidityPoolAmount, amMin[0].full || amMin[0], amMin[1].full || amMin[1], burnData)
         } catch(e) {
-            console.error(e.message)
+            console.log(e.message)
             const message = (e.message || e).toLowerCase()
             if(message.indexOf('user denied') === -1 && message.indexOf('price slippage') === -1) {
                 await blockchainCall(element.contract.methods.withdrawLiquidity, currentPosition.positionId, manageStatus.liquidityPoolAmount, burnData)

@@ -43,7 +43,7 @@ export default props => {
             const result = await lmContract.methods.transferPosition(transferAddress, position.positionId).send({ from: dfoCore.address, gasLimit, gas: gasLimit })
             onComplete(result)
         } catch (error) {
-            console.error(error)
+            console.log(error)
         } finally {
             setTransferLoading(false)
         }
@@ -57,7 +57,7 @@ export default props => {
             const result = await lmContract.methods.unlock(position.positionId, false).send({ from: dfoCore.address, gasLimit, gas: gasLimit })
             onComplete(result)
         } catch (error) {
-            console.error(error)
+            console.log(error)
         } finally {
             setUnlockLoading(false)
         }
@@ -70,7 +70,7 @@ export default props => {
             const result = await lmContract.methods.withdrawReward(position.positionId).send({ from: dfoCore.address, gasLimit, gas: gasLimit })
             onComplete(result)
         } catch (error) {
-            console.error(error)
+            console.log(error)
         } finally {
             setClaimLoading(false)
         }
@@ -93,7 +93,7 @@ export default props => {
                         <p className="UnlockInfo">{window.formatMoney(window.fromDecimals(giveBackRewardTokenValue + parseInt(lockedPositionStatus.partiallyRedeemed), rewardTokenInfo.decimals, true), 6)} {rewardTokenInfo.symbol} - {window.formatMoney(dfoCore.toDecimals(position.liquidityPoolTokenAmount, parseInt(lpTokenInfo.decimals)), parseInt(lpTokenInfo.decimals))} {/* farmTokenSymbol */"fLP"} needed to Unlock this position</p>
                         <p className="UnlockInfoBal">Balance: {window.formatMoney(window.fromDecimals(rewardTokenInfo.balance, rewardTokenInfo.decimals, true), 6)} {rewardTokenInfo.symbol} - {window.formatMoney(window.fromDecimals(position.liquidityPoolTokenAmount, parseInt(lpTokenInfo.decimals), true), 9)} fLP</p>
                         {
-                            !rewardTokenInfo.approval ? <button contract={rewardTokenInfo.contract} from={dfoCore.address} spender={lmContract.options.address} onApproval={() => onRewardTokenApproval()} onError={(error) => console.error(error)} text={`Approve ${rewardTokenInfo.symbol}`} /> :
+                            !rewardTokenInfo.approval ? <button contract={rewardTokenInfo.contract} from={dfoCore.address} spender={lmContract.options.address} onApproval={() => onRewardTokenApproval()} onError={(error) => console.log(error)} text={`Approve ${rewardTokenInfo.symbol}`} /> :
                                 unlockLoading ? <a className="Web3ActionBTN" disabled={unlockLoading}>
                                     <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                 </a> : parseInt(blockNumber) < parseInt(setup.endBlock) ? <a onClick={() => unlockPosition()} className="Web3ActionBTN">Unlock</a> : <></>

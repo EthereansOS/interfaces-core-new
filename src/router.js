@@ -28,38 +28,16 @@ const AppRouter = () => {
     window.toDecimals = window.toDecimals || toDecimals
     window.fromDecimals = window.fromDecimals || fromDecimals
     window.web3 = web3Data.web3 || window.web3 || new window.Web3()
-    window.setGanache = window.setGanache || async function setGanache() {
-        window.ganache = window.ganache || new window.Web3.providers.HttpProvider("http://127.0.0.1:8545")
-        window.bypassEstimation = window.bypassEstimation || true
-        try {
-          if(window.web3.currentProvider !== window.ganache) {
-            window.web3Data.web3 = window.web3 = new Web3(window.ganache)
-          }
-        } catch(e) {}
-        try {
-          await window.sendAsync(window.ganache, "evm_addAccount", window.web3Data.account, 0)
-        } catch(e) {}
-    }
-    window.setAndUnlockAccount = window.setAndUnlockAccount || async function setAndUnlockAccount(acc) {
+    window.setAndUnlockAccount = window.setAndUnlockAccount || function setAndUnlockAccount(acc, customProvider) {
       window.sessionStorage.removeItem("unlockedAccount")
-      await window.setAccount(acc)
-      if(!acc) {
-        return
-      }
-      await window.setGanache()
-      await window.sendAsync(window.ganache, "evm_addAccount", acc, 0)
-      window.sessionStorage.setItem("unlockedAccount", acc)
+      window.sessionStorage.removeItem("customProvider")
+      acc && window.sessionStorage.setItem("unlockedAccount", acc)
+      customProvider && window.sessionStorage.setItem("customProvider", customProvider)
+      window.setAccount(acc, acc ? customProvider || "http://127.0.0.1:8545" : undefined)
     }
-    try {
-      window.web3.eth.getBalance(window.web3Data.account).then(async result => {
-        var balance = parseFloat(fromDecimals(result, 18, true)) >= 2000
-        if(balance && !window.ganache) {
-          await window.setGanache()
-          await window.setAndUnlockAccount(window.sessionStorage.unlockedAccount)
-        }
-      }).catch(() => null)
-    } catch(e) {}
   }, [context, chainId, account, web3Data])
+
+  useEffect(() => window.setAndUnlockAccount(window.sessionStorage.unlockedAccount, window.sessionStorage.customProvider), [])
 
   const routes = usePlaceholder('router')
 

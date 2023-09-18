@@ -53,7 +53,7 @@ export async function getLogs(provider, _, args) {
     lastBlock = parseInt(lastBlock)
 
     const logKey = getLogKey(args)
-    const cached = (!args.clear && !window.ganache && JSON.parse(await cache.getItem(logKey))) || {
+    const cached = (!args.clear && JSON.parse(await cache.getItem(logKey))) || {
         logs : []
     }
 
@@ -124,9 +124,9 @@ export async function getLogs(provider, _, args) {
     cached.toBlock = (cached.toBlock = cached.toBlock || lastBlock) > lastBlock ? lastBlock : cached.toBlock
 
     try {
-        !window.ganache && await cache.setItem(logKey, JSON.stringify(cached))
+        await cache.setItem(logKey, JSON.stringify(cached))
     } catch(e) {
-        console.error(e)
+        console.log(e)
     }
 
     return logs

@@ -178,7 +178,7 @@ export async function loadItemsByFactories(data, factories) {
         }
         return vals
     } catch(exception) {
-        console.error(exception)
+        console.log(exception)
         const message = (exception?.stack || exception?.message || exception?.toString()).toLowerCase()
         if(message.indexOf('header not found') !== -1 || message.indexOf('429') !== -1) {
             await new Promise(ok => setTimeout(ok, 3000))
@@ -1697,7 +1697,7 @@ export async function loadMetadata(data, address, id) {
         try {
             metadata = await memoryFetch(uri)
         } catch(e) {
-            console.error(e)
+            console.log(e)
         }
     }*/
 

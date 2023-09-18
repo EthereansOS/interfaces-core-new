@@ -65,7 +65,7 @@ export default ({token, balance, value, other, buttonText, onClick, onPermitSign
             onSuccess && setTimeout(() => onSuccess(res))
         } catch(e) {
             errorMessage = e.message || e
-            console.error(e)
+            console.log(e)
         }
         setLoading(false)
         !errorMessage && refreshApprove()
@@ -83,7 +83,7 @@ export default ({token, balance, value, other, buttonText, onClick, onPermitSign
             }
         } catch(e) {
             errorMessage = e.message || e
-            console.error(e)
+            console.log(e)
         }
         refreshApprove()
         errorMessage && setTimeout(() => alert(errorMessage))
