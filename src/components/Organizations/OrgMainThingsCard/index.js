@@ -167,8 +167,7 @@ const Investments = ({element}) => {
   const [tokensToETHAMMPoolLinks, setTokensToETHAMMPoolLinks] = useState()
   const [totalValue, setTotalValue] = useState(null)
 
-  const [swapFromETHBlock, setSwapFromETHBlock] = useState(null)
-  const [swapToETHBlock, setSwapToETHBlock] = useState(null)
+  const [swapToETHInterval, setSwapToETHInterval] = useState(null)
 
   async function calculateNextBuy() {
     var ethereumPrice = formatNumber(await getEthereumPrice({context}))
@@ -233,8 +232,12 @@ const Investments = ({element}) => {
     amount = formatMoney(numberToString(amount), 2)
     setTotalValue(amount)
 
-    setSwapFromETHBlock(await blockchainCall(element.components.treasurySplitterManager.contract.methods.nextSplitBlock))
-    setSwapToETHBlock(await blockchainCall(element.components.investmentsManager.contract.methods.nextSwapToETHBlock))
+    var interval = await getRawField({provider : web3.currentProvider}, element.components.investmentsManager.address, 'swapToETHInterval')
+    interval = abi.decode(["uint256"], interval)[0].toString()
+    interval = parseInt(interval)
+
+    var label = Object.entries(context.timeIntervals).filter(it => it[1] === interval)[0]
+    setSwapToETHInterval(label ? label[0] : `${interval} seconds`)
   }
 
   useEffect(() => {
@@ -286,8 +289,6 @@ const Investments = ({element}) => {
               </>}
             </Fragment>)}
           </p>}
-          <p>Every 3 months</p>
-          <ExtLinkButton text="Next" href={`${getNetworkElement({context, chainId}, 'etherscanURL')}block/${swapFromETHBlock}`}/>
         </div>
         <div className={style.InvestmentsSectionBuySell}>
           {!tokensToETH && <CircularProgress/>}
@@ -306,8 +307,7 @@ const Investments = ({element}) => {
             </Fragment>)}
           for <a><img src={`${process.env.PUBLIC_URL}/img/eth_logo.png`}></img></a>
           </p>}
-          <p>Weekly</p>
-          <ExtLinkButton text="Next" href={`${getNetworkElement({context, chainId}, 'etherscanURL')}block/${swapToETHBlock}`}/>
+          {swapToETHInterval && <p>Every {swapToETHInterval}</p>}
         </div>
       </div>}
     </div>)

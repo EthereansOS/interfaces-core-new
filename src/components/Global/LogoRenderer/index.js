@@ -62,6 +62,9 @@ export default ({input, figureClassName, noFigure, title, defaultImage, noDotLin
         if(val.trim().toLowerCase() === image.trim().toLowerCase()) {
             val = realDefaultImage
         }
+        if(finalImage && val.trim().toLowerCase() === finalImage.trim().toLowerCase()) {
+            val = realDefaultImage
+        }
         setFinalImage(val)
         setLoading(false)
     }
