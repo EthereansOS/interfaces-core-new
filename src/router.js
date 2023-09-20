@@ -5,7 +5,7 @@ import Web3 from 'web3'
 import { useEthosContext, usePlaceholder, useWeb3, abi, getNetworkElement, web3Utils, sendAsync, fromDecimals, toDecimals, blockchainCall } from '@ethereansos/interfaces-core'
 import Connect from './components/Global/Connect'
 import MainTemplate from './components/Global/MainTemplate'
-import BetaBanner from './components/Global/BetaBanner'
+import AlphaBanner from './components/Global/AlphaBanner'
 
 const NoMatch = () => <div>No Match</div>
 
@@ -50,7 +50,7 @@ const AppRouter = () => {
           <Route key={path} path={path} exact={exact}>
             {requireConnection ? (
               <Connect>
-                {!banner && <BetaBanner close={() => setBanner(true)}/>}
+                {!banner && <AlphaBanner close={() => setBanner(true)}/>}
                 <MainTemplate {...templateProps} Component={Component} />
               </Connect>
             ) : (
