@@ -15,7 +15,7 @@
     ],
     "theme_color": "#ffffff",
     "background_color": "#ffffff",
-    "start_url": "https://ethos.eth.link",
+    "start_url": "https://beta.ethereansos.eth.limo",
     "display": "standalone",
     "orientation": "portrait"
 }
