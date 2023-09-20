@@ -11,7 +11,7 @@ import CircularProgress from '../../../../components/Global/OurCircularProgress'
 
 import { getOrganization } from '../../../../logic/organization'
 
-import { useEthosContext, useWeb3 } from '@ethereansos/interfaces-core'
+import { useEthosContext, useWeb3, web3Utils } from '@ethereansos/interfaces-core'
 
 import DappMenu from '../../../../components/Global/DappMenu'
 
@@ -27,7 +27,9 @@ const SubDAOView = () => {
     setOrganization(null)
     var organizationAddress= location.pathname.split('/')
     organizationAddress = organizationAddress[organizationAddress.length -1]
-    organizationAddress.indexOf("0x") === 0 && getOrganization({chainId, context, account, newContract, blockchainCall, web3}, organizationAddress).then(setOrganization)
+    try {
+      getOrganization({chainId, context, account, newContract, blockchainCall, web3}, web3Utils.toChecksumAddress(organizationAddress)).then(setOrganization)
+    } catch(e) {}
   }, [location.pathname])
 
   const [currentView, setCurrentView] = useState('overview')

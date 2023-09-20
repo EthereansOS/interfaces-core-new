@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom'
 
 import { getDelegation } from '../../../../logic/delegation'
 
-import { useWeb3, useEthosContext } from '@ethereansos/interfaces-core'
+import { useWeb3, useEthosContext, web3Utils } from '@ethereansos/interfaces-core'
 
 import HostOptions from './hostOptions'
 
@@ -33,7 +33,9 @@ const DelegationView = () => {
     setElement(null)
     var delegationAddress = pathname.split('/')
     delegationAddress = delegationAddress[delegationAddress.length - 1]
-    getDelegation({ context, newContract }, delegationAddress).then(setElement)
+    try {
+      getDelegation({ context, newContract }, web3Utils.toChecksumAddress(delegationAddress)).then(setElement)
+    } catch(e) {}
   }
 
   if(!element) {

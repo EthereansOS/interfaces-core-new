@@ -204,9 +204,9 @@ export async function getOrganization({ chainId, context, web3, account, getGlob
     organization.type = organization.proposalModels.length === 0 ? 'root' : 'organization'
     organization.proposalsConfiguration = await getProposalsConfiguration({ chainId, context, web3, account, getGlobalContract, newContract }, organization.components.proposalsManager)
 
-    var tokenAddress = abi.decode(["address"], abi.encode(["uint256"], [organization.proposalsConfiguration.objectIds[0]]))[0]
-
-    organization.votingToken = await loadTokenFromAddress({context, account, newContract}, tokenAddress)
+    try {
+        organization.votingToken = await loadTokenFromAddress({context, account, newContract}, abi.decode(["address"], abi.encode(["uint256"], [organization.proposalsConfiguration.objectIds[0]]))[0])
+    } catch(e) {}
 
     organization.organizations = await getAllOrganizations({ chainId, context, web3, account, getGlobalContract, newContract }, organization)
 

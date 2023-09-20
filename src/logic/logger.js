@@ -39,6 +39,11 @@ function ascending(a, b) {
 
 export async function getLogs(provider, _, args) {
 
+    if(window.customProvider) {
+        delete args.clear
+        return await sendAsync(provider, _, args)
+    }
+
     const chainId = parseInt(await sendAsync(provider, 'eth_chainId'))
 
     const latestBlock = parseInt(await sendAsync(provider, 'eth_blockNumber'))

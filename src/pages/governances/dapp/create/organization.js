@@ -2,6 +2,8 @@ import React, {useCallback, useEffect, useMemo, useState} from 'react'
 
 import { Style, useEthosContext, useWeb3, web3Utils } from '@ethereansos/interfaces-core'
 
+import { useHistory } from 'react-router-dom'
+
 import ActionAWeb3Button from '../../../../components/Global/ActionAWeb3Button'
 import TokenInputRegular from '../../../../components/Global/TokenInputRegular'
 
@@ -459,6 +461,7 @@ const CreateOrganization = () => {
 
     const context = useEthosContext()
     const web3Data = useWeb3()
+    const history = useHistory()
 
     const initialData = useMemo(() => ({context, ...web3Data}), [context, web3Data])
 
@@ -470,7 +473,7 @@ const CreateOrganization = () => {
 
     const disabled = useMemo(() => !state || Object.values(state).filter(it => it && it.errors).length > 0, [state])
 
-    const onClick = useCallback(() => !disabled && createOrganization(initialData, state), [disabled, state])
+    const onClick = useCallback(() => !disabled && createOrganization(initialData, state).then(address => history.push(`/guilds/organizations/${address}`)), [disabled, state])
 
     useEffect(() => getAMMs({context, ...web3Data}).then(setAMMs), [])
 
