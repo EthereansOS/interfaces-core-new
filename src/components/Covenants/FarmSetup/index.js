@@ -43,7 +43,7 @@ const FarmSetup = (props) => {
               <b>APR:</b> 500%
             </p>
             <p className={style.FarmInfoDetailS}>
-              <b>Daily Rate:</b> 50000 SOON
+              <b>Daily Rate:</b> 50000 OS
             </p>
             <p className={style.FarmInfoDetailS}>
               <b>End:</b> <a>31467951397</a>
@@ -59,7 +59,7 @@ const FarmSetup = (props) => {
                 <a>
                   <img src={`${process.env.PUBLIC_URL}/img/switch.png`}></img>
                 </a>
-                SOON per ETH
+                OS per ETH
               </p>
             </p>
             <p className={style.farmInfoCurveR}>
@@ -83,7 +83,7 @@ const FarmSetup = (props) => {
                   </div>
                 </div>
               </div>
-              <span className={style.UniV3TVLFIV}><b>TVL</b>: 56.436234 SOON - 1444 ETH</span>
+              <span className={style.UniV3TVLFIV}><b>TVL</b>: 56.436234 OS - 1444 ETH</span>
           </div>
         </div>
 
@@ -118,7 +118,7 @@ const FarmSetup = (props) => {
               <b>APR:</b> 500%
             </p>
             <p className={style.FarmInfoDetailS}>
-              <b>Daily Rate:</b> 50000 SOON
+              <b>Daily Rate:</b> 50000 OS
             </p>
             <p className={style.FarmInfoDetailS}>
               <b>End:</b> <a>31467951397</a>
@@ -132,7 +132,7 @@ const FarmSetup = (props) => {
                 <a>
                   <img src={`${process.env.PUBLIC_URL}/img/switch.png`}></img>
                 </a>
-                SOON per ETH
+                OS per ETH
               </p>
             </p>
             <p className={style.farmInfoCurveR}>
@@ -156,7 +156,7 @@ const FarmSetup = (props) => {
                   </div>
                 </div>
               </div>
-              <span className={style.UniV3TVLFIV}><b>TVL</b>: 56.436234 SOON - 1444 ETH</span>
+              <span className={style.UniV3TVLFIV}><b>TVL</b>: 56.436234 OS - 1444 ETH</span>
           </div>
           <PositionOpen></PositionOpen>
         </div>
@@ -188,7 +188,7 @@ const FarmSetup = (props) => {
               <b>APR:</b> 500%
             </p>
             <p className={style.FarmInfoDetailS}>
-              <b>Daily Rate:</b> 50000 SOON
+              <b>Daily Rate:</b> 50000 OS
             </p>
             <p className={style.FarmInfoDetailS}>
               <b>End:</b> <a>31467951397</a>
@@ -204,7 +204,7 @@ const FarmSetup = (props) => {
                 <a>
                   <img src={`${process.env.PUBLIC_URL}/img/switch.png`}></img>
                 </a>
-                SOON per ETH
+                OS per ETH
               </p>
             </p>
             <p className={style.farmInfoCurveR}>
@@ -228,7 +228,7 @@ const FarmSetup = (props) => {
                   </div>
                 </div>
               </div>
-              <span className={style.UniV3TVLFIV}><b>TVL</b>: 56.436234 SOON - 1444 ETH</span>
+              <span className={style.UniV3TVLFIV}><b>TVL</b>: 56.436234 OS - 1444 ETH</span>
           </div>
         </div>
         <AdLiquidity></AdLiquidity>
@@ -261,7 +261,7 @@ const FarmSetup = (props) => {
               <b>APR:</b> 500%
             </p>
             <p className={style.FarmInfoDetailS}>
-              <b>Daily Rate:</b> 50000 SOON
+              <b>Daily Rate:</b> 50000 OS
             </p>
             <p className={style.FarmInfoDetailS}>
               <b>End:</b> <a>31467951397</a>
@@ -275,7 +275,7 @@ const FarmSetup = (props) => {
                 <a>
                   <img src={`${process.env.PUBLIC_URL}/img/switch.png`}></img>
                 </a>
-                SOON per ETH
+                OS per ETH
               </p>
             </p>
             <p className={style.farmInfoCurveR}>
@@ -299,7 +299,7 @@ const FarmSetup = (props) => {
                   </div>
                 </div>
               </div>
-              <span className={style.UniV3TVLFIV}><b>TVL</b>: 56.436234 SOON - 1444 ETH</span>
+              <span className={style.UniV3TVLFIV}><b>TVL</b>: 56.436234 OS - 1444 ETH</span>
           </div>
           <PositionOpen></PositionOpen>
         </div>

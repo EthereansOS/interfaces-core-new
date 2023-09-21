@@ -13,7 +13,7 @@ const RoutinesOperation = (props) => {
       {/*Single operation Start*/}
       <div className={style.RoutineOperation}>
         <div className={style.RoutineOperationSchedule}>
-          <p><b>Mint</b> 50 SOON <a><img src={`${process.env.PUBLIC_URL}/img/os_logo.png`}></img></a> and <b> Swap</b> > Buidl <a><img src={`${process.env.PUBLIC_URL}/img/os_logo.png`}></img></a> > ETH<a><img src={`${process.env.PUBLIC_URL}/img/eth_logo.png`}></img></a></p>
+          <p><b>Mint</b> 50 OS <a><img src={`${process.env.PUBLIC_URL}/img/os_logo.png`}></img></a> and <b> Swap</b> > Buidl <a><img src={`${process.env.PUBLIC_URL}/img/os_logo.png`}></img></a> > ETH<a><img src={`${process.env.PUBLIC_URL}/img/eth_logo.png`}></img></a></p>
         </div>
         <div className={style.RoutineOperationTB}>
             <ExtLinkButton></ExtLinkButton>

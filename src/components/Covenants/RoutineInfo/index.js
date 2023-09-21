@@ -18,7 +18,7 @@ const RoutineInfo = (props) => {
         <div className={style.RutineBack}>
           <BackButton></BackButton>
         </div>
-        <h2>EthOS Fixed Inflation - SOON token daily</h2>
+        <h2>EthOS Fixed Inflation - OS token daily</h2>
       </div>
       <div className={style.OperationsBox}>
         <RoutinesOperation></RoutinesOperation>

@@ -13,7 +13,7 @@ const RoutinesContent = (props) => {
       {/*Single Farm Start*/}
       <div className={style.RoutineContent}>
         <div className={style.RoutineContentTitle}>
-              <h6>EthOS - SOON Fixed Inflation</h6>
+              <h6>EthOS - OS Fixed Inflation</h6>
               <RegularButton></RegularButton>
         </div>
         <div className={style.RoutineContentInfo}>
