@@ -1,6 +1,5 @@
-import { abi, VOID_ETHEREUM_ADDRESS, uploadMetadata, getNetworkElement, numberToString, blockchainCall, web3Utils, sendAsync, formatLink, tryRetrieveMetadata } from "@ethereansos/interfaces-core"
+import { getLogs, abi, VOID_ETHEREUM_ADDRESS, uploadMetadata, getNetworkElement, numberToString, blockchainCall, web3Utils, sendAsync, formatLink, tryRetrieveMetadata } from "@ethereansos/interfaces-core"
 
-import { getLogs } from "./logger"
 import { getEthereum } from "./erc20"
 
 export async function create({ context, ipfsHttpClient, newContract, chainId, ballotMaker }, metadata, duration, values, votingToken, tokenId, weight) {
@@ -29,7 +28,7 @@ export async function all({ context, ballotMaker, chainId }) {
         toBlock: 'latest'
     }
 
-    var logs = await getLogs(ballotMaker.currentProvider, 'eth_getLogs', args)
+    var logs = await getLogs(ballotMaker.currentProvider, args)
 
     logs.forEach(it => proposalIds[it.topics[2]] = true)
 

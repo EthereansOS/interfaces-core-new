@@ -1,4 +1,4 @@
-import { getTokenPriceInDollarsOnUniswapV3, getTokenPriceInDollarsOnSushiSwap, getTokenPriceInDollarsOnUniswap, cache, memoryFetch, VOID_ETHEREUM_ADDRESS, web3Utils, sendAsync, blockchainCall, abi, tryRetrieveMetadata, uploadMetadata, formatLink, VOID_BYTES32, toDecimals, getNetworkElement, async, newContract, numberToString, swap, fromDecimals } from "@ethereansos/interfaces-core"
+import { getLogs, getTokenPriceInDollarsOnUniswapV3, getTokenPriceInDollarsOnSushiSwap, getTokenPriceInDollarsOnUniswap, cache, memoryFetch, VOID_ETHEREUM_ADDRESS, web3Utils, sendAsync, blockchainCall, abi, tryRetrieveMetadata, uploadMetadata, formatLink, VOID_BYTES32, toDecimals, getNetworkElement, async, newContract, numberToString, swap, fromDecimals } from "@ethereansos/interfaces-core"
 
 import itemProjectionsMetadata from './itemProjectionsMetadata.json'
 
@@ -7,8 +7,6 @@ import { tryRetrieveDelegationAddressFromItem } from "./delegation"
 import { getOwnedTokens, retrieveAsset } from './opensea'
 import { getRawField } from './generalReader'
 import { dualChainAsMainChain } from "./dualChain"
-
-import { getLogs } from "./logger"
 
 import { resolveToken } from "./dualChain"
 
@@ -122,7 +120,7 @@ export async function loadItemsByFactories(data, factories) {
 
         var l2Tokens
         if(originalWeb3) {
-            var logs = await getLogs(originalWeb3.currentProvider, 'eth_getLogs', {
+            var logs = await getLogs(originalWeb3.currentProvider, {
                 address : getNetworkElement({ context, chainId : originalChainId}, 'L2StandardTokenFactoryAddress'),
                 topics : [
                     web3Utils.sha3('StandardL2TokenCreated(address,address)'),
@@ -157,7 +155,7 @@ export async function loadItemsByFactories(data, factories) {
                 fromBlock: web3Utils.toHex(getNetworkElement({ context, chainId }, 'deploySearchStart')) || "0x0",
                 toBlock : 'latest'
             }
-            var logs = await getLogs(web3.currentProvider, 'eth_getLogs', args)
+            var logs = await getLogs(web3.currentProvider, args)
             logs = logs.map(it => it.address).filter((it, index, arr) => arr.indexOf(it) === index)
             logs = await Promise.all(logs.map(async it => ({
                 address : it,
@@ -262,7 +260,7 @@ export async function getLogsFromFactories(data, factories, topics) {
         toBlock : 'latest'
     }
 
-    var logs = await getLogs(web3.currentProvider, 'eth_getLogs', args)
+    var logs = await getLogs(web3.currentProvider, args)
 
     return {
         items,
@@ -355,10 +353,10 @@ async function loadDeckSource(data, itemData) {
         toBlock : 'latest'
     }
 
-    var logs = await getLogs(web3.currentProvider, 'eth_getLogs', args)
+    var logs = await getLogs(web3.currentProvider, args)
 
     if(logs.length === 0) {
-        logs = await getLogs(web3.currentProvider, 'eth_getLogs', {
+        logs = await getLogs(web3.currentProvider, {
             ...args,
             clear : true
         })
@@ -881,7 +879,7 @@ export async function hostedItems(data) {
             web3Utils.sha3('Deployed(address,address,address,bytes)')
         ]
     }
-    var logs = await getLogs(web3.currentProvider, 'eth_getLogs', args)
+    var logs = await getLogs(web3.currentProvider, args)
 
     args.address = logs.map(it => abi.decode(["address"], it.topics[2])[0])
     args.topics = [
@@ -890,7 +888,7 @@ export async function hostedItems(data) {
         [],
         abi.encode(["address"], [account])
     ]
-    logs = await getLogs(web3.currentProvider, 'eth_getLogs', args)
+    logs = await getLogs(web3.currentProvider, args)
 
     if(logs.length === 0) {
         return []
@@ -947,7 +945,7 @@ export async function loadTokens(data, item) {
         toBlock : 'latest'
     }
 
-    const logs = await getLogs(wrapper.currentProvider, 'eth_getLogs', args)
+    const logs = await getLogs(wrapper.currentProvider, args)
 
     if(logs.length === 0) {
         return {}
@@ -1008,7 +1006,7 @@ export async function loadDeckItem(data, itemId, item) {
         toBlock : 'latest'
     }
 
-    const logs = await getLogs(wrapper.currentProvider, 'eth_getLogs', args)
+    const logs = await getLogs(wrapper.currentProvider, args)
 
     const tokenId = abi.decode(["uint256"], logs[0].topics[2])[0].toString()
 
@@ -1089,7 +1087,7 @@ export async function load721ItemsFromAddress(data, originalAddress) {
         fromBlock: web3Utils.toHex(getNetworkElement({ context, chainId }, 'deploySearchStart')) || "0x0",
         toBlock : 'latest'
     }
-    const logs = await getLogs(web3.currentProvider, 'eth_getLogs', args)
+    const logs = await getLogs(web3.currentProvider, args)
 
     const tokenIds = logs.map(it => abi.decode(["uint256"], it.topics.length > 3 ? it.topics[3] : it.data)[0].toString()).filter((it, i, arr) => arr.indexOf(it) === i)
 
@@ -1150,7 +1148,7 @@ export async function load1155ItemsFromAddress(data, originalAddress) {
         fromBlock: web3Utils.toHex(getNetworkElement({ context, chainId }, 'deploySearchStart')) || "0x0",
         toBlock : 'latest'
     }
-    const logs = await getLogs(web3.currentProvider, 'eth_getLogs', args)
+    const logs = await getLogs(web3.currentProvider, args)
 
     var tokenIds = []
     logs.forEach(it => {
@@ -1272,7 +1270,7 @@ export async function load1155DeckItemsForUnwrap(data, item) {
         fromBlock: web3Utils.toHex(getNetworkElement({ context, chainId }, 'deploySearchStart')) || "0x0",
         toBlock : 'latest'
     }
-    var logs = await getLogs(wrapper.currentProvider, 'eth_getLogs', args)
+    var logs = await getLogs(wrapper.currentProvider, args)
     var args = {
         address : wrapper.options.address,
         topics : [
@@ -1282,7 +1280,7 @@ export async function load1155DeckItemsForUnwrap(data, item) {
         fromBlock: web3Utils.toHex(getNetworkElement({ context, chainId }, 'deploySearchStart')) || "0x0",
         toBlock : 'latest'
     }
-    var released = await getLogs(wrapper.currentProvider, 'eth_getLogs', args)
+    var released = await getLogs(wrapper.currentProvider, args)
     released = released.map(it => it.topics[1])
     logs = logs.filter(it => released.indexOf(it.topics[3]) === -1)
 
@@ -1690,7 +1688,7 @@ export async function loadMetadata(data, address, id) {
             fromBlock: web3Utils.toHex(getNetworkElement({ context, chainId }, 'deploySearchStart')) || "0x0",
             toBlock : 'latest'
         }
-        var logs = await getLogs(provider, 'eth_getLogs', args)
+        var logs = await getLogs(provider, args)
         logs = logs[0]
         var tokenId = abi.decode(['uint256'], logs.topics[2])[0].toString()
         uri = originalUri.split('0x{id}').join(web3Utils.toHex(tokenId)).split('{id}').join(tokenId) + '?format=json'

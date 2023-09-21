@@ -33,11 +33,11 @@ const AppRouter = () => {
       window.sessionStorage.removeItem("customProvider")
       acc && window.sessionStorage.setItem("unlockedAccount", acc)
       customProvider && window.sessionStorage.setItem("customProvider", customProvider)
-      window.setAccount(acc, acc ? customProvider || "http://127.0.0.1:8545" : undefined)
+      return window.setAccount(acc, acc ? customProvider || "http://127.0.0.1:8545" : undefined)
     }
   }, [context, chainId, account, web3Data])
 
-  useEffect(() => window.setAndUnlockAccount(window.sessionStorage.unlockedAccount, window.sessionStorage.customProvider), [])
+  useEffect(() => setTimeout(() => window.setAndUnlockAccount(window.sessionStorage.unlockedAccount, window.sessionStorage.customProvider)), [])
 
   const routes = usePlaceholder('router')
 

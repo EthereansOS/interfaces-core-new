@@ -1,7 +1,5 @@
-import { web3Utils, abi, getNetworkElement, blockchainCall } from "@ethereansos/interfaces-core"
+import { getLogs, web3Utils, abi, getNetworkElement, blockchainCall } from "@ethereansos/interfaces-core"
 import { getRawField } from "./generalReader"
-
-import { getLogs } from "./logger"
 
 export async function tryRetrieveL1Address(data, tokenAddress) {
 
@@ -19,7 +17,7 @@ export async function tryRetrieveL1Address(data, tokenAddress) {
 export async function tryRetrieveL2Address(data, tokenAddress) {
     const { web3, dualChainWeb3, dualChainId, chainId, context } = data
 
-    var logs = await getLogs((dualChainWeb3 || web3).currentProvider, 'eth_getLogs', {
+    var logs = await getLogs((dualChainWeb3 || web3).currentProvider, {
         address : getNetworkElement({ context, chainId : dualChainId || chainId }, 'L1StandardBridgeAddress'),
         topics : [
             web3Utils.sha3('ERC20DepositInitiated(address,address,address,address,uint256,bytes)'),
@@ -34,7 +32,7 @@ export async function tryRetrieveL2Address(data, tokenAddress) {
     }
 
     if(dualChainWeb3) {
-        var logs = await getLogs(web3.currentProvider, 'eth_getLogs', {
+        var logs = await getLogs(web3.currentProvider, {
             address : getNetworkElement(data, 'L2StandardTokenFactoryAddress'),
             topics : [
                 web3Utils.sha3('StandardL2TokenCreated(address,address)'),

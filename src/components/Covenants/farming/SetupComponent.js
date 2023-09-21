@@ -9,11 +9,10 @@ import ActionAWeb3Button from '../../Global/ActionAWeb3Button'
 import TokenInputRegular from '../../Global/TokenInputRegular'
 import RegularButtonDuo from '../../Global/RegularButtonDuo'
 
-import { formatMoney, blockchainCall, getTokenPricesInDollarsOnCoingecko, ethers, sendAsync, isEthereumAddress, getEthereumPrice, normalizeValue, formatMoneyUniV3, useWeb3, useEthosContext, getNetworkElement, web3Utils, abi, VOID_ETHEREUM_ADDRESS, toDecimals, fromDecimals, numberToString, formatNumber, getTokenPriceInDollarsOnUniswap } from '@ethereansos/interfaces-core'
+import { getLogs, formatMoney, blockchainCall, getTokenPricesInDollarsOnCoingecko, ethers, sendAsync, isEthereumAddress, getEthereumPrice, normalizeValue, formatMoneyUniV3, useWeb3, useEthosContext, getNetworkElement, web3Utils, abi, VOID_ETHEREUM_ADDRESS, toDecimals, fromDecimals, numberToString, formatNumber, getTokenPriceInDollarsOnUniswap } from '@ethereansos/interfaces-core'
 
 import { loadFarmingSetup, loadFarmingPosition, isValidPosition, addLiquidityGen2 } from '../../../logic/farming'
 import { loadTokenFromAddress } from '../../../logic/erc20'
-import { getLogs } from '../../../logic/logger'
 import { enqueue, dequeue } from '../../../logic/interval'
 
 import style from '../../../all.module.css'
@@ -310,7 +309,7 @@ export default props => {
             if(feeData.feePercentageForTransacted === '0') {
                 return setFeeType("burn")
             }
-            const events = await getLogs(web3.currentProvider, 'eth_getLogs', {
+            const events = await getLogs(web3.currentProvider, {
                 address: element.address,
                 topics: [
                     web3.utils.sha3("Transfer(uint256,address,address)"),
@@ -358,7 +357,7 @@ export default props => {
         var positions = element.positions || []
         var positionIds = positions.map(it => it.positionId)
         if(positions.length === 0) {
-            const events = await getLogs(web3.currentProvider, 'eth_getLogs', {
+            const events = await getLogs(web3.currentProvider, {
                 address: element.address,
                 topics: [
                     web3.utils.sha3("Transfer(uint256,address,address)"),

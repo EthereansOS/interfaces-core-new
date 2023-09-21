@@ -1,4 +1,4 @@
-import { abi, VOID_ETHEREUM_ADDRESS, uploadMetadata, formatLink, fromDecimals, isEthereumAddress, getNetworkElement, blockchainCall, web3Utils, sendAsync, tryRetrieveMetadata, VOID_BYTES32, numberToString, toEthereumSymbol } from "@ethereansos/interfaces-core"
+import { getLogs, abi, VOID_ETHEREUM_ADDRESS, uploadMetadata, formatLink, fromDecimals, isEthereumAddress, getNetworkElement, blockchainCall, web3Utils, sendAsync, tryRetrieveMetadata, VOID_BYTES32, numberToString, toEthereumSymbol } from "@ethereansos/interfaces-core"
 import { loadTokenFromAddress } from "./erc20"
 import {
     tickToPrice,
@@ -7,7 +7,6 @@ import {
     TickMath
 } from '@uniswap/v3-sdk/dist/'
 import { Token } from "@uniswap/sdk-core/dist"
-import { getLogs } from '../logic/logger'
 
 async function getFactory(data, generation) {
     const { context, chainId, getGlobalContract } = data
@@ -52,7 +51,7 @@ export async function allFarmings(data, factoryAddress, generation) {
         return []
     }
 
-    var farmingContractAddresses = (await getLogs(web3.currentProvider, 'eth_getLogs', args)).map(it => web3Utils.toChecksumAddress(abi.decode(["address"], it.topics[2])[0]))
+    var farmingContractAddresses = (await getLogs(web3.currentProvider, args)).map(it => web3Utils.toChecksumAddress(abi.decode(["address"], it.topics[2])[0]))
 
     var deployedFarmingsToExclude = [...context.deployedFarmingsToExclude].map(web3Utils.toChecksumAddress)
 
@@ -68,7 +67,7 @@ export async function allFarmings(data, factoryAddress, generation) {
             web3Utils.sha3('RewardToken(address)'),
             abi.encode(["address"], [rewardTokenAddress])
         ]
-        farmingContractAddresses = (await getLogs(web3.currentProvider, 'eth_getLogs', args)).map(it => it.address)
+        farmingContractAddresses = (await getLogs(web3.currentProvider, args)).map(it => it.address)
         farmingContractAddresses = farmingContractAddresses.filter((it, index, array) => array.indexOf(it) === index)
         if(lightweight) {
             return farmingContractAddresses
@@ -81,7 +80,7 @@ export async function allFarmings(data, factoryAddress, generation) {
 
     const positionIds = {}
     if(mode === 'positions') {
-        const events = await getLogs(web3.currentProvider, 'eth_getLogs', {
+        const events = await getLogs(web3.currentProvider, {
             address: farmingContractAddresses,
             topics: [
                 web3Utils.sha3("Transfer(uint256,address,address)"),
@@ -177,7 +176,7 @@ export async function getFarming(data, address, generation) {
                 fromBlock : web3Utils.toHex(getNetworkElement({ context, chainId }, 'deploySearchStart') || '0x0'),
                 toBlock : 'latest'
             }
-            const farmTokenEvents = await getLogs(web3.currentProvider, 'eth_getLogs', args)
+            const farmTokenEvents = await getLogs(web3.currentProvider, args)
             for (const farmTokenEvent of farmTokenEvents) {
                 try {
                     const objectId = abi.decode(["uint256"], farmTokenEvent.topics[1])[0].toString()
@@ -252,7 +251,7 @@ export async function getFarmingContractGenerationByAddress(data, address) {
         toBlock: 'latest'
     }
 
-    const log = await getLogs(web3.currentProvider, 'eth_getLogs', args)
+    const log = await getLogs(web3.currentProvider, args)
 
     return gen1Factories.indexOf(web3Utils.toChecksumAddress(log[0].address)) !== -1 ? 'gen1' : 'gen2'
 }
@@ -265,7 +264,7 @@ export async function loadFarmingPositions(data, farming) {
 
     const contract = farming.contract
 
-    const events = await getLogs(web3.currentProvider, 'eth_getLogs', {
+    const events = await getLogs(web3.currentProvider, {
         address: farming.address,
         topics: [
             web3Utils.sha3("Transfer(uint256,address,address)"),

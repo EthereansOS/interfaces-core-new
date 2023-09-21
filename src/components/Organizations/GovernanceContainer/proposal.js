@@ -8,7 +8,7 @@ import ActionAWeb3Button from '../../Global/ActionAWeb3Button'
 import ActionInfoSection from '../../Global/ActionInfoSection/index.js'
 import VoteSelections from '../VoteSelections/index.js'
 
-import { abi, useWeb3, useEthosContext, blockchainCall, fromDecimals, formatLink, web3Utils, sendAsync, isEthereumAddress, getNetworkElement } from '@ethereansos/interfaces-core'
+import { getLogs, abi, useWeb3, useEthosContext, blockchainCall, fromDecimals, formatLink, web3Utils, sendAsync, isEthereumAddress, getNetworkElement } from '@ethereansos/interfaces-core'
 
 import { surveyIsTerminable, terminateProposal, withdrawProposal, tokensToWithdraw, checkSurveyStatus } from '../../../logic/organization'
 import { getRawField } from '../../../logic/generalReader'
@@ -23,7 +23,6 @@ import RegularModal from '../../Global/RegularModal/index.js'
 import ProposalMetadata from '../ProposalMetadata/index.js'
 import BackButton from '../../Global/BackButton/index.js'
 import { generateItemKey } from '../../../logic/ballot.js'
-import { getLogs } from '../../../logic/logger.js'
 import { decodePrestoOperations } from '../../../logic/covenants.js'
 import { getAMMs, getAmmPoolLink } from '../../../logic/amm.js'
 
@@ -81,7 +80,7 @@ export default ({element, refreshElements, forDelegationVote}) => {
         Executed : oldValue?.Executed
       }))
       if(proposalData.terminationBlock !== '0' && (!status || (!status.Defeated && !status.Executed))){
-        var logs = await getLogs(web3.currentProvider, 'eth_getLogs', {
+        var logs = await getLogs(web3.currentProvider, {
           address : element.proposalsManager.options.address,
           topics : [
             web3Utils.sha3('ProposalTerminated(bytes32,bool,bytes)'),

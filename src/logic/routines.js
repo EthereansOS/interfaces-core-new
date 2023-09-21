@@ -1,8 +1,7 @@
-import { abi, VOID_ETHEREUM_ADDRESS, formatMoney, fromDecimals, toDecimals, getNetworkElement, blockchainCall, web3Utils, sendAsync, tryRetrieveMetadata, VOID_BYTES32, numberToString } from "@ethereansos/interfaces-core"
+import { getLogs, abi, VOID_ETHEREUM_ADDRESS, formatMoney, fromDecimals, toDecimals, getNetworkElement, blockchainCall, web3Utils, sendAsync, tryRetrieveMetadata, VOID_BYTES32, numberToString } from "@ethereansos/interfaces-core"
 import { loadTokenFromAddress } from "./erc20"
 
 import { getRawField } from './generalReader'
-import { getLogs } from "./logger"
 
 export async function allRoutines(data) {
     const { context, chainId, web3, getGlobalContract } = data
@@ -14,7 +13,7 @@ export async function allRoutines(data) {
         fromBlock: web3Utils.toHex(getNetworkElement({ context, chainId }, 'deploySearchStart')) || "0x0",
         toBlock: 'latest'
     }
-    const logs = await getLogs(web3.currentProvider, 'eth_getLogs', args)
+    const logs = await getLogs(web3.currentProvider, args)
 
     var routineContractsAddresses = logs.map(it => abi.decode(["address"], it.topics[2])[0])
 

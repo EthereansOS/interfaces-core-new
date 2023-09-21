@@ -1,4 +1,4 @@
-import { abi, VOID_ETHEREUM_ADDRESS, uploadMetadata, formatLink, getNetworkElement, blockchainCall, web3Utils, sendAsync, tryRetrieveMetadata, toDecimals, fromDecimals, numberToString } from "@ethereansos/interfaces-core"
+import { getLogs, abi, VOID_ETHEREUM_ADDRESS, uploadMetadata, formatLink, getNetworkElement, blockchainCall, web3Utils, sendAsync, tryRetrieveMetadata, toDecimals, fromDecimals, numberToString } from "@ethereansos/interfaces-core"
 
 import { getOrganization, extractRules, wellknownPresets } from "./organization"
 
@@ -8,7 +8,6 @@ import { getData, getRawField } from "./generalReader"
 
 import { loadItem, loadToken } from "./itemsV2"
 import { loadTokenFromAddress } from "./erc20"
-import { getLogs } from "./logger"
 
 export async function getDelegationsOfOrganization({ context, chainId, web3, account, getGlobalContract, newContract }, organization) {
     var delegationsManager = organization.components.delegationsManager.contract
@@ -69,7 +68,7 @@ export async function getDelegationsManagers({ context, chainId, getGlobalContra
         toBlock : 'latest'
     }
 
-    var logs = await getLogs(web3.currentProvider, 'eth_getLogs', args)
+    var logs = await getLogs(web3.currentProvider, args)
 
     address = logs.map(it => abi.decode(["address"], it.topics[2])[0])
 
@@ -84,7 +83,7 @@ export async function getDelegationsManagers({ context, chainId, getGlobalContra
         fromBlock: web3Utils.toHex(getNetworkElement({ context, chainId }, 'deploySearchStart')) || "0x0",
         toBlock : 'latest'
     }
-    var logs = await getLogs(web3.currentProvider, 'eth_getLogs', args)
+    var logs = await getLogs(web3.currentProvider, args)
     address = logs.map(it => it.address)
     address = address.filter((it, i, array) => array.indexOf(it) === i)
 
@@ -209,7 +208,7 @@ export async function all({context, newContract, chainId, factoryOfFactories, ac
         toBlock : 'latest'
     }
 
-    var logs = await getLogs(factoryOfFactories.currentProvider, "eth_getLogs", args)
+    var logs = await getLogs(factoryOfFactories.currentProvider, args)
 
     var delegations = logs.map(it => newContract(context.ISubDAOABI, abi.decode(["address"], it.topics[2])[0]))
 
@@ -443,7 +442,7 @@ export async function refreshProposals({ context, web3, account, chainId, getGlo
         ]
     }
 
-    var logs = await getLogs(web3.currentProvider, 'eth_getLogs', args)
+    var logs = await getLogs(web3.currentProvider, args)
 
     var proposalsInfo = logs.map(it => ({
         id : it.topics[3],
@@ -688,7 +687,7 @@ export async function tryRetrieveDelegationAddressFromItem({ context, chainId },
         fromBlock: web3Utils.toHex(getNetworkElement({ context, chainId }, 'deploySearchStart')) || "0x0",
         toBlock : 'latest'
     }
-    var logs = await getLogs(item.mainInterface.currentProvider, "eth_getLogs", args)
+    var logs = await getLogs(item.mainInterface.currentProvider, args)
     if(logs.length !== 1) {
         return
     }

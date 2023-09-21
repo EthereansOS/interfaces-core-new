@@ -1,7 +1,6 @@
-import { cache, getNetworkElement, VOID_ETHEREUM_ADDRESS, blockchainCall, abi, web3Utils, formatLink, memoryFetch } from '@ethereansos/interfaces-core'
+import { getLogs, cache, getNetworkElement, VOID_ETHEREUM_ADDRESS, blockchainCall, abi, web3Utils, formatLink, memoryFetch } from '@ethereansos/interfaces-core'
 import { loadTokenFromAddress } from './erc20'
 import { OrderSide } from 'opensea-js/lib/types'
-import { getLogs } from './logger'
 import { getRawField } from './generalReader'
 import { cleanUri } from './itemsV2'
 
@@ -158,7 +157,7 @@ async function getOwned721Tokens(web3Data, toExclude) {
         fromBlock: web3Utils.toHex(getNetworkElement({ context, chainId }, 'deploySearchStart')) || "0x0",
         toBlock : 'latest'
     }
-    var logs = await getLogs(web3.currentProvider, 'eth_getLogs', args)
+    var logs = await getLogs(web3.currentProvider, args)
     var tokens = {}
     await Promise.all(logs.map(async it => {
         var addr = web3Utils.toChecksumAddress(it.address)
@@ -204,7 +203,7 @@ async function getOwned1155Tokens(web3Data, toExclude) {
         fromBlock: web3Utils.toHex(getNetworkElement({ context, chainId }, 'deploySearchStart')) || "0x0",
         toBlock : 'latest'
     }
-    var logs = await getLogs(web3.currentProvider, 'eth_getLogs', args)
+    var logs = await getLogs(web3.currentProvider, args)
     var tokens = {}
     await Promise.all(logs.map(async it => {
         var addr = web3Utils.toChecksumAddress(it.address)
