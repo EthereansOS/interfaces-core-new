@@ -162,7 +162,7 @@ const Farmings = ({element}) => {
       <p>
         <b>Dividends</b>
         <br/>
-        <span>Minimum to Stake: 5,000 SOON</span>
+        <span>Minimum to Stake: 5,000 OS</span>
         <br/>
         {!dividendsDailyRate && <CircularProgress/>}
         {dividendsDailyRate && <span>Daily reward rate: {dividendsDailyRate} ETH</span>}
@@ -173,10 +173,10 @@ const Farmings = ({element}) => {
         <img src={`${process.env.PUBLIC_URL}/img/tokentest/os.png`}/>
       </a>
       <p>
-        <b>Farm SOON</b>
+        <b>Farm OS</b>
         <br/>
         {!oSDailyRate && <CircularProgress/>}
-        {oSDailyRate && <span>Daily reward rate: {oSDailyRate} SOON</span>}
+        {oSDailyRate && <span>Daily reward rate: {oSDailyRate} OS</span>}
       </p>
     </Link>
   </div>)
@@ -241,6 +241,7 @@ const Investments = ({element}) => {
       tokensFromETHToBurn = fromETH.map(it => it === tokenFromETHToBurn)
     }
     setTokensFromETHToBurn(tokensFromETHToBurn)
+    fromETH = fromETH.map(web3Utils.toChecksumAddress).map(it => it === web3Utils.toChecksumAddress("0x6100dd79fcaa88420750dcee3f735d168abcb771") ? '/img/tokentest/os.png' : it)
     setTokensFromETH(fromETH)
     var data = await getRawField({ provider : web3.currentProvider }, element.organizations[0].components.investmentsManager.address, 'tokensToETH')
     try {
@@ -433,7 +434,7 @@ const Inflation = ({element}) => {
 
   return (<div className={style.OrgPartView}>
     <div className={style.OrgPartTitle}>
-      <h6>Ethereans (SOON) Inflation</h6>
+      <h6>Ethereans (OS) Inflation</h6>
       <ExtLinkButton text="Etherscan" href={`${getNetworkElement({context, chainId}, 'etherscanURL')}/tokenholdings?a=${element.organizations[0].components.oSFixedInflationManager.address}`}/>
     </div>
     <div className={style.OrgPartInfo}>
@@ -450,11 +451,11 @@ const Inflation = ({element}) => {
       <p>
         <b>Daily Mint</b><br/>
         {dailyMint === null && <CircularProgress/>}
-        {dailyMint && <span>{dailyMint} SOON</span>}
+        {dailyMint && <span>{dailyMint} OS</span>}
       </p>
     </div>
     <div className={style.OrgPartInfo}>
-      <p><b>SOON Farming</b><br></br>30%</p>
+      <p><b>OS Farming</b><br></br>30%</p>
     </div>
     <div className={style.OrgPartInfo}>
       <p><b>Operations Treasury</b><br></br>25%</p>
