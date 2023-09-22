@@ -17,7 +17,11 @@ const DelegationsList = ({ mine, onList }) => {
   }, [list])
 
   const context = useEthosContext()
-  const {getGlobalContract, newContract, chainId, account} = useWeb3()
+  const {getGlobalContract, newContract, chainId, account, dualChainId} = useWeb3()
+
+  if(dualChainId) {
+    return <h1>Coming soon</h1>
+  }
 
   return (<>
   <Banners bannerA="banner1" bannerB="banner2" sizeA="36%" sizeB="54%" titleA="Rule Together" titleB="Be a Player In the Game of Guilds" linkA="https://docs.ethos.wiki/ethereansos-docs/guilds/guilds-documentation/delegations/how-delegations-work" linkB="https://docs.ethos.wiki/ethereansos-docs/guilds/guilds-documentation/delegations" textA="Delegations are independent political parties that compete with each other for grant funding from one or more EthOS Organizations." textB="Create and lead a Delegation. Rally the support of an EthOS Organization’s token holders to win grant funding. Use that funding to govern your Delegation’s political economy with your supporters."/>

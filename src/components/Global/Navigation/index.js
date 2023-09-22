@@ -10,7 +10,7 @@ const Navigation = ({ menuName, isDapp, selected }) => {
   const web3Data = useWeb3()
   const { dualChainId } = web3Data
 
-  const menuItems = usePlaceholder(menuName).filter(it => !dualChainId || (it.name !== 'Guilds' && it.name !== 'Factories'))
+  const menuItems = usePlaceholder(menuName).filter(it => !dualChainId || (it.name !== 'Factories'))
 
   const navItem = (item) => {
     return (

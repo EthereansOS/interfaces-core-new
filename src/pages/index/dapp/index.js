@@ -25,7 +25,7 @@ const IndexMain = () => {
           <p>Items</p>
         </Link>
         <br></br>
-        {!dualChainId && <Link to="/guilds" className={style.CardsFancy}>
+        {<Link to="/guilds" className={style.CardsFancy}>
           <figure>
             <img src={`${process.env.PUBLIC_URL}/img/c-3.png`}></img>
           </figure>

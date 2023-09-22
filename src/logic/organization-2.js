@@ -353,8 +353,12 @@ async function createDelegationsManagerLazyInitData(initialData, data) {
 
     var factoryOfFactories = new web3.eth.Contract(context.FactoryOfFactoriesABI, getNetworkElement({context, chainId}, "factoryOfFactoriesAddress"))
 
-    var list = await factoryOfFactories.methods.get(getNetworkElement({context, chainId}, "factoryIndices").delegation).call()
-    list = [...list[1]]
+    var list = []
+    try {
+        list = await factoryOfFactories.methods.get(getNetworkElement({context, chainId}, "factoryIndices").delegation).call()
+        list = [...list[1]]
+    } catch(e) {
+    }
 
     var decimals = await getTokenDecimals(initialData, tokenAddress)
     attachInsurance = toDecimals(attachInsurance || 0, decimals)
