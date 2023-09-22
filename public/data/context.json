@@ -181,7 +181,9 @@
         },
         "factoryIndicesOptimism": {
             "farming": "0",
-            "fixedInflation": "1"
+            "fixedInflation": "1",
+            "proposalRules": 3,
+            "organization": 4
         },
         "grimoire": {
             "COMPONENT_KEY_PROPOSALS_MANAGER": "0xa504406933af7ca120d20b97dfc79ea9788beb3c4d3ac1ff9a2c292b2c28e0cc",
