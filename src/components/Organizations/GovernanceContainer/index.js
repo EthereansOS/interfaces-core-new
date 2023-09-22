@@ -71,5 +71,11 @@ export default ({element, forDelegationVote}) => {
     })}
     emptyMessage=""
     discriminant={discriminant}
+    filter={element => {
+      var elements = ["DELEGATIONS_MANAGER_INSURANCE_V1", "FIXED_INFLATION_V1", "TRANSFER_MANAGER_V1", "DELEGATIONS_MANAGER_DETACHER_V1", "TOKEN_BUY_V1", "TOKEN_SELL_V1"]
+      return !element.label || element.label === 'FIXED_INFLATION_V1'
+      console.log(element.label)
+      return true
+    }}
   />
 }

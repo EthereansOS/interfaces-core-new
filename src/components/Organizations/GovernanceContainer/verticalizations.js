@@ -2,14 +2,14 @@ import React, { useState, useEffect } from 'react'
 
 import { useWeb3, blockchainCall, fromDecimals, abi } from '@ethereansos/interfaces-core'
 
-export function HeaderOsInflationRateActiveSelection({element}) {
+export function InflationRateActiveSelection({element}) {
 
     const { block } = useWeb3()
     const [value, setValue] = useState(null)
 
     async function refresh() {
         setValue(null)
-        var perc = await blockchainCall(element.organization.components.oSFixedInflationManager.contract.methods.lastTokenPercentage)
+        var perc = await blockchainCall((element.organization.components.fixedInflationManager || element.organization.components.oSFixedInflationManager).contract.methods.lastTokenPercentage)
         setValue((fromDecimals(perc, 16, true)) + " %")
     }
 

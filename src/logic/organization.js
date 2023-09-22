@@ -833,7 +833,7 @@ export async function checkSurveyStatus(inputData, proposal, proposalId, address
 
 export async function checkSurveyStatusNew(inputData, proposal, proposalId, addressesKey) {
 
-    var { account, newContract, context} = inputData
+    var { account } = inputData
 
     var proposalData = (await retrieveProposals(proposal.proposalsManager, [proposalId]))[0]
 
@@ -1301,7 +1301,6 @@ var cleaners = {
         return {text, value}
     },
     BY_HARD_CAP(rule, proposalData) {
-        debugger
         var checkerData = getCheckerData(rule.address, proposalData)
         checkerData = abi.decode(["uint256", "bool"], checkerData )
         rule.valueUint256 = checkerData[0].toString()
@@ -1312,7 +1311,6 @@ var cleaners = {
         return {text, value}
     },
     BY_QUORUM(rule, proposalData) {
-        debugger
         var checkerData = getCheckerData(rule.address, proposalData)
         checkerData = abi.decode(["uint256", "bool"], checkerData)
         rule.valueUint256 = checkerData[0].toString()
