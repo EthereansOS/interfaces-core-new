@@ -217,7 +217,7 @@ const ProposeDelegationVote = ({ element, setOnClick, stateProvider }) => {
           <a className={style.RegularButtonDuo} onClick={() => setState(oldValue => ({...oldValue, selectProposalModal: true}))}>Select</a>
         </div>
         {state.selectedProposal && <div>
-          {false && <TokenInputRegular tokens={[state.token]} selected={state.token} onElement={(token, balance, value) => setState(oldValue => ({...oldValue, token, balance, value}))} selected={state.token} outputValue={fromDecimals(state.value, state.token.decimals, true)} noBalance/>}
+          {false && <TokenInputRegular tokens={[state.token]} selected={state.token} onElement={(token, balance, value) => setState(oldValue => ({...oldValue, token, balance, value}))} outputValue={fromDecimals(state.value, state.token.decimals, true)} noBalance/>}
           <input type="range" value={state.percentage} onChange={onPercentage}/>
           {state.value && <span>{state.percentage}% ({fromDecimals(state.value, 18)} ${element.delegationsManager.supportedToken.symbol})</span>}
           <RegularButtonDuo onClick={next}>Next</RegularButtonDuo>

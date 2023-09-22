@@ -571,8 +571,8 @@ const proposalResolvers = {
         proposalModels = await blockchainCall(element.organization.contract.methods.proposalModels, {blockNumber : parseInt(proposalData.creationBlock) - 1})
         var model = proposalModels[proposalModels.length - 1]
         var fromData = "From:" + (await Promise.all([
-            extractRules({context, provider : element.organization.components.proposalsManager.contract.currentProvider}, model.validatorsAddresses[0], "validation", proposalData),
-            extractRules({context, provider : element.organization.components.proposalsManager.contract.currentProvider}, model.canTerminateAddresses[0], "termination", proposalData)
+            extractRules({context, provider : element.organization.components.proposalsManager.contract.currentProvider}, model.validatorsAddresses[0], model),
+            extractRules({context, provider : element.organization.components.proposalsManager.contract.currentProvider}, model.canTerminateAddresses[0], model)
         ])).reduce((acc, it) => [...acc, ...it], []).map(it => `\n- ${it.text}: ${it.value}`).join('')
 
         return {

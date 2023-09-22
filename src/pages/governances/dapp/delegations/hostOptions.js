@@ -230,8 +230,8 @@ const ChangeRules = ({element, setOnClick, stateProvider }) => {
       }
       var model = element.proposalModels[element.proposalModels.length - 1]
       var fromData = (await Promise.all([
-          extractRules({context, provider : element.components.proposalsManager.contract.currentProvider}, model.validatorsAddresses[0], "validation"),
-          extractRules({context, provider : element.components.proposalsManager.contract.currentProvider}, model.canTerminateAddresses[0], "termination")
+          extractRules({context, provider : element.components.proposalsManager.contract.currentProvider}, model.validatorsAddresses[0], model),
+          extractRules({context, provider : element.components.proposalsManager.contract.currentProvider}, model.canTerminateAddresses[0], model)
       ])).reduce((acc, it) => [...acc, ...it], [])
 
       fromData = fromData.reduce((acc, it) => ({
