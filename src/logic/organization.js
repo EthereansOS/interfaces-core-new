@@ -65,16 +65,18 @@ export async function all({ context, newContract, chainId, factoryOfFactories })
         topics: [
             web3Utils.sha3('Deployed(address,address,address,bytes)')
         ],
-        fromBlock: web3Utils.toHex(getNetworkElement({ context, chainId }, 'deploySearchStart')) || "0x0",
+        fromBlock: web3Utils.toHex(chainId === 10 ? '109904523' : getNetworkElement({ context, chainId }, 'deploySearchStart')) || "0x0",
         toBlock: 'latest'
     }
     var logs = await getLogs(factoryOfFactories.currentProvider, args)
     var organizations = logs.map(it => abi.decode(["address"], it.topics[2])[0])
     organizations = (await Promise.all(organizations.map(it => hasNoHost({ context, newContract }, it)))).filter(it => it)
 
-    args.address = (await blockchainCall(factoryOfFactories.methods.get, getNetworkElement({ context, chainId }, "factoryIndices").dfo)).factoryList
-    logs = await getLogs(factoryOfFactories.currentProvider, args)
-    organizations = [...organizations, ...logs.map(it => abi.decode(["address"], it.topics[2])[0])]
+    try {
+        args.address = (await blockchainCall(factoryOfFactories.methods.get, getNetworkElement({ context, chainId }, "factoryIndices").dfo)).factoryList
+        logs = await getLogs(factoryOfFactories.currentProvider, args)
+        organizations = [...organizations, ...logs.map(it => abi.decode(["address"], it.topics[2])[0])]
+    } catch(e) {}
 
     return await Promise.all(organizations.map(it => (getOrganizationMetadata({ context }, { contract: newContract(context.SubDAOABI, it), address: it, type: 'organizations' }, true))))
 }
@@ -133,6 +135,11 @@ async function getManipulatedUri(organization) {
 
 export async function getInitializationData({newContract, context, chainId}, contract) {
     var initializerAddress = await blockchainCall(contract.methods.initializer)
+    return {
+        creationBlock : "0",
+        version : "0",
+        initializerAddress
+    }
     var factory = newContract(context.SubDAOFactoryABI, initializerAddress)
 
     var args = {
