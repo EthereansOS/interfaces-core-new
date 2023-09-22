@@ -17,6 +17,7 @@ import ProposalMetadata from '../ProposalMetadata'
 import BackButton from '../../Global/BackButton'
 import GovernanceContainer from './index'
 import { getEthereum } from '../../../logic/erc20'
+import { retrieveProposals } from '../../../logic/organization'
 
 const WrapWithdrawModal = ({ selectedToken, tokenSymbol, close, title, onClick, other, noApproveNeeded }) => {
 
@@ -256,7 +257,7 @@ export default ({element, forDelegationVote, refreshElements}) => {
         total *= percentage
         total = numberToString(total).split('.')[0]
 
-        var proposalData = await blockchainCall(element.proposalsManager.methods.list, element.presetProposals)
+        var proposalData = await retrieveProposals(element.proposalsManager, element.presetProposals)
 
         setUpshots(proposalData.map((it, i) => ({
           label : element.subProposals[i].label,

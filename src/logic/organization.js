@@ -306,7 +306,7 @@ async function retrieveProposalModels(contract) {
     return result
 }
 
-async function retrieveProposals(proposalsManager, proposalIds) {
+export async function retrieveProposals(proposalsManager, proposalIds) {
     proposalsManager = proposalsManager.contract || proposalsManager
     proposalIds = Array.isArray(proposalIds) ? proposalIds : [proposalIds]
     var result = []
@@ -521,6 +521,14 @@ async function getSurveylessProposals({context}, organization) {
         }
         try {
             metadata = {...metadata, ...wellknownPresets[metadata.uri.split('ipfs://ipfs/').join('')]}
+        } catch(e) {}
+        try {
+            if(!metadata.presetValues) {
+                var decimals = it.label.indexOf('FIXED') === 0 ? 16 : organization.votingToken.decimals
+                var postfix = it.label.indexOf('FIXED') === 0 ? "%" : organization.votingToken.symbol
+                metadata.presetValues = it.presetValues.map(val => abi.decode(["uint256"], val)[0].toString())
+                metadata.presetValues = metadata.presetValues.map(val => `${fromDecimals(val, decimals)} ${postfix}`)
+            }
         } catch(e) {}
         return metadata
     }))

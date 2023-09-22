@@ -6,7 +6,7 @@ import ActionAWeb3Button from '../../Global/ActionAWeb3Button'
 import ActionInfoSection from '../../Global/ActionInfoSection/index.js'
 
 import { useWeb3, VOID_BYTES32, VOID_ETHEREUM_ADDRESS, blockchainCall, fromDecimals, useEthosContext } from '@ethereansos/interfaces-core'
-import { createPresetProposals, withdrawProposal } from '../../../logic/organization'
+import { createPresetProposals, withdrawProposal, retrieveProposals } from '../../../logic/organization'
 import { extractProposalVotingTokens, generateItemKey } from '../../../logic/ballot'
 import Description from './description.js'
 
@@ -30,7 +30,7 @@ const MultiVoteBox = ({element, refreshElements, forDelegationVote}) => {
       var tokens = []
       var itemKeys = []
       var accounts = element.subProposals.map(() => account)
-      var l = await blockchainCall(element.proposalsManager.methods.list, proposalIds)
+      var l = await retrieveProposals(element.proposalsManager, proposalIds)
       for(var i in element.subProposals) {
         var subProposal = element.subProposals[i]
         var tks = subProposal?.proposalsConfiguration?.votingTokens || await extractProposalVotingTokens({account, web3, context, newContract}, l[i], subProposal.proposalId)
