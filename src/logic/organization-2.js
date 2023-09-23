@@ -2,6 +2,8 @@ import { abi, VOID_ETHEREUM_ADDRESS, uploadMetadata, formatLink, fromDecimals, t
 
 export async function createOrganization(initialData, inputData) {
 
+    var { context, chainId, web3 } = initialData
+
     var organizationDeployData
     try {
         organizationDeployData = await buildOrganizationDeployData(initialData, inputData)
@@ -18,8 +20,6 @@ export async function createOrganization(initialData, inputData) {
         console.log(e)
     }
 
-    var { context, chainId, web3 } = initialData
-
     var factoryIndex = getNetworkElement({ context, chainId }, "factoryIndices").organization
     var factoryOfFactories = new web3.eth.Contract(context.FactoryOfFactoriesABI, getNetworkElement({ context, chainId}, "factoryOfFactoriesAddress"))
     var organizationFactoryAddress = await blockchainCall(factoryOfFactories.methods.get, factoryIndex)
@@ -31,7 +31,7 @@ export async function createOrganization(initialData, inputData) {
 
     var transaction = await blockchainCall(organizationFactory.methods.deploy, deployData)
 
-    var log = transaction.logs.filter(it => it.topics[0] = web3Utils.sha3('Deployed(address,address,address,bytes)'))
+    var log = transaction.logs.filter(it => it.topics[0] === web3Utils.sha3('Deployed(address,address,address,bytes)'))
     log = log[log.length - 1]
     var address = log.topics[2]
     address = abi.decode(["address"], address)[0].toString()
