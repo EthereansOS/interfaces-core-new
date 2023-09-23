@@ -85,7 +85,7 @@ const TreasurySplitter = ({element}) => {
         percentage : i < receiversAndPercentages.percentages.length ? receiversAndPercentages.percentages[i] : '0'
       }))
 
-      rec[rec.length - 1].percentage = web3Utils.toBN(1e18).sub(rec.reduce((acc, it) => acc.add(web3Utils.toBN(it.percentage)), web3Utils.toBN("0"))).toString()
+      rec.length > 0 && (rec[rec.length - 1].percentage = web3Utils.toBN(1e18).sub(rec.reduce((acc, it) => acc.add(web3Utils.toBN(it.percentage)), web3Utils.toBN("0"))).toString())
 
       rec.forEach(it => {
         it.value = formatMoney((parseFloat(fromDecimals(it.percentage, 16, true)) * val), 2)
@@ -134,14 +134,16 @@ const TreasurySplitter = ({element}) => {
         {nextBlock === null && <CircularProgress/>}
         {nextBlock && <p>{nextBlock}</p>}
       </div>
-      <div className={style.OrgThingsTitle}>
-        <h6>Distribution</h6>
-      </div>
       {!receivers && <OurCircularProgress/>}
-      {receivers && receivers.map(it => <div key={it.key} className={style.OrgThingsInfoContent}>
-        <a href={`${getNetworkElement({context, chainId}, 'etherscanURL')}/tokenholdings?a=${it.address}`} target="_blank"><b>{it.key}</b></a>
-        <p>{it.percentage} ({it.value} ETH)</p>
-      </div>)}
+      {receivers && receivers.length !== 0 && <>
+        <div className={style.OrgThingsTitle}>
+          <h6>Distribution</h6>
+        </div>
+        {receivers.map(it => <div key={it.key} className={style.OrgThingsInfoContent}>
+          <a href={`${getNetworkElement({context, chainId}, 'etherscanURL')}/tokenholdings?a=${it.address}`} target="_blank"><b>{it.key}</b></a>
+          <p>{it.percentage} ({it.value} ETH)</p>
+        </div>)}
+      </>}
     </div>)
 }
 
