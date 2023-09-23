@@ -119,7 +119,7 @@ export function generateItemKey(token, proposalId) {
 }
 
 export async function decodeToken({ account, web3, context, newContract }, addr, objectId) {
-    var address = addr === VOID_ETHEREUM_ADDRESS ? !parseInt(objectId) ? VOID_ETHEREUM_ADDRESS : web3Utils.toHex(objectId) : addr
+    var address = addr === VOID_ETHEREUM_ADDRESS ? !parseInt(objectId) ? VOID_ETHEREUM_ADDRESS : abi.decode(["address"], abi.encode(["uint256"], [objectId]))[0] : addr
     if (address === VOID_ETHEREUM_ADDRESS) {
         return await getEthereum({ account, web3 })
     }
