@@ -310,6 +310,7 @@ async function retrieveProposalModels(contract) {
         result = [...(await blockchainCall(contract.methods.proposalModels))]
     }
     result = await Promise.all(result.map(async it => ({...it, ...(await getData({provider : contract.currentProvider}, it.source))})))
+    result = result.map(it => ({...it, uri : it.uri || it[1] || it.uri}))
     return result
 }
 
