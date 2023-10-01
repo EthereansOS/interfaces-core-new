@@ -1,4 +1,4 @@
-import { VOID_ETHEREUM_ADDRESS, abi, web3Utils, getNetworkElement } from "@ethereansos/interfaces-core"
+import { VOID_ETHEREUM_ADDRESS, abi, web3Utils, getNetworkElement } from "interfaces-core"
 import { getRawField } from "./generalReader"
 
 import { toChecksumAddress } from "./uiUtilities"

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { blockchainCall, formatMoney, fromDecimals, useEthosContext, useWeb3, getTokenPriceInDollarsOnUniswapV3 } from '@ethereansos/interfaces-core'
+import { blockchainCall, formatMoney, fromDecimals, useEthosContext, useWeb3, getTokenPriceInDollarsOnUniswapV3 } from 'interfaces-core'
 import style from '../../../all.module.css'
 import ItemObject from '../../Global/ObjectsLists/item-object'
 import ItemImage from '../ItemImage'

@@ -1,4 +1,4 @@
-import { getLogs, abi, VOID_ETHEREUM_ADDRESS, formatMoney, fromDecimals, toDecimals, getNetworkElement, blockchainCall, web3Utils, sendAsync, tryRetrieveMetadata, VOID_BYTES32, numberToString } from "@ethereansos/interfaces-core"
+import { getLogs, abi, VOID_ETHEREUM_ADDRESS, formatMoney, fromDecimals, toDecimals, getNetworkElement, blockchainCall, web3Utils, sendAsync, tryRetrieveMetadata, VOID_BYTES32, numberToString } from "interfaces-core"
 import { loadTokenFromAddress } from "./erc20"
 
 import { getRawField } from './generalReader'

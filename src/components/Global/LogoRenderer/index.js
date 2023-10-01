@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo, useRef } from "react"
 
 import CircularProgress from '../OurCircularProgress'
-import { useEthosContext, formatLink, web3Utils, useWeb3, normalizeValue } from "@ethereansos/interfaces-core"
+import { useEthosContext, formatLink, web3Utils, useWeb3, normalizeValue } from "interfaces-core"
 import { resolveToken } from "../../../logic/dualChain"
 import { getAddress, useOpenSea } from "../../../logic/uiUtilities"
 

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 import { useLocation } from 'react-router'
 
-import { useEthosContext, useWeb3, web3Utils } from '@ethereansos/interfaces-core'
+import { useEthosContext, useWeb3, web3Utils } from 'interfaces-core'
 
 import { loadDeckItems, cartAction, secondaryCartAction, loadDeckItemFromAddress } from '../../../../logic/itemsV2'
 

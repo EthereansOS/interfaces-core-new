@@ -1,4 +1,4 @@
-import { abi, VOID_ETHEREUM_ADDRESS, uploadMetadata, formatLink, fromDecimals, toDecimals, getNetworkElement, blockchainCall, web3Utils, sendAsync, tryRetrieveMetadata, VOID_BYTES32, numberToString } from "@ethereansos/interfaces-core"
+import { abi, VOID_ETHEREUM_ADDRESS, uploadMetadata, formatLink, fromDecimals, toDecimals, getNetworkElement, blockchainCall, web3Utils, sendAsync, tryRetrieveMetadata, VOID_BYTES32, numberToString } from "interfaces-core"
 
 export async function createOrganization(initialData, inputData) {
 

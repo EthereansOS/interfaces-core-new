@@ -5,7 +5,7 @@ import RegularVoteBox from '../../Organizations/RegularVoteBox/index.js'
 import ActionAWeb3Button from '../../Global/ActionAWeb3Button'
 import ActionInfoSection from '../../Global/ActionInfoSection/index.js'
 
-import { useWeb3, VOID_BYTES32, VOID_ETHEREUM_ADDRESS, blockchainCall, fromDecimals, useEthosContext } from '@ethereansos/interfaces-core'
+import { useWeb3, VOID_BYTES32, VOID_ETHEREUM_ADDRESS, blockchainCall, fromDecimals, useEthosContext } from 'interfaces-core'
 import { createPresetProposals, withdrawProposal, retrieveProposals } from '../../../logic/organization'
 import { extractProposalVotingTokens, generateItemKey } from '../../../logic/ballot'
 import Description from './description.js'

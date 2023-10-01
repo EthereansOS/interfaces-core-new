@@ -1,0 +1,27 @@
+.root {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  min-height: 100vh;
+  overflow: auto;
+}
+
+.centered {
+  max-width: 400px;
+  max-height: 400px;
+  width: 100%;
+  padding: calc(var(--unit) * 10);
+  background-color: var(--color-background-dark);
+}
+
+.centeredContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.fullWindow {
+  background-color: var(--color-background-dark);
+}

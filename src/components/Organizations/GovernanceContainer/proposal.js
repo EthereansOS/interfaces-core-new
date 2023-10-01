@@ -8,7 +8,7 @@ import ActionAWeb3Button from '../../Global/ActionAWeb3Button'
 import ActionInfoSection from '../../Global/ActionInfoSection/index.js'
 import VoteSelections from '../VoteSelections/index.js'
 
-import { getLogs, abi, useWeb3, useEthosContext, blockchainCall, fromDecimals, formatLink, web3Utils, sendAsync, isEthereumAddress, getNetworkElement } from '@ethereansos/interfaces-core'
+import { getLogs, abi, useWeb3, useEthosContext, blockchainCall, fromDecimals, formatLink, web3Utils, sendAsync, isEthereumAddress, getNetworkElement } from 'interfaces-core'
 
 import { surveyIsTerminable, terminateProposal, withdrawProposal, tokensToWithdraw, checkSurveyStatus } from '../../../logic/organization'
 import { getRawField } from '../../../logic/generalReader'

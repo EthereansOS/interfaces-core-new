@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { abi, shortenWord, formatMoney, fromDecimals, blockchainCall, useEthosContext, useWeb3, getTokenPriceInDollarsOnUniswap, getTokenPriceInDollarsOnUniswapV3, getTokenPriceInDollarsOnSushiSwap } from '@ethereansos/interfaces-core'
+import { abi, shortenWord, formatMoney, fromDecimals, blockchainCall, useEthosContext, useWeb3, getTokenPriceInDollarsOnUniswap, getTokenPriceInDollarsOnUniswapV3, getTokenPriceInDollarsOnSushiSwap } from 'interfaces-core'
 import style from '../../../all.module.css'
 import ItemObject from '../../Global/ObjectsLists/item-object'
 import ItemImage from '../ItemImage'

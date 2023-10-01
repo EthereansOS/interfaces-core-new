@@ -1,4 +1,4 @@
-import { getLogs, cache, getNetworkElement, VOID_ETHEREUM_ADDRESS, blockchainCall, abi, web3Utils, formatLink, memoryFetch } from '@ethereansos/interfaces-core'
+import { getLogs, cache, getNetworkElement, VOID_ETHEREUM_ADDRESS, blockchainCall, abi, web3Utils, formatLink, memoryFetch } from 'interfaces-core'
 import { loadTokenFromAddress } from './erc20'
 import { OrderSide } from 'opensea-js/lib/types'
 import { getRawField } from './generalReader'

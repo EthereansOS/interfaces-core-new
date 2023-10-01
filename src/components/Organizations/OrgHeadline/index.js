@@ -6,7 +6,7 @@ import style from '../../../all.module.css'
 import ExtLinkButton from '../../Global/ExtLinkButton/index.js'
 import Description from '../GovernanceContainer/description'
 
-import { useEthosContext, useWeb3, getNetworkElement } from '@ethereansos/interfaces-core'
+import { useEthosContext, useWeb3, getNetworkElement } from 'interfaces-core'
 
 const OrgHeadline = ({element}) => {
 

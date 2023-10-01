@@ -1,4 +1,4 @@
-import { getLogs, getTokenPriceInDollarsOnUniswapV3, getTokenPriceInDollarsOnSushiSwap, getTokenPriceInDollarsOnUniswap, cache, memoryFetch, VOID_ETHEREUM_ADDRESS, web3Utils, sendAsync, blockchainCall, abi, tryRetrieveMetadata, uploadMetadata, formatLink, VOID_BYTES32, toDecimals, getNetworkElement, async, newContract, numberToString, swap, fromDecimals } from "@ethereansos/interfaces-core"
+import { getLogs, getTokenPriceInDollarsOnUniswapV3, getTokenPriceInDollarsOnSushiSwap, getTokenPriceInDollarsOnUniswap, cache, memoryFetch, VOID_ETHEREUM_ADDRESS, web3Utils, sendAsync, blockchainCall, abi, tryRetrieveMetadata, uploadMetadata, formatLink, VOID_BYTES32, toDecimals, getNetworkElement, async, newContract, numberToString, swap, fromDecimals } from "interfaces-core"
 
 import itemProjectionsMetadata from './itemProjectionsMetadata.json'
 

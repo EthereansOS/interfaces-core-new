@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { useEthosContext } from "@ethereansos/interfaces-core"
+import { useEthosContext } from "interfaces-core"
 
 import style from '../../../all.module.css'
 

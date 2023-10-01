@@ -6,7 +6,7 @@ import style from '../../../all.module.css'
 import ExtLinkButton from '../../Global/ExtLinkButton/index.js'
 import Description from '../GovernanceContainer/description'
 
-import { useEthosContext, useWeb3, getNetworkElement, shortenWord } from '@ethereansos/interfaces-core'
+import { useEthosContext, useWeb3, getNetworkElement, shortenWord } from 'interfaces-core'
 
 const DelegationHeadline = ({element}) => {
 

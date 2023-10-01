@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo, useCallback } from 'react'
 
 import style from '../../../../all.module.css'
 
-import { blockchainCall, fromDecimals, getNetworkElement, useEthosContext, useWeb3, VOID_ETHEREUM_ADDRESS, formatLink, shortenWord } from '@ethereansos/interfaces-core'
+import { blockchainCall, fromDecimals, getNetworkElement, useEthosContext, useWeb3, VOID_ETHEREUM_ADDRESS, formatLink, shortenWord } from 'interfaces-core'
 
 import CircularProgress from '../../OurCircularProgress'
 import LogoRenderer from '../../LogoRenderer'

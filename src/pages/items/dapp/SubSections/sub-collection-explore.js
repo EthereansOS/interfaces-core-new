@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import LogoRenderer from '../../../../components/Global/LogoRenderer'
 import ExploreItems from '../../../../components/Items/ExploreItems'
 
-import { shortenWord, useEthosContext } from '@ethereansos/interfaces-core'
+import { shortenWord, useEthosContext } from 'interfaces-core'
 
 import style from '../../../../all.module.css'
 

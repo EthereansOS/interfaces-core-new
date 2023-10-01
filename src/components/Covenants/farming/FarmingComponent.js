@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react'
 
 import { Link } from 'react-router-dom'
 
-import { formatMoney, useEthosContext, useWeb3, getNetworkElement, fromDecimals, VOID_ETHEREUM_ADDRESS, numberToString } from '@ethereansos/interfaces-core'
+import { formatMoney, useEthosContext, useWeb3, getNetworkElement, fromDecimals, VOID_ETHEREUM_ADDRESS, numberToString } from 'interfaces-core'
 
 import LogoRenderer from '../../Global/LogoRenderer'
 import SetupComponent from './SetupComponent'

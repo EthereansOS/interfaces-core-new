@@ -5,7 +5,7 @@ import RegularModal from '../../../../components/Global/RegularModal'
 import BackButton from '../../../../components/Global/BackButton'
 import ProposalMetadata from '../../../../components/Organizations/ProposalMetadata'
 
-import { useWeb3, useEthosContext, blockchainCall, formatLink, web3Utils, abi } from '@ethereansos/interfaces-core'
+import { useWeb3, useEthosContext, blockchainCall, formatLink, web3Utils, abi } from 'interfaces-core'
 
 import { changeVotingRules, setDelegationMetadata, getAvailableDelegationsManagers, attachToOrganization } from '../../../../logic/delegation'
 

@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import ExtLinkButton from '../../Global/ExtLinkButton/index.js'
 import AddItemToMetamask from '../../Global/AddItemToMetamask'
 
-import { abi, useWeb3, getNetworkElement, useEthosContext, shortenWord, fromDecimals, formatMoney, getTokenPriceInDollarsOnUniswap, getTokenPriceInDollarsOnSushiSwap, getTokenPriceInDollarsOnUniswapV3, blockchainCall } from '@ethereansos/interfaces-core'
+import { abi, useWeb3, getNetworkElement, useEthosContext, shortenWord, fromDecimals, formatMoney, getTokenPriceInDollarsOnUniswap, getTokenPriceInDollarsOnSushiSwap, getTokenPriceInDollarsOnUniswapV3, blockchainCall } from 'interfaces-core'
 
 import style from '../../../all.module.css'
 

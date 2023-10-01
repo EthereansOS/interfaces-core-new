@@ -3,7 +3,7 @@ import React from 'react'
 import style from '../../../../all.module.css'
 import { Link } from 'react-router-dom'
 
-import { useWeb3 } from '@ethereansos/interfaces-core'
+import { useWeb3 } from 'interfaces-core'
 
 const Create = () => {
 

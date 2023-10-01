@@ -8,7 +8,7 @@ import CircularProgress from '../../Global/OurCircularProgress'
 import ActionAWeb3Button from '../../Global/ActionAWeb3Button'
 import { Link } from 'react-router-dom'
 
-import { fromDecimals, useWeb3, abi, useEthosContext, getNetworkElement, blockchainCall, numberToString, getEthereumPrice, formatNumber, formatMoney, formatMoneyUniV3, newContract, getTokenPriceInDollarsOnUniswapV3, web3Utils } from '@ethereansos/interfaces-core'
+import { fromDecimals, useWeb3, abi, useEthosContext, getNetworkElement, blockchainCall, numberToString, getEthereumPrice, formatNumber, formatMoney, formatMoneyUniV3, newContract, getTokenPriceInDollarsOnUniswapV3, web3Utils } from 'interfaces-core'
 
 import style from '../../../all.module.css'
 import { getDelegationsOfOrganization } from '../../../logic/delegation.js'

@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 
-import { abi, useEthosContext, useWeb3 } from '@ethereansos/interfaces-core'
+import { abi, useEthosContext, useWeb3 } from 'interfaces-core'
 import {create} from '../../../../logic/ballot'
 
 const BallotCreate = () => {

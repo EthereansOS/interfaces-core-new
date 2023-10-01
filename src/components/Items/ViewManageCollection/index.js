@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import { useEthosContext, useWeb3 } from '@ethereansos/interfaces-core'
+import { useEthosContext, useWeb3 } from 'interfaces-core'
 
 import RegularModal from '../../Global/RegularModal'
 import CreateItem from '../../../pages/items/dapp/create/item'

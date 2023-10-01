@@ -1,4 +1,4 @@
-import { getLogs, web3Utils, abi, getNetworkElement, blockchainCall } from "@ethereansos/interfaces-core"
+import { getLogs, web3Utils, abi, getNetworkElement, blockchainCall } from "interfaces-core"
 import { getRawField } from "./generalReader"
 
 export async function tryRetrieveL1Address(data, tokenAddress) {

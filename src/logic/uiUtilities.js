@@ -5,7 +5,7 @@ import { loadTokenFromAddress } from './erc20'
 
 import MenuCapableComponent from "../components/Global/MenuCapableComponent"
 import { useLocation } from 'react-router'
-import { useWeb3, sendAsync, web3Utils } from '@ethereansos/interfaces-core'
+import { useWeb3, sendAsync, web3Utils } from 'interfaces-core'
 
 import TransactionResult from '../components/Global/TransactionResult'
 

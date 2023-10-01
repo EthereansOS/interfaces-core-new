@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { Typography } from '@ethereansos/interfaces-ui'
+
 
 import style from './fund-open-card.module.css'
 import RegularButtonDuo from '../../Global/RegularButtonDuo/index.js'
@@ -43,7 +43,7 @@ const FundOpenCard = (props) => {
           <p><b>Quorum:</b><br></br>3,000,000 Votes</p>
           <p><b>Quorum:</b><br></br>3,000,000 Votes</p>
         </div>
-      </div> 
+      </div>
       <div className={style.SurveylessOpenCardSelection}>
         <p><b>Active Proposals:</b></p>
         <div className={style.SurveylessOpenCardSelectionCont}>

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { Typography } from '@ethereansos/interfaces-ui'
+
 
 import style from './org-things-card-text.module.css'
 import RegularMiniButton from '../../Global/RegularMiniButton/index.js'

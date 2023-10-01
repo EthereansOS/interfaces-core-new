@@ -3,7 +3,7 @@ import { Link, useLocation } from "react-router-dom"
 
 import { rlphash } from 'ethereumjs-util'
 
-import { getNetworkElement, abi, toDecimals, useEthosContext, useWeb3, web3Utils, isEthereumAddress, numberToString, formatNumber, fromDecimals, blockchainCall, VOID_ETHEREUM_ADDRESS, sendAsync, VOID_BYTES32 } from '@ethereansos/interfaces-core'
+import { getNetworkElement, abi, toDecimals, useEthosContext, useWeb3, web3Utils, isEthereumAddress, numberToString, formatNumber, fromDecimals, blockchainCall, VOID_ETHEREUM_ADDRESS, sendAsync, VOID_BYTES32 } from 'interfaces-core'
 
 import CreateOrEditFixedInflationEntry from './CreateOrEditFixedInflationEntry'
 import FixedInflationExtensionTemplateLocation from '../../../../logic/FixedInflationExtensionTemplateLocation.sol'

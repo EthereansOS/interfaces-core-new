@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 
-import { useWeb3, useEthosContext } from '@ethereansos/interfaces-core'
+import { useWeb3, useEthosContext } from 'interfaces-core'
 
 import { surveyIsTerminable, surveylessIsTerminable, terminateProposal } from '../../../logic/organization'
 

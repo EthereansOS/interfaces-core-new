@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import classnames from 'classnames'
 import Header from '../Header'
-import { Container } from '@ethereansos/interfaces-ui'
+import { Container } from 'interfaces-ui'
 import style from './main-template.module.css'
 import Content from '../Content'
 
-import { useWeb3, useEthosContext, getNetworkElement } from '@ethereansos/interfaces-core'
+import { useWeb3, useEthosContext, getNetworkElement } from 'interfaces-core'
 
 const MainTemplate = ({ Component, ...props }) => {
   const [, setState] = useState({})

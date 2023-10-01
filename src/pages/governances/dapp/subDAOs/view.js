@@ -11,7 +11,7 @@ import CircularProgress from '../../../../components/Global/OurCircularProgress'
 
 import { getOrganization } from '../../../../logic/organization'
 
-import { useEthosContext, useWeb3, web3Utils } from '@ethereansos/interfaces-core'
+import { useEthosContext, useWeb3, web3Utils } from 'interfaces-core'
 
 import DappMenu from '../../../../components/Global/DappMenu'
 

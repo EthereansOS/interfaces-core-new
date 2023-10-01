@@ -4,7 +4,7 @@ import { Link } from "react-router-dom"
 
 import { rlphash } from 'ethereumjs-util'
 
-import { abi, useEthosContext, toDecimals, useWeb3, web3Utils, isEthereumAddress, getNetworkElement, fromDecimals, numberToString, VOID_ETHEREUM_ADDRESS, formatNumber, blockchainCall, sendAsync, async } from '@ethereansos/interfaces-core'
+import { abi, useEthosContext, toDecimals, useWeb3, web3Utils, isEthereumAddress, getNetworkElement, fromDecimals, numberToString, VOID_ETHEREUM_ADDRESS, formatNumber, blockchainCall, sendAsync, async } from 'interfaces-core'
 
 import TokenInputRegular from '../../../../components/Global/TokenInputRegular'
 import ActionAWeb3Button from '../../../../components/Global/ActionAWeb3Button'

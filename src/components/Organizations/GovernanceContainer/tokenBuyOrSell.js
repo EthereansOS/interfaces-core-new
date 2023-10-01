@@ -9,7 +9,7 @@ import { getAMMs } from '../../../logic/amm'
 import ProposalMetadata from '../ProposalMetadata'
 import style from '../../../all.module.css'
 
-import { useWeb3, useEthosContext } from '@ethereansos/interfaces-core'
+import { useWeb3, useEthosContext } from 'interfaces-core'
 import RegularButtonDuo from '../../Global/RegularButtonDuo'
 import LogoRenderer from '../../Global/LogoRenderer'
 

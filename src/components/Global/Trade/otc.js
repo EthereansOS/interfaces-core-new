@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 import OTCDetail from './otc-detail.js'
 
-import { useEthosContext, useWeb3, blockchainCall, abi, shortenWord } from '@ethereansos/interfaces-core'
+import { useEthosContext, useWeb3, blockchainCall, abi, shortenWord } from 'interfaces-core'
 
 import { loadItem } from '../../../logic/itemsV2.js'
 

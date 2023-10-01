@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { Typography } from '@ethereansos/interfaces-ui'
+
 
 import style from '../../../all.module.css'
 import RegularButton from '../../Global/RegularButton/index.js'

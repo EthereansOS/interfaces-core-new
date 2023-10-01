@@ -1,4 +1,4 @@
-import { blockchainCall, web3Utils, sendAsync, getNetworkElement, numberToString, VOID_ETHEREUM_ADDRESS, formatLink, abi, fromDecimals } from "@ethereansos/interfaces-core"
+import { blockchainCall, web3Utils, sendAsync, getNetworkElement, numberToString, VOID_ETHEREUM_ADDRESS, formatLink, abi, fromDecimals } from "interfaces-core"
 
 import { getRawField } from './generalReader'
 

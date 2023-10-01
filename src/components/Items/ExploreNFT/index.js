@@ -5,7 +5,7 @@ import ItemImage from '../ItemImage'
 import RegularButtonDuo from '../../Global/RegularButtonDuo'
 import ActionAWeb3Button from '../../Global/ActionAWeb3Button'
 import LogoRenderer from '../../Global/LogoRenderer'
-import { getNetworkElement, useEthosContext, useWeb3, web3Utils, numberToString } from '@ethereansos/interfaces-core'
+import { getNetworkElement, useEthosContext, useWeb3, web3Utils, numberToString } from 'interfaces-core'
 import OurCircularProgress from '../../Global/OurCircularProgress'
 
 const ExploreNFT = ({ element, onClick }) => {

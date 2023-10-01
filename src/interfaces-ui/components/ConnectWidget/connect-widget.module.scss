@@ -1,0 +1,42 @@
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.root {
+  max-width: 400px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  img {
+    width: 200px;
+    display: inline-block;
+
+    &.rotateLogo {
+      animation: spin 3s infinite linear;
+    }
+  }
+}
+
+.button {
+  width: 100%;
+  margin-bottom: calc(var(--unit) * 2);
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex: 1;
+  margin-bottom: calc(var(--unit) * 5);
+}
+
+.retryButton {
+  margin-top: calc(var(--unit) * 2);
+}

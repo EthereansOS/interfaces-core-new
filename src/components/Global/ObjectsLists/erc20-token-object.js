@@ -2,9 +2,7 @@ import React, { useMemo } from 'react'
 
 import ERC20TokenObjectElement from './element/erc20-token-object-element'
 import Web3DependantList from '../Web3DependantList'
-import { useWeb3, useEthosContext } from '@ethereansos/interfaces-core'
-
-import { web3Utils } from '@ethereansos/interfaces-core'
+import { web3Utils, useWeb3, useEthosContext } from 'interfaces-core'
 
 import { loadTokens, loadTokenFromAddress } from '../../../logic/erc20'
 

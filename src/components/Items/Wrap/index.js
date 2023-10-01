@@ -5,7 +5,7 @@ import OurCircularProgress from '../../Global/OurCircularProgress'
 import ERC20 from './ERC20'
 import NFT from './NFT'
 
-import { blockchainCall, useEthosContext, useWeb3 } from '@ethereansos/interfaces-core'
+import { blockchainCall, useEthosContext, useWeb3 } from 'interfaces-core'
 
 import { loadTokenFromAddress } from '../../../logic/erc20'
 import { useOpenSea } from '../../../logic/uiUtilities'

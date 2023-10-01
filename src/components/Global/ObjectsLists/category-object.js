@@ -1,6 +1,6 @@
 import React from 'react'
 
-import {useWeb3, useEthosContext } from '@ethereansos/interfaces-core'
+import {useWeb3, useEthosContext } from 'interfaces-core'
 import {loadCollectionsByFactories} from '../../../logic/itemsV2'
 
 import CategoryObjectElement from './element/category-object-element'

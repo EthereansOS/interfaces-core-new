@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { formatMoney } from '@ethereansos/interfaces-core'
+import { formatMoney } from 'interfaces-core'
 
 import style from '../../../all.module.css'
 

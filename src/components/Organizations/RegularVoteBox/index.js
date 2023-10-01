@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 
-import { useWeb3 } from '@ethereansos/interfaces-core'
+import { useWeb3 } from 'interfaces-core'
 
 import TokenInputRegular from '../../Global/TokenInputRegular/index.js'
 import ActionAWeb3Buttons from '../../Global/ActionAWeb3Buttons/index.js'

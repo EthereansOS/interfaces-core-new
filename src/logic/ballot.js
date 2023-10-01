@@ -1,4 +1,4 @@
-import { getLogs, abi, VOID_ETHEREUM_ADDRESS, uploadMetadata, getNetworkElement, numberToString, blockchainCall, web3Utils, sendAsync, formatLink, tryRetrieveMetadata } from "@ethereansos/interfaces-core"
+import { getLogs, abi, VOID_ETHEREUM_ADDRESS, uploadMetadata, getNetworkElement, numberToString, blockchainCall, web3Utils, sendAsync, formatLink, tryRetrieveMetadata } from "interfaces-core"
 
 import { getEthereum } from "./erc20"
 

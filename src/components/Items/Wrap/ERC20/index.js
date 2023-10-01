@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 
 import TokenInputRegular from '../../../Global/TokenInputRegular'
-import { getNetworkElement, useEthosContext, useWeb3 } from '@ethereansos/interfaces-core'
+import { getNetworkElement, useEthosContext, useWeb3 } from 'interfaces-core'
 import RegularModal from '../../../Global/RegularModal'
 import ActionAWeb3Buttons from '../../../Global/ActionAWeb3Buttons'
 import { wrapERC20 } from '../../../../logic/itemsV2'

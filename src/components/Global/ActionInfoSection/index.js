@@ -3,7 +3,7 @@ import React, {useState, useEffect} from 'react'
 import OurCircularProgress from '../OurCircularProgress'
 import RegularModal from '../RegularModal'
 
-import { useWeb3, useEthosContext } from '@ethereansos/interfaces-core'
+import { useWeb3, useEthosContext } from 'interfaces-core'
 import { getAMMs } from '../../../logic/amm'
 import LogoRenderer from '../LogoRenderer'
 

@@ -1,4 +1,4 @@
-import { useWeb3 } from '@ethereansos/interfaces-core'
+import { useWeb3 } from 'interfaces-core'
 import React from 'react'
 import { Link } from 'react-router-dom'
 

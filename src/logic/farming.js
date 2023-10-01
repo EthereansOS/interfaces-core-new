@@ -1,4 +1,4 @@
-import { getLogs, abi, VOID_ETHEREUM_ADDRESS, uploadMetadata, formatLink, fromDecimals, isEthereumAddress, getNetworkElement, blockchainCall, web3Utils, sendAsync, tryRetrieveMetadata, VOID_BYTES32, numberToString, toEthereumSymbol } from "@ethereansos/interfaces-core"
+import { getLogs, abi, VOID_ETHEREUM_ADDRESS, uploadMetadata, formatLink, fromDecimals, isEthereumAddress, getNetworkElement, blockchainCall, web3Utils, sendAsync, tryRetrieveMetadata, VOID_BYTES32, numberToString, toEthereumSymbol } from "interfaces-core"
 import { loadTokenFromAddress } from "./erc20"
 import {
     tickToPrice,

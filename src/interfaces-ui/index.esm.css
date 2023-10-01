@@ -1,0 +1,816 @@
+/* http://meyerweb.com/eric/tools/css/reset/
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video,
+textarea {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
+}
+body {
+  line-height: 1;
+}
+ol,
+ul {
+  list-style: none;
+}
+blockquote,
+q {
+  quotes: none;
+}
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: '';
+  content: none;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+html {
+  box-sizing: border-box;
+}
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+input[type='checkbox'] {
+  margin: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: bold;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+div,
+span {
+  color: var(--color-text);
+}
+h1 {
+  font-size: 32px;
+}
+h2 {
+  font-size: 28px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 20px;
+}
+h5 {
+  font-size: 18px;
+}
+h6 {
+  font-size: 16px;
+}
+
+/* // TODO: needs to be tokenized with variables */
+.body1 {
+  font-size: 14px;
+}
+
+.body2 {
+  font-size: 12px;
+}
+
+:root {
+  --container-width: 990px;
+  --unit: 4px;
+
+  --color-default: #a8a8a8;
+  --color-primary: #8653f6;
+  --color-secondary: #ff007b;
+  --color-tertiary: #545454;
+  --color-text: #fefefe;
+  --color-background-light: #464646;
+  --color-background: #333333;
+  --color-background-dark: #292929;
+  --color-background-extra-dark: #212121;
+  --color-background-black: #191919;
+
+  --font-family: -apple-system, system-ui, BlinkMacSystemFont, 'Segoe UI',
+    'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif';
+  --font-family-secondary: 'Courier New', 'Lucida Console', 'Courier', 'Times',
+    'Arial';
+
+  --button-border-radius: 0px;
+  --button-color: var(--color-text);
+  --button-color-primary: var(--color-text);
+  --button-color-secondary: var(--color-text);
+  --button-color-tertiary: var(--color-text);
+  --button-background-color: var(--color-default);
+  --button-background-color-primary: var(--color-primary);
+  --button-background-color-secondary: var(--color-secondary);
+  --button-background-color-tertiary: var(--color-tertiary);
+  --button-background-image: none;
+  --button-background-image-primary: none;
+  --button-background-image-secondary: none;
+  --button-background-image-tertiary: none;
+
+  --text-input-text-color: #fefefe;
+  --text-input-placeholder-color: #a8a8a8;
+  --text-input-background-color: #292929;
+  --text-input-border-color: transparent;
+  --text-input-border-width: 0px;
+  --text-input-border-radius: 0;
+
+  --shiny-text-animation: shine 3s linear infinite;
+  --shiny-text-gradient: linear-gradient(
+    to right,
+    #9048fd 20%,
+    #4bcbc9 40%,
+    #4bcbc9 70%,
+    #9048fd 90%
+  );
+
+  --snackbar-error-color: #ff0000;
+  --snackbar-success-color: #00ff00;
+  --snackbar-warning-color: #ff00ff;
+}
+
+.ethereans-interfaces_button_root {
+  background-color: var(--button-background-color);
+  color: var(--button-color);
+  font-weight: bold;
+  text-decoration: none;
+  display: inline-block;
+  border: 0;
+  cursor: pointer;
+  background-image: var(--button-background-image);
+  border-radius: var(--button-border-radius);
+}
+.ethereans-interfaces_button_root.ethereans-interfaces_button_primary {
+  color: var(--button-color-primary);
+  background-color: var(--button-background-color-primary);
+  background-image: var(--button-background-image-primary);
+}
+.ethereans-interfaces_button_root.ethereans-interfaces_button_secondary {
+  color: var(--button-color-secondary);
+  background-color: var(--button-background-color-secondary);
+  background-image: var(--button-background-image-secondary);
+}
+.ethereans-interfaces_button_root.ethereans-interfaces_button_tertiary {
+  color: var(--button-color-tertiary);
+  background-color: var(--button-background-color-tertiary);
+  background-image: var(--button-background-image-tertiary);
+}
+.ethereans-interfaces_button_root.ethereans-interfaces_button_small {
+  padding: var(--unit) calc(var(--unit) * 4);
+  font-size: 12px;
+}
+.ethereans-interfaces_button_root.ethereans-interfaces_button_medium {
+  padding: calc(var(--unit) * 2) calc(var(--unit) * 4);
+  font-size: 15px;
+}
+.ethereans-interfaces_button_root.ethereans-interfaces_button_large {
+  padding: calc(var(--unit) * 4) calc(var(--unit) * 5);
+  font-size: 18px;
+}
+.ethereans-interfaces_button_root.ethereans-interfaces_button_fullWidth {
+  width: 100%;
+}
+
+.ethereans-interfaces_button_root:disabled {
+  opacity: 0.3;
+}
+.ethereans-interfaces_card_root {
+  width: 100%;
+  background-color: var(--color-background);
+  color: var(--color-text);
+  border-radius: calc(var(--unit) * 6);
+  margin: calc(var(--unit) * 3) 0;
+  padding-bottom: calc(var(--unit) * 8);
+}
+
+.ethereans-interfaces_card_content {
+  padding: calc(var(--unit) * 8) calc(var(--unit) * 8) 0 calc(var(--unit) * 8);
+}
+
+.ethereans-interfaces_card_footer {
+  margin-top: calc(var(--unit) * 8);
+  margin-bottom: calc(var(--unit) * -2);
+  background-color: var(--color-background-black);
+  width: 100%;
+  padding: calc(var(--unit) * 6) calc(var(--unit) * 25);
+}
+
+.ethereans-interfaces_card_header {
+  margin-bottom: calc(var(--unit) * 4);
+  padding: calc(var(--unit) * 8) calc(var(--unit) * 8) 0 calc(var(--unit) * 8);
+}
+.ethereans-interfaces_chip_root {
+  color: var(--color-text);
+  font-weight: bold;
+  text-decoration: none;
+  display: inline-block;
+}
+.ethereans-interfaces_chip_root.ethereans-interfaces_chip_primary {
+  background-color: var(--color-background-light);
+}
+.ethereans-interfaces_chip_root.ethereans-interfaces_chip_secondary {
+  background-color: var(--color-primary);
+}
+.ethereans-interfaces_chip_root.ethereans-interfaces_chip_small {
+  padding: var(--unit) calc(var(--unit) * 4);
+  font-size: 12px;
+}
+.ethereans-interfaces_chip_root.ethereans-interfaces_chip_medium {
+  padding: calc(var(--unit) * 2) calc(var(--unit) * 4);
+  font-size: 15px;
+}
+.ethereans-interfaces_chip_root.ethereans-interfaces_chip_large {
+  padding: calc(var(--unit) * 4) calc(var(--unit) * 5);
+  font-size: 18px;
+}
+.ethereans-interfaces_container_root {
+  max-width: var(--container-width);
+  margin: 0 auto;
+  display: inline-block;
+  flex-direction: column;
+  align-items: center;
+}
+.ethereans-interfaces_typography_root {
+  color: var(--color-text);
+}
+.ethereans-interfaces_typography_root.ethereans-interfaces_typography_color-primary {
+  color: var(--color-primary);
+}
+.ethereans-interfaces_typography_root.ethereans-interfaces_typography_color-secondary {
+  color: var(--color-secondary);
+}
+.ethereans-interfaces_typography_root.ethereans-interfaces_typography_font-primary {
+  font-family: var(--font-family);
+}
+.ethereans-interfaces_typography_root.ethereans-interfaces_typography_font-secondary {
+  font-family: var(--font-family-secondary);
+}
+.ethereans-interfaces_typography_root.ethereans-interfaces_typography_left {
+  text-align: left;
+}
+.ethereans-interfaces_typography_root.ethereans-interfaces_typography_center {
+  text-align: center;
+}
+.ethereans-interfaces_typography_root.ethereans-interfaces_typography_right {
+  text-align: right;
+}
+.ethereans-interfaces_typography_root b {
+  font-weight: bold;
+}
+.ethereans-interfaces_typography_root strong {
+  font-weight: bold;
+}
+.ethereans-interfaces_form-control_root {
+  display: inline-block;
+  padding: calc(var(--unit) * 2) calc(var(--unit) * 3);
+  background-color: var(--color-background-black);
+  border-radius: calc(var(--unit) * 2);
+  align-items: center;
+  display: flex;
+  margin: var(--unit);
+}
+
+.ethereans-interfaces_form-control_root > span {
+  margin-right: calc(var(--unit) * 2);
+}
+.ethereans-interfaces_link_root {
+  text-decoration: none;
+  color: #fff;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.ethereans-interfaces_link_root:hover {
+  text-decoration: underline;
+}
+.ethereans-interfaces_modal_root {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  min-height: 100vh;
+  overflow: auto;
+}
+
+.ethereans-interfaces_modal_centered {
+  max-width: 400px;
+  max-height: 400px;
+  width: 100%;
+  padding: calc(var(--unit) * 10);
+  background-color: var(--color-background-dark);
+}
+
+.ethereans-interfaces_modal_centeredContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.ethereans-interfaces_modal_fullWindow {
+  background-color: var(--color-background-dark);
+}
+@keyframes ethereans-interfaces_shinyText_shine {
+  to {
+    background-position: 200% center;
+  }
+}
+.ethereans-interfaces_shinyText_root.ethereans-interfaces_shinyText_always, .ethereans-interfaces_shinyText_root.ethereans-interfaces_shinyText_hover:hover {
+  background: var(--shiny-text-gradient);
+  background-size: 200% auto;
+  color: #6e6e6e;
+  background-clip: text;
+  text-fill-color: transparent;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.ethereans-interfaces_shinyText_root.ethereans-interfaces_shinyText_animated {
+  animation: ethereans-interfaces_shinyText_shine 3s linear infinite;
+}
+.ethereans-interfaces_shinyText_root.ethereans-interfaces_shinyText_strong {
+  font-weight: bolder;
+}
+.ethereans-interfaces_table_root {
+  width: 100%;
+  margin: calc(var(--unit) * 8) 0;
+}
+
+.ethereans-interfaces_table_root tbody > tr {
+  padding: calc(var(--unit) * 6) 0;
+  border-bottom: 1px solid #616060;
+}
+
+.ethereans-interfaces_table_root tr,
+.ethereans-interfaces_table_root th {
+  display: flex;
+  align-items: center;
+}
+
+.ethereans-interfaces_table_root tr td,
+.ethereans-interfaces_table_root tr th {
+  flex: 1;
+  overflow: hidden;
+  margin: 0 var(--unit);
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+@charset "UTF-8";
+.ethereans-interfaces_textField_root {
+  display: flex;
+  background-color: var(--text-input-background-color);
+  align-items: center;
+  padding: calc(var(--unit) * 2) var(--unit);
+}
+
+.ethereans-interfaces_textField_rounded {
+  border-radius: 50px;
+}
+
+.ethereans-interfaces_textField_input {
+  background-color: transparent;
+  outline: 0;
+  border: var(--text-input-border-width) solid var(--text-input-border-color);
+  border-radius: var(--text-input-border-radius);
+  color: var(--text-input-text-color);
+  font-family: var(--font-family);
+  width: 100%;
+}
+.ethereans-interfaces_textField_input::placeholder  {
+  color: var(--text-input-placeholder-color);
+}
+
+.ethereans-interfaces_textField_startContainer {
+  margin-right: 0;
+}
+
+.ethereans-interfaces_textField_endContainer {
+  margin-left: 0;
+}
+.ethereans-interfaces_tooltip_root {
+  background-color: var(--tooltip-background-color);
+  border-radius: calc(var(--unit) * 6);
+  display: inline-block;
+  padding: calc(var(--unit) * 4);
+  margin: calc(var(--unit) * 5) 0;
+  text-align: center;
+}
+.ethereans-interfaces_linear-progress_root {
+  position: relative;
+  width: 80px;
+  height: 35px;
+}
+.ethereans-interfaces_linear-progress_root.ethereans-interfaces_linear-progress_primary span {
+  background-color: var(--color-primary);
+}
+.ethereans-interfaces_linear-progress_root.ethereans-interfaces_linear-progress_secondary span {
+  background-color: var(--color-secondary);
+}
+
+.ethereans-interfaces_linear-progress_root span {
+  position: absolute;
+  top: 10px;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  animation-timing-function: cubic-bezier(0, 1, 1, 0);
+}
+
+.ethereans-interfaces_linear-progress_root span:nth-child(1) {
+  left: 8px;
+  animation: ethereans-interfaces_linear-progress_lds-ellipsis1 0.6s infinite;
+}
+
+.ethereans-interfaces_linear-progress_root span:nth-child(2) {
+  left: 8px;
+  animation: ethereans-interfaces_linear-progress_lds-ellipsis2 0.6s infinite;
+}
+
+.ethereans-interfaces_linear-progress_root span:nth-child(3) {
+  left: 32px;
+  animation: ethereans-interfaces_linear-progress_lds-ellipsis2 0.6s infinite;
+}
+
+.ethereans-interfaces_linear-progress_root span:nth-child(4) {
+  left: 56px;
+  animation: ethereans-interfaces_linear-progress_lds-ellipsis3 0.6s infinite;
+}
+
+@keyframes ethereans-interfaces_linear-progress_lds-ellipsis1 {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes ethereans-interfaces_linear-progress_lds-ellipsis3 {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(0);
+  }
+}
+@keyframes ethereans-interfaces_linear-progress_lds-ellipsis2 {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(24px, 0);
+  }
+}
+.ethereans-interfaces_circular-progress_root {
+  border-color: var(--color-text);
+  border-style: solid;
+  border-width: 2px;
+  border-radius: 50%;
+  animation: ethereans-interfaces_circular-progress_spin 2s linear infinite;
+  display: inline-block;
+  vertical-align: middle;
+}
+.ethereans-interfaces_circular-progress_root.ethereans-interfaces_circular-progress_primary {
+  border-top-color: var(--color-primary);
+}
+.ethereans-interfaces_circular-progress_root.ethereans-interfaces_circular-progress_secondary {
+  border-top-color: var(--color-secondary);
+}
+.ethereans-interfaces_circular-progress_root.ethereans-interfaces_circular-progress_small {
+  width: 15px;
+  height: 15px;
+  border-width: 2px;
+}
+.ethereans-interfaces_circular-progress_root.ethereans-interfaces_circular-progress_medium {
+  border-width: 4px;
+  width: 30px;
+  height: 30px;
+}
+.ethereans-interfaces_circular-progress_root.ethereans-interfaces_circular-progress_large {
+  border-width: 6px;
+  width: 45px;
+  height: 45px;
+}
+
+@keyframes ethereans-interfaces_circular-progress_spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.ethereans-interfaces_token_root {
+  display: flex;
+  align-items: center;
+}
+.ethereans-interfaces_token_root img {
+  max-width: 20px;
+  padding-right: var(--unit);
+}
+.ethereans-interfaces_select_label {
+  display: flex;
+  align-items: center;
+}
+
+.ethereans-interfaces_select_image {
+  width: 20px;
+  padding-right: var(--unit);
+}
+.ethereans-interfaces_snack-bar_root {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  text-align: center;
+  padding: calc(var(--unit) * 4);
+}
+
+.ethereans-interfaces_snack-bar_root p {
+  margin: calc(var(--unit) * 2);
+}
+.ethereans-interfaces_snack-bar_root a {
+  cursor: pointer;
+}
+
+.ethereans-interfaces_snack-bar_error {
+  background-color: var(--snackbar-error-color);
+}
+
+.ethereans-interfaces_snack-bar_warning {
+  background-color: var(--snackbar-warning-color);
+}
+
+.ethereans-interfaces_snack-bar_success {
+  background-color: var(--snackbar-success-color);
+}
+@keyframes ethereans-interfaces_connect-widget_spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+.ethereans-interfaces_connect-widget_root {
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.ethereans-interfaces_connect-widget_root img {
+  width: 200px;
+  display: inline-block;
+}
+.ethereans-interfaces_connect-widget_root img.ethereans-interfaces_connect-widget_rotateLogo {
+  animation: ethereans-interfaces_connect-widget_spin 3s infinite linear;
+}
+
+.ethereans-interfaces_connect-widget_button {
+  width: 100%;
+  margin-bottom: calc(var(--unit) * 2);
+}
+
+.ethereans-interfaces_connect-widget_modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex: 1;
+  margin-bottom: calc(var(--unit) * 5);
+}
+
+.ethereans-interfaces_connect-widget_retryButton {
+  margin-top: calc(var(--unit) * 2);
+}
+.ethereans-interfaces_token-picker_root {
+  justify-content: space-between;
+  margin-top: calc(var(--unit) * 3);
+}
+.ethereans-interfaces_edit-field_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ethereans-interfaces_edit-field_inputContainer {
+  background-color: var(--edit-field-background-color);
+  color: var(--edit-field-color);
+  margin: var(--unit);
+}
+
+.ethereans-interfaces_edit-field_tooltip {
+  width: 100%;
+}
+
+.ethereans-interfaces_edit-field_tooltip p {
+  color: var(--tooltip-color);
+}
+
+.ethereans-interfaces_edit-field_inputWrapper {
+  display: flex;
+  align-items: center;
+}
+.ethereans-interfaces_balance_root {
+  max-width: 280px;
+}
+
+.ethereans-interfaces_balance_token,
+.ethereans-interfaces_balance_amount {
+  display: flex;
+}
+
+.ethereans-interfaces_balance_token {
+  align-items: center;
+  justify-content: flex-start;
+  margin-bottom: calc(var(--unit) * 3);
+}
+.ethereans-interfaces_balance_token p {
+  margin-left: calc(var(--unit) * 3);
+}
+
+.ethereans-interfaces_balance_actions {
+  margin-top: calc(var(--unit) * 3);
+}
+.ethereans-interfaces_balance_actions > button:first-of-type {
+  margin-right: var(--unit);
+}
+
+.ethereans-interfaces_balance_transfer,
+.ethereans-interfaces_balance_swap {
+  margin: calc(var(--unit) * 3) 0;
+}
+.ethereans-interfaces_balance_transfer p,
+.ethereans-interfaces_balance_swap p {
+  margin-top: calc(var(--unit) * 3);
+}
+
+.ethereans-interfaces_balance_submitButton {
+  width: 100%;
+  margin-top: calc(var(--unit) * 3);
+}
+.ethereans-interfaces_file-field_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ethereans-interfaces_file-field_inputContainer {
+  display: none;
+}
+
+.ethereans-interfaces_file-field_tooltip {
+  width: 100%;
+}
+
+.ethereans-interfaces_file-field_tooltip p {
+  color: var(--tooltip-color);
+}
+.ethereans-interfaces_color-field_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ethereans-interfaces_color-field_inputContainer {
+  background-color: var(--edit-field-background-color);
+  color: var(--edit-field-color);
+  position: relative;
+}
+
+.ethereans-interfaces_color-field_picker {
+  min-width: 50px;
+  min-height: 30px;
+  border: 1px solid var(--edit-field-color);
+  padding: 3px;
+  background-color: var(--edit-field-background-color);
+}
+
+.ethereans-interfaces_color-field_innerPicker {
+  min-width: 44px;
+  min-height: 24px;
+}
+
+.ethereans-interfaces_color-field_pickerComponent {
+  position: absolute;
+}
+
+.ethereans-interfaces_color-field_tooltip {
+  width: 100%;
+}
+
+.ethereans-interfaces_color-field_tooltip p {
+  color: var(--tooltip-color);
+}

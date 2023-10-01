@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom'
 
 import { getDelegation } from '../../../../logic/delegation'
 
-import { useWeb3, useEthosContext, web3Utils } from '@ethereansos/interfaces-core'
+import { useWeb3, useEthosContext, web3Utils } from 'interfaces-core'
 
 import HostOptions from './hostOptions'
 

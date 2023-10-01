@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 
 import { useLocation } from 'react-router'
-import { useEthosContext, useWeb3 } from '@ethereansos/interfaces-core'
+import { useEthosContext, useWeb3 } from 'interfaces-core'
 import CircularProgress from '../../../../components/Global/OurCircularProgress'
 import { loadCollection } from '../../../../logic/itemsV2'
 

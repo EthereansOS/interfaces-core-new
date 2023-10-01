@@ -1,5 +1,5 @@
 import React from 'react'
-import {Typography} from '@ethereansos/interfaces-ui'
+import {Typography} from 'interfaces-ui'
 
 import style from './organizations-main.module.css'
 import { Link } from 'react-router-dom'

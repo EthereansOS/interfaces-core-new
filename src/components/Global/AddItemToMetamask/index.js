@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { formatLink, useWeb3, useEthosContext } from '@ethereansos/interfaces-core'
+import { formatLink, useWeb3, useEthosContext } from 'interfaces-core'
 
 import style from '../../../all.module.css'
 

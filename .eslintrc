@@ -1,0 +1,3 @@
+{
+  "ignorePatterns": ["src/lib/web3/ethereumjs-tx.min.js"]
+}

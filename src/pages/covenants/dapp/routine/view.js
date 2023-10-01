@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo } from 'react'
 
-import { isEthereumAddress, useWeb3, useEthosContext, getNetworkElement, blockchainCall, VOID_ETHEREUM_ADDRESS, formatMoney, fromDecimals, web3Utils, abi, toDecimals, numberToString } from '@ethereansos/interfaces-core'
+import { isEthereumAddress, useWeb3, useEthosContext, getNetworkElement, blockchainCall, VOID_ETHEREUM_ADDRESS, formatMoney, fromDecimals, web3Utils, abi, toDecimals, numberToString } from 'interfaces-core'
 
 import { useLocation } from 'react-router-dom'
 

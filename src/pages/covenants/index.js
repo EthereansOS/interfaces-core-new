@@ -1,5 +1,5 @@
 import React from 'react'
-import {Typography} from '@ethereansos/interfaces-ui'
+import {Typography} from 'interfaces-ui'
 import { Link } from 'react-router-dom'
 
 import style from './covenants-main.module.css'

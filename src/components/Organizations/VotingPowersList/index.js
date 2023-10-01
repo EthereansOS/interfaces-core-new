@@ -4,7 +4,7 @@ import LogoRenderer from '../../Global/LogoRenderer'
 
 import style from '../../../all.module.css'
 import { Link } from 'react-router-dom'
-import { getNetworkElement, useEthosContext, useWeb3 } from '@ethereansos/interfaces-core'
+import { getNetworkElement, useEthosContext, useWeb3 } from 'interfaces-core'
 
 const VotingPowersList = ({votingTokens}) => {
 

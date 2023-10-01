@@ -8,7 +8,7 @@ import RegularModal from '../../Global/RegularModal/index.js'
 
 import ViewFarmings from '../../../pages/covenants/dapp/farming/index'
 
-import { abi, useWeb3, getNetworkElement, useEthosContext, fromDecimals, VOID_ETHEREUM_ADDRESS, formatMoney, getTokenPriceInDollarsOnUniswap, getTokenPriceInDollarsOnSushiSwap, getTokenPriceInDollarsOnUniswapV3, blockchainCall } from '@ethereansos/interfaces-core'
+import { abi, useWeb3, getNetworkElement, useEthosContext, fromDecimals, VOID_ETHEREUM_ADDRESS, formatMoney, getTokenPriceInDollarsOnUniswap, getTokenPriceInDollarsOnSushiSwap, getTokenPriceInDollarsOnUniswapV3, blockchainCall } from 'interfaces-core'
 
 import { allFarmings } from '../../../logic/farming.js'
 import { getRawField } from '../../../logic/generalReader'

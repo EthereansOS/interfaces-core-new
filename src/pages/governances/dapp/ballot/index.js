@@ -1,7 +1,7 @@
 import React from 'react'
 
 import Web3DependantList from '../../../../components/Global/Web3DependantList'
-import { useEthosContext, useWeb3, shortenWord } from '@ethereansos/interfaces-core'
+import { useEthosContext, useWeb3, shortenWord } from 'interfaces-core'
 import LogoRenderer from '../../../../components/Global/LogoRenderer'
 
 import {all} from '../../../../logic/ballot'

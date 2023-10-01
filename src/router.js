@@ -2,7 +2,7 @@ import React, { useMemo, useState, useEffect } from 'react'
 import { Switch, Route } from 'react-router-dom'
 
 import Web3 from 'web3'
-import { useEthosContext, usePlaceholder, useWeb3, abi, getNetworkElement, web3Utils, sendAsync, fromDecimals, toDecimals, blockchainCall } from '@ethereansos/interfaces-core'
+import { useEthosContext, usePlaceholder, useWeb3, abi, getNetworkElement, web3Utils, sendAsync, fromDecimals, toDecimals, blockchainCall } from 'interfaces-core'
 import Connect from './components/Global/Connect'
 import MainTemplate from './components/Global/MainTemplate'
 import AlphaBanner from './components/Global/AlphaBanner'

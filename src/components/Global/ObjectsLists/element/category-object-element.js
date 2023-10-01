@@ -1,6 +1,6 @@
 import style from '../../../../all.module.css'
 
-import { shortenWord, useEthosContext } from '@ethereansos/interfaces-core'
+import { shortenWord, useEthosContext } from 'interfaces-core'
 import LogoRenderer from '../../LogoRenderer'
 
 export default ({element}) => {

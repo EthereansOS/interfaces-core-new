@@ -8,7 +8,7 @@ import TokenInputRegular from '../TokenInputRegular'
 
 import { useOpenSea } from '../../../logic/uiUtilities'
 import { getItemOrders, getPaymentTokens } from '../../../logic/opensea'
-import { useWeb3, fromDecimals, web3Utils, useEthosContext, getNetworkElement, VOID_ETHEREUM_ADDRESS, blockchainCall } from '@ethereansos/interfaces-core'
+import { useWeb3, fromDecimals, web3Utils, useEthosContext, getNetworkElement, VOID_ETHEREUM_ADDRESS, blockchainCall } from 'interfaces-core'
 import { perform } from '../../../logic/uiUtilities'
 import OurCircularProgress from '../OurCircularProgress'
 

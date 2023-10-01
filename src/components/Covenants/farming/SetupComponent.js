@@ -9,7 +9,7 @@ import ActionAWeb3Button from '../../Global/ActionAWeb3Button'
 import TokenInputRegular from '../../Global/TokenInputRegular'
 import RegularButtonDuo from '../../Global/RegularButtonDuo'
 
-import { getLogs, formatMoney, blockchainCall, getTokenPricesInDollarsOnCoingecko, ethers, sendAsync, isEthereumAddress, getEthereumPrice, normalizeValue, formatMoneyUniV3, useWeb3, useEthosContext, getNetworkElement, web3Utils, abi, VOID_ETHEREUM_ADDRESS, toDecimals, fromDecimals, numberToString, formatNumber, getTokenPriceInDollarsOnUniswap } from '@ethereansos/interfaces-core'
+import { getLogs, formatMoney, blockchainCall, getTokenPricesInDollarsOnCoingecko, ethers, sendAsync, isEthereumAddress, getEthereumPrice, normalizeValue, formatMoneyUniV3, useWeb3, useEthosContext, getNetworkElement, web3Utils, abi, VOID_ETHEREUM_ADDRESS, toDecimals, fromDecimals, numberToString, formatNumber, getTokenPriceInDollarsOnUniswap } from 'interfaces-core'
 
 import { loadFarmingSetup, loadFarmingPosition, isValidPosition, addLiquidityGen2 } from '../../../logic/farming'
 import { loadTokenFromAddress } from '../../../logic/erc20'

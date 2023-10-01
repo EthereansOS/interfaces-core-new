@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-import { useEthosContext } from '@ethereansos/interfaces-core'
+import { useEthosContext } from 'interfaces-core'
 
 import style from './index.module.css'
 

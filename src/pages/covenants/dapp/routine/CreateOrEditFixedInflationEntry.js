@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-import { useEthosContext, fromDecimals } from '@ethereansos/interfaces-core'
+import { useEthosContext, fromDecimals } from 'interfaces-core'
 import CreateOrEditFixedInflationEntryOperation from './CreateOrEditFixedInflationEntryOperation'
 import style from '../../../../all.module.css'
 

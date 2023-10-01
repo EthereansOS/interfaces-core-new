@@ -5,7 +5,7 @@ import Navigation from '../Navigation'
 import style from '../../../all.module.css'
 import Web3Connect  from '../Web3Connect'
 
-import { useWeb3, useEthosContext, sendAsync } from '@ethereansos/interfaces-core'
+import { useWeb3, useEthosContext, sendAsync } from 'interfaces-core'
 
 import { useThemeSelector } from '../../../logic/uiUtilities'
 

@@ -4,7 +4,7 @@ import OurCircularProgress from '../OurCircularProgress'
 import RegularModal from '../../Global/RegularModal'
 import ConnectWidget from './widget'
 
-import { useWeb3, web3States } from '@ethereansos/interfaces-core'
+import { useWeb3, web3States } from 'interfaces-core'
 
 const Connect = ({ children }) => {
   const { web3, setConnector, errorMessage, connectors, connectionStatus } = useWeb3()

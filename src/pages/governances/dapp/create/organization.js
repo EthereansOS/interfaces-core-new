@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react'
 
-import { Style, useEthosContext, useWeb3, web3Utils } from '@ethereansos/interfaces-core'
+import { Style, useEthosContext, useWeb3, web3Utils } from 'interfaces-core'
 
 import { useHistory } from 'react-router-dom'
 

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { Typography } from '@ethereansos/interfaces-ui'
+
 
 import style from './proposals-list.module.css'
 import RegularButtonDuo from '../../Global/RegularButtonDuo/index.js'
@@ -21,8 +21,8 @@ const ProposalsList = (props) => {
               <p className={style.PendingTagBlue}>Pending</p>
               <p className={style.PendingTagGreen}>Succed</p>
               <p className={style.PendingTagGreen}>Executed</p>
-              <p className={style.PendingTagRed}>Defeated</p> 
-              */} 
+              <p className={style.PendingTagRed}>Defeated</p>
+              */}
             </div>
           </div>
           <div className={style.ProposalVotesCount}>
@@ -30,7 +30,7 @@ const ProposalsList = (props) => {
             <RegularButtonDuo/>
           </div>
           <div className={style.ProposalOpen}>
-            
+
           </div>
         </div>
   )

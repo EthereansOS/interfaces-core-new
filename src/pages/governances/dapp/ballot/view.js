@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
 import Web3DependantList from '../../../../components/Global/Web3DependantList'
-import { abi, useEthosContext, useWeb3, toDecimals, fromDecimals, blockchainCall, VOID_ETHEREUM_ADDRESS } from '@ethereansos/interfaces-core'
+import { abi, useEthosContext, useWeb3, toDecimals, fromDecimals, blockchainCall, VOID_ETHEREUM_ADDRESS } from 'interfaces-core'
 import { useLocation } from 'react-router'
 
 import {getProposal, preparePermit} from '../../../../logic/ballot'

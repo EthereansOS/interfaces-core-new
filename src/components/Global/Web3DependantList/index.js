@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react'
 
-import { useWeb3 } from '@ethereansos/interfaces-core'
+import { useWeb3 } from 'interfaces-core'
 import { FixedSizeList } from 'react-window'
 import OurCircularProgress from '../OurCircularProgress'
 

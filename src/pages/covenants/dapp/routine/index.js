@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState, useMemo } from 'react'
 
 import Web3DependantList from '../../../../components/Global/Web3DependantList'
 
-import { getNetworkElement, useEthosContext, useWeb3, formatMoney, fromDecimals, web3Utils } from '@ethereansos/interfaces-core'
+import { getNetworkElement, useEthosContext, useWeb3, formatMoney, fromDecimals, web3Utils } from 'interfaces-core'
 import { allRoutines } from '../../../../logic/routines'
 
 import ViewRoutine from './view'

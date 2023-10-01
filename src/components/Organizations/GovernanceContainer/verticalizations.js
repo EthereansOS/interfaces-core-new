@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 
-import { useWeb3, blockchainCall, fromDecimals, abi } from '@ethereansos/interfaces-core'
+import { useWeb3, blockchainCall, fromDecimals, abi } from 'interfaces-core'
 
 export function InflationRateActiveSelection({element}) {
 

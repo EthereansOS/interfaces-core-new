@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-import { VOID_BYTES32, useWeb3 } from '@ethereansos/interfaces-core'
+import { VOID_BYTES32, useWeb3 } from 'interfaces-core'
 
 import { useGlobalModal } from '../../../logic/uiUtilities'
 
@@ -75,14 +75,14 @@ const Element = props => {
                     {isSelected && status === "todo" && <span className={style.SequenceStatus}>🔷 </span>}
                     {element.label}
                 </p>
-            
+
                 {isSelected && status !== "pending" && status !== "done" && status !== "skipped" && <>
                     <div className={style.FinalizeSequenceBoxButtons}>
                         {element.onTransactionReceipt && <a className={style.RegularButtonDuo} onClick={() => setTransactionHash(transactionHash !== undefined && transactionHash !== null ? undefined : "")}>Recover</a>}
                         {(transactionHash === undefined || transactionHash === null) && <a className={style.ActionAWeb3Button} onClick={performAction}>{element.text || (index === sequenceStatus.length - 1 ? "Finalize" : "Deploy")}</a>}
                     </div>
                 </>}
-                
+
                 {transactionHash !== undefined && transactionHash !== null && <div className={style.CreationPageLabelF}>
                     <p>If you already did this transaction, you can recover it by pasting the transaction hash</p>
                     <input type="text" disabled={(!transactionHashElaborated && transactionHashElaborated !== false) || status === 'done'} value={transactionHash} onChange={e => setTransactionHash(e.currentTarget.value)} placeholder="Transaction hash"/>
@@ -123,7 +123,7 @@ const Main = props => {
         {onClose && <a onClick={close}>X</a>}
         <div className={style.FinalizeSequenceBox}>
             {sequence.map((element, index) => <Element key={element.label} {...{...props, stateData, index, element : {...element, index}}}/>)}
-            {errorMessage && 
+            {errorMessage &&
             <div className={style.SequenceStatusErrorBox}>
                 <p>{errorMessage}</p>
             </div>}

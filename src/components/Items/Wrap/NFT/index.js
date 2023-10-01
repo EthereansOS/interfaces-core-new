@@ -4,7 +4,7 @@ import { Link, useHistory } from 'react-router-dom'
 import TokenInputRegular from '../../../Global/TokenInputRegular'
 import ActionAWeb3Buttons from '../../../Global/ActionAWeb3Buttons'
 
-import { blockchainCall, useWeb3, abi, web3Utils } from '@ethereansos/interfaces-core'
+import { blockchainCall, useWeb3, abi, web3Utils } from 'interfaces-core'
 import { wrapNFT } from '../../../../logic/itemsV2'
 
 import OurCircularProgress from '../../../Global/OurCircularProgress'

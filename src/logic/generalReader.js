@@ -1,4 +1,4 @@
-import { web3Utils, sendAsync, abi, VOID_ETHEREUM_ADDRESS } from '@ethereansos/interfaces-core'
+import { web3Utils, sendAsync, abi, VOID_ETHEREUM_ADDRESS } from 'interfaces-core'
 
 export async function getData({ provider }, address) {
 

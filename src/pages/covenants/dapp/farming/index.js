@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState, useMemo } from 'react'
 
 import Web3DependantList from '../../../../components/Global/Web3DependantList'
 
-import { isEthereumAddress, useEthosContext, useWeb3, web3Utils } from '@ethereansos/interfaces-core'
+import { isEthereumAddress, useEthosContext, useWeb3, web3Utils } from 'interfaces-core'
 
 import { allFarmings } from '../../../../logic/farming'
 import style from '../../../../all.module.css'

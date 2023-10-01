@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
-import { useWeb3, useEthosContext, blockchainCall, sendAsync, getNetworkElement } from '@ethereansos/interfaces-core'
+import { useWeb3, useEthosContext, blockchainCall, sendAsync, getNetworkElement } from 'interfaces-core'
 
 import { useOpenSea } from '../../../logic/uiUtilities'
 import { tryRetrieveL1Address, tryRetrieveL2Address, createL2Token } from '../../../logic/optimism'

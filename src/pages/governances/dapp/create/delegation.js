@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react'
 
 import { Link, useLocation } from 'react-router-dom'
-import { Style, useEthosContext, useWeb3, web3Utils } from '@ethereansos/interfaces-core'
+import { Style, useEthosContext, useWeb3, web3Utils } from 'interfaces-core'
 import {createDelegation, finalizeDelegation} from '../../../../logic/delegation'
 import CircularProgress from '../../../../components/Global/OurCircularProgress'
 import style from '../../../../all.module.css'

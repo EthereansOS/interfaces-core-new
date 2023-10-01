@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 
 import TokenInputRegular from '../../Global/TokenInputRegular'
 import ActionAWeb3Button from '../../Global/ActionAWeb3Button'
-import { blockchainCall, useWeb3, abi, sendAsync, web3Utils } from '@ethereansos/interfaces-core'
+import { blockchainCall, useWeb3, abi, sendAsync, web3Utils } from 'interfaces-core'
 
 import style from '../../../all.module.css'
 

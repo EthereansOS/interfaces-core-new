@@ -1,5 +1,5 @@
 import React from 'react'
-import {Typography} from '@ethereansos/interfaces-ui'
+
 
 import style from './covenants-sections.module.css'
 import RoutinesExplore from '../SubSections/routines-explore.js'

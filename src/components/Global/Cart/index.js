@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react'
 
-import { web3Utils, abi, blockchainCall, formatMoney, fromDecimals, numberToString, useWeb3, toDecimals, shortenWord, useEthosContext } from '@ethereansos/interfaces-core'
+import { web3Utils, abi, blockchainCall, formatMoney, fromDecimals, numberToString, useWeb3, toDecimals, shortenWord, useEthosContext } from 'interfaces-core'
 
 import { getEthereum } from '../../../logic/erc20'
 import { calculateSwapOutput, calculateSwapInput } from '../../../logic/amm'

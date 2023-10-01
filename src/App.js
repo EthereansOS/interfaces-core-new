@@ -1,6 +1,6 @@
 import { HashRouter } from 'react-router-dom'
 import React from 'react'
-import '@ethereansos/interfaces-ui/dist/index.cjs.css'
+import 'interfaces-ui/dist/index.cjs.css'
 import style from './all.module.css'
 
 import {
@@ -9,7 +9,7 @@ import {
   InitContextProvider,
   GlobalContextsProvider,
   cache,
-} from '@ethereansos/interfaces-core'
+} from 'interfaces-core'
 
 import { ThemeSelectorContextProvider, GlobalModalContextProvider, TransactionModalContextProvider, OpenSeaContextProvider } from './logic/uiUtilities'
 

@@ -1,0 +1,8 @@
+.root {
+  max-width: var(--container-width);
+  margin: 0 auto;
+
+  display: inline-block;
+  flex-direction: column;
+  align-items: center;
+}

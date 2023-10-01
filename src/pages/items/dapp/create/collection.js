@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 import ActionAWeb3Button from '../../../../components/Global/ActionAWeb3Button'
 
-import { useEthosContext, web3Utils, useWeb3, getNetworkElement } from '@ethereansos/interfaces-core'
+import { useEthosContext, web3Utils, useWeb3, getNetworkElement } from 'interfaces-core'
 
 import RegularModal from '../../../../components/Global/RegularModal'
 

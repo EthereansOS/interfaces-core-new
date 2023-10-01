@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 
-import { useEthosContext, useWeb3 } from '@ethereansos/interfaces-core'
+import { useEthosContext, useWeb3 } from 'interfaces-core'
 import {all} from '../../../../logic/organization'
 import Web3DependantList from '../../../../components/Global/Web3DependantList'
 import ExploreOrganizations from '../../../../components/Organizations/ExploreOrganizations'

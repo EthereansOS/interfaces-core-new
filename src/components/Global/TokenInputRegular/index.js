@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react'
 
 import style from '../../../all.module.css'
 import CircularProgress from '../OurCircularProgress'
-import { abi, blockchainCall, useWeb3, fromDecimals, toDecimals, shortenWord, useEthosContext, formatMoney, numberToString } from '@ethereansos/interfaces-core'
+import { abi, blockchainCall, useWeb3, fromDecimals, toDecimals, shortenWord, useEthosContext, formatMoney, numberToString } from 'interfaces-core'
 import ModalStandard from '../ModalStandard'
 import ObjectsLists from '../ObjectsLists'
 import LogoRenderer from '../LogoRenderer'

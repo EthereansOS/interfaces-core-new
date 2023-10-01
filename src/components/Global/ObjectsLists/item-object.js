@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo } from 'react'
 
-import { useWeb3, useEthosContext, web3Utils } from '@ethereansos/interfaces-core'
+import { useWeb3, useEthosContext, web3Utils } from 'interfaces-core'
 import { loadItemsByFactories } from '../../../logic/itemsV2'
 import { loadTokenFromAddress, loadTokens } from '../../../logic/erc20'
 

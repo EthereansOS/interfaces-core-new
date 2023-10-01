@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { useWeb3, useEthosContext, getNetworkElement } from '@ethereansos/interfaces-core'
+import { useWeb3, useEthosContext, getNetworkElement } from 'interfaces-core'
 
 import style from '../../../all.module.css'
 

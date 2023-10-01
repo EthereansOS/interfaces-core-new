@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { useLocation } from 'react-router'
-import { useEthosContext, useWeb3, web3Utils, abi } from '@ethereansos/interfaces-core'
+import { useEthosContext, useWeb3, web3Utils, abi } from 'interfaces-core'
 import CircularProgress from '../../../../components/Global/OurCircularProgress'
 import ViewCover from '../../../../components/Items/ViewCover'
 import ViewDescription from '../../../../components/Items/ViewDescription'

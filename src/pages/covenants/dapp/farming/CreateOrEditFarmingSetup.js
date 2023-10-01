@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useEthosContext, useWeb3, VOID_ETHEREUM_ADDRESS, fromDecimals, getNetworkElement, formatNumber, isEthereumAddress, formatMoney, blockchainCall } from '@ethereansos/interfaces-core'
+import { useEthosContext, useWeb3, VOID_ETHEREUM_ADDRESS, fromDecimals, getNetworkElement, formatNumber, isEthereumAddress, formatMoney, blockchainCall } from 'interfaces-core'
 import {
     tickToPrice,
     nearestUsableTick,

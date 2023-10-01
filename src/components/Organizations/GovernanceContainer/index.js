@@ -4,7 +4,7 @@ import Left from './left'
 import Head from './head'
 import Right from './right'
 
-import { useWeb3, useEthosContext } from '@ethereansos/interfaces-core'
+import { useWeb3, useEthosContext } from 'interfaces-core'
 
 import style from '../../../all.module.css'
 

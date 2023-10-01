@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import { formatMoney, fromDecimals, useEthosContext } from '@ethereansos/interfaces-core'
+import { formatMoney, fromDecimals, useEthosContext } from 'interfaces-core'
 
 import CreateOrEditFarmingSetup from './CreateOrEditFarmingSetup'
 

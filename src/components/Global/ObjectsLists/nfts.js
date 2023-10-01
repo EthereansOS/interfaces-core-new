@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo } from 'react'
 
-import {useWeb3, useEthosContext, fromDecimals, isEthereumAddress, shortenWord } from '@ethereansos/interfaces-core'
+import {useWeb3, useEthosContext, fromDecimals, isEthereumAddress, shortenWord } from 'interfaces-core'
 
 import Web3DependantList from '../Web3DependantList'
 import { useOpenSea } from '../../../logic/uiUtilities'

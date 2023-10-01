@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 import ActionAWeb3Button from '../../../../components/Global/ActionAWeb3Button'
 import { useLocation, useHistory } from 'react-router-dom'
-import { useEthosContext, web3Utils, useWeb3, getNetworkElement, blockchainCall, abi, sendAsync, VOID_BYTES32, VOID_ETHEREUM_ADDRESS } from '@ethereansos/interfaces-core'
+import { useEthosContext, web3Utils, useWeb3, getNetworkElement, blockchainCall, abi, sendAsync, VOID_BYTES32, VOID_ETHEREUM_ADDRESS } from 'interfaces-core'
 import { getRawField } from '../../../../logic/generalReader'
 
 import RegularModal from '../../../../components/Global/RegularModal'

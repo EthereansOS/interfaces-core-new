@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 
 import style from '../../../../all.module.css'
 
-import { abi, getNetworkElement, useEthosContext, useWeb3, fromDecimals, shortenWord } from '@ethereansos/interfaces-core'
+import { abi, getNetworkElement, useEthosContext, useWeb3, fromDecimals, shortenWord } from 'interfaces-core'
 import LogoRenderer from '../../LogoRenderer'
 import { Link } from 'react-router-dom'
 import { loadItemDynamicInfo } from '../../../../logic/itemsV2'

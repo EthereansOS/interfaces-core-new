@@ -9,7 +9,7 @@ import { calculateSwapOutput, calculateSwapInput, performSwap } from '../../../l
 import { getEthereum } from '../../../logic/erc20'
 import { loadiETH } from '../../../logic/itemsV2.js'
 
-import { fromDecimals, useEthosContext, useWeb3, formatMoney } from '@ethereansos/interfaces-core'
+import { fromDecimals, useEthosContext, useWeb3, formatMoney } from 'interfaces-core'
 
 import style from '../../../all.module.css'
 import { useOpenSea } from '../../../logic/uiUtilities'

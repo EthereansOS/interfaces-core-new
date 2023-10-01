@@ -1,10 +1,10 @@
 import React, { useState, Fragment, useEffect } from 'react'
 
-import { Button, Typography } from '@ethereansos/interfaces-ui'
+import { Button, Typography } from 'interfaces-ui'
 
 import OurCircularProgress from '../OurCircularProgress'
 
-import { web3States } from '@ethereansos/interfaces-core'
+import { web3States } from 'interfaces-core'
 
 export default ({
     title,

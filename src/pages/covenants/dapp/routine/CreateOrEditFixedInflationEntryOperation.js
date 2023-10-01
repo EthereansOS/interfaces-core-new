@@ -1,6 +1,6 @@
 import React, { useState, useEffect, Fragment } from 'react'
 
-import { abi, blockchainCall, useWeb3, useEthosContext, web3Utils, getNetworkElement, isEthereumAddress, formatNumber, VOID_ETHEREUM_ADDRESS, fromDecimals } from '@ethereansos/interfaces-core'
+import { abi, blockchainCall, useWeb3, useEthosContext, web3Utils, getNetworkElement, isEthereumAddress, formatNumber, VOID_ETHEREUM_ADDRESS, fromDecimals } from 'interfaces-core'
 
 import OurCircularProgress from '../../../../components/Global/OurCircularProgress'
 import LogoRenderer from '../../../../components/Global/LogoRenderer'

@@ -4,7 +4,7 @@ import RegularButtonDuo from '../../Global/RegularButtonDuo/index.js'
 import ExtLinkButton from '../../Global/ExtLinkButton/index.js'
 import LogoRenderer from '../../Global/LogoRenderer'
 import { InflationRateActiveSelection, HeaderStateManagerVariable } from './verticalizations'
-import { useEthosContext, useWeb3, getNetworkElement, fromDecimals, blockchainCall, formatMoney } from '@ethereansos/interfaces-core'
+import { useEthosContext, useWeb3, getNetworkElement, fromDecimals, blockchainCall, formatMoney } from 'interfaces-core'
 
 export default ({element, onToggle}) => {
 

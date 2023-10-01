@@ -1,4 +1,4 @@
-import { getLogs, abi, VOID_ETHEREUM_ADDRESS, uploadMetadata, formatLink, getNetworkElement, blockchainCall, web3Utils, sendAsync, tryRetrieveMetadata, toDecimals, fromDecimals, numberToString } from "@ethereansos/interfaces-core"
+import { getLogs, abi, VOID_ETHEREUM_ADDRESS, uploadMetadata, formatLink, getNetworkElement, blockchainCall, web3Utils, sendAsync, tryRetrieveMetadata, toDecimals, fromDecimals, numberToString } from "interfaces-core"
 
 import { getOrganization, extractRules, wellknownPresets } from "./organization"
 

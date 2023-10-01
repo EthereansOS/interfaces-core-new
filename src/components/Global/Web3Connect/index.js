@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 
-import { useWeb3, web3States, truncatedWord, useEthosContext, abi, web3Utils, sendAsync, blockchainCall, formatLink } from '@ethereansos/interfaces-core'
+import { useWeb3, web3States, truncatedWord, useEthosContext, abi, web3Utils, sendAsync, blockchainCall, formatLink } from 'interfaces-core'
 import { ethers } from 'ethers'
 import LogoRenderer from '../LogoRenderer'
 import {Link} from 'react-router-dom'

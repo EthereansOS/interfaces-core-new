@@ -4,7 +4,7 @@ import Description from '../../Organizations/GovernanceContainer/description'
 import { Link } from 'react-router-dom'
 import LogoRenderer from '../../Global/LogoRenderer'
 
-import { useWeb3, useEthosContext } from '@ethereansos/interfaces-core'
+import { useWeb3, useEthosContext } from 'interfaces-core'
 
 import { tryRetrieveDelegationAddressFromItem } from '../../../logic/delegation.js'
 

@@ -6,7 +6,7 @@ import ActionAWeb3Buttons from '../../Global/ActionAWeb3Buttons'
 import Web3DependantList from '../../Global/Web3DependantList'
 import LogoRenderer from '../../Global/LogoRenderer'
 
-import { useWeb3, abi, useEthosContext, fromDecimals, formatMoney, blockchainCall, VOID_ETHEREUM_ADDRESS } from '@ethereansos/interfaces-core'
+import { useWeb3, abi, useEthosContext, fromDecimals, formatMoney, blockchainCall, VOID_ETHEREUM_ADDRESS } from 'interfaces-core'
 import { getAvailableDelegationsManagers } from '../../../logic/delegation'
 import { loadToken } from '../../../logic/itemsV2'
 
@@ -114,7 +114,7 @@ export default ({element}) => {
             <div className={style.GovCardHead}>
                 <div className={style.GovCardHeadDelegation}>
                     <span>Explore new grants</span>
-                
+
                 <div className={style.DelegationWalletsCardBTN}>
                     <RegularButtonDuo onClick={() => setOpened(!opened)}>{opened ? "Close" : "Open"}</RegularButtonDuo>
                 </div>

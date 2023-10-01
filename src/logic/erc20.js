@@ -1,4 +1,4 @@
-import { blockchainCall, web3Utils, abi, getNetworkElement, numberToString, VOID_ETHEREUM_ADDRESS, formatLink } from "@ethereansos/interfaces-core"
+import { blockchainCall, web3Utils, abi, getNetworkElement, numberToString, VOID_ETHEREUM_ADDRESS, formatLink } from "interfaces-core"
 import { dualChainAsMainChain, resolveToken } from "./dualChain"
 import { getRawField } from "./generalReader"
 import { cleanUri, loadItem, loadItemDynamicInfo } from "./itemsV2"

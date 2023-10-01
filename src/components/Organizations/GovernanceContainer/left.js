@@ -7,7 +7,7 @@ import GovernanceRules from '../../Organizations/GovernanceRules/index.js'
 import ActionAWeb3Button from '../../Global/ActionAWeb3Button'
 import ActionAWeb3Buttons from '../../Global/ActionAWeb3Buttons'
 import TokenBuyOrSell from "./tokenBuyOrSell"
-import { formatMoney, isEthereumAddress, useWeb3, fromDecimals, blockchainCall, numberToString, useEthosContext, VOID_BYTES32, VOID_ETHEREUM_ADDRESS, abi, web3Utils, getNetworkElement } from '@ethereansos/interfaces-core'
+import { formatMoney, isEthereumAddress, useWeb3, fromDecimals, blockchainCall, numberToString, useEthosContext, VOID_BYTES32, VOID_ETHEREUM_ADDRESS, abi, web3Utils, getNetworkElement } from 'interfaces-core'
 import CircularProgress from '../../Global/OurCircularProgress'
 import { getData } from '../../../logic/generalReader'
 import { proposeTransfer, proposeVote } from '../../../logic/delegation'

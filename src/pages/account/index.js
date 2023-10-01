@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useWeb3, web3States, truncatedWord, useEthosContext, abi, web3Utils, sendAsync, blockchainCall, formatLink, getNetworkElement } from '@ethereansos/interfaces-core'
+import { useWeb3, web3States, truncatedWord, useEthosContext, abi, web3Utils, sendAsync, blockchainCall, formatLink, getNetworkElement } from 'interfaces-core'
 import { ethers } from 'ethers'
 import { namehash } from '@ethersproject/hash'
 import LogoRenderer from '../../components/Global/LogoRenderer'

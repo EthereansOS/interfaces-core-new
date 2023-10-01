@@ -1,6 +1,6 @@
 import React from 'react'
 import classnames from 'classnames'
-import { Container } from '@ethereansos/interfaces-ui'
+import { Container } from 'interfaces-ui'
 
 import style from './content.module.css'
 

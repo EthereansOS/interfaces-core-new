@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { useEthosContext, useWeb3, getNetworkElement, VOID_ETHEREUM_ADDRESS } from '@ethereansos/interfaces-core'
+import { useEthosContext, useWeb3, getNetworkElement, VOID_ETHEREUM_ADDRESS } from 'interfaces-core'
 
 import ExtLinkButton from '../../Global/ExtLinkButton/index.js'
 
