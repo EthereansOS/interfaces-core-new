@@ -184,7 +184,8 @@ export async function getInitializationData({newContract, context, chainId}, con
     }
 }
 
-export async function getOrganization({ chainId, context, web3, account, getGlobalContract, newContract }, organizationAddress, host) {
+export async function getOrganization(web3Data, organizationAddress, host) {
+    var { chainId, context, web3, account, getGlobalContract, newContract } = web3Data
     var contract = newContract(context.SubDAOABI, organizationAddress)
     var organization = {
         address: organizationAddress,
@@ -211,8 +212,9 @@ export async function getOrganization({ chainId, context, web3, account, getGlob
     organization.proposalsConfiguration = await getProposalsConfiguration({ chainId, context, web3, account, getGlobalContract, newContract }, organization.components.proposalsManager)
 
     try {
-        organization.votingToken = await loadTokenFromAddress({context, account, newContract}, abi.decode(["address"], abi.encode(["uint256"], [organization.proposalsConfiguration.objectIds[0]]))[0])
-    } catch(e) {}
+        organization.votingToken = await loadTokenFromAddress(web3Data, abi.decode(["address"], abi.encode(["uint256"], [organization.proposalsConfiguration.objectIds[0]]))[0])
+    } catch(e) {
+    }
 
     organization.organizations = await getAllOrganizations({ chainId, context, web3, account, getGlobalContract, newContract }, organization)
 

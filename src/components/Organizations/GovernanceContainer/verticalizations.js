@@ -2,6 +2,24 @@ import React, { useState, useEffect } from 'react'
 
 import { useWeb3, blockchainCall, fromDecimals, abi } from 'interfaces-core'
 
+export function DelegationsManagerInsurance({element}) {
+
+    const { block } = useWeb3()
+    const [value, setValue] = useState(null)
+
+    async function refresh() {
+        setValue(null)
+        var val = await blockchainCall((element.organization.components.delegationsManager).contract.methods.attachInsurance)
+        setValue((fromDecimals(val, element.organization.votingToken.decimals, true)) + " " + element.organization.votingToken.symbol)
+    }
+
+    useEffect(() => {
+        refresh()
+    }, [element, block])
+
+    return value || <></>
+}
+
 export function InflationRateActiveSelection({element}) {
 
     const { block } = useWeb3()

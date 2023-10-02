@@ -36,6 +36,7 @@ export default ({element, onToggle}) => {
   var Component;
 
   (element.name === 'OS Inflation Rate' || element.label === 'FIXED_INFLATION_V1') && (Component = <InflationRateActiveSelection element={element}/>)
+  (element.label === 'DELEGATIONS_MANAGER_INSURANCE_V1') && (Component = <DelegationsManagerInsurance element={element}/>)
   element.name === 'FoF Fee (Transaction)' && (Component = <HeaderStateManagerVariable element={element} name="factoryOfFactoriesFeePercentageTransacted" decimals="16" suffix=" %"/>)
   element.name === 'FoF Fee (Token)' && (Component = <HeaderStateManagerVariable element={element} name="factoryOfFactoriesFeePercentageBurn"  decimals="16" suffix=" %"/>)
   element.name === 'Covenants Farming Fee (Transaction)' && (Component = <HeaderStateManagerVariable element={element} name="farmingFeePercentageTransacted" decimals="16" suffix=" %"/>)
