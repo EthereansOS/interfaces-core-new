@@ -3,8 +3,13 @@ import style from '../../../all.module.css'
 import RegularButtonDuo from '../../Global/RegularButtonDuo/index.js'
 import ExtLinkButton from '../../Global/ExtLinkButton/index.js'
 import LogoRenderer from '../../Global/LogoRenderer'
-import { InflationRateActiveSelection, HeaderStateManagerVariable } from './verticalizations'
+import { InflationRateActiveSelection, HeaderStateManagerVariable, DelegationsManagerInsurance } from './verticalizations'
 import { useEthosContext, useWeb3, getNetworkElement, fromDecimals, blockchainCall, formatMoney } from 'interfaces-core'
+
+const names = {
+  'FIXED_INFLATION_V1' : element => `${element.organization.votingToken.symbol} Inflation Rate`,
+  'DELEGATIONS_MANAGER_INSURANCE_V1' : element => `${element.organization.name} Delegations attachment insurance`
+}
 
 export default ({element, onToggle}) => {
 
@@ -35,8 +40,8 @@ export default ({element, onToggle}) => {
 
   var Component;
 
-  (element.name === 'OS Inflation Rate' || element.label === 'FIXED_INFLATION_V1') && (Component = <InflationRateActiveSelection element={element}/>)
-  (element.label === 'DELEGATIONS_MANAGER_INSURANCE_V1') && (Component = <DelegationsManagerInsurance element={element}/>)
+  if(element.name === 'OS Inflation Rate' || element.label === 'FIXED_INFLATION_V1') { (Component = <InflationRateActiveSelection element={element}/>) }
+  element.label === 'DELEGATIONS_MANAGER_INSURANCE_V1' && (Component = <DelegationsManagerInsurance element={element}/>)
   element.name === 'FoF Fee (Transaction)' && (Component = <HeaderStateManagerVariable element={element} name="factoryOfFactoriesFeePercentageTransacted" decimals="16" suffix=" %"/>)
   element.name === 'FoF Fee (Token)' && (Component = <HeaderStateManagerVariable element={element} name="factoryOfFactoriesFeePercentageBurn"  decimals="16" suffix=" %"/>)
   element.name === 'Covenants Farming Fee (Transaction)' && (Component = <HeaderStateManagerVariable element={element} name="farmingFeePercentageTransacted" decimals="16" suffix=" %"/>)
@@ -61,7 +66,7 @@ export default ({element, onToggle}) => {
       </> : <>
         <div className={style.GovCardHeadOrganization}>
           <div className={style.GovCardHeadOrganizationTitle}>
-            <h6>{element.name || `${element.organization.votingToken.symbol} Inflation Rate`}</h6>
+            <h6>{element.name || (names[element.label] && names[element.label](element)) || 'Proposal'}</h6>
             <ExtLinkButton text="Etherscan" href={`${getNetworkElement({context, chainId}, 'etherscanURL')}/tokenholdings?a=${element.organization.address}`}/>
             <ExtLinkButton text="Discussion" href={element.discussion_url || element.discord_url}/>
           </div>
