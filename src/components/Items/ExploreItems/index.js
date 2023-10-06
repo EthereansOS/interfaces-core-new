@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { abi, shortenWord, formatMoney, fromDecimals, blockchainCall, useEthosContext, useWeb3, getTokenPriceInDollarsOnUniswap, getTokenPriceInDollarsOnUniswapV3, getTokenPriceInDollarsOnSushiSwap } from 'interfaces-core'
 import style from '../../../all.module.css'
@@ -31,26 +31,30 @@ const Item = ({element, allMine, wrappedOnly}) => {
   }, [element])
 
   useEffect(() => {
-    !allMine && getRawField({provider : web3.currentProvider}, element.l2Address || element.address, 'totalSupply').then(val => val !== '0x' && setTotalSupply(abi.decode(["address"], val)[0].toString()))
-    allMine && getRawField({provider : web3.currentProvider}, element.l2Address || element.address, 'balanceOf(address)', account).then(val => val !== '0x' && setBalance(abi.decode(["address"], val)[0].toString()))
+    !allMine && getRawField({provider : web3.currentProvider}, element.l2Address || element.address, 'totalSupply').then(val => val !== '0x' && setTotalSupply(abi.decode(["uint256"], val)[0].toString()))
+    allMine && getRawField({provider : web3.currentProvider}, element.l2Address || element.address, 'balanceOf(address)', account).then(val => val !== '0x' && setBalance(abi.decode(["uint256"], val)[0].toString()))
   }, [element, account, allMine])
+
+  const isDeck = useMemo(() => element.isDeck || loadedData?.isDeck,[element, loadedData])
+  const name = useMemo(() => element.name || loadedData?.name,[element, loadedData])
+  const decimals = useMemo(() => element.decimals || loadedData?.decimals,[element, loadedData])
 
   return (
     <div className={style.ItemSingle}>
-      <Link to={`/items/${wrappedOnly === 'Deck' || element.isDeck ? 'decks/' : ''}${element.l2Address || element.address}`}>
+      <Link to={`/items/${wrappedOnly === 'Deck' || isDeck ? 'decks/' : ''}${element.l2Address || element.address}`}>
         {!loadedData && <OurCircularProgress/>}
         {loadedData && <ItemImage input={loadedData}/>}
         <div className={style.ItemTitle}>
-          <h6>{shortenWord({ context, charsAmount : 15}, element.name)}</h6>
+          <h6>{shortenWord({ context, charsAmount : 15}, name)}</h6>
         </div>
         <div className={style.ItemInfo}>
           {!allMine && <div className={style.ItemInfoSide}>
             <p>Supply:</p>
-            <p>{fromDecimals(totalSupply, element.decimals)}</p>
+            <p>{shortenWord({ context, charsAmount : 5, shortenWordSuffix: '...'}, fromDecimals(totalSupply, decimals))}</p>
           </div>}
           {allMine && <div className={style.ItemInfoSide}>
             <p>Balance:</p>
-            <p>{fromDecimals(balance, element.decimals)}</p>
+            <p>{fromDecimals(balance, decimals)}</p>
           </div>}
           <div className={style.ItemInfoSide2}>
             <p>Price:</p>

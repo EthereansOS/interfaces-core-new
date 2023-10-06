@@ -108,7 +108,8 @@ export async function loadItemsByFactories(data, factories) {
                 [itemId] : {
                     itemId,
                     item,
-                    address : log.address
+                    mainInterfaceAddress : log.address,
+                    address : abi.decode(["address"], abi.encode(["uint256"], [itemId]))[0]
                 }
             }
         }, {})
@@ -165,7 +166,7 @@ export async function loadItemsByFactories(data, factories) {
             itemIds = itemIds.filter(it => logs.indexOf(it.itemId) !== -1)
         }
 
-        var vals = await Promise.all(itemIds.map(it => loadItem({...data, collectionData, lightweight : lightweight !== false }, it.itemId, it.item)))
+        var vals = [...itemIds]//await Promise.all(itemIds.map(it => loadItem({...data, collectionData, lightweight : lightweight !== false }, it.itemId, it.item)))
         vals = !l2Tokens ? vals : vals.map(it => ({...it, ...l2Tokens[it.id]}))
 
         if(dualChainId && !wrappedOnly && !collectionData) {
@@ -455,17 +456,21 @@ export function cleanUri(data, uri, id) {
     return uri
 }
 
-export async function loadItemDynamicInfo(data, itemData, item) {
+export async function loadItemDynamicInfo(data, itemData) {
 
     if(typeof itemData === 'string') {
-        return await loadItem({ ...data, lightweight : false }, itemData, item)
+        return await loadItem({ ...data, lightweight : false }, itemData)
     }
 
-    const key = web3Utils.sha3(`item-${web3Utils.toChecksumAddress(itemData.mainInterfaceAddress)}-${itemData.id}`)
+    const key = web3Utils.sha3(`item-${web3Utils.toChecksumAddress(itemData.mainInterfaceAddress)}-${itemData.id || itemData.itemId}`)
     var metadata = JSON.parse(await cache.getItem(key))
 
     if(metadata) {
         return await cleanItemData(data, itemData, metadata)
+    }
+
+    if(!itemData.id) {
+        return await loadItem({ ...data, lightweight : false }, itemData.itemId)
     }
 
     var image
