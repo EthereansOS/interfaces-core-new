@@ -805,7 +805,7 @@ export async function withdrawProposal({account}, proposal, proposalId, address,
 }
 
 export async function checkSurveyStatus(inputData, proposal, proposalId, addressesKey) {
-    if(!proposal.organization.old) {
+    if(!proposal.organization.old && proposal.organization.type !== 'delegation') {
         return await checkSurveyStatusNew(inputData, proposal, proposalId, addressesKey)
     }
     var { account, newContract, context} = inputData
