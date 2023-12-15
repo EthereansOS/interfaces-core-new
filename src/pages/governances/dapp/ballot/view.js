@@ -171,7 +171,7 @@ const BallotView = () => {
 }
 
 BallotView.menuVoice = {
-  path : '/guilds/ballots/:id',
+  path : '/organizations/ballots/:id',
 }
 
 export default BallotView

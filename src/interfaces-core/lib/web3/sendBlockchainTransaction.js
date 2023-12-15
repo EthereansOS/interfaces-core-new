@@ -13,6 +13,7 @@ var getEtherscanAddress = function getEtherscanAddress(postFix, chainId) {
       3: 'ropsten',
       4: 'rinkeby',
       42: 'kovan',
+      10 : 'optimistic'
     }
     var prefix = idToNetwork[parseInt(chainId)]
     prefix && (prefix += '.')

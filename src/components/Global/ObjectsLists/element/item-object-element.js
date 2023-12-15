@@ -19,31 +19,27 @@ export default ({element, onClick, noBalance}) => {
   const web3Data = useWeb3()
   const { chainId, account, web3 } = web3Data
 
-  const [balance, setBalance] = useState(element.balance)
-
   const [loadedData, setLoadedData] = useState()
 
   useEffect(() => {
-    loadItemDynamicInfo({...web3Data, context, seaport}, element).then(setLoadedData)
+    loadItemDynamicInfo({...web3Data, context, seaport}, element).then(result => setLoadedData({...element, ...result}))
   }, [element])
 
-  useEffect(() => {
-    getRawField({provider : web3.currentProvider}, element.l2Address || element.address, 'balanceOf(address)', account).then(val => val !== '0x' && setBalance(abi.decode(["address"], val)[0].toString()))
-  }, [element, account])
+  if(!loadedData) {
+    return <OurCircularProgress/>
+  }
 
   return (
     <a className={style.TokenObject} onClick={() => onClick && loadedData && onClick(loadedData)}>
-      {!loadedData && <OurCircularProgress/>}
       {loadedData && <LogoRenderer input={loadedData}/>}
       <div className={style.ObjectInfo}>
         <div className={style.ObjectInfoAndLink}>
-          <h5>{shortenWord({ context, charsAmount : 15}, element.name)} ({shortenWord({ context, charsAmount : 15}, element.symbol)})</h5>
-          <a target="_blank" onClick={e => e.stopPropagation()} href={`${getNetworkElement({context, chainId}, "etherscanURL")}/token/${element.address}`}>Etherscan</a>
-          <Link className={style.LinkCool} onClick={e => e.stopPropagation()} to={'/items/' + element.address}>Item</Link>
+          <h5>{shortenWord({ context, charsAmount : 15}, loadedData.name)} ({shortenWord({ context, charsAmount : 15}, loadedData.symbol)})</h5>
+          {/*<a target="_blank" onClick={e => e.stopPropagation()} href={`${getNetworkElement({context, chainId}, "etherscanURL")}/token/${loadedData.address}`}>Etherscan</a>
+          <Link className={style.LinkCool} onClick={e => e.stopPropagation()} to={'/items/' + loadedData.address}>Item</Link>*/}
         </div>
-        <div style={{"visibility" : noBalance ? "hidden" : "visible"}} className={style.ObjectInfoBalance}>
-          <p>{fromDecimals(balance, element.decimals || '0')}</p>
-          <span>Balance</span>
+        <div className={style.ObjectInfoBalance}>
+          <p>{'\u00a0'}</p>
         </div>
       </div>
     </a>

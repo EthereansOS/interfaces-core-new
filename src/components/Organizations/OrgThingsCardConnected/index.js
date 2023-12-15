@@ -3,7 +3,7 @@ import React from 'react'
 import style from '../../../all.module.css'
 import LogoRenderer from '../../Global/LogoRenderer'
 
-import { useEthosContext, useWeb3, getNetworkElement } from 'interfaces-core'
+import { useEthosContext, useWeb3, getNetworkElement, abi } from 'interfaces-core'
 
 const OrgThingsCardTokens = ({title, elements}) => {
 
@@ -18,7 +18,7 @@ const OrgThingsCardTokens = ({title, elements}) => {
       </div>
       <div className={style.OrgThingsRegularInfoPictureCarousel}>
         {elements.map(it => <a key={it.address} target="_blank" href={`${getNetworkElement({context, chainId}, 'etherscanURL')}/token/${it.interoperableInterface?.options.address || it.address}`}>
-          <LogoRenderer input={it}/>
+          <LogoRenderer input={{...it, address : !it.passedAsERC20 ? abi.decode(["address"], abi.encode(["uint256"], [it.id]))[0] : it.address}}/>
         </a>)}
       </div>
     </div>

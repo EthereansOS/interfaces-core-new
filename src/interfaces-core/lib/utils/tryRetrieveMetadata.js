@@ -30,6 +30,9 @@ export default async function tryRetrieveMetadata(
   { context, itemsTokens, ethItemElementImages, metadatas },
   item
 ) {
+  if(window.isLocal) {
+    return item
+  }
   if (item.metadataLink) {
     return item
   }

@@ -12,7 +12,7 @@ import { Link } from 'react-router-dom'
 const BallotItem = ({element}) => {
     const context = useEthosContext()
     return (
-        <Link to={`/guilds/ballots/${element.id}`} className={style.TokenObject}>
+        <Link to={`/organizations/ballots/${element.id}`} className={style.TokenObject}>
             <LogoRenderer input={element}/>
             <div className={style.ObjectInfo}>
                 <div className={style.ObjectInfoCategory}>
@@ -40,7 +40,7 @@ const Ballots = () => {
 
 /*Ballots.menuVoice = {
   label : 'Ballots',
-  path : '/guilds/ballots',
+  path : '/organizations/ballots',
   subMenuLabel : 'All',
   contextualRequire : () => require.context('./', false, /.js$/),
   index : 3

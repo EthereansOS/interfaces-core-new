@@ -2566,7 +2566,7 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 
 .biz .Factories {background: linear-gradient(0deg, #ffffff 50%, hsl(212deg 30% 83%) 100%);}
 .biz .Items {background: linear-gradient(0deg, #ffffff 50%, #bfc0ea 100%);}
-.biz .Guilds {background: linear-gradient(0deg, #ffffff 50%, #99e9da 100%);}
+.biz .Organizations {background: linear-gradient(0deg, #ffffff 50%, #99e9da 100%);}
 .biz .Covenants {background: linear-gradient(0deg, #ffffff 50%, #eccfd9 100%);}
 
 .light input[type=range] {background-color: transparent;}
@@ -2727,6 +2727,6 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
   .light .NavigationItem:hover, .light .Navigation .selected {background-color: #ffffff !important;}
   .biz .NavigationItem:hover, .biz .Navigation .selected {font-weight: bold !important;}
   .dark .NavigationItem:hover, .dark .Navigation .selected {background-color: #000000 !important;}
-  
+
 
 }

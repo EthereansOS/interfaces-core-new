@@ -240,7 +240,7 @@ const TokenBuyOrSell = ({buyOrSell, element, setOnClick, stateProvider}) => {
 export default ({buyOrSell, close, element}) => {
     return (
         <RegularModal close={close}>
-            <ProposalMetadata {...{element, onSuccess: close, buyOrSell, Component: TokenBuyOrSell}}/>
+            <ProposalMetadata {...{element, onSuccess: close, buyOrSell, Component: TokenBuyOrSell, hideProposeButton : !element.organization?.old}}/>
         </RegularModal>
     )
 }

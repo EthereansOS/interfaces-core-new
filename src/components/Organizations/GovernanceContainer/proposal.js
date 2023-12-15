@@ -10,9 +10,9 @@ import VoteSelections from '../VoteSelections/index.js'
 
 import { getLogs, abi, useWeb3, useEthosContext, blockchainCall, fromDecimals, formatLink, web3Utils, sendAsync, isEthereumAddress, getNetworkElement } from 'interfaces-core'
 
-import { surveyIsTerminable, terminateProposal, withdrawProposal, tokensToWithdraw, checkSurveyStatus } from '../../../logic/organization'
+import { surveyIsTerminable, terminateProposal, withdrawProposal, tokensToWithdraw, checkSurveyStatus, retrieveProposals } from '../../../logic/organization'
 import { getRawField } from '../../../logic/generalReader'
-import { proposeVote } from '../../../logic/delegation'
+import { proposeVote, getMetadataByCodeSequence } from '../../../logic/delegation'
 
 import Description from './description'
 
@@ -121,10 +121,11 @@ export default ({element, refreshElements, forDelegationVote}) => {
       var addM = {}
       try {
         if(!element.additionalMetadata) {
-          var additionalUri = await getRawField({ provider : element.proposalsManager.currentProvider }, proposalData[1][0], 'additionalUri')
+          /*var additionalUri = await getRawField({ provider : element.proposalsManager.currentProvider }, proposalData[1][0], 'additionalUri')
           additionalUri = abi.decode(["string"], additionalUri)[0]
           additionalUri = formatLink({ context }, additionalUri)
-          addM = await (await fetch(additionalUri)).json()
+          addM = await (await fetch(additionalUri)).json()*/
+          addM = await getMetadataByCodeSequence({ provider : element.proposalsManager.currentProvider, context }, proposalData[1][0])
         }
       } catch(e) {}
       if(!element.isSurveyless && !buyOrSell) {
@@ -181,12 +182,12 @@ export default ({element, refreshElements, forDelegationVote}) => {
 
   async function refreshGlobalData() {
     try {
-      setSucceeding(await checkSurveyStatus({account, newContract, context}, element, element.proposalId, "validators"))
+      setSucceeding(await checkSurveyStatus({...web3Data, context}, element, element.proposalId, "validators"))
     } catch(e) {}
     try {
-      setTerminable(await surveyIsTerminable({account, newContract, context}, element, element.proposalId))
+      setTerminable(await surveyIsTerminable({...web3Data, context}, element, element.proposalId))
     } catch(e) {}
-    setProposalData((await blockchainCall(element.proposalsManager.methods.list, [element.proposalId]))[0])
+    setProposalData((await retrieveProposals(element.proposalsManager, [element.proposalId]))[0])
   }
 
   function withdrawAfterDelegationVoteOriginalProposalTermination() {

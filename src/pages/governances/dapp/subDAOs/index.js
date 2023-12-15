@@ -29,7 +29,7 @@ const SubDAOsList = ({}) => {
 
 SubDAOsList.menuVoice = {
   label : 'Organizations',
-  path : '/guilds',
+  path : '/organizations',
   contextualRequire : () => require.context('./', false, /.js$/),
   index : 0
 }

@@ -12,16 +12,6 @@ export default ({element, onClick}) => {
 
   const { web3, chainId, account, newContract } = useWeb3()
 
-  const [balance, setBalance] = useState(element.balance)
-
-  useEffect(() => {
-    if(element.symbol === 'ETH' && element.address !== VOID_ETHEREUM_ADDRESS) {
-      web3.eth.getBalance(account).then(setBalance)
-      return
-    }
-    blockchainCall((element.contract = element.contract || newContract(context.ItemInteroperableInterfaceABI, element.address)).methods.balanceOf, account).then(bal => setBalance(element.balance = bal))
-  }, [element.address, account])
-
   return (
     <a className={style.TokenObject} onClick={() => onClick({
       ...element,
@@ -38,9 +28,8 @@ export default ({element, onClick}) => {
         </div>
         <div className={style.ObjectInfoBalance}>
           <p>
-            {!balance ? <CircularProgress/> : fromDecimals(balance, element.decimals)}
+            {'\u00a0'}
           </p>
-          <span>Balance</span>
         </div>
       </div>
     </a>

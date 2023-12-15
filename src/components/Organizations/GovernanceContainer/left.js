@@ -17,7 +17,7 @@ import ProposalMetadata from '../ProposalMetadata'
 import BackButton from '../../Global/BackButton'
 import GovernanceContainer from './index'
 import { getEthereum } from '../../../logic/erc20'
-import { retrieveProposals } from '../../../logic/organization'
+import { getCheckerData, retrieveProposals } from '../../../logic/organization'
 
 const WrapWithdrawModal = ({ selectedToken, tokenSymbol, close, title, onClick, other, noApproveNeeded }) => {
 
@@ -41,7 +41,7 @@ const WrapWithdrawModal = ({ selectedToken, tokenSymbol, close, title, onClick, 
 const modalOnClick = {
   Withdraw : ({ element, context, web3, chainId, account, block }, token) => blockchainCall(token.token.mainInterface.methods.safeTransferFrom, account, element.organization.components.delegationTokensManager.address, token.token.id, token.value, abi.encode(["address", "address", "bytes"], [VOID_ETHEREUM_ADDRESS, VOID_ETHEREUM_ADDRESS, "0x"])),
   Wrap : ({ element, context, web3, chainId, account, block }, token) => {
-    if(token.token.mainInterface) {
+    if(element.delegationsManager.supportedTokenData[0] !== VOID_ETHEREUM_ADDRESS) {
       return blockchainCall(token.token.mainInterface.methods.safeTransferFrom, account, element.organization.components.delegationTokensManager.address, token.token.id, token.value, abi.encode(["address", "address", "bytes"], [element.delegationsManager.delegationsManagerAddress, VOID_ETHEREUM_ADDRESS, "0x"]))
     }
     return blockchainCall(element.organization.components.delegationTokensManager.contract.methods.wrap, element.delegationsManager.delegationsManagerAddress, "0x", token.value, VOID_ETHEREUM_ADDRESS)
@@ -99,6 +99,7 @@ const ProposeDelegationTransfer = ({ element, setOnClick, stateProvider }) => {
 
   return (<>
     <h4>Transfer - 1/2</h4>
+    <p><br/><b>PLEASE NOTE</b>: for security reasons, new Delegations can move a maximum of 70% of their assets for each proposal.</p>
     {state.list?.length > 0 && <div className={style.TranferETHProp}>
       {state.list.map((it, i) => <div className={style.TranferETHPropRecap} key={`${it.address}_${it.value}_${i}`}>
         <span><b>{formatMoney(fromDecimals(it.value, it.token.decimals, true), 5)} {it.token.symbol}</b> to <a href={`${getNetworkElement({context, chainId : useWeb3Data.chainId}, "etherscanURL")}address/${it.address}`} target="_blank">{it.address}</a></span>
@@ -251,6 +252,11 @@ export default ({element, forDelegationVote, refreshElements}) => {
     setTimeout(async () => {
       try {
         var data = await getData({provider : element.proposalsManager.currentProvider}, element.validatorsAddresses[0][0])
+        if(data.label === 'BY_QUORUM') {
+          var checkerData = getCheckerData(element.validatorsAddresses[0][0], element)
+          checkerData = abi.decode(["uint256", "bool"], checkerData)
+          data.valueUint256 = checkerData[0].toString()
+        }
         var percentage = parseFloat(fromDecimals(data.valueUint256, 18))
         var votingToken = element.proposalsConfiguration.votingTokens[0]
         var total = parseFloat(await blockchainCall((votingToken.interoperableInterface || votingToken.contract).methods.totalSupply))
@@ -275,7 +281,7 @@ export default ({element, forDelegationVote, refreshElements}) => {
 
       {wrapWithdrawModal && <WrapWithdrawModal
           close={() => setWrapWithdrawModal()}
-          noApproveNeeded={wrapWithdrawModal === 'Withdraw' || element.delegationsManager.supportedToken.mainInterface}
+          noApproveNeeded={wrapWithdrawModal === 'Withdraw' || element.delegationsManager.supportedTokenData[0] !== VOID_ETHEREUM_ADDRESS}
           title={wrapWithdrawModal}
           tokenSymbol={element.delegationsManager.supportedToken.symbol}
           other={element.organization.components.delegationTokensManager.address}

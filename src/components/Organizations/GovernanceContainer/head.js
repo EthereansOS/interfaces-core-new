@@ -7,8 +7,8 @@ import { InflationRateActiveSelection, HeaderStateManagerVariable, DelegationsMa
 import { useEthosContext, useWeb3, getNetworkElement, fromDecimals, blockchainCall, formatMoney } from 'interfaces-core'
 
 const names = {
-  'FIXED_INFLATION_V1' : element => `${element.organization.votingToken.symbol} Inflation Rate`,
-  'DELEGATIONS_MANAGER_INSURANCE_V1' : element => `${element.organization.name} Delegations attachment insurance`
+  'FIXED_INFLATION_V1' : element => `${element?.organization?.votingToken?.symbol || ''} Inflation Rate`.trim(),
+  'DELEGATIONS_MANAGER_INSURANCE_V1' : element => `${element?.organization?.name || ''} Delegations attachment insurance`.trim()
 }
 
 export default ({element, onToggle}) => {

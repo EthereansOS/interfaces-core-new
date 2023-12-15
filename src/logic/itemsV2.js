@@ -167,7 +167,7 @@ export async function loadItemsByFactories(data, factories) {
         }
 
         var vals = [...itemIds]//await Promise.all(itemIds.map(it => loadItem({...data, collectionData, lightweight : lightweight !== false }, it.itemId, it.item)))
-        vals = !l2Tokens ? vals : vals.map(it => ({...it, ...l2Tokens[it.id]}))
+        vals = !l2Tokens ? vals : vals.map(it => ({...it, ...l2Tokens[it.id || it.itemId]}))
 
         if(dualChainId && !wrappedOnly && !collectionData) {
             vals = [
@@ -375,7 +375,7 @@ async function loadDeckSource(data, itemData) {
     return element
 }
 
-async function tryRetrieveMetadata2(data, itemData, image) {
+export async function tryRetrieveMetadata2(data, itemData, image) {
 
     var metadata = {
         name : itemData.name,
@@ -384,6 +384,7 @@ async function tryRetrieveMetadata2(data, itemData, image) {
     }
 
     image && (metadata.image = cleanUri(data, image, itemData.id || itemData.itemId || itemData.tokenId))
+
 
     if(itemData.sourceAddress && !itemData.sourceId) {
         try {
@@ -407,25 +408,27 @@ async function tryRetrieveMetadata2(data, itemData, image) {
     }
 
     if(!itemData.wrapper && !metadata.image) {
-        for(var i = 0; i < 15; i++) {
+        //for(var i = 0; i < 15; i++)
+        {
             try {
                 metadata = {
                     ...metadata,
                     ...(await (await fetch(metadata.uri)).json())
                 }
-                break
+                //break
             } catch(e) {
-                await new Promise(ok => setTimeout(ok, 1500))
+                //await new Promise(ok => setTimeout(ok, 1500))
             }
         }
     }
 
-    metadata.image = cleanUri(data, metadata.image || `${process.env.PUBLIC_URL}/img/missingcoin.png`, itemData.id || itemData.itemId || itemData.tokenId)
+    metadata.image = cleanUri(data, metadata.image || `${process.env.PUBLIC_URL}/img/missingcoin.gif`, itemData.id || itemData.itemId || itemData.tokenId)
 
     return metadata
 }
 
 export function cleanUri(data, uri, id) {
+    uri = uri || ""
     if(uri.toLowerCase().indexOf('0x') === 0) {
         return uri
     }
@@ -453,6 +456,8 @@ export function cleanUri(data, uri, id) {
         uri = split.join('/logo.png')
     }
 
+    uri = uri.split('///').join('/')
+
     return uri
 }
 
@@ -469,8 +474,8 @@ export async function loadItemDynamicInfo(data, itemData) {
         return await cleanItemData(data, itemData, metadata)
     }
 
-    if(!itemData.id) {
-        return await loadItem({ ...data, lightweight : false }, itemData.itemId)
+    if(!itemData.id || (itemData.l2Address && data.dualChainId)) {
+        return {...itemData, ...(await loadItem({ ...(itemData.l2Address && data.dualChainId ? await dualChainAsMainChain(data) : data), lightweight : false }, itemData.id || itemData.itemId))}
     }
 
     var image
@@ -1744,6 +1749,11 @@ export async function usdPrice(data, tokenAddress) {
     var tkAddr = await resolveToken(data, tokenAddress = web3Utils.toChecksumAddress(tokenAddress))
     var dataInput = tkAddr !== tokenAddress ? await dualChainAsMainChain(data) : data
     var decimals = await getRawField({ provider : dataInput.web3.currentProvider }, tkAddr, 'decimals')
+
+    if(decimals === '0x') {
+        dataInput = await dualChainAsMainChain(data)
+        decimals = await getRawField({ provider : dataInput.web3.currentProvider }, tkAddr, 'decimals')
+    }
 
     decimals = abi.decode(["uint256"], decimals)[0].toString()
 
