@@ -32,7 +32,7 @@ export default ({token, balance, value, other, buttonText, onClick, onPermitSign
         var appr = false
         if(!token.mainInterface || token.passedAsERC20) {
             try {
-                var allowance = await blockchainCall(token.contract.methods.allowance, account, otherAddress)
+                var allowance = await blockchainCall(token.interoperableInterface.methods.allowance, account, otherAddress)
                 appr = parseInt(balance) > 0 && parseInt(allowance) >= parseInt(balance)
             } catch(e) {
             }
@@ -41,7 +41,7 @@ export default ({token, balance, value, other, buttonText, onClick, onPermitSign
                 appr = await blockchainCall(token.mainInterface.methods.isApprovedForAll, account, otherAddress)
                 if(!appr) {
                     try {
-                        var allowance = await blockchainCall(token.contract.methods.allowance, account, otherAddress)
+                        var allowance = await blockchainCall(token.interoperableInterface.methods.allowance, account, otherAddress)
                         appr = parseInt(balance) > 0 && parseInt(allowance) >= parseInt(balance)
                     } catch(e) {
                     }
@@ -64,7 +64,7 @@ export default ({token, balance, value, other, buttonText, onClick, onPermitSign
             res = res && res.then ? await res : res
             onSuccess && setTimeout(() => onSuccess(res))
         } catch(e) {
-            errorMessage = e.message || e
+            errorMessage = e.data?.message || e.message || e
             console.log(e)
         }
         setLoading(false)
@@ -77,7 +77,7 @@ export default ({token, balance, value, other, buttonText, onClick, onPermitSign
         var errorMessage;
         try {
             if(!token.mainInterface || token.passedAsERC20) {
-                await blockchainCall(token.contract.methods.approve, otherAddress, await blockchainCall(token.contract.methods.totalSupply))
+                await blockchainCall(token.interoperableInterface.methods.approve, otherAddress, await blockchainCall(token.interoperableInterface.methods.totalSupply))
             } else {
                 await blockchainCall(token.mainInterface.methods.setApprovalForAll, otherAddress, true)
             }

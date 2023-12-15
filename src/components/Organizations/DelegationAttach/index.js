@@ -30,11 +30,14 @@ const AttachToOrganization = ({delegation, element}) => {
     const [attachInsurance, setAttachInsurance] = useState()
     const [token, setToken] = useState()
 
+    const [tokenIsItem, setTokenIsItem] = useState()
+
     useEffect(() => {
         setTimeout(async () => {
             var ai = await blockchainCall(element.delegationsManager.methods.attachInsurance)
             setAttachInsurance(ai)
             var t = await blockchainCall(element.delegationsManager.methods.supportedToken)
+            setTokenIsItem(t[0] !== VOID_ETHEREUM_ADDRESS)
             t = await loadToken({context, chainId, web3, account, newContract, getGlobalContract}, t[0], t[1])
             setToken(t)
         })
@@ -55,7 +58,7 @@ const AttachToOrganization = ({delegation, element}) => {
     function payFor() {
         const token = tokenElement.token
         const value = tokenElement.value
-        if(token.mainInterface) {
+        if(tokenIsItem) {
             const data = abi.encode(["address", "address"], [delegation.address, account])
             return blockchainCall(token.mainInterface.methods.safeTransferFrom, account, element.delegationsManagerAddress, token.id, value, data)
         }
@@ -88,7 +91,7 @@ const AttachToOrganization = ({delegation, element}) => {
                     <div>
                         {percentage < 100 && <>
                             <TokenInputRegular onElement={(token, balance, value) => setTokenElement({ token, balance, value })} tokens={[token]} selected={token}/>
-                            <ActionAWeb3Buttons token={tokenElement.token} balance={tokenElement.balance} value={tokenElement.value} other={element.delegationsManagerAddress} onSuccess={refreshPaidFor} onClick={payFor} noApproveNeeded={token.mainInterface !== undefined && token.mainInterface !== null} buttonText="Stake"/>
+                            <ActionAWeb3Buttons token={tokenElement.token} balance={tokenElement.balance} value={tokenElement.value} other={element.delegationsManagerAddress} onSuccess={refreshPaidFor} onClick={payFor} noApproveNeeded={tokenIsItem} buttonText="Stake"/>
                         </>}
                         {paidFor.retrieverPaid !== '0' && `You deposited ${fromDecimals(paidFor.retrieverPaid, token.decimals, true)} $${token.symbol}`}
                         {paidFor.retrieverPaid !== '0' && <ActionAWeb3Button onSuccess={refreshPaidFor} onClick={retirePayment}>Unstake</ActionAWeb3Button>}

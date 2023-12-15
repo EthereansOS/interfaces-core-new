@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect, useMemo } from 'react'
 
-import { OpenSeaPort, Network } from 'opensea-js'
+import { OpenSeaSDK, Chain } from "opensea-js"
 import { loadTokenFromAddress } from './erc20'
 
 import MenuCapableComponent from "../components/Global/MenuCapableComponent"
@@ -114,8 +114,8 @@ export const OpenSeaContextProvider = ({ children }) => {
     const seaport = useMemo(() => {
         var theWeb3 = dualChainWeb3 || web3
         var theChainId = dualChainId || chainId
-        return theWeb3 && theWeb3.currentProvider ? new OpenSeaPort(theWeb3.currentProvider, {
-            networkName: theChainId === 4 ? Network.Rinkeby : Network.Main,
+        return theWeb3 && theWeb3.currentProvider ? new OpenSeaSDK(theWeb3.currentProvider, {
+            networkName: Chain.Mainnet,
             apiKey: theChainId === 4 ? undefined : require('./frankSwet.json')
         }) : null
     }, [chainId, web3, dualChainId, dualChainWeb3])

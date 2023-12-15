@@ -55,7 +55,7 @@ export default (props) => {
         </label>
         <div className={style.ActionDeploy}>
           {props.Component && <BackButton onClick={() => setOnClick()}/>}
-          <ActionAWeb3Button onSuccess={props.onSuccess} onClick={() => onClick({rationale, summary, motivations, risks, specification})}>Propose</ActionAWeb3Button>
+          {!props.hideProposeButton && <ActionAWeb3Button onSuccess={props.onSuccess} onClick={() => onClick({rationale, summary, motivations, risks, specification})}>Propose</ActionAWeb3Button>}
         </div>
       </div>
     )

@@ -1,4 +1,4 @@
-import { blockchainCall, web3Utils, abi, getNetworkElement, numberToString, VOID_ETHEREUM_ADDRESS, formatLink } from "interfaces-core"
+import { blockchainCall, web3Utils, abi, getNetworkElement, numberToString, VOID_ETHEREUM_ADDRESS, formatLink, cache } from "interfaces-core"
 import { dualChainAsMainChain, resolveToken } from "./dualChain"
 import { getRawField } from "./generalReader"
 import { cleanUri, loadItem, loadItemDynamicInfo } from "./itemsV2"
@@ -192,5 +192,7 @@ export async function getTokenImage(data, tokenAddress) {
 
     var image = await cleanUri(data, filter?.logoURI || filter?.image || data.context.trustwalletImgURLTemplate.split('{0}').join(tkAddr))
 
-    return image
+    var loaded = await cache.getItem(image)
+
+    return loaded !== 'null' ? loaded : image
 }

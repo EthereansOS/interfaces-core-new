@@ -6,7 +6,7 @@ import { cleanUri } from './itemsV2'
 
 const sleepMillis = 350
 
-var openseaAssetMutex
+var assetMutex = 0
 async function openseaAsset(data, tokenAddress, tokenId) {
 
     const { seaport } = data
@@ -15,28 +15,20 @@ async function openseaAsset(data, tokenAddress, tokenId) {
         return
     }
 
-    while(openseaAssetMutex) {
-        await new Promise(ok => setTimeout(ok, sleepMillis))
-    }
-
-    openseaAssetMutex = true
-
-    while(true) {
-        try {
-            var asset = await seaport.api.getAsset({tokenAddress, tokenId})
-            asset && (asset.image = (asset.image || asset.imagePreviewUrl).split('s250').join('s300'))
-            asset && ((asset.collection = asset.collection || {}).imageUrl = (asset.collection?.imageUrl || asset.image).split('s120').join('s300'))
-            openseaAssetMutex = false
-            return asset
-        } catch(e) {
-            var message = (e.stack || e.message || e.toString()).toLowerCase()
-            if(message.indexOf('404') !== -1) {
-                openseaAssetMutex = false
-                return
-            }
-            await new Promise(ok => setTimeout(ok, sleepMillis))
+    try {
+        var asset = await seaport.api.getNFT(tokenAddress, tokenId)
+        if(!asset || !asset.nft) {
+            return
         }
+        asset = asset.nft
+        asset.collection = await seaport.api.getCollection(asset.collection)
+        asset && (asset.image = (asset.image || asset.imagePreviewUrl || asset.image_url).split('s250').join('s300'))
+        asset && ((asset.collection = asset.collection || {}).imageUrl = (asset.collection?.imageUrl || asset.image).split('s120').join('s300'))
+        return asset
+    } catch(e) {
+        console.log(e)
     }
+
 }
 
 var uriLabels = ['uri(uint256)', 'tokenURI(uint256)', 'tokenUri(uint256)', 'uri']
@@ -88,11 +80,23 @@ export function getAsset(data, tokenAddress, tokenId) {
             return asset
         }
 
-        asset = await openseaAsset(data, tokenAddress, tokenId)
+        while(assetMutex > 3) {
+            await new Promise(ok => setTimeout(ok, sleepMillis))
+        }
 
-        asset = asset || await rawAsset(data, tokenAddress, tokenId)
+        assetMutex++
 
-        asset && await cache.setItem(key, JSON.stringify(asset))
+        try {
+            asset = await openseaAsset(data, tokenAddress, tokenId)
+
+            asset = asset || await rawAsset(data, tokenAddress, tokenId)
+
+            asset && await cache.setItem(key, JSON.stringify(asset))
+        } catch(e) {
+            console.log(e)
+        }
+
+        assetMutex--
 
         return asset
 

@@ -21,7 +21,8 @@ export async function getData({ provider }, address) {
     return data
 }
 
-export async function getRawField({provider}, to, fieldName) {
+export async function getRawField(provider, to, fieldName) {
+
     var response = '0x'
     var data = web3Utils.sha3(fieldName + '()').substring(0, 10)
     if(fieldName.indexOf('(') !== -1 && fieldName.indexOf('()') === -1) {
@@ -33,7 +34,7 @@ export async function getRawField({provider}, to, fieldName) {
     }
     while(true) {
         try {
-            response = await sendAsync(provider, 'eth_call', {
+            response = await sendAsync((provider.provider || provider.currentProvider || provider), 'eth_call', {
                 to,
                 data
             }, 'latest')

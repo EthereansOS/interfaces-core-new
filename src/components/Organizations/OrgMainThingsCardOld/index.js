@@ -402,7 +402,7 @@ const Delegations = ({element}) => {
      <h6>Grant chart</h6>
      {!list && <CircularProgress/>}
      {list && list.length === 0 && <h4>No Delegations right now!</h4>}
-     {list && list.length > 0 && list.map(it => <Link key={it.key} to={`/guilds/delegations/${it.delegationAddress}`}>
+     {list && list.length > 0 && list.map(it => <Link key={it.key} to={`/organizations/delegations/${it.delegationAddress}`}>
         <div className={style.DelegationsSectionOne}>
           <LogoRenderer input={it}/>
           <Upshots title={it.name} total={total} value={it.percentage}/>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo, useRef } from "react"
 
 import CircularProgress from '../OurCircularProgress'
-import { useEthosContext, formatLink, web3Utils, useWeb3, normalizeValue } from "interfaces-core"
+import { useEthosContext, formatLink, web3Utils, useWeb3, normalizeValue, cache, resolveCID } from "interfaces-core"
 import { resolveToken } from "../../../logic/dualChain"
 import { getAddress, useOpenSea } from "../../../logic/uiUtilities"
 
@@ -24,6 +24,8 @@ export default ({input, figureClassName, noFigure, title, defaultImage, noDotLin
 
     const { dualChainId } = web3Data
 
+    const urlCacheResolverExluded = useMemo(() => [...context.urlCacheResolverExluded, context.urlCacheResolver].map(it => it.toLowerCase()), [context])
+
     const [finalImage, setFinalImage] = useState(null)
     const [loading, setLoading] = useState(false)
     const [tried, setTried] = useState()
@@ -44,6 +46,22 @@ export default ({input, figureClassName, noFigure, title, defaultImage, noDotLin
 
     async function onLoadError() {
         try {
+            if(urlCacheResolverExluded.filter(it => image.toLowerCase().indexOf(it) !== -1).length === 0 && (!finalImage || urlCacheResolverExluded.filter(it => finalImage.toLowerCase().indexOf(it) !== -1).length === 0)) {
+                var result = await cache.getItem(image)
+                if(result === "null") {
+                    try {
+                        result = await (await fetch(context.urlCacheResolver + encodeURIComponent(image))).text()
+                        await cache.setItem(image, result = 'data:application/octet-stream;base64,' + result)
+                    } catch(e) {
+                        result = "false"
+                    }
+                }
+                if(result !== 'null' && result !== 'false') {
+                    return setFinalImage(result)
+                }
+            }
+        } catch(e) {}
+        try {
             if(image === input.logoURI) {
                 return setFinalImage(realDefaultImage)
             }
@@ -59,6 +77,9 @@ export default ({input, figureClassName, noFigure, title, defaultImage, noDotLin
                 } catch(e) {}
             }
         } catch(e) {}
+        if(val.trim() === '') {
+            val = realDefaultImage
+        }
         if(val.trim().toLowerCase() === image.trim().toLowerCase()) {
             val = realDefaultImage
         }
@@ -89,6 +110,10 @@ export default ({input, figureClassName, noFigure, title, defaultImage, noDotLin
         src = src.split('.link').join('')
     }
 
+    src = src ? src.split('ethereans.mypinata.cloud').join('ipfs.io') : src
+
+    src = src && src.indexOf('ipfs') !== -1 ? resolveCID(src) : src
+
     var img = <img title={title} style={ (finalImage === null || loading) ? {"display" : "none"} : {}} src={src} onLoad={() => setLoading(false)} onError={onLoadError}/>
 
     img = tryInstrumentImg(input, img, imgRef, previewRef, noFigure) || img
@@ -113,14 +138,13 @@ export default ({input, figureClassName, noFigure, title, defaultImage, noDotLin
 }
 
 function tryInstrumentImg(input, img, imgRef, previewRef, noFigure) {
-
-    if(!input?.id && !input?.tokenId && !input?.itemId) {
-        return
-    }
-
     var src = img?.props?.src?.toLowerCase() || ''
 
     if(!src) {
+        return
+    }
+
+    if(!input?.id && !input?.tokenId && !input?.itemId && src.indexOf('infura-ipfs.io') === -1) {
         return
     }
 

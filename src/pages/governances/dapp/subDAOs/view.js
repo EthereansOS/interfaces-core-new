@@ -19,7 +19,7 @@ const SubDAOView = () => {
 
   const location = useLocation()
   const context = useEthosContext()
-  const {account, newContract, web3, blockchainCall, chainId} = useWeb3()
+  const web3Data = useWeb3()
 
   const [organization, setOrganization] = useState(null)
 
@@ -28,7 +28,7 @@ const SubDAOView = () => {
     var organizationAddress= location.pathname.split('/')
     organizationAddress = organizationAddress[organizationAddress.length -1]
     try {
-      getOrganization({chainId, context, account, newContract, blockchainCall, web3}, web3Utils.toChecksumAddress(organizationAddress)).then(setOrganization)
+      getOrganization({...web3Data, context}, web3Utils.toChecksumAddress(organizationAddress)).then(setOrganization)
     } catch(e) {}
   }, [location.pathname])
 
@@ -61,7 +61,7 @@ const SubDAOView = () => {
   return (
     <>
       <div className={style.SingleContentPage}>
-        <OrgHeadline element={organization}/>
+        <OrgHeadline element={organization} onMetadata={setOrganization}/>
         <DappSubMenu isSelected={ it => it.view === currentView } voices={menuVoices.map(it => ({...it, onClick : () => it.view && setCurrentView(it.view)}))}/>
         <Component element={organization}/>
       </div>
@@ -70,7 +70,7 @@ const SubDAOView = () => {
 }
 
 SubDAOView.menuVoice = {
-  path : '/guilds/organizations/:id'
+  path : '/organizations/:id'
 }
 
 export default SubDAOView

@@ -187,6 +187,7 @@ const Web3ContextInitializer = ({
   }, [wallet])
 
   useEffect(() => {
+    sendAsync.cleanCache()
     setContracts({})
     setGlobalContracts(globalContractNames.map(newContractByName))
     var actualChainId = (wallet && wallet.chainId) || null
