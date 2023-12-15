@@ -1,8 +1,22 @@
 import { toHex, sha3 } from 'web3-utils'
+import Mutex from '../utils/mutex'
 
 import cache from '../utils/cache'
 
 import sendAsync from './sendAsync'
+
+export async function getSearchBlocks(context, chainId) {
+  const now = new Date().getTime()
+  const interval = 3.6e+6
+  const key = 'searchBlocks'
+  var searchBlocks = JSON.parse(await cache.getItem(key))
+  if(!searchBlocks || (now - searchBlocks.lastDownload) > interval) {
+    searchBlocks = (await (await fetch(context?.eventBlockURL || 'https://raw.githubusercontent.com/EthereansOS/event-blocks/main/src/output/output.json')).json())
+    searchBlocks.lastDownload = now
+    await cache.setItem(key, JSON.stringify(searchBlocks))
+  }
+  return searchBlocks[chainId]
+}
 
 function destroyUniqueKey(it, uniqueKeyName) {
   var d = {
@@ -50,27 +64,52 @@ function ascending(a, b) {
   return parseInt(a.blockNumber) - parseInt(b.blockNumber)
 }
 
-export default async function getLogs(provider, args) {
+export default async function getLogs(prov, args, tempCache) {
+
+  args.toBlock = args.toBlock || 'latest'
+
   if (window.customProvider) {
     delete args.clear
     return await sendAsync(window.customProvider, 'eth_getLogs', args)
   }
 
-  const chainId = parseInt(await sendAsync(provider, 'eth_chainId'))
+  var provider = prov.provider || prov.currentProvider || prov
 
-  const latestBlock = parseInt(await sendAsync(provider, 'eth_blockNumber'))
+  if(!tempCache && !args.searchBlocks && (Array.isArray(args.topics[0]) ? args.topics[0] : [args.topics[0]]).indexOf(web3Utils.sha3('Transfer(address,address,uint256)')) === -1) {
+      args.searchBlocks = await getSearchBlocks(undefined, parseInt(await sendAsync(provider, 'eth_chainId')))
+  }
+
+  if(args.searchBlocks) {
+    var searchBlocks = args.searchBlocks
+    var newArgs = {...args}
+    delete newArgs.fromBlock
+    delete newArgs.toBlock,
+    delete newArgs.searchBlocks
+    var key = getLogKey(args)
+    tempCache = (!args.clear && JSON.parse(await cache.getItem(key))) || {
+      logs: []
+    }
+    var logs = await Promise.all([getLogs(prov, {...newArgs, fromBlock : searchBlocks.fromBlock, toBlock : searchBlocks.lastSearchedBlock}, tempCache), getLogs(prov, {...newArgs, fromBlock : searchBlocks.lastSearchedBlock + 1, toBlock : 'latest'}, tempCache)])
+    try {
+      await cache.setItem(key, JSON.stringify(tempCache))
+    } catch (e) {}
+    logs = logs.reduce((acc, it) => [...acc, ...it], [])
+    return logs
+  }
+
+  delete args.searchBlocks
 
   var firstBlock = parseInt(args.fromBlock)
   firstBlock = isNaN(firstBlock) ? 0 : firstBlock
 
   var lastBlock = parseInt(args.toBlock)
-  lastBlock = isNaN(lastBlock) ? latestBlock : lastBlock
+  lastBlock = isNaN(lastBlock) ? parseInt(await sendAsync(provider, 'eth_blockNumber')) : lastBlock
 
   firstBlock = parseInt(firstBlock)
   lastBlock = parseInt(lastBlock)
 
   const logKey = getLogKey(args)
-  const cached = (!args.clear && JSON.parse(await cache.getItem(logKey))) || {
+  const cached = tempCache || (!args.clear && JSON.parse(await cache.getItem(logKey))) || {
     logs: [],
   }
 
@@ -81,8 +120,6 @@ export default async function getLogs(provider, args) {
       parseInt(it.blockNumber) >= firstBlock &&
       parseInt(it.blockNumber) <= lastBlock
   )
-
-  const interval = chainId === 10 ? 10000 : 45000
 
   var logs = []
 
@@ -111,36 +148,6 @@ export default async function getLogs(provider, args) {
         return []
       })
     )
-    /*var start = range[0]
-    var end = start + interval
-    end = end > range[1] ? range[1] : end
-
-    while (start < end) {
-      logs.push(
-        (async () => {
-          var newArgs = {
-            ...args,
-            fromBlock: toHex(start),
-            toBlock: toHex(end),
-          }
-          try {
-            return await sendAsync(provider, 'eth_getLogs', newArgs)
-          } catch (e) {
-            var message = (e.stack || e.message || e).toLowerCase()
-            if (message.indexOf('response has no error') !== -1) {
-              return []
-            }
-          }
-          return []
-        })()
-      )
-      if (end === range[1]) {
-        break
-      }
-      start = end
-      end = start + interval
-      end = end > range[1] ? range[1] : end
-    }*/
   }
 
   logs = await Promise.all(logs)
@@ -172,12 +179,12 @@ export default async function getLogs(provider, args) {
       ? firstBlock
       : cached.fromBlock
   cached.toBlock =
-    (cached.toBlock = cached.toBlock || lastBlock) > lastBlock
+    (cached.toBlock = cached.toBlock || lastBlock) < lastBlock
       ? lastBlock
       : cached.toBlock
 
   try {
-    await cache.setItem(logKey, JSON.stringify(cached))
+    !tempCache && await cache.setItem(logKey, JSON.stringify(cached))
   } catch (e) {}
 
   return logs

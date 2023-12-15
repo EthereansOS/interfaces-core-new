@@ -28,7 +28,7 @@ const Item = ({element, allMine, wrappedOnly}) => {
   useEffect(() => {
     usdPrice({...web3Data, context, seaport}, element.l2Address || element.address).then(setPrice)
     loadItemDynamicInfo({...web3Data, context, seaport}, element).then(setLoadedData)
-  }, [element])
+  }, [])
 
   useEffect(() => {
     !allMine && getRawField({provider : web3.currentProvider}, element.l2Address || element.address, 'totalSupply').then(val => val !== '0x' && setTotalSupply(abi.decode(["uint256"], val)[0].toString()))

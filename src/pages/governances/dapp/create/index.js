@@ -19,7 +19,7 @@ const Create = () => {
         <Link className={style.NextStep} to="/guilds/create/organization">Start</Link>
         <a target="_blank" href="https://docs.ethos.wiki/ethereansos-docs/organizations/organizations" className={style.ExtLinkButtonAlpha}>Learn</a>
       </div>
-      {!dualChainId && <div className={style.CreateBoxDesc}>
+      {<div className={style.CreateBoxDesc}>
         <h6>Delegation</h6>
         <p>Create a Delegation, an independent political party that can compete for grant funding from one or more Organizations.</p>
         <Link className={style.NextStep} to="/guilds/create/delegation">Start</Link>

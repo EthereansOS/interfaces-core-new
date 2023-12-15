@@ -58,7 +58,7 @@ const IndexMain = () => {
           <figure>
             <img src={`${process.env.PUBLIC_URL}/img/c-3.png`}></img>
           </figure>
-          <p>Guilds</p>
+          <p>Organizations</p>
           <span>Fully on-chain and transparent governance systems</span>
         </a>
         <a target="_blank" href='https://docs.ethos.wiki/ethereansos-docs/covenants/covenants-learn' className={style.CardsFancy}>

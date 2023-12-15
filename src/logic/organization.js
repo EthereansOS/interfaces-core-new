@@ -5,7 +5,8 @@ import { encodeHeader } from "./itemsV2";
 import { decodeProposal, decodeProposalVotingToken, extractProposalVotingTokens, generateItemKey } from "./ballot";
 import { retrieveDelegationProposals } from "./delegation";
 import { getData, getRawField } from "./generalReader"
-import { getTokenBasicInfo, loadTokenFromAddress } from "./erc20";
+import { getTokenBasicInfo, loadTokenFromAddress } from "./erc20"
+import { cache } from "interfaces-core";
 
 export async function create({ context, ipfsHttpClient, newContract, chainId, factoryOfFactories }, metadata, organization) {
     var uri = await uploadMetadata({ context, ipfsHttpClient }, metadata)
@@ -69,7 +70,11 @@ export async function all({ context, newContract, chainId, factoryOfFactories })
         toBlock: 'latest'
     }
     var logs = await getLogs(factoryOfFactories.currentProvider, args)
-    var organizations = logs.map(it => abi.decode(["address"], it.topics[2])[0])
+    var organizations = logs.map(it => web3Utils.toChecksumAddress(abi.decode(["address"], it.topics[2])[0]))
+    try {
+        var excluded = context.organizationsToExclucde.map(web3Utils.toChecksumAddress)
+        organizations = organizations.filter(it => excluded.indexOf(it) === -1)
+    } catch(e) {}
     organizations = (await Promise.all(organizations.map(it => hasNoHost({ context, newContract }, it)))).filter(it => it)
 
     try {
@@ -78,7 +83,7 @@ export async function all({ context, newContract, chainId, factoryOfFactories })
         organizations = [...organizations, ...logs.map(it => abi.decode(["address"], it.topics[2])[0])]
     } catch(e) {}
 
-    return await Promise.all(organizations.map(it => (getOrganizationMetadata({ context }, { contract: newContract(context.SubDAOABI, it), address: it, type: 'organizations' }, true))))
+    return organizations//await Promise.all(organizations.map(it => (getOrganizationMetadata({ context }, { contract: newContract(context.SubDAOABI, it), address: it, type: 'organizations' }, true))))
 }
 
 export async function hasNoHost({ context, newContract }, organizationAddress) {
@@ -117,9 +122,13 @@ export async function getOrganizationMetadata({ context }, organization, merge) 
     try {
         organization.uri = await getManipulatedUri(organization)
         organization.formattedUri = formatLink({ context }, organization.uri)
-        var metadata = await (await fetch(organization.formattedUri)).json()
+        var metadataCached = JSON.parse(await cache.getItem(organization.formattedUri))
+        var metadata = metadataCached || await (await fetch(organization.formattedUri)).json()
         if(web3Utils.toChecksumAddress(organization.address) === web3Utils.toChecksumAddress("0xc28FfD843DCA86565597A1b82265df29A1642262")) {
             metadata.image = 'ipfs://ipfs/QmVBvcb4W5AMFHAu2GNsa4uAn6VhV9NGNV3PLLyJbwNmn7'
+        }
+        if(!metadataCached) {
+            await cache.setItem(organization.formattedUri, JSON.stringify(metadata))
         }
         return merge ? { ...organization, ...metadata } : metadata
     } catch (e) {}
@@ -135,11 +144,7 @@ async function getManipulatedUri(organization) {
 
 export async function getInitializationData({newContract, context, chainId}, contract) {
     var initializerAddress = await blockchainCall(contract.methods.initializer)
-    return {
-        creationBlock : "0",
-        version : "0",
-        initializerAddress
-    }
+
     var factory = newContract(context.SubDAOFactoryABI, initializerAddress)
 
     var args = {
@@ -156,15 +161,15 @@ export async function getInitializationData({newContract, context, chainId}, con
     var logs = await getLogs(contract.currentProvider, args)
 
     var creationBlock = logs[0]?.blockNumber || "0"
+    var version = "0";
 
-    var fofAddress = await blockchainCall(factory.methods.initializer)
+/*    var fofAddress = await blockchainCall(factory.methods.initializer)
     var fof = newContract(context.FactoryOfFactoriesABI, fofAddress)
 
     var partialList = await blockchainCall(fof.methods.partialList, 0, 15)
 
     partialList = partialList[1]
 
-    var version;
     for(var list of partialList) {
         for(var i in list) {
             if(list[i] === initializerAddress) {
@@ -175,7 +180,7 @@ export async function getInitializationData({newContract, context, chainId}, con
                 break;
             }
         }
-    }
+    }*/
 
     return {
         creationBlock,
@@ -203,7 +208,7 @@ export async function getOrganization(web3Data, organizationAddress, host) {
         ...organization,
         old : ["0xc28FfD843DCA86565597A1b82265df29A1642262", "0x0227aD4E1D28fcae2d91397896Ed0eF26fcEc4c0"].map(web3Utils.toChecksumAddress).indexOf(web3Utils.toChecksumAddress(organization.address)) !== -1,
         host,
-        ...(await getOrganizationMetadata({ chainId, context }, organization)),
+        //...(await getOrganizationMetadata(web3Data, organization)),
         components: await getOrganizationComponents({ chainId, newContract, context }, contract)
     }
     //organization.stateVars = await getStateVars({ context }, organization)
@@ -239,6 +244,19 @@ export async function retrieveAllProposals({ context, web3, account, chainId, ge
     }
     var proposals = await getProposals({ web3, account, context, newContract }, organization)
     await Promise.all((organization.organizations || []).map(async org => proposals.push(...(await getProposals({context, newContract}, org)))))
+    proposals = proposals.map(it => {
+        var elem = {...it}
+        if(elem.label === 'TOKEN_SELL_V1') {
+            elem.name = 'Investment Fund Routine Sell'
+        }
+        if(elem.label === 'TOKEN_BUY_V1') {
+            elem.name = 'Investment Fund Routine Buy'
+        }
+        if(elem.label === "TRANSFER_MANAGER_V1") {
+            elem.name = 'Transfer assets within the Treasury Manager'
+        }
+        return elem
+    })
     return proposals
 }
 
@@ -344,6 +362,11 @@ export async function retrieveProposals(proposalsManager, proposalIds) {
     } catch(e) {
         result = [...(await blockchainCall(proposalsManager.methods.list, proposalIds))]
     }
+    result = result.map((it, i) => ({
+        ...it,
+        id : proposalIds[i],
+        proposalId : proposalIds[i]
+    }))
     return result
 }
 
@@ -381,7 +404,7 @@ export async function getProposalModels({ context }, contract) {
             var link = formatLink({ context }, it.uri)
             var metadata = {}
             try {
-                metadata = await (await fetch(link)).json()
+                //metadata = await (await fetch(link)).json()
             } catch(e) {
             }
             return {...it, ...metadata }
@@ -526,7 +549,7 @@ async function getSurveylessProposals({context}, organization) {
     var metadatas = await Promise.all(surveyless.map(async it => {
         var metadata = {}
         try {
-            metadata = {...(await(await fetch(formatLink({context}, it.uri))).json()), uri : it.uri}
+            metadata = it.uri.toLowerCase().indexOf('ipfs') === -1 ? {} : {...(await(await fetch(formatLink({context}, it.uri))).json()), uri : it.uri}
         } catch(e) {
         }
         try {
@@ -630,7 +653,7 @@ async function getSurveysByModels({context, chainId}, organization) {
     var metadatas = await Promise.all(surveys.map(async it => {
         var metadata = {}
         try {
-            metadata = {...(await(await fetch(formatLink({context}, it.uri))).json()), uri : it.uri}
+            metadata = it.uri.toLowerCase().indexOf('ipfs') === -1 ? {} : {...(await(await fetch(formatLink({context}, it.uri))).json()), uri : it.uri}
         } catch(e) {
         }
         try {
@@ -788,11 +811,23 @@ export async function createPresetProposals({}, proposal) {
 }
 
 export async function vote({account}, proposal, token, accept, refuse, proposalId, permitSignature, voter) {
-    if(token.mainInterface) {
+
+    var collectionAddress
+    var tokenAddress
+    if(proposal.votingTokens) {
+        var tokens = abi.decode(["address[]", "uint256[]", "uint256[]"], proposal.votingTokens)
+        collectionAddress = tokens[0][0]
+        tokenAddress = tokens[1][0]
+    } else {
+        collectionAddress = proposal.proposalsConfiguration.collections[0]
+        tokenAddress = proposal.proposalsConfiguration.objectIds[0]
+    }
+    if(collectionAddress !== VOID_ETHEREUM_ADDRESS) {
         var data = abi.encode(["bytes32", "uint256", "uint256", "address", "bool"], [proposalId, accept, refuse, voter || account, false])
         await blockchainCall(token.mainInterface.methods.safeTransferFrom, account, proposal.proposalsManager.options.address, token.id, accept.ethereansosAdd(refuse), data)
     } else {
-        await blockchainCall(proposal.proposalsManager.methods.vote, token.address, proposalId, permitSignature || '0x', accept, refuse, voter || account)
+        tokenAddress = abi.decode(["address"], abi.encode(["uint256"], [tokenAddress]))[0]
+        await blockchainCall(proposal.proposalsManager.methods.vote, tokenAddress, permitSignature || '0x', proposalId, accept, refuse, voter || account, false)
     }
 }
 
@@ -805,10 +840,10 @@ export async function withdrawProposal({account}, proposal, proposalId, address,
 }
 
 export async function checkSurveyStatus(inputData, proposal, proposalId, addressesKey) {
-    if(!proposal.organization.old && proposal.organization.type !== 'delegation') {
+    var { account, newContract, context, chainId} = inputData
+    if(chainId === 10 || (proposal.organization && !proposal.organization.old && proposal.organization.type !== 'delegation')) {
         return await checkSurveyStatusNew(inputData, proposal, proposalId, addressesKey)
     }
-    var { account, newContract, context} = inputData
     var proposalData = (await retrieveProposals(proposal.proposalsManager, [proposalId]))[0]
     var values = [
         proposalData.proposer,
@@ -891,12 +926,12 @@ export async function checkSurveyStatusNew(inputData, proposal, proposalId, addr
     return addressesKey === 'validators' ? results.filter(it => !it).length === 0 : results.filter(it => it).length > 0
 }
 
-export function surveylessIsTerminable({ account, newContract, context}, proposal, proposalId) {
-    return checkSurveyStatus({ account, newContract, context}, proposal, proposalId, "validators")
+export function surveylessIsTerminable(web3Data, proposal, proposalId) {
+    return checkSurveyStatus(web3Data, proposal, proposalId, "validators")
 }
 
-export function surveyIsTerminable({ account, newContract, context}, proposal, proposalId) {
-    return checkSurveyStatus({ account, newContract, context}, proposal, proposalId)
+export function surveyIsTerminable(web3Data, proposal, proposalId) {
+    return checkSurveyStatus(web3Data, proposal, proposalId)
 }
 
 export async function retrieveProposalModelMetadata({context}, proposal) {
@@ -1238,65 +1273,65 @@ export async function tokensToWithdraw({account, web3, context, newContract}, pr
     return {tw, accs, refs}
 }
 
-export async function readGovernanceRules({ context }, proposal, proposalId) {
+export async function readGovernanceRules(web3Data, proposal, proposalId) {
     var proposalData = (await retrieveProposals(proposal.proposalsManager, [proposalId]))[0]
-    var validators = await extractRules({context, provider : proposal.proposalsManager.currentProvider}, proposalData.validators, proposalData)
-    var terminates = await extractRules({context, provider : proposal.proposalsManager.currentProvider}, proposalData.canTerminates, proposalData)
+    var validators = await extractRules({...web3Data, provider : proposal.proposalsManager.currentProvider}, proposalData.validators, proposalData)
+    var terminates = await extractRules({...web3Data, provider : proposal.proposalsManager.currentProvider}, proposalData.canTerminates, proposalData)
 
     return {validators, terminates}
 }
 
-export async function extractRules({context, provider}, rules, proposalData) {
+export async function extractRules(web3Data, rules, proposalData) {
     if(!rules || rules.length === 0) {
         return []
     }
     var convertedRules = [];
-    convertedRules = await Promise.all(rules.filter(it => it !== VOID_ETHEREUM_ADDRESS).map(it => getData({context, provider}, it)))
-    return await cleanRules(convertedRules, proposalData);
+    convertedRules = await Promise.all(rules.filter(it => it !== VOID_ETHEREUM_ADDRESS).map(it => getData(web3Data, it)))
+    return await cleanRules(web3Data, convertedRules, proposalData);
 }
 
-async function cleanRules(rules, type, proposalData) {
+async function cleanRules(web3Data, rules, type, proposalData) {
     if(!rules || rules.length === 0) {
         return []
     }
-    return Promise.all(rules.map(it => cleanRule(it, type, proposalData)))
+    return Promise.all(rules.map(it => cleanRule(web3Data, it, type, proposalData)))
 }
 
-async function cleanRule(rule, type, proposalData) {
-    var clean = cleaners[rule.label](rule, type, proposalData)
+async function cleanRule(web3Data, rule, type, proposalData) {
+    var clean = cleaners[rule.label](web3Data, rule, type, proposalData)
     clean = clean.then ? await clean : clean
     return {label: rule.label, ...clean}
 }
 
 var cleaners = {
-    hardCap(rule) {
+    hardCap(_, rule) {
         var val = fromDecimals(rule.valueUint256, rule.discriminant ? 16 : 18)
         var text = "Max Cap"
         var value = val + (rule.discriminant ? "%" : " votes")
         return {text, value}
     },
-    quorum(rule) {
+    quorum(_, rule) {
         var val = fromDecimals(rule.valueUint256, rule.discriminant ? 16 : 18)
         var text = "Quorum"
         var value = val + (rule.discriminant ? "%" : " votes")
         return {text, value}
     },
-    host(rule) {
+    host(_, rule) {
         var text = "Host"
         var value = rule.valueAddress
         return {text, value}
     },
-    async blockLength(rule) {
+    async blockLength(_, rule) {
         var text = "Length"
         var value = rule.valueUint256 + " blocks"
         return {text, value}
     },
-    async validationBomb(rule) {
+    async validationBomb(_, rule) {
         var text = "Validation bomb"
         var value = rule.valueUint256 + " blocks"
         return {text, value}
     },
-    async BY_TIME(rule, proposalData) {
+    async BY_TIME(web3Data, rule, proposalData) {
         var checkerData = getCheckerData(rule.address, proposalData)
         rule.valueUint256 = abi.decode(["uint256"], checkerData)[0].toString()
         var text = "Votable Until"
@@ -1305,9 +1340,11 @@ var cleaners = {
             value = new Date(parseInt(rule.valueUint256) * 1000).toISOString()
         } catch(e) {
         }
+        text = "Voting Period"
+        value = convertSecondsToLabel(web3Data, rule.valueUint256) + " after proposal creation"
         return {text, value}
     },
-    async UNTIL(rule, proposalData) {
+    async UNTIL(web3Data, rule, proposalData) {
         var checkerData = getCheckerData(rule.address, proposalData)
         rule.valueUint256 = abi.decode(["uint256"], checkerData)[0].toString()
         var text = "Executable Until"
@@ -1316,9 +1353,11 @@ var cleaners = {
             value = new Date(parseInt(rule.valueUint256) * 1000).toISOString()
         } catch(e) {
         }
+        text = "Validation Bomb"
+        value = convertSecondsToLabel(web3Data, rule.valueUint256) + " after proposal creation"
         return {text, value}
     },
-    BY_HARD_CAP(rule, proposalData) {
+    BY_HARD_CAP(_, rule, proposalData) {
         var checkerData = getCheckerData(rule.address, proposalData)
         checkerData = abi.decode(["uint256", "bool"], checkerData )
         rule.valueUint256 = checkerData[0].toString()
@@ -1328,7 +1367,7 @@ var cleaners = {
         var value = val + (rule.discriminant ? "%" : " votes")
         return {text, value}
     },
-    BY_QUORUM(rule, proposalData) {
+    BY_QUORUM(_, rule, proposalData) {
         var checkerData = getCheckerData(rule.address, proposalData)
         checkerData = abi.decode(["uint256", "bool"], checkerData)
         rule.valueUint256 = checkerData[0].toString()
@@ -1341,7 +1380,18 @@ var cleaners = {
 }
 cleaners.BY_HOST = cleaners.host
 
-function getCheckerData(address, proposalData) {
+function convertSecondsToLabel(web3Data, seconds) {
+
+    const { context} = web3Data
+
+    seconds = parseInt(seconds)
+
+    var timeInterval = Object.entries(context.timeIntervals).filter(it => it[1] === seconds)[0]
+
+    return (timeInterval && timeInterval[0]) || `${seconds} seconds`
+}
+
+export function getCheckerData(address, proposalData) {
     var isArray = Array.isArray((proposalData.validatorsData || proposalData.terminatorsData)[0])
     var addr = web3Utils.toChecksumAddress(address)
     if(isArray) {

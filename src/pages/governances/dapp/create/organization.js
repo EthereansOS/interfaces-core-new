@@ -79,7 +79,7 @@ const Governance = ({value, onChange}) => {
         </div>
         <label className={style.CreationPageLabelF}>
           <h6>Voting Token</h6>
-          <TokenInputRegular selected={token} onElement={setToken} noBalance noETH tokenOnly onlySelections={['ERC-20']}/>
+          <TokenInputRegular selected={token} onElement={setToken} noBalance noETH tokenOnly/>
         </label>
         <ProposalRules value={proposalRules} onChange={setProposalRules} showHost/>
       </div>

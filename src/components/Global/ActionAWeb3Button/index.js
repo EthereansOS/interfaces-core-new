@@ -20,7 +20,8 @@ const ActionAWeb3Button  = ({children, onClick, type, onSuccess, className, disa
             elem && (elem = !elem.then ? elem : (await elem))
             onSuccess && setTimeout(() => onSuccess(elem))
         } catch(e) {
-            errorMessage = e.message || e
+            errorMessage = e.data?.message || e.message || e
+            console.log(e)
         }
         setLoading(false)
         errorMessage && setTimeout(() => alert(errorMessage))

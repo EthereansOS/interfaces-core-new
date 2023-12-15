@@ -29,7 +29,7 @@ const IndexMain = () => {
           <figure>
             <img src={`${process.env.PUBLIC_URL}/img/c-3.png`}></img>
           </figure>
-          <p>Guilds</p>
+          <p>Organizations</p>
         </Link>}
         <Link to="/covenants" className={style.CardsFancy}>
           <figure>

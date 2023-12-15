@@ -71,6 +71,6 @@ export default ({element, forDelegationVote}) => {
     })}
     emptyMessage=""
     discriminant={discriminant}
-    filter={element => element.organization?.type === 'delegation' || element.organization?.old || element.label === 'FIXED_INFLATION_V1' || element.label === 'DELEGATIONS_MANAGER_INSURANCE_V1'}
+    filter={element => element.label !== 'DELEGATIONS_MANAGER_DETACHER_V1'}
   />
 }

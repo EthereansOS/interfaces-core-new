@@ -57,15 +57,15 @@ const ItemView = () => {
 
     useEffect(refresh, [pathname])
 
-    useEffect(() => item && setTimeout(async () => {
-        var name = await getRawField({ provider : web3Data.web3.currentProvider }, item.address, 'name')
+    /*useEffect(() => item && setTimeout(async () => {
+        var name = await getRawField({ provider : web3Data.web3.currentProvider }, item.l2Address || item.address, 'name')
         name = abi.decode(['string'], name)[0].toString()
-        var symbol = await getRawField({ provider : web3Data.web3.currentProvider }, item.address, 'symbol')
+        var symbol = await getRawField({ provider : web3Data.web3.currentProvider }, item.l2Address || item.address, 'symbol')
         symbol = abi.decode(['string'], symbol)[0].toString()
         console.log({
-            address : item.address, name, symbol, uri : item.uri
+            address : item.l2Address || item.address, name, symbol, uri : item.uri
         })
-    }), [item])
+    }), [item])*/
 
     return (
         <div className={style.SingleContentPage}>

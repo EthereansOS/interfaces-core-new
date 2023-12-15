@@ -9,14 +9,16 @@ import ActionAWeb3Button from '../../Global/ActionAWeb3Button'
 
 const VoteSelections = ({element, discriminator, value, votes, label, checked, proposalId, onSelect, forDelegationVote}) => {
 
-  const { block, account, newContract } = useWeb3()
+  const web3Data = useWeb3()
+
+  const { block, account, newContract } = web3Data
 
   const context = useEthosContext()
 
   const [terminable, setTerminable] = useState(false)
 
   async function refreshPositionInfo() {
-    setTerminable(element.isSurveyless ? await surveylessIsTerminable({account, newContract, context}, element, proposalId) : await surveyIsTerminable({account, newContract, context}, element, proposalId))
+    setTerminable(element.isSurveyless ? await surveylessIsTerminable({...web3Data, context}, element, proposalId) : await surveyIsTerminable({account, newContract, context}, element, proposalId))
   }
 
   useEffect(() => {

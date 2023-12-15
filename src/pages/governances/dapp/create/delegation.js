@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useMemo, useState} from 'react'
 
 import { Link, useLocation } from 'react-router-dom'
 import { Style, useEthosContext, useWeb3, web3Utils } from 'interfaces-core'
@@ -9,7 +9,10 @@ import style from '../../../../all.module.css'
 const Deploy = ({back, finalize}) => {
 
   const context = useEthosContext()
-  const {getGlobalContract, newContract, chainId, ipfsHttpClient} = useWeb3()
+
+  const web3Data = useWeb3()
+
+  const {getGlobalContract, newContract, chainId, dualChainId, ipfsHttpClient} = web3Data
 
   const [name, setName] = useState("")
   const [description, setDescription] = useState("")
@@ -26,25 +29,28 @@ const Deploy = ({back, finalize}) => {
   const [loading, setLoading] = useState(false)
 
   async function deploy() {
+    var metadata = {
+      name,
+      description,
+      ticker,
+      image,
+      tokenURI,
+      background_color,
+      external_url,
+      community_url,
+      public_polls,
+      news_url,
+      blog_url
+    }
+    if(dualChainId) {
+      return finalize(undefined, metadata)
+    }
     setLoading(true)
     var errorMessage
     try {
         finalize(await createDelegation({
-          context, newContract, chainId, ipfsHttpClient, factoryOfFactories : getGlobalContract("factoryOfFactories")
-        }, {
-          name,
-          description,
-          ticker,
-          image,
-          tokenURI,
-          background_color,
-          external_url,
-          community_url,
-          public_polls,
-          news_url,
-          blog_url
-
-        }))
+          context, ...web3Data, factoryOfFactories : getGlobalContract("factoryOfFactories")
+        }, metadata))
     } catch(e) {
       errorMessage = e.message || e
     }
@@ -116,16 +122,28 @@ const Deploy = ({back, finalize}) => {
       <div className={style.ActionDeploy}>
         {loading && <CircularProgress/>}
         {!loading && <a className={style.Web3BackBTN} onClick={back}>Back</a>}
-        {!loading && <a className={style.Web3CustomBTN} onClick={deploy}>Deploy</a>}
+        {!loading && <a className={style.Web3CustomBTN} onClick={deploy}>{dualChainId ? "Next" : "Deploy"}</a>}
       </div>
     </div>
   )
 }
 
+const Duration = ({value, onChange}) => {
+
+  const context = useEthosContext()
+
+  return <select value={value} onChange={e => onChange(parseInt(e.currentTarget.value))}>
+      {Object.entries(context.timeIntervals).map(it => <option key={it[0]} value={it[1]}>{it[0]}</option>)}
+  </select>
+}
+
 const Finalize = ({back, success, cumulativeData}) => {
 
   const context = useEthosContext()
-  const { getGlobalContract, newContract, chainId } = useWeb3()
+
+  const web3Data = useWeb3()
+
+  const { getGlobalContract, newContract, chainId, dualChainId } = web3Data
 
   const [delegationAddress, setDelegationAddress] = useState(cumulativeData?.delegationAddress)
   const [quorumPercentage, setQuorumPercentage] = useState(0)
@@ -136,18 +154,34 @@ const Finalize = ({back, success, cumulativeData}) => {
 
   const [loading, setLoading] = useState(false)
 
+  const showValidationBombWarning = useMemo(() => validationBomb && blockLength ? parseInt(validationBomb) <= parseInt(blockLength) : undefined, [blockLength, validationBomb])
+
   async function finalize() {
     setLoading(true)
     var errorMessage
     try {
-      await finalizeDelegation({context, chainId, newContract, factoryOfFactories : getGlobalContract("factoryOfFactories")},
+      var delAddr = delegationAddress
+      if(delAddr) {
+        await finalizeDelegation({context, chainId, newContract, factoryOfFactories : getGlobalContract("factoryOfFactories")},
         delegationAddress,
         host,
         quorumPercentage,
         validationBomb,
         blockLength,
         hardCapPercentage)
-      success()
+      } else {
+        delAddr = await createDelegation({
+          context, ...web3Data, factoryOfFactories : getGlobalContract("factoryOfFactories")
+        }, cumulativeData.metadata, {
+          host,
+          quorum : quorumPercentage,
+          validationBomb,
+          votePeriod : blockLength,
+          hardCap : hardCapPercentage
+        })
+      }
+
+      success(delAddr)
     } catch(e) {
       errorMessage = e.message || e
     }
@@ -163,10 +197,10 @@ const Finalize = ({back, success, cumulativeData}) => {
               <div className={style.proggressCreatePerchLast} style={{width: "100%"}}>Step 2 of 2</div>
           </div>
       </div>
-      <label className={style.CreationPageLabelF}>
+      {!dualChainId && <label className={style.CreationPageLabelF}>
         <h6>Delegation address</h6>
         <input type="text" value={delegationAddress} onChange={e => setDelegationAddress(e.currentTarget.value)}/>
-      </label>
+      </label>}
       <label className={style.CreationPageLabelF}>
         <h6>Host</h6>
         <input type="text" value={host} onChange={e => setHost(e.currentTarget.value)}/>
@@ -174,13 +208,16 @@ const Finalize = ({back, success, cumulativeData}) => {
       </label>
       <label className={style.CreationPageLabelF}>
         <h6>Survey Duration</h6>
-        <input type="number" value={blockLength} onChange={e => setBlockLength(e.currentTarget.value)}/>
-        <p>The duration (in blocks) that Proposals will be open for.</p>
+        {!dualChainId && <input type="number" value={blockLength} onChange={e => setBlockLength(e.currentTarget.value)}/>}
+        {dualChainId && <Duration value={blockLength} onChange={value => setBlockLength(value)}/>}
+        <p>The duration (in {dualChainId ? "seconds" : "blocks"}) that Proposals will be open for.</p>
       </label>
       <label className={style.CreationPageLabelF}>
         <h6>Validation Bomb</h6>
-        <input type="number" value={validationBomb} onChange={e => setValidationBomb(e.currentTarget.value)}/>
-        <p>An optional duration (in blocks) after which a passed Proposal can never be executed. If set as zero, there is no time before which a Proposal can be executed.</p>
+        {!dualChainId && <input type="number" value={validationBomb} onChange={e => setValidationBomb(e.currentTarget.value)}/>}
+        {dualChainId && <Duration value={validationBomb} onChange={value => setValidationBomb(value)}/>}
+        <p>An optional duration (in {dualChainId ? "seconds" : "blocks"}) after which a passed Proposal can never be executed. If set as zero, there is no time before which a Proposal can be executed.</p>
+        {showValidationBombWarning && <h6>WARNING: Validation Bomb must be higher than Survey Duration</h6>}
       </label>
       <label className={style.CreationPageLabelF}>
         <h6>Quorum {quorumPercentage || "0"}%</h6>
@@ -195,7 +232,7 @@ const Finalize = ({back, success, cumulativeData}) => {
       <div className={style.ActionDeploy}>
         {loading && <CircularProgress/>}
         {!loading && <a className={style.Web3BackBTN} onClick={back}>Back</a>}
-        {!loading && <a className={style.Web3CustomBTN} onClick={finalize}>Finalize</a>}
+        {!loading && <a className={style.Web3CustomBTN} onClick={finalize}>{dualChainId ? "Deploy" : "Finalize"}</a>}
       </div>
     </div>
   )
@@ -236,12 +273,12 @@ const DelegationsCreate = ({}) => {
 
   var steps = {
     deploy : () => <Deploy
-      finalize={delegationAddress => setCumulativeData(oldValue => ({...oldValue, delegationAddress, step : 'finalize'}))}
+      finalize={(delegationAddress, metadata) => setCumulativeData(oldValue => ({...oldValue, delegationAddress, metadata, step : 'finalize'}))}
     />,
     finalize : () => <Finalize
       cumulativeData={cumulativeData}
       back={() => setCumulativeData({step : 'deploy'})}
-      success={() => setCumulativeData(oldValue => ({...oldValue, step: 'success'}))}
+      success={delegationAddress => setCumulativeData(oldValue => ({...oldValue, delegationAddress, step: 'success'}))}
     />,
     success : () => <Success
       cumulativeData={cumulativeData}

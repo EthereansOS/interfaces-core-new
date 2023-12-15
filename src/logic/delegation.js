@@ -1,6 +1,6 @@
-import { getLogs, abi, VOID_ETHEREUM_ADDRESS, uploadMetadata, formatLink, getNetworkElement, blockchainCall, web3Utils, sendAsync, tryRetrieveMetadata, toDecimals, fromDecimals, numberToString } from "interfaces-core"
+import { getLogs, abi, VOID_ETHEREUM_ADDRESS, uploadMetadata, formatLink, getNetworkElement, blockchainCall, web3Utils, sendAsync, tryRetrieveMetadata, toDecimals, fromDecimals, numberToString, cache } from "interfaces-core"
 
-import { getOrganization, extractRules, wellknownPresets } from "./organization"
+import { getOrganization, extractRules, wellknownPresets, retrieveProposals, getOrganizationMetadata } from "./organization"
 
 import { decodeProposalVotingToken } from './ballot'
 
@@ -33,7 +33,11 @@ export async function getDelegationsOfOrganization({ context, chainId, web3, acc
         try {
             var uri = await blockchainCall(it.delegation.methods.uri)
             uri = formatLink({ context }, uri)
-            var metadata = await (await fetch(uri)).json()
+            var metadataCached = JSON.parse(await cache.getItem(uri))
+            var metadata = metadataCached || await (await fetch(uri)).json()
+            if(!metadataCached) {
+                await cache.setItem(uri, JSON.stringify(metadata))
+            }
             it = {...it, ...metadata}
         } catch(e) {}
         return it
@@ -47,7 +51,7 @@ export async function getAvailableDelegationsManagers({ context, chainId, web3, 
     exceptFor = (exceptFor || []).map(it => it.delegationsManagerAddress)
     var delegationsManagers = await getDelegationsManagers({ context, chainId, web3, account, getGlobalContract, newContract, lightweight : true})
     delegationsManagers = delegationsManagers.filter(it => exceptFor.indexOf(it.delegationsManagerAddress) === -1)
-    delegationsManagers = lightweight ? delegationsManagers : await Promise.all(delegationsManagers.map(async it => ({...it, organization : await tryRetrieveMetadata({context}, {contract : newContract(context.ISubDAOABI, it.hostAddress), address : it.hostAddress, type: 'organization'})})))
+    delegationsManagers = lightweight ? delegationsManagers : await Promise.all(delegationsManagers.map(async it => ({...it, organization : await getOrganizationMetadata({context}, {contract : newContract(context.ISubDAOABI, it.hostAddress), address : it.hostAddress, type: 'organization'})})))
     return delegationsManagers
 }
 
@@ -56,8 +60,11 @@ export async function getDelegationsManagers({ context, chainId, getGlobalContra
 
     const factoryIndices = getNetworkElement({context, chainId}, "factoryIndices")
 
+    var indices = Object.entries(factoryIndices).filter(it => it[0] === 'organization' || it[0] === 'dfo' || it[0] === 'subdao').map(it => it[1])
+
     var address = []
-    await Promise.all(([factoryIndices.dfo, factoryIndices.subdao]).map(async it => address.push(...(await blockchainCall(factoryOfFactories.methods.get, it))[1])))
+
+    await Promise.all(indices.map(async it => address.push(...(await blockchainCall(factoryOfFactories.methods.get, it))[1])))
 
     var args = {
         address,
@@ -70,7 +77,12 @@ export async function getDelegationsManagers({ context, chainId, getGlobalContra
 
     var logs = await getLogs(web3.currentProvider, args)
 
-    address = logs.map(it => abi.decode(["address"], it.topics[2])[0])
+    address = logs.map(it => web3Utils.toChecksumAddress(abi.decode(["address"], it.topics[2])[0]))
+
+    try {
+        var excluded = context.organizationsToExclucde.map(web3Utils.toChecksumAddress)
+        address = address.filter(it => excluded.indexOf(it) === -1)
+    } catch(e) {}
 
     const COMPONENT_KEY_DELEGATIONS_MANAGER = "0x49b87f4ee20613c184485be8eadb46851dd4294a8359f902606085b8be6e7ae6"
 
@@ -80,10 +92,12 @@ export async function getDelegationsManagers({ context, chainId, getGlobalContra
             web3Utils.sha3('ComponentSet(bytes32,address,address,bool)'),
             COMPONENT_KEY_DELEGATIONS_MANAGER
         ],
-        fromBlock: web3Utils.toHex(getNetworkElement({ context, chainId }, 'deploySearchStart')) || "0x0",
+        fromBlock: web3Utils.toHex(Math.min(...logs.map(it => parseInt(it.blockNumber)))),
         toBlock : 'latest'
     }
-    var logs = await getLogs(web3.currentProvider, args)
+
+    logs = await getLogs(web3.currentProvider, args)
+
     address = logs.map(it => it.address)
     address = address.filter((it, i, array) => array.indexOf(it) === i)
 
@@ -118,12 +132,14 @@ export async function getDelegationsManagers({ context, chainId, getGlobalContra
         hosts = hosts.filter(it => it)
     }
 
-    hosts = lightweight ? hosts : await Promise.all(hosts.map(async it => ({...it, organization : await tryRetrieveMetadata({context}, {contract : newContract(context.ISubDAOABI, it.hostAddress), address : it.hostAddress, type: 'organization'})})))
+    //hosts = lightweight ? hosts : await Promise.all(hosts.map(async it => ({...it, organization : await tryRetrieveMetadata({context}, {contract : newContract(context.ISubDAOABI, it.hostAddress), address : it.hostAddress, type: 'organization'})})))
+
+    hosts = lightweight ? hosts : await Promise.all(hosts.map(async it => ({...it, organization : await getOrganizationMetadata({context}, {contract : newContract(context.ISubDAOABI, it.hostAddress), address : it.hostAddress, type: 'organization'}, true)})))
 
     return hosts
 }
 
-export async function createDelegation({context, ipfsHttpClient, newContract, chainId, factoryOfFactories}, metadata) {
+export async function createDelegation({context, ipfsHttpClient, newContract, chainId, factoryOfFactories}, metadata, voteRules) {
     var uri = await uploadMetadata({context, ipfsHttpClient}, metadata)
 
     var mandatoryComponentsDeployData = [
@@ -147,7 +163,7 @@ export async function createDelegation({context, ipfsHttpClient, newContract, ch
         [],
         [],
         [],
-        "0x"
+        voteRules ? abi.encode(["address", "uint256", "uint256", "uint256", "uint256"], [voteRules.host, toDecimals(numberToString(parseFloat(voteRules.quorum)) / 100, 18), voteRules.validationBomb, voteRules.votePeriod, toDecimals(numberToString(parseFloat(voteRules.hardCap)) / 100, 18)]) : '0x'
     ]
 
     var deployOrganizationData = abi.encode([`tuple(${deployOrganizationDataType.join(',')})`], [deployOrganizationDataValue])
@@ -210,9 +226,16 @@ export async function all({context, newContract, chainId, factoryOfFactories, ac
 
     var logs = await getLogs(factoryOfFactories.currentProvider, args)
 
-    var delegations = logs.map(it => newContract(context.ISubDAOABI, abi.decode(["address"], it.topics[2])[0]))
+    var delegations = logs.map(it => web3Utils.toChecksumAddress(abi.decode(["address"], it.topics[2])[0]))
 
-    delegations = await Promise.all(delegations.map(contract => (tryRetrieveMetadata({context}, {contract, address : contract.options.address, type: 'delegations'}))))
+    try {
+        var excluded = context.delegationsToExclucde.map(web3Utils.toChecksumAddress)
+        delegations = delegations.filter(it => excluded.indexOf(it) === -1)
+    } catch(e) {}
+
+    delegations = delegations.map(it => newContract(context.ISubDAOABI, it))
+
+    //delegations = await Promise.all(delegations.map(contract => (tryRetrieveMetadata({context}, {contract, address : contract.options.address, type: 'delegations'}))))
 
     if(mine) {
         delegations = await Promise.all(delegations.map(async it => {
@@ -234,12 +257,13 @@ export async function all({context, newContract, chainId, factoryOfFactories, ac
         delegations = delegations.filter(it => it)
     }
 
+    delegations = delegations.map(it => it.options.address)
     return delegations
 }
 
-export async function getDelegation({context, web3, account, getGlobalContract, newContract}, delegationAddress) {
+export async function getDelegation(web3Data, delegationAddress) {
 
-    var delegation = await getOrganization({context, web3, account, getGlobalContract, newContract}, delegationAddress)
+    var delegation = await getOrganization(web3Data, delegationAddress)
     delegation.type = 'delegation'
 
     var initializer = await blockchainCall(delegation.contract.methods.initializer)
@@ -449,7 +473,9 @@ export async function refreshProposals({ context, web3, account, chainId, getGlo
         model : abi.decode(["uint256"], it.topics[1])[0].toString()
     }))
 
-    var proposals = await blockchainCall(element.organization.components.proposalsManager.contract.methods.list, proposalsInfo.map(it => it.id))
+    var proposals = await retrieveProposals(element.organization.components.proposalsManager, proposalsInfo.map(it => it.id))
+
+    var proposalsConfiguration
 
     proposals = await Promise.all(proposals.map(async (proposalData, i) => {
         var proposalInfo = proposalsInfo[i]
@@ -460,9 +486,17 @@ export async function refreshProposals({ context, web3, account, chainId, getGlo
             return
         }
 
+        proposalsConfiguration = proposalsConfiguration || new Promise(async ok => {
+            var votingTokens = abi.decode(["address[]","uint256[]", "uint256[]"], proposalData.votingTokens)
+            return ok({
+                ...element.proposalsConfiguration,
+                votingTokens : await Promise.all(votingTokens[0].map((_, i) => decodeProposalVotingToken({ account, web3, context, newContract }, "0", votingTokens[0][i], votingTokens[1][i].toString(), votingTokens[2][i].toString())))
+            })
+        })
+
         var proposal = {
             ...proposalData,
-            ...(await getMetadataByCodeSequence({ provider : web3.currentProvider, context}, proposalData.codeSequence)),
+            //...(await getMetadataByCodeSequence({ provider : web3.currentProvider, context}, proposalData.codeSequence)),
             ...isOfThisOrganization,
             id : proposalId,
             proposalId,
@@ -471,13 +505,10 @@ export async function refreshProposals({ context, web3, account, chainId, getGlo
             sourceElement : element,
             organization : element.organization,
             proposalsManager : element.proposalsManager,
-            delegationsManager : element.delegationsManager
-        }
-        var votingTokens = abi.decode(["address[]","uint256[]", "uint256[]"], proposalData.votingTokens)
-        votingTokens = await Promise.all(votingTokens[0].map((_, i) => decodeProposalVotingToken({ account, web3, context, newContract }, "0", votingTokens[0][i], votingTokens[1][i].toString(), votingTokens[2][i].toString())))
-        proposal.proposalsConfiguration = {
-            ...element.proposalsConfiguration,
-            votingTokens
+            delegationsManager : element.delegationsManager,
+            proposalsConfiguration : {
+                ...(await proposalsConfiguration)
+            }
         }
         return proposal
     }))
@@ -490,7 +521,7 @@ export async function refreshProposals({ context, web3, account, chainId, getGlo
     return element
 }
 
-async function getMetadataByCodeSequence({ provider, context }, codeSequence, labelName) {
+export async function getMetadataByCodeSequence({ provider, context }, codeSequence, labelName) {
     if(codeSequence instanceof Array) {
         return (await Promise.all(codeSequence.map(it => getMetadataByCodeSequence({ provider, context }, it)))).reduce((acc, it) => ({...acc, ...it}), {})
     }
@@ -503,7 +534,10 @@ async function getMetadataByCodeSequence({ provider, context }, codeSequence, la
         var item = await getRawField({ provider }, codeSequence, labelName)
         item = abi.decode(["string"], item)[0]
         item = formatLink({ context }, item)
-        item = await (await fetch(item)).json()
+        var link = item
+        var result = JSON.parse(await cache.getItem(link))
+        item = result ? result : item.toLowerCase().indexOf('ipfs') === -1 ? {} : await (await fetch(item)).json()
+        !result && await cache.setItem(link, JSON.stringify(item))
         return item
     } catch(e) {
         return {}
@@ -588,6 +622,10 @@ const proposalResolvers = {
         }
 
         var entries = await getRawField({ provider }, proposalData.codeSequence[0], 'allEntries')
+
+        if(entries === '0x') {
+            entries = await getRawField({ provider }, proposalData.codeSequence[0], 'entries')
+        }
 
         var types = [
             "address",

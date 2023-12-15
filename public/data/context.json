@@ -61,10 +61,11 @@
             }
         },
         "providerInstrumentableMethods" : [
-            "eth_call",
             "eth_getLogs",
             "eth_estimateGas"
         ],
+        "urlCacheResolver" : "https://2mlyrdcdid.execute-api.eu-central-1.amazonaws.com/default/urlCache?url=",
+        "urlCacheResolverExluded" : ["coingecko", "github", "opensea", "data:", "static/js/", "0x", "missingcoin.gif", "os_logo.png"],
         "discordLink" : "https://discord.gg/yMxgu4JjEy",
         "ourSubDAO" : "0xc28FfD843DCA86565597A1b82265df29A1642262",
         "ourSubDAORinkeby" : "0xe016Cc0B9cDd895E7e28163F1d0125Bd4d034cC5",
@@ -183,7 +184,8 @@
             "farming": "0",
             "fixedInflation": "1",
             "proposalRules": 3,
-            "organization": 4
+            "organization": 4,
+            "delegation": 5
         },
         "grimoire": {
             "COMPONENT_KEY_PROPOSALS_MANAGER": "0xa504406933af7ca120d20b97dfc79ea9788beb3c4d3ac1ff9a2c292b2c28e0cc",
@@ -371,7 +373,7 @@
             "Four Days": 345600,
             "Five Days": 432000,
             "Six Days": 518400,
-            "Week": 604800,
+            "A Week": 604800,
             "Two Weeks": 1210000,
             "Three Weeks": 1814000,
             "Month": 2628000,
@@ -506,6 +508,17 @@
         "deployedRoutinesToExclude" : [
             "0x10FfbBdC33b5150c0D24F994c3fF37FfDd790984"
         ],
+        "organizationsToExclucde" : [
+            "0x55C86a6bD9F01D4CdBc27A7a9cfd9112430be465",
+            "0x59945778F725f81a06C4C25F36Bb68C62EE28959",
+            "0x2bEe5950DBA88D3B7A009b19777DCdc28a4c863B"
+        ],
+        "delegationsToExclucde" : [
+            "0x13c1d68AC03118C85bfbc4Ab53F3637242169799",
+            "0xbc3d95AB4B2B21332aA38F49aad61fC07Ba07Af3",
+            "0xb13E78607ab37F6a622A0b703c1a6931C7E610a7"
+        ],
+        "eventBlockURL" : "https://raw.githubusercontent.com/EthereansOS/event-blocks/main/src/output/output.json",
         "x2USDAddress": "0xa4d9c768e1c6cabb127a6326c0668b49235639e8",
         "x5USDAddress": "0x0473f6ea742448ec9433b87ac410d79c08198abe",
         "x2USDNoteControllerAddress": "0x88a012e4d2b8600cf82e21f0685ec2ebcf643847",
