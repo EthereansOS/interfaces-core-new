@@ -473,7 +473,7 @@ const CreateOrganization = () => {
 
     const disabled = useMemo(() => !state || Object.values(state).filter(it => it && it.errors).length > 0, [state])
 
-    const onClick = useCallback(() => !disabled && createOrganization(initialData, state).then(address => history.push(`/guilds/organizations/${address}`)), [disabled, state])
+    const onClick = useCallback(() => !disabled && createOrganization(initialData, state).then(address => history.push(`/organizations/${address}`)), [disabled, state])
 
     useEffect(() => getAMMs({context, ...web3Data}).then(setAMMs), [])
 
@@ -522,7 +522,7 @@ const CreateOrganization = () => {
 }
 
 CreateOrganization.menuVoice = {
-    path : '/guilds/create/organization'
+    path : '/organizations/create/organization'
 }
 
 export default CreateOrganization

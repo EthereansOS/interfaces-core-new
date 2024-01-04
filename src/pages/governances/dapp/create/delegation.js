@@ -244,7 +244,7 @@ const Success = ({cumulativeData}) => {
       <h6>&#127881; &#127881; Delegation Created! &#127881; &#127881;</h6>
       <p><b>And Now?</b></p>
       <label className={style.CreationPageLabelF}>
-        <h6><Link to={`/guilds/delegations/${cumulativeData.delegationAddress}`}>Explore your Delegation</Link></h6>
+        <h6><Link to={`/organizations/delegations/${cumulativeData.delegationAddress}`}>Explore your Delegation</Link></h6>
       </label>
     </div>
   )
@@ -293,7 +293,7 @@ const DelegationsCreate = ({}) => {
 }
 
 DelegationsCreate.menuVoice = {
-  path : '/guilds/create/delegation'
+  path : '/organizations/create/delegation'
 }
 
 export default DelegationsCreate

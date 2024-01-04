@@ -1,26 +1,209 @@
-b {font-weight: bold;}
-a {cursor: pointer;}
+b {
+    font-weight: bold;
+}
+
+a {
+    cursor: pointer;
+}
 
 @font-face {
-  font-family: EthOSregular;
-  src: url(./components/assets/NotoSans-Regular.otf);
+    font-family: EthOSregular;
+    src: url(./components/assets/Poppins-Light.ttf);
 }
+
 @font-face {
-  font-family: EthOSregular;
-  src: url(./components/assets/NotoSans-Bold.otf);
-  font-weight: bold;
+    font-family: EthOSmedium;
+    src: url(./components/assets/Poppins-Medium.ttf);
+}
+
+@font-face {
+    font-family: EthOSbold;
+    src: url(./components/assets/Poppins-Bold.ttf);
 }
 
 /* ALE UPDATE THIS */
 .sidemenu-active {
-  background-color: white;
+    background-color: white;
 }
 
 @import "";
 
 body {
-  font-family: "EthOSregular","Overpass Mono",monospace !important;
+    font-family: "EthOSregular", "Overpass Mono", monospace !important;
 }
+
+.ModalBack {
+    position: fixed;
+    z-index: 99999998;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    text-align: center;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    align-content: center
+}
+
+
+
+/* Themes */
+
+.light p,
+.light b,
+.light figure,
+.light span,
+.light a,
+.light h6,
+.light h5,
+.light h4,
+.light h3,
+.light h2,
+.light h1,
+.light aside,
+.light input,
+.light div,
+.light textarea {
+    color: #000000;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.light::-webkit-scrollbar,
+.dark::-webkit-scrollbar,
+.biz::-webkit-scrollbar,
+.sepia::-webkit-scrollbar,
+div::-webkit-scrollbar,
+span::-webkit-scrollbar,
+p::-webkit-scrollbar,
+aside::-webkit-scrollbar,
+input::-webkit-scrollbar {
+    display: none !important;
+}
+
+.light {
+    background: white;
+}
+
+
+/* Enter modal */
+
+.ModalBoxBanner {
+    width: 500px;
+    overflow: scroll;
+    max-height: 70%;
+    z-index: 99999999;
+    border-radius: 10px;
+    padding: 40px;
+}
+
+.ModalBoxBanner h6 {
+    font-size: 13px;
+    width: 100%;
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 10px auto;
+    text-align: left;
+    font-weight: normal;
+    line-height: 1.3;
+}
+
+.ModalBoxBanner p {
+    font-size: 13px;
+    width: 100%;
+    display: inline-block;
+    padding: 5px 30px;
+    text-align: left;
+}
+
+.ModalBoxBanner h5 {
+    padding: 20px;
+    font-size: 20px;
+}
+
+.ModalBoxBanner h6 a {
+    text-decoration: underline;
+}
+
+.ModalBoxBanner span {
+    padding: 5px 20px;
+    font-size: 10px;
+    line-height: 1.2;
+    text-align: left;
+    display: inline-block;
+}
+
+.Enter {
+    background-color: var(--blue-violet);
+    font-family: "EthOSbold", "Overpass Mono", monospace !important;
+    padding: 12px 18px;
+    text-align: center;
+    color: #ffffff !important;
+    font-weight: bold;
+    margin: 20px auto;
+    font-size: 14px;
+    display: inline-block;
+    border-radius: 6px;
+}
+
+
+/* Navigation Menu */
+.Header {
+    height: 100%;
+    display: inline-block;
+    text-align: center;
+    width:15em;
+    min-height: 500px;
+    vertical-align: top;
+    overflow: hidden;
+    position: relative;
+}
+
+.Header .FixedHeader {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 15em;
+    max-width:15em;
+    height: 100%;
+    z-index: 9999999;
+    background-color: rgba(125,62,231,0.2);
+}
+.Header .BlurHeader {
+    display: none;
+    z-index: 10;
+}
+
+.logoMain {
+    width: 15em;
+    max-width:15em;
+    display: block;
+}
+.logoMain img {
+    max-width:15em;
+    max-height:10em;
+    padding: 2em;
+    display: block;
+    width: auto;
+    height: auto;
+}
+
+.Navigation {display: block;width: 148px;margin: 20px 15px;cursor: pointer; text-align: center;}
+.NavigationItem {position: relative;margin: 7px 0;display: inline-block;width:150px;text-align: left;padding: 8px 15px;border-radius: 8px;}
+.NavigationItem:hover {margin: 7px 0 7px 25px;}
+.Navigation .selected {margin: 7px 0 7px 20px;}
+.NavigationItem p {font-size: 13px;font-weight: 500;vertical-align: middle;display: inline-block;}
+.NavigationItem img {width: 25px;height: 25px;margin-right: 5px;vertical-align: middle;display: inline-block;}
+.NavigationItem .Hand {position: absolute; left: -30px; top: 10px; width:25px; height: 20px; display: none;}
+.NavigationItem:hover .Hand {display: inline-block;}
+.selected {font-weight: bold;}
+.indicator {height: 30px;}
+
+
 
 /* Global Components */
 
@@ -28,6 +211,7 @@ body {
 .LoaderB {vertical-align: middle; display: inline-block; width: 18px; height: 18px; margin: 2px;}
 .LoaderB img {width: 100%; height: 100%; display: inline-block;}
 .LoaderB {display: none;}
+
 
 @keyframes ldio_f2vadqclpalj {0% { transform: rotate(0deg) }100% { transform: rotate(360deg) }}
 .ldio_f2vadqclpalj > div > div {position: absolute;border-radius: 50%;}
@@ -81,16 +265,6 @@ body {
 .MetaBTN {border: 1px solid; font-weight: bold; border-radius: 5px;display: inline-block;width: 230px !important;margin: 5px;font-size: 11px;padding: 5px 2px !important;text-align: center;cursor: pointer;box-shadow: none;}
 .SendToL1 {border: 0px solid !important; font-weight: bold; border-radius: 5px;display: inline-block;width: 230px !important;margin: 5px;font-size: 11px;padding: 7px 2px !important;text-align: center;cursor: pointer;box-shadow: none;}
 .SendToL2 {border: 0px solid !important; ; font-weight: bold; border-radius: 5px;display: inline-block;width: 230px !important;margin: 5px;font-size: 11px;padding: 7px 2px !important;text-align: center;cursor: pointer;box-shadow: none;}
-
-
-.ModalBack {position: fixed; z-index: 99999998; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; text-align: center;display: flex;flex-wrap: wrap;flex-direction: row;justify-content: center;align-items: center;align-content: center}
-.ModalBoxBanner {width: 500px; overflow: scroll; max-height: 70%;  z-index: 99999999;border-radius: 20px; padding: 40px;}
-.ModalBoxBanner h6 {font-size: 13px; width: 100%; display: inline-block; padding: 10px 20px; margin: 10px auto; text-align: left; font-weight: normal; line-height: 1.3;}
-.ModalBoxBanner p {font-size: 13px; width: 100%; display: inline-block; padding: 5px 30px; text-align: left;}
-.ModalBoxBanner h5 {padding: 20px; font-size: 20px;}
-.ModalBoxBanner h6 a {text-decoration: underline;}
-.ModalBoxBanner span {padding: 5px 20px; font-size: 10px; line-height: 1.2; text-align: left; display: inline-block;}
-.Enter {background-color: #00F2C2; padding: 12px 18px; text-align: center; color: #ffffff; font-weight: bold; margin: 20px auto; font-size: 14px; display: inline-block; border-radius: 16px;}
 
 .DappBannerExpl {display: inline-block; padding: 5px; margin: 10px auto; width: 80%;}
 .DappBannerExpl div {border-radius: 20px; display: inline-block; padding: 20px; height:100px; text-align:left; overflow: hidden; vertical-align: middle;}
@@ -243,12 +417,6 @@ body {
 .DDapp_Menu2 > li {display: inline-block;}
 .DDapp_Menu2 > li > a {display: inline-block;padding: 8px 10px;font-size: 12px;display: inline-block; text-decoration: none; cursor: pointer;}
 
-.Header {height: 100%;display: inline-block;text-align: center;width:200px;min-height: 500px;vertical-align: top;overflow: hidden;position: relative;}
-.Header .FixedHeader {position: fixed; left: 0; top: 0; width: 200px; height: 100%;z-index: 9999999;}
-.Header .BlurHeader {display: none; z-index: 10; }
-
-.logoMain {height: 90px; width: 110px; margin: 20px 0px 20px 10px; display: block;}
-.logoMain img {height: 90px; width: 110px; display: block;}
 
 .Cart {width: 80%; display: inline-block; padding: 15px; position: fixed; left: 10%; bottom:10px;  border-radius: 12px;z-index: 9999999;}
 .CartBuyBox {width: 230px; display: inline-block; margin: 3px 5px;}
@@ -1014,16 +1182,7 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .TokenObject figure {width: 80px !important; height: 80px !important; vertical-align: middle !important; margin-top: 10px !important}
 
 
-.Navigation {display: block;width: 148px;margin: 20px 15px;cursor: pointer; text-align: center;}
-.NavigationItem {position: relative;margin: 7px 0;display: inline-block;width:150px;text-align: left;padding: 8px 15px;border-radius: 8px;}
-.NavigationItem:hover {margin: 7px 0 7px 25px;}
-.Navigation .selected {margin: 7px 0 7px 20px;}
-.NavigationItem p {font-size: 13px;font-weight: 500;vertical-align: middle;display: inline-block;}
-.NavigationItem img {width: 25px;height: 25px;margin-right: 5px;vertical-align: middle;display: inline-block;}
-.NavigationItem .Hand {position: absolute; left: -30px; top: 10px; width:25px; height: 20px; display: none;}
-.NavigationItem:hover .Hand {display: inline-block;}
-.selected {font-weight: bold;}
-.indicator {height: 30px;}
+
 
 .medium {width: 500px; position: relative; overflow: scroll; max-height: 70%;  z-index: 99999999; border-radius: 20px;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32); padding: 40px; z-index: 1000000000000000000;}
 .Small {width: 500px; position: relative; overflow: scroll; max-height: 70%;  z-index: 99999999;border-radius: 20px;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32); padding: 40px; z-index: 1000000000000000000;}
@@ -1460,8 +1619,7 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 
 /* Global Components */
 
-.light p,.light b,.light figure,.light span,.light a,.light h6,.light h5,.light h4,.light h3,.light h2,.light h1,.light aside,.light input, .light div, .light textarea {color: #000000;-ms-overflow-style: none;scrollbar-width: none;}
-.light::-webkit-scrollbar, .dark::-webkit-scrollbar, .biz::-webkit-scrollbar, .sepia::-webkit-scrollbar, div::-webkit-scrollbar, span::-webkit-scrollbar, p::-webkit-scrollbar, aside::-webkit-scrollbar, input::-webkit-scrollbar {display: none !important;}
+
 .biz p,.biz b,.biz figure,.biz span,.biz a,.biz h6,.biz h5,.biz h4,.biz h3,.biz h2,.biz h1,.biz aside, .biz input, .biz div, .biz textarea  {color: #000000;-ms-overflow-style: none;scrollbar-width: none;}
 .dark p,.dark b,.dark figure,.dark span,.dark a,.dark h6,.dark h5,.dark h4,.dark h3,.dark h2,.dark h1,.dark aside, .dark input, .dark div, .dark textarea {color: #ffffff;-ms-overflow-style: none;scrollbar-width: none;}
 .matrix p,.matrix b,.matrix figure,.matrix span,.matrix a,.matrix h6,.matrix h5,.matrix h4,.matrix h3,.matrix h2,.matrix h1,.matrix aside, .matrix input, .matrix div, .matrix textarea {color: #008F11;-ms-overflow-style: none;scrollbar-width: none; border-radius: 0px !important;}
@@ -1479,7 +1637,7 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 
 .light, .dark, .biz, .sepia, .matrix {height: 100vh; overflow: scroll;}
 
-.light {background: rgb(255,255,255);background: linear-gradient(300deg, #fdf7f5 70%, rgba(120,111,255,1) 100%);}
+
 .biz {background: rgb(255,255,255);background: linear-gradient(0deg, #ffffff 20%, #6EC9C6 100%);}
 .dark {background-color: #000000; background: linear-gradient(300deg, #1a1a1a 70%, rgba(120,111,255,1) 100%);}
 .matrix {background-color: #000000; background: linear-gradient(320deg, #000000 87%, #008F11 100%);}

@@ -555,7 +555,7 @@ const proposalResolvers = {
 
         var metadata = await getMetadataByCodeSequence({ provider, context }, address, "uri")
 
-        var context = `Attached to: [${metadata.name}](${process.env.PUBLIC_URL}/#/guilds/organizations/${address})`
+        var context = `Attached to: [${metadata.name}](${process.env.PUBLIC_URL}/#/organizations/${address})`
 
         //metadata.image && (description = `[![${metadata.name}](${formatLink({ context }, metadata.image)})](${metadata.external_url}) ${description}`)
 

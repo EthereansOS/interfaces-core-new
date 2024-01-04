@@ -104,7 +104,7 @@ const IndexMain = () => {
         <h5>Purely On-Chain, Truly Decentralized and Governed by $OS</h5>
         <h6>Governed by $OS, the very first v2 Item, EthOS itself is the debut Organization of the platform. And like everything built on top of it, for the first ever time on Ethereum, it is entirely free from dependence on anything off-chain or centralized.</h6>
         <div className={style.TextPartBTN}>
-          <Link to={"/guilds/organizations/" + context.ourSubDAO} className={style.IndexHeaderDapp}>EthOS Organization</Link>
+          <Link to={"/organizations/" + context.ourSubDAO} className={style.IndexHeaderDapp}>EthOS Organization</Link>
           <a target="_blank" href="https://docs.ethos.wiki/ethereansos-docs/grimoire/ethereansos-governance" className={style.IndexHeaderDappL}>EthOS Governance</a>
           <a target="_blank" href="https://docs.ethos.wiki/ethereansos-docs/grimoire/os-economics" className={style.IndexHeaderDappL}>$OS Economics</a>
         </div>

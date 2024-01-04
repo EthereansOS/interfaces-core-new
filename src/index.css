@@ -1,44 +1,44 @@
 @font-face {
-  font-family: EthOSregular;
-  src: url(./components/assets/NotoSans-Regular.otf);
+    font-family: EthOSregular;
+    src: url(./components/assets/Poppins-Light.ttf);
 }
+
 @font-face {
-  font-family: EthOSregular;
-  src: url(./components/assets/NotoSans-Bold.otf);
-  font-weight: bold;
+    font-family: EthOSmedium;
+    src: url(./components/assets/Poppins-Medium.ttf);
+}
+
+@font-face {
+    font-family: EthOSbold;
+    src: url(./components/assets/Poppins-Bold.ttf);
 }
 
 body {
-  margin: 0;
-  font-family: 'EthOSregular', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    margin: 0;
+    font-family: 'EthOSregular', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+        'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+        sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+        monospace;
 }
 
-*:focus{
-  outline: none;
- }
+*:focus {
+    outline: none;
+}
 
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+    -webkit-appearance: none;
+    margin: 0;
 }
 
 /* Firefox */
 input[type=number] {
-  -moz-appearance: textfield;
+    -moz-appearance: textfield;
 }
-
-
-
-
-
