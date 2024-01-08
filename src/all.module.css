@@ -23,7 +23,7 @@ a {
 
 /* ALE UPDATE THIS */
 .sidemenu-active {
-    background-color: white;
+    background-color: var(--background-color);
 }
 
 @import "";
@@ -48,6 +48,66 @@ body {
     align-items: center;
     align-content: center
 }
+
+/* Toggle switch */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+    margin: auto;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+    border-radius: 34px;
+    border: 1px solid var(--btn-background-primary);
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    top: 3px;
+    left: 4px;
+    bottom: 4px;
+    background-color: var(--btn-background-primary);
+    -webkit-transition: .4s;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: white;
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px var(--btn-background-primary);
+}
+
+input:checked + .slider:before {
+    -webkit-transform: translateX(24px);
+    -ms-transform: translateX(24px);
+    transform: translateX(24px);
+}
+
+
+
 
 
 
@@ -86,7 +146,7 @@ input::-webkit-scrollbar {
 }
 
 .light {
-    background: white;
+    background-color: var(--lavender);
 }
 
 
@@ -138,11 +198,11 @@ input::-webkit-scrollbar {
 }
 
 .Enter {
-    background-color: var(--blue-violet);
+    background-color: var(--btn-background-primary);
+    color: var(--btn-color-primary) !important;
     font-family: "EthOSbold", "Overpass Mono", monospace !important;
     padding: 12px 18px;
     text-align: center;
-    color: #ffffff !important;
     font-weight: bold;
     margin: 20px auto;
     font-size: 14px;
@@ -162,7 +222,6 @@ input::-webkit-scrollbar {
     overflow: hidden;
     position: relative;
 }
-
 .Header .FixedHeader {
     position: fixed;
     left: 0;
@@ -171,13 +230,12 @@ input::-webkit-scrollbar {
     max-width:15em;
     height: 100%;
     z-index: 9999999;
-    background-color: rgba(125,62,231,0.2);
+    background-color: var(--background-color);
 }
 .Header .BlurHeader {
     display: none;
     z-index: 10;
 }
-
 .logoMain {
     width: 15em;
     max-width:15em;
@@ -191,17 +249,89 @@ input::-webkit-scrollbar {
     width: auto;
     height: auto;
 }
+.Navigation {
+    display: block;
+    max-width:15em;
+    margin: 2em;
+    text-align: center;
+}
+.NavigationItem {
+    cursor: pointer;
+    position: relative;
+    margin: 7px 0;
+    display: inline-block;
+    min-width:150px;
+    width: 100%;
+    text-align: left;
+    padding: 8px 15px;
+    border-radius: 6px;
+}
+.NavigationItem:hover {
+    background-color: var(--menu-item-background-hover) !important;
+}
+.NavigationItem:hover p {
+    color: var(--text-color-tertiary)  !important;
+    font-weight: bold;
+}
+.NavigationItem .selected {
+    background-color: var(--menu-item-background-selected);
+}
+.NavigationItem  .selected p {
+    color: var(--text-color-tertiary)  !important;
+}
+.NavigationItem p {
+    font-size: 13px;
+    font-weight: 500;
+    vertical-align: middle;
+    display: inline-block;
+    color: var(--text-color-primary);
+}
+.NavigationItem img {
+    width: 25px;
+    height: 25px;
+    margin-right: 5px;
+    vertical-align: middle;
+    display: inline-block;
+}
+.NavigationItem .Hand {
+    position: absolute;
+    left: -30px;
+    top: 10px;
+    width:25px;
+    height: 20px;
+    display: none;
+}
+/* .NavigationItem:hover .Hand {
+    display: inline-block;
+} */
+.selected {
+    font-weight: bold;
+}
+.indicator {
+    height: 30px;
+}
 
-.Navigation {display: block;width: 148px;margin: 20px 15px;cursor: pointer; text-align: center;}
-.NavigationItem {position: relative;margin: 7px 0;display: inline-block;width:150px;text-align: left;padding: 8px 15px;border-radius: 8px;}
-.NavigationItem:hover {margin: 7px 0 7px 25px;}
-.Navigation .selected {margin: 7px 0 7px 20px;}
-.NavigationItem p {font-size: 13px;font-weight: 500;vertical-align: middle;display: inline-block;}
-.NavigationItem img {width: 25px;height: 25px;margin-right: 5px;vertical-align: middle;display: inline-block;}
-.NavigationItem .Hand {position: absolute; left: -30px; top: 10px; width:25px; height: 20px; display: none;}
-.NavigationItem:hover .Hand {display: inline-block;}
-.selected {font-weight: bold;}
-.indicator {height: 30px;}
+
+/* Home Cards */
+.CardsLayerS .CardsFancy {
+    background-color: var(--background-color);
+    box-shadow: 0 -4px 10px rgba(0, 0, 0, .05);
+    border-radius: 12px;
+    width: 200px;
+    height: 200px;
+    display: inline-block;
+    margin: 10px;
+    text-align: center;
+    vertical-align: middle;
+}
+.CardsLayerS figure {width: 60px; height: 60px; display: inline-block; margin: 50px auto 30px auto;}
+.CardsLayerS figure img {width: 60px; display: inline-block;}
+.CardsLayerS p {
+    font-size: 15px;
+    color: var(--text-color-primary);
+    font-weight: bold;
+}
+.CardsLayerS {margin-top: 100px;}
 
 
 
@@ -453,11 +583,7 @@ input::-webkit-scrollbar {
 .Cart .AMMSelector label img {width: 40px; height: 40px;}
 .Cart .AMMSelector label span {display: none;}
 
-.CardsLayerS .CardsFancy {background: rgba(173, 163, 236, 0.3);box-shadow: inset 2px -2px 4px rgba(173, 163, 236, 0.9);border-radius: 30px;width: 200px;height: 200px; display: inline-block; margin: 10px; text-align: center; vertical-align: middle;}
-.CardsLayerS figure {width: 60px; height: 60px; display: inline-block; margin: 50px auto 30px auto;}
-.CardsLayerS figure img {width: 60px; display: inline-block;}
-.CardsLayerS p {font-size: 15px; color: #786FFF; font-weight: bold;}
-.CardsLayerS {margin-top: 100px;}
+
 
 /* Global Create */
 
@@ -1194,15 +1320,15 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .Web3ConnectChain img {width:25px; height:25px; display: inline-block; margin: 3px; vertical-align: middle;}
 .Web3ConnectChain p {display: inline-block; margin: 3px;vertical-align: middle; font-size: 15px;}
 .Web3ConnectWallet {height: 40px;display: inline-block; padding: 2px 0px; border-radius: 12px;vertical-align: middle; cursor: pointer; width: 200px; text-align: left;}
-.Web3ConnectWallet img {width:30px; height:30px; border-radius: 12px; display: inline-block; margin: 3px 3px 3px 0px; vertical-align: middle;object-fit: contain;}
+.Web3ConnectWallet img {width:30px; height:30px; border-radius: 10px; display: inline-block; margin: 3px 3px 3px 3px; vertical-align: middle;object-fit: contain;}
 .Web3ConnectWallet p {display: inline-block; vertical-align: middle;font-size: 12px; font-weight: bold; max-width: 135px; overflow: hidden; margin-left: 5px;}
 
 .ThemeSelect {width: 60px; display: inline-block; text-align: left;}
 .ThemeSelect select {padding: 10px 10px; border-radius: 12px; text-align: center; border: none;}
 
 .NetworkSelect {width: 120px; display: inline-block; text-align: left; margin: 10px auto 0px 15px;border-radius: 12px;}
-.NetworkSelectL1 {border-radius: 12px 0px 0px 12px; opacity: 0.5;}
-.NetworkSelectL2 {border-radius: 0px 12px 12px 0px; opacity: 0.5;}
+.NetworkSelectL1 {border-radius: 8px 0px 0px 8px; opacity: 0.7;}
+.NetworkSelectL2 {border-radius: 0px 8px 8px 0px; opacity: 0.7;}
 .NetworkSelect a {padding: 7px 4px; text-align: center; border: none; width: 60px; display: inline-block;}
 .NetworkSelect img {width:20px; height:20px;display: inline-block; margin: 3px 3px 3px 0px; vertical-align: middle;}
 .NetworkSelect p {display: inline-block; vertical-align: middle;font-size: 12px; font-weight: bold; max-width: 40px; overflow: hidden; margin-left: 2px;}
@@ -2713,7 +2839,7 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .biz .Web3ConnectChain {background-color: #E4E4E4;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
 .dark .Web3ConnectChain {background-color: #525252;box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
 
-.light .Web3ConnectWallet {background-color: #E4E4E4;}
+.light .Web3ConnectWallet {background-color: var(--background-color);}
 .biz .Web3ConnectWallet {background: linear-gradient(0deg, #8DB1FA 80%, #ffffff 100%);border: 4px solid;border-color: #8DB1FA;border-radius: 20px !important; font-size: 12px;}
 .dark .Web3ConnectWallet {background-color: #525252;}
 .sepia .Web3ConnectWallet {background-color: #eee8d587;}
@@ -2785,12 +2911,14 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 
 .matrix .NetworkSelect {background-color: transparent; color: #008F11;}
 
-.light .NetworkSelectL1 {background-color: #627eea;}
+.light .NetworkSelectL1 {background-color: rgba(98, 126, 234, 0.7 );}
+.light .NetworkSelectL1:hover {background-color: rgba(98, 126, 234, 1 );}
 .biz .NetworkSelectL1 {background-color: #627eea;border-radius: 12px 0px 0px 12px !important;}
 .dark .NetworkSelectL1 {background-color: #627eea;}
 .sepia .NetworkSelectL1 {background-color: #627eea;}
 
-.light .NetworkSelectL2 {background-color: #ff0420;}
+.light .NetworkSelectL2 {background-color: rgba(255, 4, 32, 0.7);}
+.light .NetworkSelectL2:hover {background-color: rgba(255, 4, 32, 1);}
 .biz .NetworkSelectL2 {background-color: #ff0420;border-radius: 0px 12px 12px 0px!important;}
 .dark .NetworkSelectL2 {background-color: #ff0420;}
 .sepia .NetworkSelectL2 {background-color: #ff0420;}
@@ -2810,7 +2938,7 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .dark .NetworkSelect p {color: #ffffff}
 .sepia .NetworkSelect p {color: #ffffff}
 
-.light .RightMenu {background-color: #ffffff6e;}
+.light .RightMenu {background-color: var(--lavender)}
 .biz .RightMenu {background-color: #8cd4d17a;border-radius:0px 0px 0px 12px !important;}
 .dark .RightMenu {background-color: #1a1a1a80;}
 .sepia .RightMenu {background-color: #fdf6e37d;}

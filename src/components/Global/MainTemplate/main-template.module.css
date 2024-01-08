@@ -17,7 +17,7 @@
   min-height: 300px;
   width: 80%;
   min-width: 950px;
-  margin: 0 0 20px 2%;
+  margin: 0 0 0 2%;
   display: inline-block;
   text-align: center;
 }
@@ -35,4 +35,3 @@
   .BlockNews {display: none !important;}
 
 }
-

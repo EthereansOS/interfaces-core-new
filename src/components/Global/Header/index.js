@@ -70,7 +70,11 @@ const Header = (props) => {
         </div>
         <Web3Connect />
         <div className={style.ThemeSelect}>
-          <select
+          <label className={style.switch}>
+            <input type="checkbox" id="toggle" />
+            <span className={style.slider} aria-hidden="true"></span>
+          </label>
+          {/* <select
             value={theme}
             onChange={(e) => setTheme(e.currentTarget.value)}>
             {themes.map((it) => (
@@ -78,7 +82,7 @@ const Header = (props) => {
                 {it.name}
               </option>
             ))}
-          </select>
+          </select> */}
         </div>
       </div>
       <div className={style.BlurHeader}></div>

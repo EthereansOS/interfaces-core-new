@@ -1,3 +1,30 @@
 :root {
     --blue-violet: #7d3ee7;
+    --lavender-pink: #efdaff;
+    --lavender: #e6e0ff;
+    --interdimensional-blue-light: #5c20cd;
+    --interdimensional-blue-dark: #3a04b2;
+    --violets-are-blue: #7657fa;
+    --iris : #693cc8;
+    --chinese-black: #131313;
+
+
+
+    --background-color: white;
+    --backgroung-gradient-image: linear-gradient(rgba(162, 49, 255, 0.10) 40%, rgba(164, 49, 255, 0) 100%, rgba(164, 49, 255, 0));
+    --menu-background-color: var(--lavender);
+
+    --text-color-primary: var(--chinese-black);
+    --text-color-secondary: ;
+    --text-color-tertiary: white;
+
+    --menu-item-color-primary: var(--interdimensional-blue-dark);
+    --menu-item-background-hover: var(--violets-are-blue);
+    --menu-item-background-selected: var(--blue-violet);
+
+
+    --btn-background-primary: var(--iris);
+    --btn-color-primary: white;
+
+    --home-card-background-color: var(--lavender-pink);
 }
