@@ -9,8 +9,10 @@
 }
 .OnlyMobile {display: none;}
 
-.BlockNews {position: fixed; bottom: 10px; right: 10px; z-index: 10000000000000; -webkit-backdrop-filter: blur(6px);backdrop-filter: blur(6px); padding: 12px; border-radius: 10px; font-size: 10px; font-weight: bold; color: #555555;}
-.BlockNews a {color: #555555;}
+.BlockNews {position: fixed; bottom: 10px; right: 10px; z-index: 10000000000000; -webkit-backdrop-filter: blur(6px);backdrop-filter: blur(6px); padding: 12px; border-radius: 10px; font-size: 10px; font-weight: bold; color: #555555;  background-color: #fff;
+  padding: 10px;
+  border-radius: 6px;}
+.BlockNews a {color: #444;}
 
 .container {
   padding: calc(var(--unit) * 3) 10px 0 10px;
@@ -35,3 +37,4 @@
   .BlockNews {display: none !important;}
 
 }
+

@@ -1251,6 +1251,18 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .CardsLayerS .CardsFancy:last-child img{
     width:50px!important;
 }
+.MenuProfile{
+    margin:10px;
+}
+
+.MenuProfile img{
+    border-radius: 6px;
+}
+.MenuProfile h3{
+ font-size: 16px;
+}
+
+
 .ProposalOpen h6 {font-size: 15px;width: 100%; display: inline-block; margin: 10px auto; text-align: left; padding: 2px 30px;}
 
 .Options {width: 60px; display: inline-block; vertical-align: middle;}
