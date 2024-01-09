@@ -13,29 +13,40 @@ const IndexMain = () => {
   return (
       <div className={style.CardsLayerS}>
         {!dualChainId && <Link to="/factories" className={style.CardsFancy}>
-          <figure>
-            <img src={`${process.env.PUBLIC_URL}/img/c-2.png`}></img>
-          </figure>
-          <p>Factories</p>
+          <div className={style.CardsLayerHeader}>
+            <figure>
+              <img src={`${process.env.PUBLIC_URL}/img/c-2.png`}></img>
+            </figure>
+            <p>Factories</p>
+          </div>
+          <p className={style.CardsLayerBody}>Phasellus aliquet neque nec odio gravida fringilla. Aenean elementum orci pulvinar.</p>
         </Link>}
         <Link to="/items" className={style.CardsFancy}>
-          <figure>
-            <img src={`${process.env.PUBLIC_URL}/img/c-1.png`}></img>
-          </figure>
-          <p>Items</p>
+          <div className={style.CardsLayerHeader}>
+            <figure>
+              <img src={`${process.env.PUBLIC_URL}/img/c-1.png`}></img>
+            </figure>
+            <p>Items</p>
+          </div> 
+          <p className={style.CardsLayerBody}>Phasellus aliquet neque nec odio gravida fringilla. Aenean elementum orci pulvinar.</p>
         </Link>
-        <br></br>
         {<Link to="/organizations" className={style.CardsFancy}>
+          <div className={style.CardsLayerHeader}>
           <figure>
             <img src={`${process.env.PUBLIC_URL}/img/c-3.png`}></img>
           </figure>
           <p>Organizations</p>
+          </div> 
+          <p className={style.CardsLayerBody}>Phasellus aliquet neque nec odio gravida fringilla. Aenean elementum orci pulvinar.</p>
         </Link>}
         <Link to="/covenants" className={style.CardsFancy}>
+        <div className={style.CardsLayerHeader}>
           <figure>
             <img src={`${process.env.PUBLIC_URL}/img/c-4.png`}></img>
           </figure>
           <p>Covenants</p>
+          </div> 
+          <p className={style.CardsLayerBody}>Phasellus aliquet neque nec odio gravida fringilla. Aenean elementum orci pulvinar.</p>
         </Link>
       </div>
   )
