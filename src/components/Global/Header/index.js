@@ -44,6 +44,7 @@ const Header = (props) => {
           isDapp={props.isDapp}
           selected={props.link}
         />
+        <div className={style.CopyRight}>&copy;2024 <b>EthereansOS</b> v1.3.2 <br/> All rights reserved</div>
       </div>
       <div className={style.RightMenu}>
       <div className={style.ThemeSelect}>
