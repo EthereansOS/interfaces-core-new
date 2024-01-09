@@ -46,6 +46,21 @@ const Header = (props) => {
         />
       </div>
       <div className={style.RightMenu}>
+      <div className={style.ThemeSelect}>
+          <label className={style.switch}>
+            <input type="checkbox" id="toggle" />
+            <span className={style.slider} aria-hidden="true"></span>
+          </label>
+          {/* <select
+            value={theme}
+            onChange={(e) => setTheme(e.currentTarget.value)}>
+            {themes.map((it) => (
+              <option key={it.value} value={it.value}>
+                {it.name}
+              </option>
+            ))}
+          </select> */}
+        </div>
         <div className={style.NetworkSelect}>
           <div>
             <a
@@ -69,21 +84,7 @@ const Header = (props) => {
           </div>
         </div>
         <Web3Connect />
-        <div className={style.ThemeSelect}>
-          <label className={style.switch}>
-            <input type="checkbox" id="toggle" />
-            <span className={style.slider} aria-hidden="true"></span>
-          </label>
-          {/* <select
-            value={theme}
-            onChange={(e) => setTheme(e.currentTarget.value)}>
-            {themes.map((it) => (
-              <option key={it.value} value={it.value}>
-                {it.name}
-              </option>
-            ))}
-          </select> */}
-        </div>
+        
       </div>
       <div className={style.BlurHeader}></div>
     </header>
