@@ -15,7 +15,7 @@ const IndexMain = () => {
         {!dualChainId && <Link to="/factories" className={style.CardsFancy}>
           <div className={style.CardsLayerHeader}>
             <figure>
-              <img src={`${process.env.PUBLIC_URL}/img/c-2.png`}></img>
+              <img src={`${process.env.PUBLIC_URL}/img/factories.svg`}></img>
             </figure>
             <p>Factories</p>
           </div>
@@ -24,7 +24,7 @@ const IndexMain = () => {
         <Link to="/items" className={style.CardsFancy}>
           <div className={style.CardsLayerHeader}>
             <figure>
-              <img src={`${process.env.PUBLIC_URL}/img/c-1.png`}></img>
+              <img src={`${process.env.PUBLIC_URL}/img/items.svg`}></img>
             </figure>
             <p>Items</p>
           </div> 
@@ -33,7 +33,7 @@ const IndexMain = () => {
         {<Link to="/organizations" className={style.CardsFancy}>
           <div className={style.CardsLayerHeader}>
           <figure>
-            <img src={`${process.env.PUBLIC_URL}/img/c-3.png`}></img>
+            <img src={`${process.env.PUBLIC_URL}/img/organizations.svg`}></img>
           </figure>
           <p>Organizations</p>
           </div> 
@@ -42,7 +42,7 @@ const IndexMain = () => {
         <Link to="/covenants" className={style.CardsFancy}>
         <div className={style.CardsLayerHeader}>
           <figure>
-            <img src={`${process.env.PUBLIC_URL}/img/c-4.png`}></img>
+            <img src={`${process.env.PUBLIC_URL}/img/covenants.svg`}></img>
           </figure>
           <p>Covenants</p>
           </div> 

@@ -35,7 +35,7 @@ ItemsMain.addToPlugin =
         label: 'Items',
         link: '/items',
         index,
-        image : `${process.env.PUBLIC_URL}/img/is2.png`,
+        image : `${process.env.PUBLIC_URL}/img/items.svg`,
       })
     }
 
@@ -48,5 +48,5 @@ export default prepareAddToPlugin(
   "/items",
   style.Web3PagesRoot,
   10,
-  `${process.env.PUBLIC_URL}/img/is2.png`,
+  `${process.env.PUBLIC_URL}/img/items.svg`,
 )

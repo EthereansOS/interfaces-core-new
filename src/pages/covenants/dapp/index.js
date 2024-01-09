@@ -9,5 +9,5 @@ export default prepareAddToPlugin(
   "/covenants",
   style.Web3PagesRoot,
   30,
-  `${process.env.PUBLIC_URL}/img/is3.png`,
+  `${process.env.PUBLIC_URL}/img/covenants.svg`,
 )

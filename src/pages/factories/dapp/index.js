@@ -36,7 +36,7 @@ FactoriesMain.addToPlugin =
         label: 'Factories',
         link: '/factories',
         index,
-        image : `${process.env.PUBLIC_URL}/img/is4.png`,
+        image : `${process.env.PUBLIC_URL}/img/factories.svg`,
       })
     }
 
