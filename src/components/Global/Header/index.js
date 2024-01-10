@@ -19,15 +19,33 @@ const Header = (props) => {
 
   const history = useHistory()
 
-  useEffect(() => {
+  const handleToggleChange = () => {
     const toggleSwitch = document.getElementById('toggleSwitch')
+    const theme = toggleSwitch.checked ? 'dark' : 'light'
+    setIsChecked(toggleSwitch.checked)
+    setTheme(theme)
+    localStorage.setItem('toggleState', toggleSwitch.checked)
+  }
 
-    const handleToggleChange = () => {
-      const theme = toggleSwitch.checked ? 'dark' : 'light'
-      setTheme(theme)
-    }
-    const initialLoad = () => {
-      handleToggleChange()
+  useEffect(() => {
+    const initialLoad = async () => {
+      const toggleSwitch = document.getElementById('toggleSwitch')
+      // Utilizza un'operazione asincrona per ripristinare lo stato della checkbox da localStorage
+      await new Promise((resolve) => {
+        setTimeout(() => {
+          const savedToggleState = JSON.parse(
+            localStorage.getItem('toggleState')
+          )
+          if (savedToggleState !== null) {
+            toggleSwitch.checked = savedToggleState
+            setIsChecked(savedToggleState)
+            setTheme(savedToggleState ? 'dark' : 'light')
+          } else {
+            handleToggleChange()
+          }
+          resolve()
+        }, 0)
+      })
     }
 
     toggleSwitch.addEventListener('change', handleToggleChange)
@@ -71,7 +89,12 @@ const Header = (props) => {
       <div className={style.RightMenu}>
         <div className={style.ThemeSelect}>
           <label className={style.ThemeSwitch}>
-            <input type="checkbox" id="toggleSwitch" />
+            <input
+              type="checkbox"
+              id="toggleSwitch"
+              checked={isChecked}
+              onChange={handleToggleChange}
+            />
             <span className={style.ThemeSlider} aria-hidden="true"></span>
           </label>
         </div>
