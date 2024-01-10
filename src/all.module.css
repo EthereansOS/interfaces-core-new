@@ -1254,6 +1254,9 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
     padding-bottom: 100px;
     display: flex;
 }
+.dark .CardsLayerHeader {
+    background-color: #8428cc !important;
+}
 .CardsLayerBody{
     width: 250px;
     height: auto;
@@ -1268,6 +1271,9 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
     font-weight: normal!important;
     font-size: 14px!important;
     line-height: 18px;
+}
+.dark .CardsLayerBody {
+    background-color: #482961 !important;
 }
 .NavigationHeader{
     color: #000000;
