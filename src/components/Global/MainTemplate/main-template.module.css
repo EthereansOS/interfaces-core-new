@@ -50,3 +50,11 @@
   .BlockNews {display: none !important;}
 
 }
+
+.BackgroundBodyImage{
+  position: fixed;
+  bottom: -200px;
+  right: -200px;
+  z-index:0;
+  opacity: 0.1;
+}
