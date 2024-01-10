@@ -70,7 +70,7 @@ const Navigation = ({ menuName, isDapp, selected }) => {
   const navItem = (item) => {
     return (
       <Link
-        className={`${style.NavigationItem} ${style[item.name]} ${
+        className={`${style.NavigationItem} ${
           item.link === selected ? style.selected : ''
         }`}
         key={item.name}
