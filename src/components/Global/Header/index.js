@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react'
+import React, { useCallback, useMemo, useState, useEffect } from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import Navigation from '../Navigation'
 
@@ -11,12 +11,32 @@ import { useThemeSelector } from '../../../logic/uiUtilities'
 
 const Header = (props) => {
   const { themes, theme, setTheme } = useThemeSelector()
+  const [isChecked, setIsChecked] = useState(false)
 
   const context = useEthosContext()
   const web3Data = useWeb3()
   const { chainId, web3, dualChainId } = web3Data
 
   const history = useHistory()
+
+  useEffect(() => {
+    const toggleSwitch = document.getElementById('toggleSwitch')
+
+    const handleToggleChange = () => {
+      const theme = toggleSwitch.checked ? 'dark' : 'light'
+      setTheme(theme)
+    }
+    const initialLoad = () => {
+      handleToggleChange()
+    }
+
+    toggleSwitch.addEventListener('change', handleToggleChange)
+    initialLoad()
+
+    return () => {
+      toggleSwitch.removeEventListener('change', handleToggleChange)
+    }
+  }, [])
 
   const switchToNetwork = useCallback(
     () =>
@@ -44,23 +64,16 @@ const Header = (props) => {
           isDapp={props.isDapp}
           selected={props.link}
         />
-        <div className={style.CopyRight}>&copy;2024 <b>EthereansOS</b> v1.3.2 <br/> All rights reserved</div>
+        <div className={style.CopyRight}>
+          &copy;2024 <b>EthereansOS</b> v1.3.2 <br /> All rights reserved
+        </div>
       </div>
       <div className={style.RightMenu}>
-      <div className={style.ThemeSelect}>
-          <label className={style.switch}>
-            <input type="checkbox" id="toggle" />
-            <span className={style.slider} aria-hidden="true"></span>
+        <div className={style.ThemeSelect}>
+          <label className={style.ThemeSwitch}>
+            <input type="checkbox" id="toggleSwitch" />
+            <span className={style.ThemeSlider} aria-hidden="true"></span>
           </label>
-          {/* <select
-            value={theme}
-            onChange={(e) => setTheme(e.currentTarget.value)}>
-            {themes.map((it) => (
-              <option key={it.value} value={it.value}>
-                {it.name}
-              </option>
-            ))}
-          </select> */}
         </div>
         <div className={style.NetworkSelect}>
           <div>
@@ -85,7 +98,6 @@ const Header = (props) => {
           </div>
         </div>
         <Web3Connect />
-        
       </div>
       <div className={style.BlurHeader}></div>
     </header>
