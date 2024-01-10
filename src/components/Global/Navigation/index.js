@@ -88,6 +88,7 @@ const Navigation = ({ menuName, isDapp, selected }) => {
         <Link to="/account">
           <LogoRenderer
             noDotLink
+           
             noFigure
             input={
               ensData?.name
@@ -96,13 +97,16 @@ const Navigation = ({ menuName, isDapp, selected }) => {
             }
             defaultImage={blockie}
           />
-
+          <div className={style.MenuProfileContent}>
           <h3>
-            {connectionStatus === web3States.NOT_CONNECTED
+            My Profile
+          </h3>
+          <p> {connectionStatus === web3States.NOT_CONNECTED
               ? 'Connect'
               : ensData?.name ||
-                truncatedWord({ context, charsAmount: 8 }, account)}
-          </h3>
+                truncatedWord({ context, charsAmount: 8 }, account)}</p>
+          </div>
+         
         </Link>
       </div>
       <br />

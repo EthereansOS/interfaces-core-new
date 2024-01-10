@@ -177,6 +177,7 @@ function tryInstrumentImg(input, img, imgRef, previewRef, noFigure) {
     }}/>
     return (<>
         <div
+        
             style={{
                 "position" : "relative",
                 "display" : noFigure ? "inline-block" : undefined,

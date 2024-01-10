@@ -275,8 +275,8 @@ input::-webkit-scrollbar {
 }
 .Navigation {
     display: block;
-    max-width:15em;
-    margin: 2em;
+    max-width: 15em;
+    margin: 1em 2em 2em 2em;
     text-align: center;
 }
 .NavigationItem {
@@ -1284,16 +1284,16 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
     width:50px!important;
 }
 .MenuProfile{
-    margin:0px 0px 20px 0px;
-    padding: 25px;
-    text-align: center;
+    margin:0px 0px 0px 0px;
+    padding: 5px 10px 4px 10px;
+    text-align: left;
     display: flex;
     flex-direction: column;
     align-items: center;
     border-radius: 6px;
 }
 .light .MenuProfile {
-    background-color: #e0d5f6;
+    background-color: #f0edf4;
 }
 .dark .MenuProfile {
     background-color: #20122b;
@@ -3112,4 +3112,27 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
   .dark .NavigationItem:hover, .dark .Navigation .selected {background-color: #000000 !important;}
 
 
+}
+.MenuProfile a img{
+    display: inline-block;
+    width: 30px;
+    margin-right: 10px;
+}
+
+.MenuProfileContent{
+    display: inline-block;
+    width: 90px;
+    position: relative;
+    top:-3px;
+}
+.MenuProfileContent h3{
+    font-size: 14px;
+    margin-bottom: 3px;
+}
+.MenuProfileContent p{
+    font-size: 10px;
+}
+.MenuProfile a{
+    text-align: left;
+    margin: 0% auto 0% 0%;
 }
