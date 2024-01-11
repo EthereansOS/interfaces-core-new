@@ -115,8 +115,46 @@ input:checked + .ThemeSlider:before {
     transform: translateX(24px);
 }
 
+.MasCardLayer {
+    margin-top: 50px;
+}
 
-
+.MasCard {
+    max-width: 400px;
+    min-height: 200px;
+    background-image: linear-gradient(rgba(167, 170, 250, .5) 14%, rgba(249, 185, 255, .5) 93%);
+    border-radius: 10px;
+    padding: 14px 20px 20px;
+    margin: 10px;
+    display: inline-block;
+    margin: 10px;
+    text-align: center;
+    vertical-align: middle;
+    position: relative;
+    box-shadow: -9px 0 20px rgba(89,102,122,.1);
+}
+.MasCardHeader {
+    grid-column-gap: 20px;
+    grid-row-gap: 20px;
+    color: #a431ff;
+    background-color: rgba(255, 255, 255, .8);
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    align-items: center;
+    margin-bottom: 20px;
+    margin-right: -20px;
+    padding: 20px;
+    display: flex;
+}
+.MasCardBody {
+    margin-top: 12px;
+    color: rgba(0, 0, 0, .7);
+}
+.MasCardBody p {
+    padding-bottom: 12px !important;
+    font-size: 14px !important;
+    font-weight: normal !important;
+}
 
 
 
@@ -356,7 +394,6 @@ input::-webkit-scrollbar {
 
 /* Home Cards */
 .CardsLayerS .CardsFancy {
-
     border-radius: 12px;
     width: 270px;
     height: 200px;
@@ -650,8 +687,29 @@ input::-webkit-scrollbar {
 .CreateBTN {padding: 10px; display: inline-block; margin: 30px 20px; border-radius: 12px; font-size: 12px; font-weight: bold;}
 .CreateBTN2 {padding: 10px; display: inline-block; margin: 10px 5px; border-radius: 12px; font-size: 12px; font-weight: bold;}
 
-.ExtLinkButtonAlpha {border: 1px solid #849BBD;color: #ffffff;border-radius: 5px;display: inline-block;margin: 5px;font-size: 11px;padding: 5px 8px;text-align: center;cursor: pointer;box-shadow: none;background-color: transparent;}
-.NextStep {width: auto; margin: 5px; padding: 5px 12px; text-align: center; font-size: 11px; border-radius: 5px; border: none !important; cursor: pointer;background-color: #849bbd;color: #fff; box-shadow: none;  margin: 0 auto;}
+.ExtLinkButtonAlpha {
+    width: auto;
+    padding: 5px 12px;
+    text-align: center;
+    font-size: 14px;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: none;
+    margin: 5px !important;
+    border: 1px solid !important;
+}
+.NextStep {
+    width: auto;
+    padding: 5px 12px;
+    text-align: center;
+    font-size: 14px;
+    border-radius: 5px;
+    border: none !important;
+    cursor: pointer;
+    box-shadow: none;
+    margin: 5px !important;
+    border: 1px solid !important;
+}
 .AdvancedLinks {width: 100%; display: inline-block; margin: 50px auto 0px auto; text-align: center;}
 .AdvancedLinks a {font-size: 11px; color: #535353; text-decoration: underline;}
 .CreationPageLabel {width: 100%; display: inline-block; padding: 10px 50px}
@@ -2199,10 +2257,10 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .biz .MetadataSingle {background-color: #F0F0F0;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
 .dark .MetadataSingle {background-color: #1b1b1b;box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
 
-.light .CreatePage {background-color: #ffffff;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
+/* .light .CreatePage {background-color: #ffffff;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
 .biz .CreatePage {background: linear-gradient(0deg, #ffffff 50%, #e9effc 100%);}
 .dark .CreatePage {background-color: #000000;box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
-.sepia .CreatePage {background-color: #eee8d59c;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
+.sepia .CreatePage {background-color: #eee8d59c;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);} */
 
 .light .CreationSelect {background-color: #e9effc;}
 .biz .CreationSelect {background-color: #e9effc;}
@@ -2472,9 +2530,12 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .dark .FancyExplanationCreate {background-color: #1f1f1f; border-color: #333333;}
 .sepia .FancyExplanationCreate {background-color: #eee8d59c; border-color: #eee8d59c;}
 
-.light .NextStep {color: #ffffff;}
-.biz .NextStep {color: #ffffff;}
+.light .NextStep {color: #ffffff; background-color: #693CC8;border-color: #693CC8 !important;}
+.light .NextStep:hover {color: #ffffff; background-color: #3c1c80;border-color: #3c1c80 !important;}
 .dark .NextStep {color: #ffffff;}
+
+.light .ExtLinkButtonAlpha {border-color: #693CC8 !important;}
+.light .ExtLinkButtonAlpha:hover {background-color: #b976db;border-color: #b976db !important;}
 
 .light .proggressCreate {border-color: #e0e2e6;}
 .biz .proggressCreate {border-color: #e0e2e6;}
