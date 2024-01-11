@@ -337,6 +337,11 @@ input::-webkit-scrollbar {
 }
 .selected {
     font-weight: bold;
+    background-color: #8a77de !important;
+    color: rgb(232, 230, 227) !important;
+    border-bottom-color: initial;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
 }
 .indicator {
     height: 30px;
@@ -562,9 +567,16 @@ input::-webkit-scrollbar {
 .Lockedbasics {position: absolute; width: 10px; height: 10px; text-align: center; font-size: 12px; right: 10px; bottom: 10px;}
 
 
-.Dapp_Menu {display: inline-block; padding: 0 10px; margin: 50px auto 30px auto; width: auto; height: 40px;border-radius: 24px;border: 2px solid;}
+.Dapp_Menu {display: inline-block; padding: 0 10px; margin: 50px auto 30px auto; width: auto; height: 40px;border-bottom: 2px solid;}
 .Dapp_Menu > li {display: inline-block;}
 .Dapp_Menu > li > a {display: inline-block; padding: 11px 15px;font-size: 17px;display: inline-block; text-decoration: none; cursor: pointer;}
+.Dapp_Menu > li > a:hover {
+    background-color: var(--menu-item-background-hover);
+    color:#fff;
+    border-bottom-color: initial;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+}
 
 .DappSubMenu {display: inline-block; padding: 0 8px; margin: 50px auto; width: auto; height: 30px;border-radius: 20px;border: 2px solid;}
 .DappSubMenu > li {display: inline-block;}
@@ -2435,7 +2447,7 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .dark .TradeOTCBoxOrdersBuy .TradeOTCBoxOrder  button {background-color: rgb(106, 234, 200);}
 .dark .TradeOTCBoxOrdersSell .TradeOTCBoxOrder  button {background-color: rgb(252, 98, 111);}
 
-.light .Dapp_Menu, .light .DDapp_Menu1 {background-color: #ffffff; border-color: #aa9cfe;box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-webkit-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
+.light .Dapp_Menu, .light .DDapp_Menu1 {border-color: #aa9cfe;box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-webkit-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
 .biz .Dapp_Menu, .biz .DDapp_Menu1  {background: linear-gradient(0deg, #D2CDF9 80%, #ffffff 100%); border: 4px solid; border-color: #D2CDF9; border-radius: 20px !important;}
 .dark .Dapp_Menu, .dark .DDapp_Menu1 {background-color: #000000; border-color: #aa9cfe;box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
 .sepia .Dapp_Menu, .sepia .DDapp_Menu1 {background-color: #D9D2C2; border-color: #D9D2C2;}
