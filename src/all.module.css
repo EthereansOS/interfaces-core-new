@@ -231,7 +231,8 @@ input::-webkit-scrollbar {
     min-height: 500px;
     vertical-align: top;
     overflow: hidden;
-    position: relative;
+    position: fixed;
+    left:0;
 }
 .Header .FixedHeader {
     position: fixed;
