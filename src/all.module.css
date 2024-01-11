@@ -259,6 +259,7 @@ input::-webkit-scrollbar {
     max-width:15em;
     display: block;
     background: #000;
+    height: 60px;
 }
 .light .logoMain {
     box-shadow: -9px 0 20px rgba(89,102,122,.1);
@@ -278,6 +279,7 @@ input::-webkit-scrollbar {
     max-width: 15em;
     margin: 1em 2em 2em 2em;
     text-align: center;
+    height: 60px;
 }
 .NavigationItem {
     cursor: pointer;
