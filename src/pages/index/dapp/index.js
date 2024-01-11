@@ -11,6 +11,14 @@ const IndexMain = () => {
   const { dualChainId } = web3Data
 
   return (
+    <>
+      <div className={style.CardLayerBanner}>
+        <div className={style.CardLayerBannerDetail}>
+          <h3>Lorem ipsum sim <br/> dolorem asid avec on</h3>
+          <p>Donec ac vestibulum augue, eget molestie dolor. Morbi placerat urna eu<br/>dui auctor elementum. Mauris at mauris non mauris porta rutrum.</p>
+          <a className={style.BtnPrimary}>New <b>Collection</b></a><a className={style.BtnSecondary}>New <b>Organization</b></a>
+          </div>
+        </div>
       <div className={style.CardsLayerS}>
         {!dualChainId && <Link to="/factories" className={style.CardsFancy}>
           <div className={style.CardsLayerHeader}>
@@ -49,6 +57,8 @@ const IndexMain = () => {
           <p className={style.CardsLayerBody}>Phasellus aliquet neque nec odio gravida fringilla. Aenean elementum orci pulvinar.</p>
         </Link>
       </div>
+    </>
+      
   )
 }
 
