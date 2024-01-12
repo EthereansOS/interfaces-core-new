@@ -245,7 +245,7 @@ export async function retrieveAllProposals(web3Data, organization) {
     }
     var proposals = await getProposals({ web3, account, context, newContract }, organization)
     await Promise.all((organization.organizations || []).map(async org => proposals.push(...(await getProposals({context, newContract}, org)))))
-    proposals = await Promise.all(proposals.map(async it => {
+    proposals = organization.old ? proposals : await Promise.all(proposals.map(async it => {
         var elem = {...it}
         if(elem.label === 'TOKEN_SELL_V1') {
             elem.name = 'Investment Fund Routine Sell'
@@ -260,7 +260,6 @@ export async function retrieveAllProposals(web3Data, organization) {
             elem.subProposals && (elem.subProposals = await Promise.all(elem.subProposals.map(async it => ({...it, ...(await proposalResolvers[elem.modelIndex](web3Data, it))}))))
             !elem.subProposals && (elem = {...elem, ...(await proposalResolvers[elem.modelIndex](web3Data, elem))})
         }
-
         return elem
     }))
     return proposals
