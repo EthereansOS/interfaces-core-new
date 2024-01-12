@@ -14,7 +14,8 @@ const IndexMain = () => {
     <>
       <div className={style.CardLayerBanner}>
         <div className={style.CardLayerBannerDetail}>
-          <h3>Lorem ipsum sim <br/> dolorem asid avec on</h3>
+          <h3>Welcome to</h3>
+          <h1 className={style.H1}>ethereans<span className={style.WhiteText}>os</span>_</h1>
           <p>Donec ac vestibulum augue, eget molestie dolor. Morbi placerat urna eu<br/>dui auctor elementum. Mauris at mauris non mauris porta rutrum.</p>
           <a className={style.BtnPrimary}>New <b>Collection</b></a><a className={style.BtnSecondary}>New <b>Organization</b></a>
           </div>

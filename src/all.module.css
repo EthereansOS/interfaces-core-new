@@ -21,6 +21,14 @@ a {
     src: url(./components/assets/Poppins-Bold.ttf);
 }
 
+@font-face {
+    font-family: 'Good Times Rg';
+    src: url(./components/assets/Good-Times-Rg.otf) format('opentype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+
 /* ALE UPDATE THIS */
 .sidemenu-active {
     background-color: var(--background-color);
@@ -1342,8 +1350,15 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
     display: flex;
     border: 1px solid #eaceff;
 }
+.CardsLayerHeader:hover{
+    background-color: #e0cbf1;
+}
 .dark .CardsLayerHeader {
-    background-color: #8428cc !important;
+    background-color: #120b26 !important;
+    border: 1px solid #2a1e52;
+}
+.dark .CardsLayerHeader:hover {
+    background-color: #190f35 !important;
 }
 .CardsLayerBody{
     width: 250px;
@@ -3254,9 +3269,13 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
     z-index: 0;
     overflow: hidden;
     min-height: 280px;
+    border: 1px solid #eaceff;
+}
+.dark .CardLayerBanner{
+    border: 1px solid #2a1e52;
 }
 .CardLayerBannerDetail h3 {
-    margin:20px auto;
+    margin: 5px 20px 0px 20px;
     font-size: 26px;
 }
 .CardLayerBannerDetail p {
@@ -3273,6 +3292,11 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
     opacity: .5;
     z-index: -1;
 }
+
+.dark .CardLayerBanner:before {
+    background: #0f0a1f!important;
+}
+
 .BtnPrimary{
     color: #fff!important;
     background-color: #593ec2;
@@ -3307,4 +3331,17 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 }
 .BtnPrimary:hover{
     background-color: #5433d4;
+}
+.WhiteText {
+    color: #fff!important;
+}
+.H1 {
+    color: #693cc8!important;
+    letter-spacing: 2.8px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    font-family: Good Times Rg, sans-serif;
+    font-size: 46px;
+    font-weight: 400;
+    line-height: 60px;
 }
