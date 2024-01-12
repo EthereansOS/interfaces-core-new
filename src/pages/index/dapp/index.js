@@ -1,8 +1,9 @@
-import { useWeb3 } from 'interfaces-core'
-import React from 'react'
-import { Link } from 'react-router-dom'
-
-import style from '../../../all.module.css'
+import React, { useEffect, useCallback, useState } from 'react';
+import { useWeb3 } from 'interfaces-core';
+import { Link } from 'react-router-dom';
+import style from '../../../all.module.css';
+import Particles, { initParticlesEngine } from "@tsparticles/react";
+import { loadSlim } from "@tsparticles/slim";
 
 const IndexMain = () => {
 
@@ -10,8 +11,89 @@ const IndexMain = () => {
 
   const { dualChainId } = web3Data
 
+  const [ init, setInit ] = useState(false);
+  useEffect(() => {
+      initParticlesEngine(async (engine) => {
+          await loadSlim(engine);
+      }).then(() => {
+          setInit(true);
+      });
+  }, []);
+
+  const particlesLoaded = (container) => {
+      console.log(container);
+  };
+
   return (
     <>
+    <Particles
+            id="tsparticles"
+            particlesLoaded={particlesLoaded}
+            options={{
+                fpsLimit: 60,
+                interactivity: {
+                    events: {
+                        onClick: {
+                            enable: false,
+                            mode: "push",
+                        },
+                        onHover: {
+                            enable: false,
+                            mode: "repulse",
+                        },
+                        resize: true,
+                    },
+                    modes: {
+                        push: {
+                            quantity: 4,
+                        },
+                        repulse: {
+                            distance: 200,
+                            duration: 0.4,
+                        },
+                    },
+                },
+                particles: {
+                    color: {
+                        value: "#ffffff",
+                    },
+                    links: {
+                        color: "#ffffff",
+                        distance: 150,
+                        enable: true,
+                        opacity: 0.1,
+                        width: 1,
+                    },
+                    move: {
+                        direction: "none",
+                        enable: true,
+                        outModes: {
+                            default: "bounce",
+                        },
+                        random: false,
+                        speed: 1,
+                        straight: false,
+                    },
+                    number: {
+                        density: {
+                            enable: true,
+                            area: 800,
+                        },
+                        value: 80,
+                    },
+                    opacity: {
+                        value: 0.1,
+                    },
+                    shape: {
+                        type: "circle",
+                    },
+                    size: {
+                        value: { min: 1, max: 5 },
+                    },
+                },
+                detectRetina: true,
+            }}
+        />
       <div className={style.CardLayerBanner}>
         <div className={style.CardLayerBannerDetail}>
           <h3>Welcome to</h3>

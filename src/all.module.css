@@ -84,7 +84,7 @@ body {
     border: 1px solid var(--btn-background-primary);
 }
 .dark .ThemeSlider {
-    border: 1px solid #b03eff !important;
+    border: 1px solid #7b57ff !important;
 }
 
 .ThemeSlider:before {
@@ -102,7 +102,7 @@ body {
 }
 
 .dark .ThemeSlider:before {
-    background-color: #b03eff !important;
+    background-color: #7b57ff !important;
 }
 
 .light input:checked + .ThemeSlider {
@@ -1376,7 +1376,7 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
     line-height: 18px;
 }
 .dark .CardsLayerBody {
-    background-color: #482961 !important;
+    background-color: #593ec2 !important;
 }
 .NavigationHeader{
     color: #000000;
