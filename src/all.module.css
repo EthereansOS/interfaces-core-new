@@ -3186,7 +3186,7 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
     margin-bottom: 30px;
     margin-top: 30px;
     box-shadow: 0 0 20px rgba(89,102,122,.05);
-    background: url(./components/assets/promo.png);
+    background: url(./components/assets/shape_7.png);
     background-size: cover;
     background-position: 50%;
     position: relative;
@@ -3197,10 +3197,8 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .CardLayerBannerDetail h3 {
     margin:20px auto;
     font-size: 26px;
-    color: #fff;
 }
 .CardLayerBannerDetail p {
-    color: #fff;
     margin-bottom: 50px;
 }
 .CardLayerBanner:before {
@@ -3210,7 +3208,7 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
     right: 0;
     top: 0;
     bottom: 0;
-    background: #6f4ef2;
+    background: #f0dbff;
     opacity: .5;
     z-index: -1;
 }
