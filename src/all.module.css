@@ -81,7 +81,7 @@ body {
     -webkit-transition: .4s;
     transition: .4s;
     border-radius: 6px;
-    border: 1px solid var(--btn-background-primary);
+    border: 1px solid #000000;
 }
 .dark .ThemeSlider {
     border: 1px solid #7b57ff !important;
@@ -95,7 +95,7 @@ body {
     top: 3px;
     left: 4px;
     bottom: 4px;
-    background-color: var(--btn-background-primary);
+    background-color: #141416;
     -webkit-transition: .4s;
     transition: .4s;
     border-radius: 20%;
@@ -199,7 +199,7 @@ input::-webkit-scrollbar {
 }
 
 .light {
-    background: linear-gradient(150deg, rgba(181,179,251,1) 0%, rgba(228,213,240,1) 60%, rgba(244,230,255,1) 100%);
+    background: #fdfdfd;
 }
 
 .dark {
@@ -291,12 +291,9 @@ input::-webkit-scrollbar {
     z-index: 9999999;
 }
 .light .Header .FixedHeader  {
-    box-shadow: -9px 0 20px rgba(89,102,122,.1);
-    background-color: var(--background-color);
 }
 .dark .Header .FixedHeader  {
-    box-shadow: -9px 0 20px rgba(255, 255, 255, 0.1);
-    background-color: #000;
+
 }
 .Header .BlurHeader {
     display: none;
@@ -306,15 +303,15 @@ input::-webkit-scrollbar {
     width: 15em;
     max-width:15em;
     display: block;
-    background: #000;
     height: 60px;
 }
 .light .logoMain {
-    box-shadow: -9px 0 20px rgba(89,102,122,.1);
-    background: #f9fbfb;
+    background: transparent;
+    filter: brightness(0%);
 }
 .dark .logoMain {
     box-shadow: -9px 0 20px rgba(255, 255, 255, 0.1);
+    filter: brightness(100%);
 }
 .logoMain img {
     max-width: 15em;
@@ -342,7 +339,7 @@ input::-webkit-scrollbar {
     border-radius: 6px;
 }
 .light .NavigationItem:hover {
-    background-color: var(--menu-item-background-hover) !important;
+    background-color: #282828 !important;
 }
 .light .NavigationItem:hover p {
     color: var(--text-color-tertiary)  !important;
@@ -1340,7 +1337,7 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
     background: #2a2a2a;
 }
 .CardsLayerHeader{
-    background-color: #efdaff;
+    background-color: #ffffff;
     border-radius: 20px;
     flex-direction: column;
     justify-content: center;
@@ -1349,7 +1346,7 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
     padding-top: 0px;
     padding-bottom: 100px;
     display: flex;
-    border: 1px solid #eaceff;
+    border: 1px solid #f3f3f3;
 }
 .CardsLayerHeader:hover{
     background-color: #e0cbf1;
@@ -1364,14 +1361,14 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .CardsLayerBody{
     width: 250px;
     height: auto;
-    background-color: #fff;
+    /* background-color: #fff; */
     border-radius: 20px;
     margin-left: 10px;
     margin-right: 10px;
     padding: 30px 15px 20px;
     position: absolute;
-    top: 175px;
-    box-shadow: 0 -4px 10px rgba(0, 0, 0, .15);
+    top: 158px;
+    /* box-shadow: 0 -4px 10px rgba(0, 0, 0, .15); */
     font-weight: normal!important;
     font-size: 14px!important;
     line-height: 18px;
@@ -1404,6 +1401,10 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 }
 .light .MenuProfile {
     background-color: #f0edf4;
+    min-width: fit-content;
+    height: fit-content;
+    margin-top: 10px;
+    margin-left: 15px;
 }
 .dark .MenuProfile {
     background-color: #2a2a2a;
@@ -1544,16 +1545,17 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .Web3ConnectWallet p {display: inline-block; vertical-align: middle;font-size: 12px; font-weight: bold; max-width: 135px; overflow: hidden; margin-left: 5px;}
 
 .ThemeSelect {width: 60px; display: inline-block; text-align: left; width: 100px;
-    margin-left: 240px;
     margin-right: auto;}
 .ThemeSelect select {padding: 10px 10px; border-radius: 12px; text-align: center; border: none; }
 
-.NetworkSelect {width: 120px; display: inline-block; text-align: left; margin: 10px 0px 0px 15px;border-radius: 12px;}
+.NetworkSelect {width: 120px; display: inline-block; text-align: left; margin: 10px 0px 0px 15px;border-radius: 12px;    min-width: fit-content;}
 .NetworkSelectL1 {border-radius: 6px 0px 0px 6px; opacity: 0.7;}
 .NetworkSelectL2 {border-radius: 0px 6px 6px 0px; opacity: 0.7;}
 .NetworkSelect a {padding: 7px 4px; text-align: center; border: none; width: 60px; display: inline-block;}
 .NetworkSelect img {width:20px; height:20px;display: inline-block; margin: 3px 3px 3px 0px; vertical-align: middle;}
 .NetworkSelect p {display: inline-block; vertical-align: middle;font-size: 12px; font-weight: bold; max-width: 40px; overflow: hidden; margin-left: 2px;}
+
+.NetworkSelectL1 img {width:20px; height:20px;display: inline-block; margin: 3px 3px 3px 0px; vertical-align: middle; filter: brightness(100);}
 
 .RightMenu {
     width: 100%;
@@ -1572,16 +1574,19 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
     backdrop-filter: blur(6px);
 }
 .light .RightMenu {
+    padding-left: 270px;
     background: #fff;
     box-shadow: -9px 0 20px rgba(89,102,122,.1);
 }
 .dark .RightMenu {
+    min-width: fit-content;
     background: #000;
     box-shadow: -9px 0 20px rgba(147, 152, 160, 0.1);
 }
 .RightMenu>div {
     justify-items: flex-end;
     display: flex;
+    margin-right: 10px;
 }
 
 .ObjectsLists {width: 100%; display: inline-block;}
@@ -3067,9 +3072,40 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .sepia .AccountInfo {background-color: #eee8d59c; border-color: #d9d2c2a3;}
 .matrix .AccountInfo {background-color: transparent; border: 1px solid #008F11;}
 
-
+.Navigation{
+    min-width: max-content;
+    text-align: left;
+    margin-left: 0px;
+    margin-bottom: 0px;
+    margin-top: 16px;
+    vertical-align: middle;
+    display: flex;
+    height: 40px;
+    min-width: min-content;
+}
+.Navigation h3{
+    display: inline-block;
+    min-height: 0px;
+    height: auto;
+    margin-right: 50px;
+}
 /* Others Components */
-.light .NavigationItem {background-color: #efedf3;}
+.light .NavigationItem {width: 200px;
+    max-width: fit-content;
+    margin-right: 10px;
+    position: relative;
+    top: -5px;
+    width: 200px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding-top: 0px;
+    min-height: 0px;
+    padding-bottom: 0px;
+}
+.light .NavigationItem span{
+    padding-top: 7px;
+    display: inline-block;
+}
 .dark .NavigationItem {background-color: #2a2a2a;}
 
 .light .Web3ConnectChain {background-color: #E4E4E4;box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgba(202,202,202,0.32);}
@@ -3128,12 +3164,12 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 
 .matrix .NetworkSelect {background-color: transparent; color: #008F11;}
 
-.light .NetworkSelectL1 {background-color: rgba(98, 126, 234, 0.7 );}
+.light .NetworkSelectL1 {background-color: #141416}
 .light .NetworkSelectL1:hover {background-color: rgba(98, 126, 234, 1 );}
 .dark .NetworkSelectL1 {background-color: rgba(98, 126, 234, 0.7 );}
 .dark .NetworkSelectL1:hover {background-color: rgba(98, 126, 234, 1 );}
 
-.light .NetworkSelectL2 {background-color: rgba(255, 4, 32, 0.7);}
+.light .NetworkSelectL2 {background-color: rgb(241 237 245);}
 .light .NetworkSelectL2:hover {background-color: rgba(255, 4, 32, 1);}
 .dark .NetworkSelectL2 {background-color: rgba(255, 4, 32, 0.7);}
 .dark .NetworkSelectL2:hover {background-color: rgba(255, 4, 32, 1);}
@@ -3270,7 +3306,7 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
     z-index: 0;
     overflow: hidden;
     min-height: 280px;
-    border: 1px solid #eaceff;
+    border: 1px solid #000000;
 }
 .dark .CardLayerBanner{
     border: 1px solid #2a1e52;
@@ -3289,8 +3325,8 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
     right: 0;
     top: 0;
     bottom: 0;
-    background: #f0dbff;
-    opacity: .5;
+    background: #141416;
+    opacity: 1;
     z-index: -1;
 }
 
@@ -3299,9 +3335,9 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 }
 
 .BtnPrimary{
-    color: #fff!important;
-    background-color: #593ec2;
-    border-color: #533bb6;
+    color: #000!important;
+    background-color: #ffffff;
+    border-color: #ffffff;
     padding: 12px 30px;
     min-width: 150px;
     margin: 10px 0;
@@ -3313,8 +3349,8 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 }
 .BtnSecondary{
     color: #fff!important;
-    background-color: #f8507b;
-    border-color: #f73164;
+    background-color: #141416;
+    border-color: #ffffff;
     padding: 12px 30px;
     min-width: 150px;
     margin: 10px 0;
@@ -3322,8 +3358,13 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
     border-radius: 9px;
     outline: none;
     font-weight: 200;
+    border: 1px solid;
 }
-.BtnPrimary b, .BtnSecondary b{
+.BtnPrimary b{
+    color: #000;
+    font-weight: 700;
+}
+.BtnSecondary b{
     color: #fff;
     font-weight: 700;
 }
@@ -3341,8 +3382,27 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
     letter-spacing: 2.8px;
     margin-top: 5px;
     margin-bottom: 15px;
-    font-family: Good Times Rg, sans-serif;
+    font-family: Good Times Rg, sans-serif;color: #000!important;
+    background-color: transparent;
+    border-color: #ffffff;
+    padding: 12px 30px;
+    min-width: 150px;
+    margin: 10px 0;
+    text-decoration: none;
+    border-radius: 9px;
+    outline: none;
+    font-weight: 200;
+    margin-right: 10px;
     font-size: 46px;
     font-weight: 400;
     line-height: 60px;
+}
+.CardLayerBannerDetail p, .CardLayerBannerDetail h3, .CardLayerBannerDetail h1, .CardLayerBannerDetail .H1{
+    color: #fff!important;
+}
+.NetworkSelect div .NetworkSelect:last-child p {
+    color: #444;
+}
+.NetworkSelectL2 p{
+    color: #000!important;
 }

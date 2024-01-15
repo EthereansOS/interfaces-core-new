@@ -84,32 +84,8 @@ const Navigation = ({ menuName, isDapp, selected }) => {
 
   return (
     <nav className={style.Navigation}>
-      <div className={style.MenuProfile}>
-        <Link to="/account">
-          <LogoRenderer
-            noDotLink
-           
-            noFigure
-            input={
-              ensData?.name
-                ? `//metadata.ens.domains/mainnet/avatar/${ensData?.name}`
-                : blockie
-            }
-            defaultImage={blockie}
-          />
-          <div className={style.MenuProfileContent}>
-          <h3>
-            My Profile
-          </h3>
-          <p> {connectionStatus === web3States.NOT_CONNECTED
-              ? 'Connect'
-              : ensData?.name ||
-                truncatedWord({ context, charsAmount: 8 }, account)}</p>
-          </div>
-         
-        </Link>
-      </div>
-      <br />
+     
+
       <h3 className={style.NavigationHeader}>
         Navigation
         <br />

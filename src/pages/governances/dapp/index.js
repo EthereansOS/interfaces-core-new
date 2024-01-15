@@ -9,5 +9,5 @@ export default prepareAddToPlugin(
   '/organizations',
   style.Web3PagesRoot,
   20,
-  `${process.env.PUBLIC_URL}/img/organizations.svg`
+  `${process.env.PUBLIC_URL}/img/organizations.png`
 )

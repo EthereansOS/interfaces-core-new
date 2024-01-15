@@ -16,7 +16,6 @@ const MainTemplate = ({ Component, ...props }) => {
 
   return props.componentOnly ? <Component setTemplateState={setState} {...props} /> : (
     <>
-      <img src="./img/background-image.svg" className={style.BackgroundBodyImage}></img>
       <main
         className={style.root}>
         <div className={style.BlockNews}>

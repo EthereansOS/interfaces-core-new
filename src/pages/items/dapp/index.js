@@ -35,7 +35,7 @@ ItemsMain.addToPlugin =
         label: 'Items',
         link: '/items',
         index,
-        image : `${process.env.PUBLIC_URL}/img/items.svg`,
+        image : `${process.env.PUBLIC_URL}/img/items.png`,
       })
     }
 
@@ -44,9 +44,9 @@ ItemsMain.addToPlugin =
 export default prepareAddToPlugin(
   require.context('./', true, /index.js$/),
   require.context('./', true, /.js$/),
-  "Items",
+  "NFT Items",
   "/items",
   style.Web3PagesRoot,
   10,
-  `${process.env.PUBLIC_URL}/img/items.svg`,
+  `${process.env.PUBLIC_URL}/img/items.png`,
 )

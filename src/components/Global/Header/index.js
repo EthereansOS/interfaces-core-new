@@ -1,11 +1,12 @@
 import React, { useCallback, useMemo, useState, useEffect } from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import Navigation from '../Navigation'
+import LogoRenderer from '../LogoRenderer'
 
 import style from '../../../all.module.css'
 import Web3Connect from '../Web3Connect'
-
-import { useWeb3, useEthosContext, sendAsync } from 'interfaces-core'
+import makeBlockie from 'ethereum-blockies-base64'
+import { useWeb3, useEthosContext, sendAsync, truncatedWord, web3States } from 'interfaces-core'
 
 import { useThemeSelector } from '../../../logic/uiUtilities'
 
@@ -15,9 +16,38 @@ const Header = (props) => {
 
   const context = useEthosContext()
   const web3Data = useWeb3()
-  const { chainId, web3, dualChainId } = web3Data
+  const { chainId, web3, dualChainId,  account, connectionStatus} = web3Data
 
   const history = useHistory()
+
+  const [ensData, setEnsData] = useState()
+
+  useEffect(() => {
+    setTimeout(async () => {
+      const address = account
+      if (
+        ensData &&
+        ensData.account === account &&
+        ensData.chainId === chainId
+      ) {
+        return
+      }
+      var name
+      try {
+        const ethersProvider = new ethers.providers.Web3Provider(
+          web3.currentProvider
+        )
+        name = await ethersProvider.lookupAddress(address)
+      } catch (e) {
+        var index = e.message.split('\n')[0].indexOf('value="')
+        if (index !== -1) {
+          name = e.message.substring(index + 7)
+          name = name.substring(0, name.indexOf('"'))
+        }
+      }
+      setEnsData((oldValue) => ({ ...oldValue, name, account, chainId }))
+    })
+  }, [account, chainId, ensData])
 
   const handleToggleChange = () => {
     const toggleSwitch = document.getElementById('toggleSwitch')
@@ -71,22 +101,25 @@ const Header = (props) => {
     [chainId, dualChainId, history]
   )
 
+  const blockie = !ensData?.name ? makeBlockie(account) : undefined
+
   return (
     <header className={style.Header}>
       <div className={style.FixedHeader}>
         <Link to="" className={style.logoMain}>
           <img src={`${process.env.PUBLIC_URL}/img/logo.png`} />
         </Link>
-        <Navigation
-          menuName={props.menuName}
-          isDapp={props.isDapp}
-          selected={props.link}
-        />
+       
         <div className={style.CopyRight}>
           &copy;2024 <b>EthereansOS</b> v1.3.2 <br /> All rights reserved
         </div>
       </div>
       <div className={style.RightMenu}>
+      <Navigation
+          menuName={props.menuName}
+          isDapp={props.isDapp}
+          selected={props.link}
+        />
         <div className={style.ThemeSelect}>
           <label className={style.ThemeSwitch}>
             <input
@@ -119,6 +152,31 @@ const Header = (props) => {
               <p>OP</p>
             </a>
           </div>
+        </div>
+        <div className={style.MenuProfile}>
+          <Link to="/account">
+            <LogoRenderer
+              noDotLink
+            
+              noFigure
+              input={
+                ensData?.name
+                  ? `//metadata.ens.domains/mainnet/avatar/${ensData?.name}`
+                  : blockie
+              }
+              defaultImage={blockie}
+            />
+            <div className={style.MenuProfileContent}>
+            <h3>
+              My Profile
+            </h3>
+            <p> {connectionStatus === web3States.NOT_CONNECTED
+                ? 'Connect'
+                : ensData?.name ||
+                  truncatedWord({ context, charsAmount: 8 }, account)}</p>
+            </div>
+          
+          </Link>
         </div>
         <Web3Connect />
       </div>
