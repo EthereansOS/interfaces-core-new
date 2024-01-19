@@ -84,13 +84,13 @@ const Navigation = ({ menuName, isDapp, selected }) => {
 
   return (
     <nav className={style.Navigation}>
-     
-
-      <h3 className={style.NavigationHeader}>
-        Navigation
-        <br />
-        <span>Lorem ipsum sim dolorem</span>
-      </h3>
+     <Link
+     to="/"
+        className={`${style.NavigationItem}`}>
+        <span>
+          <img src='./img/dashboard.png'></img> <p>Dashboard</p>
+        </span>
+      </Link>
       {menuItems.map((item) => navItem(item))}
     </nav>
   )

@@ -37,30 +37,41 @@ const Metadata = ({value, onChange}) => {
     return (
       <div className={style.CreationPageLabel}>
         <div className={style.FancyExplanationCreate}>
-          <h6>Basic Info</h6>
+          <h2>Basic Info</h2>
+          <p>Lorem ispums im dolor amed asid</p>
         </div>
         <label className={style.CreationPageLabelF}>
           <h6>Name</h6>
-          <input type="text" value={value?.name} onChange={e => onChange({...value, name : e.currentTarget.value})}/>
+          <p>Choose an unique name for your ogranization</p>
+          <input type="text" value={value?.name} placeholder='Organization name' onChange={e => onChange({...value, name : e.currentTarget.value})}/>
           {value?.error?.name && <p>{value.error.name}</p>}
         </label>
         <label className={style.CreationPageLabelF}>
           <h6>Description</h6>
-          <textarea value={value?.description} onChange={e => onChange({...value, description : e.currentTarget.value})}/>
+          <p>Enter the description of your Organization</p>
+          <textarea value={value?.description} onChange={e => onChange({...value, description : e.currentTarget.value})} placeholder='Describe your organization'/>
           {value?.error?.description && <p>{value.error.description}</p>}
         </label>
-        <label className={style.CreationPageLabelF}>
-          <h6>Logo</h6>
-          <input type="link" value={value?.image} onChange={e => onChange({...value, image : e.currentTarget.value})}/>
-          <p>A valid link for your Organization's logo. Please upload a square picture (.png, .gif or .jpg;) so that it fits perfectly with the EthereansOS interface style.</p>
-          {value?.error?.image && <p>{value.error.image}</p>}
-        </label>
-        <label className={style.CreationPageLabelF}>
-          <h6>Website</h6>
-          <input type="link" value={value?.url} onChange={e => onChange({...value, url : e.currentTarget.value})}/>
-          <p>The official website of your Organization.</p>
-          {value?.error?.url && <p>{value.error.url}</p>}
-        </label>
+        <div className={style.CreationPageLabelFDivide}>
+            <label className={style.CreationPageLabelF}>
+            <h6>Logo</h6>
+            <p>A valid link for your Organization's logo. Square size recomended.</p>
+            <input type="link" value={value?.image} placeholder='Organization logo url' onChange={e => onChange({...value, image : e.currentTarget.value})}/>
+            
+            {value?.error?.image && <p>{value.error.image}</p>}
+            </label>
+            <label className={style.CreationPageLabelF}>
+            <h6>Website</h6>
+            <p>The official website of your Organization.</p>
+            <input type="link" value={value?.url} placeholder="Organziation website url" onChange={e => onChange({...value, url : e.currentTarget.value})}/>
+            
+            {value?.error?.url && <p>{value.error.url}</p>}
+            </label>
+        </div>
+        <div className={style.WizardFooter}>
+            <button className={style.WizardFooterBack}>Back</button>
+            <button className={style.WizardFooterNext}>Next</button>
+        </div>
       </div>
     )
 }
@@ -481,7 +492,34 @@ const CreateOrganization = () => {
         return <OurCircularProgress/>
     }
     return (
-      <div className={style.CreatePage}>
+        <div className={style.CreatePage}>
+            <div className={style.WizardStepsList}>
+                <ul>
+                    <li>Notice</li>
+                    <li className={style.WizardStepsListActive}>Basic Info</li>
+                    <li>Governance Rules</li>
+                    <li>Organization Treasury</li>
+                    <li>Fixed Inflation</li>
+                    <li>Confirmation</li>
+                </ul>
+            </div>
+           <div className={style.WizardHeader}>
+                    <h3>Create a new Organization (ALPHA) <span>step 2 of 6</span></h3>
+                    <div className={style.WizardHeaderDescription}>Lorem ispum sim dolor amed asid avec mono on alor</div>
+                    <div className={style.WizardProgress}>
+                        <div className={style.WizardProgressBar}></div>
+                    </div>
+                </div>
+            <div className={style.WizardStep}>
+                <Metadata value={state?.metadata} onChange={value => setState({...state, metadata : value})}/>
+            </div>
+
+
+        </div>
+
+
+
+      /*<div className={style.CreatePage}>
         <div className={style.FancyExplanationCreate}>
             <h4>Create a new Organization (ALPHA)</h4>
         </div>
@@ -517,7 +555,7 @@ const CreateOrganization = () => {
             {loading && <CircularProgress/>}
             {!loading && <ActionAWeb3Button onClick={onClick} disabled={disabled}>Deploy</ActionAWeb3Button>}
         </div>
-      </div>
+      </div>*/
     )
 }
 

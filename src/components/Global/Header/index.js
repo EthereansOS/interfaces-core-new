@@ -8,6 +8,12 @@ import Web3Connect from '../Web3Connect'
 import makeBlockie from 'ethereum-blockies-base64'
 import { useWeb3, useEthosContext, sendAsync, truncatedWord, web3States } from 'interfaces-core'
 
+import Select from 'react-select';
+import { IconContext } from 'react-icons';
+import { FaEthereum} from 'react-icons/fa'; 
+
+import Toggle from '../../../components/Toggle'
+
 import { useThemeSelector } from '../../../logic/uiUtilities'
 
 const Header = (props) => {
@@ -21,6 +27,41 @@ const Header = (props) => {
   const history = useHistory()
 
   const [ensData, setEnsData] = useState()
+
+
+
+const customStyles = {
+  control: (provided) => ({
+    ...provided,
+    backgroundColor: 'transparent',
+    borderColor: 'transparent',
+    boxShadow: 'none',
+    '&:hover': {
+      borderColor: 'transparent',
+    },
+  }),
+  option: (provided, state) => ({
+    ...provided,
+    display: 'flex',
+    alignItems: 'center',
+    backgroundColor: state.isSelected ? 'purple' : 'transparent',
+    color: 'white',
+    ':hover': {
+      backgroundColor: 'lightgrey',
+    },
+  })
+};
+
+const options = [
+  { value: 'ethereum', label: <div><FaEthereum /> <div className={style.SelectLabel}>Ethereum</div></div> },
+  { value: 'optimism', label: <div><FaEthereum /> <div className={style.SelectLabel}>Optimism</div></div> }
+];
+
+const [toggled, setToggled] = React.useState(false);
+const handleClick = () => {
+    setToggled((s) => !s);
+};
+
 
   useEffect(() => {
     setTimeout(async () => {
@@ -56,7 +97,7 @@ const Header = (props) => {
     setTheme(theme)
     localStorage.setItem('toggleState', toggleSwitch.checked)
   }
-
+/*
   useEffect(() => {
     const initialLoad = async () => {
       const toggleSwitch = document.getElementById('toggleSwitch')
@@ -84,7 +125,7 @@ const Header = (props) => {
     return () => {
       toggleSwitch.removeEventListener('change', handleToggleChange)
     }
-  }, [])
+  }, [])*/
 
   const switchToNetwork = useCallback(
     () =>
@@ -120,39 +161,33 @@ const Header = (props) => {
           isDapp={props.isDapp}
           selected={props.link}
         />
-        <div className={style.ThemeSelect}>
-          <label className={style.ThemeSwitch}>
-            <input
-              type="checkbox"
-              id="toggleSwitch"
-              checked={isChecked}
-              onChange={handleToggleChange}
-            />
-            <span className={style.ThemeSlider} aria-hidden="true"></span>
-          </label>
-        </div>
-        <div className={style.NetworkSelect}>
-          <div>
-            <a
-              className={
-                style.NetworkSelectL1 +
-                (!dualChainId ? ' ' + style.opacity1 : '')
-              }
-              onClick={dualChainId && switchToNetwork}>
-              <img src={`${process.env.PUBLIC_URL}/img/ethereum.png`} />
-              <p>ETH</p>
-            </a>
-            <a
-              className={
-                style.NetworkSelectL2 +
-                (dualChainId ? ' ' + style.opacity1 : '')
-              }
-              onClick={!dualChainId && switchToNetwork}>
-              <img src={`${process.env.PUBLIC_URL}/img/Optimism.png`} />
-              <p>OP</p>
-            </a>
-          </div>
-        </div>
+      
+
+      <Toggle toggled={toggled} onClick={handleClick} />
+
+
+        <IconContext.Provider value={{ color: 'black', size: '1.5em' }}>
+        <Select
+          isSearchable={false}
+          className={style.NetworkSelectDropdown}
+          styles={customStyles}
+          options={options}
+          components={{
+            DropdownIndicator:() => null,
+            IndicatorSeparator:() => null 
+          }}
+        />
+      </IconContext.Provider>
+
+
+
+      
+
+
+
+
+
+
         <div className={style.MenuProfile}>
           <Link to="/account">
             <LogoRenderer

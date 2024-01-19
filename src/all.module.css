@@ -199,7 +199,7 @@ input::-webkit-scrollbar {
 }
 
 .light {
-    background: #fdfdfd;
+    background: #f1f4f8;
 }
 
 .dark {
@@ -255,7 +255,7 @@ input::-webkit-scrollbar {
 }
 
 .Enter {
-    background-color: var(--btn-background-primary);
+    background-color: #141416;
     color: var(--btn-color-primary) !important;
     font-family: "EthOSbold", "Overpass Mono", monospace !important;
     padding: 12px 18px;
@@ -339,14 +339,20 @@ input::-webkit-scrollbar {
     border-radius: 6px;
 }
 .light .NavigationItem:hover {
-    background-color: #282828 !important;
+    background-color: #141416 !important;
+}
+.light .NavigationItem:hover img{
+    filter:invert(1)!important;
 }
 .light .NavigationItem:hover p {
     color: var(--text-color-tertiary)  !important;
     font-weight: bold;
 }
 .light .NavigationItem.selected {
-    background-color: #8a77de !important;
+    background-color: #141416 !important;
+}
+.light .NavigationItem.selected img {
+    filter: invert(1);
 }
 .light .NavigationItem.selected p {
     color: var(--text-color-tertiary)  !important;
@@ -686,7 +692,19 @@ input::-webkit-scrollbar {
 
 /* Global Create */
 
-.CreatePage {width: 800px; padding: 50px; margin: 50px auto; border-radius: 20px; display: block;}
+.CreatePage {
+    display: block;
+    top: 0px;
+    left: 0px;
+    z-index: 10000;
+    margin: 0px;
+    padding: 20px 10% 0px 10%;
+    border-radius: 0px;
+    background: linear-gradient(135deg,#f1f4f8,#f1f4f8 80%);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(10px);
+    height: 100vh;
+}
 .CreateBoxDesc {width: 330px;display: inline-block;margin: 10px 10px;padding: 30px;background-color: #e9effc;border: 1px solid #e0e2e6;border-radius: 12px; vertical-align: middle; min-height: 100px;}
 .CreateBoxDesc h6 {font-size: 16px;font-weight: 700;}
 .CreateBoxDesc p {font-size: 13px;}
@@ -716,11 +734,13 @@ input::-webkit-scrollbar {
     box-shadow: none;
     margin: 5px !important;
     border: 1px solid !important;
+    box-shadow: 0 0 #0000, 0 0 #0000, 0px 1px 3px 0px rgba(97, 110, 124, .1), 0px 1px 2px -1px rgba(97, 110, 124, .1);
 }
 .AdvancedLinks {width: 100%; display: inline-block; margin: 50px auto 0px auto; text-align: center;}
 .AdvancedLinks a {font-size: 11px; color: #535353; text-decoration: underline;}
-.CreationPageLabel {width: 100%; display: inline-block; padding: 10px 50px}
-.CreationPageLabelF {width: 100%; display: inline-block; border-radius: 12px; padding: 20px 50px; margin: 15px auto;}
+.CreationPageLabel {width: 100%; display: inline-block;     padding: 10px 50px 40px 50px; background: #fff;
+    border-radius: 10px;}
+.CreationPageLabelF {width: 100%; display: inline-block; border-radius: 12px;     padding: 0px 20px; margin: 15px auto;}
 .CreationPageLabelF h6 {width: 100%; display: inline-block; text-align: center; font-size: 16px;}
 .CreationPageLabelF input {width: 350px; display: inline-block; border: none; text-align: left; padding: 10px; font-size: 14px; border-radius: 12px; margin: 10px auto;}
 .CreationPageLabelF input[type="color"] {width: 90px; height: 40px;}
@@ -1344,12 +1364,19 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
     align-self: stretch;
     align-items: center;
     padding-top: 0px;
-    padding-bottom: 100px;
+    padding-bottom: 10px;
     display: flex;
     border: 1px solid #f3f3f3;
 }
 .CardsLayerHeader:hover{
-    background-color: #e0cbf1;
+    background-color: #141416;
+    color:#fff;
+}
+.CardsLayerHeader:hover p, .CardsLayerHeader:hover h2{
+    color:#fff;
+}
+.CardsLayerHeader:hover img{
+    filter: invert(1);
 }
 .dark .CardsLayerHeader {
     background-color: #120b26 !important;
@@ -1366,8 +1393,6 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
     margin-left: 10px;
     margin-right: 10px;
     padding: 30px 15px 20px;
-    position: absolute;
-    top: 158px;
     /* box-shadow: 0 -4px 10px rgba(0, 0, 0, .15); */
     font-weight: normal!important;
     font-size: 14px!important;
@@ -1400,11 +1425,12 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
     border-radius: 6px;
 }
 .light .MenuProfile {
-    background-color: #f0edf4;
+    background-color: #fff;
     min-width: fit-content;
     height: fit-content;
     margin-top: 10px;
-    margin-left: 15px;
+    margin-left: -2px;
+    width: 200px;
 }
 .dark .MenuProfile {
     background-color: #2a2a2a;
@@ -1575,8 +1601,6 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 }
 .light .RightMenu {
     padding-left: 270px;
-    background: #fff;
-    box-shadow: -9px 0 20px rgba(89,102,122,.1);
 }
 .dark .RightMenu {
     min-width: fit-content;
@@ -1586,7 +1610,8 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .RightMenu>div {
     justify-items: flex-end;
     display: flex;
-    margin-right: 10px;
+    margin-right: 0px;
+    margin-left: 10px;
 }
 
 .ObjectsLists {width: 100%; display: inline-block;}
@@ -2109,7 +2134,7 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .biz .Web3BackBTN  {background-color: #e4e4e4; color: #6e6e6e;}
 .dark .Web3BackBTN  {background-color: #525252; color: #6e6e6e;}
 
-.light .ModalBack  {background: linear-gradient(135deg,#655dfff5,#a0a0a06b 80%); -webkit-backdrop-filter: blur(6px);backdrop-filter: blur(6px);}
+.light .ModalBack  {background: linear-gradient(135deg,#7a7a7af5,#a0a0a06b 80%); -webkit-backdrop-filter: blur(6px);backdrop-filter: blur(6px);}
 .biz .ModalBack  {background: linear-gradient(135deg,#655dfff5,#a0a0a05e 80%); -webkit-backdrop-filter: blur(6px);backdrop-filter: blur(6px);}
 .dark .ModalBack  {background: linear-gradient(135deg,#655dfff5,#1b1b1b48 80%); -webkit-backdrop-filter: blur(6px);backdrop-filter: blur(6px);}
 .sepia .ModalBack  {background: linear-gradient(135deg,#49646a76,#d9d2c280 80%); -webkit-backdrop-filter: blur(6px);backdrop-filter: blur(6px);}
@@ -2298,7 +2323,23 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .sepia .CreationSelectW, .sepia .UniV3SelectPerch select {background-color: #eee8d59c;}
 .matrix .CreationSelectW, .matrix .UniV3SelectPerch select {background-color: #008F11; color: #000; border-radius: 0;}
 
-.light .CreationPageLabelF {background-color: #e9effc;border: 1px solid #e0e2e6;}
+.light .CreationPageLabelF h6{
+    text-align: left;
+}
+.light .CreationPageLabelF input, .light .CreationPageLabelF textarea{
+    border: 2px solid #e7ecf3;
+    width: 100%;
+    background: #ffffff;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 300;
+}
+.light .CreationPageLabelF p{
+    text-align: left;
+}
+.FancyExplanationCreate h2{
+    text-align: left;
+}
 .biz .CreationPageLabelF {background: linear-gradient(0deg, #ffffff 50%, #bfc0ea 100%); border: 1px solid #a7a7a7;}
 .dark .CreationPageLabelF {background-color: #525252;border: 1px solid #010101;}
 .sepia .CreationPageLabelF {background-color: #d9d2c2a3;border: 1px solid #d9d2c2a3;}
@@ -2308,15 +2349,19 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .biz .CreationPageLabelF input {background-color: #ffffff; border: 1px solid #b7c5d9;}
 .dark .CreationPageLabelF input {background-color: #000000;}
 .sepia .CreationPageLabelF input {background-color: #eee8d59c;}
-.matrix .CreationPageLabelF input {background-color: #008F11; color: #000; border-radius: 0;}
-.matrix .CreationPageLabelF input::placeholder { color: #000;}
-
+.matrix .CreationPageLabelF input {background-color: #008F11; color: #000; border-radius: 0;font-family:  Good Times Rg, sans-serif;}
+.matrix .CreationPageLabelF input::placeholder{ color: #000;font-family:  Good Times Rg, sans-serif;color: #000!important;}
+input{
+    font-family: "EthOSregular", "Overpass Mono", monospace !important;
+}
 .light .CreationPageLabelF textarea {background-color: #ffffff;}
 .biz .CreationPageLabelF textarea {background-color: #ffffff; border: 1px solid #b7c5d9;}
 .dark .CreationPageLabelF textarea {background-color: #000000;}
 .sepia .CreationPageLabelF textarea {background-color: #eee8d59c;}
 .matrix .CreationPageLabelF textarea {background-color: #008F11; color: #000; border-radius: 0;}
 .matrix .CreationPageLabelF textarea::placeholder { color: #000;}
+
+
 
 .light .CreateBoxDesc {background-color: #e9effc; border-color: #e0e2e6;}
 .biz .CreateBoxDesc {background: linear-gradient(0deg, #ffffff 50%, #bfc0ea 100%); border: 1px solid #a7a7a7;}
@@ -2549,7 +2594,11 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .dark .DappSubMenu, .dark .DDapp_Menu2 {background-color: #525252; border: none; box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);-moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);}
 .sepia .DappSubMenu, .sepia .DDapp_Menu2 {background-color: #eee8d587; border: none;}
 
-.light .FancyExplanationCreate {background-color: #f7fafe; border-color: #e0e2e6;}
+.light .FancyExplanationCreate {
+    border-color: transparent;
+    border-bottom: 1px solid #e7ecf4;
+    border-radius: 0px;
+}
 .biz .FancyExplanationCreate {background-color: #f7fafe; border-color: #e0e2e6;}
 .dark .FancyExplanationCreate {background-color: #1f1f1f; border-color: #333333;}
 .sepia .FancyExplanationCreate {background-color: #eee8d59c; border-color: #eee8d59c;}
@@ -3294,7 +3343,7 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
     margin-bottom: 10px;
 }
 .CardLayerBanner{
-    padding: 20px 30px;
+    padding: 35px 50px 50px 50px;
     border-radius: 16px;
     margin-bottom: 30px;
     margin-top: 30px;
@@ -3306,13 +3355,12 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
     z-index: 0;
     overflow: hidden;
     min-height: 280px;
-    border: 1px solid #000000;
 }
 .dark .CardLayerBanner{
     border: 1px solid #2a1e52;
 }
 .CardLayerBannerDetail h3 {
-    margin: 5px 20px 0px 20px;
+    margin: 5px 20px 0px 0px;
     font-size: 26px;
 }
 .CardLayerBannerDetail p {
@@ -3396,6 +3444,9 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
     font-size: 46px;
     font-weight: 400;
     line-height: 60px;
+    color: #fff!important;
+    margin-left: 0px;
+    padding-left: 0px;
 }
 .CardLayerBannerDetail p, .CardLayerBannerDetail h3, .CardLayerBannerDetail h1, .CardLayerBannerDetail .H1{
     color: #fff!important;
@@ -3405,4 +3456,169 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 }
 .NetworkSelectL2 p{
     color: #000!important;
+}
+
+.CardLayerBannerDetail{
+    text-align: left;
+}
+.CardLayerBannerDetail>div:first-child{
+    display: inline-block;
+    text-align: left;
+    width: 60%;
+    position: relative;
+    padding-left: 0px;
+}
+
+.CardLayerBannerDetail>div:last-child{
+    display: inline-block;
+    width: 40%;
+    position: relative;
+}
+.CardLayerBannerDetailImages{
+    position: absolute;
+    width: 800px;
+    transform: rotateZ(324deg);
+    top: -220px;
+    right: -300px;
+}
+.CardLayerBannerDetailImages img{
+    width: 100px;
+    margin: 0 0 0 auto;
+    display: inline-block;
+    /* box-shadow: 0px 0px 11px 0px #99c0e7; */
+    border-radius: 10px;
+    margin-right: 30px;
+    margin-bottom: 30px;
+}
+.CardLayerBannerDetailImage{
+    display: inline-block;
+    position: relative;
+    top: 7px;
+}
+.CardLayerTitleArea{
+    margin-top: 60px;
+    margin-bottom: 60px;
+    text-align: left;
+}
+.CardLayerTitleArea{
+    text-align: left;
+}
+.NetworkSelectDropdown{
+    width: 130px;
+    position: relative;
+    display: inline-block;
+    min-width: 130px;
+    text-align: left;
+}
+
+.WizardProgress{
+    width: 100%;
+    background-color: #fff;
+    overflow: hidden;
+    padding: 5px;
+    border-radius: 10px;
+}
+.WizardProgressBar{
+    width: 30%;
+    height: 8px;
+    border-radius: 10px;
+    background-color: #1f1f1f;
+}
+.WizardHeader{
+    text-align: left;
+    margin-bottom:20px;
+    padding: 20px 0px 20px 0px;
+    background: transparent;
+}
+.WizardHeader>h3{
+    margin-bottom: 5px;
+    display: block;
+    font-weight: bold;
+}
+.WizardHeader>h3>span{
+    float:right;
+    font-size: 14px;
+    font-weight: 200;
+}
+.WizardHeaderDescription{
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+.CreationPageLabelFDivide label{
+    width: 50%;
+}
+.WizardFooter {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+.WizardFooter button{
+    border:0px;
+    border-radius: 8px;
+    padding: 10px;
+    width: 200px;
+    font-weight: bold;
+    cursor: pointer;
+}
+.WizardFooter .WizardFooterBack{
+    background-color: #f1f4f8;
+    color:#7D9CBD;
+    float:left;
+}
+.WizardFooter .WizardFooterNext{
+    background-color: #141416;
+    color:#fff;
+    float:right;
+    
+}
+.WizardStepsList{
+    position: fixed;
+    left: -100px;
+    top:30%;
+    text-align:left;
+}
+.WizardStepsList ul{
+    text-align:left;
+    margin:0px;
+    padding:0px;
+}
+.WizardStepsList ul li{
+    margin-bottom: 15px;
+    color:#696969;
+    font-size:14px
+}
+.WizardStepsListActive{
+    font-weight: bold;
+    color:#000000!important;
+}
+.WizardStepsList ul li::before{
+    content: "";
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    margin-right: 5px;
+    background: #bbbbbb;
+    position: relative;
+    top:2px;
+    border-radius: 2px;
+}
+.WizardStepsList ul li.WizardStepsListActive::before{
+    background: #000000!important;
+}
+.NetworkSelectDropdown .SelectLabel svg, .NetworkSelectDropdown .SelectLabel{
+    display: inline-block;
+
+}
+
+.NetworkSelectDropdown .SelectLabel{
+    position: relative;
+    top: -6px;
+    font-size: 14px;
+}
+.NetworkSelectDropdown>div>div{
+    background: #fff;
+    border-radius: 8px;
+    padding-top: 7px;
+    padding-bottom: 8px;
+    position: relative;
+    top: 2px;
 }

@@ -31,7 +31,7 @@ SubDAOsList.menuVoice = {
   label : 'Organizations',
   path : '/organizations',
   contextualRequire : () => require.context('./', false, /.js$/),
-  index : 0
+  index : 0,
 }
 
 export default SubDAOsList
