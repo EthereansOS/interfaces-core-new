@@ -39,7 +39,6 @@ body {
 }
 
 .ModalBack {
-    position: fixed;
     z-index: 99999998;
     top: 0;
     left: 0;
@@ -52,7 +51,9 @@ body {
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    align-content: center
+    align-content: center;
+    position: absolute;
+    margin: 0 auto;
 }
 
 /* Toggle switch */
@@ -534,10 +535,19 @@ input::-webkit-scrollbar {
 
 .TradeMarketTokenAll {display: inline-block;border-radius: 16px; text-align: left; margin: 5px auto;}
 .TradeMarketToken {width: 100%; padding: 5px; border-radius: 16px; text-align: left; border: 2px solid;}
-.TradeMarketToken .TradeMarketTokenSelector {width: 75px; height: 70px; display: inline-block; text-align: center; cursor: pointer; border-radius: 14px; overflow: hidden; vertical-align: top;}
-.TradeMarketToken .TradeMarketTokenSelector figure {width: 100%; height: 50px; display: inline-block;}
-.TradeMarketToken .TradeMarketTokenSelector figure img {width: 100%; height: 100%; display: block;object-fit: contain;}
-.TradeMarketToken .TradeMarketTokenSelector span {font-size: 13px; font-weight: bold;}
+.TradeMarketToken .TradeMarketTokenSelector {width: 75px;     height: 48px; display: inline-block; text-align: center; cursor: pointer; border-radius: 14px; overflow: hidden; vertical-align: top;}
+.TradeMarketToken .TradeMarketTokenSelector figure {width: 50px; height: 50px; display: inline-block;}
+.TradeMarketToken .TradeMarketTokenSelector figure img {  width: 35px;
+    height: 35px;
+    border-radius: 8px;}
+.TradeMarketToken .TradeMarketTokenSelector span {font-size: 13px; font-weight: bold;  }
+.TradeMarketToken .TradeMarketTokenSelector>span {    position: relative;
+    font-size: 18px;
+    top: -10px;
+    padding-right: 10px;  }
+.TradeMarketToken .TradeMarketTokenSelector>span>span {    float: right;
+    padding-top: 20px;
+    padding-right: 10px;}
 .TradeMarketTokenAmount {width: 130px;display: inline-block; text-align: right;}
 .TradeMarketTokenAmount input {width: 90%; height: 70px; font-size: 30px; border: none; text-align: right;}
 .TradeMarketTokenAmount input:focus{outline: none;}
@@ -569,7 +579,8 @@ input::-webkit-scrollbar {
 .TradeMarketTokenAmountS input:focus{outline: none;}
 .TradeMarketTokenBalanceS {font-size: 10px; cursor: pointer; margin: 5px; font-weight: bold; width: 100%; display: inline-block; text-align: center;}
 
-.ModalBox {width: 600px; height: 80%; display: flex; border-radius: 20px; position: relative;}
+.ModalBox {width: 600px; height: 80%; display: flex; border-radius: 20px;   position: relative;
+    overflow: hidden;}
 .TokensSelector {width: 100%; display: block; position: relative;}
 .TokensSelectorList {height: 90%; width: 100%; padding: 10px; display: block; border-radius: 20px 20px 0 0; overflow-y: scroll;}
 .TokensSelectorCategories {height: 60px;  border-top: 2px solid; width: 100%; display: block; border-radius: 0 0 20px 20px; position: absolute; left:0; bottom: 0; text-align: center; overflow: hidden;}
@@ -704,6 +715,7 @@ input::-webkit-scrollbar {
     -webkit-backdrop-filter: blur(6px);
     backdrop-filter: blur(10px);
     height: 100vh;
+    width: 1300px;
 }
 .CreateBoxDesc {width: 330px;display: inline-block;margin: 10px 10px;padding: 30px;background-color: #e9effc;border: 1px solid #e0e2e6;border-radius: 12px; vertical-align: middle; min-height: 100px;}
 .CreateBoxDesc h6 {font-size: 16px;font-weight: 700;}
@@ -739,8 +751,8 @@ input::-webkit-scrollbar {
 .AdvancedLinks {width: 100%; display: inline-block; margin: 50px auto 0px auto; text-align: center;}
 .AdvancedLinks a {font-size: 11px; color: #535353; text-decoration: underline;}
 .CreationPageLabel {width: 100%; display: inline-block;     padding: 10px 50px 40px 50px; background: #fff;
-    border-radius: 10px;}
-.CreationPageLabelF {width: 100%; display: inline-block; border-radius: 12px;     padding: 0px 20px; margin: 15px auto;}
+    border-radius: 10px;position: relative;}
+.CreationPageLabelF {width: 100%; display: inline-block; border-radius: 12px;     padding: 0px 20px; margin: 5px auto;}
 .CreationPageLabelF h6 {width: 100%; display: inline-block; text-align: center; font-size: 16px;}
 .CreationPageLabelF input {width: 350px; display: inline-block; border: none; text-align: left; padding: 10px; font-size: 14px; border-radius: 12px; margin: 10px auto;}
 .CreationPageLabelF input[type="color"] {width: 90px; height: 40px;}
@@ -1425,7 +1437,7 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
     border-radius: 6px;
 }
 .light .MenuProfile {
-    background-color: #fff;
+    background-color: #e9ecf1;
     min-width: fit-content;
     height: fit-content;
     margin-top: 10px;
@@ -1583,6 +1595,11 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 
 .NetworkSelectL1 img {width:20px; height:20px;display: inline-block; margin: 3px 3px 3px 0px; vertical-align: middle; filter: brightness(100);}
 
+
+.CreationPageLabelFDivideGroup .CreationPageLabelFDivide{
+    width:50%;
+    display: inline-block;
+}
 .RightMenu {
     width: 100%;
     text-align: right;
@@ -2134,7 +2151,7 @@ input[type=range]::-ms-thumb {margin-top: 1px;height: 25px;width: 25px;border-ra
 .biz .Web3BackBTN  {background-color: #e4e4e4; color: #6e6e6e;}
 .dark .Web3BackBTN  {background-color: #525252; color: #6e6e6e;}
 
-.light .ModalBack  {background: linear-gradient(135deg,#7a7a7af5,#a0a0a06b 80%); -webkit-backdrop-filter: blur(6px);backdrop-filter: blur(6px);}
+.light .ModalBack  { -webkit-backdrop-filter: blur(6px);backdrop-filter: blur(6px);}
 .biz .ModalBack  {background: linear-gradient(135deg,#655dfff5,#a0a0a05e 80%); -webkit-backdrop-filter: blur(6px);backdrop-filter: blur(6px);}
 .dark .ModalBack  {background: linear-gradient(135deg,#655dfff5,#1b1b1b48 80%); -webkit-backdrop-filter: blur(6px);backdrop-filter: blur(6px);}
 .sepia .ModalBack  {background: linear-gradient(135deg,#49646a76,#d9d2c280 80%); -webkit-backdrop-filter: blur(6px);backdrop-filter: blur(6px);}
@@ -2376,7 +2393,12 @@ input{
 .biz .MetadataSingleOpened a {background-color: #849BBD; color: #ffffff;}
 .dark .MetadataSingleOpened a {background-color: #849BBD; color: #ffffff;}
 
-.light .TradeMarketTokenAll {background-color: #e9effc;}
+.light .TradeMarketTokenAll {    background-color: transparent;
+    padding: 0px;
+    margin: 0px;
+    margin: 0px auto 0px 0px;
+    text-align: left;
+    display: block;}
 .biz .TradeMarketTokenAll {background-color: #e9effc;}
 .dark .TradeMarketTokenAll {background-color: #525252;}
 
@@ -2385,13 +2407,26 @@ input{
 .dark .OperationsTrigger .SettingFB {background-color: #525252;}
 .sepia .OperationsTrigger .SettingFB {background-color: #eee8d59c;}
 
-.light .TradeMarketToken {background-color: #ffffff; border-color: #ffffff;}
+.light .TradeMarketToken {      background-color: #ffffff;
+    border-color: #ffffff;
+    padding: 0px;
+    margin: 0px;
+    margin-top: 4px;}
 .biz .TradeMarketToken {background-color: #ffffff; border-color: #e4e4e4;;}
 .dark .TradeMarketToken {background-color: #000000; border-color: #000000;}
 .sepia .TradeMarketToken {background-color: #eee8d59c; border-color: #eee8d59c;}
 
-.light .TradeMarketToken .TradeMarketTokenSelector {background-color: #e9effc;}
-.biz .TradeMarketToken .TradeMarketTokenSelector {background-color: #F0F0F0; border-radius: 0;}
+.light .TradeMarketToken .TradeMarketTokenSelector {    background-color: #f2f4f8;
+    margin: 0px;
+    width: 100%;
+    text-align: left;
+    padding-left: 8px;
+    padding: 6px;}
+.biz .TradeMarketToken .TradeMarketTokenSelector {    background-color: #f2f4f8;
+    margin: 0px;
+    padding: 7px;
+    width: 100%;
+    text-align: left;}
 .dark .TradeMarketToken .TradeMarketTokenSelector {background-color: #525252;}
 
 .light .TradeMarketTokenAmount input  {background-color: transparent;}
@@ -3144,7 +3179,7 @@ input{
     margin-right: 10px;
     position: relative;
     top: -5px;
-    width: 200px;
+    width: 186px;
     margin-top: 0px;
     margin-bottom: 0px;
     padding-top: 0px;
@@ -3490,11 +3525,28 @@ input{
     margin-right: 30px;
     margin-bottom: 30px;
 }
+.imageSelectorContainer {
+    text-align: center;
+    padding: 20px;
+}
+
+
+.ImagePreview img {
+    width: 100px;
+    height: auto;
+    margin-top: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
 .CardLayerBannerDetailImage{
     display: inline-block;
     position: relative;
     top: 7px;
 }
+.ImagePreviewLabel{
+    font-size: 12px;
+}
+
 .CardLayerTitleArea{
     margin-top: 60px;
     margin-bottom: 60px;
@@ -3510,6 +3562,13 @@ input{
     min-width: 130px;
     text-align: left;
 }
+.CreationPageLabelFloatRight{
+    float:right;
+    text-decoration: underline;
+    font-weight: 200;
+    font-size: 12px;
+    cursor: pointer;
+}
 
 .WizardProgress{
     width: 100%;
@@ -3519,7 +3578,8 @@ input{
     border-radius: 10px;
 }
 .WizardProgressBar{
-    width: 30%;
+    width: 1%;
+    transition: width 0.5s;
     height: 8px;
     border-radius: 10px;
     background-color: #1f1f1f;
@@ -3615,7 +3675,7 @@ input{
     font-size: 14px;
 }
 .NetworkSelectDropdown>div>div{
-    background: #fff;
+    background: #e9ecf1;
     border-radius: 8px;
     padding-top: 7px;
     padding-bottom: 8px;

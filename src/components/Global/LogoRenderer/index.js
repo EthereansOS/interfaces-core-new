@@ -127,7 +127,7 @@ export default ({input, figureClassName, noFigure, title, defaultImage, noDotLin
             {hasBadge && <span className={style.BollinoEth}>L1</span>}
             {false && <span className={style.BollinoOP}>L2</span>}
             {img}
-        </figure>
+          </figure>
     }
 
     if(finalImage === null || loading) {

@@ -15,6 +15,7 @@ import { getAMMs } from '../../../../logic/amm'
 
 import ActionInfoSection from '../../../../components/Global/ActionInfoSection'
 import OurCircularProgress from '../../../../components/Global/OurCircularProgress'
+import CircularSlider from '@fseehawer/react-circular-slider';
 
 const components = [
     "COMPONENT_KEY_TREASURY_MANAGER",
@@ -23,7 +24,301 @@ const components = [
     "COMPONENT_KEY_INVESTMENTS_MANAGER"
 ]
 
-const Metadata = ({value, onChange}) => {
+import AreaClosed from "@visx/shape/lib/shapes/AreaClosed";
+import { curveMonotoneX } from "@visx/curve";
+import { scaleUtc,scaleLinear,scaleLog,scaleBand,coerceNumber} from "@visx/scale";
+import { Orientation } from "@visx/axis";
+import {AnimatedAxis,AnimatedGridRows,AnimatedGridColumns,} from "@visx/react-spring";
+import { LinearGradient } from "@visx/gradient";
+import { timeFormat } from "d3-time-format";
+import { GradientPinkBlue } from '@visx/gradient';
+import Pie, { ProvidedProps, PieArcDatum } from '@visx/shape/lib/shapes/Pie';
+import letterFrequency, { LetterFrequency } from '@visx/mock-data/lib/mocks/letterFrequency';
+import browserUsage, { BrowserUsage as Browsers } from '@visx/mock-data/lib/mocks/browserUsage';
+import { scaleOrdinal } from '@visx/scale';
+
+import { animated, useTransition, interpolate } from '@react-spring/web';
+
+import { Group } from '@visx/group';
+export const backgroundColor = "#da7cff";
+const axisColor = "#fff";
+const tickLabelColor = "#fff";
+export const labelColor = "#340098";
+const gridColor = "#6e0fca";
+const margin = {
+    top: 40,
+    right: 150,
+    bottom: 20,
+    left: 50,
+};
+ 
+const tickLabelProps = () => ({
+    fill: tickLabelColor,
+    fontSize: 12,
+    fontFamily: "sans-serif",
+    textAnchor: "middle",
+});
+
+const letters = [
+    {frequency:0.20,letter:'SubValue 1'},
+    {frequency:0.49,letter:'SubValue 2'},
+    {frequency:0.10,letter:'SubValue 3'},
+];
+const browserNames = Object.keys(browserUsage[0]).filter((k) => k !== 'date');
+const browsers = [
+    {
+        label: 'Value 1',
+        usage: 0.3,
+      },
+      {
+        label: 'Value 2',
+        usage: 0.3,
+      },
+      {
+        label: 'Value 3',
+        usage: 0.3,
+      }
+];
+
+
+// accessor functions
+const usage = (d) => d.usage;
+const frequency = (d) => d.frequency;
+
+// color scales
+const getBrowserColor = scaleOrdinal({
+  domain: browserNames,
+  range: [
+    'rgba(179,33,86,0.7)',
+    'rgba(179,33,86,0.6)',
+    'rgba(151,213,244,0.6)',
+    'rgba(40,40,40,0.4)',
+    'rgba(40,40,40,0.3)',
+    'rgba(40,40,40,0.2)',
+    'rgba(40,40,40,0.1)',
+  ],
+});
+const getLetterFrequencyColor = scaleOrdinal({
+  domain: letters.map((l) => l.letter),
+  range: ['rgba(231,57,197, 0.8)', 'rgba(121,135,228,0.8)', 'rgba(242,142,221,0.6)', 'rgba(93,30,91,0.4)'],
+});
+
+const defaultMargin = { top: 20, right: 20, bottom: 20, left: 20 };
+
+ 
+const getMinMax = (vals) => {
+    const numericVals = vals.map(coerceNumber);
+    return [(Math.min(...numericVals), Math.max(...numericVals))];
+};
+ 
+function Example({
+    width: outerWidth = 800,
+    height: outerHeight = 800,
+    showControls = true,
+    margin = defaultMargin,
+  animate = true,
+}) {
+
+
+    const width = outerWidth - margin.left - margin.right;
+    const height = outerHeight - margin.top - margin.bottom;
+
+    const [selectedBrowser, setSelectedBrowser] = useState(null);
+    const [selectedAlphabetLetter, setSelectedAlphabetLetter] = useState(null);
+
+    if (width < 10) return null;
+
+    const innerWidth = width - margin.left - margin.right;
+    const innerHeight = height - margin.top - margin.bottom;
+    const radius = Math.min(innerWidth, innerHeight) / 2;
+    const centerY = innerHeight / 2;
+    const centerX = innerWidth / 2;
+    const donutThickness = 50;
+
+
+    
+    const [dataToggle] = useState(true);
+    const [animationTrajectory] = useState("center");
+ 
+    const axes = useMemo(() => {
+        const linearValues = dataToggle ? [0, 2, 4, 6, 8, 10] : [6, 8, 10, 12];
+        console.log(letters);
+        return [
+            {
+                scale: scaleLinear({
+                    domain: getMinMax(linearValues),
+                    range: [0, width],
+                }),
+                values: linearValues,
+                tickFormat: (v, index, ticks) =>
+                    index === 0
+                        ? "first"
+                        : index === ticks[ticks.length - 1].index
+                        ? "last"
+                        : `${v}`,
+                label: "linear",
+            },
+        ];
+    }, [dataToggle, width]);
+ 
+    if (width < 10) return null;
+ 
+    const scalePadding = 40;
+    const scaleHeight = height / axes.length - scalePadding;
+ 
+    const yScale = scaleLinear({
+        domain: [100, 0],
+        range: [scaleHeight, 0],
+    });
+ 
+    return (
+        <>
+
+<svg width={width} height={height}>
+    
+      <rect rx={14} width={width} height={height} fill="#fff" />
+      <Group top={centerY + margin.top} left={centerX + margin.left}>
+        <Pie
+          data={
+            selectedBrowser ? browsers.filter(({ label }) => label === selectedBrowser) : browsers
+          }
+          pieValue={usage}
+          outerRadius={radius}
+          innerRadius={radius - donutThickness}
+          cornerRadius={3}
+          padAngle={0.005}
+        >
+          {(pie) => (
+            <AnimatedPie
+              {...pie}
+              animate={animate}
+              getKey={(arc) => arc.data.label}
+              onClickDatum={({ data: { label } }) =>
+                animate &&
+                setSelectedBrowser(selectedBrowser && selectedBrowser === label ? null : label)
+              }
+              getColor={(arc) => getBrowserColor(arc.data.label)}
+            />
+          )}
+        </Pie>
+        <Pie
+          data={
+            selectedAlphabetLetter
+              ? letters.filter(({ letter }) => letter === selectedAlphabetLetter)
+              : letters
+          }
+          pieValue={frequency}
+          pieSortValues={() => -1}
+          outerRadius={radius - donutThickness * 1.3}
+        >
+          {(pie) => (
+            <AnimatedPie
+              {...pie}
+              animate={animate}
+              getKey={({ data: { letter } }) => letter}
+              onClickDatum={({ data: { letter } }) =>
+                animate &&
+                setSelectedAlphabetLetter(
+                  selectedAlphabetLetter && selectedAlphabetLetter === letter ? null : letter,
+                )
+              }
+              getColor={({ data: { letter } }) => getLetterFrequencyColor(letter)}
+            />
+          )}
+        </Pie>
+      </Group>
+      {animate && (
+        <text
+          textAnchor="end"
+          x={width - 16}
+          y={height - 16}
+          fill="white"
+          fontSize={11}
+          fontWeight={300}
+          pointerEvents="none"
+        >
+       
+        </text>
+      )}
+    </svg>
+
+        </>
+    );
+}
+
+
+
+const fromLeaveTransition = ({ endAngle }) => ({
+  // enter from 360° if end angle is > 180°
+  startAngle: endAngle > Math.PI ? 2 * Math.PI : 0,
+  endAngle: endAngle > Math.PI ? 2 * Math.PI : 0,
+  opacity: 0,
+});
+const enterUpdateTransition = ({ startAngle, endAngle }) => ({
+  startAngle,
+  endAngle,
+  opacity: 1,
+});
+
+
+
+function AnimatedPie({
+  animate,
+  arcs,
+  path,
+  getKey,
+  getColor,
+  onClickDatum,
+}) {
+  const transitions = useTransition(arcs, {
+    from: animate ? fromLeaveTransition : enterUpdateTransition,
+    enter: enterUpdateTransition,
+    update: enterUpdateTransition,
+    leave: animate ? fromLeaveTransition : enterUpdateTransition,
+    keys: getKey,
+  });
+  return transitions((props, arc, { key }) => {
+    const [centroidX, centroidY] = path.centroid(arc);
+    const hasSpaceForLabel = arc.endAngle - arc.startAngle >= 0.1;
+
+    return (
+      <g key={key}>
+        <animated.path
+          // compute interpolated path d attribute from intermediate angle values
+          d={interpolate([props.startAngle, props.endAngle], (startAngle, endAngle) =>
+            path({
+              ...arc,
+              startAngle,
+              endAngle,
+            }),
+          )}
+          fill={getColor(arc)}
+          onClick={() => onClickDatum(arc)}
+          onTouchStart={() => onClickDatum(arc)}
+        />
+        {hasSpaceForLabel && (
+          <animated.g style={{ opacity: props.opacity }}>
+            <text
+              fill="white"
+              x={centroidX}
+              y={centroidY}
+              dy=".33em"
+              fontSize={9}
+              textAnchor="middle"
+              pointerEvents="none"
+            >
+              {getKey(arc)}
+            </text>
+          </animated.g>
+        )}
+      </g>
+    );
+  });
+}
+
+
+const Metadata = ({value, onChange, onNext, onPrev}) => {
+    
 
     useEffect(() => setTimeout(async () => {
         if(!value) {
@@ -34,6 +329,15 @@ const Metadata = ({value, onChange}) => {
         JSON.stringify(error) !== JSON.stringify(value.error) && onChange({...value, error})
     }), [value])
 
+    const [selectedImage, setSelectedImage] = useState(null);
+    const [triggerTextInput, setTriggerTextInput] = useState(false);
+
+    const handleImageChange = (e) => {
+        if (e.target.files && e.target.files[0]) {
+            setSelectedImage(URL.createObjectURL(e.target.files[0]));
+        }
+    };
+
     return (
       <div className={style.CreationPageLabel}>
         <div className={style.FancyExplanationCreate}>
@@ -41,62 +345,229 @@ const Metadata = ({value, onChange}) => {
           <p>Lorem ispums im dolor amed asid</p>
         </div>
         <label className={style.CreationPageLabelF}>
-          <h6>Name</h6>
+          <h6>Name*</h6>
           <p>Choose an unique name for your ogranization</p>
           <input type="text" value={value?.name} placeholder='Organization name' onChange={e => onChange({...value, name : e.currentTarget.value})}/>
           {value?.error?.name && <p>{value.error.name}</p>}
         </label>
         <label className={style.CreationPageLabelF}>
-          <h6>Description</h6>
+          <h6>Description*</h6>
           <p>Enter the description of your Organization</p>
-          <textarea value={value?.description} onChange={e => onChange({...value, description : e.currentTarget.value})} placeholder='Describe your organization'/>
+          <textarea value={value?.description} onChange={e => onChange({...value, description : e.currentTarget.value})} placeholder='Describe your Organization'/>
           {value?.error?.description && <p>{value.error.description}</p>}
         </label>
         <div className={style.CreationPageLabelFDivide}>
-            <label className={style.CreationPageLabelF}>
-            <h6>Logo</h6>
+            <label className={style.CreationPageLabelF} style={{"verticalAlign": "bottom", "Display": "flex"}}>
+            <h6>Logo* 
+            {!triggerTextInput && (
+                <span className={style.CreationPageLabelFloatRight} onClick={() => setTriggerTextInput(true)}>or indicate an image URL</span>
+            )}
+             {triggerTextInput && (
+                <span className={style.CreationPageLabelFloatRight} onClick={() => setTriggerTextInput(false)}>or indicate an image file</span>
+            )}
+                </h6>
+            {!triggerTextInput && (
+            <p>Select an image file, square size recomended.</p>
+            )}
+             {triggerTextInput && (
             <p>A valid link for your Organization's logo. Square size recomended.</p>
-            <input type="link" value={value?.image} placeholder='Organization logo url' onChange={e => onChange({...value, image : e.currentTarget.value})}/>
-            
+            )}
+            {!triggerTextInput && (
+            <div className={style.imageSelectorContaine}>
+                {!selectedImage && (
+                <input type="file" onChange={handleImageChange} accept="image/*" />
+                )}
+                {selectedImage && (
+                    <div className={style.ImagePreview}>
+                        <img src={selectedImage} alt="Selected" />
+                        <div className={style.ImagePreviewLabel} onClick={() => setSelectedImage(null)}>Replace Image</div>
+                    </div>
+                )}
+            </div>
+            )}
+
+            {triggerTextInput && (
+                <input type="link" value={value?.image} placeholder='Organization Logo URL' onChange={e => onChange({...value, image : e.currentTarget.value})}/>
+            )}
             {value?.error?.image && <p>{value.error.image}</p>}
             </label>
             <label className={style.CreationPageLabelF}>
             <h6>Website</h6>
-            <p>The official website of your Organization.</p>
-            <input type="link" value={value?.url} placeholder="Organziation website url" onChange={e => onChange({...value, url : e.currentTarget.value})}/>
+            <p>The official website of your Organization</p>
+            <input type="link" value={value?.url} placeholder="Organziation Website URL" onChange={e => onChange({...value, url : e.currentTarget.value})}/>
+            
+            {value?.error?.url && <p>{value.error.url}</p>}
+            </label>
+        </div>
+        <div className={style.CreationPageLabelFDivide}>
+            <label className={style.CreationPageLabelF}>
+            <h6>Social Link</h6>
+            <p>Insert link for your organization's social</p>
+            <input type="link" value={value?.image} placeholder='Organization Social Link' onChange={e => onChange({...value, image : e.currentTarget.value})}/>
+            
+            {value?.error?.image && <p>{value.error.image}</p>}
+            </label>
+            <label className={style.CreationPageLabelF}>
+            <h6>Community Link</h6>
+            <p>Insert Discord or Telegram link</p>
+            <input type="link" value={value?.url} placeholder="Community Invite Link" onChange={e => onChange({...value, url : e.currentTarget.value})}/>
             
             {value?.error?.url && <p>{value.error.url}</p>}
             </label>
         </div>
         <div className={style.WizardFooter}>
-            <button className={style.WizardFooterBack}>Back</button>
-            <button className={style.WizardFooterNext}>Next</button>
+           
+            <button className={style.WizardFooterNext} onClick={onNext}>Next</button>
         </div>
       </div>
     )
 }
 
-const Governance = ({value, onChange}) => {
+const Governance = ({value, onChange, onNext, onPrev}) => {
 
     const [token, setToken] = useState(value?.token)
     const [proposalRules, setProposalRules] = useState(value?.proposalRules)
 
+    const [hardCapValue, setHardCapValue] = useState(0)
+    const [quorum, setQuorum] = useState(0)
+
     useEffect(() => onChange && onChange({token, proposalRules}), [token, proposalRules])
+
+    const [quorumKey, setQuorumKey] = useState(0); // Add a key state for the Quorum slider
+
+    useEffect(() => {
+        setQuorum(hardCapValue);
+            setQuorumKey(prevKey => prevKey + 1); 
+    }, [hardCapValue]);
+
+    useEffect(() => {
+        onChange && onChange({ token, proposalRules, hardCapValue, quorum });
+    }, [token, proposalRules, hardCapValue, quorum]);
 
     return (
       <div className={style.CreationPageLabel}>
         <div className={style.FancyExplanationCreate}>
-          <h6>Governance Rules</h6>
+          <h2>Governance Rules</h2>
+          <p>Lorem ispums im dolor amed asid</p>
         </div>
-        <label className={style.CreationPageLabelF}>
-          <h6>Voting Token</h6>
-          <TokenInputRegular selected={token} onElement={setToken} noBalance noETH tokenOnly/>
-        </label>
-        <ProposalRules value={proposalRules} onChange={setProposalRules} showHost/>
+
+        <div className={style.CreationPageLabelFDivide} style={{    display: "flex"}}>
+            <label className={style.CreationPageLabelF}>
+                <h6>Voting Token</h6>
+                <p>Select the Voting Token</p>
+                <TokenInputRegular selected={token} onElement={setToken} noBalance noETH tokenOnly/>
+            </label>
+
+            <label className={style.CreationPageLabelF}>
+                <h6>Host address*  <span className={style.CreationPageLabelFloatRight} onClick={() => onChange({...value, name: '0x37C5EfD20dd9c3D5922843a4Ab7787c7978A6a83'})}>Insert your current address</span></h6>
+                <p>Insert the host Address</p>
+                <input type="text" value={value?.name} placeholder='The Organization host address' onChange={e => onChange({...value, name : e.currentTarget.value})}/>
+                {value?.error?.name && <p>{value.error.name}</p>}
+            </label>
+        </div>
+
+        <div className={style.CreationPageLabelFDivideGroup} style={{'marginTop':'30px', 'marginBottom':'30px'}}>
+
+        <div className={style.CreationPageLabelFDivide} style={{'marginTop':'30px', 'marginBottom':'30px'}}>
+            <label className={style.CreationPageLabelF} >
+                <h6>Hard cap</h6>
+                <p>Selelct the value of Hard cap</p>
+                <br/>
+                <br/>
+                <br/>
+                <CircularSlider
+                    label="Hard cap"
+                    labelColor="#fff"
+                    width = "120"
+                    knobSize="25"
+                    progressSize="9"
+                    trackSize="14"
+                    labelFontSize="10"
+                    valueFontSize="20"
+                    knobColor="#000000"
+                    progressColorFrom="#000000"
+                    progressColorTo="#444444"
+                    appendToValue="%"
+                    trackColor="#eeeeee"
+                    min={0}
+                    max={100}
+                    onChange={value => { setHardCapValue(value); }}
+                />
+            </label>
+            <label className={style.CreationPageLabelF} key={quorumKey}>
+                <h6>Quorum</h6>
+                <p>Selelct the value of Quorum</p>
+                <br/>
+                <br/>
+                <br/>
+                <CircularSlider
+                    label="Quorum"
+                    labelColor="#fff"
+                    knobColor="#000000"
+                    width = "120"
+                    knobSize="25"
+                    progressSize="9"
+                    trackSize="14"
+                    labelFontSize="10"
+                    valueFontSize="20"
+                    appendToValue="%"
+                    progressColorFrom="#000000"
+                    progressColorTo="#444444"
+                    trackColor="#eeeeee"
+                    min={hardCapValue}
+                    max={100}
+                    initialValue={quorum}
+                    onChange={value => { setQuorum(value); }}
+                />
+            </label>
+        </div>
+
+        <div className={style.CreationPageLabelFDivide} style={{'marginTop':'30px', 'marginBottom':'30px'}}>
+            <label className={style.CreationPageLabelF} >
+                <h6>Proposal Duration</h6>
+                <p>Selelct the value of Hard cap</p>
+               
+            </label>
+            <label className={style.CreationPageLabelF} key={quorumKey}>
+                <h6>Validation Bomb</h6>
+                <p>Selelct the value of Quorum</p>
+                
+            </label>
+        </div>
+
+        
+
+        </div>
+      
+       
+       
+        <div className={style.WizardFooter}>
+            <button className={style.WizardFooterBack} onClick={onPrev}>Back</button>
+            <button className={style.WizardFooterNext} onClick={onNext}>Next</button>
+        </div>
       </div>
     )
 }
 
+
+  /*
+        <CircularSlider
+        width={200}
+        progressLineCap="flat"
+        dataIndex={1}
+        label="Alphabet"
+        data='[\"A\","B","C","D","E","etc..."]'
+        labelColor="#212121"
+        valueFontSize="6rem"
+        verticalOffset="1rem"
+        knobColor="#212121"
+        progressColorFrom="#ff8500"
+        progressColorTo="#a15400"
+        progressSize={8}
+        trackColor="#eeeeee"
+        trackSize={4}/>*/
+
+        
 const Duration = ({value, onChange}) => {
 
     const context = useEthosContext()
@@ -482,6 +953,8 @@ const CreateOrganization = () => {
 
     const [amms, setAMMs] = useState()
 
+    const [step, setStep] = useState(0);
+
     const disabled = useMemo(() => !state || Object.values(state).filter(it => it && it.errors).length > 0, [state])
 
     const onClick = useCallback(() => !disabled && createOrganization(initialData, state).then(address => history.push(`/organizations/${address}`)), [disabled, state])
@@ -495,23 +968,27 @@ const CreateOrganization = () => {
         <div className={style.CreatePage}>
             <div className={style.WizardStepsList}>
                 <ul>
-                    <li>Notice</li>
-                    <li className={style.WizardStepsListActive}>Basic Info</li>
-                    <li>Governance Rules</li>
-                    <li>Organization Treasury</li>
-                    <li>Fixed Inflation</li>
-                    <li>Confirmation</li>
+                    <li className={step === 0 ? style.WizardStepsListActive : ''}>Basic Info</li>
+                    <li className={step === 1 ? style.WizardStepsListActive : ''}>Governance Rules</li>
+                    <li className={step === 2 ? style.WizardStepsListActive : ''}>Organization Treasury</li>
+                    <li className={step === 3 ? style.WizardStepsListActive : ''}>Fixed Inflation</li>
+                    <li className={step === 4 ? style.WizardStepsListActive : ''}>Confirmation</li>
                 </ul>
             </div>
            <div className={style.WizardHeader}>
-                    <h3>Create a new Organization (ALPHA) <span>step 2 of 6</span></h3>
+                    <h3>Create a new Organization (ALPHA) <span>step {step + 1} of 6</span></h3>
                     <div className={style.WizardHeaderDescription}>Lorem ispum sim dolor amed asid avec mono on alor</div>
                     <div className={style.WizardProgress}>
-                        <div className={style.WizardProgressBar}></div>
+                        <div className={style.WizardProgressBar}  style={{ width: (((100 / 5) * step) > 0 ? ((100 / 5) * step) : 1) +'%' }}></div>
                     </div>
                 </div>
             <div className={style.WizardStep}>
-                <Metadata value={state?.metadata} onChange={value => setState({...state, metadata : value})}/>
+                {step == 0 &&
+                <Metadata value={state?.metadata} onChange={value => setState({...state, metadata : value})} onNext={() => setStep(1)} onPrev={() => setStep(0)}/>
+                }
+                {step == 1 &&
+                 <Governance value={state?.governance} onChange={value => setState({...state, governance : value})} onNext={() => setStep(2)} onPrev={() => setStep(0)}/>
+                }
             </div>
 
 

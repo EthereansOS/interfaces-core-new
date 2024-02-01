@@ -92,6 +92,13 @@ const Navigation = ({ menuName, isDapp, selected }) => {
         </span>
       </Link>
       {menuItems.map((item) => navItem(item))}
+      <Link
+      to="/"
+          className={`${style.NavigationItem}`}>
+          <span>
+            <img src='./img/launchpad.png'></img> <p>Launch Factory </p>
+          </span>
+      </Link>
     </nav>
   )
 }
