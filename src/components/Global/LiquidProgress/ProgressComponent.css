@@ -1,0 +1,181 @@
+/* [ YEK/SASS - VERSION : 3.1.0 ] */
+@import url("https://fonts.googleapis.com/css?family=Montserrat");
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Lalezar&display=swap");
+@import url("https://cdn.jsdelivr.net/npm/yekan-font@1.0.0/css/yekan-font.min.css");
+.visible-hidden {
+  visibility: hidden;
+}
+
+/* YEK/SASS (https://github.com/yek/sass || https://npmjs.com/yek/sass) */
+/* __[ FONT'S ]__ */
+/* __[ VARIABLE ]__ */
+/* __[ :ROOT ]__ */
+
+
+
+
+:root {
+  --color-progress: #7475f7;
+  --color-progress-alpha: #292929;
+}
+
+.description {
+  margin-top: 45px;
+}
+
+.progress {
+  margin-top: 30px;
+  --progress-value: 50;
+  --progress-indicator-size: 650px;
+  --progress-size: 390px;
+  --progress-inner-size: calc(var(--progress-size) - 20px);
+  border: 15px solid var(--color-progress-alpha);
+
+}
+.progress::before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 50%;
+  height: 50%;
+  border-radius: 50%;
+  min-width: 8px;
+  min-height: 8px;
+  transform: translate(-50%, -50%);
+}
+.progress[data-value="100"] {
+  --color-progress: #557c55;
+  --color-progress-alpha: #a6cf98;
+  
+}
+.progress[data-value="100"]::before {
+  -webkit-animation: progress-firework 1.3s 0.1s ease infinite both;
+          animation: progress-firework 1.3s 0.1s ease infinite both;
+}
+.progress, .progress-inner {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
+  width: var(--progress-size);
+  height: var(--progress-size);
+  border-radius: var(--progress-size);
+  background: var(--color-gray);
+}
+.progress-inner {
+  width: var(--progress-inner-size);
+  height: var(--progress-inner-size);
+  border: none;
+  margin: auto;
+  overflow: hidden;
+}
+.progress--upper-half-value .progress-label {
+  color: var(--color-light-gray) !important;
+}
+.progress-label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 90%;
+  transform: translate(-50%, -50%);
+  display: inline-block;
+  color: var(--color-black);
+  text-align: center;
+  overflow: hidden;
+}
+.progress-label strong {
+  font-size: 200%;
+}
+.progress-label span {
+  font-size: 120%;
+}
+.progress-indicator {
+  background: var(--color-progress);
+  transform-origin: center center;
+  opacity: 0.6;
+  -webkit-animation: progress-wave-animation 8s linear infinite both;
+          animation: progress-wave-animation 8s linear infinite both;
+  position: absolute;
+  top: calc(100% - var(--progress-value) * 1%);
+  left: -50%;
+  right: 50%;
+  width: var(--progress-indicator-size);
+  height: var(--progress-indicator-size);
+  border-radius: calc(var(--progress-indicator-size) / 2.5);
+}
+.progress-indicator:nth-child(2) {
+  background: var(--color-progress-alpha);
+  transform: rotate(90deg);
+  border-radius: 300px;
+}
+
+@-webkit-keyframes progress-firework {
+  from, 0% {
+    width: 50%;
+    height: 50%;
+    background: var(--color-progress);
+    opacity: 1;
+  }
+  30% {
+    opacity: 1;
+  }
+  to, 100% {
+    width: 150%;
+    height: 150%;
+    background: var(--color-progress-alpha);
+    opacity: 0;
+  }
+}
+
+@keyframes progress-firework {
+  from, 0% {
+    width: 50%;
+    height: 50%;
+    background: var(--color-progress);
+    opacity: 1;
+  }
+  30% {
+    opacity: 1;
+  }
+  to, 100% {
+    width: 150%;
+    height: 150%;
+    background: var(--color-progress-alpha);
+    opacity: 0;
+  }
+}
+@-webkit-keyframes progress-wave-animation {
+  to, 100% {
+    transform: rotate(360deg);
+  }
+}
+@keyframes progress-wave-animation {
+  to, 100% {
+    transform: rotate(360deg);
+  }
+}
+*:not(.watermark) {
+  z-index: 2;
+}
+
+.description {
+  display: block;
+  margin-bottom:50px;
+  place-items: center;
+  justify-content: space-between;
+}
+.description input {
+  max-width: 100%;
+}
+
+.watermark {
+  margin-top: 2rem;
+  color: var(--color-primary);
+  align-self: start;
+}

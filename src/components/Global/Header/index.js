@@ -163,7 +163,7 @@ const handleClick = () => {
         />
       
 
-      <Toggle toggled={toggled} onClick={handleClick} />
+      
 
 
         <IconContext.Provider value={{ color: 'black', size: '1.5em' }}>
@@ -219,5 +219,6 @@ const handleClick = () => {
     </header>
   )
 }
+//<Toggle toggled={toggled} onClick={handleClick} />
 
 export default Header

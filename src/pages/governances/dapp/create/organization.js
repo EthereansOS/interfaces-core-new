@@ -9,6 +9,8 @@ import TokenInputRegular from '../../../../components/Global/TokenInputRegular'
 
 import { createOrganization } from '../../../../logic/organization-2'
 
+import ProgressComponent from  '../../../../components/Global/LiquidProgress/ProgressComponent'
+
 import CircularProgress from '../../../../components/Global/OurCircularProgress'
 import style from '../../../../all.module.css'
 import { getAMMs } from '../../../../logic/amm'
@@ -112,8 +114,8 @@ const getMinMax = (vals) => {
 };
  
 function Example({
-    width: outerWidth = 800,
-    height: outerHeight = 800,
+    width: outerWidth = 400,
+    height: outerHeight = 400,
     showControls = true,
     margin = defaultMargin,
   animate = true,
@@ -423,6 +425,311 @@ const Metadata = ({value, onChange, onNext, onPrev}) => {
     )
 }
 
+
+
+
+const Confirmation = ({value, onChange, onNext, onPrev}) => {
+
+    const [token, setToken] = useState(value?.token)
+    const [proposalRules, setProposalRules] = useState(value?.proposalRules)
+
+    const [hardCapValue, setHardCapValue] = useState(0)
+    const [quorum, setQuorum] = useState(0)
+
+    useEffect(() => onChange && onChange({token, proposalRules}), [token, proposalRules])
+
+    const [quorumKey, setQuorumKey] = useState(0); // Add a key state for the Quorum slider
+
+    useEffect(() => {
+        setQuorum(hardCapValue);
+            setQuorumKey(prevKey => prevKey + 1); 
+    }, [hardCapValue]);
+
+    useEffect(() => {
+        onChange && onChange({ token, proposalRules, hardCapValue, quorum });
+    }, [token, proposalRules, hardCapValue, quorum]);
+
+    return (
+      <div className={style.CreationPageLabel}>
+        <div className={style.FancyExplanationCreate}>
+          <h2>Confirmation</h2>
+          <p>Lorem ispums im dolor amed asid</p>
+        </div>
+
+        <h6 style={{
+               'text-align': 'left',
+               'padding-left': '20px',
+               'margin-bottom': '10px',
+              'margin-top': '30px',
+         }}>Lorem ipsum sim dolor amed</h6>
+         <p style={{
+            'fontSize': '12px',
+            'textAlign': 'left',
+            'padding-left': '20px',
+         }}>Donec suscipit ullamcorper enim ac pulvinar. Suspendisse eu luctus dui, a pharetra turpis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</p>
+
+
+        <div className={style.CreationPageLabelFDivide} style={{'marginTop':'30px', 'marginBottom':'30px'}}>
+            <label className={style.CreationPageLabelF} >
+               <Example></Example>
+            </label>
+            <label className={style.CreationPageLabelF} key={quorumKey}>
+                
+
+            </label>
+        </div>
+
+       
+    
+       
+       
+        <div className={style.WizardFooter}>
+            <button className={style.WizardFooterBack} onClick={onPrev}>Back</button>
+            <button className={style.WizardFooterNext} onClick={onNext}>Next</button>
+        </div>
+      </div>
+    )
+}
+
+
+const VotingRules = ({value, onChange, onNext, onPrev}) => {
+
+    const [token, setToken] = useState(value?.token)
+    const [proposalRules, setProposalRules] = useState(value?.proposalRules)
+
+    const [hardCapValue, setHardCapValue] = useState(0)
+    const [quorum, setQuorum] = useState(0)
+
+    useEffect(() => onChange && onChange({token, proposalRules}), [token, proposalRules])
+
+    const [quorumKey, setQuorumKey] = useState(0); // Add a key state for the Quorum slider
+
+    useEffect(() => {
+        setQuorum(hardCapValue);
+            setQuorumKey(prevKey => prevKey + 1); 
+    }, [hardCapValue]);
+
+    useEffect(() => {
+        onChange && onChange({ token, proposalRules, hardCapValue, quorum });
+    }, [token, proposalRules, hardCapValue, quorum]);
+
+    return (
+      <div className={style.CreationPageLabel}>
+        <div className={style.FancyExplanationCreate}>
+          <h2>Voting Rules</h2>
+          <p>Lorem ispums im dolor amed asid</p>
+
+         
+        </div>
+
+        <h6 style={{
+               'text-align': 'left',
+               'padding-left': '20px',
+               'margin-bottom': '10px',
+              'margin-top': '30px',
+         }}>Lorem ipsum sim dolor amed</h6>
+         <p style={{
+            'fontSize': '12px',
+            'textAlign': 'left',
+            'padding-left': '20px',
+         }}>Donec suscipit ullamcorper enim ac pulvinar. Suspendisse eu luctus dui, a pharetra turpis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</p>
+
+
+        <div className={style.CreationPageLabelFDivideGroup} style={{'marginTop':'20px', 'marginBottom':'30px'}}>
+
+        <div className={style.CreationPageLabelFDivide} style={{'marginTop':'30px', 'marginBottom':'30px'}}>
+            <label className={style.CreationPageLabelF} >
+                <h6>Hard cap</h6>
+                <p>Selelct the value of Hard cap</p>
+                <br/>
+                <br/>
+                <br/>
+                <CircularSlider
+                    label="Hard cap"
+                    labelColor="#fff"
+                    width = "120"
+                    knobSize="25"
+                    progressSize="9"
+                    trackSize="14"
+                    labelFontSize="10"
+                    valueFontSize="20"
+                    knobColor="#000000"
+                    progressColorFrom="#000000"
+                    progressColorTo="#444444"
+                    appendToValue="%"
+                    trackColor="#eeeeee"
+                    min={0}
+                    max={100}
+                    onChange={value => { setHardCapValue(value); }}
+                />
+            </label>
+            <label className={style.CreationPageLabelF} key={quorumKey}>
+                <h6>Quorum</h6>
+                <p>Selelct the value of Quorum</p>
+                <br/>
+                <br/>
+                <br/>
+                <CircularSlider
+                    label="Quorum"
+                    labelColor="#fff"
+                    knobColor="#000000"
+                    width = "120"
+                    knobSize="25"
+                    progressSize="9"
+                    trackSize="14"
+                    labelFontSize="10"
+                    valueFontSize="20"
+                    appendToValue="%"
+                    progressColorFrom="#000000"
+                    progressColorTo="#444444"
+                    trackColor="#eeeeee"
+                    min={hardCapValue}
+                    max={100}
+                    initialValue={quorum}
+                    onChange={value => { setQuorum(value); }}
+                />
+            </label>
+        </div>
+
+        <div className={style.CreationPageLabelFDivide} style={{'marginTop':'30px', 'marginBottom':'30px', 'borderLeft': '1px solid #e7ecf4'}}>
+            <label className={style.CreationPageLabelF} >
+                <h6>Proposal Duration</h6>
+                <p>Selelct the duration of Proposal</p>
+                <br/>
+                <br/>
+                <br/>
+                <CircularSlider
+                    progressLineCap="flat"
+                    dataIndex={0}
+                    label="Duration"
+                    data={["30min", "6h", "12h", "1 Day", "2 Days", "3 Days", "4 Days", "5 Days", "1 Week", "1 Month", "6 Months", "1 Year", "3 Years", "5 Years"]}
+                    labelColor="#fff"
+                    knobColor="#000000"
+                    width = "120"
+                    knobSize="25"
+                    progressSize="9"
+                    trackSize="14"
+                    labelFontSize="10"
+                    valueFontSize="20"
+                    verticalOffset="1rem"
+                    progressColorFrom="#000000"
+                    progressColorTo="#444444"
+                    trackColor="#eeeeee"
+                />
+            </label>
+            <label className={style.CreationPageLabelF} >
+                <h6>Validation Bomb</h6>
+                <p>Selelct Validation Bomb value</p>
+                <br/>
+                <br/>
+                <br/>
+                <CircularSlider
+                    progressLineCap="flat"
+                    dataIndex={3}
+                    label="Duration"
+                    data={["30min", "6h", "12h", "1 Day", "2 Days", "3 Days", "4 Days", "5 Days", "1 Week", "1 Month", "6 Months", "1 Year", "3 Years", "5 Years"]}
+                    labelColor="#fff"
+                    knobColor="#000000"
+                    width = "120"
+                    knobSize="25"
+                    progressSize="9"
+                    trackSize="14"
+                    labelFontSize="10"
+                    valueFontSize="20"
+                    verticalOffset="1rem"
+                    progressColorFrom="#000000"
+                    progressColorTo="#444444"
+                    trackColor="#eeeeee"
+                />
+            </label>
+        </div>
+
+        
+
+        </div>     
+       
+       
+        <div className={style.WizardFooter}>
+            <button className={style.WizardFooterBack} onClick={onPrev}>Back</button>
+            <button className={style.WizardFooterNext} onClick={onNext}>Next</button>
+        </div>
+      </div>
+    )
+}
+
+const Organization = ({value, onChange, onNext, onPrev}) => {
+
+    const [token, setToken] = useState(value?.token)
+    const [proposalRules, setProposalRules] = useState(value?.proposalRules)
+
+    const [hardCapValue, setHardCapValue] = useState(0)
+    const [quorum, setQuorum] = useState(0)
+
+    useEffect(() => onChange && onChange({token, proposalRules}), [token, proposalRules])
+
+    const [quorumKey, setQuorumKey] = useState(0); // Add a key state for the Quorum slider
+
+    useEffect(() => {
+        setQuorum(hardCapValue);
+            setQuorumKey(prevKey => prevKey + 1); 
+    }, [hardCapValue]);
+
+    useEffect(() => {
+        onChange && onChange({ token, proposalRules, hardCapValue, quorum });
+    }, [token, proposalRules, hardCapValue, quorum]);
+
+    return (
+      <div className={style.CreationPageLabel}>
+        <div className={style.FancyExplanationCreate}>
+          <h2>Organization Treasury</h2>
+          <p>Lorem ispums im dolor amed asid</p>
+
+         
+        </div>
+
+        <div className={style.CreationPageLabelFDivide} style={{    display: "flex"}}>
+            <label className={style.CreationPageLabelF}>
+               
+                <ProgressComponent></ProgressComponent>
+            </label>
+
+            <label className={style.CreationPageLabelF}>
+                <h4 style={{textAlign:"left"}}>Percentage to move </h4>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas ligula tellus.</p><br/>
+                <br/>
+                <h6>Lorem ipsum sim dolorem </h6>
+                    <p>Aliquam euismod tincidunt in, volutpat eleifend erat. Mauris convallis consectetur lorem non tristique. Donec vel sem eget orci dictum tincidunt ac at magna. Ut blandit dapibus accumsan. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Praesent nec diam erat. Vivamus at dapibus urna, vel facilisis lectus.</p>
+                    <br/><br/>
+                    <ul style={{
+                        'fontSize': '12px',
+                        'textAlign': 'left',
+                        'listStyle': 'circle',
+                        'marginLeft': '40px'
+                    }}>
+                        <li>Lorem ipsum sim dolorem</li>
+                        <li>Acec asid amed</li>
+                        <li>Efficitur vulputate</li>
+                    </ul>
+                    <br/><br/>
+                    <h6>Sim dolor amed asid</h6>
+                    <p>Aliquam venenatis gravida lectus, efficitur vulputate metus hendrerit sagittis. Curabitur ultrices mauris a nibh mollis, ut maximus magna lacinia. Morbi quis nunc vitae justo sollicitudin blandit. </p>
+                    <br/><br/>
+                    <h6>Lorem ipsum sim dolorem </h6>
+                    <p>Paliquam euismod tincidunt in, volutpat eleifend erat. Mauris convallis consectetur lorem non tristique. Donec vel sem eget orci dictum tincidunt ac at magna. Ut blandit dapibus accumsan. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Praesent nec diam erat. Vivamus at dapibus urna, vel facilisis lectus.</p>
+                   
+            </label>
+        </div>      
+       
+       
+        <div className={style.WizardFooter}>
+            <button className={style.WizardFooterBack} onClick={onPrev}>Back</button>
+            <button className={style.WizardFooterNext} onClick={onNext}>Next</button>
+        </div>
+      </div>
+    )
+}
+
+
 const Governance = ({value, onChange, onNext, onPrev}) => {
 
     const [token, setToken] = useState(value?.token)
@@ -466,6 +773,7 @@ const Governance = ({value, onChange, onNext, onPrev}) => {
             </label>
         </div>
 
+       
         <div className={style.CreationPageLabelFDivideGroup} style={{'marginTop':'30px', 'marginBottom':'30px'}}>
 
         <div className={style.CreationPageLabelFDivide} style={{'marginTop':'30px', 'marginBottom':'30px'}}>
@@ -522,16 +830,56 @@ const Governance = ({value, onChange, onNext, onPrev}) => {
             </label>
         </div>
 
-        <div className={style.CreationPageLabelFDivide} style={{'marginTop':'30px', 'marginBottom':'30px'}}>
+        <div className={style.CreationPageLabelFDivide} style={{'marginTop':'30px', 'marginBottom':'30px', 'borderLeft': '1px solid #e7ecf4'}}>
             <label className={style.CreationPageLabelF} >
                 <h6>Proposal Duration</h6>
-                <p>Selelct the value of Hard cap</p>
-               
+                <p>Selelct the duration of Proposal</p>
+                <br/>
+                <br/>
+                <br/>
+                <CircularSlider
+                    progressLineCap="flat"
+                    dataIndex={0}
+                    label="Duration"
+                    data={["30min", "6h", "12h", "1 Day", "2 Days", "3 Days", "4 Days", "5 Days", "1 Week", "1 Month", "6 Months", "1 Year", "3 Years", "5 Years"]}
+                    labelColor="#fff"
+                    knobColor="#000000"
+                    width = "120"
+                    knobSize="25"
+                    progressSize="9"
+                    trackSize="14"
+                    labelFontSize="10"
+                    valueFontSize="20"
+                    verticalOffset="1rem"
+                    progressColorFrom="#000000"
+                    progressColorTo="#444444"
+                    trackColor="#eeeeee"
+                />
             </label>
-            <label className={style.CreationPageLabelF} key={quorumKey}>
+            <label className={style.CreationPageLabelF} >
                 <h6>Validation Bomb</h6>
-                <p>Selelct the value of Quorum</p>
-                
+                <p>Selelct Validation Bomb value</p>
+                <br/>
+                <br/>
+                <br/>
+                <CircularSlider
+                    progressLineCap="flat"
+                    dataIndex={3}
+                    label="Duration"
+                    data={["30min", "6h", "12h", "1 Day", "2 Days", "3 Days", "4 Days", "5 Days", "1 Week", "1 Month", "6 Months", "1 Year", "3 Years", "5 Years"]}
+                    labelColor="#fff"
+                    knobColor="#000000"
+                    width = "120"
+                    knobSize="25"
+                    progressSize="9"
+                    trackSize="14"
+                    labelFontSize="10"
+                    valueFontSize="20"
+                    verticalOffset="1rem"
+                    progressColorFrom="#000000"
+                    progressColorTo="#444444"
+                    trackColor="#eeeeee"
+                />
             </label>
         </div>
 
@@ -624,7 +972,7 @@ const ProposalRules = ({value, onChange, showHost, title}) => {
     )
 }
 
-const FixedInflation = ({amms, value, onChange}) => {
+const FixedInflation = ({amms, value, onChange,  onNext, onPrev}) => {
 
     const defaultInflationPercentage = useMemo(() => 0.05)
 
@@ -741,6 +1089,10 @@ const FixedInflation = ({amms, value, onChange}) => {
             </label>
             <ProposalRules value={proposalRules} onChange={setProposalRules}/>
         </>}
+        <div className={style.WizardFooter}>
+            <button className={style.WizardFooterBack} onClick={onPrev}>Back</button>
+            <button className={style.WizardFooterNext} onClick={onNext}>Next</button>
+        </div>
       </div>
     )
 }
@@ -971,8 +1323,9 @@ const CreateOrganization = () => {
                     <li className={step === 0 ? style.WizardStepsListActive : ''}>Basic Info</li>
                     <li className={step === 1 ? style.WizardStepsListActive : ''}>Governance Rules</li>
                     <li className={step === 2 ? style.WizardStepsListActive : ''}>Organization Treasury</li>
-                    <li className={step === 3 ? style.WizardStepsListActive : ''}>Fixed Inflation</li>
-                    <li className={step === 4 ? style.WizardStepsListActive : ''}>Confirmation</li>
+                    <li className={step === 3 ? style.WizardStepsListActive : ''}>Voting Rules</li>
+                    <li className={step === 4 ? style.WizardStepsListActive : ''}>Fixed Inflation</li>
+                    <li className={step === 5 ? style.WizardStepsListActive : ''}>Confirmation</li>
                 </ul>
             </div>
            <div className={style.WizardHeader}>
@@ -988,6 +1341,22 @@ const CreateOrganization = () => {
                 }
                 {step == 1 &&
                  <Governance value={state?.governance} onChange={value => setState({...state, governance : value})} onNext={() => setStep(2)} onPrev={() => setStep(0)}/>
+                }
+
+                {step == 2 &&
+                 <Organization value={state?.governance} onChange={value => setState({...state, governance : value})} onNext={() => setStep(3)} onPrev={() => setStep(1)}/>
+                }
+
+                {step == 3 &&
+                 <VotingRules value={state?.governance} onChange={value => setState({...state, governance : value})} onNext={() => setStep(4)} onPrev={() => setStep(2)}/>
+                }
+
+                {step == 4 &&
+                 <FixedInflation value={state?.governance} onChange={value => setState({...state, governance : value})} onNext={() => setStep(5)} onPrev={() => setStep(3)}/>
+                }
+
+                {step == 5 &&
+                 <Confirmation value={state?.governance} onChange={value => setState({...state, governance : value})} onNext={() => setStep(5)} onPrev={() => setStep(3)}/>
                 }
             </div>
 
