@@ -313,6 +313,15 @@ const Metadata = ({ state, value, onStateEntry, onChange, onNext, onPrev }) => {
     })
   }, [state.metadata?.image])
 
+  const [selectedImage, setSelectedImage] = useState(null)
+  const [triggerTextInput, setTriggerTextInput] = useState(false)
+
+  const handleImageChange = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      setSelectedImage(URL.createObjectURL(e.target.files[0]))
+    }
+  }
+
   return (
     <div className={style.CreationPageLabel}>
       <div className={style.FancyExplanationCreate}>
@@ -358,6 +367,84 @@ const Metadata = ({ state, value, onStateEntry, onChange, onNext, onPrev }) => {
             description="A description of the collection"
           />
           <div className={style.CreationPageLabelFDivide}>
+            <label
+              className={style.CreationPageLabelF}
+              style={{ verticalAlign: 'bottom', Display: 'flex' }}>
+              <h6>
+                Logo*
+                {!triggerTextInput && (
+                  <span
+                    className={style.CreationPageLabelFloatRight}
+                    onClick={() => setTriggerTextInput(true)}>
+                    or indicate an image URL
+                  </span>
+                )}
+                {triggerTextInput && (
+                  <span
+                    className={style.CreationPageLabelFloatRight}
+                    onClick={() => setTriggerTextInput(false)}>
+                    or indicate an image file
+                  </span>
+                )}
+              </h6>
+              {!triggerTextInput && (
+                <p>Select an image file, square size recomended.</p>
+              )}
+              {triggerTextInput && (
+                <p>
+                  A valid link for your collection's logo. Square size
+                  recomended.
+                </p>
+              )}
+              {!triggerTextInput && (
+                <div className={style.imageSelectorContaine}>
+                  {!selectedImage && (
+                    <input
+                      type="file"
+                      onChange={handleImageChange}
+                      accept="image/*"
+                    />
+                  )}
+                  {selectedImage && (
+                    <div className={style.ImagePreview}>
+                      <img src={selectedImage} alt="Selected" />
+                      <div
+                        className={style.ImagePreviewLabel}
+                        onClick={() => setSelectedImage(null)}>
+                        Replace Image
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {triggerTextInput && (
+                <input
+                  type="link"
+                  value={value?.image}
+                  placeholder="Collection Logo URL"
+                  onChange={(e) =>
+                    onChange({ ...value, image: e.currentTarget.value })
+                  }
+                />
+              )}
+              {value?.error?.image && <p>{value.error.image}</p>}
+            </label>
+            <label className={style.CreationPageLabelF}>
+              <h6>Website</h6>
+              <p>A link to the official website of this project (if any)</p>
+              <input
+                type="link"
+                value={value?.external_url}
+                placeholder="Website (if any)"
+                onChange={(e) =>
+                  onChange({ ...value, external_url: e.currentTarget.value })
+                }
+              />
+
+              {value?.error?.url && <p>{value.error.url}</p>}
+            </label>
+
             <MetadataField
               state={state}
               onStateEntry={onStateEntry}
@@ -365,13 +452,7 @@ const Metadata = ({ state, value, onStateEntry, onChange, onNext, onPrev }) => {
               label="Discussion Link"
               description="A link to a social hub and/or discussion channel for the collection (if any)"
             />
-            <MetadataField
-              state={state}
-              onStateEntry={onStateEntry}
-              field="external_url"
-              label="Website"
-              description="A link to the official website of this project (if any)"
-            />
+
             <MetadataField
               state={state}
               onStateEntry={onStateEntry}
@@ -379,16 +460,7 @@ const Metadata = ({ state, value, onStateEntry, onChange, onNext, onPrev }) => {
               label="Github Link"
               description="A link to the official repo of this project (if any)"
             />
-            <MetadataField
-              state={state}
-              onStateEntry={onStateEntry}
-              type="upload"
-              accept=".png,.gif,.jpeg,.jpg"
-              field="image"
-              label="Logo"
-              mandatory
-              description="A valid IPFS link for your logo. Please upload a square picture (.png, .gif or .jpg, max size 1mb) so that it fits perfectly with the EthereansOS interface style."
-            />
+
             <MetadataField
               state={state}
               onStateEntry={onStateEntry}
