@@ -765,7 +765,7 @@ input::-webkit-scrollbar {
 .Web3BackBTN {width: 200px; margin: 0 auto; padding: 5px 12px; text-align: center; font-size: 13px; border-radius: 15px; border: none !important; cursor: pointer;background-color: #7474f7; color: #ffffff; font-weight: bold;font-weight: normal !important; background-color: #e4e4e4 !important; color: #6e6e6e !important; margin: 5px;}
 .stepTitle {width: 100%; display: inline-block; margin: 20px auto;}
 .stepTitleI {width: 100%; display: inline-block; margin: 20px auto;}
-.CreationSelect {width: 100px; display: inline-block; margin: 10px auto; border: none; padding: 10px; border-radius: 12px; text-align: center;}
+.CreationSelect {width: 100px; display: inline-block; margin: 10px auto; border: none; padding: 10px; border-radius: 8px; text-align: center;}
 .CreationSelectW {width: 100px; display: inline-block; margin: 10px auto; border: none; padding: 10px; border-radius: 12px; text-align: center;}
 .stepTitle h6 {font-size: 22px;}
 .stepTitleI h6 {font-size: 22px;}
@@ -3725,5 +3725,23 @@ input{
       color: #FFF;
       border-color: black;
       z-index: 1;
+    }
+  }
+
+.MetadataSelection {
+    position: absolute;
+    top: 10px;
+    right: 50px;
+    margin: 10px auto;
+    padding-top: 2%;
+    padding-right: 2%;
+    box-sizing: border-box;
+    font-size: 0;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-end;
+    align-items: stretch;
+    input {
+        width: 0; height: 0; position: absolute; left: -9999px;
     }
   }

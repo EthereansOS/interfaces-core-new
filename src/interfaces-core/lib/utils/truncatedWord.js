@@ -3,11 +3,11 @@ export default function truncatedWord({ context, charsAmount }, word) {
   if (!word) {
     return ''
   }
-  var pippo = word.length - 1 - charsAmount
+  var pippo = word.length - charsAmount
   if (pippo <= 0) {
     return word
   }
   var firstPart = word.substring(0, charsAmount)
-  var secondPart = word.substring(pippo, word.length - 1)
+  var secondPart = word.substring(pippo, word.length)
   return firstPart + '...' + secondPart
 }
