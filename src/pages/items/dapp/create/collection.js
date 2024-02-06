@@ -21,23 +21,7 @@ import style from '../../../../all.module.css'
 import OurCircularProgress from '../../../../components/Global/OurCircularProgress'
 import { Link, useHistory } from 'react-router-dom'
 
-import Select from 'react-select'
-
-const defaultMargin = { top: 20, right: 20, bottom: 20, left: 20 }
-
-const getMinMax = (vals) => {
-  const numericVals = vals.map(coerceNumber)
-  return [(Math.min(...numericVals), Math.max(...numericVals))]
-}
-
-const NameAndSymbol = ({
-  state,
-  value,
-  onStateEntry,
-  onChange,
-  onNext,
-  onPrev,
-}) => {
+const NameAndSymbol = ({ value, onChange, onNext, onPrev }) => {
   useEffect(
     () =>
       setTimeout(async () => {
@@ -51,14 +35,6 @@ const NameAndSymbol = ({
       }),
     [value]
   )
-  useEffect(() => {
-    onStateEntry('name', state.name)
-    onStateEntry('symbol', state.symbol)
-  }, [])
-
-  useEffect(() => {
-    onStateEntry('disabled', state.name && state.symbol ? undefined : true)
-  }, [state.name, state.symbol])
 
   return (
     <div className={style.CreationPageLabel}>
@@ -71,9 +47,9 @@ const NameAndSymbol = ({
         <p>Insert a name for your collection.</p>
         <input
           type="text"
-          value={state.name}
+          value={value?.name}
           placeholder="Collection name"
-          onChange={(e) => onStateEntry('name', e.currentTarget.value)}
+          onChange={(e) => onChange({ ...value, name: e.currentTarget.value })}
         />
         {value?.error?.name && <p>{value.error.name}</p>}
       </label>
@@ -82,9 +58,11 @@ const NameAndSymbol = ({
         <p>Insert a symbol for your collection.</p>
         <input
           type="text"
-          value={state.symbol}
+          value={value?.symbol}
           placeholder="Collection symbol"
-          onChange={(e) => onStateEntry('symbol', e.currentTarget.value)}
+          onChange={(e) =>
+            onChange({ ...value, symbol: e.currentTarget.value })
+          }
         />
         {value?.error?.symbol && <p>{value.error.symbol}</p>}
       </label>
@@ -97,7 +75,7 @@ const NameAndSymbol = ({
   )
 }
 
-const Host = ({ state, value, onStateEntry, onChange, onNext, onPrev }) => {
+const Host = ({ value, onChange, onNext, onPrev }) => {
   useEffect(
     () =>
       setTimeout(async () => {
@@ -111,25 +89,21 @@ const Host = ({ state, value, onStateEntry, onChange, onNext, onPrev }) => {
       }),
     [value]
   )
-  useEffect(() => {
-    onStateEntry('host', state.host)
-    onStateEntry('metadataHost', state.metadataHost)
-  }, [])
-
-  useEffect(() => {
-    var disabled = state.host && state.metadataHost ? undefined : true
-    try {
-      web3Utils.toChecksumAddress(state.host)
-    } catch (e) {
-      disabled = true
-    }
-    try {
-      web3Utils.toChecksumAddress(state.metadataHost)
-    } catch (e) {
-      disabled = true
-    }
-    onStateEntry('disabled', disabled)
-  }, [state.host, state.metadataHost])
+  // FIXME
+  //   useEffect(() => {
+  //     var disabled = value?.host && value?.metadataHost ? undefined : true
+  //     try {
+  //       web3Utils.toChecksumAddress(value?.host)
+  //     } catch (e) {
+  //       disabled = true
+  //     }
+  //     try {
+  //       web3Utils.toChecksumAddress(value?.metadataHost)
+  //     } catch (e) {
+  //       disabled = true
+  //     }
+  //     value.disabled = disabled
+  //   }, [value?.host, value?.metadataHost])
 
   return (
     <div className={style.CreationPageLabel}>
@@ -144,8 +118,8 @@ const Host = ({ state, value, onStateEntry, onChange, onNext, onPrev }) => {
             className={style.CreationPageLabelFloatRight}
             onClick={() =>
               onChange({
-                ...state,
-                name: '0x37C5EfD20dd9c3D5922843a4Ab7787c7978A6a83',
+                ...value,
+                host: '0x37C5EfD20dd9c3D5922843a4Ab7787c7978A6a83',
               })
             }>
             Insert your current address
@@ -160,8 +134,8 @@ const Host = ({ state, value, onStateEntry, onChange, onNext, onPrev }) => {
         <input
           type="text"
           placeholder="Mint host address"
-          value={state.host}
-          onChange={(e) => onStateEntry('host', e.currentTarget.value)}
+          value={value?.host}
+          onChange={(e) => onChange({ ...value, host: e.currentTarget.value })}
         />
       </label>
       <label className={style.CreationPageLabelF}>
@@ -171,8 +145,8 @@ const Host = ({ state, value, onStateEntry, onChange, onNext, onPrev }) => {
             className={style.CreationPageLabelFloatRight}
             onClick={() =>
               onChange({
-                ...state,
-                name: '0x37C5EfD20dd9c3D5922843a4Ab7787c7978A6a83',
+                ...value,
+                metadataHost: '0x37C5EfD20dd9c3D5922843a4Ab7787c7978A6a83',
               })
             }>
             Insert your current address
@@ -187,8 +161,10 @@ const Host = ({ state, value, onStateEntry, onChange, onNext, onPrev }) => {
         <input
           type="text"
           placeholder="Metadata host address"
-          value={state.metadataHost}
-          onChange={(e) => onStateEntry('metadataHost', e.currentTarget.value)}
+          value={value?.metadataHost}
+          onChange={(e) =>
+            onChange({ ...value, metadataHost: e.currentTarget.value })
+          }
         />
       </label>
       <div className={style.WizardFooter}>
@@ -499,6 +475,7 @@ const CreateCollection = ({}) => {
   const [success, setSuccess] = useState(null)
 
   const [step, setStep] = useState(0)
+  const [disabled, setDisabled] = useState(false)
 
   function onStateEntry(key, value) {
     setState((oldState) => {
@@ -546,9 +523,7 @@ const CreateCollection = ({}) => {
       <div className={style.WizardStep}>
         {step == 0 && (
           <NameAndSymbol
-            state={state}
             value={state?.nameandsymbol}
-            onStateEntry={onStateEntry}
             onChange={(value) => setState({ ...state, nameandsymbol: value })}
             onNext={() => setStep(1)}
             onPrev={() => setStep(0)}
