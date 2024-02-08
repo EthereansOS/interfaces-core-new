@@ -10,6 +10,7 @@ import TokenInputRegular from '../../../../components/Global/TokenInputRegular'
 import { createOrganization } from '../../../../logic/organization-2'
 
 import ProgressComponent from '../../../../components/Global/LiquidProgress/ProgressComponent'
+import DonutAndLegend from '../../../../components/Global/DonutChart'
 
 import CircularProgress from '../../../../components/Global/OurCircularProgress'
 import style from '../../../../all.module.css'
@@ -1291,6 +1292,27 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
 
   const [proposalRules, setProposalRules] = useState(value?.proposalRules)
 
+  const [hardCapValue, setHardCapValue] = useState(0)
+  const [quorum, setQuorum] = useState(0)
+
+  const [token, setToken] = useState(value?.token)
+
+  useEffect(
+    () => onChange && onChange({ token, proposalRules }),
+    [token, proposalRules]
+  )
+
+  const [quorumKey, setQuorumKey] = useState(0) // Add a key state for the Quorum slider
+
+  useEffect(() => {
+    setQuorum(hardCapValue)
+    setQuorumKey((prevKey) => prevKey + 1)
+  }, [hardCapValue])
+
+  useEffect(() => {
+    onChange && onChange({ token, proposalRules, hardCapValue, quorum })
+  }, [token, proposalRules, hardCapValue, quorum])
+
   useEffect(
     () =>
       onChange &&
@@ -1379,7 +1401,9 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
 
       {value && (
         <>
-          <label className={style.CreationPageLabelF}>
+        <div className={style.CreationPageLabelFDivide} style={{marginTop: '20px', marginBottom: '20px', borderBottom: "1px solid #e7ecf4"
+      }}>
+         <label className={style.CreationPageLabelF}>
             <h6>
               Token minter owner
               <span
@@ -1405,6 +1429,24 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
             {value?.error?.name && <p>{value.error.name}</p>}
           </label>
 
+          <label className={style.CreationPageLabelF}>
+            <h6>First Execution</h6>
+            <input
+              type="datetime-local"
+              value={firstExecution}
+              onChange={(e) => setFirstExecution(e.currentTarget.value)}
+            />
+          </label>
+          </div>
+             
+          <label className={style.CreationPageLabelF}>
+            <h6>Inflation percentages</h6>
+            <DonutAndLegend></DonutAndLegend>
+          </label>
+      
+
+         
+
           {/* <label className={style.CreationPageLabelF}>
             <h6>Token minter owner</h6>
             <input
@@ -1413,6 +1455,7 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
               onChange={(e) => setTokenMinter(e.currentTarget.value)}
             />
           </label> */}
+          {/*
           <label className={style.CreationPageLabelF}>
             <h6>Initial Daily inflation percentage</h6>
             <p>
@@ -1507,14 +1550,10 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
               />
             </label>
           </label>
-          <label className={style.CreationPageLabelF}>
-            <h6>First Execution</h6>
-            <input
-              type="datetime-local"
-              value={firstExecution}
-              onChange={(e) => setFirstExecution(e.currentTarget.value)}
-            />
-          </label>
+          */}
+
+<div className={style.CreationPageLabelFDivide}>
+          
           <label className={style.CreationPageLabelF}>
             <h6>Swap for ETH AMM</h6>
             <ActionInfoSection
@@ -1535,7 +1574,8 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
                 set_bootstrapFundWalletAddress(e.currentTarget.value)
               }
             />
-          </label>
+          </label>  
+          </div>
           <label className={style.CreationPageLabelF}>
             <h6>Bootstrap Fund percentage</h6>
             <p>
@@ -1583,7 +1623,159 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
               }
             />
           </label>
-          <ProposalRules value={proposalRules} onChange={setProposalRules} />
+          <div
+        className={style.CreationPageLabelFDivideGroup}
+        style={{ marginTop: '20px', marginBottom: '30px' }}>
+        <div
+          className={style.CreationPageLabelFDivide}
+          style={{ marginTop: '30px', marginBottom: '30px' }}>
+          <label className={style.CreationPageLabelF}>
+            <h6>Hard cap</h6>
+            <p>Selelct the value of Hard cap</p>
+            <br />
+            <br />
+            <br />
+            <CircularSlider
+              label="Hard cap"
+              labelColor="#fff"
+              width="120"
+              knobSize="25"
+              progressSize="9"
+              trackSize="14"
+              labelFontSize="10"
+              valueFontSize="20"
+              knobColor="#000000"
+              progressColorFrom="#000000"
+              progressColorTo="#444444"
+              appendToValue="%"
+              trackColor="#eeeeee"
+              min={0}
+              max={100}
+              onChange={(value) => {
+                setHardCapValue(value)
+              }}
+            />
+          </label>
+          <label className={style.CreationPageLabelF} key={quorumKey}>
+            <h6>Quorum</h6>
+            <p>Selelct the value of Quorum</p>
+            <br />
+            <br />
+            <br />
+            <CircularSlider
+              label="Quorum"
+              labelColor="#fff"
+              knobColor="#000000"
+              width="120"
+              knobSize="25"
+              progressSize="9"
+              trackSize="14"
+              labelFontSize="10"
+              valueFontSize="20"
+              appendToValue="%"
+              progressColorFrom="#000000"
+              progressColorTo="#444444"
+              trackColor="#eeeeee"
+              min={hardCapValue}
+              max={100}
+              initialValue={quorum}
+              onChange={(value) => {
+                setQuorum(value)
+              }}
+            />
+          </label>
+        </div>
+
+        <div
+          className={style.CreationPageLabelFDivide}
+          style={{
+            marginTop: '30px',
+            marginBottom: '30px',
+            borderLeft: '1px solid #e7ecf4',
+          }}>
+          <label className={style.CreationPageLabelF}>
+            <h6>Proposal Duration</h6>
+            <p>Selelct the duration of Proposal</p>
+            <br />
+            <br />
+            <br />
+            <CircularSlider
+              progressLineCap="flat"
+              dataIndex={0}
+              label="Duration"
+              data={[
+                '30min',
+                '6h',
+                '12h',
+                '1 Day',
+                '2 Days',
+                '3 Days',
+                '4 Days',
+                '5 Days',
+                '1 Week',
+                '1 Month',
+                '6 Months',
+                '1 Year',
+                '3 Years',
+                '5 Years',
+              ]}
+              labelColor="#fff"
+              knobColor="#000000"
+              width="120"
+              knobSize="25"
+              progressSize="9"
+              trackSize="14"
+              labelFontSize="10"
+              valueFontSize="20"
+              verticalOffset="1rem"
+              progressColorFrom="#000000"
+              progressColorTo="#444444"
+              trackColor="#eeeeee"
+            />
+          </label>
+          <label className={style.CreationPageLabelF}>
+            <h6>Validation Bomb</h6>
+            <p>Selelct Validation Bomb value</p>
+            <br />
+            <br />
+            <br />
+            <CircularSlider
+              progressLineCap="flat"
+              dataIndex={3}
+              label="Duration"
+              data={[
+                '30min',
+                '6h',
+                '12h',
+                '1 Day',
+                '2 Days',
+                '3 Days',
+                '4 Days',
+                '5 Days',
+                '1 Week',
+                '1 Month',
+                '6 Months',
+                '1 Year',
+                '3 Years',
+                '5 Years',
+              ]}
+              labelColor="#fff"
+              knobColor="#000000"
+              width="120"
+              knobSize="25"
+              progressSize="9"
+              trackSize="14"
+              labelFontSize="10"
+              valueFontSize="20"
+              verticalOffset="1rem"
+              progressColorFrom="#000000"
+              progressColorTo="#444444"
+              trackColor="#eeeeee"
+            />
+          </label>
+        </div>
+      </div>
+
         </>
       )}
       <div className={style.WizardFooter}>

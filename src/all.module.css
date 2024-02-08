@@ -1611,6 +1611,11 @@ input::-webkit-scrollbar {
     margin: 15px auto;
 }
 
+.DonutGraphContainer .chart-wrapper{
+    width: 400px!important;
+    height: 400px!important;
+}
+
 .TradeMarketBoxSwitch {
     width: 20px;
     height: 20px;
@@ -1622,6 +1627,23 @@ input::-webkit-scrollbar {
     cursor: pointer;
     margin: 35px 5px auto 5px;
     vertical-align: top;
+}
+.SimplyDonutArea{
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+.SimplyDonutArea .CreationPageLabelF{
+    text-align: left;
+}
+.SimplyDonutArea .CreationPageLabelF label{
+    font-weight: 300;
+}
+.SimplyDonutArea .SimplyDonutAreaPercentageLabel{
+    float: right;
+    font-weight: bold;
+}
+.ActionInfoSectionAMMLabel{
+    display: inline-block;
 }
 
 .TradeMarketType {

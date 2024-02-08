@@ -55,7 +55,7 @@ const ActionInfoSection = ({hideAmmStuff, settings, onSettingsToggle, amm, onAMM
                     </a>}
                     {amm && amm.name === 'UniswapV3' && onUniV3Pool && <div>
                         <h4>Uniswap V3 Pools:</h4>
-                        {Object.entries(amm.pools).map(it => <div key={it[0]}>
+                        {Object.entries(amm.pools).map(it => <div key={it[0]} className={style.ActionInfoSectionAMMLabel}>
                             <label>
                                 <span>{it[1].label}</span>
                                 <input type="radio" checked={uniV3Pool === it[0]} onClick={e => void(e.stopPropagation(), onUniV3Pool(it[0]))}/>
