@@ -14344,6 +14344,13 @@ input {
     float: right;
 
 }
+.WizardFooter .WizardFooterNext:disabled,
+.WizardFooter .WizardFooterNext[disabled]{
+  background-color: #717178;
+  color: #fff;
+  float: right;
+  cursor: not-allowed;
+}
 
 .WizardStepsList {
     position: fixed;

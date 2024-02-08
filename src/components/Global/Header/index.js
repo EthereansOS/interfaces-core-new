@@ -6,11 +6,17 @@ import LogoRenderer from '../LogoRenderer'
 import style from '../../../all.module.css'
 import Web3Connect from '../Web3Connect'
 import makeBlockie from 'ethereum-blockies-base64'
-import { useWeb3, useEthosContext, sendAsync, truncatedWord, web3States } from 'interfaces-core'
+import {
+  useWeb3,
+  useEthosContext,
+  sendAsync,
+  truncatedWord,
+  web3States,
+} from 'interfaces-core'
 
-import Select from 'react-select';
-import { IconContext } from 'react-icons';
-import { FaEthereum} from 'react-icons/fa'; 
+import Select from 'react-select'
+import { IconContext } from 'react-icons'
+import { FaEthereum } from 'react-icons/fa'
 
 import Toggle from '../../../components/Toggle'
 
@@ -22,46 +28,57 @@ const Header = (props) => {
 
   const context = useEthosContext()
   const web3Data = useWeb3()
-  const { chainId, web3, dualChainId,  account, connectionStatus} = web3Data
+  const { chainId, web3, dualChainId, account, connectionStatus } = web3Data
 
   const history = useHistory()
 
   const [ensData, setEnsData] = useState()
 
-
-
-const customStyles = {
-  control: (provided) => ({
-    ...provided,
-    backgroundColor: 'transparent',
-    borderColor: 'transparent',
-    boxShadow: 'none',
-    '&:hover': {
+  const customStyles = {
+    control: (provided) => ({
+      ...provided,
+      backgroundColor: 'transparent',
       borderColor: 'transparent',
+      boxShadow: 'none',
+      '&:hover': {
+        borderColor: 'transparent',
+      },
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      display: 'flex',
+      alignItems: 'center',
+      backgroundColor: state.isSelected ? 'purple' : 'transparent',
+      color: 'white',
+      ':hover': {
+        backgroundColor: 'lightgrey',
+      },
+    }),
+  }
+
+  const options = [
+    {
+      value: 'ethereum',
+      label: (
+        <div>
+          <FaEthereum /> <div className={style.SelectLabel}>Ethereum</div>
+        </div>
+      ),
     },
-  }),
-  option: (provided, state) => ({
-    ...provided,
-    display: 'flex',
-    alignItems: 'center',
-    backgroundColor: state.isSelected ? 'purple' : 'transparent',
-    color: 'white',
-    ':hover': {
-      backgroundColor: 'lightgrey',
+    {
+      value: 'optimism',
+      label: (
+        <div>
+          <FaEthereum /> <div className={style.SelectLabel}>Optimism</div>
+        </div>
+      ),
     },
-  })
-};
+  ]
 
-const options = [
-  { value: 'ethereum', label: <div><FaEthereum /> <div className={style.SelectLabel}>Ethereum</div></div> },
-  { value: 'optimism', label: <div><FaEthereum /> <div className={style.SelectLabel}>Optimism</div></div> }
-];
-
-const [toggled, setToggled] = React.useState(false);
-const handleClick = () => {
-    setToggled((s) => !s);
-};
-
+  const [toggled, setToggled] = React.useState(false)
+  const handleClick = () => {
+    setToggled((s) => !s)
+  }
 
   useEffect(() => {
     setTimeout(async () => {
@@ -97,7 +114,7 @@ const handleClick = () => {
     setTheme(theme)
     localStorage.setItem('toggleState', toggleSwitch.checked)
   }
-/*
+  /*
   useEffect(() => {
     const initialLoad = async () => {
       const toggleSwitch = document.getElementById('toggleSwitch')
@@ -150,49 +167,35 @@ const handleClick = () => {
         <Link to="" className={style.logoMain}>
           <img src={`${process.env.PUBLIC_URL}/img/logo.png`} />
         </Link>
-       
+
         <div className={style.CopyRight}>
           &copy;2024 <b>EthereansOS</b> v1.3.2 <br /> All rights reserved
         </div>
       </div>
       <div className={style.RightMenu}>
-      <Navigation
+        <Navigation
           menuName={props.menuName}
           isDapp={props.isDapp}
           selected={props.link}
         />
-      
-
-      
-
 
         <IconContext.Provider value={{ color: 'black', size: '1.5em' }}>
-        <Select
-          isSearchable={false}
-          className={style.NetworkSelectDropdown}
-          styles={customStyles}
-          options={options}
-          components={{
-            DropdownIndicator:() => null,
-            IndicatorSeparator:() => null 
-          }}
-        />
-      </IconContext.Provider>
-
-
-
-      
-
-
-
-
-
+          <Select
+            isSearchable={false}
+            className={style.NetworkSelectDropdown}
+            styles={customStyles}
+            options={options}
+            components={{
+              DropdownIndicator: () => null,
+              IndicatorSeparator: () => null,
+            }}
+          />
+        </IconContext.Provider>
 
         <div className={style.MenuProfile}>
           <Link to="/account">
             <LogoRenderer
               noDotLink
-            
               noFigure
               input={
                 ensData?.name
@@ -202,15 +205,15 @@ const handleClick = () => {
               defaultImage={blockie}
             />
             <div className={style.MenuProfileContent}>
-            <h3>
-              My Profile
-            </h3>
-            <p> {connectionStatus === web3States.NOT_CONNECTED
-                ? 'Connect'
-                : ensData?.name ||
-                  truncatedWord({ context, charsAmount: 8 }, account)}</p>
+              <h3>My Profile</h3>
+              <p>
+                {' '}
+                {connectionStatus === web3States.NOT_CONNECTED
+                  ? 'Connect'
+                  : ensData?.name ||
+                    truncatedWord({ context, charsAmount: 8 }, account)}
+              </p>
             </div>
-          
           </Link>
         </div>
         <Web3Connect />

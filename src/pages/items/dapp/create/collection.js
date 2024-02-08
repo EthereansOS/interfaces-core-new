@@ -26,6 +26,7 @@ import getCurrentAddress from 'interfaces-core/lib/web3/getCurrentAddress'
 import Select from 'react-select'
 
 const NameAndSymbol = ({ value, onChange, onNext, onPrev }) => {
+  const [disabled, setDisabled] = useState()
   useEffect(
     () =>
       setTimeout(async () => {
@@ -39,6 +40,10 @@ const NameAndSymbol = ({ value, onChange, onNext, onPrev }) => {
       }),
     [value]
   )
+
+  useEffect(() => {
+    setDisabled(value?.name && value?.symbol ? false : true)
+  }, [value])
 
   return (
     <div className={style.CreationPageLabel}>
@@ -71,7 +76,10 @@ const NameAndSymbol = ({ value, onChange, onNext, onPrev }) => {
         {value?.error?.symbol && <p>{value.error.symbol}</p>}
       </label>
       <div className={style.WizardFooter}>
-        <button className={style.WizardFooterNext} onClick={onNext}>
+        <button
+          className={style.WizardFooterNext}
+          disabled={disabled}
+          onClick={onNext}>
           Next
         </button>
       </div>
@@ -80,6 +88,8 @@ const NameAndSymbol = ({ value, onChange, onNext, onPrev }) => {
 }
 
 const Host = ({ value, onChange, onNext, onPrev }) => {
+  const [disabled, setDisabled] = useState()
+
   useEffect(
     () =>
       setTimeout(async () => {
@@ -93,21 +103,22 @@ const Host = ({ value, onChange, onNext, onPrev }) => {
       }),
     [value]
   )
-  // FIXME
-  //   useEffect(() => {
-  //     var disabled = value?.host && value?.metadataHost ? undefined : true
-  //     try {
-  //       web3Utils.toChecksumAddress(value?.host)
-  //     } catch (e) {
-  //       disabled = true
-  //     }
-  //     try {
-  //       web3Utils.toChecksumAddress(value?.metadataHost)
-  //     } catch (e) {
-  //       disabled = true
-  //     }
-  //     value.disabled = disabled
-  //   }, [value?.host, value?.metadataHost])
+
+  useEffect(() => {
+    var dis = value?.host && value?.metadataHost ? false : true
+    setDisabled(dis)
+    try {
+      web3Utils.toChecksumAddress(value?.host)
+    } catch (e) {
+      setDisabled(true)
+    }
+    try {
+      web3Utils.toChecksumAddress(value?.metadataHost)
+    } catch (e) {
+      setDisabled(true)
+    }
+    setDisabled(dis)
+  }, [value])
 
   return (
     <div className={style.CreationPageLabel}>
@@ -175,7 +186,10 @@ const Host = ({ value, onChange, onNext, onPrev }) => {
         <button className={style.WizardFooterBack} onClick={onPrev}>
           Back
         </button>
-        <button className={style.WizardFooterNext} onClick={onNext}>
+        <button
+          className={style.WizardFooterNext}
+          disabled={disabled}
+          onClick={onNext}>
           Next
         </button>
       </div>
@@ -207,40 +221,31 @@ function extractFile(files) {
 const Metadata = ({ value, onChange, onNext, onPrev }) => {
   const context = useEthosContext()
 
-  // useEffect(() => {
-  //   onStateEntry('metadata', value.metadata || { background_color: '#000000' })
-  //   onStateEntry('metadataLink', value.metadataLink)
-  //   onStateEntry('metadataType', value.metadataType || 'metadata')
-  // }, [])
+  useEffect(() => {
+    if (!value?.metadataType) {
+      onChange({ ...value, metadataType: 'metadata' })
+    }
+  }, [value, onChange])
 
-  // useEffect(() => {
-  //   if (!value.metadataType) {
-  //     return
-  //   }
-  //   onStateEntry(
-  //     value.metadataType === 'metadata' ? 'metadataLink' : 'metadata',
-  //     value.metadataType === 'metadata'
-  //       ? undefined
-  //       : { background_color: '#000000' }
-  //   )
-  // }, [value.metadataType])
+  useEffect(() => {
+    if (!value?.metadataType) {
+      return
+    }
+    var ipfsRegex = 'ipfs://ipfs/(([a-z]|[A-Z]|[0-9]){46})$'
+    if (value.metadataType === 'metadataLink') {
+      setDisabled(
+        value.metadataLink && new RegExp(ipfsRegex).test(value.metadataLink)
+          ? false
+          : true
+      )
+    }
 
-  // useEffect(() => {
-  //   if (!value.metadataType) {
-  //     return
-  //   }
-  //   var ipfsRegex = 'ipfs://ipfs/(([a-z]|[A-Z]|[0-9]){46})$'
-  //   if (value.metadataType === 'metadataLink') {
-  //     return onStateEntry(
-  //       'disabled',
-  //       value.metadataLink && new RegExp(ipfsRegex).test(value.metadataLink)
-  //         ? undefined
-  //         : true
-  //     )
-  //   }
-  //   onStateEntry('disabled', !checkCollectionMetadata(value.metadata))
-  // }, [value.metadataType, value.metadata, value.metadataLink])
+    if (value.metadataType === 'metadata') {
+      setDisabled(!checkCollectionMetadata(value.metadata))
+    }
+  }, [value, onChange])
 
+  // FIXME
   // useEffect(() => {
   //   if (!value.metadata?.image) {
   //     return
@@ -258,10 +263,10 @@ const Metadata = ({ value, onChange, onNext, onPrev }) => {
   //     }
   //   })
   // }, [value.metadata?.image])
-
+  const [disabled, setDisabled] = useState()
   const [selectedImage, setSelectedImage] = useState(null)
   const [triggerTextInput, setTriggerTextInput] = useState(false)
-  const [hex, updateHex] = useState('#000000')
+  const [hex, updateHex] = useState('#6f6fae')
 
   const handleInput = (e) => {
     updateHex(e.target.value)
@@ -282,7 +287,7 @@ const Metadata = ({ value, onChange, onNext, onPrev }) => {
       <div className={style.MetadataSelection}>
         <select
           className={style.CreationSelect}
-          value={value?.metadataType ?? 'metadata'}
+          value={value?.metadataType}
           onChange={(e) =>
             onChange({ ...value, metadataType: e.currentTarget.value })
           }>
@@ -296,10 +301,11 @@ const Metadata = ({ value, onChange, onNext, onPrev }) => {
           <div>
             <label className={style.CreationPageLabelF}>
               <h6>Link</h6>
+              <p>Enter the link for your custom collection's metadata</p>
               <input
                 placeholder="ipfs://ipfs/..."
                 type="text"
-                value={value?.metadataLink}
+                value={value?.metadataLink ?? ''}
                 onChange={(e) =>
                   onChange({ ...value, metadataLink: e.currentTarget.value })
                 }
@@ -318,8 +324,8 @@ const Metadata = ({ value, onChange, onNext, onPrev }) => {
               onChange={(e) =>
                 onChange({ ...value, description: e.currentTarget.value })
               }
+              mandatory="true"
               placeholder="Describe your Collection"
-              mandatory
             />
             {value?.error?.description && <p>{value.error.description}</p>}
           </label>
@@ -439,7 +445,7 @@ const Metadata = ({ value, onChange, onNext, onPrev }) => {
             </label>
 
             <label className={style.CreationPageLabelF}>
-              <h6>Background Color</h6>
+              <h6>Background Color*</h6>
               <p>
                 The background color of your collection logo. This color will
                 fill any empty space that the logo leaves if it doesn’t match
@@ -451,17 +457,19 @@ const Metadata = ({ value, onChange, onNext, onPrev }) => {
               )}
             </label>
           </div>
-
-          <div className={style.WizardFooter}>
-            <button className={style.WizardFooterBack} onClick={onPrev}>
-              Back
-            </button>
-            <button className={style.WizardFooterNext} onClick={onNext}>
-              Next
-            </button>
-          </div>
         </>
       )}
+      <div className={style.WizardFooter}>
+        <button className={style.WizardFooterBack} onClick={onPrev}>
+          Back
+        </button>
+        <button
+          disabled={disabled}
+          className={style.WizardFooterNext}
+          onClick={onNext}>
+          Next
+        </button>
+      </div>
     </div>
   )
 }
@@ -469,8 +477,13 @@ const Metadata = ({ value, onChange, onNext, onPrev }) => {
 const ColorPicker = (props) => {
   return (
     <div className={style.ColorPickerContainer}>
-      <input type="color" {...props} />
-      <input type="text" {...props} field="background_color" mandatory />
+      <input
+        type="color"
+        {...props}
+        field="background_color"
+        mandatory="true"
+      />
+      <input type="text" {...props} />
     </div>
   )
 }
