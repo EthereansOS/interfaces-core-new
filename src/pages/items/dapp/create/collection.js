@@ -21,6 +21,10 @@ import style from '../../../../all.module.css'
 import OurCircularProgress from '../../../../components/Global/OurCircularProgress'
 import { Link, useHistory } from 'react-router-dom'
 
+import getCurrentAddress from 'interfaces-core/lib/web3/getCurrentAddress'
+
+import Select from 'react-select'
+
 const NameAndSymbol = ({ value, onChange, onNext, onPrev }) => {
   useEffect(
     () =>
@@ -119,7 +123,7 @@ const Host = ({ value, onChange, onNext, onPrev }) => {
             onClick={() =>
               onChange({
                 ...value,
-                host: '0x37C5EfD20dd9c3D5922843a4Ab7787c7978A6a83',
+                host: getCurrentAddress(),
               })
             }>
             Insert your current address
@@ -134,7 +138,7 @@ const Host = ({ value, onChange, onNext, onPrev }) => {
         <input
           type="text"
           placeholder="Mint host address"
-          value={value?.host}
+          value={value?.host ?? ''}
           onChange={(e) => onChange({ ...value, host: e.currentTarget.value })}
         />
       </label>
@@ -146,7 +150,7 @@ const Host = ({ value, onChange, onNext, onPrev }) => {
             onClick={() =>
               onChange({
                 ...value,
-                metadataHost: '0x37C5EfD20dd9c3D5922843a4Ab7787c7978A6a83',
+                metadataHost: getCurrentAddress(),
               })
             }>
             Insert your current address
@@ -161,7 +165,7 @@ const Host = ({ value, onChange, onNext, onPrev }) => {
         <input
           type="text"
           placeholder="Metadata host address"
-          value={value?.metadataHost}
+          value={value?.metadataHost ?? ''}
           onChange={(e) =>
             onChange({ ...value, metadataHost: e.currentTarget.value })
           }
@@ -200,121 +204,68 @@ function extractFile(files) {
   return newList
 }
 
-const MetadataField = ({
-  state,
-  onStateEntry,
-  field,
-  type,
-  label,
-  description,
-  accept,
-  mandatory,
-}) => {
-  return (
-    <label className={style.CreationPageLabelF}>
-      <h6>
-        {label}
-        {mandatory && <b>*</b>}:
-      </h6>
-      {description && <p>{description}</p>}
-      {type === 'textarea' ? (
-        <textarea
-          onChange={(e) =>
-            onStateEntry('metadata', {
-              ...state.metadata,
-              [field]: e.currentTarget.value,
-            })
-          }>
-          {state.metadata[field]}
-        </textarea>
-      ) : (
-        <input
-          type={type || 'text'}
-          accept={accept}
-          ref={
-            type !== 'file'
-              ? undefined
-              : (ref) =>
-                  ref &&
-                  (ref.files =
-                    state.metadata[field] ||
-                    (window.DataTransfer
-                      ? new window.DataTransfer().files
-                      : null))
-          }
-          value={type === 'file' ? undefined : state.metadata[field]}
-          onChange={(e) =>
-            onStateEntry('metadata', {
-              ...state.metadata,
-              [field]:
-                type === 'file'
-                  ? extractFile(e.currentTarget.files)
-                  : e.currentTarget.value,
-            })
-          }
-        />
-      )}
-    </label>
-  )
-}
-
-const Metadata = ({ state, value, onStateEntry, onChange, onNext, onPrev }) => {
+const Metadata = ({ value, onChange, onNext, onPrev }) => {
   const context = useEthosContext()
 
-  useEffect(() => {
-    onStateEntry('metadata', state.metadata || { background_color: '#ffffff' })
-    onStateEntry('metadataLink', state.metadataLink)
-    onStateEntry('metadataType', state.metadataType || 'metadata')
-  }, [])
+  // useEffect(() => {
+  //   onStateEntry('metadata', value.metadata || { background_color: '#000000' })
+  //   onStateEntry('metadataLink', value.metadataLink)
+  //   onStateEntry('metadataType', value.metadataType || 'metadata')
+  // }, [])
 
-  useEffect(() => {
-    if (!state.metadataType) {
-      return
-    }
-    onStateEntry(
-      state.metadataType === 'metadata' ? 'metadataLink' : 'metadata',
-      state.metadataType === 'metadata'
-        ? undefined
-        : { background_color: '#000000' }
-    )
-  }, [state.metadataType])
+  // useEffect(() => {
+  //   if (!value.metadataType) {
+  //     return
+  //   }
+  //   onStateEntry(
+  //     value.metadataType === 'metadata' ? 'metadataLink' : 'metadata',
+  //     value.metadataType === 'metadata'
+  //       ? undefined
+  //       : { background_color: '#000000' }
+  //   )
+  // }, [value.metadataType])
 
-  useEffect(() => {
-    if (!state.metadataType) {
-      return
-    }
-    var ipfsRegex = 'ipfs://ipfs/(([a-z]|[A-Z]|[0-9]){46})$'
-    if (state.metadataType === 'metadataLink') {
-      return onStateEntry(
-        'disabled',
-        state.metadataLink && new RegExp(ipfsRegex).test(state.metadataLink)
-          ? undefined
-          : true
-      )
-    }
-    onStateEntry('disabled', !checkCollectionMetadata(state.metadata))
-  }, [state.metadataType, state.metadata, state.metadataLink])
+  // useEffect(() => {
+  //   if (!value.metadataType) {
+  //     return
+  //   }
+  //   var ipfsRegex = 'ipfs://ipfs/(([a-z]|[A-Z]|[0-9]){46})$'
+  //   if (value.metadataType === 'metadataLink') {
+  //     return onStateEntry(
+  //       'disabled',
+  //       value.metadataLink && new RegExp(ipfsRegex).test(value.metadataLink)
+  //         ? undefined
+  //         : true
+  //     )
+  //   }
+  //   onStateEntry('disabled', !checkCollectionMetadata(value.metadata))
+  // }, [value.metadataType, value.metadata, value.metadataLink])
 
-  useEffect(() => {
-    if (!state.metadata?.image) {
-      return
-    }
-    setTimeout(async () => {
-      try {
-        if (!(await checkCoverSize({ context }, state.metadata.image, true))) {
-          throw 'Cover size does not match requirements'
-        }
-      } catch (e) {
-        var newMetadata = { ...state.metadata }
-        delete newMetadata.image
-        alert(e.message || e)
-        onStateEntry('metadata', newMetadata)
-      }
-    })
-  }, [state.metadata?.image])
+  // useEffect(() => {
+  //   if (!value.metadata?.image) {
+  //     return
+  //   }
+  //   setTimeout(async () => {
+  //     try {
+  //       if (!(await checkCoverSize({ context }, value.metadata.image, true))) {
+  //         throw 'Cover size does not match requirements'
+  //       }
+  //     } catch (e) {
+  //       var newMetadata = { ...value.metadata }
+  //       delete newMetadata.image
+  //       alert(e.message || e)
+  //       onStateEntry('metadata', newMetadata)
+  //     }
+  //   })
+  // }, [value.metadata?.image])
 
   const [selectedImage, setSelectedImage] = useState(null)
   const [triggerTextInput, setTriggerTextInput] = useState(false)
+  const [hex, updateHex] = useState('#000000')
+
+  const handleInput = (e) => {
+    updateHex(e.target.value)
+  }
 
   const handleImageChange = (e) => {
     if (e.target.files && e.target.files[0]) {
@@ -331,14 +282,16 @@ const Metadata = ({ state, value, onStateEntry, onChange, onNext, onPrev }) => {
       <div className={style.MetadataSelection}>
         <select
           className={style.CreationSelect}
-          value={state.metadataType}
-          onChange={(e) => onStateEntry('metadataType', e.currentTarget.value)}>
+          value={value?.metadataType ?? 'metadata'}
+          onChange={(e) =>
+            onChange({ ...value, metadataType: e.currentTarget.value })
+          }>
           <option value="metadata">Basic</option>
           <option value="metadataLink">Custom</option>
         </select>
       </div>
 
-      {state.metadataType === 'metadataLink' && (
+      {value?.metadataType === 'metadataLink' && (
         <>
           <div>
             <label className={style.CreationPageLabelF}>
@@ -346,26 +299,31 @@ const Metadata = ({ state, value, onStateEntry, onChange, onNext, onPrev }) => {
               <input
                 placeholder="ipfs://ipfs/..."
                 type="text"
-                value={state.metadataLink}
+                value={value?.metadataLink}
                 onChange={(e) =>
-                  onStateEntry('metadataLink', e.currentTarget.value)
+                  onChange({ ...value, metadataLink: e.currentTarget.value })
                 }
               />
             </label>
           </div>
         </>
       )}
-      {state.metadataType === 'metadata' && (
+      {value?.metadataType === 'metadata' && (
         <>
-          <MetadataField
-            state={state}
-            onStateEntry={onStateEntry}
-            type="textarea"
-            field="description"
-            label="Description"
-            mandatory
-            description="A description of the collection"
-          />
+          <label className={style.CreationPageLabelF}>
+            <h6>Description*</h6>
+            <p>Enter the description of your Collection</p>
+            <textarea
+              value={value?.description}
+              onChange={(e) =>
+                onChange({ ...value, description: e.currentTarget.value })
+              }
+              placeholder="Describe your Collection"
+              mandatory
+            />
+            {value?.error?.description && <p>{value.error.description}</p>}
+          </label>
+
           <div className={style.CreationPageLabelFDivide}>
             <label
               className={style.CreationPageLabelF}
@@ -442,34 +400,56 @@ const Metadata = ({ state, value, onStateEntry, onChange, onNext, onPrev }) => {
                 }
               />
 
-              {value?.error?.url && <p>{value.error.url}</p>}
+              {value?.error?.external_url && <p>{value.error.external_url}</p>}
             </label>
 
-            <MetadataField
-              state={state}
-              onStateEntry={onStateEntry}
-              field="discussion_url"
-              label="Discussion Link"
-              description="A link to a social hub and/or discussion channel for the collection (if any)"
-            />
+            <label className={style.CreationPageLabelF}>
+              <h6>Discussion Link</h6>
+              <p>
+                A link to a social hub and/or discussion channel for the
+                collection (if any)
+              </p>
+              <input
+                type="link"
+                value={value?.discussion_url}
+                placeholder="Discussion link (if any)"
+                onChange={(e) =>
+                  onChange({ ...value, discussion_url: e.currentTarget.value })
+                }
+              />
 
-            <MetadataField
-              state={state}
-              onStateEntry={onStateEntry}
-              field="github_url"
-              label="Github Link"
-              description="A link to the official repo of this project (if any)"
-            />
+              {value?.error?.discussion_url && (
+                <p>{value.error.discussion_url}</p>
+              )}
+            </label>
 
-            <MetadataField
-              state={state}
-              onStateEntry={onStateEntry}
-              type="color"
-              field="background_color"
-              label="Background Color"
-              mandatory
-              description="The background color of your collection logo. This color will fill any empty space that the logo leaves if it doesn’t match any standard box in the interface."
-            />
+            <label className={style.CreationPageLabelF}>
+              <h6>Github Link</h6>
+              <p>A link to the official repo of this project (if any)</p>
+              <input
+                type="link"
+                value={value?.github_url}
+                placeholder="Github link (if any)"
+                onChange={(e) =>
+                  onChange({ ...value, github_url: e.currentTarget.value })
+                }
+              />
+
+              {value?.error?.github_url && <p>{value.error.github_url}</p>}
+            </label>
+
+            <label className={style.CreationPageLabelF}>
+              <h6>Background Color</h6>
+              <p>
+                The background color of your collection logo. This color will
+                fill any empty space that the logo leaves if it doesn’t match
+                any standard box in the interface.
+              </p>
+              <ColorPicker onChange={handleInput} value={hex} />
+              {value?.error?.background_color && (
+                <p>{value.error.background_color}</p>
+              )}
+            </label>
           </div>
 
           <div className={style.WizardFooter}>
@@ -486,7 +466,14 @@ const Metadata = ({ state, value, onStateEntry, onChange, onNext, onPrev }) => {
   )
 }
 
-Metadata.deploy = true
+const ColorPicker = (props) => {
+  return (
+    <div className={style.ColorPickerContainer}>
+      <input type="color" {...props} />
+      <input type="text" {...props} field="background_color" mandatory />
+    </div>
+  )
+}
 
 const CreateSuccess = ({ success }) => {
   const context = useEthosContext()
@@ -542,20 +529,9 @@ const CreateCollection = ({}) => {
 
   const [state, setState] = useState({})
 
-  const [componentIndex, setComponentIndex] = useState(0)
-
   const [success, setSuccess] = useState(null)
 
   const [step, setStep] = useState(0)
-  const [disabled, setDisabled] = useState(false)
-
-  function onStateEntry(key, value) {
-    setState((oldState) => {
-      var newState = { ...oldState, [key]: value }
-      value === undefined && delete newState[key]
-      return newState
-    })
-  }
 
   return (
     <div className={style.CreatePage}>
@@ -603,10 +579,8 @@ const CreateCollection = ({}) => {
         )}
         {step == 1 && (
           <Host
-            state={state}
-            value={state?.host}
-            onStateEntry={onStateEntry}
-            onChange={(value) => setState({ ...state, host: value })}
+            value={state?.hostSection}
+            onChange={(value) => setState({ ...state, hostSection: value })}
             onNext={() => setStep(2)}
             onPrev={() => setStep(0)}
           />
@@ -614,12 +588,18 @@ const CreateCollection = ({}) => {
 
         {step == 2 && (
           <Metadata
-            state={state}
             value={state?.metadata}
-            onStateEntry={onStateEntry}
             onChange={(value) => setState({ ...state, metadata: value })}
             onNext={() => setStep(3)}
             onPrev={() => setStep(1)}
+          />
+        )}
+
+        {step == 3 && (
+          <Confirmation
+            value={state?.confirmation}
+            onChange={(value) => setState({ ...state, confirmation: value })}
+            onPrev={() => setStep(2)}
           />
         )}
       </div>
