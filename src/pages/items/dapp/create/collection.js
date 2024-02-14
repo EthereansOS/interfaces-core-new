@@ -56,7 +56,7 @@ const NameAndSymbol = ({ value, onChange, onNext, onPrev }) => {
         <p>Insert a name for your collection.</p>
         <input
           type="text"
-          value={value?.name}
+          value={value?.name ?? ''}
           placeholder="Collection name"
           onChange={(e) => onChange({ ...value, name: e.currentTarget.value })}
         />
@@ -67,7 +67,7 @@ const NameAndSymbol = ({ value, onChange, onNext, onPrev }) => {
         <p>Insert a symbol for your collection.</p>
         <input
           type="text"
-          value={value?.symbol}
+          value={value?.symbol ?? ''}
           placeholder="Collection symbol"
           onChange={(e) =>
             onChange({ ...value, symbol: e.currentTarget.value })
@@ -220,6 +220,7 @@ function extractFile(files) {
 
 const Metadata = ({ value, onChange, onNext, onPrev }) => {
   const context = useEthosContext()
+  const background_color_default = '#6f6fae'
 
   useEffect(() => {
     if (!value?.metadataType) {
@@ -241,7 +242,10 @@ const Metadata = ({ value, onChange, onNext, onPrev }) => {
     }
 
     if (value.metadataType === 'metadata') {
-      setDisabled(!checkCollectionMetadata(value.metadata))
+      if (value.background_color == null) {
+        value.background_color = background_color_default
+      }
+      setDisabled(!checkCollectionMetadata(value))
     }
   }, [value, onChange])
 
@@ -266,11 +270,6 @@ const Metadata = ({ value, onChange, onNext, onPrev }) => {
   const [disabled, setDisabled] = useState()
   const [selectedImage, setSelectedImage] = useState(null)
   const [triggerTextInput, setTriggerTextInput] = useState(false)
-  const [hex, updateHex] = useState('#6f6fae')
-
-  const handleInput = (e) => {
-    updateHex(e.target.value)
-  }
 
   const handleImageChange = (e) => {
     if (e.target.files && e.target.files[0]) {
@@ -399,7 +398,7 @@ const Metadata = ({ value, onChange, onNext, onPrev }) => {
               <p>A link to the official website of this project (if any)</p>
               <input
                 type="link"
-                value={value?.external_url}
+                value={value?.external_url ?? ''}
                 placeholder="Website (if any)"
                 onChange={(e) =>
                   onChange({ ...value, external_url: e.currentTarget.value })
@@ -417,7 +416,7 @@ const Metadata = ({ value, onChange, onNext, onPrev }) => {
               </p>
               <input
                 type="link"
-                value={value?.discussion_url}
+                value={value?.discussion_url ?? ''}
                 placeholder="Discussion link (if any)"
                 onChange={(e) =>
                   onChange({ ...value, discussion_url: e.currentTarget.value })
@@ -434,7 +433,7 @@ const Metadata = ({ value, onChange, onNext, onPrev }) => {
               <p>A link to the official repo of this project (if any)</p>
               <input
                 type="link"
-                value={value?.github_url}
+                value={value?.github_url ?? ''}
                 placeholder="Github link (if any)"
                 onChange={(e) =>
                   onChange({ ...value, github_url: e.currentTarget.value })
@@ -451,7 +450,15 @@ const Metadata = ({ value, onChange, onNext, onPrev }) => {
                 fill any empty space that the logo leaves if it doesn’t match
                 any standard box in the interface.
               </p>
-              <ColorPicker onChange={handleInput} value={hex} />
+              <ColorPicker
+                onChange={(e) =>
+                  onChange({
+                    ...value,
+                    background_color: e.currentTarget.value,
+                  })
+                }
+                value={value?.background_color ?? background_color_default}
+              />
               {value?.error?.background_color && (
                 <p>{value.error.background_color}</p>
               )}
@@ -477,12 +484,7 @@ const Metadata = ({ value, onChange, onNext, onPrev }) => {
 const ColorPicker = (props) => {
   return (
     <div className={style.ColorPickerContainer}>
-      <input
-        type="color"
-        {...props}
-        field="background_color"
-        mandatory="true"
-      />
+      <input type="color" {...props} mandatory="true" />
       <input type="text" {...props} />
     </div>
   )
