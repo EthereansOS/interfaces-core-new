@@ -1,1678 +1,2490 @@
-import { getLogs, getTokenPriceInDollarsOnUniswapV3, getTokenPriceInDollarsOnSushiSwap, getTokenPriceInDollarsOnUniswap, cache, memoryFetch, VOID_ETHEREUM_ADDRESS, web3Utils, sendAsync, blockchainCall, abi, tryRetrieveMetadata, uploadMetadata, formatLink, VOID_BYTES32, toDecimals, getNetworkElement, async, newContract, numberToString, swap, fromDecimals } from "interfaces-core"
+import {
+  getLogs,
+  getTokenPriceInDollarsOnUniswapV3,
+  getTokenPriceInDollarsOnSushiSwap,
+  getTokenPriceInDollarsOnUniswap,
+  cache,
+  memoryFetch,
+  VOID_ETHEREUM_ADDRESS,
+  web3Utils,
+  sendAsync,
+  blockchainCall,
+  abi,
+  tryRetrieveMetadata,
+  uploadMetadata,
+  formatLink,
+  VOID_BYTES32,
+  toDecimals,
+  getNetworkElement,
+  async,
+  newContract,
+  numberToString,
+  swap,
+  fromDecimals,
+} from 'interfaces-core'
 
 import itemProjectionsMetadata from './itemProjectionsMetadata.json'
 
-import { getTokenImage, loadTokenFromAddress } from "./erc20"
-import { tryRetrieveDelegationAddressFromItem } from "./delegation"
+import { getTokenImage, loadTokenFromAddress } from './erc20'
+import { tryRetrieveDelegationAddressFromItem } from './delegation'
 import { getOwnedTokens, retrieveAsset } from './opensea'
 import { getRawField } from './generalReader'
-import { dualChainAsMainChain } from "./dualChain"
+import { dualChainAsMainChain } from './dualChain'
 
-import { resolveToken } from "./dualChain"
+import { resolveToken } from './dualChain'
 
 import { getAsset } from './opensea'
 
-const MAX_UINT128 = '0x' + web3Utils.toBN(2).pow(web3Utils.toBN(128)).sub(web3Utils.toBN(1)).toString('hex')
-const MAX_UINT256 = '0x' + web3Utils.toBN(2).pow(web3Utils.toBN(256)).sub(web3Utils.toBN(1)).toString('hex')
+const MAX_UINT128 =
+  '0x' +
+  web3Utils
+    .toBN(2)
+    .pow(web3Utils.toBN(128))
+    .sub(web3Utils.toBN(1))
+    .toString('hex')
+const MAX_UINT256 =
+  '0x' +
+  web3Utils
+    .toBN(2)
+    .pow(web3Utils.toBN(256))
+    .sub(web3Utils.toBN(1))
+    .toString('hex')
 
 const wrappedCollectionIds = {
-    chainId : undefined,
-    wrappers : [],
-    wrapTypes : [
-        'ERC20',
-        'ERC721',
-        'ERC1155',
-        'ERC721',
-        'ERC1155'
-    ],
-    collectionIds : []
+  chainId: undefined,
+  wrappers: [],
+  wrapTypes: ['ERC20', 'ERC721', 'ERC1155', 'ERC721', 'ERC1155'],
+  collectionIds: [],
 }
 
 export async function loadWrappedCollectionIds(data) {
+  var { getGlobalContract, chainId } = data
 
-    var { getGlobalContract, chainId } = data
+  if (chainId !== wrappedCollectionIds.chainId) {
+    wrappedCollectionIds.chainId = chainId
+    wrappedCollectionIds.collectionIds = Promise.all(
+      (wrappedCollectionIds.wrappers = [
+        getGlobalContract('eRC20Wrapper'),
+        getGlobalContract('eRC721Wrapper'),
+        getGlobalContract('eRC1155Wrapper'),
+        getGlobalContract('eRC721WrapperDeck'),
+        getGlobalContract('eRC1155WrapperDeck'),
+      ]).map((it) =>
+        blockchainCall(it.methods.collectionId).catch(() => VOID_BYTES32)
+      )
+    )
+  }
 
-    if(chainId !== wrappedCollectionIds.chainId) {
-        wrappedCollectionIds.chainId = chainId
-        wrappedCollectionIds.collectionIds = Promise.all((wrappedCollectionIds.wrappers = [
-            getGlobalContract('eRC20Wrapper'),
-            getGlobalContract('eRC721Wrapper'),
-            getGlobalContract('eRC1155Wrapper'),
-            getGlobalContract('eRC721WrapperDeck'),
-            getGlobalContract('eRC1155WrapperDeck')
-        ]).map(it => blockchainCall(it.methods.collectionId).catch((() => VOID_BYTES32))))
-    }
-
-    return await wrappedCollectionIds.collectionIds
+  return await wrappedCollectionIds.collectionIds
 }
 
 export async function loadItemsByFactories(data, factories) {
+  data =
+    data.dualMode && data.dualChainId ? await dualChainAsMainChain(data) : data
 
-    data = data.dualMode && data.dualChainId ? await dualChainAsMainChain(data) : data
+  var {
+    context,
+    chainId,
+    originalChainId,
+    originalWeb3,
+    originalNewContract,
+    dualChainId,
+    web3,
+    account,
+    newContract,
+    getGlobalContract,
+    collectionData,
+    excluding,
+    wrappedOnly,
+    allMine,
+    lightweight,
+  } = data
 
-    var {context, chainId, originalChainId, originalWeb3, originalNewContract, dualChainId, web3, account, newContract, getGlobalContract, collectionData, excluding, wrappedOnly, allMine, lightweight} = data
+  factories = factories || getGlobalContract('itemProjectionFactory')
 
-    factories = factories || getGlobalContract('itemProjectionFactory')
-
-    try {
-        var topics = collectionData ? [
-            web3Utils.sha3("CollectionItem(bytes32,bytes32,uint256)"),
-            [],
-            collectionData.id
-        ] : "CollectionItem(bytes32,bytes32,uint256)"
-
-        var { items, logs } = await getLogsFromFactories(data, factories, topics)
-
-        const wrappedCollectionIds = await loadWrappedCollectionIds(data)
-        var exclusiveIncluding = []
-
-        const noDecks = wrappedOnly !== 'Deck' ? [
-            wrappedCollectionIds[3],
-            wrappedCollectionIds[4]
-        ] : []
-
-        if(wrappedOnly) {
-            exclusiveIncluding = [
-                wrappedCollectionIds[wrappedOnly === true ? 3 : 1],
-                wrappedCollectionIds[wrappedOnly === true ? 4 : 2]
-            ]
-            wrappedOnly === true && exclusiveIncluding.unshift((await loadWrappedCollectionIds(data))[0])
-        }
-
-        var exclusiveIncluding = wrappedOnly && [
-            await blockchainCall(getGlobalContract(`eRC721Wrapper${wrappedOnly === true ? '' : wrappedOnly}`).methods.collectionId),
-            await blockchainCall(getGlobalContract(`eRC1155Wrapper${wrappedOnly === true ? '' : wrappedOnly}`).methods.collectionId)
+  try {
+    var topics = collectionData
+      ? [
+          web3Utils.sha3('CollectionItem(bytes32,bytes32,uint256)'),
+          [],
+          collectionData.id,
         ]
-        wrappedOnly === true && exclusiveIncluding.unshift((await loadWrappedCollectionIds(data))[0])
+      : 'CollectionItem(bytes32,bytes32,uint256)'
 
-        const deployedItemsToExclude = [...context.deployedItemsToExclude].map(it => it.indexOf('0x') === 0 ? abi.decode(["uint256"], abi.encode(["address"], [it]))[0].toString() : it)
+    var { items, logs } = await getLogsFromFactories(data, factories, topics)
 
-        var itemIds = logs.reduce((acc, log) => {
-            var collectionId = log.topics[2]
-            var itemId = abi.decode(["uint256"], log.topics[3])[0].toString()
-            if(context.deployedCollectionsToExclude && context.deployedCollectionsToExclude.indexOf(collectionId) !== - 1) {
-                return acc
-            }
-            if(deployedItemsToExclude && deployedItemsToExclude.indexOf(itemId) !== - 1) {
-                return acc
-            }
-            if(exclusiveIncluding && exclusiveIncluding.indexOf(collectionId) === -1) {
-                return acc
-            }
-            if(noDecks.indexOf(collectionId) !== -1) {
-                return acc
-            }
-            var item = items.filter(it => web3Utils.toChecksumAddress(it.options.address) === web3Utils.toChecksumAddress(log.address))[0]
-            return {
-                ...acc,
-                [itemId] : {
-                    itemId,
-                    item,
-                    mainInterfaceAddress : log.address,
-                    address : abi.decode(["address"], abi.encode(["uint256"], [itemId]))[0]
-                }
-            }
-        }, {})
+    const wrappedCollectionIds = await loadWrappedCollectionIds(data)
+    var exclusiveIncluding = []
 
-        excluding = excluding || []
-        excluding = excluding instanceof Array ? excluding : [excluding]
+    const noDecks =
+      wrappedOnly !== 'Deck'
+        ? [wrappedCollectionIds[3], wrappedCollectionIds[4]]
+        : []
 
-        itemIds = Object.values(itemIds).filter(it => excluding.indexOf(it.itemId) === -1)
-
-        var l2Tokens
-        if(originalWeb3) {
-            var logs = await getLogs(originalWeb3.currentProvider, {
-                address : getNetworkElement({ context, chainId : originalChainId}, 'L2StandardTokenFactoryAddress'),
-                topics : [
-                    web3Utils.sha3('StandardL2TokenCreated(address,address)'),
-                    itemIds.map(it => abi.encode(["uint256"], [it.itemId])).filter((it, i, arr) => arr.indexOf(it) === i)
-                ],
-                fromBlock: web3Utils.toHex(getNetworkElement({ context, chainId : originalChainId }, 'deploySearchStart')) || "0x0",
-                toBlock : 'latest'
-            })
-            l2Tokens = Object.values(logs.reduce((acc, it) => {
-                var id = abi.decode(["uint256"], it.topics[1])[0].toString()
-                return {
-                    ...acc,
-                    [id] : acc[id] || {
-                        id,
-                        l2Address : abi.decode(["address"], it.topics[2])[0].toString()
-                    }
-                }
-            }, {}))
-            l2Tokens = l2Tokens.reduce((acc, it) => ({ ...acc, [it.id] : it}), {})
-            var keys = Object.keys(l2Tokens)
-            itemIds = itemIds.filter(it => keys.indexOf(it.itemId) !== -1)
-        }
-
-        if(allMine && !originalWeb3) {
-            const args = {
-                address : itemIds.map(it => abi.decode(["address"], abi.encode(["uint256"], [it.itemId]))[0]).filter((it, i, arr) => arr.indexOf(it) === i),
-                topics : [
-                    web3Utils.sha3('Transfer(address,address,uint256)'),
-                    [],
-                    abi.encode(['address'], [account])
-                ],
-                fromBlock: web3Utils.toHex(getNetworkElement({ context, chainId }, 'deploySearchStart')) || "0x0",
-                toBlock : 'latest'
-            }
-            var logs = await getLogs(web3.currentProvider, args)
-            logs = logs.map(it => it.address).filter((it, index, arr) => arr.indexOf(it) === index)
-            logs = await Promise.all(logs.map(async it => ({
-                address : it,
-                balance : await blockchainCall(newContract(context.IERC20ABI, it).methods.balanceOf, account)
-            })))
-            logs = logs.filter(it => parseInt(it.balance) > 0).map(it => abi.decode(["uint256"], abi.encode(["address"], [it.address]))[0].toString())
-            itemIds = itemIds.filter(it => logs.indexOf(it.itemId) !== -1)
-        }
-
-        var vals = [...itemIds]//await Promise.all(itemIds.map(it => loadItem({...data, collectionData, lightweight : lightweight !== false }, it.itemId, it.item)))
-        vals = !l2Tokens ? vals : vals.map(it => ({...it, ...l2Tokens[it.id || it.itemId]}))
-
-        if(dualChainId && !wrappedOnly && !collectionData) {
-            vals = [
-                ...vals,
-                ...(await loadItemsByFactories({...data, dualMode : true}))
-            ]
-        }
-        return vals
-    } catch(exception) {
-        console.log(exception)
-        const message = (exception?.stack || exception?.message || exception?.toString()).toLowerCase()
-        if(message.indexOf('header not found') !== -1 || message.indexOf('429') !== -1) {
-            await new Promise(ok => setTimeout(ok, 3000))
-            return await loadItemsByFactories(data, factories)
-        }
-        throw exception
+    if (wrappedOnly) {
+      exclusiveIncluding = [
+        wrappedCollectionIds[wrappedOnly === true ? 3 : 1],
+        wrappedCollectionIds[wrappedOnly === true ? 4 : 2],
+      ]
+      wrappedOnly === true &&
+        exclusiveIncluding.unshift((await loadWrappedCollectionIds(data))[0])
     }
+
+    var exclusiveIncluding = wrappedOnly && [
+      await blockchainCall(
+        getGlobalContract(
+          `eRC721Wrapper${wrappedOnly === true ? '' : wrappedOnly}`
+        ).methods.collectionId
+      ),
+      await blockchainCall(
+        getGlobalContract(
+          `eRC1155Wrapper${wrappedOnly === true ? '' : wrappedOnly}`
+        ).methods.collectionId
+      ),
+    ]
+    wrappedOnly === true &&
+      exclusiveIncluding.unshift((await loadWrappedCollectionIds(data))[0])
+
+    const deployedItemsToExclude = [...context.deployedItemsToExclude].map(
+      (it) =>
+        it.indexOf('0x') === 0
+          ? abi.decode(['uint256'], abi.encode(['address'], [it]))[0].toString()
+          : it
+    )
+
+    var itemIds = logs.reduce((acc, log) => {
+      var collectionId = log.topics[2]
+      var itemId = abi.decode(['uint256'], log.topics[3])[0].toString()
+      if (
+        context.deployedCollectionsToExclude &&
+        context.deployedCollectionsToExclude.indexOf(collectionId) !== -1
+      ) {
+        return acc
+      }
+      if (
+        deployedItemsToExclude &&
+        deployedItemsToExclude.indexOf(itemId) !== -1
+      ) {
+        return acc
+      }
+      if (
+        exclusiveIncluding &&
+        exclusiveIncluding.indexOf(collectionId) === -1
+      ) {
+        return acc
+      }
+      if (noDecks.indexOf(collectionId) !== -1) {
+        return acc
+      }
+      var item = items.filter(
+        (it) =>
+          web3Utils.toChecksumAddress(it.options.address) ===
+          web3Utils.toChecksumAddress(log.address)
+      )[0]
+      return {
+        ...acc,
+        [itemId]: {
+          itemId,
+          item,
+          mainInterfaceAddress: log.address,
+          address: abi.decode(
+            ['address'],
+            abi.encode(['uint256'], [itemId])
+          )[0],
+        },
+      }
+    }, {})
+
+    excluding = excluding || []
+    excluding = excluding instanceof Array ? excluding : [excluding]
+
+    itemIds = Object.values(itemIds).filter(
+      (it) => excluding.indexOf(it.itemId) === -1
+    )
+
+    var l2Tokens
+    if (originalWeb3) {
+      var logs = await getLogs(originalWeb3.currentProvider, {
+        address: getNetworkElement(
+          { context, chainId: originalChainId },
+          'L2StandardTokenFactoryAddress'
+        ),
+        topics: [
+          web3Utils.sha3('StandardL2TokenCreated(address,address)'),
+          itemIds
+            .map((it) => abi.encode(['uint256'], [it.itemId]))
+            .filter((it, i, arr) => arr.indexOf(it) === i),
+        ],
+        fromBlock:
+          web3Utils.toHex(
+            getNetworkElement(
+              { context, chainId: originalChainId },
+              'deploySearchStart'
+            )
+          ) || '0x0',
+        toBlock: 'latest',
+      })
+      l2Tokens = Object.values(
+        logs.reduce((acc, it) => {
+          var id = abi.decode(['uint256'], it.topics[1])[0].toString()
+          return {
+            ...acc,
+            [id]: acc[id] || {
+              id,
+              l2Address: abi.decode(['address'], it.topics[2])[0].toString(),
+            },
+          }
+        }, {})
+      )
+      l2Tokens = l2Tokens.reduce((acc, it) => ({ ...acc, [it.id]: it }), {})
+      var keys = Object.keys(l2Tokens)
+      itemIds = itemIds.filter((it) => keys.indexOf(it.itemId) !== -1)
+    }
+
+    if (allMine && !originalWeb3) {
+      const args = {
+        address: itemIds
+          .map(
+            (it) =>
+              abi.decode(['address'], abi.encode(['uint256'], [it.itemId]))[0]
+          )
+          .filter((it, i, arr) => arr.indexOf(it) === i),
+        topics: [
+          web3Utils.sha3('Transfer(address,address,uint256)'),
+          [],
+          abi.encode(['address'], [account]),
+        ],
+        fromBlock:
+          web3Utils.toHex(
+            getNetworkElement({ context, chainId }, 'deploySearchStart')
+          ) || '0x0',
+        toBlock: 'latest',
+      }
+      var logs = await getLogs(web3.currentProvider, args)
+      logs = logs
+        .map((it) => it.address)
+        .filter((it, index, arr) => arr.indexOf(it) === index)
+      logs = await Promise.all(
+        logs.map(async (it) => ({
+          address: it,
+          balance: await blockchainCall(
+            newContract(context.IERC20ABI, it).methods.balanceOf,
+            account
+          ),
+        }))
+      )
+      logs = logs
+        .filter((it) => parseInt(it.balance) > 0)
+        .map((it) =>
+          abi
+            .decode(['uint256'], abi.encode(['address'], [it.address]))[0]
+            .toString()
+        )
+      itemIds = itemIds.filter((it) => logs.indexOf(it.itemId) !== -1)
+    }
+
+    var vals = [...itemIds] //await Promise.all(itemIds.map(it => loadItem({...data, collectionData, lightweight : lightweight !== false }, it.itemId, it.item)))
+    vals = !l2Tokens
+      ? vals
+      : vals.map((it) => ({ ...it, ...l2Tokens[it.id || it.itemId] }))
+
+    if (dualChainId && !wrappedOnly && !collectionData) {
+      vals = [
+        ...vals,
+        ...(await loadItemsByFactories({ ...data, dualMode: true })),
+      ]
+    }
+    return vals
+  } catch (exception) {
+    console.log(exception)
+    const message = (
+      exception?.stack ||
+      exception?.message ||
+      exception?.toString()
+    ).toLowerCase()
+    if (
+      message.indexOf('header not found') !== -1 ||
+      message.indexOf('429') !== -1
+    ) {
+      await new Promise((ok) => setTimeout(ok, 3000))
+      return await loadItemsByFactories(data, factories)
+    }
+    throw exception
+  }
 }
 
 export async function loadCollectionsByFactories(data, factories) {
+  var { context } = data
 
-    var {context} = data
+  var { items, logs } = await getLogsFromFactories(
+    data,
+    factories,
+    'Collection(address,address,bytes32)'
+  )
 
-    var { items, logs } = await getLogsFromFactories(data, factories, "Collection(address,address,bytes32)")
+  var collectionIds = logs.reduce((acc, log) => {
+    var collectionId = log.topics[3]
+    if (
+      context.deployedCollectionsToExclude &&
+      context.deployedCollectionsToExclude.indexOf(collectionId) !== -1
+    ) {
+      return acc
+    }
+    var item = items.filter(
+      (it) =>
+        web3Utils.toChecksumAddress(it.options.address) ===
+        web3Utils.toChecksumAddress(log.address)
+    )[0]
+    return {
+      ...acc,
+      [collectionId]: {
+        collectionId,
+        item,
+      },
+    }
+  }, {})
 
-    var collectionIds = logs.reduce((acc, log) => {
-        var collectionId = log.topics[3]
-        if(context.deployedCollectionsToExclude && context.deployedCollectionsToExclude.indexOf(collectionId) !== - 1) {
-            return acc
-        }
-        var item = items.filter(it => web3Utils.toChecksumAddress(it.options.address) === web3Utils.toChecksumAddress(log.address))[0]
-        return {
-            ...acc,
-            [collectionId] : {
-                collectionId,
-                item
-            }
-        }
-    }, {})
+  collectionIds = Object.values(collectionIds)
 
-    collectionIds = Object.values(collectionIds)
+  var topics = [
+    web3Utils.sha3('CollectionItem(bytes32,bytes32,uint256)'),
+    [],
+    collectionIds.map((it) => it.collectionId),
+  ]
 
-    var topics = [
-        web3Utils.sha3("CollectionItem(bytes32,bytes32,uint256)"),
-        [],
-        collectionIds.map(it => it.collectionId)
-    ]
+  var itemLogs = await getLogsFromFactories(data, factories, topics)
 
-    var itemLogs = await getLogsFromFactories(data, factories, topics)
+  var nonEmptyCollections = {}
 
-    var nonEmptyCollections = {}
+  itemLogs.logs.forEach((it) => (nonEmptyCollections[it.topics[2]] = true))
 
-    itemLogs.logs.forEach(it => nonEmptyCollections[it.topics[2]] = true)
+  var toExclude = collectionIds.filter(
+    (it) => !nonEmptyCollections[it.collectionId]
+  )
 
-    var toExclude = collectionIds.filter(it => !nonEmptyCollections[it.collectionId])
+  var collections = await Promise.all(
+    collectionIds.map((it) =>
+      loadCollection(
+        { ...data, deep: true },
+        it.collectionId,
+        factories,
+        it.item
+      )
+    )
+  )
 
-    var collections = await Promise.all(collectionIds.map(it => loadCollection({...data, deep : true}, it.collectionId, factories, it.item)))
+  var wrapperCollectionIds = await loadWrappedCollectionIds(data)
+  const wrapperCollectionsItems = [
+    ...collections.filter((it) => it.id === wrapperCollectionIds[3])[0].items,
+    ...collections.filter((it) => it.id === wrapperCollectionIds[4])[0].items,
+  ]
 
-    var wrapperCollectionIds = await loadWrappedCollectionIds(data)
-    const wrapperCollectionsItems = [
-        ...collections.filter(it => it.id === wrapperCollectionIds[3])[0].items,
-        ...collections.filter(it => it.id === wrapperCollectionIds[4])[0].items
-    ]
+  collections = collections.filter(
+    (it) =>
+      it.id !== wrapperCollectionIds[3] && it.id !== wrapperCollectionIds[4]
+  )
 
-    collections = collections.filter(it => it.id !== wrapperCollectionIds[3] && it.id !== wrapperCollectionIds[4])
+  collections.push({
+    name: 'Decks',
+    isDecks: true,
+    items: wrapperCollectionsItems,
+  })
 
-    collections.push({
-        name : 'Decks',
-        isDecks : true,
-        items : wrapperCollectionsItems
-    })
-
-    return collections
+  return collections
 }
 
 export async function getLogsFromFactories(data, factories, topics) {
-    var {context, web3, newContract, chainId} = data
-    var array = factories instanceof Array ? factories : [factories]
+  var { context, web3, newContract, chainId } = data
+  var array = factories instanceof Array ? factories : [factories]
 
-    var address = await Promise.all(array.map(it => blockchainCall(it.methods.mainInterface)))
-    address = address.filter((it, i) => address.indexOf(it) === i)
+  var address = await Promise.all(
+    array.map((it) => blockchainCall(it.methods.mainInterface))
+  )
+  address = address.filter((it, i) => address.indexOf(it) === i)
 
-    var items = address.map(it => newContract(context.ItemMainInterfaceABI, it))
+  var items = address.map((it) => newContract(context.ItemMainInterfaceABI, it))
 
-    var args = {
-        address,
-        topics : typeof topics === 'string' ? [
-            web3Utils.sha3(topics)
-        ] : topics,
-        fromBlock: web3Utils.toHex(getNetworkElement({ context, chainId }, 'deploySearchStart')) || "0x0",
-        toBlock : 'latest'
-    }
+  var args = {
+    address,
+    topics: typeof topics === 'string' ? [web3Utils.sha3(topics)] : topics,
+    fromBlock:
+      web3Utils.toHex(
+        getNetworkElement({ context, chainId }, 'deploySearchStart')
+      ) || '0x0',
+    toBlock: 'latest',
+  }
 
-    var logs = await getLogs(web3.currentProvider, args)
+  var logs = await getLogs(web3.currentProvider, args)
 
-    return {
-        items,
-        logs
-    }
+  return {
+    items,
+    logs,
+  }
 }
 
 export async function loadiETH(data) {
-    var {getGlobalContract} = data
-    return await loadItem(data, await blockchainCall(getGlobalContract('eRC20Wrapper').methods.itemIdOf, VOID_ETHEREUM_ADDRESS))
+  var { getGlobalContract } = data
+  return await loadItem(
+    data,
+    await blockchainCall(
+      getGlobalContract('eRC20Wrapper').methods.itemIdOf,
+      VOID_ETHEREUM_ADDRESS
+    )
+  )
 }
 
 export async function loadItem(data, itemId, item) {
+  var {
+    context,
+    chainId,
+    newContract,
+    getGlobalContract,
+    collectionData,
+    lightweight,
+  } = data
 
-    var {context, chainId, newContract, getGlobalContract, collectionData, lightweight } = data
+  var address = item
+    ? await blockchainCall(item.methods.interoperableOf, itemId)
+    : itemId.indexOf('0x') === 0
+    ? itemId
+    : abi.decode(['address'], abi.encode(['uint256'], [itemId]))[0]
+  var contract = newContract(context.ItemInteroperableInterfaceABI, address)
+  itemId = item ? itemId : await blockchainCall(contract.methods.itemId)
+  item =
+    item ||
+    newContract(
+      context.ItemMainInterfaceABI,
+      await blockchainCall(contract.methods.mainInterface)
+    )
+  var itemData = await blockchainCall(item.methods.item, itemId)
+  collectionData =
+    collectionData ||
+    (await loadCollectionMetadata(
+      { chainId, context, newContract, getGlobalContract },
+      itemData.collectionId,
+      item
+    ))
+  var index = -1
+  try {
+    index = (await loadWrappedCollectionIds(data)).indexOf(
+      itemData.collectionId
+    )
+  } catch (e) {}
 
-    var address = item ? await blockchainCall(item.methods.interoperableOf, itemId) : itemId.indexOf('0x') === 0 ? itemId : abi.decode(["address"], abi.encode(["uint256"], [itemId]))[0]
-    var contract = newContract(context.ItemInteroperableInterfaceABI, address)
-    itemId = item ? itemId : await blockchainCall(contract.methods.itemId)
-    item = item || newContract(context.ItemMainInterfaceABI, await blockchainCall(contract.methods.mainInterface))
-    var itemData = await blockchainCall(item.methods.item, itemId)
-    collectionData = collectionData || await loadCollectionMetadata({chainId, context, newContract, getGlobalContract}, itemData.collectionId, item)
-    var index = -1
-    try {
-        index = (await loadWrappedCollectionIds(data)).indexOf(itemData.collectionId)
-    } catch(e) {}
+  var result = {
+    id: itemId,
+    ...itemData,
+    ...itemData.header,
+    mainInterface: item,
+    mainInterfaceAddress: item.options.address,
+    host: collectionData.host,
+    collectionData,
+    address,
+    contract,
+    decimals: '18',
+    wrapType: wrappedCollectionIds.wrapTypes[index],
+    wrapper: wrappedCollectionIds.wrappers[index],
+    isDeck: index > 2,
+  }
 
-    var result = {
-        id : itemId,
-        ...itemData,
-        ...itemData.header,
-        mainInterface : item,
-        mainInterfaceAddress : item.options.address,
-        host : collectionData.host,
-        collectionData,
-        address,
-        contract,
-        decimals : "18",
-        wrapType : wrappedCollectionIds.wrapTypes[index],
-        wrapper : wrappedCollectionIds.wrappers[index],
-        isDeck : index > 2
-    }
+  result.uri =
+    result.uri.toLowerCase().indexOf('0x') === 0
+      ? await blockchainCall(
+          (result.wrapper || result.mainInterface).methods.uri,
+          result.id
+        )
+      : result.uri
 
-    result.uri = result.uri.toLowerCase().indexOf('0x') === 0 ? await blockchainCall((result.wrapper || result.mainInterface).methods.uri, result.id) : result.uri
+  result = result.wrapper ? await loadWrappedData(data, result) : result
 
-    result = result.wrapper ? await loadWrappedData(data, result) : result
+  result =
+    lightweight !== true
+      ? await loadItemDynamicInfo(data, result, item)
+      : result
 
-    result = lightweight !== true ? await loadItemDynamicInfo(data, result, item) : result
-
-    return result
+  return result
 }
 
 async function loadWrappedData(data, itemData) {
+  var source = await blockchainCall(
+    itemData.wrapper.methods.source,
+    itemData.id
+  )
 
-    var source = await blockchainCall(itemData.wrapper.methods.source, itemData.id)
+  var sourceAddress = source
+  var sourceId
+  if ((typeof sourceAddress).toLowerCase() !== 'string') {
+    sourceAddress = source[0]
+    sourceId = source[1].toString()
+  }
+  itemData.sourceAddress = sourceAddress
 
-    var sourceAddress = source
-    var sourceId
-    if((typeof sourceAddress).toLowerCase() !== 'string') {
-        sourceAddress = source[0]
-        sourceId = source[1].toString()
-    }
-    itemData.sourceAddress = sourceAddress
+  if (itemData.isDeck) {
+    var result = await loadDeckSource(data, itemData)
+    sourceId = result.sourceId
+  }
 
-    if(itemData.isDeck) {
-        var result = await loadDeckSource(data, itemData)
-        sourceId = result.sourceId
-    }
+  sourceId && (itemData.sourceId = sourceId)
 
-    sourceId && (itemData.sourceId = sourceId)
-
-    return itemData
+  return itemData
 }
 
 async function loadDeckSource(data, itemData) {
+  var { chainId, context, web3 } = data
 
-    var {chainId, context, web3} = data
+  var element
 
-    var element
+  var args = {
+    address: itemData.wrapper.options.address,
+    topics: [
+      web3Utils.sha3('Token(address,uint256,uint256)'),
+      [],
+      [],
+      abi.encode(['uint256'], [itemData.id]),
+    ],
+    fromBlock:
+      web3Utils.toHex(
+        getNetworkElement({ context, chainId }, 'deploySearchStart')
+      ) || '0x0',
+    toBlock: 'latest',
+  }
 
-    var args = {
-        address : itemData.wrapper.options.address,
-        topics : [
-            web3Utils.sha3('Token(address,uint256,uint256)'),
-            [],
-            [],
-            abi.encode(["uint256"], [itemData.id])
-        ],
-        fromBlock: web3Utils.toHex(getNetworkElement({ context, chainId }, 'deploySearchStart')) || "0x0",
-        toBlock : 'latest'
-    }
+  var logs = await getLogs(web3.currentProvider, args)
 
-    var logs = await getLogs(web3.currentProvider, args)
+  if (logs.length === 0) {
+    logs = await getLogs(web3.currentProvider, {
+      ...args,
+      clear: true,
+    })
+  }
 
-    if(logs.length === 0) {
-        logs = await getLogs(web3.currentProvider, {
-            ...args,
-            clear : true
-        })
-    }
+  if (logs.length === 0) {
+    throw new Error('logs')
+  }
 
-    if(logs.length === 0) {
-        throw new Error('logs')
-    }
+  element = logs.length > 0 && {
+    sourceAddress: abi.decode(['address'], logs[0].topics[1])[0].toString(),
+    sourceId: abi.decode(['uint256'], logs[0].topics[2])[0].toString(),
+  }
 
-    element = logs.length > 0 && {
-        sourceAddress : abi.decode(["address"], logs[0].topics[1])[0].toString(),
-        sourceId : abi.decode(["uint256"], logs[0].topics[2])[0].toString()
-    }
-
-    return element
+  return element
 }
 
 export async function tryRetrieveMetadata2(data, itemData, image) {
+  var metadata = {
+    name: itemData.name,
+    symbol: itemData.symbol,
+    uri: cleanUri(
+      data,
+      itemData.uri,
+      itemData.id || itemData.itemId || itemData.tokenId
+    ),
+  }
 
-    var metadata = {
-        name : itemData.name,
-        symbol : itemData.symbol,
-        uri : cleanUri(data, itemData.uri, itemData.id || itemData.itemId || itemData.tokenId)
+  image &&
+    (metadata.image = cleanUri(
+      data,
+      image,
+      itemData.id || itemData.itemId || itemData.tokenId
+    ))
+
+  if (itemData.sourceAddress && !itemData.sourceId) {
+    try {
+      metadata = {
+        ...metadata,
+        ...(await (await fetch(metadata.uri)).json()),
+      }
+    } catch (e) {}
+    metadata.image = await getTokenImage(data, itemData.sourceAddress)
+  }
+
+  if (itemData.sourceAddress && itemData.sourceId) {
+    var asset = await getAsset(data, itemData.sourceAddress, itemData.sourceId)
+
+    asset &&
+      (asset.image =
+        (itemData.isDeck && asset.collection?.imageUrl) || asset.image)
+
+    metadata = {
+      ...metadata,
+      ...asset,
     }
+  }
 
-    image && (metadata.image = cleanUri(data, image, itemData.id || itemData.itemId || itemData.tokenId))
-
-
-    if(itemData.sourceAddress && !itemData.sourceId) {
-        try {
-            metadata = {
-                ...metadata,
-                ...(await (await fetch(metadata.uri)).json())
-            }
-        } catch(e) {}
-        metadata.image = await getTokenImage(data, itemData.sourceAddress)
-    }
-
-    if(itemData.sourceAddress && itemData.sourceId) {
-        var asset = await getAsset(data, itemData.sourceAddress, itemData.sourceId)
-
-        asset && (asset.image = (itemData.isDeck && asset.collection?.imageUrl) || asset.image)
-
+  if (!itemData.wrapper && !metadata.image) {
+    //for(var i = 0; i < 15; i++)
+    {
+      try {
         metadata = {
-            ...metadata,
-            ...asset
+          ...metadata,
+          ...(await (await fetch(metadata.uri)).json()),
         }
+        //break
+      } catch (e) {
+        //await new Promise(ok => setTimeout(ok, 1500))
+      }
     }
+  }
 
-    if(!itemData.wrapper && !metadata.image) {
-        //for(var i = 0; i < 15; i++)
-        {
-            try {
-                metadata = {
-                    ...metadata,
-                    ...(await (await fetch(metadata.uri)).json())
-                }
-                //break
-            } catch(e) {
-                //await new Promise(ok => setTimeout(ok, 1500))
-            }
-        }
-    }
+  metadata.image = cleanUri(
+    data,
+    metadata.image || `${process.env.PUBLIC_URL}/img/missingcoin.gif`,
+    itemData.id || itemData.itemId || itemData.tokenId
+  )
 
-    metadata.image = cleanUri(data, metadata.image || `${process.env.PUBLIC_URL}/img/missingcoin.gif`, itemData.id || itemData.itemId || itemData.tokenId)
-
-    return metadata
+  return metadata
 }
 
 export function cleanUri(data, uri, id) {
-    uri = uri || ""
-    if(uri.toLowerCase().indexOf('0x') === 0) {
-        return uri
-    }
-    uri = decodeURI(uri)
-    uri = id ? uri.split('0x{id}').join(web3Utils.numberToHex(id)) : uri
-    uri = id ? uri.split('{id}').join(id) : uri
-    if(uri.toLowerCase().indexOf('ipfs') !== -1) {
-        uri = 'ipfs://' + (uri.substring(uri.toLowerCase().indexOf('/ipfs/') + ('/ipfs/').length))
-    }
-    uri = uri.indexOf('data') === 0 ? uri : formatLink({ context : data.context }, uri)
-
-    uri = uri.split('gateway.ipfs.io').join('ipfs.io')
-
-    if(uri.indexOf('trustwallet') !== -1 && uri.indexOf('/logo.png') !== -1) {
-        var split = uri.split('/logo.png')
-        var split0 = split[0].split('/')
-        var addr = split0[split0.length - 1]
-        addr = web3Utils.toChecksumAddress(addr)
-        if(addr === VOID_ETHEREUM_ADDRESS) {
-            return `${process.env.PUBLIC_URL}/img/eth_logo.png`
-        }
-        split0[split0.length - 1] = addr
-        split0 = split0.join('/')
-        split[0] = split0
-        uri = split.join('/logo.png')
-    }
-
-    uri = uri.split('///').join('/')
-
+  uri = uri || ''
+  if (uri.toLowerCase().indexOf('0x') === 0) {
     return uri
+  }
+  uri = decodeURI(uri)
+  uri = id ? uri.split('0x{id}').join(web3Utils.numberToHex(id)) : uri
+  uri = id ? uri.split('{id}').join(id) : uri
+  if (uri.toLowerCase().indexOf('ipfs') !== -1) {
+    uri =
+      'ipfs://' +
+      uri.substring(uri.toLowerCase().indexOf('/ipfs/') + '/ipfs/'.length)
+  }
+  uri =
+    uri.indexOf('data') === 0 ? uri : formatLink({ context: data.context }, uri)
+
+  uri = uri.split('gateway.ipfs.io').join('ipfs.io')
+
+  if (uri.indexOf('trustwallet') !== -1 && uri.indexOf('/logo.png') !== -1) {
+    var split = uri.split('/logo.png')
+    var split0 = split[0].split('/')
+    var addr = split0[split0.length - 1]
+    addr = web3Utils.toChecksumAddress(addr)
+    if (addr === VOID_ETHEREUM_ADDRESS) {
+      return `${process.env.PUBLIC_URL}/img/eth_logo.png`
+    }
+    split0[split0.length - 1] = addr
+    split0 = split0.join('/')
+    split[0] = split0
+    uri = split.join('/logo.png')
+  }
+
+  uri = uri.split('///').join('/')
+
+  return uri
 }
 
 export async function loadItemDynamicInfo(data, itemData) {
+  if (typeof itemData === 'string') {
+    return await loadItem({ ...data, lightweight: false }, itemData)
+  }
 
-    if(typeof itemData === 'string') {
-        return await loadItem({ ...data, lightweight : false }, itemData)
-    }
+  const key = web3Utils.sha3(
+    `item-${web3Utils.toChecksumAddress(itemData.mainInterfaceAddress)}-${
+      itemData.id || itemData.itemId
+    }`
+  )
+  var metadata = JSON.parse(await cache.getItem(key))
 
-    const key = web3Utils.sha3(`item-${web3Utils.toChecksumAddress(itemData.mainInterfaceAddress)}-${itemData.id || itemData.itemId}`)
-    var metadata = JSON.parse(await cache.getItem(key))
-
-    if(metadata) {
-        return await cleanItemData(data, itemData, metadata)
-    }
-
-    if(!itemData.id || (itemData.l2Address && data.dualChainId)) {
-        return {...itemData, ...(await loadItem({ ...(itemData.l2Address && data.dualChainId ? await dualChainAsMainChain(data) : data), lightweight : false }, itemData.id || itemData.itemId))}
-    }
-
-    var image
-    try {
-        const delegation = await tryRetrieveDelegationAddressFromItem(data, itemData)
-        image = delegation?.tokenURI || delegation?.image || undefined
-    } catch(e) {}
-
-    metadata = await tryRetrieveMetadata2(data, itemData, image)
-
-    metadata = {
-        ...metadata,
-        name : itemData.name || metadata.name,
-        symbol : itemData.symbol || metadata.symbol,
-        image : cleanUri(data, metadata.image, itemData.id || itemData.itemId || itemData.tokenId)
-    }
-
-    metadata && await cache.setItem(key, JSON.stringify(metadata))
-
+  if (metadata) {
     return await cleanItemData(data, itemData, metadata)
+  }
 
+  if (!itemData.id || (itemData.l2Address && data.dualChainId)) {
+    return {
+      ...itemData,
+      ...(await loadItem(
+        {
+          ...(itemData.l2Address && data.dualChainId
+            ? await dualChainAsMainChain(data)
+            : data),
+          lightweight: false,
+        },
+        itemData.id || itemData.itemId
+      )),
+    }
+  }
+
+  var image
+  try {
+    const delegation = await tryRetrieveDelegationAddressFromItem(
+      data,
+      itemData
+    )
+    image = delegation?.tokenURI || delegation?.image || undefined
+  } catch (e) {}
+
+  metadata = await tryRetrieveMetadata2(data, itemData, image)
+
+  metadata = {
+    ...metadata,
+    name: itemData.name || metadata.name,
+    symbol: itemData.symbol || metadata.symbol,
+    image: cleanUri(
+      data,
+      metadata.image,
+      itemData.id || itemData.itemId || itemData.tokenId
+    ),
+  }
+
+  metadata && (await cache.setItem(key, JSON.stringify(metadata)))
+
+  return await cleanItemData(data, itemData, metadata)
 }
 
 async function cleanItemData(data, itemData, metadata) {
-
-    if(itemData.l2Address) {
-        var l2Contract = (data.dualChainId ? data : await dualChainAsMainChain(data)).newContract(data.context.ItemInteroperableInterfaceABI, itemData.l2Address)
-        return {
-            address : itemData.l2Address,
-            contract : l2Contract,
-            l2Address : itemData.l2Address,
-            l2Contract,
-            l1Address : itemData.address,
-            l1Contract : itemData.contract,
-            ...metadata,
-            metadata,
-            decimals : '18',
-            collectionData : itemData.collectionData,
-            l1Data : itemData
-        }
-    }
-
+  if (itemData.l2Address) {
+    var l2Contract = (
+      data.dualChainId ? data : await dualChainAsMainChain(data)
+    ).newContract(
+      data.context.ItemInteroperableInterfaceABI,
+      itemData.l2Address
+    )
     return {
-        ...itemData,
-        ...metadata,
-        metadata,
-        address : itemData.address,
-        id : itemData.id
+      address: itemData.l2Address,
+      contract: l2Contract,
+      l2Address: itemData.l2Address,
+      l2Contract,
+      l1Address: itemData.address,
+      l1Contract: itemData.contract,
+      ...metadata,
+      metadata,
+      decimals: '18',
+      collectionData: itemData.collectionData,
+      l1Data: itemData,
     }
+  }
+
+  return {
+    ...itemData,
+    ...metadata,
+    metadata,
+    address: itemData.address,
+    id: itemData.id,
+  }
 }
 
 function cleanMetadataUris(dataInput, metadata) {
-    var keys = Object.keys(metadata)
-    for(var key of keys) {
-        var value = metadata[key]
-        if(key !== 'description' && value.indexOf && (value.indexOf('://') !== -1 || value.indexOf('//') === 0)) {
-            try {
-                value = cleanUri(dataInput, value, metadata.id || metadata.itemId || metadata.tokenId)
-            } catch(e) {
-                console.log('METADATA VALUE', key, value, (e.stack || e.message || e))
-            }
-        }
-        metadata[key] = value
+  var keys = Object.keys(metadata)
+  for (var key of keys) {
+    var value = metadata[key]
+    if (
+      key !== 'description' &&
+      value.indexOf &&
+      (value.indexOf('://') !== -1 || value.indexOf('//') === 0)
+    ) {
+      try {
+        value = cleanUri(
+          dataInput,
+          value,
+          metadata.id || metadata.itemId || metadata.tokenId
+        )
+      } catch (e) {
+        console.log('METADATA VALUE', key, value, e.stack || e.message || e)
+      }
     }
-    return metadata
+    metadata[key] = value
+  }
+  return metadata
 }
 
-export async function loadCollectionMetadata(dataInput, collectionId, mainInterface) {
+export async function loadCollectionMetadata(
+  dataInput,
+  collectionId,
+  mainInterface
+) {
+  var { context, newContract } = dataInput
 
-    var {context, newContract} = dataInput
+  var key = web3Utils.sha3('collection-' + collectionId)
 
-    var key = web3Utils.sha3('collection-' + collectionId)
+  var metadata = JSON.parse(await cache.getItem(key))
 
-    var metadata = JSON.parse(await cache.getItem(key))
-
-    if(!metadata) {
-        metadata = await tryRetrieveMetadata({context}, {
-            ...(await blockchainCall(mainInterface.methods.collection, collectionId)),
-            mainInterface,
-            id : collectionId
-        })
-        delete metadata.mainInterface
-        metadata = (metadata && cleanMetadataUris(dataInput, metadata)) || metadata
-        metadata && await cache.setItem(key, JSON.stringify(metadata))
-    }
-
-    metadata.hostContract = newContract(context.MultiOperatorHostABI, metadata.host)
-    try {
-        metadata.mintOperator = await blockchainCall(metadata.hostContract.methods.operator, 1)
-        metadata.metadataOperator = await blockchainCall(metadata.hostContract.methods.operator, 4)
-    } catch(e) {
-    }
-
-    metadata = {
-        ...metadata,
+  if (!metadata) {
+    metadata = await tryRetrieveMetadata(
+      { context },
+      {
+        ...(await blockchainCall(
+          mainInterface.methods.collection,
+          collectionId
+        )),
         mainInterface,
-        metadata
-    }
-    if(collectionId === '0xc8ae2302153c696a508f505d7a046ff5fa78dcf79478eea09c682d0101f02252') {
-        metadata.image = 'https://ipfs.io/ipfs/QmYpYpHVNtvPYJsuDcjfGEXc9y5FozERzQ92JaRcAcfq3h'
-    }
-    var index = (await loadWrappedCollectionIds(dataInput)).indexOf(collectionId)
+        id: collectionId,
+      }
+    )
+    delete metadata.mainInterface
+    metadata = (metadata && cleanMetadataUris(dataInput, metadata)) || metadata
+    metadata && (await cache.setItem(key, JSON.stringify(metadata)))
+  }
 
-    metadata = {...metadata, ...itemProjectionsMetadata[index]}
-    return metadata
+  metadata.hostContract = newContract(
+    context.MultiOperatorHostABI,
+    metadata.host
+  )
+  try {
+    metadata.mintOperator = await blockchainCall(
+      metadata.hostContract.methods.operator,
+      1
+    )
+    metadata.metadataOperator = await blockchainCall(
+      metadata.hostContract.methods.operator,
+      4
+    )
+  } catch (e) {}
+
+  metadata = {
+    ...metadata,
+    mainInterface,
+    metadata,
+  }
+  if (
+    collectionId ===
+    '0xc8ae2302153c696a508f505d7a046ff5fa78dcf79478eea09c682d0101f02252'
+  ) {
+    metadata.image =
+      'https://ipfs.io/ipfs/QmYpYpHVNtvPYJsuDcjfGEXc9y5FozERzQ92JaRcAcfq3h'
+  }
+  var index = (await loadWrappedCollectionIds(dataInput)).indexOf(collectionId)
+
+  metadata = { ...metadata, ...itemProjectionsMetadata[index] }
+  return metadata
 }
 
 export async function loadCollection(data, collectionId, factory, item) {
-    var {context, newContract} = data
-    var collectionData = await loadCollectionMetadata(data, collectionId, item = item || newContract(context.ItemMainInterfaceABI, await blockchainCall(factory.methods.mainInterface)))
-    return {
-        ...collectionData,
-        items : await loadItemsByFactories({...data, collectionData, lightweight : false}, factory)
-    }
+  var { context, newContract } = data
+  var collectionData = await loadCollectionMetadata(
+    data,
+    collectionId,
+    (item =
+      item ||
+      newContract(
+        context.ItemMainInterfaceABI,
+        await blockchainCall(factory.methods.mainInterface)
+      ))
+  )
+  return {
+    ...collectionData,
+    items: await loadItemsByFactories(
+      { ...data, collectionData, lightweight: false },
+      factory
+    ),
+  }
 }
 
-export function wrapERC20({web3}, token, _, value, w20) {
-    var items = [{
-        header : {
-          host : VOID_ETHEREUM_ADDRESS,
-          name : "",
-          symbol : "",
-          uri : ""
-        },
-        collectionId : web3.eth.abi.encodeParameter("address", token.address),
-        id : "0",
-        accounts : [],
-        amounts : [value]
-    }]
-    return blockchainCall(w20.methods.mintItemsWithPermit, items, [], {value : token.address === VOID_ETHEREUM_ADDRESS ? value : '0'})
+export function wrapERC20({ web3 }, token, _, value, w20) {
+  var items = [
+    {
+      header: {
+        host: VOID_ETHEREUM_ADDRESS,
+        name: '',
+        symbol: '',
+        uri: '',
+      },
+      collectionId: web3.eth.abi.encodeParameter('address', token.address),
+      id: '0',
+      accounts: [],
+      amounts: [value],
+    },
+  ]
+  return blockchainCall(w20.methods.mintItemsWithPermit, items, [], {
+    value: token.address === VOID_ETHEREUM_ADDRESS ? value : '0',
+  })
 }
 
 export function encodeHeader(header) {
-    var headerType = [
-        "address",
-        "string",
-        "string",
-        "string"
-    ]
-    var headerVal = [
-        header.host,
-        header.name,
-        header.symbol,
-        header.uri
-    ]
-    return abi.encode([`tuple(${headerType.join(',')})`], [headerVal])
+  var headerType = ['address', 'string', 'string', 'string']
+  var headerVal = [header.host, header.name, header.symbol, header.uri]
+  return abi.encode([`tuple(${headerType.join(',')})`], [headerVal])
 }
 
 export function wrapNFT({ account }, token, _, value, wrapper, type, reserve) {
-
-    if(type.indexOf('ERC1155') !== -1) {
-        var data = abi.encode(['uint256[]', 'address[]'], [[value], [account]])
-        if(type.indexOf('Deck') !== -1) {
-            data = abi.encode(['uint256[]', 'address[]', 'bool'], [[value], [account], reserve === true])
-        }
-        return blockchainCall(token.mainInterface.methods.safeTransferFrom, account, wrapper.options.address, token.id, value, data)
+  if (type.indexOf('ERC1155') !== -1) {
+    var data = abi.encode(['uint256[]', 'address[]'], [[value], [account]])
+    if (type.indexOf('Deck') !== -1) {
+      data = abi.encode(
+        ['uint256[]', 'address[]', 'bool'],
+        [[value], [account], reserve === true]
+      )
     }
+    return blockchainCall(
+      token.mainInterface.methods.safeTransferFrom,
+      account,
+      wrapper.options.address,
+      token.id,
+      value,
+      data
+    )
+  }
 
-    const createItems = [{
-        header : {
-          host : VOID_ETHEREUM_ADDRESS,
-          name : "",
-          symbol : "",
-          uri : ""
-        },
-        collectionId : abi.encode(["address"], [token.mainInterfaceAddress]),
-        id : token.id,
-        accounts : [],
-        amounts : []
-    }]
+  const createItems = [
+    {
+      header: {
+        host: VOID_ETHEREUM_ADDRESS,
+        name: '',
+        symbol: '',
+        uri: '',
+      },
+      collectionId: abi.encode(['address'], [token.mainInterfaceAddress]),
+      id: token.id,
+      accounts: [],
+      amounts: [],
+    },
+  ]
 
-    if(type.indexOf('Deck') !== -1) {
-        const mintItems = Object.entries(wrapper.methods).filter(it => it[0].indexOf('mintItems') !== -1 && it[0].indexOf('bool[]') !== -1)[0]
-        return blockchainCall(mintItems[1], createItems, [reserve === true])
-    }
+  if (type.indexOf('Deck') !== -1) {
+    const mintItems = Object.entries(wrapper.methods).filter(
+      (it) =>
+        it[0].indexOf('mintItems') !== -1 && it[0].indexOf('bool[]') !== -1
+    )[0]
+    return blockchainCall(mintItems[1], createItems, [reserve === true])
+  }
 
-    return blockchainCall(wrapper.methods.mintItems, createItems)
+  return blockchainCall(wrapper.methods.mintItems, createItems)
 }
 
-export async function checkCoverSize({context}, file, mandatory) {
-    if(!file && mandatory) {
-        throw "Cover is Mandatory"
+export async function checkCoverSize({ context }, file, mandatory) {
+  if (!file && mandatory) {
+    throw 'Cover is Mandatory'
+  }
+  var cover = file
+  if ((typeof file).toLowerCase() !== 'string') {
+    cover = file.size
+      ? file
+      : file.item
+      ? file.item(0)
+      : file.get
+      ? file.get(0)
+      : file[0]
+  }
+  if ((typeof cover).toLowerCase() === 'string') {
+    cover = formatLink({ context }, cover)
+  }
+  if (!cover && mandatory) {
+    throw 'Cover is Mandatory'
+  }
+  function toImage(src, ok, ko, reader) {
+    var image = new Image()
+    image.onload = function onload() {
+      var result = image.width <= context.metadataCoverMaxWidth
+      if (result && reader) {
+        var byteLength = parseInt(
+          reader.result
+            .substring(reader.result.indexOf(',') + 1)
+            .replace(/=/g, '').length * 0.75
+        )
+        var mBLength = byteLength / 1024 / 1024
+        result = mBLength <= (context.metadataCoverMaxWeightInMB || 100000)
+      }
+      return ok(result)
     }
-    var cover = file
-    if ((typeof file).toLowerCase() !== "string") {
-        cover = file.size ? file : file.item ? file.item(0) : file.get ? file.get(0) : file[0]
+    image.onerror = ko
+    image.src = src
+  }
+  return await new Promise(function (ok, ko) {
+    try {
+      var reader = new FileReader()
+      reader.addEventListener(
+        'load',
+        function () {
+          toImage(
+            (window.URL || window.webkitURL).createObjectURL(cover),
+            ok,
+            ko,
+            reader
+          )
+        },
+        false
+      )
+      reader.readAsDataURL(cover)
+    } catch (e) {
+      try {
+        toImage(cover, ok, ko)
+      } catch (e) {
+        return ko(e)
+      }
     }
-    if ((typeof cover).toLowerCase() === "string") {
-        cover = formatLink({ context }, cover)
-    }
-    if(!cover && mandatory) {
-        throw "Cover is Mandatory"
-    }
-    function toImage(src, ok, ko, reader) {
-        var image = new Image()
-        image.onload = function onload() {
-            var result = image.width <= context.metadataCoverMaxWidth
-            if(result && reader) {
-                var byteLength = parseInt(reader.result.substring(reader.result.indexOf(',') + 1).replace(/=/g, "").length * 0.75)
-                var mBLength = byteLength / 1024 / 1024
-                result = mBLength <= (context.metadataCoverMaxWeightInMB || 100000)
-            }
-            return ok(result)
-        }
-        image.onerror = ko
-        image.src = src
-    }
-    return await new Promise(function(ok, ko) {
-        try {
-            var reader = new FileReader()
-            reader.addEventListener("load", function() {
-                toImage((window.URL || window.webkitURL).createObjectURL(cover), ok, ko, reader)
-            }, false)
-            reader.readAsDataURL(cover)
-        } catch(e) {
-            try {
-                toImage(cover, ok, ko)
-            } catch(e) {
-                return ko(e)
-            }
-        }
-    })
+  })
 }
 
 export function checkCollectionMetadata(metadata, throwOnError) {
-    var errors = []
+  var errors = []
 
-    if(!metadata) {
-        errors.push('Metadata')
-    }
+  if (!metadata) {
+    errors.push('Metadata')
+  }
 
-    if(metadata && !metadata.description) {
-        errors.push('Description is mandatory')
-    }
+  if (metadata && !metadata.description) {
+    errors.push('Description is mandatory')
+  }
 
-    if(metadata && (!metadata.image || ((typeof metadata.image).toLowerCase() === 'filelist' && metadata.image.length === 0))) {
-        errors.push('Cover image is mandatory')
-    }
+  if (
+    metadata &&
+    (!metadata.image ||
+      ((typeof metadata.image).toLowerCase() === 'filelist' &&
+        metadata.image.length === 0))
+  ) {
+    errors.push('Cover image is mandatory')
+  }
 
-    if(metadata && !metadata.background_color) {
-        errors.push('Background Color is mandatory')
-    }
+  if (metadata && !metadata.background_color) {
+    errors.push('Background Color is mandatory')
+  }
 
-    if(errors.length > 0 && throwOnError) {
-        throw `Errors:\n${errors.join('\n')}`
-    }
+  if (errors.length > 0 && throwOnError) {
+    throw `Errors:\n${errors.join('\n')}`
+  }
 
-    return errors.length === 0
+  return errors.length === 0
 }
 
-export async function deployCollection({ context, ipfsHttpClient, projectionFactory }, state) {
-    if(state.disabled) {
-        return
-    }
-    var uri = state.metadataLink || await uploadMetadata({ context, ipfsHttpClient }, state.metadata)
+export async function deployCollection(
+  { context, ipfsHttpClient, projectionFactory },
+  state
+) {
+  if (state.disabled) {
+    return
+  }
+  var uri =
+    state.metadataLink ||
+    (await uploadMetadata({ context, ipfsHttpClient }, state.metadata))
 
-    console.log(uri)
+  console.log(uri)
 
-    var ops = [
-        1,
-        4
-    ]
+  var ops = [1, 4]
 
-    var authorized = [
-        state.host,
-        state.metadataHost
-    ]
+  var authorized = [state.host, state.metadataHost]
 
-    var headerType = [
-        "address",
-        "string",
-        "string",
-        "string"
-    ]
+  var headerType = ['address', 'string', 'string', 'string']
 
-    var headerVal = [
-        VOID_ETHEREUM_ADDRESS,
-        state.name,
-        state.symbol,
-        uri
-    ]
+  var headerVal = [VOID_ETHEREUM_ADDRESS, state.name, state.symbol, uri]
 
-    var createItemType = [
-        `tuple(${headerType.join(',')})`,
-        'bytes32',
-        'uint256',
-        'address[]',
-        'uint256[]'
-    ]
+  var createItemType = [
+    `tuple(${headerType.join(',')})`,
+    'bytes32',
+    'uint256',
+    'address[]',
+    'uint256[]',
+  ]
 
-    var deployData = abi.encode(["uint256[]", "address[]"], [ops, authorized])
-    deployData = abi.encode(["bytes32", `tuple(${headerType.join(',')})`, `tuple(${createItemType.join(',')})[]`, 'bytes'], [VOID_BYTES32, headerVal, [], deployData])
-    deployData = abi.encode(['address', 'bytes'], [VOID_ETHEREUM_ADDRESS, deployData])
-    deployData = abi.encode(['uint256', 'bytes'], [0, deployData])
+  var deployData = abi.encode(['uint256[]', 'address[]'], [ops, authorized])
+  deployData = abi.encode(
+    [
+      'bytes32',
+      `tuple(${headerType.join(',')})`,
+      `tuple(${createItemType.join(',')})[]`,
+      'bytes',
+    ],
+    [VOID_BYTES32, headerVal, [], deployData]
+  )
+  deployData = abi.encode(
+    ['address', 'bytes'],
+    [VOID_ETHEREUM_ADDRESS, deployData]
+  )
+  deployData = abi.encode(['uint256', 'bytes'], [0, deployData])
 
-    return await blockchainCall(projectionFactory.methods.deploy, deployData)
+  return await blockchainCall(projectionFactory.methods.deploy, deployData)
 }
 
 function checkSingleItemMetadata(field, metadataType) {
-    if((!metadataType.type || metadataType.type === 'color' || metadataType.type === 'textarea' || metadataType.type === 'text' || metadataType.type === 'url') && !field) {
-        return `${metadataType.label} is empty`
-    }
+  if (
+    (!metadataType.type ||
+      metadataType.type === 'color' ||
+      metadataType.type === 'textarea' ||
+      metadataType.type === 'text' ||
+      metadataType.type === 'url') &&
+    !field
+  ) {
+    return `${metadataType.label} is empty`
+  }
 
-    if(metadataType?.type === 'file' && !field || (((typeof field).toLowerCase() === 'filelist' && field.length === 0))) {
-        return `${metadataType.label} is not set`
-    }
+  if (
+    (metadataType?.type === 'file' && !field) ||
+    ((typeof field).toLowerCase() === 'filelist' && field.length === 0)
+  ) {
+    return `${metadataType.label} is not set`
+  }
 }
 
 export function checkItemMetadata(metadata, metadataTypes, throwOnError) {
-    if(!metadataTypes) {
-        return false
+  if (!metadataTypes) {
+    return false
+  }
+
+  var errors = []
+
+  if (!metadata) {
+    errors.push('Metadata')
+  } else {
+    var mandatoryFields = metadataTypes.filter((it) => it.mandatory)
+    for (var mandatoryField of mandatoryFields) {
+      var error = checkSingleItemMetadata(
+        metadata[mandatoryField.field],
+        mandatoryField
+      )
+      error && errors.push(error)
     }
+  }
 
-    var errors = []
+  if (errors.length > 0 && throwOnError) {
+    throw `Errors:\n${errors.join('\n')}`
+  }
 
-    if(!metadata) {
-        errors.push('Metadata')
-    } else {
-        var mandatoryFields = metadataTypes.filter(it => it.mandatory)
-        for(var mandatoryField of mandatoryFields) {
-            var error = checkSingleItemMetadata(metadata[mandatoryField.field], mandatoryField)
-            error && errors.push(error)
-        }
-    }
-
-    if(errors.length > 0 && throwOnError) {
-        throw `Errors:\n${errors.join('\n')}`
-    }
-
-    return errors.length === 0
+  return errors.length === 0
 }
 
-export async function deployItem({ context, ipfsHttpClient, projectionFactory, newContract, account }, state) {
-    if(state.disabled) {
-        return
-    }
+export async function deployItem(
+  { context, ipfsHttpClient, projectionFactory, newContract, account },
+  state
+) {
+  if (state.disabled) {
+    return
+  }
 
-    const mainInterface = newContract(context.ItemMainInterfaceABI, await blockchainCall(projectionFactory.methods.mainInterface))
+  const mainInterface = newContract(
+    context.ItemMainInterfaceABI,
+    await blockchainCall(projectionFactory.methods.mainInterface)
+  )
 
-    const header = await blockchainCall(mainInterface.methods.collection, state.collectionId)
+  const header = await blockchainCall(
+    mainInterface.methods.collection,
+    state.collectionId
+  )
 
-    const projection = newContract(context.MultiOperatorHostABI, header.host)
+  const projection = newContract(context.MultiOperatorHostABI, header.host)
 
-    if(state.hostType === 'metadata') {
-        return await blockchainCall(projection.methods.setOperator, 4, state.host)
-    }
+  if (state.hostType === 'metadata') {
+    return await blockchainCall(projection.methods.setOperator, 4, state.host)
+  }
 
-    if(state.hostType === 'mint') {
-        return await blockchainCall(projection.methods.setOperator, 1, state.host)
-    }
+  if (state.hostType === 'mint') {
+    return await blockchainCall(projection.methods.setOperator, 1, state.host)
+  }
 
-    var metadataContent = {...state.metadata, attributes : state.attributes || [], name : state.name, symbol : state.symbol}
-    delete metadataContent.uri
+  var metadataContent = {
+    ...state.metadata,
+    attributes: state.attributes || [],
+    name: state.name,
+    symbol: state.symbol,
+  }
+  delete metadataContent.uri
 
-    var uri = state.metadataLink || await uploadMetadata({ context, ipfsHttpClient }, metadataContent)
+  var uri =
+    state.metadataLink ||
+    (await uploadMetadata({ context, ipfsHttpClient }, metadataContent))
 
-    console.log(uri)
+  console.log(uri)
 
-    const newHeader = {
-        host : VOID_ETHEREUM_ADDRESS,
-        name: state.name,
-        symbol : state.symbol,
-        uri
-    }
+  const newHeader = {
+    host: VOID_ETHEREUM_ADDRESS,
+    name: state.name,
+    symbol: state.symbol,
+    uri,
+  }
 
-    if(state.item !== 'new' && !state.amount) {
-        var id = abi.decode(['uint256'], abi.encode(['address'], [state.item]))[0].toString()
-        var transaction = await blockchainCall(projection.methods.setItemsMetadata, [id], [newHeader])
-        metadataContent = formatLink({ context }, uri)
-        metadataContent = await (await fetch(metadataContent)).json()
-        const key = web3Utils.sha3(`item-${web3Utils.toChecksumAddress(mainInterface.options.address)}-${id}`)
-        await cache.setItem(key, metadataContent)
-        return transaction
-    }
+  if (state.item !== 'new' && !state.amount) {
+    var id = abi
+      .decode(['uint256'], abi.encode(['address'], [state.item]))[0]
+      .toString()
+    var transaction = await blockchainCall(
+      projection.methods.setItemsMetadata,
+      [id],
+      [newHeader]
+    )
+    metadataContent = formatLink({ context }, uri)
+    metadataContent = await (await fetch(metadataContent)).json()
+    const key = web3Utils.sha3(
+      `item-${web3Utils.toChecksumAddress(mainInterface.options.address)}-${id}`
+    )
+    await cache.setItem(key, metadataContent)
+    return transaction
+  }
 
-    const createItems = [{
-        header : newHeader,
-        collectionId : state.collectionId,
-        id : state.item === 'new' ? '0' : abi.decode(['uint256'], abi.encode(['address'], [state.item]))[0].toString(),
-        accounts : [account],
-        amounts : [toDecimals(state.amount, 18)]
-    }]
+  const createItems = [
+    {
+      header: newHeader,
+      collectionId: state.collectionId,
+      id:
+        state.item === 'new'
+          ? '0'
+          : abi
+              .decode(['uint256'], abi.encode(['address'], [state.item]))[0]
+              .toString(),
+      accounts: [account],
+      amounts: [toDecimals(state.amount, 18)],
+    },
+  ]
 
-    return await blockchainCall(projection.methods.mintItems, createItems)
+  return await blockchainCall(projection.methods.mintItems, createItems)
 }
 
 export async function loadToken(data, collectionAddress, objectId) {
-    if(!objectId || collectionAddress === VOID_ETHEREUM_ADDRESS) {
-        var tokenAddress = objectId || collectionAddress
-        tokenAddress = tokenAddress.toLowerCase().indexOf('0x') === 0 ? tokenAddress : abi.decode(["address"], abi.encode(["uint256"], [objectId]))[0]
-        tokenAddress = web3Utils.toChecksumAddress(tokenAddress)
-        return await loadTokenFromAddress(data, tokenAddress)
-    }
+  if (!objectId || collectionAddress === VOID_ETHEREUM_ADDRESS) {
+    var tokenAddress = objectId || collectionAddress
+    tokenAddress =
+      tokenAddress.toLowerCase().indexOf('0x') === 0
+        ? tokenAddress
+        : abi.decode(['address'], abi.encode(['uint256'], [objectId]))[0]
+    tokenAddress = web3Utils.toChecksumAddress(tokenAddress)
+    return await loadTokenFromAddress(data, tokenAddress)
+  }
 
-    return await loadItem(data, objectId)
+  return await loadItem(data, objectId)
 }
 
 export async function hostedItems(data) {
+  var { context, chainId, web3, account, newContract, getGlobalContract } = data
 
-    var {context, chainId, web3, account, newContract, getGlobalContract} = data
+  const factories = [getGlobalContract('itemProjectionFactory')]
 
-    const factories = [getGlobalContract("itemProjectionFactory")]
+  const itemMainInterface = newContract(
+    context.ItemMainInterfaceABI,
+    await blockchainCall(factories[0].methods.mainInterface)
+  )
 
-    const itemMainInterface = newContract(context.ItemMainInterfaceABI, await blockchainCall(factories[0].methods.mainInterface))
+  var args = {
+    address: factories.map((it) => it.options.address),
+    fromBlock:
+      web3Utils.toHex(
+        getNetworkElement({ context, chainId }, 'deploySearchStart')
+      ) || '0x0',
+    toBlock: 'latest',
+    topics: [web3Utils.sha3('Deployed(address,address,address,bytes)')],
+  }
+  var logs = await getLogs(web3.currentProvider, args)
 
-    var args = {
-        address : factories.map(it => it.options.address),
-        fromBlock: web3Utils.toHex(getNetworkElement({ context, chainId }, 'deploySearchStart')) || "0x0",
-        toBlock : 'latest',
-        topics : [
-            web3Utils.sha3('Deployed(address,address,address,bytes)')
-        ]
-    }
-    var logs = await getLogs(web3.currentProvider, args)
+  args.address = logs.map((it) => abi.decode(['address'], it.topics[2])[0])
+  args.topics = [
+    web3Utils.sha3('Operator(uint256,address,address)'),
+    abi.encode(['uint256'], [1]),
+    [],
+    abi.encode(['address'], [account]),
+  ]
+  logs = await getLogs(web3.currentProvider, args)
 
-    args.address = logs.map(it => abi.decode(["address"], it.topics[2])[0])
-    args.topics = [
-        web3Utils.sha3('Operator(uint256,address,address)'),
-        abi.encode(["uint256"], [1]),
-        [],
-        abi.encode(["address"], [account])
-    ]
-    logs = await getLogs(web3.currentProvider, args)
+  if (logs.length === 0) {
+    return []
+  }
 
-    if(logs.length === 0) {
-        return []
-    }
+  var projectionAddresses = logs
+    .map((it) => it.address)
+    .filter((it, index, array) => array.indexOf(it) === index)
 
-    var projectionAddresses = logs.map(it => it.address).filter((it, index, array) => array.indexOf(it) === index)
+  var projections = projectionAddresses.map((it) =>
+    newContract(context.MultiOperatorHostABI, it)
+  )
+  var hosts = await Promise.all(
+    projections.map((it) => blockchainCall(it.methods.operator, 1))
+  )
 
-    var projections = projectionAddresses.map(it => newContract(context.MultiOperatorHostABI, it))
-    var hosts = await Promise.all(projections.map(it => blockchainCall(it.methods.operator, 1)))
+  var collectionIds = await Promise.all(
+    projections.map(
+      (it, i) => hosts[i] === account && blockchainCall(it.methods.collectionId)
+    )
+  )
+  collectionIds = collectionIds.filter((it) => it)
 
-    var collectionIds = await Promise.all(projections.map((it, i) => hosts[i] === account && blockchainCall(it.methods.collectionId)))
-    collectionIds = collectionIds.filter(it => it)
+  var topics = [
+    web3Utils.sha3('CollectionItem(bytes32,bytes32,uint256)'),
+    [],
+    collectionIds,
+  ]
 
-    var topics = [
-        web3Utils.sha3("CollectionItem(bytes32,bytes32,uint256)"),
-        [],
-        collectionIds
-    ]
+  var itemLogs = await getLogsFromFactories(data, factories, topics)
+  itemLogs = itemLogs.logs.map((it) =>
+    abi.decode(['uint256'], it.topics[3])[0].toString()
+  )
 
-    var itemLogs = await getLogsFromFactories(data, factories, topics)
-    itemLogs = itemLogs.logs.map(it => abi.decode(["uint256"], it.topics[3])[0].toString())
-
-    return await Promise.all(itemLogs.map(it => loadItem(data, it)))
+  return await Promise.all(itemLogs.map((it) => loadItem(data, it)))
 }
 
 export async function loadDeckWrapper(data, item) {
+  var { getGlobalContract } = data
 
-    var { getGlobalContract } = data
+  const wrappers = [
+    getGlobalContract('eRC721WrapperDeck'),
+    getGlobalContract('eRC1155WrapperDeck'),
+  ]
 
-    const wrappers = [
-        getGlobalContract('eRC721WrapperDeck'),
-        getGlobalContract('eRC1155WrapperDeck')
-    ]
-
-    return wrappers[await blockchainCall(wrappers[0].methods.source, item.id) !== VOID_ETHEREUM_ADDRESS ? 0 : 1]
-
+  return wrappers[
+    (await blockchainCall(wrappers[0].methods.source, item.id)) !==
+    VOID_ETHEREUM_ADDRESS
+      ? 0
+      : 1
+  ]
 }
 
 export async function loadTokens(data, item) {
+  var { wrapper, chainId, context } = data
 
-    var { wrapper, chainId, context } = data
+  wrapper = wrapper || (await loadDeckWrapper(data, item))
 
-    wrapper = wrapper || await loadDeckWrapper(data, item)
+  const args = {
+    address: wrapper.options.address,
+    topics: [
+      web3Utils.sha3('Token(address,uint256,uint256)'),
+      [],
+      [],
+      abi.encode(['uint256'], [item.id]),
+    ],
+    fromBlock:
+      web3Utils.toHex(
+        getNetworkElement({ context, chainId }, 'deploySearchStart')
+      ) || '0x0',
+    toBlock: 'latest',
+  }
 
-    const args = {
-        address : wrapper.options.address,
-        topics : [
-            web3Utils.sha3('Token(address,uint256,uint256)'),
-            [],
-            [],
-            abi.encode(["uint256"], [item.id])
-        ],
-        fromBlock: web3Utils.toHex(getNetworkElement({ context, chainId }, 'deploySearchStart')) || "0x0",
-        toBlock : 'latest'
-    }
+  const logs = await getLogs(wrapper.currentProvider, args)
 
-    const logs = await getLogs(wrapper.currentProvider, args)
+  if (logs.length === 0) {
+    return {}
+  }
 
-    if(logs.length === 0) {
-        return {}
-    }
-
-    return {
-        tokenAddress : abi.decode(["address"], logs[0].topics[1])[0],
-        ids : logs.map(it => abi.decode(["uint256"], it.topics[2])[0].toString()).filter((it, i, arr) => arr.indexOf(it) === i)
-    }
+  return {
+    tokenAddress: abi.decode(['address'], logs[0].topics[1])[0],
+    ids: logs
+      .map((it) => abi.decode(['uint256'], it.topics[2])[0].toString())
+      .filter((it, i, arr) => arr.indexOf(it) === i),
+  }
 }
 
 export async function loadDeckItemFromAddress(data, tokenAddress) {
-    const { context, dualChainId, newContract } = data
+  const { context, dualChainId, newContract } = data
 
-    var tkAddr = tokenAddress = web3Utils.toChecksumAddress(tokenAddress)
-    var dataInput = data
-    if(dualChainId && (tkAddr = await resolveToken(data, tkAddr)) !== tokenAddress) {
-        dataInput = await dualChainAsMainChain(dataInput)
+  var tkAddr = (tokenAddress = web3Utils.toChecksumAddress(tokenAddress))
+  var dataInput = data
+  if (
+    dualChainId &&
+    (tkAddr = await resolveToken(data, tkAddr)) !== tokenAddress
+  ) {
+    dataInput = await dualChainAsMainChain(dataInput)
+  }
+  var deckItem = await loadDeckItem(dataInput, tkAddr)
+  if (dualChainId && tkAddr !== tokenAddress) {
+    var contract = newContract(context.IERC20ABI, tokenAddress)
+    deckItem = {
+      ...deckItem,
+      address: tokenAddress,
+      contract,
+      l1Address: deckItem.address,
+      l2Address: tokenAddress,
+      l1Contract: deckItem.contract,
+      l2Contract: contract,
     }
-    var deckItem = await loadDeckItem(dataInput, tkAddr)
-    if(dualChainId && tkAddr !== tokenAddress) {
-        var contract = newContract(context.IERC20ABI, tokenAddress)
-        deckItem = {
-            ...deckItem,
-            address : tokenAddress,
-            contract,
-            l1Address : deckItem.address,
-            l2Address : tokenAddress,
-            l1Contract : deckItem.contract,
-            l2Contract : contract
-        }
-    }
-    return deckItem
+  }
+  return deckItem
 }
 
 export async function loadDeckItem(data, itemId, item) {
+  var {
+    getGlobalContract,
+    wrapper,
+    is721,
+    seaport,
+    context,
+    newContract,
+    chainId,
+    dualChainId,
+  } = data
 
-    var { getGlobalContract, wrapper, is721, seaport, context, newContract, chainId, dualChainId } = data
+  item = await loadItem(data, itemId, item)
 
-    item = await loadItem(data, itemId, item)
+  wrapper = wrapper || (await loadDeckWrapper(data, item))
 
-    wrapper = wrapper || await loadDeckWrapper(data, item)
+  is721 =
+    is721 !== undefined
+      ? is721
+      : wrapper === getGlobalContract('eRC721WrapperDeck')
 
-    is721 = is721 !== undefined ? is721 : wrapper === getGlobalContract('eRC721WrapperDeck')
+  var originalAddress = await blockchainCall(wrapper.methods.source, item.id)
+  originalAddress =
+    typeof originalAddress === 'string' ? originalAddress : originalAddress[0]
 
-    var originalAddress = await blockchainCall(wrapper.methods.source, item.id)
-    originalAddress = typeof originalAddress === 'string' ? originalAddress : originalAddress[0]
+  const args = {
+    address: wrapper.options.address,
+    topics: [
+      web3Utils.sha3('Token(address,uint256,uint256)'),
+      abi.encode(['address'], [originalAddress]),
+      [],
+      abi.encode(['uint256'], [item.id]),
+    ],
+    fromBlock:
+      web3Utils.toHex(
+        getNetworkElement({ context, chainId }, 'deploySearchStart')
+      ) || '0x0',
+    toBlock: 'latest',
+  }
 
-    const args = {
-        address : wrapper.options.address,
-        topics : [
-            web3Utils.sha3('Token(address,uint256,uint256)'),
-            abi.encode(["address"], [originalAddress]),
-            [],
-            abi.encode(["uint256"], [item.id])
-        ],
-        fromBlock: web3Utils.toHex(getNetworkElement({ context, chainId }, 'deploySearchStart')) || "0x0",
-        toBlock : 'latest'
-    }
+  const logs = await getLogs(wrapper.currentProvider, args)
 
-    const logs = await getLogs(wrapper.currentProvider, args)
+  const tokenId = abi.decode(['uint256'], logs[0].topics[2])[0].toString()
 
-    const tokenId = abi.decode(["uint256"], logs[0].topics[2])[0].toString()
+  const collection = dualChainId
+    ? { imageUrl: item.image }
+    : (await seaport.api.getAsset({ tokenAddress: originalAddress, tokenId }))
+        .collection
 
-    const collection = dualChainId ? { imageUrl : item.image } : (await seaport.api.getAsset({ tokenAddress : originalAddress, tokenId })).collection
+  item = {
+    ...item,
+    collectionData: {
+      ...item.collectionData,
+      ...collection,
+    },
+    wrapper,
+    is721,
+    originalAddress,
+    original: newContract(
+      context[`${is721 ? 'IERC721' : 'IERC1155'}ABI`],
+      originalAddress
+    ),
+  }
 
-    item = {
-        ...item,
-        collectionData : {
-            ...item.collectionData,
-            ...collection
-        },
-        wrapper,
-        is721,
-        originalAddress,
-        original : newContract(context[`${is721 ? 'IERC721' : 'IERC1155'}ABI`], originalAddress)
-    }
-
-    return item
+  return item
 }
 
 export async function loadDeckItems(data, item, method) {
+  var { getGlobalContract, wrapper, is721 } = data
 
-    var { getGlobalContract, wrapper, is721 } = data
+  wrapper = wrapper || (await loadDeckWrapper(data, item))
 
-    wrapper = wrapper || await loadDeckWrapper(data, item)
+  is721 =
+    is721 !== undefined
+      ? is721
+      : wrapper === getGlobalContract('eRC721WrapperDeck')
 
-    is721 = is721 !== undefined ? is721 : wrapper === getGlobalContract('eRC721WrapperDeck')
-
-    if(method === 'wrap') {
-        return await loadDeckItemsForWrap({...data, wrapper, is721}, item)
-    }
-    return await loadDeckItemsForUnwrap({...data, wrapper, is721}, item)
+  if (method === 'wrap') {
+    return await loadDeckItemsForWrap({ ...data, wrapper, is721 }, item)
+  }
+  return await loadDeckItemsForUnwrap({ ...data, wrapper, is721 }, item)
 }
 
 export async function loadDeckItemsForWrap(data, item) {
+  var { getGlobalContract, wrapper, is721 } = data
 
-    var { getGlobalContract, wrapper, is721 } = data
+  wrapper = wrapper || (await loadDeckWrapper(data, item))
 
-    wrapper = wrapper || await loadDeckWrapper(data, item)
+  is721 =
+    is721 !== undefined
+      ? is721
+      : wrapper === getGlobalContract('eRC721WrapperDeck')
 
-    is721 = is721 !== undefined ? is721 : wrapper === getGlobalContract('eRC721WrapperDeck')
-
-    if(is721) {
-        return await load721DeckItemsForWrap({...data, wrapper, is721}, item)
-    }
-    return await load1155DeckItemsForWrap({...data, wrapper, is721}, item)
+  if (is721) {
+    return await load721DeckItemsForWrap({ ...data, wrapper, is721 }, item)
+  }
+  return await load1155DeckItemsForWrap({ ...data, wrapper, is721 }, item)
 }
 
 export async function loadDeckItemsForUnwrap(data, item) {
+  var { getGlobalContract, wrapper, is721 } = data
 
-    var { getGlobalContract, wrapper, is721 } = data
+  wrapper = wrapper || (await loadDeckWrapper(data, item))
 
-    wrapper = wrapper || await loadDeckWrapper(data, item)
+  is721 =
+    is721 !== undefined
+      ? is721
+      : wrapper === getGlobalContract('eRC721WrapperDeck')
 
-    is721 = is721 !== undefined ? is721 : wrapper === getGlobalContract('eRC721WrapperDeck')
-
-    if(is721) {
-        return await load721DeckItemsForUnwrap({...data, wrapper, is721}, item)
-    }
-    return await load1155DeckItemsForUnwrap({...data, wrapper, is721}, item)
+  if (is721) {
+    return await load721DeckItemsForUnwrap({ ...data, wrapper, is721 }, item)
+  }
+  return await load1155DeckItemsForUnwrap({ ...data, wrapper, is721 }, item)
 }
 
 export async function load721DeckItemsForWrap(data, item) {
-    return await load721ItemsFromAddress(data, await blockchainCall((data.wrapper = data.wrapper || await loadDeckWrapper(data, item)).methods.source, item.id))
+  return await load721ItemsFromAddress(
+    data,
+    await blockchainCall(
+      (data.wrapper = data.wrapper || (await loadDeckWrapper(data, item)))
+        .methods.source,
+      item.id
+    )
+  )
 }
 
 export async function load721ItemsFromAddress(data, originalAddress) {
+  var { context, account, web3, newContract, chainId } = data
 
-    var { context, account, web3, newContract, chainId } = data
+  const args = {
+    address: originalAddress,
+    topics: [
+      web3Utils.sha3('Transfer(address,address,uint256)'),
+      [],
+      [abi.encode(['address'], [account])],
+    ],
+    fromBlock:
+      web3Utils.toHex(
+        getNetworkElement({ context, chainId }, 'deploySearchStart')
+      ) || '0x0',
+    toBlock: 'latest',
+  }
+  const logs = await getLogs(web3.currentProvider, args)
 
-    const args = {
-        address : originalAddress,
-        topics : [
-            web3Utils.sha3('Transfer(address,address,uint256)'),
-            [],
-            [abi.encode(["address"], [account])]
-        ],
-        fromBlock: web3Utils.toHex(getNetworkElement({ context, chainId }, 'deploySearchStart')) || "0x0",
-        toBlock : 'latest'
-    }
-    const logs = await getLogs(web3.currentProvider, args)
+  const tokenIds = logs
+    .map((it) =>
+      abi
+        .decode(['uint256'], it.topics.length > 3 ? it.topics[3] : it.data)[0]
+        .toString()
+    )
+    .filter((it, i, arr) => arr.indexOf(it) === i)
 
-    const tokenIds = logs.map(it => abi.decode(["uint256"], it.topics.length > 3 ? it.topics[3] : it.data)[0].toString()).filter((it, i, arr) => arr.indexOf(it) === i)
+  const contract = newContract(context.IERC721ABI, originalAddress)
 
-    const contract = newContract(context.IERC721ABI, originalAddress)
-
-    var originalItems = (await Promise.all(tokenIds.map(async it => {
-        if(web3Utils.toChecksumAddress(account) !== web3Utils.toChecksumAddress(await blockchainCall(contract.methods.ownerOf, it))) {
-            return
+  var originalItems = (
+    await Promise.all(
+      tokenIds.map(async (it) => {
+        if (
+          web3Utils.toChecksumAddress(account) !==
+          web3Utils.toChecksumAddress(
+            await blockchainCall(contract.methods.ownerOf, it)
+          )
+        ) {
+          return
         }
         return it
-    }))).filter(it => it)
+      })
+    )
+  ).filter((it) => it)
 
-    if(originalItems.length === 0) {
-        return []
+  if (originalItems.length === 0) {
+    return []
+  }
+
+  var items = await getOwnedTokens(data, 'ERC721', originalAddress)
+
+  if (items.length !== originalItems.length) {
+    items = items.filter((it) => originalItems.indexOf(it.tokenId) !== -1)
+    if (items.length !== originalItems.length) {
+      const remainingItems = originalItems.filter(
+        (it) => items.filter((ite) => ite.tokenId === it).length === 0
+      )
+      items.push(
+        ...(await Promise.all(
+          remainingItems.map((it) => load721(data, contract, it))
+        ))
+      )
     }
+  }
 
-    var items = await getOwnedTokens(data, 'ERC721', originalAddress)
-
-    if(items.length !== originalItems.length) {
-        items = items.filter(it => originalItems.indexOf(it.tokenId) !== -1)
-        if(items.length !== originalItems.length) {
-            const remainingItems = originalItems.filter(it => items.filter(ite => ite.tokenId === it).length === 0)
-            items.push(...await Promise.all(remainingItems.map(it => load721(data, contract, it))))
-        }
-    }
-
-    return items
+  return items
 }
 
 export function loadNFTItemsFromAddress(data, address, type) {
-    if(type === 'ERC721') {
-        return load721ItemsFromAddress(data, address)
-    }
-    return load1155ItemsFromAddress(data, address)
+  if (type === 'ERC721') {
+    return load721ItemsFromAddress(data, address)
+  }
+  return load1155ItemsFromAddress(data, address)
 }
 
 export async function load1155DeckItemsForWrap(data, item) {
-    return load1155ItemsFromAddress(data, (await blockchainCall((data.wrapper = data.wrapper || await loadDeckWrapper(data, item)).methods.source, item.id))[0])
+  return load1155ItemsFromAddress(
+    data,
+    (
+      await blockchainCall(
+        (data.wrapper = data.wrapper || (await loadDeckWrapper(data, item)))
+          .methods.source,
+        item.id
+      )
+    )[0]
+  )
 }
 
 export async function load1155ItemsFromAddress(data, originalAddress) {
-    var { context, account, web3, newContract, chainId } = data
+  var { context, account, web3, newContract, chainId } = data
 
-    const transferSingle = web3Utils.sha3('TransferSingle(address,address,address,uint256,uint256)')
-    const transferBatch = web3Utils.sha3('TransferBatch(address,address,address,uint256[],uint256[])')
+  const transferSingle = web3Utils.sha3(
+    'TransferSingle(address,address,address,uint256,uint256)'
+  )
+  const transferBatch = web3Utils.sha3(
+    'TransferBatch(address,address,address,uint256[],uint256[])'
+  )
 
-    const args = {
-        address : originalAddress,
-        topics : [
-            [
-                transferSingle,
-                transferBatch
-            ],
-            [],
-            [],
-            [abi.encode(["address"], [account])]
-        ],
-        fromBlock: web3Utils.toHex(getNetworkElement({ context, chainId }, 'deploySearchStart')) || "0x0",
-        toBlock : 'latest'
-    }
-    const logs = await getLogs(web3.currentProvider, args)
+  const args = {
+    address: originalAddress,
+    topics: [
+      [transferSingle, transferBatch],
+      [],
+      [],
+      [abi.encode(['address'], [account])],
+    ],
+    fromBlock:
+      web3Utils.toHex(
+        getNetworkElement({ context, chainId }, 'deploySearchStart')
+      ) || '0x0',
+    toBlock: 'latest',
+  }
+  const logs = await getLogs(web3.currentProvider, args)
 
-    var tokenIds = []
-    logs.forEach(it => {
-        const type = ('uint256' + (it.topics[0] === transferSingle ? '' : '[]'))
-        const args = it.topics.length === 4 ? [
-            type,
-            type
-        ] : [
-            type
-        ]
+  var tokenIds = []
+  logs.forEach((it) => {
+    const type = 'uint256' + (it.topics[0] === transferSingle ? '' : '[]')
+    const args = it.topics.length === 4 ? [type, type] : [type]
 
-        const data = abi.decode(args, it.topics.length === 4 ? it.data : it.topics[5])[0]
-        tokenIds.push(data instanceof Array ? data.map(it => it.toString()) : data.toString())
-    })
-    tokenIds = tokenIds.reduce((acc, it) => [...acc, ...(Array.isArray(it) ? it : [it])], []).filter((it, i, arr) => arr.indexOf(it) === i)
+    const data = abi.decode(
+      args,
+      it.topics.length === 4 ? it.data : it.topics[5]
+    )[0]
+    tokenIds.push(
+      data instanceof Array ? data.map((it) => it.toString()) : data.toString()
+    )
+  })
+  tokenIds = tokenIds
+    .reduce((acc, it) => [...acc, ...(Array.isArray(it) ? it : [it])], [])
+    .filter((it, i, arr) => arr.indexOf(it) === i)
 
-    const contract = newContract(context.IERC1155ABI, originalAddress)
+  const contract = newContract(context.IERC1155ABI, originalAddress)
 
-    var originalItems = (await Promise.all(tokenIds.map(async it => {
-        const balance = await blockchainCall(contract.methods.balanceOf, account, it)
-        if(balance === '0') {
-            return
+  var originalItems = (
+    await Promise.all(
+      tokenIds.map(async (it) => {
+        const balance = await blockchainCall(
+          contract.methods.balanceOf,
+          account,
+          it
+        )
+        if (balance === '0') {
+          return
         }
-        return { id : it, balance }
-    }))).filter(it => it)
+        return { id: it, balance }
+      })
+    )
+  ).filter((it) => it)
 
-    if(originalItems.length === 0) {
-        return []
+  if (originalItems.length === 0) {
+    return []
+  }
+
+  var items = await getOwnedTokens(data, 'ERC1155', originalAddress)
+  if (items.length !== originalItems.length) {
+    items = items.filter(
+      (it) => originalItems.filter((ite) => it.tokenId === ite.id).length > 0
+    )
+    if (items.length !== originalItems.length) {
+      const remainingItems = originalItems.filter(
+        (it) => items.filter((ite) => ite.tokenId === it.it).length === 0
+      )
+      items.push(
+        ...(await Promise.all(
+          remainingItems.map((it) => load1155(data, contract, it.id))
+        ))
+      )
     }
+  }
 
-    var items = await getOwnedTokens(data, 'ERC1155', originalAddress)
-    if(items.length !== originalItems.length) {
-        items = items.filter(it => originalItems.filter(ite => it.tokenId === ite.id).length > 0)
-        if(items.length !== originalItems.length) {
-            const remainingItems = originalItems.filter(it => items.filter(ite => ite.tokenId === it.it).length === 0)
-            items.push(...await Promise.all(remainingItems.map(it => load1155(data, contract, it.id))))
-        }
-    }
+  items = items.map((it) => ({
+    ...it,
+    balance: originalItems.filter((or) => or.id === it.tokenId)[0].balance,
+  }))
 
-    items = items.map(it => ({...it, balance : originalItems.filter(or => or.id === it.tokenId)[0].balance}))
-
-    return items
+  return items
 }
 
 export async function load721DeckItemsForUnwrap(data, item) {
+  var { context, wrapper, tokens, newContract } = data
 
-    var { context, wrapper, tokens, newContract } = data
+  wrapper = wrapper || (await loadDeckWrapper(data, item))
+  tokens = tokens || (await loadTokens({ ...data, wrapper }, item))
 
-    wrapper = wrapper || await loadDeckWrapper(data, item)
-    tokens = tokens || await loadTokens({...data, wrapper}, item)
+  if (!tokens.ids || tokens.ids.length === 0) {
+    return []
+  }
 
-    if(!tokens.ids || tokens.ids.length === 0) {
-        return []
+  const contract = newContract(context.IERC721ABI, tokens.tokenAddress)
+
+  var originalItems = (tokens.ids = (
+    await Promise.all(
+      tokens.ids.map(
+        async (it) =>
+          web3Utils.toChecksumAddress(
+            await blockchainCall(contract.methods.ownerOf, it)
+          ) === web3Utils.toChecksumAddress(wrapper.options.address) && it
+      )
+    )
+  ).filter((it) => it))
+
+  if (originalItems.length === 0) {
+    return []
+  }
+
+  var items = await getOwnedTokens(
+    { ...data, owner: wrapper.options.address },
+    'ERC721',
+    tokens.tokenAddress
+  )
+
+  if (items.length !== originalItems.length) {
+    items = items.filter((it) => originalItems.indexOf(it.tokenId) !== -1)
+    if (items.length !== originalItems.length) {
+      const remainingItems = originalItems.filter(
+        (it) => items.filter((ite) => ite.tokenId === it).length === 0
+      )
+      items.push(
+        ...(await Promise.all(
+          remainingItems.map((it) => load721(data, contract, it))
+        ))
+      )
     }
+  }
 
-    const contract = newContract(context.IERC721ABI, tokens.tokenAddress)
-
-    var originalItems = tokens.ids = (await Promise.all(tokens.ids.map(async it => web3Utils.toChecksumAddress(await blockchainCall(contract.methods.ownerOf, it)) === web3Utils.toChecksumAddress(wrapper.options.address) && it))).filter(it => it)
-
-    if(originalItems.length === 0) {
-        return []
-    }
-
-    var items = await getOwnedTokens({...data, owner : wrapper.options.address}, 'ERC721', tokens.tokenAddress)
-
-    if(items.length !== originalItems.length) {
-        items = items.filter(it => originalItems.indexOf(it.tokenId) !== -1)
-        if(items.length !== originalItems.length) {
-            const remainingItems = originalItems.filter(it => items.filter(ite => ite.tokenId === it).length === 0)
-            items.push(...await Promise.all(remainingItems.map(it => load721(data, contract, it))))
-        }
-    }
-
-    return items
+  return items
 }
 
 export async function load1155DeckItemsForUnwrap(data, item) {
+  var { context, wrapper, tokens, newContract, chainId } = data
 
-    var { context, wrapper, tokens, newContract, chainId } = data
+  wrapper = wrapper || (await loadDeckWrapper(data, item))
+  tokens = tokens || (await loadTokens({ ...data, wrapper }, item))
 
-    wrapper = wrapper || await loadDeckWrapper(data, item)
-    tokens = tokens || await loadTokens({...data, wrapper}, item)
+  if (!tokens.ids || tokens.ids.length === 0) {
+    return []
+  }
 
-    if(!tokens.ids || tokens.ids.length === 0) {
-        return []
+  const contract = newContract(context.IERC1155ABI, tokens.tokenAddress)
+
+  var balances = await Promise.all(
+    tokens.ids.map((it) =>
+      blockchainCall(contract.methods.balanceOf, wrapper.options.address, it)
+    )
+  )
+  balances = tokens.ids.reduce(
+    (acc, it, i) => ({ ...acc, [it]: balances[i] }),
+    {}
+  )
+
+  tokens.ids = tokens.ids.filter((it) => parseInt(balances[it]) > 0)
+
+  var originalItems = tokens.ids.map((id) => ({ id, balance: balances[id] }))
+
+  if (originalItems.length === 0) {
+    return []
+  }
+
+  var items = await getOwnedTokens(
+    { ...data, owner: wrapper.options.address },
+    'ERC1155',
+    tokens.tokenAddress
+  )
+  if (items.length !== originalItems.length) {
+    items = items.filter(
+      (it) => originalItems.filter((ite) => it.tokenId === ite.id).length > 0
+    )
+    if (items.length !== originalItems.length) {
+      const remainingItems = originalItems.filter(
+        (it) => items.filter((ite) => ite.tokenId === it.it).length === 0
+      )
+      items.push(
+        ...(await Promise.all(
+          remainingItems.map((it) => load1155(data, contract, it.id))
+        ))
+      )
     }
+  }
 
-    const contract = newContract(context.IERC1155ABI, tokens.tokenAddress)
+  items = items.map((it) => ({
+    ...it,
+    balance: originalItems.filter((or) => or.id === it.tokenId)[0].balance,
+  }))
 
-    var balances = await Promise.all(tokens.ids.map(it => blockchainCall(contract.methods.balanceOf, wrapper.options.address, it)))
-    balances = tokens.ids.reduce((acc, it, i) => ({ ...acc, [it] : balances[i] }), {})
+  var args = {
+    address: wrapper.options.address,
+    topics: [
+      web3Utils.sha3(
+        'ReserveData(address,address,uint256,uint256,uint256,bytes32)'
+      ),
+      abi.encode(['address'], [tokens.tokenAddress]),
+      tokens.ids.map((it) => abi.encode(['uint256'], [it])),
+    ],
+    fromBlock:
+      web3Utils.toHex(
+        getNetworkElement({ context, chainId }, 'deploySearchStart')
+      ) || '0x0',
+    toBlock: 'latest',
+  }
+  var logs = await getLogs(wrapper.currentProvider, args)
+  var args = {
+    address: wrapper.options.address,
+    topics: [
+      web3Utils.sha3(
+        'ReserveDataUnlocked(address,bytes32,address,uint256,address,uint256,uint256)'
+      ),
+      logs.map((it) => it.topics[3]),
+    ],
+    fromBlock:
+      web3Utils.toHex(
+        getNetworkElement({ context, chainId }, 'deploySearchStart')
+      ) || '0x0',
+    toBlock: 'latest',
+  }
+  var released = await getLogs(wrapper.currentProvider, args)
+  released = released.map((it) => it.topics[1])
+  logs = logs.filter((it) => released.indexOf(it.topics[3]) === -1)
 
-    tokens.ids = tokens.ids.filter(it => parseInt(balances[it]) > 0)
+  var reserves = tokens.ids.reduce(
+    (acc, it) => ({
+      ...acc,
+      [it]: logs
+        .filter((log) => log.topics[2] === abi.encode(['uint256'], [it]))
+        .map((log) => {
+          var data = abi.decode(['address', 'uint256', 'uint256'], log.data)
+          return {
+            key: log.topics[3],
+            from: data[0],
+            amount: data[1].toString(),
+            timeout: data[2].toString(),
+            address: tokens.tokenAddress,
+            id: it,
+          }
+        }),
+    }),
+    {}
+  )
 
-    var originalItems = tokens.ids.map(id => ({id, balance : balances[id]}))
+  items = items.map((it) => ({
+    ...it,
+    balance: balances[it.id],
+    available: reserves[it.id].reduce(
+      (acc, it) => acc.ethereansosSub(it.amount),
+      balances[it.id]
+    ),
+    reserves: reserves[it.id],
+  }))
 
-    if(originalItems.length === 0) {
-        return []
-    }
-
-    var items = await getOwnedTokens({...data, owner : wrapper.options.address }, 'ERC1155', tokens.tokenAddress)
-    if(items.length !== originalItems.length) {
-        items = items.filter(it => originalItems.filter(ite => it.tokenId === ite.id).length > 0)
-        if(items.length !== originalItems.length) {
-            const remainingItems = originalItems.filter(it => items.filter(ite => ite.tokenId === it.it).length === 0)
-            items.push(...await Promise.all(remainingItems.map(it => load1155(data, contract, it.id))))
-        }
-    }
-
-    items = items.map(it => ({...it, balance : originalItems.filter(or => or.id === it.tokenId)[0].balance}))
-
-    var args = {
-        address : wrapper.options.address,
-        topics : [
-            web3Utils.sha3('ReserveData(address,address,uint256,uint256,uint256,bytes32)'),
-            abi.encode(['address'], [tokens.tokenAddress]),
-            tokens.ids.map(it => abi.encode(['uint256'], [it]))
-        ],
-        fromBlock: web3Utils.toHex(getNetworkElement({ context, chainId }, 'deploySearchStart')) || "0x0",
-        toBlock : 'latest'
-    }
-    var logs = await getLogs(wrapper.currentProvider, args)
-    var args = {
-        address : wrapper.options.address,
-        topics : [
-            web3Utils.sha3('ReserveDataUnlocked(address,bytes32,address,uint256,address,uint256,uint256)'),
-            logs.map(it => it.topics[3])
-        ],
-        fromBlock: web3Utils.toHex(getNetworkElement({ context, chainId }, 'deploySearchStart')) || "0x0",
-        toBlock : 'latest'
-    }
-    var released = await getLogs(wrapper.currentProvider, args)
-    released = released.map(it => it.topics[1])
-    logs = logs.filter(it => released.indexOf(it.topics[3]) === -1)
-
-    var reserves = tokens.ids.reduce((acc, it) => ({
-        ...acc,
-        [it] : logs.filter(log => log.topics[2] === abi.encode(['uint256'], [it])).map(log => {
-            var data = abi.decode(['address', 'uint256', 'uint256'], log.data)
-            return {
-                key : log.topics[3],
-                from : data[0],
-                amount : data[1].toString(),
-                timeout : data[2].toString(),
-                address : tokens.tokenAddress,
-                id : it
-            }
-        })
-    }), {})
-
-    items = items.map(it => ({...it, balance : balances[it.id], available : reserves[it.id].reduce((acc, it) => acc.ethereansosSub(it.amount), balances[it.id]), reserves : reserves[it.id]}))
-
-    return items
+  return items
 }
 
 export async function load721(data, contract, id) {
+  var { context, chainId, wrapper } = data
 
-    var { context, chainId, wrapper } = data
+  const token = {
+    address: contract.options.address,
+    tokenAddress: contract.options.address,
+    mainInterfaceAddress: contract.options.address,
+    id,
+    tokenId: id,
+    contract,
+    type: 'ERC721',
+    assetContract: {
+      schemaName: 'ERC721',
+    },
+  }
 
-    const token = {
-        address : contract.options.address,
-        tokenAddress : contract.options.address,
-        mainInterfaceAddress : contract.options.address,
-        id,
-        tokenId : id,
-        contract,
-        type : 'ERC721',
-        assetContract : {
-            schemaName : 'ERC721'
-        }
-    }
+  var metadataLink
 
-    var metadataLink
-
+  try {
+    metadataLink = abi.decode(
+      ['string'],
+      await getRawField(
+        { provider: contract.currentProvider },
+        contract.options.address,
+        'uri(uint256)',
+        id
+      )
+    )[0]
+  } catch (e) {
     try {
-        metadataLink = abi.decode(["string"], await getRawField({provider : contract.currentProvider}, contract.options.address, 'uri(uint256)', id))[0]
-    } catch(e) {
+      metadataLink = abi.decode(
+        ['string'],
+        await getRawField(
+          { provider: contract.currentProvider },
+          contract.options.address,
+          'tokenURI(uint256)',
+          id
+        )
+      )[0]
+    } catch (e) {
+      try {
+        metadataLink = abi.decode(
+          ['string'],
+          await getRawField(
+            { provider: contract.currentProvider },
+            contract.options.address,
+            'uri'
+          )
+        )[0]
+      } catch (e) {
         try {
-            metadataLink = abi.decode(["string"], await getRawField({provider : contract.currentProvider}, contract.options.address, 'tokenURI(uint256)', id))[0]
-        } catch(e) {
-            try {
-                metadataLink = abi.decode(["string"], await getRawField({provider : contract.currentProvider}, contract.options.address, 'uri'))[0]
-            } catch(e) {
-                try {
-                    metadataLink = abi.decode(["string"], await getRawField({provider : contract.currentProvider}, contract.options.address, 'tokenURI'))[0]
-                } catch(e) {
-                }
-            }
-        }
+          metadataLink = abi.decode(
+            ['string'],
+            await getRawField(
+              { provider: contract.currentProvider },
+              contract.options.address,
+              'tokenURI'
+            )
+          )[0]
+        } catch (e) {}
+      }
     }
+  }
 
-    var metadata
+  var metadata
 
-    metadataLink = metadataLink && decodeURI(metadataLink)
-    metadataLink = metadataLink && metadataLink.split('{id}').join(id)
-    metadataLink = metadataLink && formatLink({ context, chainId }, metadataLink)
+  metadataLink = metadataLink && decodeURI(metadataLink)
+  metadataLink = metadataLink && metadataLink.split('{id}').join(id)
+  metadataLink = metadataLink && formatLink({ context, chainId }, metadataLink)
 
+  try {
+    metadata = await (await fetch(metadataLink)).json()
+  } catch (e) {}
+
+  try {
+    token.name = abi.decode(
+      ['string'],
+      await getRawField(
+        { provider: contract.currentProvider },
+        contract.options.address,
+        'name(uint256)',
+        id
+      )
+    )[0]
+  } catch (e) {
     try {
-        metadata = await (await fetch(metadataLink)).json()
-    } catch(e) {
-    }
+      token.name = abi.decode(
+        ['string'],
+        await getRawField(
+          { provider: contract.currentProvider },
+          contract.options.address,
+          'name'
+        )
+      )[0]
+    } catch (e) {}
+  }
 
+  try {
+    token.symbol = abi.decode(
+      ['string'],
+      await getRawField(
+        { provider: contract.currentProvider },
+        contract.options.address,
+        'symbol(uint256)',
+        id
+      )
+    )[0]
+  } catch (e) {
     try {
-        token.name = abi.decode(["string"], await getRawField({provider : contract.currentProvider}, contract.options.address, 'name(uint256)', id))[0]
-    } catch(e) {
-        try {
-            token.name = abi.decode(["string"], await getRawField({provider : contract.currentProvider}, contract.options.address, 'name'))[0]
-        } catch(e) {
-        }
-    }
+      token.symbol = abi.decode(
+        ['string'],
+        await getRawField(
+          { provider: contract.currentProvider },
+          contract.options.address,
+          'symbol'
+        )
+      )[0]
+    } catch (e) {}
+  }
 
-    try {
-        token.symbol = abi.decode(["string"], await getRawField({provider : contract.currentProvider}, contract.options.address, 'symbol(uint256)', id))[0]
-    } catch(e) {
-        try {
-            token.symbol = abi.decode(["string"], await getRawField({provider : contract.currentProvider}, contract.options.address, 'symbol'))[0]
-        } catch(e) {
-        }
-    }
+  wrapper &&
+    (token.reserveData = await blockchainCall(
+      wrapper.methods.reserveData,
+      token.address,
+      token.id
+    ))
 
-    wrapper && (token.reserveData = await blockchainCall(wrapper.methods.reserveData, token.address, token.id))
+  metadata =
+    metadata || (await retrieveAsset(data, contract.options.address, id))
 
-    metadata = metadata || await retrieveAsset(data, contract.options.address, id)
+  var result = {
+    ...token,
+    ...metadata.assetContract,
+    ...metadata,
+    metadata,
+    metadataLink,
+  }
 
-    var result = {
-        ...token,
-        ...metadata.assetContract,
-        ...metadata,
-        metadata,
-        metadataLink
-    }
+  result.image = result.imageUrl || result.image
 
-    result.image = result.imageUrl || result.image
-
-    return result
+  return result
 }
 
 export async function load1155(data, contract, id) {
+  var { wrapper, context, chainId } = data
 
-    var { wrapper, context, chainId } = data
+  const token = {
+    address: contract.options.address,
+    tokenAddress: contract.options.address,
+    mainInterfaceAddress: contract.options.address,
+    id,
+    tokenId: id,
+    contract,
+    balance: wrapper
+      ? await blockchainCall(
+          contract.methods.balanceOf,
+          wrapper.options.address,
+          id
+        )
+      : '0',
+    type: 'ERC1155',
+    assetContract: {
+      schemaName: 'ERC1155',
+    },
+  }
 
-    const token = {
-        address : contract.options.address,
-        tokenAddress : contract.options.address,
-        mainInterfaceAddress : contract.options.address,
-        id,
-        tokenId : id,
-        contract,
-        balance : wrapper ? await blockchainCall(contract.methods.balanceOf, wrapper.options.address, id) : '0',
-        type : 'ERC1155',
-        assetContract : {
-            schemaName : 'ERC1155'
-        }
-    }
+  var metadataLink
 
-    var metadataLink
-
+  try {
+    metadataLink = abi.decode(
+      ['string'],
+      await getRawField(
+        { provider: contract.currentProvider },
+        contract.options.address,
+        'uri'
+      )
+    )[0]
+  } catch (e) {
     try {
-        metadataLink = abi.decode(["string"], await getRawField({provider : contract.currentProvider}, contract.options.address, 'uri'))[0]
-    } catch(e) {
-        try {
-            metadataLink = abi.decode(["string"], await getRawField({provider : contract.currentProvider}, contract.options.address, 'uri(uint256)', id))[0]
-        } catch(e) {
-        }
-    }
-    metadataLink = metadataLink && decodeURI(metadataLink)
-    metadataLink = metadataLink && metadataLink.split('{id}').join(id)
-    metadataLink = metadataLink && formatLink({ context, chainId }, metadataLink)
-    var metadata
+      metadataLink = abi.decode(
+        ['string'],
+        await getRawField(
+          { provider: contract.currentProvider },
+          contract.options.address,
+          'uri(uint256)',
+          id
+        )
+      )[0]
+    } catch (e) {}
+  }
+  metadataLink = metadataLink && decodeURI(metadataLink)
+  metadataLink = metadataLink && metadataLink.split('{id}').join(id)
+  metadataLink = metadataLink && formatLink({ context, chainId }, metadataLink)
+  var metadata
 
+  try {
+    metadata = await (await fetch(metadataLink)).json()
+  } catch (e) {}
+
+  try {
+    token.name = abi.decode(
+      ['string'],
+      await getRawField(
+        { provider: contract.currentProvider },
+        contract.options.address,
+        'name(uint256)',
+        id
+      )
+    )[0]
+  } catch (e) {
     try {
-        metadata = await (await fetch(metadataLink)).json()
-    } catch(e) {
-    }
+      token.name = abi.decode(
+        ['string'],
+        await getRawField(
+          { provider: contract.currentProvider },
+          contract.options.address,
+          'name'
+        )
+      )[0]
+    } catch (e) {}
+  }
 
+  try {
+    token.symbol = abi.decode(
+      ['string'],
+      await getRawField(
+        { provider: contract.currentProvider },
+        contract.options.address,
+        'symbol(uint256)',
+        id
+      )
+    )[0]
+  } catch (e) {
     try {
-        token.name = abi.decode(["string"], await getRawField({provider : contract.currentProvider}, contract.options.address, 'name(uint256)', id))[0]
-    } catch(e) {
-        try {
-            token.name = abi.decode(["string"], await getRawField({provider : contract.currentProvider}, contract.options.address, 'name'))[0]
-        } catch(e) {
-        }
-    }
+      token.symbol = abi.decode(
+        ['string'],
+        await getRawField(
+          { provider: contract.currentProvider },
+          contract.options.address,
+          'symbol'
+        )
+      )[0]
+    } catch (e) {}
+  }
 
-    try {
-        token.symbol = abi.decode(["string"], await getRawField({provider : contract.currentProvider}, contract.options.address, 'symbol(uint256)', id))[0]
-    } catch(e) {
-        try {
-            token.symbol = abi.decode(["string"], await getRawField({provider : contract.currentProvider}, contract.options.address, 'symbol'))[0]
-        } catch(e) {
-        }
-    }
+  metadata =
+    metadata || (await retrieveAsset(data, contract.options.address, id))
 
-    metadata = metadata || await retrieveAsset(data, contract.options.address, id)
+  var result = {
+    ...token,
+    ...metadata.assetContract,
+    ...metadata,
+    metadata,
+    metadataLink,
+  }
 
-    var result = {
-        ...token,
-        ...metadata.assetContract,
-        ...metadata,
-        metadata,
-        metadataLink
-    }
+  result.image = result.imageUrl || result.image
 
-    result.image = result.imageUrl || result.image
-
-    return result
+  return result
 }
 
-export function cartAction(data, mode, item, cart, inputType, selectedAmount, reserveAll, decimals) {
-    return mode === 'wrap' ? wrap(data, item, cart, inputType, selectedAmount, reserveAll, decimals) : unwrap(data, item, cart, inputType, selectedAmount, reserveAll, decimals)
+export function cartAction(
+  data,
+  mode,
+  item,
+  cart,
+  inputType,
+  selectedAmount,
+  reserveAll,
+  decimals
+) {
+  return mode === 'wrap'
+    ? wrap(data, item, cart, inputType, selectedAmount, reserveAll, decimals)
+    : unwrap(data, item, cart, inputType, selectedAmount, reserveAll, decimals)
 }
 
 export function wrap(data, item, cart, inputType, selectedAmount, reserveAll) {
+  var { account } = data
 
-    var { account } = data
+  if (item.wrapType === 'ERC1155') {
+    var data = cart.map((_, i) =>
+      abi.encode(
+        ['uint256[]', 'address[]', 'bool'],
+        [[selectedAmount[i]], [account], reserveAll === true]
+      )
+    )
+    data = abi.encode(['bytes[]'], [data])
+    return blockchainCall(
+      cart[0].contract.methods.safeBatchTransferFrom,
+      account,
+      item.wrapper.options.address,
+      cart.map((it) => it.id),
+      selectedAmount,
+      data
+    )
+  }
 
-    if(item.wrapType === 'ERC1155') {
-        var data = cart.map((_, i) => abi.encode(['uint256[]', 'address[]', 'bool'], [[selectedAmount[i]], [account], reserveAll === true]))
-        data = abi.encode(["bytes[]"], [data])
-        return blockchainCall(cart[0].contract.methods.safeBatchTransferFrom, account, item.wrapper.options.address, cart.map(it => it.id), selectedAmount, data)
-    }
+  const createItems = cart.map((it) => ({
+    header: {
+      host: VOID_ETHEREUM_ADDRESS,
+      name: '',
+      symbol: '',
+      uri: '',
+    },
+    collectionId: abi.encode(['address'], [it.tokenAddress]),
+    id: it.id,
+    accounts: [],
+    amounts: [],
+  }))
 
-    const createItems = cart.map(it => ({
-        header : {
-          host : VOID_ETHEREUM_ADDRESS,
-          name : "",
-          symbol : "",
-          uri : ""
-        },
-        collectionId : abi.encode(["address"], [it.tokenAddress]),
-        id : it.id,
-        accounts : [],
-        amounts : []
-    }))
-
-    const mintItems = Object.entries(item.wrapper.methods).filter(it => it[0].indexOf('mintItems') !== -1 && it[0].indexOf('bool[]') !== -1)[0]
-    return blockchainCall(mintItems[1], createItems, cart.map(() => reserveAll === true))
+  const mintItems = Object.entries(item.wrapper.methods).filter(
+    (it) => it[0].indexOf('mintItems') !== -1 && it[0].indexOf('bool[]') !== -1
+  )[0]
+  return blockchainCall(
+    mintItems[1],
+    createItems,
+    cart.map(() => reserveAll === true)
+  )
 }
 
 function tryGetReserves(data, item, element, selectedAmount, decimals, buy) {
+  if (!element.reserves || element.reserves.length === 0) {
+    return []
+  }
 
-    if(!element.reserves || element.reserves.length === 0) {
-        return []
-    }
+  var { account, block } = data
 
-    var { account, block } = data
+  var am = parseInt(fromDecimals(selectedAmount, decimals, true).split('.')[0])
 
-    var am = parseInt(fromDecimals(selectedAmount, decimals, true).split('.')[0])
+  var res = element.reserves.filter(
+    (it) => parseInt(block) >= parseInt(it.timeout)
+  )
 
-    var res = element.reserves.filter(it => parseInt(block) >= parseInt(it.timeout))
+  if (parseInt(element.available) >= parseInt(am) || buy) {
+    return res.map((it) => it.key)
+  }
 
-    if(parseInt(element.available) >= parseInt(am) || buy) {
-        return res.map(it => it.key)
-    }
+  am = res.reduce((acc, it) => acc - parseInt(it.amount), am)
 
-    am = res.reduce((acc, it) => acc - parseInt(it.amount), am)
+  if (parseInt(element.available) >= parseInt(am)) {
+    return res.map((it) => it.key)
+  }
 
-    if(parseInt(element.available) >= parseInt(am)) {
-        return res.map(it => it.key)
-    }
-
-    return element.reserves.filter(it => parseInt(it.timeout) >= parseInt(block) || web3Utils.toChecksumAddress(it.from) === web3Utils.toChecksumAddress(account)).map(it => it.key)
+  return element.reserves
+    .filter(
+      (it) =>
+        parseInt(it.timeout) >= parseInt(block) ||
+        web3Utils.toChecksumAddress(it.from) ===
+          web3Utils.toChecksumAddress(account)
+    )
+    .map((it) => it.key)
 }
 
-export function unwrap(data, item, cart, inputType, selectedAmount, reserveAll, decimals) {
+export function unwrap(
+  data,
+  item,
+  cart,
+  inputType,
+  selectedAmount,
+  reserveAll,
+  decimals
+) {
+  var { account } = data
 
-    var { account } = data
+  var reserves =
+    item.wrapType === 'ERC1155' &&
+    cart.map((it, i) =>
+      tryGetReserves(data, item, it, selectedAmount[i], decimals)
+    )
 
-    var reserves = item.wrapType === 'ERC1155' && cart.map((it, i) => tryGetReserves(data, item, it, selectedAmount[i], decimals))
+  var data =
+    item.wrapType === 'ERC721'
+      ? cart.map((it) =>
+          abi.encode(
+            ['address', 'uint256', 'address', 'bytes', 'bool', 'bool'],
+            [it.tokenAddress || it.address, it.id, account, '0x', true, true]
+          )
+        )
+      : cart.map((it, i) =>
+          abi.encode(
+            ['address', 'uint256', 'address', 'bytes32[]', 'bytes'],
+            [it.tokenAddress || it.address, it.id, account, reserves[i], '0x']
+          )
+        )
+  data = abi.encode(['bytes[]'], [data])
 
-    var data = item.wrapType === 'ERC721' ? cart.map(it => abi.encode(["address", "uint256", "address", "bytes", "bool", "bool"], [it.tokenAddress || it.address, it.id, account, "0x", true, true])) : cart.map((it, i) => abi.encode(["address", "uint256", "address", "bytes32[]", "bytes"], [it.tokenAddress || it.address, it.id, account, reserves[i], "0x"]))
-    data = abi.encode(["bytes[]"], [data])
-
-    return blockchainCall(item.wrapper.methods.burnBatch, account, cart.map(() => item.id), selectedAmount, data)
+  return blockchainCall(
+    item.wrapper.methods.burnBatch,
+    account,
+    cart.map(() => item.id),
+    selectedAmount,
+    data
+  )
 }
 
-export function secondaryCartAction(data, mode, item, cart, itemValue, ETHValue, slippage, amm, swapData, inputType, selectedAmount, reserveAll) {
-    return mode === 'wrap' ? wrapAndSell(data, item, cart, itemValue, ETHValue, slippage, amm, swapData, inputType, selectedAmount, reserveAll) : buyAndUnrwap(data, item, cart, itemValue, ETHValue, slippage, amm, swapData, inputType, selectedAmount, reserveAll)
+export function secondaryCartAction(
+  data,
+  mode,
+  item,
+  cart,
+  itemValue,
+  ETHValue,
+  slippage,
+  amm,
+  swapData,
+  inputType,
+  selectedAmount,
+  reserveAll
+) {
+  return mode === 'wrap'
+    ? wrapAndSell(
+        data,
+        item,
+        cart,
+        itemValue,
+        ETHValue,
+        slippage,
+        amm,
+        swapData,
+        inputType,
+        selectedAmount,
+        reserveAll
+      )
+    : buyAndUnrwap(
+        data,
+        item,
+        cart,
+        itemValue,
+        ETHValue,
+        slippage,
+        amm,
+        swapData,
+        inputType,
+        selectedAmount,
+        reserveAll
+      )
 }
 
-export async function wrapAndSell(data, item, cart, itemValue, ETHValue, slippage, amm, swapData, inputType, selectedAmount, reserveAll) {
+export async function wrapAndSell(
+  data,
+  item,
+  cart,
+  itemValue,
+  ETHValue,
+  slippage,
+  amm,
+  swapData,
+  inputType,
+  selectedAmount,
+  reserveAll
+) {
+  var { getGlobalContract, account, context, newContract } = data
+  const prestoDeck = getGlobalContract('deckPresto')
 
-    var { getGlobalContract, account, context, newContract } = data
-    const prestoDeck = getGlobalContract("deckPresto")
+  const is721 = item.wrapType === 'ERC721'
 
-    const is721 = item.wrapType === 'ERC721'
+  const tokenAddress = cart[0].mainInterfaceAddress
 
-    const tokenAddress = cart[0].mainInterfaceAddress
+  const tokenIds = cart.map((it) => it.tokenId)
 
-    const tokenIds = cart.map(it => it.tokenId)
+  const reserve = cart.map(() => reserveAll === true)
 
-    const reserve = cart.map(() => reserveAll === true)
+  const itemInteroperableAddress = abi
+    .decode(['address'], abi.encode(['uint256'], [item.id]))[0]
+    .toString()
+  const operations = cart.map(() => ({
+    inputTokenAddress: itemInteroperableAddress,
+    inputTokenAmount: numberToString(1e18),
+    ammPlugin: amm.address,
+    liquidityPoolAddresses: swapData.liquidityPoolAddresses,
+    swapPath: swapData.swapPath,
+    enterInETH: false,
+    exitInETH: true,
+    receivers: [account],
+    receiversPercentages: [],
+    tokenMins: [0],
+  }))
+  operations[0].tokenMins[0] = numberToString(
+    parseInt(ETHValue) * (1 - parseFloat(slippage) / 100)
+  ).split('.')[0]
 
-    const itemInteroperableAddress = abi.decode(["address"], abi.encode(["uint256"], [item.id]))[0].toString()
-    const operations = cart.map(() => ({
-        inputTokenAddress : itemInteroperableAddress,
-        inputTokenAmount : numberToString(1e18),
-        ammPlugin : amm.address,
-        liquidityPoolAddresses : swapData.liquidityPoolAddresses,
-        swapPath : swapData.swapPath,
-        enterInETH : false,
-        exitInETH : true,
-        receivers : [account],
-        receiversPercentages : [],
-        tokenMins : [0]
-    }))
-    operations[0].tokenMins[0] = numberToString(parseInt(ETHValue) * (1 - (parseFloat(slippage) / 100))).split('.')[0]
+  if (is721) {
+    return await blockchainCall(
+      prestoDeck.methods.wrapAndSell721,
+      tokenAddress,
+      tokenIds,
+      reserve,
+      operations
+    )
+  }
 
-    if(is721) {
-        return await blockchainCall(prestoDeck.methods.wrapAndSell721, tokenAddress, tokenIds, reserve, operations)
-    }
+  const prestoOperationTypes = [
+    'address',
+    'uint256',
+    'address',
+    'address[]',
+    'address[]',
+    'bool',
+    'bool',
+    'uint256[]',
+    'address[]',
+    'uint256[]',
+  ]
 
-    const prestoOperationTypes = [
-        "address",
-        "uint256",
-        "address",
-        "address[]",
-        "address[]",
-        "bool",
-        "bool",
-        "uint256[]",
-        "address[]",
-        "uint256[]"
-    ]
+  const operationsValues = operations.map((it, i) => [
+    it.inputTokenAddress,
+    it.inputTokenAmount,
+    it.ammPlugin,
+    it.liquidityPoolAddresses,
+    it.swapPath,
+    it.enterInETH,
+    it.exitInETH,
+    it.tokenMins,
+    it.receivers,
+    it.receiversPercentages,
+  ])
 
-    const operationsValues = operations.map((it, i) => ([
-        it.inputTokenAddress,
-        it.inputTokenAmount,
-        it.ammPlugin,
-        it.liquidityPoolAddresses,
-        it.swapPath,
-        it.enterInETH,
-        it.exitInETH,
-        it.tokenMins,
-        it.receivers,
-        it.receiversPercentages
-    ]))
+  const payload = abi.encode(
+    ['bool[]', `tuple(${prestoOperationTypes.join(',')})[]`, 'bool'],
+    [reserve, operationsValues, false]
+  )
 
-    const payload = abi.encode(["bool[]", `tuple(${prestoOperationTypes.join(',')})[]`, "bool"], [reserve, operationsValues, false])
+  const values = selectedAmount
 
-    const values = selectedAmount
+  const NFT = newContract(context.IERC1155ABI, tokenAddress)
 
-    const NFT = newContract(context.IERC1155ABI, tokenAddress)
-
-    return await blockchainCall(NFT.methods.safeBatchTransferFrom, account, prestoDeck.options.address, tokenIds, values, payload)
+  return await blockchainCall(
+    NFT.methods.safeBatchTransferFrom,
+    account,
+    prestoDeck.options.address,
+    tokenIds,
+    values,
+    payload
+  )
 }
 
-export async function buyAndUnrwap(data, item, cart, itemValue, ETHValue, slippage, amm, swapData, inputType, selectedAmount, reserveAll, decimals) {
-    var { getGlobalContract, account } = data
-    const prestoDeck = getGlobalContract("deckPresto")
+export async function buyAndUnrwap(
+  data,
+  item,
+  cart,
+  itemValue,
+  ETHValue,
+  slippage,
+  amm,
+  swapData,
+  inputType,
+  selectedAmount,
+  reserveAll,
+  decimals
+) {
+  var { getGlobalContract, account } = data
+  const prestoDeck = getGlobalContract('deckPresto')
 
-    var operation = {
-        inputTokenAddress : swapData.inputTokenAddress,
-        inputTokenAmount : ETHValue,
-        ammPlugin : amm.address,
-        liquidityPoolAddresses : swapData.liquidityPoolAddresses,
-        swapPath : swapData.swapPath,
-        enterInETH : true,
-        exitInETH : false,
-        tokenMins : [itemValue],
-        receivers : [],
-        receiversPercentages : []
-    }
-    const is721 = item.wrapType === 'ERC721'
-    var payload = cart.map(it => abi.encode(["address", "uint256", "address", "bytes", "bool", "bool"], [it.tokenAddress || it.address, it.id, account, "0x", true, true]))
-    if(!is721) {
-        var reserves = item.wrapType === 'ERC1155' && cart.map((it, i) => tryGetReserves(data, item, it, selectedAmount[i], decimals, true))
-        payload = cart.map((it, i) => abi.encode(["address", "uint256", "address", "bytes32[]", "bytes"], [it.tokenAddress || it.address, it.id, account, reserves[i], "0x"]))
-    }
+  var operation = {
+    inputTokenAddress: swapData.inputTokenAddress,
+    inputTokenAmount: ETHValue,
+    ammPlugin: amm.address,
+    liquidityPoolAddresses: swapData.liquidityPoolAddresses,
+    swapPath: swapData.swapPath,
+    enterInETH: true,
+    exitInETH: false,
+    tokenMins: [itemValue],
+    receivers: [],
+    receiversPercentages: [],
+  }
+  const is721 = item.wrapType === 'ERC721'
+  var payload = cart.map((it) =>
+    abi.encode(
+      ['address', 'uint256', 'address', 'bytes', 'bool', 'bool'],
+      [it.tokenAddress || it.address, it.id, account, '0x', true, true]
+    )
+  )
+  if (!is721) {
+    var reserves =
+      item.wrapType === 'ERC1155' &&
+      cart.map((it, i) =>
+        tryGetReserves(data, item, it, selectedAmount[i], decimals, true)
+      )
+    payload = cart.map((it, i) =>
+      abi.encode(
+        ['address', 'uint256', 'address', 'bytes32[]', 'bytes'],
+        [it.tokenAddress || it.address, it.id, account, reserves[i], '0x']
+      )
+    )
+  }
 
-    return await blockchainCall(prestoDeck.methods.buyAndUnwrap, operation, is721, payload, { value : ETHValue })
+  return await blockchainCall(
+    prestoDeck.methods.buyAndUnwrap,
+    operation,
+    is721,
+    payload,
+    { value: ETHValue }
+  )
 }
 
 async function decodeString(provider, to, name, id) {
-    const args = [{ provider }, to, name]
-    id && args.push(id)
-    const request = getRawField.apply(this, args)
-    const response = await request
-    return response !== '0x' && abi.decode(["string"], response)[0]
+  const args = [{ provider }, to, name]
+  id && args.push(id)
+  const request = getRawField.apply(this, args)
+  const response = await request
+  return response !== '0x' && abi.decode(['string'], response)[0]
 }
 
 export async function loadMetadata(data, address, id) {
+  var { provider, context, newContract, chainId } = data
 
-    var { provider, context, newContract, chainId } = data
+  var metadata
 
-    var metadata
+  var uri = await decodeString(provider, address, 'uri(uint256)', id)
+  uri = uri || (await decodeString(provider, address, 'tokenUri(uint256)', id))
+  uri = uri || (await decodeString(provider, address, 'tokenURI(uint256)', id))
+  uri = uri || (await decodeString(provider, address, 'uri'))
+  uri = uri || (await decodeString(provider, address, 'tokenUri'))
+  uri = uri || (await decodeString(provider, address, 'tokenURI'))
 
-    var uri = await decodeString(provider, address, "uri(uint256)", id)
-    uri = uri || await decodeString(provider, address, "tokenUri(uint256)", id)
-    uri = uri || await decodeString(provider, address, "tokenURI(uint256)", id)
-    uri = uri || await decodeString(provider, address, "uri")
-    uri = uri || await decodeString(provider, address, "tokenUri")
-    uri = uri || await decodeString(provider, address, "tokenURI")
+  try {
+    uri = formatLink({ context }, uri)
+    uri.indexOf('//data:') === 0 && (uri = uri.substring(2))
+    uri.indexOf('//0x') === 0 && (uri = uri.substring(2))
+  } catch (e) {}
 
-    try {
-        uri = formatLink({ context }, uri)
-        uri.indexOf('//data:') === 0 && (uri = uri.substring(2))
-        uri.indexOf('//0x') === 0 && (uri = uri.substring(2))
-    } catch(e) {
-    }
+  var originalUri = uri
 
-    var originalUri = uri
+  uri = decodeURI(uri)
+  uri &&
+    uri.indexOf('0x{id}') !== -1 &&
+    (uri = uri.split('0x{id}').join(web3Utils.toHex(id)))
+  uri && uri.indexOf('{id}') !== -1 && (uri = uri.split('{id}').join(id))
 
-    uri = decodeURI(uri)
-    uri && uri.indexOf('0x{id}') !== -1 && (uri = uri.split('0x{id}').join(web3Utils.toHex(id)))
-    uri && uri.indexOf('{id}') !== -1 && (uri = uri.split('{id}').join(id))
+  var metadata
+  try {
+    metadata =
+      uri.indexOf('data:') === 0
+        ? await (await fetch(uri)).json()
+        : await memoryFetch(uri)
+  } catch (e) {}
 
-    var metadata
-    try {
-        metadata = uri.indexOf('data:') === 0 ? await (await fetch(uri)).json() : await memoryFetch(uri)
-    } catch(e) {
-    }
-
-    /*if(!metadata && originalUri && originalUri.indexOf('{id}') !== -1) {
+  /*if(!metadata && originalUri && originalUri.indexOf('{id}') !== -1) {
         var wrapper = data.wrapper
         if(!wrapper) {
             try {
@@ -1709,70 +2521,85 @@ export async function loadMetadata(data, address, id) {
         }
     }*/
 
-    console.log(address, id, uri)
+  console.log(address, id, uri)
 
-    var name = await decodeString(provider, address, "name(uint256)", id)
-    name = name || await decodeString(provider, address, "name")
+  var name = await decodeString(provider, address, 'name(uint256)', id)
+  name = name || (await decodeString(provider, address, 'name'))
 
-    var symbol = await decodeString(provider, address, "symbol(uint256)", id)
-    symbol = symbol || await decodeString(provider, address, "symbol")
+  var symbol = await decodeString(provider, address, 'symbol(uint256)', id)
+  symbol = symbol || (await decodeString(provider, address, 'symbol'))
 
-    return {
-        ...metadata,
-        address,
-        id,
-        tokenAddress : address,
-        tokenId : id,
-        name,
-        symbol,
-        uri,
-        metadata
-    }
+  return {
+    ...metadata,
+    address,
+    id,
+    tokenAddress: address,
+    tokenId: id,
+    name,
+    symbol,
+    uri,
+    metadata,
+  }
 }
 
 const sleepMillis = 350
 var coigeckoSemaphore
 
 export async function usdPrice(data, tokenAddress) {
-    const { seaport } = data
+  const { seaport } = data
 
-    if(!seaport) {
+  if (!seaport) {
+    return
+  }
+
+  while (coigeckoSemaphore) {
+    await new Promise((ok) => setTimeout(ok, sleepMillis))
+  }
+
+  coigeckoSemaphore = true
+
+  var tkAddr = await resolveToken(
+    data,
+    (tokenAddress = web3Utils.toChecksumAddress(tokenAddress))
+  )
+  var dataInput =
+    tkAddr !== tokenAddress ? await dualChainAsMainChain(data) : data
+  var decimals = await getRawField(
+    { provider: dataInput.web3.currentProvider },
+    tkAddr,
+    'decimals'
+  )
+
+  if (decimals === '0x') {
+    dataInput = await dualChainAsMainChain(data)
+    decimals = await getRawField(
+      { provider: dataInput.web3.currentProvider },
+      tkAddr,
+      'decimals'
+    )
+  }
+
+  decimals = abi.decode(['uint256'], decimals)[0].toString()
+
+  while (true) {
+    try {
+      var result = await Promise.all([
+        getTokenPriceInDollarsOnUniswapV3(dataInput, tkAddr, decimals),
+        getTokenPriceInDollarsOnUniswap(dataInput, tkAddr, decimals),
+        getTokenPriceInDollarsOnSushiSwap(dataInput, tkAddr, decimals),
+      ]).then((prices) => Math.max.apply(window, prices))
+      coigeckoSemaphore = false
+      return result
+    } catch (e) {
+      var message = (e.stack || e.message || e.toString()).toLowerCase()
+      if (
+        message.indexOf('404') !== -1 ||
+        message.indexOf('did you run out of gas')
+      ) {
+        coigeckoSemaphore = false
         return
+      }
+      await new Promise((ok) => setTimeout(ok, sleepMillis))
     }
-
-    while(coigeckoSemaphore) {
-        await new Promise(ok => setTimeout(ok, sleepMillis))
-    }
-
-    coigeckoSemaphore = true
-
-    var tkAddr = await resolveToken(data, tokenAddress = web3Utils.toChecksumAddress(tokenAddress))
-    var dataInput = tkAddr !== tokenAddress ? await dualChainAsMainChain(data) : data
-    var decimals = await getRawField({ provider : dataInput.web3.currentProvider }, tkAddr, 'decimals')
-
-    if(decimals === '0x') {
-        dataInput = await dualChainAsMainChain(data)
-        decimals = await getRawField({ provider : dataInput.web3.currentProvider }, tkAddr, 'decimals')
-    }
-
-    decimals = abi.decode(["uint256"], decimals)[0].toString()
-
-    while(true) {
-        try {
-            var result = await Promise.all([
-                getTokenPriceInDollarsOnUniswapV3(dataInput, tkAddr, decimals),
-                getTokenPriceInDollarsOnUniswap(dataInput, tkAddr, decimals),
-                getTokenPriceInDollarsOnSushiSwap(dataInput, tkAddr, decimals)
-              ]).then(prices => Math.max.apply(window, prices))
-            coigeckoSemaphore = false
-            return result
-        } catch(e) {
-            var message = (e.stack || e.message || e.toString()).toLowerCase()
-            if(message.indexOf('404') !== -1 || message.indexOf('did you run out of gas')) {
-                coigeckoSemaphore = false
-                return
-            }
-            await new Promise(ok => setTimeout(ok, sleepMillis))
-        }
-    }
+  }
 }
