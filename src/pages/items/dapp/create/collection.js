@@ -49,7 +49,6 @@ const NameAndSymbol = ({ value, onChange, onNext, onPrev }) => {
     <div className={style.CreationPageLabel}>
       <div className={style.FancyExplanationCreate}>
         <h2>Basic Info</h2>
-        <p>Lorem ispums im dolor amed asid</p>
       </div>
       <label className={style.CreationPageLabelF}>
         <h6>Name</h6>
@@ -570,8 +569,8 @@ const CreateCollection = ({}) => {
         <h3>
           Create a new Collection <span>step {step + 1} of 3</span>
         </h3>
-        <div className={style.WizardHeaderDescription}>
-          Lorem ispum sim dolor amed asid avec mono on alor
+        <div className={style.WizardHeaderDescription} style={{ margin: "20px 0px 20px 0px!important", fontSize: "16px!important" }}>
+        Items are a new ERC token super standard, combining functionalities of ERC-20 tokens, ERC-721, and ERC-1155 NFT's. This gives them access to the best functionalities and platforms of both normal tokens and NFT's
         </div>
         <div className={style.WizardProgress}>
           <div

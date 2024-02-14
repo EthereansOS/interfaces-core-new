@@ -4,32 +4,32 @@ import style from '../../../all.module.css'
 const initialData = [
     {
         "value": 10,
-        "name": "First day inflation percentage",
+        "name": "Option 1",
         "color": "#000000"
       },
       {
         "value": 0,
-        "name": "Second day inflation percentage",
+        "name": "Option 2",
         "color": "#7474F7"
       },
       {
         "value": 0,
-        "name": "Third day inflation percentage",
+        "name": "Option 3",
         "color": "#FEBC33"
       },
       {
         "value": 0,
-        "name": "Fourth day inflation percentage",
+        "name": "Option 4",
         "color": "#101356"
       },
       {
         "value": 0,
-        "name": "Fifth day inflation percentage",
+        "name": "Option 5",
         "color": "#ba81ff"
       },
       {
         "value": 0,
-        "name": "Sixth day inflation percentage",
+        "name": "Option 6",
         "color": "#668C68"
       },
   {
@@ -85,7 +85,7 @@ const DonutAndLegend = () => {
         {data.map((item, index) => (
             !item.isAvailableSpace && (
             <div key={index} className={style.SliderInputElement}>
-                <label>{item.name} <span className={style.SimplyDonutAreaPercentageLabel}>{item.value.toFixed(2)}%</span></label>
+                <label>{item.name} <span className={style.SimplyDonutAreaPercentageLabel}>{item.value.toFixed(0)}%</span></label>
                 <input
                 type="range"
                 value={item.value}

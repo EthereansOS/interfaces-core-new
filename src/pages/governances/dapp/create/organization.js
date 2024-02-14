@@ -132,8 +132,8 @@ const getMinMax = (vals) => {
 }
 
 function Example({
-  width: outerWidth = 400,
-  height: outerHeight = 400,
+  width: outerWidth = 600,
+  height: outerHeight = 600,
   showControls = true,
   margin = defaultMargin,
   animate = true,
@@ -352,7 +352,6 @@ const Metadata = ({ value, onChange, onNext, onPrev }) => {
     <div className={style.CreationPageLabel}>
       <div className={style.FancyExplanationCreate}>
         <h2>Basic Info</h2>
-        <p>Lorem ispums im dolor amed asid</p>
       </div>
       <label className={style.CreationPageLabelF}>
         <h6>Name*</h6>
@@ -517,7 +516,6 @@ const Confirmation = ({ value, onChange, onNext, onPrev }) => {
     <div className={style.CreationPageLabel}>
       <div className={style.FancyExplanationCreate}>
         <h2>Confirmation</h2>
-        <p>Lorem ispums im dolor amed asid</p>
       </div>
 
       <h6
@@ -527,7 +525,7 @@ const Confirmation = ({ value, onChange, onNext, onPrev }) => {
           'margin-bottom': '10px',
           'margin-top': '30px',
         }}>
-        Lorem ipsum sim dolor amed
+       Review the settings of your fully granular Organization. 
       </h6>
       <p
         style={{
@@ -535,9 +533,7 @@ const Confirmation = ({ value, onChange, onNext, onPrev }) => {
           textAlign: 'left',
           'padding-left': '20px',
         }}>
-        Donec suscipit ullamcorper enim ac pulvinar. Suspendisse eu luctus dui,
-        a pharetra turpis. Class aptent taciti sociosqu ad litora torquent per
-        conubia nostra, per inceptos himenaeos.
+          Once you deploy, all changes will need to be made through a successful governance proposal and executed by holders of the governance token chosen.
       </p>
 
       <div
@@ -588,9 +584,8 @@ const VotingRules = ({ value, onChange, onNext, onPrev }) => {
     <div className={style.CreationPageLabel}>
       <div className={style.FancyExplanationCreate}>
         <h2>Voting Rules</h2>
-        <p>Lorem ispums im dolor amed asid</p>
       </div>
-
+    {/*
       <h6
         style={{
           'text-align': 'left',
@@ -599,16 +594,14 @@ const VotingRules = ({ value, onChange, onNext, onPrev }) => {
           'margin-top': '30px',
         }}>
         Lorem ipsum sim dolor amed
-      </h6>
+      </h6>*/}
       <p
         style={{
           fontSize: '12px',
           textAlign: 'left',
           'padding-left': '20px',
         }}>
-        Donec suscipit ullamcorper enim ac pulvinar. Suspendisse eu luctus dui,
-        a pharetra turpis. Class aptent taciti sociosqu ad litora torquent per
-        conubia nostra, per inceptos himenaeos.
+       Set granular voting rules for how proposals are handled in the organization.
       </p>
 
       <div
@@ -617,6 +610,36 @@ const VotingRules = ({ value, onChange, onNext, onPrev }) => {
         <div
           className={style.CreationPageLabelFDivide}
           style={{ marginTop: '30px', marginBottom: '30px' }}>
+         
+          <label className={style.CreationPageLabelF} key={quorumKey}>
+            <h6>Quorum</h6>
+            <p>Selelct the value of Quorum</p>
+            <br />
+            <br />
+            <br />
+            <CircularSlider
+              label="Quorum"
+              labelColor="#fff"
+              knobColor="#000000"
+              width="120"
+              knobSize="25"
+              progressSize="9"
+              trackSize="14"
+              labelFontSize="10"
+              valueFontSize="20"
+              appendToValue="%"
+              progressColorFrom="#000000"
+              progressColorTo="#444444"
+              trackColor="#eeeeee"
+              min={0}
+              max={100}
+              initialValue={quorum}
+              onChange={(value) => {
+                setQuorum(value)
+              }}
+            />
+          </label>
+
           <label className={style.CreationPageLabelF}>
             <h6>Hard cap</h6>
             <p>Selelct the value of Hard cap</p>
@@ -641,34 +664,6 @@ const VotingRules = ({ value, onChange, onNext, onPrev }) => {
               max={100}
               onChange={(value) => {
                 setHardCapValue(value)
-              }}
-            />
-          </label>
-          <label className={style.CreationPageLabelF} key={quorumKey}>
-            <h6>Quorum</h6>
-            <p>Selelct the value of Quorum</p>
-            <br />
-            <br />
-            <br />
-            <CircularSlider
-              label="Quorum"
-              labelColor="#fff"
-              knobColor="#000000"
-              width="120"
-              knobSize="25"
-              progressSize="9"
-              trackSize="14"
-              labelFontSize="10"
-              valueFontSize="20"
-              appendToValue="%"
-              progressColorFrom="#000000"
-              progressColorTo="#444444"
-              trackColor="#eeeeee"
-              min={hardCapValue}
-              max={100}
-              initialValue={quorum}
-              onChange={(value) => {
-                setQuorum(value)
               }}
             />
           </label>
@@ -803,7 +798,6 @@ const Organization = ({ value, onChange, onNext, onPrev }) => {
     <div className={style.CreationPageLabel}>
       <div className={style.FancyExplanationCreate}>
         <h2>Organization Treasury</h2>
-        <p>Lorem ispums im dolor amed asid</p>
       </div>
 
       <div
@@ -816,53 +810,11 @@ const Organization = ({ value, onChange, onNext, onPrev }) => {
         <label className={style.CreationPageLabelF}>
           <h4 style={{ textAlign: 'left' }}>Percentage to move </h4>
           <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-            ligula tellus.
+          This limits the percentage of the treasury that can be transferred in a single proposal. It serves as an anti rug feature, ensuring that the entire treasury cannot be moved at once.
           </p>
           <br />
-          <br />
-          <h6>Lorem ipsum sim dolorem </h6>
-          <p>
-            Aliquam euismod tincidunt in, volutpat eleifend erat. Mauris
-            convallis consectetur lorem non tristique. Donec vel sem eget orci
-            dictum tincidunt ac at magna. Ut blandit dapibus accumsan. Class
-            aptent taciti sociosqu ad litora torquent per conubia nostra, per
-            inceptos himenaeos. Praesent nec diam erat. Vivamus at dapibus urna,
-            vel facilisis lectus.
-          </p>
-          <br />
-          <br />
-          <ul
-            style={{
-              fontSize: '12px',
-              textAlign: 'left',
-              listStyle: 'circle',
-              marginLeft: '40px',
-            }}>
-            <li>Lorem ipsum sim dolorem</li>
-            <li>Acec asid amed</li>
-            <li>Efficitur vulputate</li>
-          </ul>
-          <br />
-          <br />
-          <h6>Sim dolor amed asid</h6>
-          <p>
-            Aliquam venenatis gravida lectus, efficitur vulputate metus
-            hendrerit sagittis. Curabitur ultrices mauris a nibh mollis, ut
-            maximus magna lacinia. Morbi quis nunc vitae justo sollicitudin
-            blandit.{' '}
-          </p>
-          <br />
-          <br />
-          <h6>Lorem ipsum sim dolorem </h6>
-          <p>
-            Paliquam euismod tincidunt in, volutpat eleifend erat. Mauris
-            convallis consectetur lorem non tristique. Donec vel sem eget orci
-            dictum tincidunt ac at magna. Ut blandit dapibus accumsan. Class
-            aptent taciti sociosqu ad litora torquent per conubia nostra, per
-            inceptos himenaeos. Praesent nec diam erat. Vivamus at dapibus urna,
-            vel facilisis lectus.
-          </p>
+          
+          
         </label>
       </div>
 
@@ -905,7 +857,6 @@ const Governance = ({ value, onChange, onNext, onPrev }) => {
     <div className={style.CreationPageLabel}>
       <div className={style.FancyExplanationCreate}>
         <h2>Governance Rules</h2>
-        <p>Lorem ispums im dolor amed asid</p>
       </div>
 
       <div
@@ -956,6 +907,35 @@ const Governance = ({ value, onChange, onNext, onPrev }) => {
         <div
           className={style.CreationPageLabelFDivide}
           style={{ marginTop: '30px', marginBottom: '30px' }}>
+         
+          <label className={style.CreationPageLabelF} key={quorumKey}>
+            <h6>Quorum</h6>
+            <p>Selelct the value of Quorum</p>
+            <br />
+            <br />
+            <br />
+            <CircularSlider
+              label="Quorum"
+              labelColor="#fff"
+              knobColor="#000000"
+              width="120"
+              knobSize="25"
+              progressSize="9"
+              trackSize="14"
+              labelFontSize="10"
+              valueFontSize="20"
+              appendToValue="%"
+              progressColorFrom="#000000"
+              progressColorTo="#444444"
+              trackColor="#eeeeee"
+              min={0}
+              max={100}
+              initialValue={quorum}
+              onChange={(value) => {
+                setQuorum(value)
+              }}
+            />
+          </label>
           <label className={style.CreationPageLabelF}>
             <h6>Hard cap</h6>
             <p>Selelct the value of Hard cap</p>
@@ -980,34 +960,6 @@ const Governance = ({ value, onChange, onNext, onPrev }) => {
               max={100}
               onChange={(value) => {
                 setHardCapValue(value)
-              }}
-            />
-          </label>
-          <label className={style.CreationPageLabelF} key={quorumKey}>
-            <h6>Quorum</h6>
-            <p>Selelct the value of Quorum</p>
-            <br />
-            <br />
-            <br />
-            <CircularSlider
-              label="Quorum"
-              labelColor="#fff"
-              knobColor="#000000"
-              width="120"
-              knobSize="25"
-              progressSize="9"
-              trackSize="14"
-              labelFontSize="10"
-              valueFontSize="20"
-              appendToValue="%"
-              progressColorFrom="#000000"
-              progressColorTo="#444444"
-              trackColor="#eeeeee"
-              min={hardCapValue}
-              max={100}
-              initialValue={quorum}
-              onChange={(value) => {
-                setQuorum(value)
               }}
             />
           </label>
@@ -1358,7 +1310,7 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
     <div className={style.CreationPageLabel}>
       <div className={style.FancyExplanationCreate}>
         <h2>Fixed Inflation</h2>
-        <p>Lorem ispums im dolor amed asid</p>
+        <p>Fixed inflation is a novel funding mechanism to bootstrap the development team and the economy of an Organization. <br/>Funding to both the team and different economic components can be customized.</p>
 
         <div className={style.OrganizationToggle}>
           <input
@@ -2371,10 +2323,10 @@ const CreateOrganization = () => {
       </div>
       <div className={style.WizardHeader}>
         <h3>
-          Create a new Organization (ALPHA) <span>step {step + 1} of 6</span>
+          Create a new Organization <span>step {step + 1} of 6</span>
         </h3>
         <div className={style.WizardHeaderDescription}>
-          Lorem ispum sim dolor amed asid avec mono on alor
+          Organizations are fully decentralized DAOs with modular economic components
         </div>
         <div className={style.WizardProgress}>
           <div
