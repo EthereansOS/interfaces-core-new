@@ -74,22 +74,32 @@ const ItemView = () => {
         {item && <>
             <div className={style.CollectionLeft}>
             <ViewCover item={item}/>
-            <ViewBasics item={item}/>
-            <ViewManageItem item={item} onRefresh={refresh}/>
-            <ViewDescription item={item}/>
-            <ViewProperties item={item}/>
-            </div>
-            <div className={style.CollectionRight}>
-            <SubTrade item={{...item, address : item.l2Address || item.address}}/>
             {!item.l2Address && <>
-                {item?.wrapper && <div className={style.WrapUnwrapBox}>
-                <Wrap item={item}/>
-                <Unwrap item={item} wrapper={item.wrapper}/>
-                </div>}
                 <DappSubMenu isSelected={it => it.id === submenuSelection} voices={itemSubmenuVoices.map(it => ({...it, onClick : () => submenuSelection !== it.id && setSubmenuSelection(it.id)}))}/>
                 {submenuSelection === itemSubmenuVoices[0].id && <SubCollectionExplore item={item}/>}
                 {submenuSelection === itemSubmenuVoices[1].id && <ViewFarmings rewardTokenAddress={item.address}/>}
             </>}
+            </div>
+            <div className={style.CollectionRight}>
+                <ViewBasics item={item}/>
+                <ViewDescription item={item}/>
+                <ViewManageItem item={item} onRefresh={refresh}/>
+                <div className={style.CollectionRightSubtitles}>
+                    <h4>Lorem ipsum sim dolorem</h4>
+                    <p>Lorem ipsum sim dolorem</p>
+                </div>
+                <ViewProperties item={item}/>
+                <SubTrade item={{...item, address : item.l2Address || item.address}}/>
+                <div className={style.CollectionRightSubtitles}>
+                    <h4>Lorem ipsum sim dolorem</h4>
+                    <p>Lorem ipsum sim dolorem</p>
+                </div>
+                {!item.l2Address && <>
+                    {item?.wrapper && <div className={style.WrapUnwrapBox}>
+                    <Wrap item={item}/>
+                    <Unwrap item={item} wrapper={item.wrapper}/>
+                    </div>}
+                </>}
             </div>
         </>}
         </div>

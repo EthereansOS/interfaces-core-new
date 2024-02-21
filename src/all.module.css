@@ -416,10 +416,11 @@ input::-webkit-scrollbar {
     border-bottom-color: initial;
     border-top-left-radius: 6px;
     border-top-right-radius: 6px;
+    border-radius: 20px!important;
 }
 
 .light .selected {
-    background-color: #8a77de !important;
+    background-color: #141416 !important;
     color: rgb(232, 230, 227) !important;
 }
 
@@ -428,6 +429,18 @@ input::-webkit-scrollbar {
     color: rgb(232, 230, 227) !important;
 }
 
+.CollectionLeft .exploreBanners{
+    display: none;
+}
+
+.CollectionLeft .CovenantsMainBox{
+    width: 100%;
+}
+
+.CollectionLeft .CovenantsMainBox  h2{
+    font-size: 18px!important;
+    padding: 20px;
+}
 .indicator {
     height: 30px;
 }
@@ -590,9 +603,10 @@ input::-webkit-scrollbar {
     border-radius: 15px;
     border: none !important;
     cursor: pointer;
-    background-color: #7474f7;
+    background-color: #141416;
     color: #ffffff;
-    font-weight: bold;
+    font-weight: 200;
+    font-family: inherit;
 }
 
 .ActionAWeb3Button button:disabled {
@@ -635,9 +649,9 @@ input::-webkit-scrollbar {
 .ActionAWeb3Buttons button {
     width: 40%;
     margin: 0 3%;
-    padding: 20px 0px;
+    padding: 9px 0px;
     text-align: center;
-    font-size: 15px;
+    font-size: 12px;
     border-radius: 20px;
     border: none !important;
     cursor: pointer;
@@ -652,7 +666,7 @@ input::-webkit-scrollbar {
 
 .ActionAWeb3Buttons button:disabled {
     font-weight: normal !important;
-    color: #6e6e6e !important;
+    color: #999999 !important;
     cursor: default;
 }
 
@@ -689,8 +703,8 @@ input::-webkit-scrollbar {
 }
 
 .ActionInfoSection .ActionInfoSectionAMM {
-    width: 40px;
-    height: 40px;
+    width: 35px;
+    height: 34px;
     padding: 5px;
     display: inline-block;
     text-align: center;
@@ -698,11 +712,10 @@ input::-webkit-scrollbar {
     border-radius: 14px;
     overflow: hidden;
     vertical-align: middle;
+    border-radius: 6px;
 }
 
 .ActionInfoSection .ActionInfoSectionAMM figure {
-    width: 25px;
-    height: 25px;
     display: inline-block;
 }
 
@@ -710,13 +723,14 @@ input::-webkit-scrollbar {
     width: 100%;
     height: 100%;
     display: block;
+    border-radius:6px;
 }
 
 .ActionInfoSection .ActionInfoSectionAMM span {
     font-size: 13px;
     font-weight: bold;
     margin-top: -5px;
-    display: block;
+    display: none;
 }
 
 .ActionInfoSection .ActionInfoSectionSettings {
@@ -926,10 +940,16 @@ input::-webkit-scrollbar {
     min-width: 70px;
     margin: 5px;
     font-size: 11px;
-    padding: 3px 2px;
+    padding: 3px 15px;
     text-align: center;
     cursor: pointer;
     box-shadow: none;
+}
+.DetailItemAddButtonsGroup{
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 14px;
+    margin-bottom: 10px;
+    text-align: center;
 }
 
 .ItemLinkButton {
@@ -1568,11 +1588,10 @@ input::-webkit-scrollbar {
 }
 
 .TradeMain {
-    width: 660px;
-    margin-bottom: 30px;
+    width: 100%;
+    margin-bottom: 10px;
     display: inline-block;
     text-align: center;
-    padding: 10px;
     border-radius: 20px;
 }
 
@@ -1601,7 +1620,12 @@ input::-webkit-scrollbar {
     text-align: center;
     padding: 2%;
     border: none;
-    width: 95%;
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    background-color: #fff;
+    margin-top: 10px;
+    border-radius: 10px;
 }
 
 .TradeMarketBox h4 {
@@ -1620,12 +1644,11 @@ input::-webkit-scrollbar {
     width: 20px;
     height: 20px;
     display: inline-block;
-    margin: 15px auto 15px auto;
     font-size: 17px;
     font-weight: bold;
     border-radius: 100%;
     cursor: pointer;
-    margin: 35px 5px auto 5px;
+    margin: 23px 5px auto 5px;
     vertical-align: top;
 }
 .SimplyDonutArea{
@@ -1750,11 +1773,11 @@ input::-webkit-scrollbar {
 .TradeInfoThings {
     width: 90%;
     display: inline-block;
-    margin: 20px 0px auto;
+    margin: 0px 0px auto;
 }
 
 .TradeInfoThings .ActionInfoSection {
-    width: 300px;
+    width: 100%;
     overflow: hidden;
     height: 50px;
 }
@@ -1950,13 +1973,21 @@ input::-webkit-scrollbar {
 .DappSubMenu {
     display: inline-block;
     padding: 0 8px;
-    margin: 50px auto;
+    margin: 20px auto;
     width: auto;
     height: 30px;
     border-radius: 20px;
     border: 2px solid;
 }
 
+.CollectionLeft .DappSubMenu {
+    width: 100%;
+    background: #fff!important;
+    padding: 20px;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: none!important;
+}
 .DappSubMenu>li {
     display: inline-block;
 }
@@ -3266,12 +3297,12 @@ input::-webkit-scrollbar {
 }
 
 input[type=range] {
-    height: 31px;
+    height: 3px;
     -webkit-appearance: none;
-    margin: 10px 0;
+    margin: 0px 0;
     width: 100%;
     width: 350px;
-    margin: 10px auto;
+    margin: 0px auto;
     display: block;
 }
 
@@ -3281,19 +3312,20 @@ input[type=range]:focus {
 
 input[type=range]::-webkit-slider-runnable-track {
     width: 100%;
-    height: 15px;
+    height: 5px!important;
     cursor: pointer;
     animate: 0.2s;
     border-radius: 10px;
+    background-color: #000!important;
 }
 
 input[type=range]::-webkit-slider-thumb {
-    height: 25px;
-    width: 25px;
+    height: 20px;
+    width: 20px;
     border-radius: 12px;
     cursor: pointer;
     -webkit-appearance: none;
-    margin-top: -5px;
+    margin-top: -8px;
 }
 
 input[type=range]::-ms-track {
@@ -4368,31 +4400,175 @@ input[type=range]::-ms-thumb {
 }
 
 .ItemSingle {
-    width: 170px;
+    width: 332px;
     display: inline-block;
     border-radius: 20px;
     overflow: hidden;
     margin: 10px;
 }
 
+.ItemSingle>a{
+    position: relative;
+    left: 0px;
+    top: 0px;
+    display: block;
+}
+.ItemSingle>a>.ItemTitleBottomZone{
+    color: #fff;
+    z-index: 10;
+    position: absolute;
+    bottom: -30px;
+    right: 52px;
+    left: auto;
+}
+
+.ItemSingle>a>.ItemTitleTopZone{
+    color: #fff;
+    z-index: 10;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    left: auto;
+    width: 200px;
+}
+.ItemInfoSide{
+    z-index: 1000!important;
+    position: absolute;
+    text-align: right;
+    top: 10px;
+    right: 30px;
+}
+
+.ItemTitleTopZoneLabel{
+    font-weight: 100;
+    font-size: 13px;
+    margin-bottom: 5px;
+}
+
+.ItemTitleTopZoneValue{
+    font-weight: 600;
+    font-size: 18px;
+}
+
+
 .ItemSingle figure {
     display: block;
     width: 100%;
-    height: 170px;
+    height: 350px;
     overflow: hidden;
     position: relative;
 }
 
+.ItemTitleTopZoneLikeButton{
+    position: absolute;
+    left: 20px;
+    top: 20px;
+    z-index: 10!important;
+    background: #fff;
+    border-radius: 1000px;
+    border: 1px solid #ddd;
+    height: 40px;
+    width: 40px;
+}
+.ItemsExploreMainTitleArea{
+    position:relative;
+    text-align: left;
+    width: 97%;
+    margin: 0 auto;
+    margin-top: 50px;
+
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 35px;
+    margin-bottom: 25px;
+}
+
+.ItemsExploreMainTitleArea h2{
+   margin-bottom: 5px;
+   font-weight: bold;
+}
+
+.ItemsExploreMainCategories{
+    padding: 0px;
+    text-align: left;
+    margin: 0 auto;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    width: 97%;
+    padding-bottom: 30px;
+    border-bottom: 1px solid #e8e8e8;
+}
+
+.ItemsExploreMainCategories li{
+    display: inline-block;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    border-radius: 9999px;
+    color:#64748b;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.ItemsExploreMainCategories li.ItemsExploreMainCategoriesActive{
+    background-color: #000;
+    color:rgb(241, 245, 249, 1);
+}
+
+.ItemTitleTopZoneLikeButton svg{
+    width: 22px;
+    position: relative;
+    left: 0px;
+    top: 3px;
+}
+
+.ItemsExploreMainSearch{
+   position:absolute;
+   right: 0px;
+   top:0px;
+}
+
+.ItemsExploreMainSearch input{
+    border: 1px solid rgb(229,231,235);
+    padding: 15px 20px 15px 20px;
+    width: 600px;
+    font-size: 15px;
+    border-radius: 10px;
+}
+
+.ItemsExploreMainSearch svg{
+    width: 20px;
+    position: absolute;
+    right: 20px;
+    top:17px;
+    color: #ddd;
+}
+.ItemsExploreMainCategoriesCreateElement{
+    float: right;
+    background-color: #f09243;
+    color:#fff!important;
+    font-weight: bold;
+    padding-right: 26px!important;
+    position: relative;
+    top:-5px;
+}
+.ItemsExploreMainCategoriesCreateElement span{
+    color:#fff!important;
+    position: relative;
+    top: -6px;
+    left:6px;
+}
 .ItemSingle figure img {
     display: block;
     width: 100%;
     height: 100%;
-    position: absolute;
+    position: relative;
     left: 0;
     top: 0;
-    object-fit: contain;
+    object-fit: cover;
     padding: 10px;
     border-radius: 20px;
+    z-index:100;
 }
 
 .ItemSingle .ItemTitle {
@@ -4461,20 +4637,21 @@ input[type=range]::-ms-thumb {
 }
 
 .SingleContentPage {
-    width: 100%;
-    max-width: 990px;
+    width: auto;
+    max-width: 100%;
+    margin-top: 50px;
     text-align: center;
 }
 
 .CollectionLeft {
-    width: 270px;
+    width: 470px;
     display: inline-block;
     text-align: center;
     vertical-align: top;
 }
 
 .CollectionRight {
-    width: 660px;
+    width: 600px;
     display: inline-block;
     text-align: center;
     margin-left: 30px;
@@ -4493,9 +4670,9 @@ input[type=range]::-ms-thumb {
 .WrapUnwrapBox {
     width: 100%;
     display: block;
-    margin: 30px auto 50px auto;
     padding: 0px;
     border-radius: 20px;
+    background: #fff;
 }
 
 .WrapBoxItem {
@@ -4530,38 +4707,40 @@ input[type=range]::-ms-thumb {
 }
 
 .ViewBasics {
-    width: 270px;
+    width: 100%;
     display: inline-block;
     text-align: left;
-    padding: 15px;
-    margin-top: 45px;
+    padding: 15px 0px 15px 0px;
     border-radius: 20px;
 }
 
 .ViewBasics a {
     border: 2px solid;
-    border-radius: 5px;
+    border-radius: 30px;
     display: inline-block;
     width: 80px;
     margin: 5px;
     font-size: 12px;
-    padding: 3px 2px;
+    padding: 12px 2px!important;
     text-align: center;
     cursor: pointer;
 }
 
 .ViewBasics h5 {
-    font-size: 16px;
+    font-size: 26px;
     display: inline-block;
-    text-align: center;
+    text-align: left;
+    font-weight: 600;
     margin: 5px auto 15px auto;
     width: 100%;
+    border-bottom: 1px solid #e0e2ed;
+    padding-bottom: 20px;
 }
 
 .ViewBasics p {
     font-size: 12px;
     width: 100%;
-    text-align: center;
+    text-align: left;
     display: inline-block;
     margin: 10px auto;
 }
@@ -4598,13 +4777,15 @@ input[type=range]::-ms-thumb {
 }
 
 .ICViewCover {
-    width: 270px;
+    width: 100%;
     min-height: 130px;
     display: inline-block;
-    border-radius: 20px;
     overflow: hidden;
     vertical-align: middle;
     position: relative;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
 }
 
 .ICViewCover img {
@@ -4614,13 +4795,13 @@ input[type=range]::-ms-thumb {
 }
 
 .ViewDescriptionL {
-    width: 270px;
+    width: 100%;
     display: inline-block;
     text-align: left;
-    padding: 25px;
-    margin-top: 45px;
+    padding: 7px;
     border-radius: 20px;
     overflow: hidden;
+    padding-top: 0px;
     overflow-wrap: break-word;
 }
 
@@ -9328,6 +9509,11 @@ input[type=range]::-ms-thumb {
 
 .light .ActionInfoSection {
     background-color: #ffffff;
+    display: flex;
+    border: 2px solid #e7ecf4;
+    padding: 4px;
+    margin-top: 5px;
+    border-radius: 9px;
 }
 
 .biz .ActionInfoSection {
@@ -9526,7 +9712,8 @@ input[type=range]::-ms-thumb {
 .light .ActionAWeb3ButtonExtraSmall button:disabled,
 .light .ActionAWeb3Buttons button:disabled,
 .light .ActionAWeb3ButtonSmall button:disabled {
-    background-color: #e4e4e4 !important;
+    background-color: #e9ebf2 !important;
+    border: 1px solid #ddd!important;
 }
 
 .biz .ActionAWeb3Button button:disabled,
@@ -9613,6 +9800,7 @@ input[type=range]::-ms-thumb {
 .light .ModalBack {
     -webkit-backdrop-filter: blur(6px);
     backdrop-filter: blur(6px);
+    z-index: 10000;
 }
 
 .biz .ModalBack {
@@ -9666,9 +9854,9 @@ input[type=range]::-ms-thumb {
 }
 
 .light .ExtLinkButton {
-    border-color: #849BBD;
-    color: #849BBD;
-    background-color: transparent;
+    border-color: #403f830d;
+    color: #999;
+    background-color: #403f830d;
 }
 
 .biz .ExtLinkButton {
@@ -9697,9 +9885,9 @@ input[type=range]::-ms-thumb {
 }
 
 .light .MetaBTN {
-    border-color: #e1b9be !important;
-    background-color: #e1b9be !important;
-    color: #ffffff !important;
+    border-color: #403f830d!important;
+    color: #999!important;
+    background-color: #403f830d;
 }
 
 .biz .MetaBTN {
@@ -9755,9 +9943,10 @@ input[type=range]::-ms-thumb {
 }
 
 .light .SendToL2 {
-    border-color: #ff0420 !important;
-    background-color: #ff0420 !important;
+    border-color: #f09243 !important;
+    background-color: #f09243 !important;
     color: #ffffff !important;
+    text-transform: uppercase;
 }
 
 .biz .SendToL2 {
@@ -10611,13 +10800,25 @@ input {
     color: #ffffff;
 }
 
+.DetailSupply{
+    background: #e9ebf2;
+    border: 1px solid #e0e2ed;
+    border-radius: 40px;
+    font-weight: bold;
+    padding: 8px 20px 8px 20px;
+    float: right;
+    color: #999!important;
+    font-size: 13px;
+}
+
 .light .TradeMarketTokenAll {
     background-color: transparent;
     padding: 0px;
     margin: 0px;
     margin: 0px auto 0px 0px;
     text-align: left;
-    display: block;
+    display: inline-block;
+    width: 100%;
 }
 
 .biz .TradeMarketTokenAll {
@@ -10675,6 +10876,30 @@ input {
     text-align: left;
     padding-left: 8px;
     padding: 6px;
+}
+
+.CollectionRightSubtitles{
+    padding: 0px 7px 0px 7px;
+    border-top: 1px solid #ddd;
+    padding-top: 10px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 12px;
+    text-align: left;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.CollectionRightSubtitles h4{
+    font-size: 18px;
+    color: #222;
+}
+
+.CollectionRightSubtitles p{
+    font-size: 12px;
+    margin-top: 5px;
+    color: #444;
 }
 
 .biz .TradeMarketToken .TradeMarketTokenSelector {
@@ -10872,10 +11097,10 @@ input {
 }
 
 .light .TradeMain {
-    background-color: #e9effc;
+    /*background-color: #e9effc;
     box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);
     -webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);
-    -moz-box-shadow: 1px 1px 2px 1px rgba(202, 202, 202, 0.32);
+    -moz-box-shadow: 1px 1px 2px 1px rgba(202, 202, 202, 0.32);*/
 }
 
 .biz .TradeMain {
@@ -10898,10 +11123,10 @@ input {
 
 
 .light .WrapBoxItem {
-    background-color: #e9effc;
+   /* background-color: #e9effc;
     box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);
     -webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);
-    -moz-box-shadow: 1px 1px 2px 1px rgba(202, 202, 202, 0.32);
+    -moz-box-shadow: 1px 1px 2px 1px rgba(202, 202, 202, 0.32);*/
 }
 
 .biz .WrapBoxItem {
@@ -10923,10 +11148,10 @@ input {
 }
 
 .light .UnwrapBoxItem {
-    background-color: #e9effc;
+   /* background-color: #e9effc;
     box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);
     -webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);
-    -moz-box-shadow: 1px 1px 2px 1px rgba(202, 202, 202, 0.32);
+    -moz-box-shadow: 1px 1px 2px 1px rgba(202, 202, 202, 0.32);*/
 }
 
 .biz .UnwrapBoxItem {
@@ -10948,8 +11173,8 @@ input {
 }
 
 .light .TradeMarketBox {
-    border-color: #ffffff;
-    background-color: #e9effc;
+    /*border-color: #ffffff;
+    background-color: #e9effc;*/
 }
 
 .biz .TradeMarketBox {
@@ -12294,9 +12519,9 @@ input {
 
 .light .CovenantsMainBox {
     background-color: #ffffff;
-    box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);
+    /*box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);
     -webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);
-    -moz-box-shadow: 1px 1px 2px 1px rgba(202, 202, 202, 0.32);
+    -moz-box-shadow: 1px 1px 2px 1px rgba(202, 202, 202, 0.32);*/
 }
 
 .biz .CovenantsMainBox {
@@ -12725,9 +12950,12 @@ input {
 
 .light .SubCollectionInfo {
     background-color: #ffffff;
-    box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);
+    /*box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);
     -webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);
-    -moz-box-shadow: 1px 1px 2px 1px rgba(202, 202, 202, 0.32);
+    -moz-box-shadow: 1px 1px 2px 1px rgba(202, 202, 202, 0.32);*/
+    background-color: #ffffff;
+    padding: 20px;
+    height: auto;
 }
 
 .biz .SubCollectionInfo {
@@ -12826,8 +13054,34 @@ input {
 }
 
 .light .ItemSingle .ItemTitle {
-    background-color: #ffffff;
-    opacity: 0.7;
+    opacity: 1;
+    position: absolute;
+    z-index: 20;
+    text-align: left;
+    padding-left: 0px;
+    left: 23px;
+    bottom: 2px;
+    display: block;
+    width: 100%;
+    max-width: 100%;
+}
+
+
+.light .ItemSingle .ItemTitle h4 {
+    border: 1px solid #141416;
+    width: fit-content;
+    padding: 7px 12px 7px 12px;
+    font-size: 12px;
+    margin-top: 5px;
+    border-radius: 8px;
+    background: #141416;
+    color: #fff;
+    font-weight: 600;
+}
+
+.light .ItemSingle .ItemTitle h6{
+    font-size: 16px;
+    font-weight: 200;
 }
 
 .biz .ItemSingle .ItemTitle {
@@ -12878,10 +13132,10 @@ input {
 }
 
 .light .ViewBasics {
-    background-color: #ffffff;
+    /*background-color: #ffffff;
     box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);
     -webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);
-    -moz-box-shadow: 1px 1px 2px 1px rgba(202, 202, 202, 0.32);
+    -moz-box-shadow: 1px 1px 2px 1px rgba(202, 202, 202, 0.32);*/
 }
 
 .biz .ViewBasics {
@@ -12959,9 +13213,9 @@ input {
 }
 
 .light .ICViewCover {
-    box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);
+   /* box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);
     -webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);
-    -moz-box-shadow: 1px 1px 2px 1px rgba(202, 202, 202, 0.32);
+    -moz-box-shadow: 1px 1px 2px 1px rgba(202, 202, 202, 0.32);*/
 }
 
 .biz .ICViewCover {}
@@ -12973,10 +13227,10 @@ input {
 }
 
 .light .ViewDescriptionL {
-    background-color: #ffffff;
+    /* background-color: #ffffff;
     box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);
     -webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);
-    -moz-box-shadow: 1px 1px 2px 1px rgba(202, 202, 202, 0.32);
+    -moz-box-shadow: 1px 1px 2px 1px rgba(202, 202, 202, 0.32);*/
 }
 
 .biz .ViewDescriptionL {
@@ -13440,6 +13694,10 @@ input {
 
 .light input[type=range] {
     background-color: transparent;
+    border: 0px;
+    margin-top: 15px;
+    padding-left: 0px;
+    padding-right: 0px;
 }
 
 .dark input[type=range] {
@@ -13450,18 +13708,20 @@ input {
     border: 0px solid #000000;
     box-shadow: 0px 0px 0px #50555C;
     background: #ffffff;
+    height:1px;
 }
 
 .dark input[type=range]::-webkit-slider-runnable-track {
     border: 0px solid #ffffff;
     box-shadow: 0px 0px 0px #50555C;
     background: #50555C;
+
 }
 
 .light input[type=range]::-webkit-slider-thumb {
-    background: #7474F7;
+    background: #000;
     box-shadow: 0px 0px 0px #000000;
-    border: 0px solid #000000;
+    border: 5px solid #ddd;
 }
 
 .dark input[type=range]::-webkit-slider-thumb {

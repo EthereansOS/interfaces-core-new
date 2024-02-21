@@ -47,11 +47,13 @@ export default ({item}) => {
         {farming && <RegularModal close={() => setFarming()}>
           <ViewFarmings rewardTokenAddress={item.address}/>
         </RegularModal>}
-        <h5>{item.name} ({item.symbol})</h5>
-        <p>Supply: {fromDecimals(totalSupply, item.decimals)}</p>
-        <p>{price ? ("Price: $" + formatMoney(price, 2)) : '-'}</p>
-        <SendToLayer item={item}/>
-        <AddItemToMetamask item={item}/>
+        <h5>{item.name} ({item.symbol})  <span className={style.DetailSupply}><b>Supply</b> {fromDecimals(totalSupply, item.decimals)}</span></h5>
+        <div className={style.DetailItemAddButtonsGroup}>
+          <SendToLayer item={item}/>
+          <AddItemToMetamask item={item}/>
+        </div>
+        {/* <p>{price ? ("Price: $" + formatMoney(price, 2)) : ''}</p> */}
+       
         <ExtLinkButton href={`${getNetworkElement({context, chainId : item.l2Address ? dualChainId : chainId}, "etherscanURL")}/${dualChainId && !item.l2Address ? 'address' : 'token'}/${item.address}`} text="Contract"/>
         <ExtLinkButton href={item.external_url} text="Website"/>
         {(!dualChainId || item.l2Address) && <ExtLinkButton href={`https://${(dualChainId || chainId) === 1 ? '' : 'testnets.'}opensea.io/assets/${(item.mainInterface || item.l1Data.mainInterface).options.address}/${item.id || item.l1Data.id}`} text="OpenSea"/>}
@@ -61,6 +63,6 @@ export default ({item}) => {
         <ExtLinkButton className={(!item.collectionData.metadataOperator || item.collectionData.metadataOperator === VOID_ETHEREUM_ADDRESS) && 'Disabled'} href={item.collectionData.metadataOperator && item.collectionData.metadataOperator !== VOID_ETHEREUM_ADDRESS ? (getNetworkElement({context, chainId : dualChainId || chainId }, 'etherscanURL') + 'address/' + item.collectionData.metadataOperator) : undefined} text={`Metadata ${item.collectionData.metadataOperator && item.collectionData.metadataOperator !== VOID_ETHEREUM_ADDRESS ? 'Host' : 'Frozen'}`}/>
         {false && hasFarming === null && <OurCircularProgress/>}
         {false && hasFarming !== null && <RegularButtonDuo onClick={() => setFarming(true)}>Farming Contracts</RegularButtonDuo>}
-    </div>
+   </div>
   )
 }

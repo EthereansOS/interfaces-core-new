@@ -145,7 +145,7 @@ export default ({item}) => {
             <Component item={{...item, address : item.l2Address || item.address}} close={close}/>
         </RegularModal>}
         {flag === null && <OurCircularProgress/>}
-        {flag === true && <a className={style.SendToL1} onClick={onClick}>Send to Ethereum</a>}
-        {flag === false && <a className={style.SendToL2} onClick={onClick}>Send to Optimism</a>}
+            {flag === true && <a className={style.SendToL1} onClick={onClick}>Send to Ethereum</a>}
+            {flag === false && <a className={style.SendToL2} onClick={onClick}>Send to Optimism</a>}      
     </>
 }
