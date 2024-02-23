@@ -114,7 +114,7 @@ const Header = (props) => {
     setTheme(theme)
     localStorage.setItem('toggleState', toggleSwitch.checked)
   }
-  /*
+  
   useEffect(() => {
     const initialLoad = async () => {
       const toggleSwitch = document.getElementById('toggleSwitch')
@@ -142,7 +142,7 @@ const Header = (props) => {
     return () => {
       toggleSwitch.removeEventListener('change', handleToggleChange)
     }
-  }, [])*/
+  }, [])
 
   const switchToNetwork = useCallback(
     () =>
@@ -178,7 +178,17 @@ const Header = (props) => {
           isDapp={props.isDapp}
           selected={props.link}
         />
-
+       <div className={style.ThemeSelect}>
+          <label className={style.ThemeSwitch}>
+            <input
+              type="checkbox"
+              id="toggleSwitch"
+              checked={isChecked}
+              onChange={handleToggleChange}
+            />
+            <span className={style.ThemeSlider} aria-hidden="true"></span>
+          </label>
+        </div>
         <IconContext.Provider value={{ color: 'black', size: '1.5em' }}>
           <Select
             isSearchable={false}
@@ -222,6 +232,6 @@ const Header = (props) => {
     </header>
   )
 }
-//<Toggle toggled={toggled} onClick={handleClick} />
+//
 
 export default Header

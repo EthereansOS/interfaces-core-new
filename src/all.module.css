@@ -39,7 +39,7 @@ body {
 }
 
 .ModalBack {
-    z-index: 99999998;
+    z-index: 99999998!important;
     top: 0;
     left: 0;
     width: 100%;
@@ -60,9 +60,10 @@ body {
 .ThemeSwitch {
     position: relative;
     display: inline-block;
-    width: 60px;
-    height: 34px;
+    width: 64px;
+    height: 41px;
     margin: auto;
+    margin-top: 10px;
 }
 
 .ThemeSwitch input {
@@ -82,29 +83,29 @@ body {
     -webkit-transition: .4s;
     transition: .4s;
     border-radius: 6px;
-    border: 1px solid #000000;
+    border: 1px solid #d2d6e0;
 }
 
 .dark .ThemeSlider {
-    border: 1px solid #7b57ff !important;
+    border: 1px solid #403b62 !important;
 }
 
 .ThemeSlider:before {
     position: absolute;
     content: "";
-    height: 26px;
-    width: 26px;
-    top: 3px;
+    height: 31px;
+    width: 30px;
+    top: 4px;
     left: 4px;
     bottom: 4px;
-    background-color: #141416;
+    background-color: #d2d6e0;
     -webkit-transition: .4s;
     transition: .4s;
     border-radius: 20%;
 }
 
 .dark .ThemeSlider:before {
-    background-color: #7b57ff !important;
+    background-color: #403b62 !important;
 }
 
 .light input:checked+.ThemeSlider {
@@ -112,7 +113,7 @@ body {
 }
 
 .dark input:checked+.ThemeSlider {
-    background-color: #242424;
+    background-color: #29263e;
 }
 
 input:focus+.ThemeSlider {
@@ -208,7 +209,7 @@ input::-webkit-scrollbar {
 }
 
 .dark {
-    background: linear-gradient(150deg, rgba(32, 18, 43, 1) 0%, rgba(15, 8, 43, 1) 60%, rgba(14, 14, 14, 1) 100%);
+    background: #28263D;
 }
 
 
@@ -260,7 +261,7 @@ input::-webkit-scrollbar {
 }
 
 .Enter {
-    background-color: #141416;
+    background-color: #f09243;
     color: var(--btn-color-primary) !important;
     font-family: "EthOSbold", "Overpass Mono", monospace !important;
     padding: 12px 18px;
@@ -271,6 +272,8 @@ input::-webkit-scrollbar {
     display: inline-block;
     border-radius: 6px;
 }
+
+
 
 
 /* Navigation Menu */
@@ -313,15 +316,18 @@ input::-webkit-scrollbar {
     height: 60px;
 }
 
-.light .logoMain {
+.logoMain {
     background: transparent;
     filter: brightness(0%);
 }
 
+
 .dark .logoMain {
-    box-shadow: -9px 0 20px rgba(255, 255, 255, 0.1);
-    filter: brightness(100%);
+    background: transparent;
+    filter: brightness(0%) invert(1);
 }
+
+ 
 
 .logoMain img {
     max-width: 15em;
@@ -334,7 +340,7 @@ input::-webkit-scrollbar {
 .Navigation {
     display: block;
     max-width: 15em;
-    margin: 1em 2em 2em 2em;
+    margin: 1em 0em 2em 2em;
     text-align: center;
     height: 60px;
 }
@@ -353,6 +359,7 @@ input::-webkit-scrollbar {
 
 .light .NavigationItem:hover {
     background-color: #141416 !important;
+    border-radius: 100px;
 }
 
 .light .NavigationItem:hover img {
@@ -378,7 +385,7 @@ input::-webkit-scrollbar {
 }
 
 .dark .NavigationItem:hover {
-    background-color: #32256d !important;
+    background-color: #3b3854 !important;
 }
 
 .dark .NavigationItem:hover p {
@@ -387,7 +394,7 @@ input::-webkit-scrollbar {
 }
 
 .dark .NavigationItem.selected {
-    background-color: #5f4eaa !important;
+    background-color: #3b3854 !important;
 }
 
 .dark .NavigationItem.selected p {
@@ -409,6 +416,10 @@ input::-webkit-scrollbar {
     margin-right: 5px;
     vertical-align: middle;
     display: inline-block;
+}
+
+.dark .NavigationItem img {
+    filter: invert(1);
 }
 
 .selected {
@@ -2261,6 +2272,11 @@ input::-webkit-scrollbar {
     height: 100vh;
     width: 1300px;
 }
+.dark .CreatePage {
+    background:#28263D!important;
+}
+
+
 
 .CreateBoxDesc {
     width: 330px;
@@ -2353,6 +2369,10 @@ input::-webkit-scrollbar {
     background: #fff;
     border-radius: 10px;
     position: relative;
+}
+
+.dark .CreationPageLabel {
+    background: #3A3854;
 }
 
 .CreationPageLabelF {
@@ -4447,7 +4467,7 @@ input[type=range]::-ms-thumb {
 
 .ItemTitleTopZoneValue{
     font-weight: 600;
-    font-size: 18px;
+    font-size: 14px;
 }
 
 
@@ -4457,6 +4477,10 @@ input[type=range]::-ms-thumb {
     height: 350px;
     overflow: hidden;
     position: relative;
+}
+
+.dark .ItemSingle figure {
+    background-color: #3b3854;
 }
 
 .ItemTitleTopZoneLikeButton{
@@ -4557,6 +4581,7 @@ input[type=range]::-ms-thumb {
     position: relative;
     top: -6px;
     left:6px;
+    font-size: 15px;
 }
 .ItemSingle figure img {
     display: block;
@@ -5401,6 +5426,10 @@ input[type=range]::-ms-thumb {
 .SelectProposal span {
     font-size: 13px;
     padding: 5px 15px 15px 15px;
+}
+
+.dark .NetworkSelectDropdown svg{
+    filter: invert(1)
 }
 
 .GovCardS .GovCardHeadOrganizationTitle span,
@@ -6301,7 +6330,7 @@ input[type=range]::-ms-thumb {
 
 .dark .CopyRight {
     color: #f8f8f8 !important;
-    background: #2a2a2a;
+    background: #3b3754;
 }
 
 .CardsLayerHeader {
@@ -6332,12 +6361,16 @@ input[type=range]::-ms-thumb {
 }
 
 .dark .CardsLayerHeader {
-    background-color: #120b26 !important;
-    border: 1px solid #2a1e52;
+    background-color: #403b60 !important;
+    border: 1px solid #403b60;
 }
 
 .dark .CardsLayerHeader:hover {
-    background-color: #190f35 !important;
+    background-color: #f09243 !important;
+}
+
+.dark .CardsLayerS figure img {
+    filter: invert(1)!important;
 }
 
 .CardsLayerBody {
@@ -6355,7 +6388,7 @@ input[type=range]::-ms-thumb {
 }
 
 .dark .CardsLayerBody {
-    background-color: #593ec2 !important;
+    background-color: transparent !important;
 }
 
 .NavigationHeader {
@@ -6385,7 +6418,7 @@ input[type=range]::-ms-thumb {
     border-radius: 6px;
 }
 
-.light .MenuProfile {
+.MenuProfile {
     background-color: #e9ecf1;
     min-width: fit-content;
     height: fit-content;
@@ -6395,7 +6428,7 @@ input[type=range]::-ms-thumb {
 }
 
 .dark .MenuProfile {
-    background-color: #2a2a2a;
+    background-color: #403b62;
 }
 
 .MenuProfile img {
@@ -7357,21 +7390,16 @@ input[type=range]::-ms-thumb {
     backdrop-filter: blur(6px);
 }
 
-.light .RightMenu {
+.RightMenu {
     padding-left: 270px;
 }
 
-.dark .RightMenu {
-    min-width: fit-content;
-    background: #000;
-    box-shadow: -9px 0 20px rgba(147, 152, 160, 0.1);
-}
 
 .RightMenu>div {
     justify-items: flex-end;
     display: flex;
     margin-right: 0px;
-    margin-left: 10px;
+    margin-left: -4px;
 }
 
 .ObjectsLists {
@@ -9380,9 +9408,7 @@ input[type=range]::-ms-thumb {
     background: #ffffff;
 }
 
-.dark .ldio_f2vadqclpalj>div>div:nth-child(1) {
-    background: #000000;
-}
+
 
 .biz .ldio_f2vadqclpalj>div>div:nth-child(1) {
     background: #ffffff;
@@ -9521,9 +9547,10 @@ input[type=range]::-ms-thumb {
     border: 1px solid #a7a7a7;
 }
 
-.dark .ActionInfoSection {
-    background-color: #000000;
+.dark .ItemTitleTopZone, .dark .ItemTitleBottomZone{
+    color:#302d47!important;
 }
+
 
 .matrix .ActionInfoSection {
     background-color: #000000;
@@ -9797,7 +9824,7 @@ input[type=range]::-ms-thumb {
     color: #6e6e6e;
 }
 
-.light .ModalBack {
+.ModalBack {
     -webkit-backdrop-filter: blur(6px);
     backdrop-filter: blur(6px);
     z-index: 10000;
@@ -9813,6 +9840,7 @@ input[type=range]::-ms-thumb {
     background: linear-gradient(135deg, #655dfff5, #1b1b1b48 80%);
     -webkit-backdrop-filter: blur(6px);
     backdrop-filter: blur(6px);
+    z-index: 10000;
 }
 
 .sepia .ModalBack {
@@ -9840,7 +9868,7 @@ input[type=range]::-ms-thumb {
 }
 
 .dark .ModalBoxBanner {
-    background-color: #161616;
+    background-color: #242333;
     box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);
     -webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);
     -moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);
@@ -10123,11 +10151,6 @@ input[type=range]::-ms-thumb {
     color: #ffffff;
 }
 
-.dark .RegularButtonDuoBack {
-    border-color: #fff;
-    color: #fff;
-    border: 1px solid;
-}
 
 .matrix .RegularButtonDuoBack {
     background-color: transparent;
@@ -10644,12 +10667,12 @@ input[type=range]::-ms-thumb {
     border-radius: 0;
 }
 
-.light .CreationPageLabelF h6 {
+ .CreationPageLabelF h6 {
     text-align: left;
 }
 
-.light .CreationPageLabelF input,
-.light .CreationPageLabelF textarea {
+ .CreationPageLabelF input,
+.CreationPageLabelF textarea {
     border: 2px solid #e7ecf3;
     width: 100%;
     background: #ffffff;
@@ -10658,7 +10681,7 @@ input[type=range]::-ms-thumb {
     font-weight: 300;
 }
 
-.light .CreationPageLabelF p {
+ .CreationPageLabelF p {
     text-align: left;
 }
 
@@ -10669,11 +10692,6 @@ input[type=range]::-ms-thumb {
 .biz .CreationPageLabelF {
     background: linear-gradient(0deg, #ffffff 50%, #bfc0ea 100%);
     border: 1px solid #a7a7a7;
-}
-
-.dark .CreationPageLabelF {
-    background-color: #525252;
-    border: 1px solid #010101;
 }
 
 .sepia .CreationPageLabelF {
@@ -10697,7 +10715,8 @@ input[type=range]::-ms-thumb {
 }
 
 .dark .CreationPageLabelF input {
-    background-color: #000000;
+    background-color: #29263e;
+    border: 2px solid #4b4670;
 }
 
 .sepia .CreationPageLabelF input {
@@ -10731,7 +10750,8 @@ input {
 }
 
 .dark .CreationPageLabelF textarea {
-    background-color: #000000;
+    background-color: #29263f;
+    border: 2px solid #4b4670;
 }
 
 .sepia .CreationPageLabelF textarea {
@@ -10895,11 +10915,18 @@ input {
     font-size: 18px;
     color: #222;
 }
+.dark .CollectionRightSubtitles h4{
+    color: #fff;
+}
 
 .CollectionRightSubtitles p{
     font-size: 12px;
     margin-top: 5px;
     color: #444;
+}
+
+.dark .CollectionRightSubtitles p{
+    color: #fff;
 }
 
 .biz .TradeMarketToken .TradeMarketTokenSelector {
@@ -11110,12 +11137,6 @@ input {
     -moz-box-shadow: 1px 1px 2px 1px rgba(202, 202, 202, 0.32);
 }
 
-.dark .TradeMain {
-    background-color: #212121;
-    box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);
-    -webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);
-    -moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);
-}
 
 .sepia .TradeMain {
     background-color: #d9d2c2a3;
@@ -11633,7 +11654,7 @@ input {
     border: none;
 }
 
-.light .FancyExplanationCreate {
+.FancyExplanationCreate {
     border-color: transparent;
     border-bottom: 1px solid #e7ecf4;
     border-radius: 0px;
@@ -11644,10 +11665,7 @@ input {
     border-color: #e0e2e6;
 }
 
-.dark .FancyExplanationCreate {
-    background-color: #1f1f1f;
-    border-color: #333333;
-}
+
 
 .sepia .FancyExplanationCreate {
     background-color: #eee8d59c;
@@ -13040,10 +13058,18 @@ input {
 }
 
 .dark .ItemSingle {
-    background-color: #000000;
-    box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);
+    background-color: #3b3854!important;
+   /*box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);
     -webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);
-    -moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);
+    -moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);*/
+}
+
+.dark .ItemsExploreMainCategories li.ItemsExploreMainCategoriesActive {
+    background-color: #f09243;
+}
+
+.ItemNumbersLabel{
+    font-size: 14px;
 }
 
 .sepia .ItemSingle {
@@ -13053,7 +13079,7 @@ input {
     -moz-box-shadow: 1px 1px 2px 1px rgba(202, 202, 202, 0.32);
 }
 
-.light .ItemSingle .ItemTitle {
+.ItemSingle .ItemTitle {
     opacity: 1;
     position: absolute;
     z-index: 20;
@@ -13067,7 +13093,7 @@ input {
 }
 
 
-.light .ItemSingle .ItemTitle h4 {
+.ItemSingle .ItemTitle h4 {
     border: 1px solid #141416;
     width: fit-content;
     padding: 7px 12px 7px 12px;
@@ -13079,7 +13105,7 @@ input {
     font-weight: 600;
 }
 
-.light .ItemSingle .ItemTitle h6{
+ .ItemSingle .ItemTitle h6{
     font-size: 16px;
     font-weight: 200;
 }
@@ -13089,10 +13115,7 @@ input {
     opacity: 0.7;
 }
 
-.dark .ItemSingle .ItemTitle {
-    background-color: #000000;
-    opacity: 0.7;
-}
+
 
 .light .ItemSingle .ItemInfo {
     border-color: #D0D0D0;
@@ -13145,12 +13168,6 @@ input {
     border-top: none;
 }
 
-.dark .ViewBasics {
-    background-color: #000000;
-    box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);
-    -webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);
-    -moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);
-}
 
 .sepia .ViewBasics {
     background-color: #eee8d59c;
@@ -13240,12 +13257,6 @@ input {
     border-top: none;
 }
 
-.dark .ViewDescriptionL {
-    background-color: #000000;
-    box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);
-    -webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);
-    -moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);
-}
 
 .sepia .ViewDescriptionL {
     background-color: #eee8d59c;
@@ -13642,8 +13653,8 @@ input {
 }
 
 /* Others Components */
-.light .NavigationItem {
-    width: 200px;
+ .NavigationItem {
+    width: 173px!important;
     max-width: fit-content;
     margin-right: 10px;
     position: relative;
@@ -13656,13 +13667,13 @@ input {
     padding-bottom: 0px;
 }
 
-.light .NavigationItem span {
+ .NavigationItem span {
     padding-top: 7px;
     display: inline-block;
 }
 
 .dark .NavigationItem {
-    background-color: #2a2a2a;
+    background-color: transparent;
 }
 
 .light .Web3ConnectChain {
@@ -14101,6 +14112,11 @@ input {
     color: #008F11;
 }
 
+.dark .ItemSingle .ItemTitle h4 {
+    border: 1px solid #f09243;
+    background: #f09243;
+}
+
 .matrix .CircleRightV3Curve,
 .matrix .CircleLeftV3Curve {
     border-color: #008F11;
@@ -14320,6 +14336,7 @@ input {
 .MenuProfile a {
     text-align: left;
     margin: 0% auto 0% 0%;
+    padding-right: 7px;
 }
 
 .ModalBoxBanner h5,
@@ -14377,7 +14394,7 @@ input {
 }
 
 .dark .CardLayerBanner:before {
-    background: #0f0a1f !important;
+    background: #403b60 !important;
 }
 
 .BtnPrimary {
@@ -14394,10 +14411,26 @@ input {
     margin-right: 10px;
 }
 
+.BtnPrimary {
+    color: #000 !important;
+    background-color: #eaecf2;
+    border-color: #eaecf2;
+}
+
+.dark .BtnPrimary {
+    color: #000 !important;
+    background-color: #6c678d;
+    border-color: #6c678d;
+}
+
+.dark .BtnPrimary {
+    color: #29263e !important;
+}
+
 .BtnSecondary {
     color: #fff !important;
-    background-color: #141416;
-    border-color: #ffffff;
+    background-color: #f09243;
+    border: 1px solid #f09243!important;
     padding: 12px 30px;
     min-width: 150px;
     margin: 10px 0;
@@ -14405,13 +14438,16 @@ input {
     border-radius: 9px;
     outline: none;
     font-weight: 200;
-    border: 1px solid;
 }
 
 .BtnPrimary b {
     color: #000;
     font-weight: 700;
 }
+.dark .BtnPrimary b {
+    color: #29263e !important;
+}
+
 
 .BtnSecondary b {
     color: #fff;
@@ -14422,8 +14458,23 @@ input {
     background-color: #f93d6d;
 }
 
+.dark .BtnSecondary:hover {
+    background-color: #29263e;
+    border: 1px solid #29263e!important;
+}
+
 .BtnPrimary:hover {
     background-color: #5433d4;
+}
+
+.dark .BtnPrimary:hover {
+    background-color: #5c5d81;
+    color:#736e93;
+}
+
+
+.dark .BtnPrimary:hover b{
+    color:#736e93;
 }
 
 .WhiteText {
@@ -14572,6 +14623,10 @@ input {
     background-color: #1f1f1f;
 }
 
+.dark .WizardProgressBar {
+    background-color: #f09243;
+}
+
 .WizardHeader {
     text-align: left;
     margin-bottom: 20px;
@@ -14614,11 +14669,26 @@ input {
     cursor: pointer;
 }
 
+
+.dark .WizardProgress {
+    background-color: #35324c!important;
+}
+
+
 .WizardFooter .WizardFooterBack {
     background-color: #f1f4f8;
     color: #7D9CBD;
     float: left;
 }
+
+.dark .WizardFooter .WizardFooterBack {
+    background-color: #29263e;
+    color: #615c8d;
+}
+
+:global(.dark) .progress-indicator {
+    background: #f09243 !important;
+  }
 
 .WizardFooter .WizardFooterNext {
     background-color: #141416;
@@ -14626,6 +14696,12 @@ input {
     float: right;
 
 }
+.dark .WizardFooter .WizardFooterNext {
+    background-color: #f09243;
+
+}
+
+
 .WizardFooter .WizardFooterNext:disabled,
 .WizardFooter .WizardFooterNext[disabled]{
   background-color: #717178;
@@ -14653,10 +14729,20 @@ input {
     font-size: 14px
 }
 
+.dark .WizardStepsList ul li {
+    color: #5d597d;
+}
+
 .WizardStepsListActive {
     font-weight: bold;
     color: #000000 !important;
 }
+
+.dark .WizardStepsListActive {
+    font-weight: bold;
+    color: #f09243 !important;
+}
+
 
 .WizardStepsList ul li::before {
     content: "";
@@ -14670,8 +14756,16 @@ input {
     border-radius: 2px;
 }
 
+.dark .WizardStepsList ul li::before {
+    background: #595578;
+}
+
 .WizardStepsList ul li.WizardStepsListActive::before {
     background: #000000 !important;
+}
+
+.dark .WizardStepsList ul li.WizardStepsListActive::before {
+    background: #f09243 !important;
 }
 
 .NetworkSelectDropdown .SelectLabel svg,
@@ -14694,6 +14788,11 @@ input {
     position: relative;
     top: 2px;
 }
+
+.dark .NetworkSelectDropdown>div>div {
+    background: #403b61;
+}
+
 
 .OrganizationToggle {
     position: absolute;

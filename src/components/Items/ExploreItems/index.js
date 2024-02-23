@@ -39,6 +39,36 @@ const Item = ({element, allMine, wrappedOnly}) => {
   const name = useMemo(() => element.name || loadedData?.name,[element, loadedData])
   const decimals = useMemo(() => element.decimals || loadedData?.decimals,[element, loadedData])
 
+  function formatNumber(number) {
+    if (number >= 1 && number <= 999) {
+      return `${number}`;
+    } else if (number >= 1000 && number <= 999999) {
+      return `${(number / 1000).toFixed(1)} thousand`;
+    } else if (number >= 1000000 && number <= 999999999) {
+      return `${(number / 1000000).toFixed(1)} million`;
+    } else if (number >= 1000000000 && number <= 999999999999) {
+      return `${(number / 1000000000).toFixed(1)} billion`;
+    } else if (number >= 1000000000000 && number <= 999999999999999) {
+      return `${(number / 1000000000000).toFixed(1)} trillion`;
+    } else if (number >= 1000000000000000 && number <= 999999999999999999) {
+      return `${(number / 1000000000000000).toFixed(1)} quadrillion`;
+    } else if (number >= 1000000000000000000 && number <= 999999999999999999999) {
+      return `${(number / 1000000000000000000).toFixed(1)} quintillion`;
+    } else if (number >= 1e21 && number <= 999999999999999999999999) {
+      return `${(number / 1e21).toFixed(1)} sextillion`;
+    } else if (number >= 1e24 && number <= 999999999999999999999999999) {
+      return `${(number / 1e24).toFixed(1)} septillion`;
+    } else if (number >= 1e27 && number <= 999999999999999999999999999999) {
+      return `${(number / 1e27).toFixed(1)} octillion`;
+    } else if (number >= 1e30 && number <= 999999999999999999999999999999999) {
+      return `${(number / 1e30).toFixed(1)} nonillion`;
+    } else if (number >= 1e33) {
+      return `${(number / 1e33).toFixed(1)} decillion`;
+    } else {
+      return "Out of range";
+    }
+  }
+
   return (
     <div className={style.ItemSingle}>
       <Link to={`/items/${wrappedOnly === 'Deck' || isDeck ? 'decks/' : ''}${element.l2Address || element.address}`}>
@@ -48,7 +78,7 @@ const Item = ({element, allMine, wrappedOnly}) => {
         <svg className={style.ItemTitleTopZone} viewBox="0 0 196 55" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M196 55V0H0.5V1H4.05286C12.4067 1 20.1595 5.34387 24.5214 12.4685L43.5393 43.5315C47.9012 50.6561 55.654 55 64.0078 55H196Z" fill="currentColor"></path></svg>
         {!allMine && <div className={style.ItemInfoSide}>
             <p className={style.ItemTitleTopZoneLabel}>Supply</p>
-            <p className={style.ItemTitleTopZoneValue}>{shortenWord({ context, charsAmount : 10, shortenWordSuffix: '...'}, fromDecimals(totalSupply, decimals))}</p>
+            <p className={style.ItemTitleTopZoneValue}>{formatNumber(fromDecimals(totalSupply, decimals))}</p>
           </div>}
         {loadedData && <ItemImage input={loadedData}/>}
         <div className={style.ItemTitle}>
