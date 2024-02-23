@@ -20,6 +20,8 @@ import ActionInfoSection from '../../../../components/Global/ActionInfoSection'
 import OurCircularProgress from '../../../../components/Global/OurCircularProgress'
 import CircularSlider from '@fseehawer/react-circular-slider'
 
+import getCurrentAddress from 'interfaces-core/lib/web3/getCurrentAddress'
+
 const components = [
   'COMPONENT_KEY_TREASURY_MANAGER',
   'COMPONENT_KEY_TREASURY_SPLITTER_MANAGER',
@@ -458,26 +460,28 @@ const Metadata = ({ value, onChange, onNext, onPrev }) => {
           <p>Insert link for your organization's social</p>
           <input
             type="link"
-            value={value?.image}
+            value={value?.social_link}
             placeholder="Organization Social Link"
             onChange={(e) =>
-              onChange({ ...value, image: e.currentTarget.value })
+              onChange({ ...value, social_link: e.currentTarget.value })
             }
           />
 
-          {value?.error?.image && <p>{value.error.image}</p>}
+          {value?.error?.social_link && <p>{value.error.social_link}</p>}
         </label>
         <label className={style.CreationPageLabelF}>
           <h6>Community Link</h6>
           <p>Insert Discord or Telegram link</p>
           <input
             type="link"
-            value={value?.url}
+            value={value?.community_link}
             placeholder="Community Invite Link"
-            onChange={(e) => onChange({ ...value, url: e.currentTarget.value })}
+            onChange={(e) =>
+              onChange({ ...value, community_link: e.currentTarget.value })
+            }
           />
 
-          {value?.error?.url && <p>{value.error.url}</p>}
+          {value?.error?.community_link && <p>{value.error.community_link}</p>}
         </label>
       </div>
       <div className={style.WizardFooter}>
@@ -525,7 +529,7 @@ const Confirmation = ({ value, onChange, onNext, onPrev }) => {
           'margin-bottom': '10px',
           'margin-top': '30px',
         }}>
-       Review the settings of your fully granular Organization. 
+        Review the settings of your fully granular Organization.
       </h6>
       <p
         style={{
@@ -533,7 +537,9 @@ const Confirmation = ({ value, onChange, onNext, onPrev }) => {
           textAlign: 'left',
           'padding-left': '20px',
         }}>
-          Once you deploy, all changes will need to be made through a successful governance proposal and executed by holders of the governance token chosen.
+        Once you deploy, all changes will need to be made through a successful
+        governance proposal and executed by holders of the governance token
+        chosen.
       </p>
 
       <div
@@ -585,7 +591,7 @@ const VotingRules = ({ value, onChange, onNext, onPrev }) => {
       <div className={style.FancyExplanationCreate}>
         <h2>Voting Rules</h2>
       </div>
-    {/*
+      {/*
       <h6
         style={{
           'text-align': 'left',
@@ -601,7 +607,8 @@ const VotingRules = ({ value, onChange, onNext, onPrev }) => {
           textAlign: 'left',
           'padding-left': '20px',
         }}>
-       Set granular voting rules for how proposals are handled in the organization.
+        Set granular voting rules for how proposals are handled in the
+        organization.
       </p>
 
       <div
@@ -610,7 +617,6 @@ const VotingRules = ({ value, onChange, onNext, onPrev }) => {
         <div
           className={style.CreationPageLabelFDivide}
           style={{ marginTop: '30px', marginBottom: '30px' }}>
-         
           <label className={style.CreationPageLabelF} key={quorumKey}>
             <h6>Quorum</h6>
             <p>Selelct the value of Quorum</p>
@@ -810,11 +816,11 @@ const Organization = ({ value, onChange, onNext, onPrev }) => {
         <label className={style.CreationPageLabelF}>
           <h4 style={{ textAlign: 'left' }}>Percentage to move </h4>
           <p>
-          This limits the percentage of the treasury that can be transferred in a single proposal. It serves as an anti rug feature, ensuring that the entire treasury cannot be moved at once.
+            This limits the percentage of the treasury that can be transferred
+            in a single proposal. It serves as an anti rug feature, ensuring
+            that the entire treasury cannot be moved at once.
           </p>
           <br />
-          
-          
         </label>
       </div>
 
@@ -882,7 +888,7 @@ const Governance = ({ value, onChange, onNext, onPrev }) => {
               onClick={() =>
                 onChange({
                   ...value,
-                  name: '0x37C5EfD20dd9c3D5922843a4Ab7787c7978A6a83',
+                  name: getCurrentAddress(),
                 })
               }>
               Insert your current address
@@ -907,7 +913,6 @@ const Governance = ({ value, onChange, onNext, onPrev }) => {
         <div
           className={style.CreationPageLabelFDivide}
           style={{ marginTop: '30px', marginBottom: '30px' }}>
-         
           <label className={style.CreationPageLabelF} key={quorumKey}>
             <h6>Quorum</h6>
             <p>Selelct the value of Quorum</p>
@@ -1310,7 +1315,12 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
     <div className={style.CreationPageLabel}>
       <div className={style.FancyExplanationCreate}>
         <h2>Fixed Inflation</h2>
-        <p>Fixed inflation is a novel funding mechanism to bootstrap the development team and the economy of an Organization. <br/>Funding to both the team and different economic components can be customized.</p>
+        <p>
+          Fixed inflation is a novel funding mechanism to bootstrap the
+          development team and the economy of an Organization. <br />
+          Funding to both the team and different economic components can be
+          customized.
+        </p>
 
         <div className={style.OrganizationToggle}>
           <input
@@ -1353,51 +1363,53 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
 
       {value && (
         <>
-        <div className={style.CreationPageLabelFDivide} style={{marginTop: '20px', marginBottom: '20px', borderBottom: "1px solid #e7ecf4"
-      }}>
-         <label className={style.CreationPageLabelF}>
-            <h6>
-              Token minter owner
-              <span
-                className={style.CreationPageLabelFloatRight}
-                onClick={() =>
-                  onChange({
-                    ...value,
-                    name: '0x37C5EfD20dd9c3D5922843a4Ab7787c7978A6a83',
-                  })
-                }>
-                Insert your current address
-              </span>
-            </h6>
-            <p>Insert the the token minter owner address</p>
-            <input
-              type="text"
-              value={value?.name}
-              placeholder="The token minter owner address"
-              onChange={(e) =>
-                onChange({ ...value, name: e.currentTarget.value })
-              }
-            />
-            {value?.error?.name && <p>{value.error.name}</p>}
-          </label>
+          <div
+            className={style.CreationPageLabelFDivide}
+            style={{
+              marginTop: '20px',
+              marginBottom: '20px',
+              borderBottom: '1px solid #e7ecf4',
+            }}>
+            <label className={style.CreationPageLabelF}>
+              <h6>
+                Token minter owner
+                <span
+                  className={style.CreationPageLabelFloatRight}
+                  onClick={() =>
+                    onChange({
+                      ...value,
+                      name: getCurrentAddress(),
+                    })
+                  }>
+                  Insert your current address
+                </span>
+              </h6>
+              <p>Insert the the token minter owner address</p>
+              <input
+                type="text"
+                value={value?.name}
+                placeholder="The token minter owner address"
+                onChange={(e) =>
+                  onChange({ ...value, name: e.currentTarget.value })
+                }
+              />
+              {value?.error?.name && <p>{value.error.name}</p>}
+            </label>
 
-          <label className={style.CreationPageLabelF}>
-            <h6>First Execution</h6>
-            <input
-              type="datetime-local"
-              value={firstExecution}
-              onChange={(e) => setFirstExecution(e.currentTarget.value)}
-            />
-          </label>
+            <label className={style.CreationPageLabelF}>
+              <h6>First Execution</h6>
+              <input
+                type="datetime-local"
+                value={firstExecution}
+                onChange={(e) => setFirstExecution(e.currentTarget.value)}
+              />
+            </label>
           </div>
-             
+
           <label className={style.CreationPageLabelF}>
             <h6>Inflation percentages</h6>
             <DonutAndLegend></DonutAndLegend>
           </label>
-      
-
-         
 
           {/* <label className={style.CreationPageLabelF}>
             <h6>Token minter owner</h6>
@@ -1504,29 +1516,28 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
           </label>
           */}
 
-<div className={style.CreationPageLabelFDivide}>
-          
-          <label className={style.CreationPageLabelF}>
-            <h6>Swap for ETH AMM</h6>
-            <ActionInfoSection
-              settings
-              ammsInput={amms}
-              amm={amm}
-              onAMM={setAMM}
-              uniV3Pool={uniV3Pool}
-              onUniV3Pool={setUniV3Pool}
-            />
-          </label>
-          <label className={style.CreationPageLabelF}>
-            <h6>Boostrap Fund wallet</h6>
-            <input
-              type="text"
-              value={_bootstrapFundWalletAddress}
-              onChange={(e) =>
-                set_bootstrapFundWalletAddress(e.currentTarget.value)
-              }
-            />
-          </label>  
+          <div className={style.CreationPageLabelFDivide}>
+            <label className={style.CreationPageLabelF}>
+              <h6>Swap for ETH AMM</h6>
+              <ActionInfoSection
+                settings
+                ammsInput={amms}
+                amm={amm}
+                onAMM={setAMM}
+                uniV3Pool={uniV3Pool}
+                onUniV3Pool={setUniV3Pool}
+              />
+            </label>
+            <label className={style.CreationPageLabelF}>
+              <h6>Boostrap Fund wallet</h6>
+              <input
+                type="text"
+                value={_bootstrapFundWalletAddress}
+                onChange={(e) =>
+                  set_bootstrapFundWalletAddress(e.currentTarget.value)
+                }
+              />
+            </label>
           </div>
           <label className={style.CreationPageLabelF}>
             <h6>Bootstrap Fund percentage</h6>
@@ -1576,158 +1587,157 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
             />
           </label>
           <div
-        className={style.CreationPageLabelFDivideGroup}
-        style={{ marginTop: '20px', marginBottom: '30px' }}>
-        <div
-          className={style.CreationPageLabelFDivide}
-          style={{ marginTop: '30px', marginBottom: '30px' }}>
-          <label className={style.CreationPageLabelF}>
-            <h6>Hard cap</h6>
-            <p>Selelct the value of Hard cap</p>
-            <br />
-            <br />
-            <br />
-            <CircularSlider
-              label="Hard cap"
-              labelColor="#fff"
-              width="120"
-              knobSize="25"
-              progressSize="9"
-              trackSize="14"
-              labelFontSize="10"
-              valueFontSize="20"
-              knobColor="#000000"
-              progressColorFrom="#000000"
-              progressColorTo="#444444"
-              appendToValue="%"
-              trackColor="#eeeeee"
-              min={0}
-              max={100}
-              onChange={(value) => {
-                setHardCapValue(value)
-              }}
-            />
-          </label>
-          <label className={style.CreationPageLabelF} key={quorumKey}>
-            <h6>Quorum</h6>
-            <p>Selelct the value of Quorum</p>
-            <br />
-            <br />
-            <br />
-            <CircularSlider
-              label="Quorum"
-              labelColor="#fff"
-              knobColor="#000000"
-              width="120"
-              knobSize="25"
-              progressSize="9"
-              trackSize="14"
-              labelFontSize="10"
-              valueFontSize="20"
-              appendToValue="%"
-              progressColorFrom="#000000"
-              progressColorTo="#444444"
-              trackColor="#eeeeee"
-              min={hardCapValue}
-              max={100}
-              initialValue={quorum}
-              onChange={(value) => {
-                setQuorum(value)
-              }}
-            />
-          </label>
-        </div>
+            className={style.CreationPageLabelFDivideGroup}
+            style={{ marginTop: '20px', marginBottom: '30px' }}>
+            <div
+              className={style.CreationPageLabelFDivide}
+              style={{ marginTop: '30px', marginBottom: '30px' }}>
+              <label className={style.CreationPageLabelF}>
+                <h6>Hard cap</h6>
+                <p>Selelct the value of Hard cap</p>
+                <br />
+                <br />
+                <br />
+                <CircularSlider
+                  label="Hard cap"
+                  labelColor="#fff"
+                  width="120"
+                  knobSize="25"
+                  progressSize="9"
+                  trackSize="14"
+                  labelFontSize="10"
+                  valueFontSize="20"
+                  knobColor="#000000"
+                  progressColorFrom="#000000"
+                  progressColorTo="#444444"
+                  appendToValue="%"
+                  trackColor="#eeeeee"
+                  min={0}
+                  max={100}
+                  onChange={(value) => {
+                    setHardCapValue(value)
+                  }}
+                />
+              </label>
+              <label className={style.CreationPageLabelF} key={quorumKey}>
+                <h6>Quorum</h6>
+                <p>Selelct the value of Quorum</p>
+                <br />
+                <br />
+                <br />
+                <CircularSlider
+                  label="Quorum"
+                  labelColor="#fff"
+                  knobColor="#000000"
+                  width="120"
+                  knobSize="25"
+                  progressSize="9"
+                  trackSize="14"
+                  labelFontSize="10"
+                  valueFontSize="20"
+                  appendToValue="%"
+                  progressColorFrom="#000000"
+                  progressColorTo="#444444"
+                  trackColor="#eeeeee"
+                  min={hardCapValue}
+                  max={100}
+                  initialValue={quorum}
+                  onChange={(value) => {
+                    setQuorum(value)
+                  }}
+                />
+              </label>
+            </div>
 
-        <div
-          className={style.CreationPageLabelFDivide}
-          style={{
-            marginTop: '30px',
-            marginBottom: '30px',
-            borderLeft: '1px solid #e7ecf4',
-          }}>
-          <label className={style.CreationPageLabelF}>
-            <h6>Proposal Duration</h6>
-            <p>Selelct the duration of Proposal</p>
-            <br />
-            <br />
-            <br />
-            <CircularSlider
-              progressLineCap="flat"
-              dataIndex={0}
-              label="Duration"
-              data={[
-                '30min',
-                '6h',
-                '12h',
-                '1 Day',
-                '2 Days',
-                '3 Days',
-                '4 Days',
-                '5 Days',
-                '1 Week',
-                '1 Month',
-                '6 Months',
-                '1 Year',
-                '3 Years',
-                '5 Years',
-              ]}
-              labelColor="#fff"
-              knobColor="#000000"
-              width="120"
-              knobSize="25"
-              progressSize="9"
-              trackSize="14"
-              labelFontSize="10"
-              valueFontSize="20"
-              verticalOffset="1rem"
-              progressColorFrom="#000000"
-              progressColorTo="#444444"
-              trackColor="#eeeeee"
-            />
-          </label>
-          <label className={style.CreationPageLabelF}>
-            <h6>Validation Bomb</h6>
-            <p>Selelct Validation Bomb value</p>
-            <br />
-            <br />
-            <br />
-            <CircularSlider
-              progressLineCap="flat"
-              dataIndex={3}
-              label="Duration"
-              data={[
-                '30min',
-                '6h',
-                '12h',
-                '1 Day',
-                '2 Days',
-                '3 Days',
-                '4 Days',
-                '5 Days',
-                '1 Week',
-                '1 Month',
-                '6 Months',
-                '1 Year',
-                '3 Years',
-                '5 Years',
-              ]}
-              labelColor="#fff"
-              knobColor="#000000"
-              width="120"
-              knobSize="25"
-              progressSize="9"
-              trackSize="14"
-              labelFontSize="10"
-              valueFontSize="20"
-              verticalOffset="1rem"
-              progressColorFrom="#000000"
-              progressColorTo="#444444"
-              trackColor="#eeeeee"
-            />
-          </label>
-        </div>
-      </div>
-
+            <div
+              className={style.CreationPageLabelFDivide}
+              style={{
+                marginTop: '30px',
+                marginBottom: '30px',
+                borderLeft: '1px solid #e7ecf4',
+              }}>
+              <label className={style.CreationPageLabelF}>
+                <h6>Proposal Duration</h6>
+                <p>Selelct the duration of Proposal</p>
+                <br />
+                <br />
+                <br />
+                <CircularSlider
+                  progressLineCap="flat"
+                  dataIndex={0}
+                  label="Duration"
+                  data={[
+                    '30min',
+                    '6h',
+                    '12h',
+                    '1 Day',
+                    '2 Days',
+                    '3 Days',
+                    '4 Days',
+                    '5 Days',
+                    '1 Week',
+                    '1 Month',
+                    '6 Months',
+                    '1 Year',
+                    '3 Years',
+                    '5 Years',
+                  ]}
+                  labelColor="#fff"
+                  knobColor="#000000"
+                  width="120"
+                  knobSize="25"
+                  progressSize="9"
+                  trackSize="14"
+                  labelFontSize="10"
+                  valueFontSize="20"
+                  verticalOffset="1rem"
+                  progressColorFrom="#000000"
+                  progressColorTo="#444444"
+                  trackColor="#eeeeee"
+                />
+              </label>
+              <label className={style.CreationPageLabelF}>
+                <h6>Validation Bomb</h6>
+                <p>Selelct Validation Bomb value</p>
+                <br />
+                <br />
+                <br />
+                <CircularSlider
+                  progressLineCap="flat"
+                  dataIndex={3}
+                  label="Duration"
+                  data={[
+                    '30min',
+                    '6h',
+                    '12h',
+                    '1 Day',
+                    '2 Days',
+                    '3 Days',
+                    '4 Days',
+                    '5 Days',
+                    '1 Week',
+                    '1 Month',
+                    '6 Months',
+                    '1 Year',
+                    '3 Years',
+                    '5 Years',
+                  ]}
+                  labelColor="#fff"
+                  knobColor="#000000"
+                  width="120"
+                  knobSize="25"
+                  progressSize="9"
+                  trackSize="14"
+                  labelFontSize="10"
+                  valueFontSize="20"
+                  verticalOffset="1rem"
+                  progressColorFrom="#000000"
+                  progressColorTo="#444444"
+                  trackColor="#eeeeee"
+                />
+              </label>
+            </div>
+          </div>
         </>
       )}
       <div className={style.WizardFooter}>
@@ -2326,7 +2336,8 @@ const CreateOrganization = () => {
           Create a new Organization <span>step {step + 1} of 6</span>
         </h3>
         <div className={style.WizardHeaderDescription}>
-          Organizations are fully decentralized DAOs with modular economic components
+          Organizations are fully decentralized DAOs with modular economic
+          components
         </div>
         <div className={style.WizardProgress}>
           <div

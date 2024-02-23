@@ -489,6 +489,76 @@ const ColorPicker = (props) => {
   )
 }
 
+const Confirmation = ({ value, onChange, onNext, onPrev, state }) => {
+  useEffect(
+    () =>
+      setTimeout(async () => {
+        console.log(state)
+        if (!value) {
+          return
+        }
+        var error
+
+        JSON.stringify(error) !== JSON.stringify(value.error) &&
+          onChange({ ...value, error })
+      }),
+    [value]
+  )
+
+  return (
+    <div className={style.CreationPageLabel}>
+      <div className={style.FancyExplanationCreate}>
+        <h2>Confirmation</h2>
+      </div>
+
+      <h6
+        style={{
+          'text-align': 'left',
+          'padding-left': '20px',
+          'margin-bottom': '10px',
+          'margin-top': '30px',
+        }}>
+        Review the settings of your collection.
+      </h6>
+      <p
+        style={{
+          fontSize: '12px',
+          textAlign: 'left',
+          'padding-left': '20px',
+        }}>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean nec ex
+        in elit fermentum fermentum. Maecenas fermentum mauris metus, non tempus
+        odio sollicitudin a.
+      </p>
+
+      <div
+        className={style.CreationPageLabelFDivide}
+        style={{ marginTop: '30px', marginBottom: '30px' }}>
+        <label className={style.CreationPageLabelF}>
+          <h6>Name</h6>
+          <p></p>
+        </label>
+        <label className={style.CreationPageLabelF}>
+          <h6>Symbol</h6>
+          <p></p>
+        </label>
+      </div>
+
+      <div className={style.WizardFooter}>
+        <button className={style.WizardFooterBack} onClick={onPrev}>
+          Back
+        </button>
+        <button
+          className={style.WizardFooterNext}
+          // onClick={onNext}
+        >
+          Deploy
+        </button>
+      </div>
+    </div>
+  )
+}
+
 const CreateSuccess = ({ success }) => {
   const context = useEthosContext()
 
@@ -565,14 +635,24 @@ const CreateCollection = ({}) => {
           <li className={step === 2 ? style.WizardStepsListActive : ''}>
             Metadata
           </li>
+          <li className={step === 3 ? style.WizardStepsListActive : ''}>
+            Confirmation
+          </li>
         </ul>
       </div>
       <div className={style.WizardHeader}>
         <h3>
           Create a new Collection <span>step {step + 1} of 3</span>
         </h3>
-        <div className={style.WizardHeaderDescription} style={{ margin: "20px 0px 20px 0px!important", fontSize: "16px!important" }}>
-        Items are a new ERC token super standard, combining functionalities of ERC-20 tokens, ERC-721, and ERC-1155 NFT's. This gives them access to the best functionalities and platforms of both normal tokens and NFT's
+        <div
+          className={style.WizardHeaderDescription}
+          style={{
+            margin: '20px 0px 20px 0px!important',
+            fontSize: '16px!important',
+          }}>
+          Items are a new ERC token super standard, combining functionalities of
+          ERC-20 tokens, ERC-721, and ERC-1155 NFT's. This gives them access to
+          the best functionalities and platforms of both normal tokens and NFT's
         </div>
         <div className={style.WizardProgress}>
           <div
@@ -614,6 +694,7 @@ const CreateCollection = ({}) => {
             value={state?.confirmation}
             onChange={(value) => setState({ ...state, confirmation: value })}
             onPrev={() => setStep(2)}
+            state={state}
           />
         )}
       </div>
