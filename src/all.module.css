@@ -287,7 +287,7 @@ input::-webkit-scrollbar {
     overflow: hidden;
     position: fixed;
     left: 0;
-    z-index: 1000;
+    z-index: 1000!important;
 }
 
 .Header .FixedHeader {
@@ -4499,11 +4499,15 @@ input[type=range]::-ms-thumb {
     text-align: left;
     width: 97%;
     margin: 0 auto;
-    margin-top: 50px;
-
+    margin-top: 40px;
     border-bottom: 1px solid #ddd;
     padding-bottom: 35px;
     margin-bottom: 25px;
+}
+
+
+.dark .ItemsExploreMainTitleArea{
+    border-bottom: 1px solid #403b63;
 }
 
 .ItemsExploreMainTitleArea h2{
@@ -4522,10 +4526,14 @@ input[type=range]::-ms-thumb {
     border-bottom: 1px solid #e8e8e8;
 }
 
+.dark .ItemsExploreMainCategories{
+    border-bottom: 1px solid #403b63!important;
+}
+
 .ItemsExploreMainCategories li{
     display: inline-block;
-    padding-top: 0.75rem;
-    padding-bottom: 0.75rem;
+    padding-top: 0.65rem;
+    padding-bottom: 0.65rem;
     padding-left: 1.5rem;
     padding-right: 1.5rem;
     border-radius: 9999px;
@@ -4560,6 +4568,11 @@ input[type=range]::-ms-thumb {
     border-radius: 10px;
 }
 
+.dark .ItemsExploreMainSearch input{
+    background-color: #29263e;
+    border: 2px solid #4b4670;
+}
+
 .ItemsExploreMainSearch svg{
     width: 20px;
     position: absolute;
@@ -4567,15 +4580,43 @@ input[type=range]::-ms-thumb {
     top:17px;
     color: #ddd;
 }
+
 .ItemsExploreMainCategoriesCreateElement{
     float: right;
-    background-color: #f09243;
-    color:#fff!important;
+    background-color: #141416;
+    color: #fff!important;
     font-weight: bold;
     padding-right: 26px!important;
     position: relative;
-    top:-5px;
+    top: -5px;
 }
+
+.dark .ItemsExploreMainCategoriesCreateElement{
+    background-color: #f09243;
+}
+
+.SectionSubMenuItems{
+    text-align: right;
+    margin-top: 30px;
+}
+.SectionSubMenuItems li{
+    display: inline-block;
+    margin-right: 30px;
+}
+.SectionSubMenuItems li a {
+    font-weight: 200;
+    color: #565279;
+}
+.SectionSubMenuItems li.SectionSubMenuItemsActive a{
+   font-weight: 600;
+   color: #141416;
+}
+.dark .SectionSubMenuItems li.SectionSubMenuItemsActive a{
+    font-weight: 600;
+    color: #bebcd0;
+ }
+
+
 .ItemsExploreMainCategoriesCreateElement span{
     color:#fff!important;
     position: relative;
@@ -14113,8 +14154,8 @@ input {
 }
 
 .dark .ItemSingle .ItemTitle h4 {
-    border: 1px solid #f09243;
-    background: #f09243;
+    border: 1px solid #4a4667;
+    background: #4a4667;
 }
 
 .matrix .CircleRightV3Curve,
