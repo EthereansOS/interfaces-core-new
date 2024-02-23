@@ -513,10 +513,10 @@ const Confirmation = ({ value, onChange, onNext, onPrev, state }) => {
 
       <h6
         style={{
-          'text-align': 'left',
-          'padding-left': '20px',
-          'margin-bottom': '10px',
-          'margin-top': '30px',
+          textAlign: 'left',
+          paddingLeft: '20px',
+          marginBottom: '10px',
+          marginTop: '30px',
         }}>
         Review the settings of your collection.
       </h6>
@@ -524,7 +524,7 @@ const Confirmation = ({ value, onChange, onNext, onPrev, state }) => {
         style={{
           fontSize: '12px',
           textAlign: 'left',
-          'padding-left': '20px',
+          paddingLeft: '20px',
         }}>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean nec ex
         in elit fermentum fermentum. Maecenas fermentum mauris metus, non tempus

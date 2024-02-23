@@ -146,7 +146,7 @@ const Farming = ({selectedSubvoice, rewardTokenAddress}) => {
                 </select>
                 <label className={style.FilterOnly}>
                 <input type="checkbox" checked={activeOnly} onChange={e => setActiveOnly(e.currentTarget.checked)}/>
-                    <p>Only Active</p>
+                    <p>Active Only</p>
                 </label>
                 </div>}
             </div>
