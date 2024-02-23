@@ -12,7 +12,8 @@ const normalizeAnchors = async function(a) {
     lastElement = '.limo' + lastElement
   }
   href[lastIndex] = lastElement
-  a.href = href.join('.eth')
+  href = href.join('.eth').split('.eth.limoerscan').join('.etherscan')
+  a.href = href
 }
 
 var Description = ({title, description, className, shortLength, modal}) => {

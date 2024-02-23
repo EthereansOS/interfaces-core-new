@@ -17,7 +17,6 @@ import HostOptions from './hostOptions'
 import style from '../../../../all.module.css'
 
 const DelegationView = () => {
-
   const [element, setElement] = useState(null)
 
   const { pathname } = useLocation()
@@ -35,30 +34,44 @@ const DelegationView = () => {
     var delegationAddress = pathname.split('/')
     delegationAddress = delegationAddress[delegationAddress.length - 1]
     try {
-      getDelegation({ ...web3Data, context }, web3Utils.toChecksumAddress(delegationAddress)).then(setElement)
-    } catch(e) {}
+      getDelegation(
+        { ...web3Data, context },
+        web3Utils.toChecksumAddress(delegationAddress)
+      ).then(setElement)
+    } catch (e) {}
   }
 
-  if(!element) {
-    return <CircularProgress/>
+  if (!element) {
+    return <CircularProgress />
   }
 
   return (
     <div className={style.SingleContentPage}>
-      <DelegationHeadline element={element} onMetadata={setElement}/>
-      {!element?.host && <>
-        <h4>This Delegation must be finalized</h4>
-        {element.deployer === account && <Link to={`/organizations/create/${element.address}`}>Finalize Delegation</Link>}
-      </>}
-      {element?.host === account && <HostOptions refresh={refresh} element={element}/>}
-      {element?.host && <GovernanceContainer element={element}/>}
-      {element?.host && <DelegationAttach element={element}/>}
+      <DelegationHeadline element={element} onMetadata={setElement} />
+      {!element?.host && (
+        <>
+          <h4>This Delegation must be finalized</h4>
+          {element.deployer === account && (
+            <p>
+              <br />
+              <Link to={`/organizations/create/delegation/${element.address}`}>
+                <h5>Finalize Delegation</h5>
+              </Link>
+            </p>
+          )}
+        </>
+      )}
+      {element?.host === account && (
+        <HostOptions refresh={refresh} element={element} />
+      )}
+      {element?.host && <GovernanceContainer element={element} />}
+      {element?.host && <DelegationAttach element={element} />}
     </div>
   )
 }
 
 DelegationView.menuVoice = {
-  path : '/organizations/delegations/:id'
+  path: '/organizations/delegations/:id',
 }
 
 export default DelegationView

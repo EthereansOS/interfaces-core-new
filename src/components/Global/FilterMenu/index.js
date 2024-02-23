@@ -11,7 +11,7 @@ const ExploreCollections = (props) => {
       <select className={style.FilterSelect}><option value="0">Sort by..</option><option value="1">Higher Rewards per day</option><option value="2">Lower Rewards per day</option><option value="3">More Setups</option><option value="4">Less Setups</option></select>
       <label className={style.FilterOnly}>
         <input type="checkbox" checked=""></input>
-        <p>Only Active</p>
+        <p>Active Only</p>
       </label>
     </div>
   )

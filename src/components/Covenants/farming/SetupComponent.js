@@ -160,7 +160,7 @@ export default props => {
 
     const farmingPresto = useMemo(() => newContract(context.FarmingPrestoABI, getFarmingPrestoAddress()), [chainId])
 
-    useEffect(() => blockchainCall(element.contract.methods.initializer).then(factoryAddress => blockchainCall(newContract(context.EthereansFactoryABI, factoryAddress).methods.feeInfo)).then(result => void(setFeeData(result), reloadData())), [])
+    useEffect(() => blockchainCall(element.contract.methods.initializer).then(factoryAddress => blockchainCall(newContract(context.EthereansFactoryABI, factoryAddress).methods.feeInfo)).then(setFeeData).finally(reloadData), [])
 
     useEffect(() => {
         updateEthAmount(ethAmount)

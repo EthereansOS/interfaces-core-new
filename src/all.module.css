@@ -327,7 +327,7 @@ input::-webkit-scrollbar {
     filter: brightness(0%) invert(1);
 }
 
- 
+
 
 .logoMain img {
     max-width: 15em;
@@ -13698,6 +13698,10 @@ input {
 .light .Web3ConnectWallet {
     background-color: #e0d5f6;
 }
+.biz .Factories {background: linear-gradient(0deg, #ffffff 50%, hsl(212deg 30% 83%) 100%);}
+.biz .Items {background: linear-gradient(0deg, #ffffff 50%, #bfc0ea 100%);}
+.biz .Organizations {background: linear-gradient(0deg, #ffffff 50%, #99e9da 100%);}
+.biz .Covenants {background: linear-gradient(0deg, #ffffff 50%, #eccfd9 100%);}
 
 .dark .Web3ConnectWallet {
     background-color: #20122b;
