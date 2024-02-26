@@ -16,7 +16,7 @@
 
 
 :root {
-  --color-progress: #7475f7;
+  --color-progress: #f09243;
   --color-progress-alpha: #292929;
 }
 
@@ -115,6 +115,10 @@
   width: var(--progress-indicator-size);
   height: var(--progress-indicator-size);
   border-radius: calc(var(--progress-indicator-size) / 2.5);
+}
+
+.progress-inner .progress-indicator:first-child{
+  opacity: 1!important;
 }
 
 .dark .progress-indicator {

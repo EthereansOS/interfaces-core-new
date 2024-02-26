@@ -20,6 +20,17 @@ const WrapIndex = ({}) => {
 
     return (<>
         <div className={style.CreatePage}>
+          <ul className={style.SectionSubMenuItems}>
+            <li><Link to="/items">Items</Link></li>
+            <li ><Link to="/items/decks">Decks</Link></li>
+            <li><Link to="/items/collections"><a href="#">Collections</a></Link></li>
+            <li className={style.SectionSubMenuItemsActive}><Link to="/items/wrap"><a href="#">Wrap</a></Link></li>
+          </ul>
+          <div className={style.ItemsExploreMainTitleArea}>
+            <h2>Wrap Items or Decks</h2>
+            <p>Discover the most trending Decks in EthereanOS.</p>
+            
+          </div>
             <div className={style.CreateBoxDesc}>
                 <h6>Items</h6>
                 <p>Wrap any ERC20, ERC721 or ERC1155 as an Item, allowing it to act as an ERC20, ERC1155 and as a token with unprecedented capabilities.</p>
