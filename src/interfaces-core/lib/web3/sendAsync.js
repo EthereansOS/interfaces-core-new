@@ -24,11 +24,11 @@ async function instrumentProvider(provider, method, force) {
 
     var entry = instrumentedProviders.filter(it => it.provider == provider || it.instrumentedProvider == provider)[0]
 
+    const chainId = parseInt(chainIds.filter(it => it.provider == provider)[0]?.response || await sendAsync(provider, 'eth_chainId'))
+
     if(entry) {
         return chainId === 1 && !force ? entry.provider : entry.instrumentedProvider
     }
-
-    const chainId = parseInt(chainIds.filter(it => it.provider == provider)[0]?.response || await sendAsync(provider, 'eth_chainId'))
 
     instrumentedProviders.push(entry = {
         chainId,
