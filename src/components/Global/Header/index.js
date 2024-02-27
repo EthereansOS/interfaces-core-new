@@ -114,10 +114,10 @@ const Header = (props) => {
     setTheme(theme)
     localStorage.setItem('toggleState', toggleSwitch.checked)
   }
-  
+
   useEffect(() => {
+    let toggleSwitch = document.getElementById('toggleSwitch')
     const initialLoad = async () => {
-      const toggleSwitch = document.getElementById('toggleSwitch')
       // Utilizza un'operazione asincrona per ripristinare lo stato della checkbox da localStorage
       await new Promise((resolve) => {
         setTimeout(() => {
@@ -136,11 +136,15 @@ const Header = (props) => {
       })
     }
 
-    toggleSwitch.addEventListener('change', handleToggleChange)
+    if (toggleSwitch) {
+      toggleSwitch.addEventListener('change', handleToggleChange)
+    }
     initialLoad()
 
     return () => {
-      toggleSwitch.removeEventListener('change', handleToggleChange)
+      if (toggleSwitch) {
+        toggleSwitch.removeEventListener('change', handleToggleChange)
+      }
     }
   }, [])
 
@@ -178,7 +182,7 @@ const Header = (props) => {
           isDapp={props.isDapp}
           selected={props.link}
         />
-       <div className={style.ThemeSelect}>
+        <div className={style.ThemeSelect}>
           <label className={style.ThemeSwitch}>
             <input
               type="checkbox"
