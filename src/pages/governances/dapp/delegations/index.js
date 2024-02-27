@@ -53,7 +53,7 @@ const DelegationsList = ({ mine, onList }) => {
 
 DelegationsList.menuVoice = {
   label : 'Delegations',
-  path : '/organizations/delegations/',
+  path : '/organizations/delegations',
   contextualRequire : () => require.context('./', false, /.js$/),
   index : 1
 }
