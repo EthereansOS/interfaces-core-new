@@ -3,7 +3,11 @@ function resolveCID(link) {
     if(!cid) {
         return link
     }
-    return `https://ethereansos${window.isLocal ? 'dev' : ''}.infura-ipfs.io/ipfs/${cid}`
+    var prefix = ''
+    var key = 'eth3r34n5'
+    prefix = `${key}${window.isLocal ? 'dev' : ''}.infura-ipfs.io`
+    prefix = 'ipfs.io'
+    return 'https://' + prefix + '/ipfs/' + cid
 }
 
 function findCIDInIPFSLink(ipfsLink) {
