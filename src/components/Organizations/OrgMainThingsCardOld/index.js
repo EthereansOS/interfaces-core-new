@@ -377,7 +377,6 @@ const Delegations = ({element}) => {
         setVal(val)
     })
     setTimeout(async function() {
-      window.delegationsManager = await element.organizations[0].components.delegationsManager.contract
       setList(await getDelegationsOfOrganization({...useWeb3Data, context}, element))
     })
   }, [])
