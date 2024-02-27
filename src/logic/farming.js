@@ -95,7 +95,7 @@ export async function allFarmings(data, factoryAddress, generation) {
         farmingContractAddresses = Object.keys(positionIds)
     }
 
-    var farmingContracts = await Promise.all(farmingContractAddresses.map(it => getFarming({ ...data, positionIds : positionIds[it] }, it, generation)))
+    var farmingContracts = await Promise.all(farmingContractAddresses.map(it => getFarming({ ...data, positionIds : positionIds[it] }, it, generation).catch(e => void(console.log('ERROR', it), console.log(e), console.log(e.stack)))))
 
     farmingContracts = farmingContracts.filter(it => it)
 
