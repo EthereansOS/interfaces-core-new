@@ -204,7 +204,19 @@ export default ({item, onTokens}) => {
     return (
         <>
             <TokenInputRegular outputValue={input ? fromDecimals(input?.value, input?.token?.decimals, true) : undefined} tokens={input?.token === item && []} selected={input?.token} onElement={onInput}/>
-            <a className={style.TradeMarketBoxSwitch} onClick={switchSide}>🔁</a>
+            <a className={style.TradeMarketBoxSwitch} onClick={switchSide}>
+                <svg fill="#fff" height="50px" width="50px" viewBox="0 0 423.755 423.755" >
+                    <g>
+                        <path d="M43.84,281.457c-18.585-44.869-18.586-94.29,0-139.159c10.649-25.709,26.678-48.152,46.86-66.135l60.86,60.86V15.099
+                            H29.635l39.88,39.88c-64.293,58.426-88.5,153.2-53.391,237.959c14.167,34.202,37.07,64.159,66.234,86.634
+                            c28.275,21.789,61.873,36.201,97.162,41.677l4.601-29.646C120.778,381.774,68.337,340.597,43.84,281.457z"/>
+                        <path d="M407.516,292.938c21.652-52.272,21.652-109.848,0-162.12c-14.167-34.202-37.071-64.159-66.234-86.633
+                            C313.007,22.395,279.409,7.983,244.12,2.507l-4.601,29.646c63.342,9.829,115.783,51.005,140.28,110.146
+                            c18.586,44.869,18.586,94.29,0,139.159c-10.649,25.709-26.678,48.152-46.859,66.135l-60.86-60.86v121.924h121.924l-39.801-39.801
+                            C377.118,348.099,395.334,322.348,407.516,292.938z"/>
+                    </g>
+                </svg>
+            </a>
             <TokenInputRegular outputValue={output ? fromDecimals(output?.value, output?.token?.decimals, true) : undefined} tokens={output?.token === item && []} selected={output?.token} onElement={onOutput}/>
             <div className={style.TradeInfoThings}>
                 <ActionInfoSection ammRecap={ammRecap} settings={settings} onSettingsToggle={setSettings} amm={amm} onAMM={setAMM} onAMMs={setAMMs}/>

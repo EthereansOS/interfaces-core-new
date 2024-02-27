@@ -436,7 +436,7 @@ input::-webkit-scrollbar {
 }
 
 .dark .selected {
-    background-color: #5f4eaa !important;
+    background-color: #403b63 !important;
     color: rgb(232, 230, 227) !important;
 }
 
@@ -611,13 +611,18 @@ input::-webkit-scrollbar {
     padding: 9px 15px;
     text-align: center;
     font-size: 15px;
-    border-radius: 15px;
+    border-radius: 105px;
     border: none !important;
     cursor: pointer;
     background-color: #141416;
     color: #ffffff;
     font-weight: 200;
     font-family: inherit;
+}
+
+.dark .ActionAWeb3Button button {
+    background-color: #f09243;
+    color: #ffffff;
 }
 
 .ActionAWeb3Button button:disabled {
@@ -640,7 +645,7 @@ input::-webkit-scrollbar {
     border-radius: 12px;
     border: none !important;
     cursor: pointer;
-    background-color: #7474f7;
+    background-color: #141416;
     color: #ffffff;
     font-weight: bold;
 }
@@ -660,20 +665,29 @@ input::-webkit-scrollbar {
 .ActionAWeb3Buttons button {
     width: 40%;
     margin: 0 3%;
-    padding: 9px 0px;
     text-align: center;
     font-size: 12px;
     border-radius: 20px;
     border: none !important;
     cursor: pointer;
+    padding: 15px 10px 15px 10px;
+    font-size: 14px;
 }
 
 .ActionAWeb3Buttons .ActionASide,
 .ActionAWeb3Buttons .ActionAMain {
-    background-color: #7474f7;
+    background-color: #141416;
     color: #ffffff;
     font-weight: bold;
 }
+
+.dark .ActionAWeb3Buttons .ActionASide,
+.dark .ActionAWeb3Buttons .ActionAMain {
+    background-color: #f09243;
+    color: #ffffff;
+    font-weight: bold;
+}
+
 
 .ActionAWeb3Buttons button:disabled {
     font-weight: normal !important;
@@ -695,7 +709,7 @@ input::-webkit-scrollbar {
     border-radius: 15px;
     border: none !important;
     cursor: pointer;
-    background-color: #7474f7;
+    background-color: #141416;
     color: #ffffff;
     font-weight: bold;
 }
@@ -1605,6 +1619,12 @@ input::-webkit-scrollbar {
     text-align: center;
     border-radius: 20px;
 }
+.BazarExchangeArea .TradeMain{
+    max-width: 500px;
+}
+.BazarExchangeArea .TradeMain .TradeMarketBox{
+    display: block;
+}
 
 .TradeMain h4 {
     font-size: 16px;
@@ -1954,6 +1974,7 @@ input::-webkit-scrollbar {
 
 .Dapp_Menu>li {
     display: inline-block;
+    margin-right: 20px;
 }
 
 .Dapp_Menu>li>a {
@@ -1972,8 +1993,9 @@ input::-webkit-scrollbar {
 }
 
 .light .Dapp_Menu>li>a:hover {
-    background-color: var(--menu-item-background-hover);
-    color: #fff;
+    background-color: #eaecf2;
+    color: #141416;
+    border-radius: 100px;
 }
 
 .dark .Dapp_Menu>li>a:hover {
@@ -1986,14 +2008,13 @@ input::-webkit-scrollbar {
     padding: 0 8px;
     margin: 20px auto;
     width: auto;
-    height: 30px;
     border-radius: 20px;
     border: 2px solid;
 }
 
+
 .CollectionLeft .DappSubMenu {
     width: 100%;
-    background: #fff!important;
     padding: 20px;
     height: auto;
     border-radius: 10px;
@@ -2014,7 +2035,8 @@ input::-webkit-scrollbar {
 
 .DDapp_Menu {
     display: inline-block;
-    margin: 50px auto 30px auto;
+    margin: 0px auto 30px auto;
+    min-width: 1400px;
 }
 
 .DDapp_Menu1 {
@@ -2045,7 +2067,7 @@ input::-webkit-scrollbar {
     position: relative;
     z-index: 10;
     padding: 15px 8px 0px 8px;
-    margin: -17px auto 0px auto;
+    margin: 5px auto 0px auto;
     width: auto;
     height: auto;
     border-radius: 20px;
@@ -2451,7 +2473,7 @@ input::-webkit-scrollbar {
     border-radius: 15px;
     border: none !important;
     cursor: pointer;
-    background-color: #7474f7;
+    background-color: #141416;
     color: #ffffff;
     font-weight: bold;
     margin: 5px;
@@ -2466,7 +2488,7 @@ input::-webkit-scrollbar {
     border-radius: 15px;
     border: none !important;
     cursor: pointer;
-    background-color: #7474f7;
+    background-color: #141416;
     color: #ffffff;
     font-weight: bold;
     font-weight: normal !important;
@@ -3036,7 +3058,7 @@ input::-webkit-scrollbar {
     width: 95%;
     height: 30px;
     margin-bottom: 30px;
-    border-bottom: 1px solid #7472fc;
+    border-bottom: 1px solid #141416;
     position: relative;
 }
 
@@ -3044,9 +3066,9 @@ input::-webkit-scrollbar {
 .CircleRightV3Curve {
     position: absolute;
     bottom: -5px;
-    background-color: #7472fc;
-    border: 1px solid #7472fc;
-    color: #7472fc;
+    background-color: #141416;
+    border: 1px solid #141416;
+    color: #141416;
     height: 8px;
     width: 8px;
     border-radius: 100%;
@@ -3405,9 +3427,9 @@ input[type=range]::-ms-thumb {
 
 .UniNFTInfo {
     font-size: 10px;
-    color: #7472fc;
+    color: #141416;
     font-weight: bold;
-    border: 2px solid #7472fc;
+    border: 2px solid #141416;
     padding: 2px 4px;
     border-radius: 5px;
     display: inline-block;
@@ -3416,9 +3438,9 @@ input[type=range]::-ms-thumb {
 
 .UniNFTInfo:hover,
 .UniNFTInfo:active {
-    color: #7472fc;
+    color: #141416;
     font-weight: bold;
-    border: 2px solid #7472fc;
+    border: 2px solid #141416;
     text-decoration: none !important;
 }
 
@@ -3492,7 +3514,7 @@ input[type=range]::-ms-thumb {
     width: 95%;
     height: 30px;
     margin-bottom: 30px;
-    border-bottom: 1px solid #7472fc;
+    border-bottom: 1px solid #141416;
     position: relative;
 }
 
@@ -3500,9 +3522,9 @@ input[type=range]::-ms-thumb {
 .CircleRightV3Curve {
     position: absolute;
     bottom: -5px;
-    background-color: #7472fc;
-    border: 1px solid #7472fc;
-    color: #7472fc;
+    background-color: #141416;
+    border: 1px solid #141416;
+    color: #141416;
     height: 8px;
     width: 8px;
     border-radius: 100%;
@@ -3553,6 +3575,12 @@ input[type=range]::-ms-thumb {
     margin-bottom: 20px;
 }
 
+.dark .CircleRightV3Actual img {
+    filter: grayscale(1) invert(1) brightness(100);
+}
+
+
+
 .CircleRightV3ActualPrice {
     display: inline-block;
     font-size: 11px;
@@ -3587,20 +3615,32 @@ input[type=range]::-ms-thumb {
 
 .UniPoolFeeInfo {
     font-size: 10px;
-    color: #7472fc;
+    color: #141416;
     font-weight: bold;
-    border: 2px solid #7472fc;
+    border: 2px solid #141416;
     padding: 2px 4px;
     border-radius: 5px;
     display: inline-block;
     margin-left: 5px;
 }
 
+.BazarExchangeArea .ActionInfoSection{
+    display: inline-block;
+}
+
+.BazarExchangeArea .ActionInfoSectionSettings{
+    float: right;
+}
+
+.BazarExchangeArea .TradeInfoThings{
+    width: 100%;
+}
+
 .UniPoolFeeInfo:hover,
 .UniPoolFeeInfo:active {
-    color: #7472fc;
+    color: #141416;
     font-weight: bold;
-    border: 2px solid #7472fc;
+    border: 2px solid #141416;
     text-decoration: none !important;
 }
 
@@ -3678,6 +3718,12 @@ input[type=range]::-ms-thumb {
     width: 25px !important;
 }
 
+.BazarExchangeArea .ActionInfoSection{
+    margin: 0 0 0 auto;
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+
 .TokenFarmV3InfoBox span {
     font-size: 13px;
     font-weight: bold;
@@ -3686,6 +3732,25 @@ input[type=range]::-ms-thumb {
 
 .TokenFarmV3InfoBox span .Spannino {
     font-size: 10px;
+}
+
+.BazarExchangeArea .TradeMarketTokenAmount input{
+    height: 50px!important;
+    margin-right: 20px!important;
+}
+
+.BazarExchangeArea .TradeMarketBox{
+    padding: 30px 30px 10px 30px;
+}
+
+.BazarExchangeArea .TradeMarketBoxSwitch{
+    background-color: transparent!important;
+    width: 80px;
+    height: 80px;
+}
+
+.dark .BazarExchangeArea .TradeMarketTokenSelector{
+    background-color: #403b63!important;
 }
 
 .FarmSetupV3 .SetupFarmingInstructions {
@@ -4080,7 +4145,7 @@ input[type=range]::-ms-thumb {
 }
 
 .FarmBannerV3 {
-    background-color: #7474f7;
+    background-color: #141416;
     color: #ffffff;
     padding: 30px;
     border-radius: 15px;
@@ -4751,6 +4816,10 @@ input[type=range]::-ms-thumb {
     background: #fff;
 }
 
+.dark .WrapUnwrapBox {
+    background: #403b63;
+}
+
 .WrapBoxItem {
     width: 49%;
     padding: 5px;
@@ -4899,7 +4968,7 @@ input[type=range]::-ms-thumb {
 
 .InfoBox h1 {
     width: 400px;
-    font-size: 22px;
+    font-size: 50px;
     font-weight: bold;
     color: #000000;
     text-align: left;
@@ -5250,6 +5319,7 @@ input[type=range]::-ms-thumb {
     display: block;
     width: 100%;
     height: 100%;
+    border-radius: 10px;
 }
 
 .OrgTitleEx {
@@ -6589,6 +6659,7 @@ input[type=range]::-ms-thumb {
 .OrgHeadline figure img {
     width: 100%;
     height: 100%;
+    padding: 20px;
 }
 
 .OrgHeadlineSide {
@@ -6638,7 +6709,6 @@ input[type=range]::-ms-thumb {
 }
 
 .OrgTitle p:hover {
-    text-decoration: underline;
 }
 
 .OrgLinks {
@@ -6845,6 +6915,7 @@ input[type=range]::-ms-thumb {
     line-height: 1.3;
     font-size: 15px;
     margin: 5px;
+    display: inline-block;
 }
 
 .InvestmentsSectionBuySell p>a {
@@ -7207,9 +7278,17 @@ input[type=range]::-ms-thumb {
     font-weight: bold;
     padding: 5px;
     background-color: transparent;
-    border: 2px solid #7472fc !important;
-    color: #7472fc !important;
+    border: 2px solid #141416 !important;
+    color: #141416 !important;
     vertical-align: middle;
+    display: block;
+    width: fit-content;
+    margin-bottom: 10px;
+}
+
+.dark .GuildTagO {
+    border: 2px solid #fff !important;
+    color: #fff !important;
 }
 
 .GuildTagD {
@@ -7985,7 +8064,7 @@ input[type=range]::-ms-thumb {
     border-radius: 8px;
     border: none !important;
     cursor: pointer;
-    background-color: #7474f7;
+    background-color: #141416;
     color: #ffffff;
     font-weight: bold;
 }
@@ -9584,7 +9663,7 @@ input[type=range]::-ms-thumb {
     box-shadow: none;
 }
 
-.light .ActionInfoSection {
+.ActionInfoSection {
     background-color: #ffffff;
     display: flex;
     border: 2px solid #e7ecf4;
@@ -9592,6 +9671,13 @@ input[type=range]::-ms-thumb {
     margin-top: 5px;
     border-radius: 9px;
 }
+
+.dark .ActionInfoSection {
+    background-color: #29263e;
+    border: 2px solid #29263e;
+}
+
+
 
 .biz .ActionInfoSection {
     background: linear-gradient(0deg, #ffffff 50%, #bfc0ea 100%);
@@ -9617,7 +9703,7 @@ input[type=range]::-ms-thumb {
 }
 
 .light .ActionInfoSection .ActionInfoSectionAMM {
-    background-color: #e9effc;
+    background-color: #ffffff;
 }
 
 .biz .ActionInfoSection .ActionInfoSectionAMM {
@@ -9625,7 +9711,7 @@ input[type=range]::-ms-thumb {
 }
 
 .dark .ActionInfoSection .ActionInfoSectionAMM {
-    background-color: #525252;
+    background-color: #29263f;
 }
 
 .sepia .ActionInfoSection .ActionInfoSectionAMM {
@@ -9633,7 +9719,7 @@ input[type=range]::-ms-thumb {
 }
 
 .light .ActionInfoSection .ActionInfoSectionSettings {
-    background-color: #e9effc;
+    background-color: #ffffff;
 }
 
 .biz .ActionInfoSection .ActionInfoSectionSettings {
@@ -9641,7 +9727,7 @@ input[type=range]::-ms-thumb {
 }
 
 .dark .ActionInfoSection .ActionInfoSectionSettings {
-    background-color: #525252;
+    background-color: #29263f;
 }
 
 .sepia .ActionInfoSection .ActionInfoSectionSettings {
@@ -9779,9 +9865,9 @@ input[type=range]::-ms-thumb {
 .biz .ActionAWeb3Buttons button,
 .biz .FinalizeSequenceBoxButtons .ActionAWeb3Button,
 .biz .ActionAWeb3ButtonSmall button {
-    background: linear-gradient(0deg, #7474f7 80%, #ffffff 100%) !important;
+    background: linear-gradient(0deg, #141416 80%, #ffffff 100%) !important;
     border: 4px solid !important;
-    border-color: #7474f7 !important;
+    border-color: #141416 !important;
     border-radius: 20px !important;
     color: #ffffff !important;
 }
@@ -9809,7 +9895,23 @@ input[type=range]::-ms-thumb {
 .dark .ActionAWeb3ButtonExtraSmall button:disabled,
 .dark .ActionAWeb3Buttons button:disabled,
 .dark .ActionAWeb3ButtonSmall button:disabled {
-    background-color: #444444 !important;
+    background-color: #353151 !important;
+    color: #fff!important;
+}
+
+.CollectionLeft .FarmContent{
+min-width: auto
+}
+
+.CollectionLeft .SetupFarmingInstructions{
+    text-align: center;
+}
+
+.CollectionLeft .SetupFarmingInstructions,
+.CollectionLeft .farmInfoCurve {
+    display: block;
+
+    width: 100%!important;
 }
 
 .sepia .ActionAWeb3Button button:disabled,
@@ -9841,17 +9943,17 @@ input[type=range]::-ms-thumb {
 }
 
 .light .Web3CustomBTN {
-    background-color: #7474f7;
+    background-color: #141416;
     color: #ffffff;
 }
 
 .biz .Web3CustomBTN {
-    background-color: #7474f7;
+    background-color: #141416;
     color: #ffffff;
 }
 
 .dark .Web3CustomBTN {
-    background-color: #7474f7;
+    background-color: #141416;
     color: #ffffff;
 }
 
@@ -9945,8 +10047,8 @@ input[type=range]::-ms-thumb {
 }
 
 .dark .ExtLinkButton {
-    border-color: #849BBD;
-    color: #849BBD;
+    border-color: #ffffff;
+    color: #ffffff;
     background-color: transparent;
 }
 
@@ -9976,9 +10078,9 @@ input[type=range]::-ms-thumb {
 }
 
 .dark .MetaBTN {
-    border-color: #e1b9be !important;
-    background-color: #e1b9be !important;
-    color: #ffffff !important;
+    border-color: #403b62!important;
+    color: #fff!important;
+    background-color: #403b62;
 }
 
 .sepia .MetaBTN {
@@ -10035,9 +10137,10 @@ input[type=range]::-ms-thumb {
 }
 
 .dark .SendToL2 {
-    border-color: #ff0420 !important;
-    background-color: #ff0420 !important;
+    border-color: #f09243 !important;
+    background-color: #f09243 !important;
     color: #ffffff !important;
+    text-transform: uppercase;
 }
 
 .sepia .SendToL2 {
@@ -10126,7 +10229,7 @@ input[type=range]::-ms-thumb {
 .light .CreateBTN2,
 .light .SubCollectionInfoCover a,
 .light .PlusWallet {
-    background-color: #849bbd;
+    background-color: #141416;
     color: #fff;
 }
 
@@ -10317,20 +10420,20 @@ input[type=range]::-ms-thumb {
 }
 
 .light .VioletLinkButton {
-    color: #7472fc;
-    border-color: #7472fc;
+    color: #141416;
+    border-color: #141416;
     background-color: transparent;
 }
 
 .biz .VioletLinkButton {
-    color: #7472fc;
-    border-color: #7472fc;
+    color: #141416;
+    border-color: #141416;
     background-color: transparent;
 }
 
 .dark .VioletLinkButton {
-    color: #7472fc;
-    border-color: #7472fc;
+    color: #141416;
+    border-color: #141416;
     background-color: transparent;
 }
 
@@ -10347,8 +10450,8 @@ input[type=range]::-ms-thumb {
 }
 
 .dark .FilterMenuSearch {
-    border-color: #849bbd;
-    color: #849bbd;
+    border-color: #ffffff;
+    color: #ffffff;
     background-color: transparent;
 }
 
@@ -10371,8 +10474,8 @@ input[type=range]::-ms-thumb {
 }
 
 .dark .FilterSelect {
-    border-color: #849bbd;
-    color: #849bbd;
+    border-color: #ffffff;
+    color: #ffffff;
     background-color: transparent;
 }
 
@@ -10383,15 +10486,15 @@ input[type=range]::-ms-thumb {
 }
 
 .light .FilterOnly {
-    background-color: #e9effc;
+    background-color: #f3f4f8;
 }
 
 .biz .FilterOnly {
-    background-color: #e9effc;
+    background-color: #f3f4f8;
 }
 
 .dark .FilterOnly {
-    background-color: #525252;
+    background-color: #29263e;
 }
 
 .sepia .FilterOnly {
@@ -10414,6 +10517,25 @@ input[type=range]::-ms-thumb {
     background-color: #eee8d59c;
 }
 
+.CovenantsMainBox{
+    width: 100%;
+}
+
+.dark .NoElementsWrapper polyline{
+    color: #fff;
+    fill:#fff;
+}
+
+.dark .NoElementsWrapper{
+    margin-top: 20px;
+}
+
+.NoElementsLabel{
+    font-size: 20px;
+    padding-top: 20px;
+    padding-bottom: 30px;
+}
+
 .light .SettingB {
     background-color: #ffffff;
 }
@@ -10423,7 +10545,7 @@ input[type=range]::-ms-thumb {
 }
 
 .dark .SettingB {
-    background-color: #000000;
+    background-color: #29263f;
 }
 
 .sepia .SettingB {
@@ -10775,7 +10897,7 @@ input[type=range]::-ms-thumb {
 }
 
 .SectionMinWidth{
-    min-width: 1200px;
+    min-width: 1400px;
 }
 
 .matrix .CreationPageLabelF input {
@@ -10826,8 +10948,8 @@ input {
 
 
 .light .CreateBoxDesc {
-    background-color: #e9effc;
-    border-color: #e0e2e6;
+    background-color: #eaecf2;
+    border-color: #ebecf3;
 }
 
 .biz .CreateBoxDesc {
@@ -10886,7 +11008,13 @@ input {
     font-size: 13px;
 }
 
-.light .TradeMarketTokenAll {
+.dark .DetailSupply{
+    background: #403b62;
+    border: 1px solid #403b62;
+    color: #fff!important;
+}
+
+ .TradeMarketTokenAll {
     background-color: transparent;
     padding: 0px;
     margin: 0px;
@@ -10900,9 +11028,6 @@ input {
     background-color: #e9effc;
 }
 
-.dark .TradeMarketTokenAll {
-    background-color: #525252;
-}
 
 .light .OperationsTrigger .SettingFB {
     background-color: #f7fafe;
@@ -10935,16 +11060,39 @@ input {
 }
 
 .dark .TradeMarketToken {
-    background-color: #000000;
-    border-color: #000000;
+    background-color: #403b63;
+    border-color: #403b63;
 }
+
+.dark .BazarExchangeArea .TradeMarketToken{
+    background-color: #29263f;
+    border-color: #403b63;
+}
+
+.BazarExchangeArea .TradeMarketToken{
+    display: block;
+}
+
+.BazarExchangeArea .TradeMarketTokenSelector{
+    width: 200px!important;
+}
+
+.BazarExchangeArea .TradeMarketTokenAmount{
+    float:right;
+}
+
+.BazarExchangeArea .TradeMarketTokenBalance{
+    text-align: right;
+    padding-right: 20px;
+}
+
 
 .sepia .TradeMarketToken {
     background-color: #eee8d59c;
     border-color: #eee8d59c;
 }
 
-.light .TradeMarketToken .TradeMarketTokenSelector {
+.TradeMarketToken .TradeMarketTokenSelector {
     background-color: #f2f4f8;
     margin: 0px;
     width: 100%;
@@ -10993,7 +11141,7 @@ input {
 }
 
 .dark .TradeMarketToken .TradeMarketTokenSelector {
-    background-color: #525252;
+    background-color: #29263e;
 }
 
 .light .TradeMarketTokenAmount input {
@@ -11213,10 +11361,7 @@ input {
 }
 
 .dark .WrapBoxItem {
-    background-color: #525252;
-    box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);
-    -webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);
-    -moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);
+    background-color: #403b63;
 }
 
 .sepia .WrapBoxItem {
@@ -11238,10 +11383,7 @@ input {
 }
 
 .dark .UnwrapBoxItem {
-    background-color: #525252;
-    box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);
-    -webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);
-    -moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);
+    background-color: #403b63;
 }
 
 .sepia .UnwrapBoxItem {
@@ -11259,8 +11401,8 @@ input {
 }
 
 .dark .TradeMarketBox {
-    border-color: #000000;
-    background-color: #212121;
+    border-color: #403b62;
+    background-color: #403b62;
 }
 
 .sepia .TradeMarketBox {
@@ -11525,23 +11667,23 @@ input {
 
 .light .pModalDesc {
     color: #ffffff;
-    background-color: #7472fc;
+    background-color: #141416;
 }
 
 .biz .pModalDesc {
     color: #ffffff;
-    background-color: #7472fc;
+    background-color: #141416;
     border-radius: 0px;
 }
 
 .dark .pModalDesc {
     color: #ffffff;
-    background-color: #7472fc;
+    background-color: #141416;
 }
 
 .sepia .pModalDesc {
     color: #ffffff;
-    background-color: #7472fc;
+    background-color: #141416;
 }
 
 .light .TradeOTCBoxOrder .TradeOTCBoxOrderQ {
@@ -11669,7 +11811,7 @@ input {
 
 .light .Dapp_Menu,
 .light .DDapp_Menu1 {
-    border-color: #aa9cfe;
+    border: none;
 }
 
 .dark .Dapp_Menu,
@@ -11679,11 +11821,11 @@ input {
 
 .light .DappSubMenu,
 .light .DDapp_Menu2 {
-    background-color: #e9effc;
+    /*background-color: #e9effc;*/
     border: none;
-    box-shadow: 1px 1px 2px 1px rgba(202, 202, 202, 0.32);
+    /*box-shadow: 1px 1px 2px 1px rgba(202, 202, 202, 0.32);
     -webkit-box-shadow: 1px 1px 2px 1px rgba(202, 202, 202, 0.32);
-    -moz-box-shadow: 1px 1px 2px 1px rgba(202, 202, 202, 0.32);
+    -moz-box-shadow: 1px 1px 2px 1px rgba(202, 202, 202, 0.32);*/
 }
 
 .biz .DappSubMenu,
@@ -11696,11 +11838,13 @@ input {
 
 .dark .DappSubMenu,
 .dark .DDapp_Menu2 {
-    background-color: #525252;
+    background-color: #29263f;
     border: none;
-    box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);
+    /*box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);
     -webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);
-    -moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);
+    -moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);*/
+    display: block;
+    padding-bottom: 10px;
 }
 
 .sepia .DappSubMenu,
@@ -11729,8 +11873,9 @@ input {
 
 .light .NextStep {
     color: #ffffff;
-    background-color: #693CC8;
-    border-color: #693CC8 !important;
+    background-color: #141416;
+    border-color: #141416 !important;
+    border-radius: 100px;
 }
 
 .light .NextStep:hover {
@@ -11744,7 +11889,8 @@ input {
 }
 
 .light .ExtLinkButtonAlpha {
-    border-color: #693CC8 !important;
+    border-color: #141416 !important;
+    border-radius: 100px;
 }
 
 .light .ExtLinkButtonAlpha:hover {
@@ -11983,9 +12129,9 @@ input {
 
 .light .OrgSingle {
     background-color: #ffffff;
-    box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);
+    /*box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);
     -webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);
-    -moz-box-shadow: 1px 1px 2px 1px rgba(202, 202, 202, 0.32);
+    -moz-box-shadow: 1px 1px 2px 1px rgba(202, 202, 202, 0.32);*/
 }
 
 .biz .OrgSingle {
@@ -11996,10 +12142,10 @@ input {
 }
 
 .dark .OrgSingle {
-    background-color: #000000;
-    box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);
+    background-color: #403b62;
+    /*box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);
     -webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);
-    -moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);
+    -moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);*/
 }
 
 .sepia .OrgSingle {
@@ -12032,7 +12178,6 @@ input {
 }
 
 .dark .OrgTitleEx h6 {
-    background-color: #000000;
 }
 
 .light .OrgTitleAsideB {
@@ -12076,10 +12221,10 @@ input {
 }
 
 .dark .GovCard {
-    background-color: #000000;
-    box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);
+    background-color: #403b63;
+    /*box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);
     -webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);
-    -moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);
+    -moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);*/
 }
 
 .light .GovCardHead {
@@ -12094,7 +12239,7 @@ input {
 }
 
 .dark .GovCardHead {
-    background-color: #383c42;
+    background-color: #403b63;
 }
 
 .sepia .GovCardHead {
@@ -12126,7 +12271,8 @@ input {
 }
 
 .dark .GovCardOpened {
-    background-color: #000000;
+    background-color: #403b63;
+    border-top: 1px solid #29263e;
 }
 
 .sepia .GovCardOpened {
@@ -12569,9 +12715,9 @@ input {
 
 .light .OrgHeadline {
     background-color: #ffffff;
-    box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);
+    /*box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);
     -webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);
-    -moz-box-shadow: 1px 1px 2px 1px rgba(202, 202, 202, 0.32);
+    -moz-box-shadow: 1px 1px 2px 1px rgba(202, 202, 202, 0.32);*/
 }
 
 .biz .OrgHeadline {
@@ -12580,10 +12726,10 @@ input {
 }
 
 .dark .OrgHeadline {
-    background-color: #000000;
-    box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);
+    background-color: #403b62;
+    /*box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);
     -webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);
-    -moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);
+    -moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);*/
 }
 
 .sepia .OrgHeadline {
@@ -12603,10 +12749,10 @@ input {
 }
 
 .dark .CovenantsMainBox {
-    background-color: #000000;
-    box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);
+    background-color: #403b62;
+    /*box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);
     -webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);
-    -moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);
+    -moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);*/
 }
 
 .sepia .CovenantsMainBox {
@@ -12614,7 +12760,7 @@ input {
 }
 
 .light .OrgHeadlineSide {
-    background-color: #e9effc;
+    background-color: #ffffff;
 }
 
 .biz .OrgHeadlineSide {
@@ -12622,7 +12768,7 @@ input {
 }
 
 .dark .OrgHeadlineSide {
-    background-color: #292929;
+    background-color: #403b63;
 }
 
 .sepia .OrgHeadlineSide {
@@ -12635,9 +12781,9 @@ input {
 
 .light .OrgMainThingsCard {
     background-color: #ffffff;
-    box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);
+    /*box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);
     -webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);
-    -moz-box-shadow: 1px 1px 2px 1px rgba(202, 202, 202, 0.32);
+    -moz-box-shadow: 1px 1px 2px 1px rgba(202, 202, 202, 0.32);*/
 }
 
 .biz .OrgMainThingsCard {
@@ -12648,10 +12794,10 @@ input {
 }
 
 .dark .OrgMainThingsCard {
-    background-color: #000000;
-    box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);
+    background-color: #403b62;
+    /*box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);
     -webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);
-    -moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);
+    -moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);*/
 }
 
 .sepia .OrgMainThingsCard {
@@ -12664,9 +12810,9 @@ input {
 
 .light .OrgMainThingsCardSL {
     background-color: #ffffff;
-    box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);
+    /*box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);
     -webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);
-    -moz-box-shadow: 1px 1px 2px 1px rgba(202, 202, 202, 0.32);
+    -moz-box-shadow: 1px 1px 2px 1px rgba(202, 202, 202, 0.32);*/
 }
 
 .biz .OrgMainThingsCardSL {
@@ -12677,10 +12823,10 @@ input {
 }
 
 .dark .OrgMainThingsCardSL {
-    background-color: #000000;
-    box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);
+    background-color: #403b62;
+    /*box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);
     -webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);
-    -moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);
+    -moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);*/
 }
 
 .sepia .OrgMainThingsCardSL {
@@ -12692,7 +12838,7 @@ input {
 }
 
 .light .OrgThingsInfoContent {
-    background-color: #e9effc;
+    background-color: #eaecf2;
 }
 
 .biz .OrgThingsInfoContent {
@@ -12700,7 +12846,7 @@ input {
 }
 
 .dark .OrgThingsInfoContent {
-    background-color: #383c42;
+    background-color: #29263e;
 }
 
 .sepia .OrgThingsInfoContent {
@@ -12709,9 +12855,9 @@ input {
 
 .light .OrgPartView {
     background-color: #ffffff;
-    box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);
+    /*box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);
     -webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);
-    -moz-box-shadow: 1px 1px 2px 1px rgba(202, 202, 202, 0.32);
+    -moz-box-shadow: 1px 1px 2px 1px rgba(202, 202, 202, 0.32);*/
 }
 
 .biz .OrgPartView {
@@ -12722,10 +12868,10 @@ input {
 }
 
 .dark .OrgPartView {
-    background-color: #000000;
-    box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);
+    background-color: #403b63;
+    /*box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);
     -webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);
-    -moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);
+    -moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);*/
 }
 
 .sepia .OrgPartView {
@@ -12737,7 +12883,7 @@ input {
 }
 
 .light .OrgPartInfo {
-    background-color: #e9effc;
+    background-color: #eaecf2;
 }
 
 .biz .OrgPartInfo {
@@ -12745,7 +12891,7 @@ input {
 }
 
 .dark .OrgPartInfo {
-    background-color: #383c42;
+    background-color: #29263e;
 }
 
 .sepia .OrgPartInfo {
@@ -12761,7 +12907,7 @@ input {
 }
 
 .dark .DelegationsSectionOne {
-    border-color: #383c42;
+    border-color: #29263e;
 }
 
 .sepia .DelegationsSectionOne {
@@ -12777,7 +12923,7 @@ input {
 }
 
 .dark .DelegationsSection {
-    border-color: #383c42;
+    border-color: #29263e;
 }
 
 .sepia .DelegationsSection {
@@ -12793,7 +12939,7 @@ input {
 }
 
 .dark .InvestmentsSection {
-    border-color: #383c42;
+    border-color: #29263e;
 }
 
 .sepia .InvestmentsSection {
@@ -12801,7 +12947,7 @@ input {
 }
 
 .light .TranferETHProp {
-    background-color: #e9effc;
+    background-color: #eaecf2;
 }
 
 .biz .TranferETHProp {
@@ -12813,7 +12959,7 @@ input {
 }
 
 .light .InvestmentsSectionBuySell {
-    background-color: #e9effc;
+    background-color: #eaecf2;
 }
 
 .biz .InvestmentsSectionBuySell {
@@ -12821,7 +12967,7 @@ input {
 }
 
 .dark .InvestmentsSectionBuySell {
-    background-color: #383c42;
+    background-color: #29263e;
 }
 
 .sepia .InvestmentsSectionBuySell {
@@ -12829,7 +12975,7 @@ input {
 }
 
 .light .OrgPartFarm {
-    background-color: #e9effc;
+    background-color: #ffffff;
 }
 
 .biz .OrgPartFarm {
@@ -12841,7 +12987,7 @@ input {
 }
 
 .dark .OrgPartFarm {
-    background-color: #383c42;
+    background-color: #403b63;
 }
 
 .sepia .OrgPartFarm {
@@ -12860,9 +13006,9 @@ input {
 
 .light .OrgThingsCardPics {
     background-color: #ffffff;
-    box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);
+    /*box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);
     -webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);
-    -moz-box-shadow: 1px 1px 2px 1px rgba(202, 202, 202, 0.32);
+    -moz-box-shadow: 1px 1px 2px 1px rgba(202, 202, 202, 0.32);*/
 }
 
 .biz .OrgThingsCardPics {
@@ -12873,10 +13019,10 @@ input {
 }
 
 .dark .OrgThingsCardPics {
-    background-color: #000000;
-    box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);
+    background-color: #403b62;
+    /*box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);
     -webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);
-    -moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);
+    -moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);*/
 }
 
 .sepia .OrgThingsCardPics {
@@ -12908,7 +13054,7 @@ input {
 }
 
 .dark .Upshot span {
-    background-color: #3f3f3f59;
+    background-color: transparent;
 }
 
 .light .UpshotBar {
@@ -12920,7 +13066,7 @@ input {
 }
 
 .dark .UpshotBar {
-    background-color: #383c42;
+    background-color: #29263e;
 }
 
 .sepia .UpshotBar {
@@ -12936,7 +13082,7 @@ input {
 }
 
 .dark .UpshotBar figure {
-    background-color: #2e2c35;
+    background-color: #403b63;
 }
 
 .sepia .UpshotBar figure {
@@ -13033,10 +13179,9 @@ input {
 }
 
 .dark .SubCollectionInfo {
-    background-color: #000000;
-    box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);
-    -webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);
-    -moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);
+    background-color: #403b63;
+    padding: 20px;
+    height: auto;
 }
 
 .sepia .SubCollectionInfo {
@@ -13083,7 +13228,7 @@ input {
 }
 
 .light .CollectionSingle .CollectionFolder {
-    background-color: #F0F0F0;
+    background-color: #ffffff;
 }
 
 .biz .CollectionSingle .CollectionFolder {
@@ -13176,7 +13321,7 @@ input {
 
 .biz .ItemSingle .ItemInfo {
     border-color: transparent;
-    background: linear-gradient(180deg, #ffffff 30%, #7474f752 100%);
+    background: linear-gradient(180deg, #ffffff 30%, #14141652 100%);
     z-index: 100;
     position: relative;
 }
@@ -13198,7 +13343,7 @@ input {
 
 .biz .NFTTools {
     border-color: transparent;
-    background: linear-gradient(180deg, #ffffff 30%, #7474f752 100%);
+    background: linear-gradient(180deg, #ffffff 30%, #14141652 100%);
 }
 
 .dark .NFTTools {
@@ -13326,10 +13471,10 @@ input {
 }
 
 .dark .InfoBox {
-    background-color: #000000;
+    /*background-color: #3b3854;
     box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);
     -webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);
-    -moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);
+    -moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);*/
 }
 
 .sepia .InfoBox {
@@ -13366,16 +13511,16 @@ input {
 }
 
 .light .InfoBoxaside {
-    background-color: #e9effc;
+    /*background-color: #e9effc;*/
 }
 
 .biz .InfoBoxaside {
-    background: linear-gradient(180deg, #ffffff 30%, #7474f752 100%);
+    background: linear-gradient(180deg, #ffffff 30%, #14141652 100%);
     border-radius: 0 0 20px 20px !important;
 }
 
 .dark .InfoBoxaside {
-    background-color: #292929;
+    /*background-color: #3b3854;*/
 }
 
 .sepia .InfoBoxaside {
@@ -13385,19 +13530,19 @@ input {
 /* Covenants Components */
 
 .light .FarmContent {
-    border-color: #ebebeb;
-    background-color: #f7fafe;
+    border-color: #f3f4f8;
+    background-color: #f3f4f8;
 }
 
 .biz .FarmContent {
-    background: linear-gradient(180deg, #ffffff 30%, #7474f752 100%);
+    background: linear-gradient(180deg, #ffffff 30%, #14141652 100%);
     border-radius: 20px;
     border: none;
 }
 
 .dark .FarmContent {
-    border-color: #000000;
-    background-color: #000000;
+    border-color: #29263e;
+    background-color: #29263e;
 }
 
 .sepia .FarmContent {
@@ -13425,8 +13570,8 @@ input {
 }
 
 .dark .FarmSetupV3 {
-    border-color: #161616;
-    background-color: #1a1a1a;
+    border-color: #29263f;
+    background-color: #403b63;
 }
 
 .sepia .FarmSetupV3 {
@@ -13442,7 +13587,7 @@ input {
 }
 
 .dark .farmInfoCurve {
-    background-color: #000000;
+    background-color: #403b63;
 }
 
 .sepia .farmInfoCurve {
@@ -13459,14 +13604,14 @@ input {
 }
 
 .biz .RoutineContent {
-    background: linear-gradient(180deg, #ffffff 30%, #7474f752 100%);
+    background: linear-gradient(180deg, #ffffff 30%, #14141652 100%);
     border-radius: 20px;
     border: none;
 }
 
 .dark .RoutineContent {
-    border: 1px solid #1a1a1a;
-    background-color: #000000;
+    border: 1px solid #29263e;
+    background-color: #29263e;
 }
 
 .sepia .RoutineContent {
@@ -13488,7 +13633,7 @@ input {
 }
 
 .dark .RoutineOperation {
-    background-color: #000000;
+    background-color: #403b63;
 }
 
 .light .generationSelectorULTRA,
@@ -13635,7 +13780,7 @@ input {
 }
 
 .biz .YourFarmingPositionsFarmingFarmingFarmingChiFarmaViveComeUnPAsha {
-    background: linear-gradient(180deg, #ffffff 30%, #7474f752 100%);
+    background: linear-gradient(180deg, #ffffff 30%, #14141652 100%);
     border-color: #e0e2e6;
 }
 
@@ -13792,7 +13937,7 @@ input {
 }
 
 .dark input[type=range]::-webkit-slider-thumb {
-    background: #7474F7;
+    background: #141416;
     box-shadow: 0px 0px 0px #ffffff;
     border: 0px solid #d9d2c2a3;
 }
@@ -13831,6 +13976,14 @@ input {
     box-shadow: 0px 0px 0px #50555C;
 }
 
+.BazarExchangeArea .SettingB{
+    width: 100%;
+}
+
+.BazarExchangeArea  .SettingBLabPerch input{
+    width: 300px;
+}
+
 .biz input[type=range]::-moz-range-track {
     box-shadow: 0px 0px 0px #50555C;
     background: #849BBD;
@@ -13855,53 +14008,53 @@ input {
 .light input[type=range]::-moz-range-thumb {
     box-shadow: 0px 0px 0px #000000;
     border: 0px solid #000000;
-    background: #7474F7;
+    background: #141416;
     box-shadow: 0px 0px 0px #50555C;
 }
 
 .biz input[type=range]::-moz-range-thumb {
     box-shadow: 0px 0px 0px #000000;
     border: 0px solid #000000;
-    background: #7474F7;
+    background: #141416;
     box-shadow: 0px 0px 0px #50555C;
 }
 
 .dark input[type=range]::-moz-range-thumb {
     box-shadow: 0px 0px 0px #ffffff;
     border: 0px solid #ffffff;
-    background: #7474F7;
+    background: #141416;
     box-shadow: 0px 0px 0px #50555C;
 }
 
 .sepia input[type=range]::-moz-range-thumb {
     box-shadow: 0px 0px 0px #ffffff;
     border: 0px solid #ffffff;
-    background: #7474F7;
+    background: #141416;
     box-shadow: 0px 0px 0px #50555C;
 }
 
 .light input[type=range]::-ms-thumb {
     box-shadow: 0px 0px 0px #000000;
     border: 0px solid #000000;
-    background: #7474F7;
+    background: #141416;
 }
 
 .biz input[type=range]::-ms-thumb {
     box-shadow: 0px 0px 0px #000000;
     border: 0px solid #000000;
-    background: #7474F7;
+    background: #141416;
 }
 
 .dark input[type=range]::-ms-thumb {
     box-shadow: 0px 0px 0px #ffffff;
     border: 0px solid #ffffff;
-    background: #7474F7;
+    background: #141416;
 }
 
 .sepia input[type=range]::-ms-thumb {
     box-shadow: 0px 0px 0px #ffffff;
     border: 0px solid #ffffff;
-    background: #7474F7;
+    background: #141416;
 }
 
 .light input[type=range]::-ms-track {

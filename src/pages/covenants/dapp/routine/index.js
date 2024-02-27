@@ -70,7 +70,7 @@ const Routines = ({selectedSubvoice}) => {
     }, [mode, account])
 
     return (<>
-        <Banners bannerA="banner1" bannerB="banner5" sizeA="35%" sizeB="41%" titleA="Earn by Executing Routines" titleB="Create Routines" linkA="https://docs.ethos.wiki/ethereansos-docs/covenants/covenants-documentation/routines/how-routines-works" linkB="https://docs.ethos.wiki/ethereansos-docs/covenants/covenants-documentation/routines" textA="Routines are purely on-chain, periodic and semi-automatic token transfer / swap operations. You can earn rewards for executing them." textB="Routines can be used for payment cycles, token inflation, investment acquisition and liquidation, and more. No coding skills required."/>
+        {/*<Banners bannerA="banner1" bannerB="banner5" sizeA="35%" sizeB="41%" titleA="Earn by Executing Routines" titleB="Create Routines" linkA="https://docs.ethos.wiki/ethereansos-docs/covenants/covenants-documentation/routines/how-routines-works" linkB="https://docs.ethos.wiki/ethereansos-docs/covenants/covenants-documentation/routines" textA="Routines are purely on-chain, periodic and semi-automatic token transfer / swap operations. You can earn rewards for executing them." textB="Routines can be used for payment cycles, token inflation, investment acquisition and liquidation, and more. No coding skills required."/>*/}
         <div className={style.CovenantsMainBox}>
             <Web3DependantList
                 provider={() => allRoutines({context, ...web3Data})}

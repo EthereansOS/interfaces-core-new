@@ -121,7 +121,7 @@ export default ({input, figureClassName, noFigure, title, defaultImage, noDotLin
     if(!noFigure) {
         var figureProperties = {}
         figureClassName && (figureProperties.className = figureClassName)
-        input && input.background_color && (figureProperties.style={backgroundColor : input.background_color})
+        input && input.background_color
         input && input.isDeck && (figureProperties.className = (figureProperties.className || '') + (figureProperties.className ? ' ' : '') + style.Deck)
         img = <figure {...figureProperties}>
             {hasBadge && <span className={style.BollinoEth}>L1</span>}

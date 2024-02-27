@@ -132,7 +132,7 @@ const Farming = ({selectedSubvoice, rewardTokenAddress}) => {
     }
 
     return (<>
-        <Banners bannerA="banner1" bannerB="banner5" sizeA="30%" sizeB="46%" titleA="Earn With Your Liquidity" titleB="Create Customizable Farming Contracts" linkA="https://docs.ethos.wiki/ethereansos-docs/covenants/covenants-documentation/farming/how-the-farming-works" linkB="https://docs.ethos.wiki/ethereansos-docs/covenants/covenants-documentation/farming" textA="EthOS farms reward you for providing liquidity to decentralized exchanges like Uniswap." textB="Covenants farms can offer any token as a reward for providing any token as liquidity to any pool on any decentralized exchange. No coding skills required."/>
+        {/*<Banners bannerA="banner1" bannerB="banner5" sizeA="30%" sizeB="46%" titleA="Earn With Your Liquidity" titleB="Create Customizable Farming Contracts" linkA="https://docs.ethos.wiki/ethereansos-docs/covenants/covenants-documentation/farming/how-the-farming-works" linkB="https://docs.ethos.wiki/ethereansos-docs/covenants/covenants-documentation/farming" textA="EthOS farms reward you for providing liquidity to decentralized exchanges like Uniswap." textB="Covenants farms can offer any token as a reward for providing any token as liquidity to any pool on any decentralized exchange. No coding skills required."/>*/}
         <div className={style.CovenantsMainBox}>
             <div className={style.FilterMenu}>
                 {mode !== 'positions' && <div>

@@ -24,9 +24,12 @@ export default ({item}) => {
   }
 
   return (
-    <div className={style.TradeMain}>
-      <Market item={item} onTokens={onTokens}/>
-      <OTC item={otcItem}/>
+    <div className={style.BazarExchangeArea}>
+      <div className={style.TradeMain}>
+        <Market item={item} onTokens={onTokens}/>
+        <OTC item={otcItem}/>
+      </div>
     </div>
+   
   )
 }

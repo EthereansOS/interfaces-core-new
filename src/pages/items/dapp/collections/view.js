@@ -37,6 +37,10 @@ const CollectionView = () => {
         {collection === null && <CircularProgress/>}
         {collection === undefined && <h1>No collection found with provided Id. Maybe wrong network?</h1>}
         {collection && <>
+          <div className={style.ItemsExploreMainTitleArea}>
+            <h2>Item Details</h2>
+            <p>Discover the most trending Collections in EthereanOS.</p>
+          </div>
           <div className={style.CollectionLeft}>
             <ViewCover item={collection}/>
             <ViewManageCollection item={collection}/>
@@ -44,8 +48,12 @@ const CollectionView = () => {
           </div>
           <div className={style.CollectionRight}>
             <ViewInfoBox collection={collection}/>
-            <SubItemsExplore collection={collection}/>
           </div>
+          <div className={style.ItemsExploreMainTitleArea}>
+            <h2>Collection Details</h2>
+            <p>Discover the most trending Collections in EthereanOS.</p>
+          </div>
+          <SubItemsExplore collection={collection}/>
         </>}
       </div>
   )

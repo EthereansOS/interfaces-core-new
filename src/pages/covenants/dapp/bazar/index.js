@@ -1,5 +1,5 @@
 import React from "react"
-
+import style from '../../../../all.module.css'
 import Trade from '../../../../components/Global/Trade'
 
 const Bazar = () => {
@@ -9,7 +9,7 @@ const Bazar = () => {
 }
 
 Bazar.menuVoice = {
-    label : 'Bazar',
+    label : 'Token Swap',
     path : '/covenants',
     index : 0
 }

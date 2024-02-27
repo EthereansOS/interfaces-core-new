@@ -18,8 +18,8 @@ const Wrap = ({voices}) => {
 
 const WrapIndex = ({}) => {
 
-    return (<>
-        <div className={style.CreatePage}>
+    return (<div className={style.SectionMinWidth}>
+        <div>
           <ul className={style.SectionSubMenuItems}>
             <li><Link to="/items">Items</Link></li>
             <li ><Link to="/items/decks">Decks</Link></li>
@@ -44,7 +44,7 @@ const WrapIndex = ({}) => {
                 <a target="_blank" href="https://docs.ethos.wiki/ethereansos-docs/organizations/organizations" className={style.ExtLinkButtonAlpha}>Learn</a>
             </div>
         </div>
-    </>)
+    </div>)
 }
 
 WrapIndex.Wrap = Wrap
