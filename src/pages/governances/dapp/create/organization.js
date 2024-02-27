@@ -1,6 +1,12 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
-import { Style, useEthosContext, useWeb3, web3Utils } from 'interfaces-core'
+import {
+  Style,
+  useEthosContext,
+  useWeb3,
+  VOID_ETHEREUM_ADDRESS,
+  web3Utils,
+} from 'interfaces-core'
 
 import { useHistory } from 'react-router-dom'
 
@@ -1072,35 +1078,18 @@ const Governance = ({ value, onChange, onNext, onPrev }) => {
   )
 }
 
-/*
-        <CircularSlider
-        width={200}
-        progressLineCap="flat"
-        dataIndex={1}
-        label="Alphabet"
-        data='[\"A\","B","C","D","E","etc..."]'
-        labelColor="#212121"
-        valueFontSize="6rem"
-        verticalOffset="1rem"
-        knobColor="#212121"
-        progressColorFrom="#ff8500"
-        progressColorTo="#a15400"
-        progressSize={8}
-        trackColor="#eeeeee"
-        trackSize={4}/>*/
-
-const Duration = ({ value, onChange }) => {
-  const context = useEthosContext()
-
+const Duration = ({ value, onChange, from }) => {
   return (
     <select
       value={value}
       onChange={(e) => onChange(parseInt(e.currentTarget.value))}>
-      {Object.entries(context.timeIntervals).map((it) => (
-        <option key={it[0]} value={it[1]}>
-          {it[0]}
-        </option>
-      ))}
+      {Object.entries(context.timeIntervals)
+        .filter((_, i) => !from || i >= parseInt(from))
+        .map((it) => (
+          <option key={it[0]} value={it[1]}>
+            {it[0]}
+          </option>
+        ))}
     </select>
   )
 }
@@ -1208,9 +1197,14 @@ const ProposalRules = ({ value, onChange, showHost, title }) => {
 }
 
 const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
+  const { account } = useWeb3()
+
   const defaultInflationPercentage = useMemo(() => 0.05)
 
   const [tokenMinterOwner, setTokenMinter] = useState(value?.tokenMinterOwner)
+  const [giveBackOwnershipSeconds, setGiveBackOwnershipSeconds] = useState(
+    value?.giveBackOwnershipSeconds
+  )
   const [inflationPercentage0, setInflationPercentage0] = useState(
     value?.inflationPercentage0 || defaultInflationPercentage
   )
@@ -1275,6 +1269,7 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
       onChange &&
       onChange({
         tokenMinterOwner,
+        giveBackOwnershipSeconds,
         inflationPercentage0,
         inflationPercentage1,
         inflationPercentage2,
@@ -1293,6 +1288,7 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
       }),
     [
       tokenMinterOwner,
+      giveBackOwnershipSeconds,
       inflationPercentage0,
       inflationPercentage1,
       inflationPercentage2,
@@ -1371,28 +1367,38 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
               borderBottom: '1px solid #e7ecf4',
             }}>
             <label className={style.CreationPageLabelF}>
-              <h6>
-                Token minter owner
-                <span
-                  className={style.CreationPageLabelFloatRight}
+              <label>
+                <h6>Give back mint permissions of the token</h6>
+                <input
+                  type="checkbox"
+                  checked={tokenMinterOwner !== undefined}
                   onClick={() =>
-                    onChange({
-                      ...value,
-                      name: getCurrentAddress(),
-                    })
-                  }>
-                  Insert your current address
-                </span>
-              </h6>
-              <p>Insert the the token minter owner address</p>
-              <input
-                type="text"
-                value={value?.name}
-                placeholder="The token minter owner address"
-                onChange={(e) =>
-                  onChange({ ...value, name: e.currentTarget.value })
-                }
-              />
+                    setTokenMinter(
+                      tokenMinterOwner !== undefined ? undefined : account
+                    )
+                  }
+                />
+              </label>
+              {tokenMinterOwner !== undefined && (
+                <>
+                  <label className={style.CreationPageLabelF}>
+                    <h6>To this address</h6>
+                    <input
+                      type="text"
+                      value={tokenMinterOwner}
+                      onChange={(e) => setTokenMinter(e.currentTarget.value)}
+                    />
+                  </label>
+                  <label className={style.CreationPageLabelF}>
+                    <h6>After</h6>
+                    <Duration
+                      value={giveBackOwnershipSeconds}
+                      onChange={setGiveBackOwnershipSeconds}
+                      from="16"
+                    />
+                  </label>
+                </>
+              )}
               {value?.error?.name && <p>{value.error.name}</p>}
             </label>
 
