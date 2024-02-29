@@ -59,7 +59,9 @@ const NameAndSymbol = ({ value, onChange, onNext, onPrev }) => {
           placeholder="Collection name"
           onChange={(e) => onChange({ ...value, name: e.currentTarget.value })}
         />
-        {value?.error?.name && <p>{value.error.name}</p>}
+        {value?.error?.name && (
+          <p className={style.ErrorMessage}>{value.error.name}</p>
+        )}
       </label>
       <label className={style.CreationPageLabelF}>
         <h6>Symbol</h6>
@@ -72,7 +74,9 @@ const NameAndSymbol = ({ value, onChange, onNext, onPrev }) => {
             onChange({ ...value, symbol: e.currentTarget.value })
           }
         />
-        {value?.error?.symbol && <p>{value.error.symbol}</p>}
+        {value?.error?.symbol && (
+          <p className={style.ErrorMessage}>{value.error.symbol}</p>
+        )}
       </label>
       <div className={style.WizardFooter}>
         <button
@@ -228,6 +232,12 @@ const Metadata = ({ value, onChange, onNext, onPrev }) => {
   }, [value, onChange])
 
   useEffect(() => {
+    if (!value) {
+      return
+    }
+
+    value.error = {}
+
     if (!value?.metadataType) {
       return
     }
@@ -244,28 +254,41 @@ const Metadata = ({ value, onChange, onNext, onPrev }) => {
       if (value.background_color == null) {
         value.background_color = background_color_default
       }
+
+      if (value?.image && value.image.includes('ipfs')) {
+        if (!new RegExp(ipfsRegex).test(value.image)) {
+          value.image = ''
+          value.error = {
+            image: 'Invalid IPFS link',
+          }
+        }
+      }
+
       setDisabled(!checkCollectionMetadata(value))
     }
   }, [value, onChange])
 
-  // FIXME
-  // useEffect(() => {
-  //   if (!value.metadata?.image) {
-  //     return
-  //   }
-  //   setTimeout(async () => {
-  //     try {
-  //       if (!(await checkCoverSize({ context }, value.metadata.image, true))) {
-  //         throw 'Cover size does not match requirements'
-  //       }
-  //     } catch (e) {
-  //       var newMetadata = { ...value.metadata }
-  //       delete newMetadata.image
-  //       alert(e.message || e)
-  //       onStateEntry('metadata', newMetadata)
-  //     }
-  //   })
-  // }, [value.metadata?.image])
+  const handleBlur = () => {
+    onChange(value) // Assicurati di aggiornare il valore dopo la validazione
+  }
+
+  useEffect(() => {
+    if (!value?.image) {
+      return
+    }
+
+    setTimeout(async () => {
+      try {
+        if (!(await checkCoverSize({ context }, value.image, true))) {
+          throw 'Cover size does not match requirements'
+        }
+      } catch (e) {
+        value.image = ''
+        alert(e.message || e)
+      }
+    })
+  }, [value, onChange])
+
   const [disabled, setDisabled] = useState()
   const [selectedImage, setSelectedImage] = useState(null)
   const [triggerTextInput, setTriggerTextInput] = useState(false)
@@ -325,7 +348,9 @@ const Metadata = ({ value, onChange, onNext, onPrev }) => {
               mandatory="true"
               placeholder="Describe your Collection"
             />
-            {value?.error?.description && <p>{value.error.description}</p>}
+            {value?.error?.description && (
+              <p className={style.ErrorMessage}>{value.error.description}</p>
+            )}
           </label>
 
           <div className={style.CreationPageLabelFDivide}>
@@ -383,14 +408,17 @@ const Metadata = ({ value, onChange, onNext, onPrev }) => {
               {triggerTextInput && (
                 <input
                   type="link"
-                  value={value?.image}
+                  value={value?.image ?? ''}
                   placeholder="Collection Logo URL"
                   onChange={(e) =>
                     onChange({ ...value, image: e.currentTarget.value })
                   }
+                  onBlur={handleBlur}
                 />
               )}
-              {value?.error?.image && <p>{value.error.image}</p>}
+              {value?.error?.image && (
+                <p className={style.ErrorMessage}>{value.error.image}</p>
+              )}
             </label>
             <label className={style.CreationPageLabelF}>
               <h6>Website</h6>
@@ -404,7 +432,9 @@ const Metadata = ({ value, onChange, onNext, onPrev }) => {
                 }
               />
 
-              {value?.error?.external_url && <p>{value.error.external_url}</p>}
+              {value?.error?.external_url && (
+                <p className={style.ErrorMessage}>{value.error.external_url}</p>
+              )}
             </label>
 
             <label className={style.CreationPageLabelF}>
@@ -423,7 +453,9 @@ const Metadata = ({ value, onChange, onNext, onPrev }) => {
               />
 
               {value?.error?.discussion_url && (
-                <p>{value.error.discussion_url}</p>
+                <p className={style.ErrorMessage}>
+                  {value.error.discussion_url}
+                </p>
               )}
             </label>
 
@@ -439,7 +471,9 @@ const Metadata = ({ value, onChange, onNext, onPrev }) => {
                 }
               />
 
-              {value?.error?.github_url && <p>{value.error.github_url}</p>}
+              {value?.error?.github_url && (
+                <p className={style.ErrorMessage}>{value.error.github_url}</p>
+              )}
             </label>
 
             <label className={style.CreationPageLabelF}>
@@ -459,7 +493,9 @@ const Metadata = ({ value, onChange, onNext, onPrev }) => {
                 value={value?.background_color ?? background_color_default}
               />
               {value?.error?.background_color && (
-                <p>{value.error.background_color}</p>
+                <p className={style.ErrorMessage}>
+                  {value.error.background_color}
+                </p>
               )}
             </label>
           </div>
@@ -490,11 +526,12 @@ const ColorPicker = (props) => {
 }
 
 const Confirmation = ({ value, onChange, onNext, onPrev, state }) => {
+  const [isMetadataListOdd, setIsMetadataListOdd] = useState(true)
+
   useEffect(
     () =>
       setTimeout(async () => {
-        console.log(state)
-        if (!value) {
+        if (!value || !state) {
           return
         }
         var error
@@ -503,6 +540,31 @@ const Confirmation = ({ value, onChange, onNext, onPrev, state }) => {
           onChange({ ...value, error })
       }),
     [value]
+  )
+
+  useEffect(
+    () =>
+      setTimeout(async () => {
+        console.log(state)
+        setIsMetadataListOdd(true)
+
+        if (!state || !state.metadata) {
+          return
+        }
+
+        if (state.metadata.metadataType == 'metadata') {
+          const excludedKeys = ['metadataType', 'image', 'description']
+
+          let count = 0
+          for (const key in state.metadata) {
+            if (!excludedKeys.includes(key)) {
+              count++
+            }
+          }
+          setIsMetadataListOdd(count % 2 !== 0)
+        }
+      }),
+    [state]
   )
 
   return (
@@ -536,12 +598,96 @@ const Confirmation = ({ value, onChange, onNext, onPrev, state }) => {
         style={{ marginTop: '30px', marginBottom: '30px' }}>
         <label className={style.CreationPageLabelF}>
           <h6>Name</h6>
-          <p></p>
+          <p>{state.nameandsymbol.name}</p>
         </label>
         <label className={style.CreationPageLabelF}>
           <h6>Symbol</h6>
-          <p></p>
+          <p>{state.nameandsymbol.symbol}</p>
         </label>
+        <hr className={style.hrConfirmation}></hr>
+        <label className={style.CreationPageLabelF}>
+          <h6>Mint Host</h6>
+          <p>{state.hostSection.host}</p>
+        </label>
+        <label className={style.CreationPageLabelF}>
+          <h6>Metadata Host</h6>
+          <p>{state.hostSection.metadataHost}</p>
+        </label>
+        <hr className={style.hrConfirmation}></hr>
+
+        {state.metadata.metadataType === 'metadataLink' && (
+          <>
+            <label className={style.CreationPageLabelF}>
+              <h6>Link</h6>
+              <p>{state.metadata.metadataLink}</p>
+            </label>
+          </>
+        )}
+
+        {state.metadata.metadataType === 'metadata' && (
+          <>
+            <label
+              className={style.CreationPageLabelF}
+              style={{ width: '100%', textAlign: 'left' }}>
+              <h6>Logo</h6>
+              <span style={{ width: '100%', paddingTop: '10px' }}>
+                <img
+                  style={{ paddingTop: '10px' }}
+                  src={state.metadata.image}
+                  alt="Collection's logo"
+                  width="150"
+                  height="auto"
+                />
+              </span>
+            </label>
+            <label
+              className={style.CreationPageLabelF}
+              style={{ width: '100%' }}>
+              <h6>Description</h6>
+              <span style={{ width: '100%' }}>
+                <p>{state.metadata.description}</p>
+              </span>
+            </label>
+            <div className={style.CreationPageLabelFDivide}>
+              {state.metadata.external_url && (
+                <>
+                  <label className={style.CreationPageLabelF}>
+                    <h6>Website</h6>
+                    <p>{state.metadata.external_url}</p>
+                  </label>
+                </>
+              )}
+              {state.metadata.discussion_url && (
+                <>
+                  <label className={style.CreationPageLabelF}>
+                    <h6>Discussion Link</h6>
+                    <p>{state.metadata.discussion_url}</p>
+                  </label>
+                </>
+              )}
+              {state.metadata.github_url && (
+                <>
+                  <label className={style.CreationPageLabelF}>
+                    <h6>Github Link</h6>
+                    <p>{state.metadata.github_url}</p>
+                  </label>
+                </>
+              )}
+              <label className={style.CreationPageLabelF}>
+                <h6>Background Color</h6>
+                <p>{state.metadata.background_color}</p>
+              </label>
+              {isMetadataListOdd > 0 && (
+                <>
+                  <label className={style.CreationPageLabelF}>
+                    <h6></h6>
+                    <p></p>
+                  </label>
+                </>
+              )}
+            </div>
+          </>
+        )}
       </div>
 
       <div className={style.WizardFooter}>
