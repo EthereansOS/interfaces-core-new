@@ -1,8 +1,8 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 
 import { Link } from 'react-router-dom'
 import { useEthosContext, useWeb3 } from 'interfaces-core'
-import {all} from '../../../../logic/organization'
+import { all } from '../../../../logic/organization'
 import Web3DependantList from '../../../../components/Global/Web3DependantList'
 import ExploreOrganizations from '../../../../components/Organizations/ExploreOrganizations'
 
@@ -10,9 +10,8 @@ import style from '../../../../all.module.css'
 import Banners from '../../../../components/Global/banners/index.js'
 
 const SubDAOsList = ({}) => {
-
   const context = useEthosContext()
-  const {getGlobalContract, newContract, chainId} = useWeb3()
+  const { getGlobalContract, newContract, chainId } = useWeb3()
 
   const [modal, setModal] = useState(true)
 
@@ -38,14 +37,14 @@ const SubDAOsList = ({}) => {
         provider={() => all({context, getGlobalContract, newContract, chainId, factoryOfFactories : getGlobalContract('factoryOfFactories')}) }
       />
     </div>
-  </div>)
+  )
 }
 
 SubDAOsList.menuVoice = {
-  label : 'Organizations',
-  path : '/organizations',
-  contextualRequire : () => require.context('./', false, /.js$/),
-  index : 0,
+  label: 'Organizations',
+  path: '/organizations',
+  contextualRequire: () => require.context('./', false, /.js$/),
+  index: 0,
 }
 
 export default SubDAOsList

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
 import { useEthosContext, useWeb3 } from 'interfaces-core'
-import {all} from '../../../../logic/delegation'
+import { all } from '../../../../logic/delegation'
 import Web3DependantList from '../../../../components/Global/Web3DependantList'
 import ExploreOrganizations from '../../../../components/Organizations/ExploreOrganizations'
 import Banners from '../../../../components/Global/banners/index.js'
@@ -9,10 +9,11 @@ import { Link } from 'react-router-dom'
 
 import style from '../../../../all.module.css'
 
-const ExploreDelegations = ({elements}) => <ExploreOrganizations elements={elements} type='delegations'/>
+const ExploreDelegations = ({ elements }) => (
+  <ExploreOrganizations elements={elements} type="delegations" />
+)
 
 const DelegationsList = ({ mine, onList }) => {
-
   const [list, setList] = useState()
 
   useEffect(() => {
@@ -20,7 +21,8 @@ const DelegationsList = ({ mine, onList }) => {
   }, [list])
 
   const context = useEthosContext()
-  const {getGlobalContract, newContract, chainId, account, dualChainId} = useWeb3()
+  const { getGlobalContract, newContract, chainId, account, dualChainId } =
+    useWeb3()
 
   return (<div className={style.SectionMinWidth}>
   {/*<Banners bannerA="banner1" bannerB="banner2" sizeA="36%" sizeB="54%" titleA="Rule Together" titleB="Be a Player In the Game of Organizations" linkA="https://docs.ethos.wiki/ethereansos-docs/guilds/guilds-documentation/delegations/how-delegations-work" linkB="https://docs.ethos.wiki/ethereansos-docs/guilds/guilds-documentation/delegations" textA="Delegations are independent political parties that compete with each other for grant funding from one or more EthOS Organizations." textB="Create and lead a Delegation. Rally the support of an EthOS Organization’s token holders to win grant funding. Use that funding to govern your Delegation’s political economy with your supporters."/>*/}
@@ -53,10 +55,10 @@ const DelegationsList = ({ mine, onList }) => {
 }
 
 DelegationsList.menuVoice = {
-  label : 'Delegations',
-  path : '/organizations/delegations',
-  contextualRequire : () => require.context('./', false, /.js$/),
-  index : 1
+  label: 'Delegations',
+  path: '/organizations/delegations',
+  contextualRequire: () => require.context('./', false, /.js$/),
+  index: 1,
 }
 
 export default DelegationsList

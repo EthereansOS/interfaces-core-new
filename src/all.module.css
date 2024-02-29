@@ -15193,3 +15193,13 @@ input {
 .ColorPickerContainer>input[type='text'] {
     width: 80% !important;
 }
+
+.hrConfirmation {
+    border-color: transparent;
+    border-bottom: 1px solid #e7ecf4;
+    border-radius: 0px;
+}
+
+.ErrorMessage {
+    color: #ec3939 !important;
+}
