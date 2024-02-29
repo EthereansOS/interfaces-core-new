@@ -32,11 +32,11 @@ FactoriesMain.addToPlugin =
       })
 
       addElement('appMenu', {
-        name: 'Factories',
-        label: 'Factories',
+        name: 'Launch Factory',
+        label: 'Launch Factory',
         link: '/factories',
         index,
-        image : `${process.env.PUBLIC_URL}/img/factories.png`,
+        image : `${process.env.PUBLIC_URL}/img/launchpad.png`,
       })
     }
 

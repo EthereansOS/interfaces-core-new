@@ -73,25 +73,44 @@ export default props => {
     var steps = [
         [function () {
             return <>
+                <div className={style.WizardHeader}>
+                    <h3>
+                    Create a new Routine <span>step 1 of 5</span>
+                    </h3>
+                    <div className={style.WizardHeaderDescription}>
+                    Routine are fully decentralized DAOs with modular economic
+                    components
+                    </div>
+                    <div className={style.WizardProgress}>
+                    <div
+                        className={style.WizardProgressBar}
+                        style={{
+                        width: ((100 / 5) * 1 > 0 ? (100 / 5) * 1 : 1) + '%',
+                        }}></div>
+                    </div>
+                </div>
+
+
+
+               <div className={style.CreationPageLabel}>
                 <div className={style.FancyExplanationCreate}>
-                    <h6>Basic Info</h6>
-                    <div className={style.proggressCreate}>
-                        <div className={style.proggressCreatePerch} style={{width: "25%"}}>Step 1 of 5</div>
-                    </div>
+                    <h2>Basic Info</h2>
                 </div>
-                <div>
-                    <div className={style.CreationPageLabelF}>
-                        <h6>Routine Title</h6>
-                        <input  placeholder="Title" onChange={e => setEntryName(e.currentTarget.value)} value={entryName} />
-                    </div>
-                    <div className={style.CreationPageLabelF}>
-                        <h6>Blocks Interval</h6>
-                        <select className={style.CreationSelectW}  onChange={e => setBlockInterval(e.currentTarget.value)} value={blockInterval}>
-                            {Object.entries(context.blockIntervals).map(it => <option key={it[0]} value={it[1]}>{it[0]}</option>)}
-                        </select>
-                        <p>The minimum amount of time that must pass between each execution</p>
-                    </div>
-                </div>
+                <label className={style.CreationPageLabelF}>
+                    <h6>Routine Title*</h6>
+                    <p>Choose an unique rou for your ogranization</p>
+                    <input placeholder="Title" onChange={e => setEntryName(e.currentTarget.value)} value={entryName} />
+               
+                </label>
+                <label className={style.CreationPageLabelF}>
+                    <h6>Description*</h6>
+                    <p>Enter the description of your Organization</p>
+                    <select className={style.CreationSelectW}  onChange={e => setBlockInterval(e.currentTarget.value)} value={blockInterval}>
+                        {Object.entries(context.blockIntervals).map(it => <option key={it[0]} value={it[1]}>{it[0]}</option>)}
+                    </select>
+                    <p>The minimum amount of time that must pass between each execution</p>
+                </label>
+            </div>
             </>
         },
         function () {

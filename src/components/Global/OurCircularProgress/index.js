@@ -6,12 +6,12 @@ export default ({}) => {
     return (
         <><div className={style.LoaderA}>
             <div className={style.loadingio_spinner_disk_hn1zpmja0x6}><div className={style.ldio_f2vadqclpalj}>
-                    <div><div></div><div></div></div>
+                    <img className={style.animateFlicker} src={`${process.env.PUBLIC_URL}/img/loading-icon.png`}></img>
                 </div>
             </div>
         </div>
         <div className={style.LoaderB}>
-            <img src={`${process.env.PUBLIC_URL}/img/miniloader.gif`}></img>
+            <img src={`${process.env.PUBLIC_URL}/img/loading-icon.png`}></img>
         </div>
         </>)
 }

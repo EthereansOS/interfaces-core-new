@@ -553,12 +553,48 @@ input::-webkit-scrollbar {
     transform-origin: 29.139999999999997px 40.419999999999995px;
 }
 
+@keyframes flickerAnimation {
+    0%   { opacity:1; }
+    50%  { opacity:0; }
+    100% { opacity:1; }
+  }
+  @-o-keyframes flickerAnimation{
+    0%   { opacity:1; }
+    50%  { opacity:0; }
+    100% { opacity:1; }
+  }
+  @-moz-keyframes flickerAnimation{
+    0%   { opacity:1; }
+    50%  { opacity:0; }
+    100% { opacity:1; }
+  }
+  @-webkit-keyframes flickerAnimation{
+    0%   { opacity:1; }
+    50%  { opacity:0; }
+    100% { opacity:1; }
+  }
+  .animateFlicker {
+     -webkit-animation: flickerAnimation 2s infinite;
+     -moz-animation: flickerAnimation 2s infinite;
+     -o-animation: flickerAnimation 2s infinite;
+      animation: flickerAnimation 2s infinite;
+  }
+
+.light .animateFlicker{
+    filter: invert(1);
+}
+
+.light .TradeMarketBoxSwitch>svg{
+    fill: #141416;
+}
+
 .loadingio_spinner_disk_hn1zpmja0x6 {
     width: 48px;
-    height: 48px;
+    height: 51px;
     display: inline-block;
     overflow: hidden;
     background: none;
+    margin-top: 20%;
 }
 
 .ldio_f2vadqclpalj {
@@ -2809,6 +2845,7 @@ input::-webkit-scrollbar {
     width: 70px;
     max-height: 130px;
     vertical-align: middle;
+    border-radius: 10px;
 }
 
 .FarmContentTitle aside {
@@ -4421,11 +4458,29 @@ input[type=range]::-ms-thumb {
 
 /* Items Components*/
 .CollectionSingle {
-    width: 332px;
+    width: 280px;
     display: inline-block;
     border-radius: 20px;
     overflow: hidden;
     margin: 10px;
+    display: block;
+    width: 32%;
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+    background: transparent;
+    z-index: 1000000 !important;
+    position: absolute;
+    z-index: 100000;
+    width: 62%;
+    margin-left: 6px;
+    right: -48px;
+    border: 0px;
+    background: transparent !important;
+    box-shadow: none!important;
+    overflow: hidden !important;
+    padding-left: 0px;
+
 }
 
 .CollectionSingle>figure {
@@ -4486,11 +4541,15 @@ input[type=range]::-ms-thumb {
 }
 
 .ItemSingle {
-    width: 332px;
+    width: 280px;
     display: inline-block;
     border-radius: 20px;
     overflow: hidden;
     margin: 10px;
+   
+    flex: 1 0 22%;
+    margin: 30px;
+    background-color: blue;
 }
 
 .ItemSingle>a{
@@ -4498,6 +4557,7 @@ input[type=range]::-ms-thumb {
     left: 0px;
     top: 0px;
     display: block;
+    min-height: 280px;
 }
 .ItemSingle>a>.ItemTitleBottomZone{
     color: #fff;
@@ -4540,13 +4600,13 @@ input[type=range]::-ms-thumb {
 .ItemSingle figure {
     display: block;
     width: 100%;
-    height: 350px;
+    height: 280px;
     overflow: hidden;
     position: relative;
 }
 
 .dark .ItemSingle figure {
-    background-color: #3b3854;
+    background-color: transparent;
 }
 
 .ItemTitleTopZoneLikeButton{
@@ -4656,7 +4716,7 @@ input[type=range]::-ms-thumb {
     position: relative;
     top: -5px;
     padding-top: 0.65rem;
-    padding-bottom: 0.65rem;
+    padding-bottom: 0.35rem;
     padding-left: 1.5rem;
     padding-right: 1.5rem;
     border-radius: 9999px;
@@ -4851,6 +4911,16 @@ input[type=range]::-ms-thumb {
     text-align: center;
 }
 
+.ItemsExploreMain {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.ItemsExploreMain>a {
+    flex: 1 0 21%;
+    margin: 5px;
+}
+
 .ViewBasics {
     width: 100%;
     display: inline-block;
@@ -4862,13 +4932,14 @@ input[type=range]::-ms-thumb {
 .ViewBasics a {
     border: 2px solid;
     border-radius: 30px;
-    display: inline-block;
     width: 80px;
     margin: 5px;
     font-size: 12px;
     padding: 12px 2px!important;
     text-align: center;
     cursor: pointer;
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .ViewBasics h5 {
@@ -4930,13 +5001,14 @@ input[type=range]::-ms-thumb {
     position: relative;
     background-color: #fff;
     padding: 20px;
-    border-radius: 10px;
+    border-radius: 30px;
 }
 
 .ICViewCover img {
     display: block;
     width: 100%;
     height: 100%;
+    border-radius: 20px;
 }
 
 .ViewDescriptionL {
@@ -5417,6 +5489,7 @@ input[type=range]::-ms-thumb {
     width: 50px;
     height: 50px;
     display: inline-block;
+    border-radius: 6px;
 }
 
 .GovCardHeadDelegation span {
@@ -6660,6 +6733,7 @@ input[type=range]::-ms-thumb {
     width: 100%;
     height: 100%;
     padding: 20px;
+    border-radius: 30px;
 }
 
 .OrgHeadlineSide {
@@ -7156,7 +7230,7 @@ input[type=range]::-ms-thumb {
 }
 
 .VotingPowersObject {
-    width: 85px;
+    width: 100%;
     min-height: 85px;
     display: inline-block;
     margin: 5px;
@@ -10513,123 +10587,123 @@ min-width: auto
     background-color: #525252;
 }
 
-.sepia .FarmProtocolFee {
-    background-color: #eee8d59c;
-}
+    .sepia .FarmProtocolFee {
+        background-color: #eee8d59c;
+    }
 
-.CovenantsMainBox{
-    width: 100%;
-}
+    .CovenantsMainBox{
+        width: 100%;
+    }
 
-.dark .NoElementsWrapper polyline{
-    color: #fff;
-    fill:#fff;
-}
+    .dark .NoElementsWrapper polyline{
+        color: #fff;
+        fill:#fff;
+    }
 
-.dark .NoElementsWrapper{
-    margin-top: 20px;
-}
+    .dark .NoElementsWrapper{
+        margin-top: 20px;
+    }
 
-.NoElementsLabel{
-    font-size: 20px;
-    padding-top: 20px;
-    padding-bottom: 30px;
-}
+    .NoElementsLabel{
+        font-size: 20px;
+        padding-top: 20px;
+        padding-bottom: 30px;
+    }
 
-.light .SettingB {
-    background-color: #ffffff;
-}
+    .light .SettingB {
+        background-color: #ffffff;
+    }
 
-.biz .SettingB {
-    background-color: #ffffff;
-}
+    .biz .SettingB {
+        background-color: #ffffff;
+    }
 
-.dark .SettingB {
-    background-color: #29263f;
-}
+    .dark .SettingB {
+        background-color: #29263f;
+    }
 
-.sepia .SettingB {
-    background-color: #d9d2c2a3;
-}
+    .sepia .SettingB {
+        background-color: #d9d2c2a3;
+    }
 
-.light .SettingFB {
-    background-color: #ffffff;
-}
+    .light .SettingFB {
+        background-color: #ffffff;
+    }
 
-.biz .SettingFB {
-    background-color: #ffffff;
-}
+    .biz .SettingFB {
+        background-color: #ffffff;
+    }
 
-.dark .SettingFB {
-    background-color: #000000;
-}
+    .dark .SettingFB {
+        background-color: #000000;
+    }
 
-.sepia .SettingFB {
-    background-color: #d9d2c2a3;
-}
+    .sepia .SettingFB {
+        background-color: #d9d2c2a3;
+    }
 
-.light .Lockedfordays {
-    background-color: #e9effc;
-}
+    .light .Lockedfordays {
+        background-color: #e9effc;
+    }
 
-.biz .Lockedfordays {
-    background-color: #e9effc;
-}
+    .biz .Lockedfordays {
+        background-color: #e9effc;
+    }
 
-.dark .Lockedfordays {
-    background-color: #000000;
-}
+    .dark .Lockedfordays {
+        background-color: #000000;
+    }
 
-.light .Cart {
-    background-color: rgba(255, 255, 255, 0.829);
-    -webkit-backdrop-filter: blur(6px);
-    backdrop-filter: blur(6px);
-    border: 1px solid #f0f0f0;
-}
+    .light .Cart {
+        background-color: rgba(255, 255, 255, 0.829);
+        -webkit-backdrop-filter: blur(6px);
+        backdrop-filter: blur(6px);
+        border: 1px solid #f0f0f0;
+    }
 
-.biz .Cart {
-    background: linear-gradient(0deg, #ffffff 50%, #bfc0ea 100%);
-    border: 1px solid #a7a7a7;
-}
+    .biz .Cart {
+        background: linear-gradient(0deg, #ffffff 50%, #bfc0ea 100%);
+        border: 1px solid #a7a7a7;
+    }
 
-.dark .Cart {
-    background-color: rgba(0, 0, 0, 0.829);
-    -webkit-backdrop-filter: blur(6px);
-    backdrop-filter: blur(6px);
-    border: 1px solid #2e2e2e;
-}
+    .dark .Cart {
+        background-color: rgba(0, 0, 0, 0.829);
+        -webkit-backdrop-filter: blur(6px);
+        backdrop-filter: blur(6px);
+        border: 1px solid #2e2e2e;
+    }
 
-.sepia .Cart {
-    background-color: #d9d2c280;
-    -webkit-backdrop-filter: blur(6px);
-    backdrop-filter: blur(6px);
-    border: 1px solid #d9d2c280;
-}
+    .sepia .Cart {
+        background-color: #d9d2c280;
+        -webkit-backdrop-filter: blur(6px);
+        backdrop-filter: blur(6px);
+        border: 1px solid #d9d2c280;
+    }
 
-.matrix .Cart {
-    background-color: #000;
-}
+    .matrix .Cart {
+        background-color: #000;
+    }
 
 
-.light .RoundedButton {
-    background-color: #849bbd;
-    color: #ffffff;
-}
+    .light .RoundedButton {
+        background-color: #849bbd;
+        color: #ffffff;
+    }
 
-.biz .RoundedButton {
-    background-color: #849bbd;
-    color: #ffffff;
-}
+    .biz .RoundedButton {
+        background-color: #849bbd;
+        color: #ffffff;
+    }
 
-.dark .RoundedButton {
-    background-color: #2e2e2e;
-    color: #ffffff;
-}
+    .dark .RoundedButton {
+        background-color: #2e2e2e;
+        color: #ffffff;
+    }
 
-.sepia .RoundedButton {
-    background-color: #5E594E;
-    color: #ffffff;
-}
+    .sepia .RoundedButton {
+        background-color: #5E594E;
+        color: #ffffff;
+    }
 
 .light .SettingBLabPerch input {
     background-color: #e9effc;
@@ -11046,11 +11120,11 @@ input {
 }
 
 .light .TradeMarketToken {
-    background-color: #ffffff;
-    border-color: #ffffff;
+    background-color: #eaebf3;
+    border-color: #eaebf3;
     padding: 0px;
     margin: 0px;
-    margin-top: 4px;
+    margin-top: 4px;  
 }
 
 .biz .TradeMarketToken {
@@ -12288,7 +12362,7 @@ input {
 }
 
 .dark .DelegationWrapBox {
-    background-color: #383c42;
+    background-color: #29263e;
 }
 
 .sepia .DelegationWrapBox {
@@ -12434,7 +12508,7 @@ input {
 }
 
 .dark .Proposal {
-    background-color: #383c42;
+    background-color: #29263e;
 }
 
 .sepia .Proposal {
@@ -12527,7 +12601,7 @@ input {
 }
 
 .dark .ProposalOpen {
-    border-color: #000000;
+    border-color: #403b63;
 }
 
 .light .ProposalOpen .Upshots {
@@ -12539,7 +12613,7 @@ input {
 }
 
 .dark .ProposalOpen .Upshots {
-    background-color: #000;
+    background-color: #403b63;
 }
 
 .light .SurveylessOpenCardSelectionSingleOpenStaked {
@@ -12551,7 +12625,7 @@ input {
 }
 
 .dark .SurveylessOpenCardSelectionSingleOpenStaked {
-    background-color: #000;
+    background-color: #403b63;
 }
 
 .light .MultiVoteBox {
@@ -12579,7 +12653,7 @@ input {
 }
 
 .dark .Vote {
-    background-color: #383c42;
+    background-color: #403b63;
 }
 
 .light .ModalBoxGov {
@@ -12706,7 +12780,7 @@ input {
 }
 
 .dark .Rule {
-    background-color: #383c42;
+    background-color: #29263e;
 }
 
 .sepia .Rule {
@@ -13136,7 +13210,7 @@ input {
 }
 
 .dark .VotingPowersAmount {
-    background-color: #292929;
+    background-color: #29263e;
 }
 
 .sepia .VotingPowersAmount {
@@ -13228,7 +13302,7 @@ input {
 }
 
 .light .CollectionSingle .CollectionFolder {
-    background-color: #ffffff;
+    background-color: transparent;
 }
 
 .biz .CollectionSingle .CollectionFolder {
@@ -13236,7 +13310,7 @@ input {
 }
 
 .dark .CollectionSingle .CollectionFolder {
-    background-color: #3b3854;
+    background-color: transparent;
 }
 
 .sepia .CollectionSingle .CollectionFolder {
@@ -13303,7 +13377,7 @@ input {
 }
 
  .ItemSingle .ItemTitle h6{
-    font-size: 16px;
+    font-size: 13px;
     font-weight: 200;
 }
 
@@ -13435,9 +13509,11 @@ input {
 .biz .ICViewCover {}
 
 .dark .ICViewCover {
-    box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);
-    -webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);
-    -moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);
+    background-color: #403b63;
+}
+
+.DetailItemAddButtonsGroup>a{
+    display: inline-block;
 }
 
 .light .ViewDescriptionL {

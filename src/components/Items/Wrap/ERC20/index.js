@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-
+import style from '../../../../all.module.css'
 import TokenInputRegular from '../../../Global/TokenInputRegular'
 import { getNetworkElement, useEthosContext, useWeb3, VOID_ETHEREUM_ADDRESS } from 'interfaces-core'
 import RegularModal from '../../../Global/RegularModal'
@@ -32,12 +32,18 @@ export default ({token, onSuccess}) => {
 
   return (
     <div>
-      <p>Wrap {token ? token.symbol : 'ERC-20 Tokens into Items'}</p>
-      {false && success && <RegularModal close={() => setSuccess(null)}>
-          <WrapSuccess success={success}/>
-        </RegularModal>}
-      <TokenInputRegular selected={data?.token} tokens={token ? [token] : undefined} onElement={onElement} onlySelections={['ERC-20', 'Items V1']}/>
-      {data && data.token && <ActionAWeb3Buttons onSuccess={transaction => void(setSuccess(transaction), onSuccess && onSuccess())} token={data.token} other={w20} balance={data.balance} value={data.value} buttonText="Wrap" noApproveNeeded={data.token.address === VOID_ETHEREUM_ADDRESS} onClick={() => wrapERC20({web3}, data.token, data.balance, data.value, w20)}/>}
-    </div>
+        <div className={style.CreationPageLabel}>
+          <div className={style.FancyExplanationCreate}>
+              <h2>Wrap ERC-20 Tokens into Items</h2>
+          </div>
+          <label className={style.CreationPageLabelF}>
+              {false && success && <RegularModal close={() => setSuccess(null)}>
+                <WrapSuccess success={success}/>
+              </RegularModal>}
+              <TokenInputRegular selected={data?.token} tokens={token ? [token] : undefined} onElement={onElement} onlySelections={['ERC-20', 'Items V1']}/>
+              {data && data.token && <ActionAWeb3Buttons onSuccess={transaction => void(setSuccess(transaction), onSuccess && onSuccess())} token={data.token} other={w20} balance={data.balance} value={data.value} buttonText="Wrap" noApproveNeeded={data.token.address === VOID_ETHEREUM_ADDRESS} onClick={() => wrapERC20({web3}, data.token, data.balance, data.value, w20)}/>}
+          </label>
+        </div>
+     </div>
   )
 }
