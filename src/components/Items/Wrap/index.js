@@ -48,5 +48,6 @@ export default ({item}) => {
 
     return <div className={style.WrapBoxItem}>
         <Component {...{token, nftType : item.wrapType}}/>
+   
     </div>
 }

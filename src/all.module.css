@@ -2345,7 +2345,7 @@ input::-webkit-scrollbar {
     border: 1px solid #e0e2e6;
     border-radius: 12px;
     vertical-align: middle;
-    min-height: 100px;
+    min-height: 180px;
 }
 
 .CreateBoxDesc h6 {
@@ -2556,7 +2556,7 @@ input::-webkit-scrollbar {
 }
 
 .CreationSelectW {
-    width: 100px;
+    width: 200px;
     display: inline-block;
     margin: 10px auto;
     border: none;
@@ -3948,7 +3948,9 @@ input[type=range]::-ms-thumb {
 }
 
 .FancyExplanationCreate a {
-    text-decoration: underline !important;
+    text-decoration: none !important;
+    padding: 10px 20px 10px 20px;
+    margin-right: 10px;
 }
 
 .generationSelectorULTRA {
@@ -4452,7 +4454,7 @@ input[type=range]::-ms-thumb {
     color: #ffffff;
     font-size: 20px;
     line-height: 2;
-    border-radius: 50%;
+    border-radius: 10px;
     font-weight: bold;
 }
 
@@ -5325,6 +5327,9 @@ input[type=range]::-ms-thumb {
     vertical-align: top;
     padding: 10px 30px;
 }
+.mtop30{
+    margin-top: 30px;
+}
 
 .ViewDescriptionD {
     width: 420px;
@@ -5918,8 +5923,14 @@ input[type=range]::-ms-thumb {
     padding: 30px;
     text-align: center;
     display: inline-block;
-    margin: 40px auto;
+    margin: 0px auto;
     border-radius: 20px;
+    padding-bottom: 0px;
+    margin-bottom: 0px;
+}
+
+.RoutineSuccessTitle{
+    margin-top: 20px;
 }
 
 .AndNowBox h6 {
@@ -7378,10 +7389,10 @@ input[type=range]::-ms-thumb {
 }
 
 .TokenObject figure {
-    width: 80px !important;
-    height: 80px !important;
+    width: 30px !important;
+    height: 71px !important;
     vertical-align: middle !important;
-    margin-top: 10px !important
+    margin-top: 10px !important;
 }
 
 
@@ -8138,7 +8149,7 @@ input[type=range]::-ms-thumb {
     border-radius: 8px;
     border: none !important;
     cursor: pointer;
-    background-color: #141416;
+    background-color: #f09243;
     color: #ffffff;
     font-weight: bold;
 }
@@ -9665,10 +9676,10 @@ input[type=range]::-ms-thumb {
 }
 
 .dark .medium {
-    background-color: #1b1b1b;
-    box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);
-    -webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);
-    -moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);
+    background-color: rgb(40,38,61);
+    box-shadow:none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
 }
 
 .sepia .medium {
@@ -10006,8 +10017,8 @@ min-width: auto
 }
 
 .dark .BackButton {
-    background-color: #525252;
-    color: #6e6e6e;
+    background-color: #3A3854;
+    color: #ffffff;
 }
 
 .matrix .BackButton {
@@ -10064,10 +10075,11 @@ min-width: auto
 }
 
 .dark .ModalBack {
-    background: linear-gradient(135deg, #655dfff5, #1b1b1b48 80%);
+    background: #35324c;
     -webkit-backdrop-filter: blur(6px);
     backdrop-filter: blur(6px);
     z-index: 10000;
+    border-radius: 10px;
 }
 
 .sepia .ModalBack {
@@ -10696,7 +10708,7 @@ min-width: auto
     }
 
     .dark .RoundedButton {
-        background-color: #2e2e2e;
+        background-color: #29263f;
         color: #ffffff;
     }
 
@@ -10872,7 +10884,7 @@ min-width: auto
 }
 
 .dark .CreationSelect {
-    background-color: #525252;
+    background-color: #29263e;
     color: #ffffff;
 }
 
@@ -10898,7 +10910,7 @@ min-width: auto
 
 .dark .CreationSelectW,
 .dark .UniV3SelectPerch select {
-    background-color: #000000;
+    background-color: #29263f;
     color: #ffffff;
 }
 
@@ -11102,6 +11114,11 @@ input {
     background-color: #e9effc;
 }
 
+.SmallBoxWidth{
+    width: 700px;
+    margin:0 auto;
+}
+
 
 .light .OperationsTrigger .SettingFB {
     background-color: #f7fafe;
@@ -11134,8 +11151,8 @@ input {
 }
 
 .dark .TradeMarketToken {
-    background-color: #403b63;
-    border-color: #403b63;
+    background-color: #3b3854;
+    border-color: #3b3854;
 }
 
 .dark .BazarExchangeArea .TradeMarketToken{
@@ -11492,7 +11509,7 @@ input {
 }
 
 .dark .TokensSelector {
-    background-color: #000000;
+    background-color: #29263e;
 }
 
 .sepia .TokensSelector {
@@ -11602,7 +11619,8 @@ input {
 
 .light .TokensSelectorCategories input {
     color: #ffffff;
-    background-color: #525252;
+    background-color: #141416;
+    border: 0px;
 }
 
 .biz .TokensSelectorCategories input {
@@ -11919,6 +11937,7 @@ input {
     -moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);*/
     display: block;
     padding-bottom: 10px;
+    padding-top: 10px;
 }
 
 .sepia .DappSubMenu,
@@ -12421,7 +12440,7 @@ input {
 }
 
 .dark .AndNowBox {
-    background-color: #161616;
+    background-color: #3b3854;
     border-color: #e0e2e6;
 }
 
@@ -12569,7 +12588,10 @@ input {
 }
 
 .dark .SuccessMessage {
-    background-color: #99e9da;
+    background-color: #29263e;
+    color: #fff;
+    z-index: 100000000;
+    position: absolute;
 }
 
 .sepia .SuccessMessage {
@@ -13701,7 +13723,7 @@ input {
 }
 
 .light .RoutineOperation {
-    background-color: #f7fafe;
+    background-color: #ffffff;
 }
 
 .biz .RoutineOperation {
@@ -13733,8 +13755,8 @@ input {
 }
 
 .dark .FinalizeSequenceBoxIn {
-    background-color: #000000;
-    border-color: #212121;
+    background-color: #3A3854;
+    border-color: #3A3854;
 }
 
 .sepia .FinalizeSequenceBoxIn {
@@ -14943,6 +14965,7 @@ input {
 .WizardFooter {
     padding-left: 20px;
     padding-right: 20px;
+    margin-top:20px;
 }
 
 .WizardFooter button {

@@ -32,11 +32,9 @@ const ActionAWeb3Button  = ({children, onClick, type, onSuccess, className, disa
     }
 
     return (
-        <div className={!realType ? style.ActionAWeb3Button : style["ActionAWeb3Button" + realType]}>
-            <button disabled={disabled} className={(!realType ? style.ActionAMain : style["ActionAWeb3Button" + realType]) + (className ? ' ' + className : '') + (disabled ? style.disabled : '')} onClick={onButtonClick}>
-                {children}
-            </button>
-        </div>
+        <button disabled={disabled} className={(!realType ? style.WizardFooterNext : style.WizardFooterNext) + ' ' + (disabled ? style.disabled : '')} onClick={onButtonClick}>
+            {children}
+        </button>
     )
 }
 

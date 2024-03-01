@@ -58,7 +58,7 @@ export default props => {
         var fixedInflationContract = await newContract(context.NewFixedInflationABI, fixedInflationContractAddress)
         setExtensionAddress(await blockchainCall(fixedInflationContract.methods.host))
         var entry = await blockchainCall(fixedInflationContract.methods.entry)
-        var clonedEntry = {...entry[0]}
+        var clonedEntry = { ...entry[0] }
         clonedEntry.lastBlock = elaborateStartBlock(clonedEntry, true)
         clonedEntry.callerRewardPercentage = numberToString(parseFloat(fromDecimals(clonedEntry.callerRewardPercentage, 18, true)) * 100)
         clonedEntry.operations = []
@@ -72,11 +72,11 @@ export default props => {
 
             var inputTokenDecimals = '18'
             var inputTokenSymbol = 'ETH'
-            if(op.inputTokenAddress !== VOID_ETHEREUM_ADDRESS && op.inputTokenAddress !== ethAddress) {
+            if (op.inputTokenAddress !== VOID_ETHEREUM_ADDRESS && op.inputTokenAddress !== ethAddress) {
                 try {
                     var inputTokenContract = newContract(context.IERC20ABI, op.inputTokenAddress)
                     inputTokenDecimals = await blockchainCall(inputTokenContract.methods.decimals)
-                    inputTokenSymbol = abi.decode(["string"], await getRawField({provider : web3.currentProvider}, op.inputTokenAddress, 'symbol'))[0]
+                    inputTokenSymbol = abi.decode(["string"], await getRawField({ provider: web3.currentProvider }, op.inputTokenAddress, 'symbol'))[0]
                 } catch (e) {
                 }
             }
@@ -95,7 +95,7 @@ export default props => {
                         info: await blockchainCall(ammContract.methods.info),
                         data: await blockchainCall(ammContract.methods.data)
                     }
-                } catch(e) {
+                } catch (e) {
                     op.amm = {
                         contract: ammContract,
                         info: ["UniV3", "1"],
@@ -107,8 +107,8 @@ export default props => {
                 for (var i in op.liquidityPoolAddresses) {
                     var address = op.liquidityPoolAddresses[i]
                     const lpInfo = op.amm.info[0] !== 'UniV3' ? await blockchainCall(ammContract.methods.byLiquidityPool, address) : [undefined, undefined, [
-                        abi.decode(["address"], await getRawField({provider : web3.currentProvider}, address, 'token0'))[0],
-                        abi.decode(["address"], await getRawField({provider : web3.currentProvider}, address, 'token1'))[0]
+                        abi.decode(["address"], await getRawField({ provider: web3.currentProvider }, address, 'token0'))[0],
+                        abi.decode(["address"], await getRawField({ provider: web3.currentProvider }, address, 'token1'))[0]
                     ]]
                     const lpTokensAddresses = lpInfo[2]
                     const symbols = []
@@ -121,7 +121,7 @@ export default props => {
                             symbols.push(currentTokenSymbol)
                         }
                         ethAddress === currentTokenAddress && (symbols[symbols.length - 1] = `ETH`)
-                        if(ethAddress === currentTokenAddress) {
+                        if (ethAddress === currentTokenAddress) {
                             op.enterInETH = ethAddress === op.inputTokenAddress
                             op.exitInETH = ethAddress !== op.inputTokenAddress
                         }
@@ -163,25 +163,25 @@ export default props => {
 
     function deploy() {
 
-        if(extensionType === 'address' && !isEthereumAddress(walletAddress)) {
+        if (extensionType === 'address' && !isEthereumAddress(walletAddress)) {
             return
         }
 
-        if(extensionType === 'fromSourceCode') {
+        if (extensionType === 'fromSourceCode') {
 
         }
 
-        if(extensionType !== 'address' && extensionType !== 'fromSourceCode' && (!isEthereumAddress(extensionAddress) || !payload)) {
+        if (extensionType !== 'address' && extensionType !== 'fromSourceCode' && (!isEthereumAddress(extensionAddress) || !payload)) {
             return
         }
 
         const sequence = []
         extensionType === 'address' && sequence.push({
-            label : "Deploy Extension",
+            label: "Deploy Extension",
             async onTransactionReceipt(transactionReceipt, state) {
                 var fixedInflationFactoryAddress = (await blockchainCall(getGlobalContract("factoryOfFactories").methods.get, getNetworkElement({ context, chainId }, "factoryIndices").fixedInflation)).factoryList
                 fixedInflationFactoryAddress = fixedInflationFactoryAddress[fixedInflationFactoryAddress.length - 1]
-                if(web3Utils.toChecksumAddress(transactionReceipt.to) !== web3Utils.toChecksumAddress(fixedInflationFactoryAddress)) {
+                if (web3Utils.toChecksumAddress(transactionReceipt.to) !== web3Utils.toChecksumAddress(fixedInflationFactoryAddress)) {
                     throw "Wrong transaction"
                 }
                 var fixedInflationFactory = newContract(context.NewFactoryABI, fixedInflationFactoryAddress)
@@ -203,7 +203,7 @@ export default props => {
         })
 
         extensionType === 'fromSourceCode' && sequence.push({
-            label : "Deploy Custom Extension",
+            label: "Deploy Custom Extension",
             async onTransactionReceipt(transactionReceipt) {
 
             },
@@ -213,10 +213,10 @@ export default props => {
         })
 
         sequence.push(...[{
-            label : "Deploy Routine Contract",
+            label: "Deploy Routine Contract",
             async onTransactionReceipt(transactionReceipt, state) {
                 var fixedInflationAddress = abi.decode(["address"], transactionReceipt.logs.filter(it => it.topics[0] === web3Utils.sha3('Deployed(address,address,address,bytes)'))[0].topics[2])[0]
-                return { fixedInflationAddress, elaboratedEntry : elaborateEntry(state.entry) }
+                return { fixedInflationAddress, elaboratedEntry: elaborateEntry(state.entry) }
             },
             async onAction(state, element) {
                 var elaboratedEntry = elaborateEntry(state.entry)
@@ -236,12 +236,12 @@ export default props => {
                 return await this.onTransactionReceipt(receipt, state, element)
             }
         }, {
-            label : "Enable Extension",
+            label: "Enable Extension",
             async onTransactionReceipt(transactionReceipt, state) {
                 var extension = newContract(context.FixedInflationExtensionABI, state.extensionAddress)
                 var data = extension.methods.setActive(true).encodeABI()
                 var transaction = await web3.eth.getTransaction(transactionReceipt.transactionHash)
-                if(transaction.input !== data) {
+                if (transaction.input !== data) {
                     throw "Wrong Transaction"
                 }
             },
@@ -255,7 +255,7 @@ export default props => {
         }])
 
         setActionSequence({
-            initialState : {
+            initialState: {
                 extensionAddress,
                 payload,
                 entry,
@@ -286,7 +286,7 @@ export default props => {
             var transaction = await blockchainCall(fixedInflationFactory.methods.cloneDefaultExtension)
             var nonce = parseInt(await sendAsync(fixedInflationFactory.currentProvider, "eth_getTransactionCount", fixedInflationFactory.options.address, web3Utils.toHex(parseInt(transaction.blockNumber) - 1)))
             var fixedInflationExtensionAddress = "0x" + rlphash([fixedInflationFactory.options.address, nonce]).toString('hex').substring(24)
-            console.log({fixedInflationExtensionAddress})
+            console.log({ fixedInflationExtensionAddress })
             setExtensionType("deployedContract")
             setExtensionAddress(fixedInflationExtensionAddress)
 
@@ -337,7 +337,7 @@ export default props => {
             blockIntervalLabel = Object.entries(context.blockIntervals).filter(it => formatNumber(it[1]) === formatNumber(blockInterval))[0][0]
         } catch (e) { }
         var finalRecap = {
-            blockInterval: blockIntervalLabel || `${blockInterval} block${formatNumber(blockInterval)> 1 ? 's' : ''}`,
+            blockInterval: blockIntervalLabel || `${blockInterval} block${formatNumber(blockInterval) > 1 ? 's' : ''}`,
             transfers: 0,
             swaps: 0
         }
@@ -368,7 +368,7 @@ export default props => {
     function elaborateStartBlock(entry, add) {
         var lastBlock = parseInt(entry.lastBlock)
         var interval = parseInt(entry.blockInterval)
-        if(!lastBlock || isNaN(lastBlock) || lastBlock <= interval) {
+        if (!lastBlock || isNaN(lastBlock) || lastBlock <= interval) {
             return 0
         }
         return add ? lastBlock + interval : lastBlock - interval
@@ -408,43 +408,65 @@ export default props => {
         [
             function () {
                 return <>
-                <div className={style.FancyExplanationCreate}>
-                    <h6>Host</h6>
-                    <p className={style.BreefRecapB}>The host is the wallet, contract, dApp or Organization with permissions to manage this Routine Contract. <a target="_blank" href="https://docs.ethos.wiki/covenants/">Technical Documentation</a>.</p>
-                    <div className={style.proggressCreate}>
-                        <div className={style.proggressCreatePerchLast} style={{width: "100%"}}>Step 5 of 5</div>
-                    </div>
-                </div>
-                    <select className={style.CreationSelect}  value={extensionType} onChange={onExtensionType}>
-                        <option value="">Host type</option>
-                        <option value="address">Standard (Address, wallet)</option>
-                        <option value="deployedContract">Custom (Deployed Contract)</option>
-                        {false && <option value="fromSourceCode">Custom Extension (Deploy Contract)</option>}
-                    </select>
-                    {(extensionType === 'address' || extensionType === 'deployedContract') &&
-                        <div>
-                            {extensionType === 'address' &&
-                             <div className={style.CreationPageLabelF}>
-                                <h6>Host Address</h6>
-                                <input  type="text" placeholder="Host address" defaultValue={walletAddress} onKeyUp={e => setWalletAddress(isEthereumAddress(e.currentTarget.value) ? e.currentTarget.value : "")}/>
-                                <p>The address who has hosting permissions for this contract. The host can manage new setups and ending early existing setups.</p>
-                            </div>}
-
-                            {extensionType === 'deployedContract' &&
-                            <>
-                            <div className={style.CreationPageLabelF}>
-                                <h6>Custom Extension Address</h6>
-                                <input  type="text" placeholder="Insert extension address" defaultValue={extensionAddress} onKeyUp={e => setExtensionAddress(isEthereumAddress(e.currentTarget.value) ? e.currentTarget.value : "")}/>
-                            </div>
-                            <div className={style.CreationPageLabelF}>
-                                <h6>[Optional] Extension payload</h6>
-                                <input  placeholder="Optional init payload" type="text" defaultValue={payload} onKeyUp={e => setPayload(e.currentTarget.value)}/>
-                            </div>
-                            </> }
+                    <div className={style.WizardHeader}>
+                        <h3>
+                            Create a new Routine <span>step 5 of 5</span>
+                        </h3>
+                        <div className={style.WizardHeaderDescription}>
+                            Routine are fully decentralized DAOs with modular economic
+                            components
                         </div>
-                    }
-                    {/*extensionType === 'fromSourceCode' && <ContractEditor filterDeployedContract={filterDeployedContract} onContract={setCustomExtensionData} templateCode={fixedInflationExtensionTemplateCode}/>*/}
+                        <div className={style.WizardProgress}>
+                            <div
+                                className={style.WizardProgressBar}
+                                style={{
+                                    width: ((100 / 5) * 3 > 0 ? (100 / 5) * 3 : 1) + '%',
+                                }}></div>
+                        </div>
+                    </div>
+                    <div className={style.CreationPageLabel}>
+                        <div className={style.FancyExplanationCreate}>
+                            <h2>Host</h2>
+                        </div>
+                        <label className={style.CreationPageLabelF}>
+                            <p>The host is the wallet, contract, dApp or Organization with permissions to manage this Routine Contract. <a target="_blank" href="https://docs.ethos.wiki/covenants/">Technical Documentation</a>.</p>
+                        </label>
+                        <select className={style.CreationSelect} value={extensionType} onChange={onExtensionType}>
+                            <option value="">Host type</option>
+                            <option value="address">Standard (Address, wallet)</option>
+                            <option value="deployedContract">Custom (Deployed Contract)</option>
+                            {false && <option value="fromSourceCode">Custom Extension (Deploy Contract)</option>}
+                        </select>
+                        {(extensionType === 'address' || extensionType === 'deployedContract') &&
+                            <div>
+                                {extensionType === 'address' &&
+                                    <div className={style.CreationPageLabelF}>
+                                        <h6>Host Address</h6>
+                                        <input type="text" placeholder="Host address" defaultValue={walletAddress} onKeyUp={e => setWalletAddress(isEthereumAddress(e.currentTarget.value) ? e.currentTarget.value : "")} />
+                                        <p>The address who has hosting permissions for this contract. The host can manage new setups and ending early existing setups.</p>
+                                    </div>}
 
+                                {extensionType === 'deployedContract' &&
+                                    <>
+                                        <div className={style.CreationPageLabelF}>
+                                            <h6>Custom Extension Address</h6>
+                                            <input type="text" placeholder="Insert extension address" defaultValue={extensionAddress} onKeyUp={e => setExtensionAddress(isEthereumAddress(e.currentTarget.value) ? e.currentTarget.value : "")} />
+                                        </div>
+                                        <div className={style.CreationPageLabelF}>
+                                            <h6>[Optional] Extension payload</h6>
+                                            <input placeholder="Optional init payload" type="text" defaultValue={payload} onKeyUp={e => setPayload(e.currentTarget.value)} />
+                                        </div>
+                                    </>}
+                            </div>
+                        }
+                        {/*extensionType === 'fromSourceCode' && <ContractEditor filterDeployedContract={filterDeployedContract} onContract={setCustomExtensionData} templateCode={fixedInflationExtensionTemplateCode}/>*/}
+
+                        <div className={style.WizardFooter}>
+                            <button className={style.WizardFooterBack} onClick={back}>Back</button>
+                            {step !== steps.length - 1 && <button className={style.WizardFooterNext} disabled={steps[step][1]()} onClick={() => setStep(step + 1)}>Next</button>}
+                            {step === steps.length - 1 && <ActionAWeb3Button disabled={steps[step][1]()} onClick={deploy}>Deploy</ActionAWeb3Button>}
+                        </div>
+                    </div>
                 </>
             },
             function () {
@@ -454,7 +476,7 @@ export default props => {
 
     function filterDeployedContract(contractData) {
         var abi = contractData.abi
-        if (abi.filter(abiEntry => abiEntry.type === 'constructor').length> 0) {
+        if (abi.filter(abiEntry => abiEntry.type === 'constructor').length > 0) {
             return false
         }
         if (abi.filter(abiEntry => abiEntry.type === 'function' && abiEntry.stateMutability === 'view' && abiEntry.name === 'active' && abiEntry.outputs && abiEntry.outputs.length === 1 && abiEntry.outputs[0].type === 'bool').length === 0) {
@@ -527,7 +549,7 @@ export default props => {
 
     function copyToClipboard(address) {
         const value = `${address}`
-        if(navigator.clipboard) {
+        if (navigator.clipboard) {
             return navigator.clipboard.writeText(value)
         }
         const input = document.createElement('input')
@@ -539,7 +561,7 @@ export default props => {
         input.setSelectionRange(0, 99999)
         try {
             document.execCommand('copy')
-        } catch(e) {
+        } catch (e) {
             console.log(e)
         }
         document.body.removeChild(input)
@@ -548,51 +570,49 @@ export default props => {
     function render() {
         return <div className={style.CreatePage}>
             {steps[step][0]()}
-            <div className={style.ActionBTNCreateX}>
-                <a className={style.Web3BackBTN} onClick={back}>Back</a>
-                {step !== steps.length - 1 && <a className={style.RegularButton} disabled={steps[step][1]()} onClick={() => setStep(step + 1)}>Next</a>}
-                {step === steps.length - 1 && <ActionAWeb3Button disabled={steps[step][1]()} onClick={deploy}>Deploy</ActionAWeb3Button>}
-            </div>
+
         </div>
     }
 
     function success() {
         return <div className={style.CreatePage}>
-            <h3>Routine Contract Deployed!🎉</h3>
-            <div className={style.AndNowBox}>
-                <h6>And Now?<br></br>👇</h6>
-            </div>
-            {/*If choosen by wallet*/}
-            {extensionType == 'address' ? <>
-            <div className={style.FancyExplanationCreate}>
-                <p className={style.BreefRecapB}>Before attempting to execute the FI remember to send the amount of token needed to the FI extension address:</p>
-                <a className={style.RegularButton} target="_blank" href={`${getNetworkElement({ chainId, context}, "etherscanURL")}/address/${extensionAddress}`}>{extensionAddress}</a><a onClick={()=>copyToClipboard(extensionAddress)} className={style.RegularButton}>Copy</a>
-                <p className={style.BreefRecapB}>The first time the FI will fail the execution due to insufficient funds in the extension address, this contract will be automatically deactivated until editing from the host and reactivation manually.<br></br>For more info about hosting a Fixed Inflation contract: <a  target="_blank" href="https://docs.ethos.wiki/covenants/protocols/inflation">Documentation</a></p>
-            </div>
+            <div className={style.CreationPageLabel}>
+                <h3 className={style.RoutineSuccessTitle}>Routine Contract Deployed!🎉</h3>
+                <div className={style.AndNowBox}>
+                    <h6>And Now?<br></br>👇</h6>
+                </div>
+                {/*If choosen by wallet*/}
+                {extensionType == 'address' ? <>
+                    <div className={style.FancyExplanationCreate}>
+                        <p className={style.BreefRecapB}>Before attempting to execute the FI remember to send the amount of token needed to the FI extension address:</p>
+                        <a className={style.RegularButton} target="_blank" href={`${getNetworkElement({ chainId, context }, "etherscanURL")}/address/${extensionAddress}`}>{extensionAddress}</a><a onClick={() => copyToClipboard(extensionAddress)} className={style.RegularButton}>Copy</a>
+                        <p className={style.BreefRecapB}>The first time the FI will fail the execution due to insufficient funds in the extension address, this contract will be automatically deactivated until editing from the host and reactivation manually.<br></br>For more info about hosting a Fixed Inflation contract: <a target="_blank" href="https://docs.ethos.wiki/covenants/protocols/inflation">Documentation</a></p>
+                    </div>
                 </> : <>
-            <div className={style.FancyExplanationCreate}>
-                {/*If not choosen by wallet (custom extension contract)*/}
-                <p className={style.BreefRecapB}>Before attempting to execute the FI you first need to do do all of the actions needed to send the amount of token needed to the FI extension address:</p>
-                <a className={style.RegularButton} target="_blank" href={`${getNetworkElement({ chainId, context}, "etherscanURL")}/address/${extensionAddress}`}>{extensionAddress}</a><a onClick={()=>copyToClipboard(extensionAddress)} className={style.RegularButton}>Copy</a>
-                <p className={style.BreefRecapB}>If you rule the extension via a DFO or a DAO, be sure to vote to grant permissions from its Treasury.</p>
-                <p className={style.BreefRecapB}>The first time the FI will fail the execution due to insufficient funds in the extension address, this contract will be automatically deactivated until editing from the host and reactivation manually.<br></br>For more info about hosting a Fixed Inflation contract: <a  target="_blank" href="https://docs.ethos.wiki/covenants/protocols/inflation">Documentation</a></p>
-            </div>
-            </>}
-            <div className={style.FancyExplanationCreate}>
-                <p className={style.BreefRecapB}>Fixed Inflation Contract Address: {fixedInflationAddress} <a target="_blank" href={`${getNetworkElement({ chainId, context}, "etherscanURL")}/address/${fixedInflationAddress}`}>(Etherscan)</a></p>
-                <Link className={style.RegularButton} to={"/covenants/routines/" + fixedInflationAddress}>{process.env.PUBLIC_URL + "#/inflation/" + fixedInflationAddress}</Link>
+                    <div className={style.FancyExplanationCreate}>
+                        {/*If not choosen by wallet (custom extension contract)*/}
+                        <p className={style.BreefRecapB}>Before attempting to execute the FI you first need to do do all of the actions needed to send the amount of token needed to the FI extension address:</p>
+                        <a className={style.RegularButton} target="_blank" href={`${getNetworkElement({ chainId, context }, "etherscanURL")}/address/${extensionAddress}`}>{extensionAddress}</a><a onClick={() => copyToClipboard(extensionAddress)} className={style.RegularButton}>Copy</a>
+                        <p className={style.BreefRecapB}>If you rule the extension via a DFO or a DAO, be sure to vote to grant permissions from its Treasury.</p>
+                        <p className={style.BreefRecapB}>The first time the FI will fail the execution due to insufficient funds in the extension address, this contract will be automatically deactivated until editing from the host and reactivation manually.<br></br>For more info about hosting a Fixed Inflation contract: <a target="_blank" href="https://docs.ethos.wiki/covenants/protocols/inflation">Documentation</a></p>
+                    </div>
+                </>}
+                <div className={style.FancyExplanationCreate}>
+                    <p className={style.BreefRecapB}>Fixed Inflation Contract Address: {fixedInflationAddress} <a target="_blank" href={`${getNetworkElement({ chainId, context }, "etherscanURL")}/address/${fixedInflationAddress}`}>(Etherscan)</a></p>
+                    <Link className={style.RegularButton} to={"/covenants/routines/" + fixedInflationAddress}>{process.env.PUBLIC_URL + "#/inflation/" + fixedInflationAddress}</Link>
+                </div>
             </div>
         </div>
     }
 
     return (
         <>
-        {actionSequence && <ActionSequence {...{...actionSequence, onClose(){setActionSequence()}}}/>}
-        {!entry ? <OurCircularProgress/> :
-            fixedInflationAddress ? success() :
-                isNaN(step) ? <CreateOrEditFixedInflationEntry entry={copy(entry)} continue={creationComplete} saveEntry={saveEntry} notFirstTime={notFirstTime}/> :
-                    fixedInflationContractAddress ? renderEditEntry() :
-                        render()}
+            {actionSequence && <ActionSequence {...{ ...actionSequence, onClose() { setActionSequence() } }} />}
+            {!entry ? <OurCircularProgress /> :
+                fixedInflationAddress ? success() :
+                    isNaN(step) ? <CreateOrEditFixedInflationEntry entry={copy(entry)} continue={creationComplete} saveEntry={saveEntry} notFirstTime={notFirstTime} /> :
+                        fixedInflationContractAddress ? renderEditEntry() :
+                            render()}
         </>
     )
 }

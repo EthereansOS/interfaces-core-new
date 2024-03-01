@@ -73,44 +73,23 @@ export default props => {
     var steps = [
         [function () {
             return <>
-                <div className={style.WizardHeader}>
-                    <h3>
-                    Create a new Routine <span>step 1 of 5</span>
-                    </h3>
-                    <div className={style.WizardHeaderDescription}>
-                    Routine are fully decentralized DAOs with modular economic
-                    components
-                    </div>
-                    <div className={style.WizardProgress}>
-                    <div
-                        className={style.WizardProgressBar}
-                        style={{
-                        width: ((100 / 5) * 1 > 0 ? (100 / 5) * 1 : 1) + '%',
-                        }}></div>
-                    </div>
-                </div>
-
-
-
-               <div className={style.CreationPageLabel}>
                 <div className={style.FancyExplanationCreate}>
                     <h2>Basic Info</h2>
                 </div>
                 <label className={style.CreationPageLabelF}>
                     <h6>Routine Title*</h6>
-                    <p>Choose an unique rou for your ogranization</p>
+                    <p>Choose an unique title for your routine</p>
                     <input placeholder="Title" onChange={e => setEntryName(e.currentTarget.value)} value={entryName} />
-               
+
                 </label>
                 <label className={style.CreationPageLabelF}>
-                    <h6>Description*</h6>
-                    <p>Enter the description of your Organization</p>
-                    <select className={style.CreationSelectW}  onChange={e => setBlockInterval(e.currentTarget.value)} value={blockInterval}>
+                    <h6>Execution Time Interval*</h6>
+                    <p>The minimum amount of time that must pass between each execution</p>
+                    <select className={style.CreationSelectW} onChange={e => setBlockInterval(e.currentTarget.value)} value={blockInterval}>
                         {Object.entries(context.blockIntervals).map(it => <option key={it[0]} value={it[1]}>{it[0]}</option>)}
                     </select>
-                    <p>The minimum amount of time that must pass between each execution</p>
                 </label>
-            </div>
+
             </>
         },
         function () {
@@ -119,16 +98,13 @@ export default props => {
         [function () {
             return <>
                 <div className={style.FancyExplanationCreate}>
-                    <h6>Start Block</h6>
-                    <div className={style.proggressCreate}>
-                        <div className={style.proggressCreatePerch} style={{width: "40%"}}>Step 2 of 5</div>
-                    </div>
+                    <h2>Execution Block</h2>
                 </div>
                 <div className={style.CreationPageLabelF}>
-                        <h6>Start Block</h6>
-                        <input type="checkbox" checked={hasLastBlock} onChange={onHasLastBlockChange} />
-                        <p>If selected, the first operation of the inflation contract will become executable immediately after the chosen block ends. If not, the operation will become executable immediately after the contract’s deployment block ends.</p>
-                    {hasLastBlock && <input type="number"  placeholder="Start Block" label="Start Block:" min="0" onChange={e => setLastBlock(parseInt(e.target.value))} value={lastBlock} />}
+                    <h6>Start Block</h6>
+                    <input type="checkbox" checked={hasLastBlock} onChange={onHasLastBlockChange} />
+                    <p>If selected, the first operation of the inflation contract will become executable immediately after the chosen block ends. If not, the operation will become executable immediately after the contract’s deployment block ends.</p>
+                    {hasLastBlock && <input type="number" placeholder="Start Block" label="Start Block:" min="0" onChange={e => setLastBlock(parseInt(e.target.value))} value={lastBlock} />}
                 </div>
             </>
         },
@@ -138,19 +114,18 @@ export default props => {
         [function () {
             return <>
                 <div className={style.FancyExplanationCreate}>
-                    <h6>Manage Operations</h6>
-                    <p className={style.BreefRecapB}>When executed, a routine can trigger one or more operations. Each operation can involve the transfer of ETH, Items or other tokens from a single address to one or more others; or it can involve the swap of ETH, an Item or another token on an AMM for any other token, as well as the transfer of the acquired token to one or more addresses.</p>
-                    <div className={style.proggressCreate}>
-                        <div className={style.proggressCreatePerch} style={{width: "60%"}}>Step 3 of 5</div>
-                    </div>
+                    <h2>Manage Operations</h2>
+                </div>
+                <div className={style.CreationPageLabelF}>
+                    <p>When executed, a routine can trigger one or more operations. Each operation can involve the transfer of ETH, Items or other tokens from a single address to one or more others; or it can involve the swap of ETH, an Item or another token on an AMM for any other token, as well as the transfer of the acquired token to one or more addresses.</p>
                 </div>
                 {editingOperation === null && operations.map((entryOperation, entryOperationIndex) => <div className={style.CreationPageLabelF} key={entryOperationIndex} >
                     <span>{entryOperation.actionType} {entryOperation.amount && entryOperation.amount !== '0' ? fromDecimals(entryOperation.amount, entryOperation.inputToken.decimals) : `${entryOperation.percentage}% (supply)`} {entryOperation.inputToken.symbol} to {entryOperation.receivers.length} receiver(s)</span>
-                        <a className={style.RoundedButton} onClick={() => removeEntryOperation(entryOperationIndex)}>X</a>
-                        <a className={style.RoundedButton} onClick={() => editOrAddEntryOperation(entryOperationIndex)}>⚙️</a>
+                    <a className={style.RoundedButton} onClick={() => removeEntryOperation(entryOperationIndex)}>X</a>
+                    <a className={style.RoundedButton} onClick={() => editOrAddEntryOperation(entryOperationIndex)}>⚙️</a>
                 </div>)}
                 <div>
-                    <a className={style.RoundedButton}  onClick={editOrAddEntryOperation}>+</a>
+                    <a className={style.RoundedButton} onClick={editOrAddEntryOperation}>+</a>
                 </div>
             </>
         },
@@ -160,15 +135,14 @@ export default props => {
         [function () {
             return <>
                 <div className={style.FancyExplanationCreate}>
-                    <h6>Executor Reward</h6>
-                    <p className={style.BreefRecapB}>Bots on Ethereum search around the clock to find and execute operations that reap them more rewards than what they will pay in gas. As a result, setting a fair and profitable executor reward can help ensure the automation of your routine as it won’t rely on manual execution by humans.</p>
-                    <div className={style.proggressCreate}>
-                        <div className={style.proggressCreatePerch} style={{width: "80%"}}>Step 4 of 5</div>
-                    </div>
+                    <h2>Executor Reward</h2>
                 </div>
                 <div className={style.CreationPageLabelF}>
-                        <h6>Executor Reward</h6>
-                        <input type="checkbox" checked={hasCallerRewardPercentage} onChange={onHasCallerRewardPercentageChange} />
+                    <p>Bots on Ethereum search around the clock to find and execute operations that reap them more rewards than what they will pay in gas. As a result, setting a fair and profitable executor reward can help ensure the automation of your routine as it won’t rely on manual execution by humans.</p>
+                </div>
+                <div className={style.CreationPageLabelF}>
+                    <h6>Executor Reward</h6>
+                    <input type="checkbox" checked={hasCallerRewardPercentage} onChange={onHasCallerRewardPercentageChange} />
                     {hasCallerRewardPercentage &&
                         <div >
                             <aside>{callerRewardPercentage} %</aside>
@@ -186,13 +160,38 @@ export default props => {
     return editingOperation != null ?
         <CreateOrEditFixedInflationEntryOperation operation={operations[editingOperation]} cancelEditOperation={cancelEditOperation} saveEditOperation={saveEditOperation} />
         : <div className={style.CreatePage}>
-            <div >
-                {steps[step][0]()}
-            </div>
-            <div className={style.ActionBTNCreateX}>
-                {step !== 0 && <a className={style.Web3BackBTN} onClick={() => setStep(step - 1)} >Back</a>}
-                {step !== steps.length - 1 && <a className={style.RegularButton} disabled={steps[step][1]()} onClick={() => !steps[step][1]() && setStep(step + 1)}>Next</a>}
-                {step === steps.length - 1 && <a className={style.RegularButton} disabled={steps[step][1]()} onClick={() => !steps[step][1]() && props.saveEntry(entryName, lastBlock, blockInterval, callerRewardPercentage, operations)}>Next</a>}
+            <div>
+                <div className={style.WizardHeader}>
+                    <h3>
+                        Create a new Routine <span>step {step + 1} of 5</span>
+                    </h3>
+                    <div className={style.WizardHeaderDescription}>
+                        Routine are fully decentralized DAOs with modular economic
+                        components
+                    </div>
+                    <div className={style.WizardProgress}>
+                        <div
+                            className={style.WizardProgressBar}
+                            style={{
+                                width: ((100 / 5) * step > 0 ? (100 / 5) * step : 1) + '%',
+                            }}></div>
+                    </div>
+                </div>
+                <div className={style.mtop30}>
+                    <div className={style.CreationPageLabel}>
+                        {steps[step][0]()}
+                        <div className={style.WizardFooter}>
+                            {step !== 0 && <button className={style.WizardFooterBack} onClick={() => setStep(step - 1)} >Back</button>}
+                            {step !== steps.length - 1 &&
+                                (
+                                    <button className={style.WizardFooterNext} disabled={steps[step][1]()} onClick={() => !steps[step][1]() && setStep(step + 1)}>
+                                        Next
+                                    </button>
+                                )}
+                            {step === steps.length - 1 && <button className={style.WizardFooterNext} disabled={steps[step][1]()} onClick={() => !steps[step][1]() && props.saveEntry(entryName, lastBlock, blockInterval, callerRewardPercentage, operations)}>Next</button>}
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 }

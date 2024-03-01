@@ -9,10 +9,14 @@ const Wrap = ({voices}) => {
   const [currentVoice, setCurrentVoice] = useState(voices[0])
   const { Component, props } = currentVoice
   return (
-    <div className={style.CovenantsMainBox}>
-        <DappSubMenu isSelected={it => it.id === currentVoice?.id} voices={voices.map(it => ({...it, onClick : () => setCurrentVoice(it)}))}/>
-        <Component {...props}/>
+    <div className={style.SmallBoxWidth}>
+      <div className={style.CovenantsMainBox}>
+            
+            <DappSubMenu isSelected={it => it.id === currentVoice?.id} voices={voices.map(it => ({...it, onClick : () => setCurrentVoice(it)}))}/>
+            <Component {...props}/>
+        </div>
     </div>
+    
   )
 }
 

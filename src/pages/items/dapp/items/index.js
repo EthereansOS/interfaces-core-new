@@ -57,6 +57,7 @@ const ItemsList = ({ wrappedOnly }) => (
       <li>Document</li>
       <li>Other</li>
       <li className={style.ItemsExploreMainCategoriesCreateElement}>
+        <Link to="/items/wrap" style={{color:'white'}}>
         <svg
           width="24"
           height="24"
@@ -82,7 +83,8 @@ const ItemsList = ({ wrappedOnly }) => (
             strokeLinecap="round"
             strokeLinejoin="round"></path>
         </svg>
-        <span>Create New Item</span>
+        <span>Wrap</span>
+        </Link>
       </li>
     </ul>
     <div className={style.ItemsExploreMain}>

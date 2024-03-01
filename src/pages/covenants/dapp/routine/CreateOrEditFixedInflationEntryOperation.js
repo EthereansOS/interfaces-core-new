@@ -66,11 +66,11 @@ export default props => {
         setAmm(operation.amm)
     }, [])
 
-    useEffect(() => setTimeout(async function() {
-        if(!inputToken || !operation || !operation.liquidityPoolAddresses || operation.liquidityPoolAddresses.length === 0) {
+    useEffect(() => setTimeout(async function () {
+        if (!inputToken || !operation || !operation.liquidityPoolAddresses || operation.liquidityPoolAddresses.length === 0) {
             return
         }
-        for(var addr of operation.liquidityPoolAddresses) {
+        for (var addr of operation.liquidityPoolAddresses) {
             await onAddPathToken(addr)
         }
     }), [operation, inputToken])
@@ -78,7 +78,7 @@ export default props => {
     // second step methods
     const onSelectInputToken = async address => {
         address = (address && address.address) || address
-        if(inputToken && inputToken.address === address) {
+        if (inputToken && inputToken.address === address) {
             return
         }
         setAmm(null)
@@ -86,7 +86,7 @@ export default props => {
         setExitInETH(false)
         if (!address) return setInputToken(null)
         setLoading(true)
-        setInputToken(await loadTokenFromAddress({ context, ...web3Data, seaport}, address))
+        setInputToken(await loadTokenFromAddress({ context, ...web3Data, seaport }, address))
         setEnterInETH(address === VOID_ETHEREUM_ADDRESS)
         address === VOID_ETHEREUM_ADDRESS && setInputTokenMethod("reserve")
         address === VOID_ETHEREUM_ADDRESS && setTransferType("amount")
@@ -98,7 +98,7 @@ export default props => {
         var hasIncoherent = false
         for (var receiver of receivers) {
             var percentage = formatNumber(receiver.percentage)
-            if (percentage <= 0 || percentage> 100) {
+            if (percentage <= 0 || percentage > 100) {
                 hasIncoherent = true
             }
         }
@@ -133,19 +133,19 @@ export default props => {
                 info = await blockchainCall(ammAggregator.methods.info, address)
                 ammContract = newContract(context.AMMABI, info['amm'])
                 ethAddress = web3Utils.toChecksumAddress((await blockchainCall(ammContract.methods.data))[0])
-            } catch(e) {}
+            } catch (e) { }
 
             var realInputToken = web3Utils.toChecksumAddress(enterInETH ? ethAddress : inputToken.address)
             if (amm && amm.ammContract.options.address !== ammContract.options.address) {
                 return
             }
-            if (pathTokens.filter(it => it.address === address).length> 0) {
+            if (pathTokens.filter(it => it.address === address).length > 0) {
                 return
             }
             const lastOutputToken = web3Utils.toChecksumAddress(pathTokens.length === 0 ? realInputToken : pathTokens[pathTokens.length - 1].outputTokenAddress)
             const lpInfo = info ? await blockchainCall(ammContract.methods.byLiquidityPool, address) : [undefined, undefined, [
-                abi.decode(["address"], await getRawField({provider : web3.currentProvider}, address, 'token0'))[0],
-                abi.decode(["address"], await getRawField({provider : web3.currentProvider}, address, 'token1'))[0]
+                abi.decode(["address"], await getRawField({ provider: web3.currentProvider }, address, 'token0'))[0],
+                abi.decode(["address"], await getRawField({ provider: web3.currentProvider }, address, 'token1'))[0]
             ]]
             const lpTokensAddresses = lpInfo[2]
             const symbols = []
@@ -174,7 +174,7 @@ export default props => {
             try {
                 symbol = await blockchainCall(pathTokenContract.methods.symbol)
                 decimals = await blockchainCall(pathTokenContract.methods.decimals)
-            } catch(e) {}
+            } catch (e) { }
             setPathTokens(pathTokens.concat({ symbol, address, decimals, output: null, outputTokenAddress, lpTokensAddresses, symbols }))
             setExitInETH(web3Utils.toChecksumAddress(outputTokenAddress) === web3Utils.toChecksumAddress(ethAddress))
         } catch (error) {
@@ -213,35 +213,52 @@ export default props => {
             case 3:
                 return getFourthStep()
             default:
-                return <div/>
+                return <div />
         }
     }
 
     const getFirstStep = () => {
         var disabled = !actionType
         return <div className={style.CreatePage}>
-            <div className={style.FancyExplanationCreate}>
-                <h6>Manage Operations</h6>
-                <p className={style.BreefRecapB}>When executed, a routine can trigger one or more operations. Each operation can involve the transfer of ETH, Items or other tokens from a single address to one or more others; or it can involve the swap of ETH, an Item or another token on an AMM for any other token, as well as the transfer of the acquired token to one or more addresses.</p>
-                <div className={style.proggressCreate}>
-                    <div className={style.proggressCreatePerch} style={{width: "60%"}}>Step 3 of 5</div>
+            <div className={style.WizardHeader}>
+                <h3>
+                    Create a new Routine <span>step 3 of 5</span>
+                </h3>
+                <div className={style.WizardHeaderDescription}>
+                    Routine are fully decentralized DAOs with modular economic
+                    components
+                </div>
+                <div className={style.WizardProgress}>
+                    <div
+                        className={style.WizardProgressBar}
+                        style={{
+                            width: ((100 / 5) * 3 > 0 ? (100 / 5) * 3 : 1) + '%',
+                        }}></div>
                 </div>
             </div>
-            <div className={style.CreationPageLabelF}>
-                <h6>Operation Type</h6>
-                <select className={style.CreationSelectW}  value={actionType} onChange={e => setActionType(e.target.value)}>
-                    <option value="">Operation type</option>
-                    <option value="transfer">Transfer</option>
-                    <option value="swap">Swap</option>
-                </select>
-                <p>A “Transfer” operation is the semi-automatic transfer of ETH, Items or other tokens from a single address to one or more others. A “Swap” operation is the semi-automatic swap of ETH, an Item or another token on an AMM for any other token, and the transfer of the acquired token to one or more addresses.</p>
-            </div>
-            <div className={style.ActionBTNCreateX}>
-                <a className={style.Web3BackBTN} onClick={() => {
-                    setActionType("")
-                    props.cancelEditOperation()
-                }}>Cancel</a>
-                <a className={style.RegularButton} onClick={() => !disabled && setStep(1)} disabled={disabled}>Next</a>
+            <div className={style.CreationPageLabel}>
+                <div className={style.FancyExplanationCreate}>
+                    <h2>Manage Operations</h2>
+                </div>
+                <label className={style.CreationPageLabelF}>
+                    <p>When executed, a routine can trigger one or more operations. Each operation can involve the transfer of ETH, Items or other tokens from a single address to one or more others; or it can involve the swap of ETH, an Item or another token on an AMM for any other token, as well as the transfer of the acquired token to one or more addresses.</p>
+                </label>
+                <div className={style.CreationPageLabelF}>
+                    <h6>Operation Type</h6>
+                    <select className={style.CreationSelectW} value={actionType} onChange={e => setActionType(e.target.value)}>
+                        <option value="">Operation type</option>
+                        <option value="transfer">Transfer</option>
+                        <option value="swap">Swap</option>
+                    </select>
+                    <p>A “Transfer” operation is the semi-automatic transfer of ETH, Items or other tokens from a single address to one or more others. A “Swap” operation is the semi-automatic swap of ETH, an Item or another token on an AMM for any other token, and the transfer of the acquired token to one or more addresses.</p>
+                </div>
+                <div className={style.WizardFooter}>
+                    <button className={style.WizardFooterBack} onClick={() => {
+                        setActionType("")
+                        props.cancelEditOperation()
+                    }}>Cancel</button>
+                    <button className={style.WizardFooterNext} onClick={() => !disabled && setStep(1)} disabled={disabled}>Next</button>
+                </div>
             </div>
         </div>
     }
@@ -249,93 +266,135 @@ export default props => {
     const getSecondStep = () => {
         var disabled = !inputToken || !inputTokenMethod
         return <div className={style.CreatePage}>
-            <div className={style.FancyExplanationCreate}>
-                <h6>Manage Operations</h6>
-                <p className={style.BreefRecapB}>When executed, a routine can trigger one or more operations. Each operation can involve the transfer of ETH, Items or other tokens from a single address to one or more others; or it can involve the swap of ETH, an Item or another token on an AMM for any other token, as well as the transfer of the acquired token to one or more addresses.</p>
-                <div className={style.proggressCreate}>
-                    <div className={style.proggressCreatePerch} style={{width: "60%"}}>Step 3 of 5</div>
+            <div className={style.WizardHeader}>
+                <h3>
+                    Create a new Routine <span>step 3 of 5</span>
+                </h3>
+                <div className={style.WizardHeaderDescription}>
+                    Routine are fully decentralized DAOs with modular economic
+                    components
+                </div>
+                <div className={style.WizardProgress}>
+                    <div
+                        className={style.WizardProgressBar}
+                        style={{
+                            width: ((100 / 5) * 3 > 0 ? (100 / 5) * 3 : 1) + '%',
+                        }}></div>
                 </div>
             </div>
-            <TokenInputRegular selected={inputToken} onElement={onSelectInputToken} tokenOnly/>
-            {
-                loading ? <OurCircularProgress/>: <>
-                    {inputToken && !enterInETH && <div className={style.CreationPageLabelF}>
-                        <h6>Origin of funds</h6>
-                        <select className={style.CreationSelectW} value={inputTokenMethod} onChange={e => setInputTokenMethod(e.currentTarget.value)}>
-                            <option value="">Select</option>
-                            <option value="mint">By mint</option>
-                            <option value="reserve">By Reserve</option>
-                        </select>
-                        <p>If “by reserve” is selected, the tokens will be transferred from a wallet. If “by mint” is selected, they will be minted and then sent. The logic of this action must be carefully coded into the extension! To learn more, read the <a target="_blank" href="https://docs.ethos.wiki/covenants/">Documentation</a></p>
-                    </div>}
-                </>
-            }
-            <div className={style.ActionBTNCreateX}>
-                <a className={style.Web3BackBTN} onClick={() => setStep(step - 1)}>Back</a>
-                <a className={style.RegularButton} onClick={() => !disabled && setStep(2)} disabled={disabled}>Next</a>
+            <div className={style.CreationPageLabel}>
+                <div className={style.FancyExplanationCreate}>
+                    <h2>Manage Operations</h2>
+                </div>
+                <label className={style.CreationPageLabelF}>
+                    <p>When executed, a routine can trigger one or more operations. Each operation can involve the transfer of ETH, Items or other tokens from a single address to one or more others; or it can involve the swap of ETH, an Item or another token on an AMM for any other token, as well as the transfer of the acquired token to one or more addresses.</p>
+                </label>
+                <TokenInputRegular selected={inputToken} onElement={onSelectInputToken} tokenOnly />
+                {
+                    loading ? <OurCircularProgress /> : <>
+                        {inputToken && !enterInETH && <div className={style.CreationPageLabelF}>
+                            <h6>Origin of funds</h6>
+                            <select className={style.CreationSelectW} value={inputTokenMethod} onChange={e => setInputTokenMethod(e.currentTarget.value)}>
+                                <option value="">Select</option>
+                                <option value="mint">By mint</option>
+                                <option value="reserve">By Reserve</option>
+                            </select>
+                            <p>If “by reserve” is selected, the tokens will be transferred from a wallet. If “by mint” is selected, they will be minted and then sent. The logic of this action must be carefully coded into the extension! To learn more, read the <a target="_blank" href="https://docs.ethos.wiki/covenants/">Documentation</a></p>
+                        </div>}
+                    </>
+                }
+                <div className={style.mtop30}></div>
+                <div className={style.WizardFooter}>
+                    <button className={style.WizardFooterBack} onClick={() => setStep(step - 1)}>Back</button>
+                    <button className={style.WizardFooterNext} onClick={() => !disabled && setStep(2)} disabled={disabled}>Next</button>
+                </div>
             </div>
         </div>
     }
 
-    const getTransferThirdStep = () => {
-        return <>
-        <div className={style.FancyExplanationCreate}>
-            <h6>Manage Operations</h6>
-            <p className={style.BreefRecapB}>When executed, a routine can trigger one or more operations. Each operation can involve the transfer of ETH, Items or other tokens from a single address to one or more others; or it can involve the swap of ETH, an Item or another token on an AMM for any other token, as well as the transfer of the acquired token to one or more addresses.</p>
-            <div className={style.proggressCreate}>
-                <div className={style.proggressCreatePerch} style={{width: "60%"}}>Step 3 of 5</div>
+    const getTransferThirdStep = (disabled) => {
+        return <div>
+            <div className={style.WizardHeader}>
+                <h3>
+                    Create a new Routine <span>step 3 of 5</span>
+                </h3>
+                <div className={style.WizardHeaderDescription}>
+                    Routine are fully decentralized DAOs with modular economic
+                    components
+                </div>
+                <div className={style.WizardProgress}>
+                    <div
+                        className={style.WizardProgressBar}
+                        style={{
+                            width: ((100 / 5) * 3 > 0 ? (100 / 5) * 3 : 1) + '%',
+                        }}></div>
+                </div>
+            </div>
+            <div className={style.CreationPageLabel}>
+                <div className={style.FancyExplanationCreate}>
+                    <h2>Manage Operations</h2>
+                </div>
+                <label className={style.CreationPageLabelF}>
+                    <p>When executed, a routine can trigger one or more operations. Each operation can involve the transfer of ETH, Items or other tokens from a single address to one or more others; or it can involve the swap of ETH, an Item or another token on an AMM for any other token, as well as the transfer of the acquired token to one or more addresses.</p>
+                </label>
+                <div className={style.CreationPageLabelF}>
+                    <h6>Transfer</h6>
+                    {!enterInETH && <select className={style.CreationSelectW} value={transferType} onChange={e => setTransferType(e.currentTarget.value)}>
+                        <option value="">Select type</option>
+                        <option value="percentage">Percentage</option>
+                        <option value="amount">Amount</option>
+                    </select>}
+                    {transferType &&
+                        transferType == 'percentage' ?
+                        <div>
+                            <input type="range" min={0} max={100} value={percentage} onChange={e => setPercentage(e.currentTarget.value)} />
+                            <p>{percentage}% Of {inputToken.symbol}'s existing supply</p>
+                        </div>
+                        :
+                        <div>
+                            <div>
+                                <TokenInputRegular noBalance tokens={[inputToken]} selected={inputToken} onElement={(_, b, am) => setAmount(am)} outputValue={fromDecimals(amount, inputToken.decimals, true)} />
+                            </div>
+                        </div>
+                    }
+                </div>
+                {transferType && <>
+                    <div className={style.CreationPageLabelF}>
+                        <h6>Receivers</h6>
+                        <input type="text" value={currentReceiver} onChange={(e) => setCurrentReceiver(e.target.value)} placeholder="Address" aria-label="Receiver" aria-describedby="button-add" />
+                        <a className={style.RoundedButton} onClick={() => {
+                            if (!isEthereumAddress(currentReceiver)) return
+                            const exists = receivers.filter((r) => r.address === currentReceiver).length > 0
+                            if (exists) return
+                            setReceivers(receivers.concat({ address: currentReceiver, percentage: receivers.length === 0 ? 100 : 0 }))
+                            setCurrentReceiver("")
+                        }} type="button" id="button-add">+</a>
+                        <p>Add one or more addresses as receivers from this operation.</p>
+                    </div>
+                    <div >
+                        {receivers.map((receiver, index) => <div className={style.CreationPageLabelF} key={receiver.address}>
+                            <span>{receiver.address}</span>
+                            <a className={style.RoundedButton} onClick={() => setReceivers(receivers.filter((_, i) => i !== index))}>X</a>
+                            {index !== receivers.length - 1 &&
+                                <div>
+                                    <input type="range" min={0} max={100} onChange={(e) => onPercentageChange(index, e.target.value)} value={receiver.percentage} />
+                                    <aside>{receiver.percentage}%</aside>
+                                </div>}
+
+                            {index === receivers.length - 1 && receivers.length !== 1 && <div><span>{receiver.percentage}%</span></div>}
+
+                        </div>)}
+                    </div>
+                </>}
+                <div className={style.WizardFooter}>
+                    <button className={style.WizardFooterBack} onClick={() => setStep(step - 1)}>Back</button>
+                    <button className={style.WizardFooterNext}
+                        onClick={() => !disabled && props.saveEditOperation(getEntry())}
+                        disabled={disabled}
+                    >Add</button>
+                </div>
             </div>
         </div>
-        <div className={style.CreationPageLabelF}>
-            <h6>Transfer</h6>
-            {!enterInETH && <select className={style.CreationSelectW} value={transferType} onChange={e => setTransferType(e.currentTarget.value)}>
-                <option value="">Select type</option>
-                <option value="percentage">Percentage</option>
-                <option value="amount">Amount</option>
-            </select>}
-            {transferType &&
-                transferType == 'percentage' ?
-                    <div>
-                        <input type="range" min={0} max={100} value={percentage} onChange={e => setPercentage(e.currentTarget.value)}/>
-                        <p>{percentage}% Of {inputToken.symbol}'s existing supply</p>
-                    </div>
-                    :
-                    <div>
-                        <div>
-                            <TokenInputRegular noBalance tokens={[inputToken]} selected={inputToken} onElement={(_, b, am) => setAmount(am)} outputValue={fromDecimals(amount, inputToken.decimals, true)}/>
-                        </div>
-                    </div>
-            }
-        </div>
-            {transferType && <>
-                <div className={style.CreationPageLabelF}>
-                    <h6>Receivers</h6>
-                    <input type="text" value={currentReceiver} onChange={(e) => setCurrentReceiver(e.target.value)}  placeholder="Address" aria-label="Receiver" aria-describedby="button-add"/>
-                    <a className={style.RoundedButton}  onClick={() => {
-                        if (!isEthereumAddress(currentReceiver)) return
-                        const exists = receivers.filter((r) => r.address === currentReceiver).length> 0
-                        if (exists) return
-                        setReceivers(receivers.concat({ address: currentReceiver, percentage: receivers.length === 0 ? 100 : 0 }))
-                        setCurrentReceiver("")
-                    }} type="button" id="button-add">+</a>
-                    <p>Add one or more addresses as receivers from this operation.</p>
-                </div>
-                <div>
-                    {receivers.map((receiver, index) => <div className={style.CreationPageLabelF} key={receiver.address}>
-                        <span>{receiver.address}</span>
-                        <a className={style.RoundedButton} onClick={() => setReceivers(receivers.filter((_, i) => i !== index))}>X</a>
-                        {index !== receivers.length - 1 &&
-                        <div>
-                            <input type="range" min={0} max={100} onChange={(e) => onPercentageChange(index, e.target.value)}  value={receiver.percentage}/>
-                            <aside>{receiver.percentage}%</aside>
-                        </div>}
-
-                        {index === receivers.length - 1 && receivers.length !== 1 && <div><span>{receiver.percentage}%</span></div>}
-
-                    </div>)}
-                </div>
-            </>}
-        </>
     }
 
     function onTransferChange(e) {
@@ -352,14 +411,14 @@ export default props => {
         setExitInETH(false)
     }
 
-    const getSwapThirdStep = () => {
+    const getSwapThirdStep = (disabled) => {
         return <>
             <div className={style.FancyExplanationCreate}>
-                    <h6>Manage Operations</h6>
-                    <p className={style.BreefRecapB}>A routine contract can trigger a set of operation on every execution. Operations can be about trasfering Items, tokens or ETH to one or more addresses or swap  Items, tokens or ETH and send the resul to one or more addresses.</p>
-                    <div className={style.proggressCreate}>
-                        <div className={style.proggressCreatePerch} style={{width: "60%"}}>Step 3 of 5</div>
-                    </div>
+                <h6>Manage Operations</h6>
+                <p className={style.BreefRecapB}>A routine contract can trigger a set of operation on every execution. Operations can be about trasfering Items, tokens or ETH to one or more addresses or swap  Items, tokens or ETH and send the resul to one or more addresses.</p>
+                <div className={style.proggressCreate}>
+                    <div className={style.proggressCreatePerch} style={{ width: "60%" }}>Step 3 of 5</div>
+                </div>
             </div>
             <div className={style.CreationPageLabelF}>
                 <h6>Swap</h6>
@@ -374,69 +433,69 @@ export default props => {
                 {
                     transferType ?
                         transferType == 'percentage' ?
-                        <div>
-                            <input type="range" min={0} max={100} value={percentage} onChange={(e) => setPercentage(e.target.value)}/>
-                            <p>{percentage}% Of {inputToken.symbol}'s existing supply</p>
-                        </div>
+                            <div>
+                                <input type="range" min={0} max={100} value={percentage} onChange={(e) => setPercentage(e.target.value)} />
+                                <p>{percentage}% Of {inputToken.symbol}'s existing supply</p>
+                            </div>
                             :
                             <div>
                                 <div>
-                                    <TokenInputRegular noBalance tokens={[inputToken]} selected={inputToken} onElement={(_, b, am) => setAmount(am)} outputValue={fromDecimals(amount, inputToken.decimals, true)}/>
+                                    <TokenInputRegular noBalance tokens={[inputToken]} selected={inputToken} onElement={(_, b, am) => setAmount(am)} outputValue={fromDecimals(amount, inputToken.decimals, true)} />
                                 </div>
                             </div>
-                        : <div/>
+                        : <div />
                 }
             </div>
             {transferType && <div className={style.CreationPageLabelF}>
-            {transferType && loading && <OurCircularProgress/>}
-            {transferType && !loading && pathTokens.map((pathToken, index) => {
-                var realInputToken = web3Utils.toChecksumAddress(enterInETH ? amm.ethAddress : inputToken.address)
-                var lastOutputToken = web3Utils.toChecksumAddress(pathTokens.length === 1 ? realInputToken : pathTokens[pathTokens.length - 2].outputTokenAddress)
-                return <Fragment key={pathToken.address}>
-                    {pathToken && <div>
-                        <span>{pathToken.symbol} | {pathToken.symbols.map((symbol) => <span> {symbol} </span>)}</span> {index === pathTokens.length - 1 ? <a className={style.RoundedButton}  onClick={() => removePathTokens(index)}>x</a> : <div/>}
-                    </div>}
-                    <div>
-                        <select className={style.CreationSelectW} value={pathToken.outputTokenAddress} disabled={index !== pathTokens.length - 1} onChange={e => setPathTokens(pathTokens.map((pt, i) => i === index ? { ...pt, outputTokenAddress: e.target.value } : pt))}>
-                            {pathToken.lpTokensAddresses.filter(it => index !== pathTokens.length - 1 ? true : web3Utils.toChecksumAddress(it) !== lastOutputToken).map(lpTokenAddress => <option value={lpTokenAddress}>{pathToken.symbols[pathToken.lpTokensAddresses.indexOf(lpTokenAddress)]}</option>)}
-                        </select>
-                    </div>
-                </Fragment>
-            })}
+                {transferType && loading && <OurCircularProgress />}
+                {transferType && !loading && pathTokens.map((pathToken, index) => {
+                    var realInputToken = web3Utils.toChecksumAddress(enterInETH ? amm.ethAddress : inputToken.address)
+                    var lastOutputToken = web3Utils.toChecksumAddress(pathTokens.length === 1 ? realInputToken : pathTokens[pathTokens.length - 2].outputTokenAddress)
+                    return <Fragment key={pathToken.address}>
+                        {pathToken && <div>
+                            <span>{pathToken.symbol} | {pathToken.symbols.map((symbol) => <span> {symbol} </span>)}</span> {index === pathTokens.length - 1 ? <a className={style.RoundedButton} onClick={() => removePathTokens(index)}>x</a> : <div />}
+                        </div>}
+                        <div>
+                            <select className={style.CreationSelectW} value={pathToken.outputTokenAddress} disabled={index !== pathTokens.length - 1} onChange={e => setPathTokens(pathTokens.map((pt, i) => i === index ? { ...pt, outputTokenAddress: e.target.value } : pt))}>
+                                {pathToken.lpTokensAddresses.filter(it => index !== pathTokens.length - 1 ? true : web3Utils.toChecksumAddress(it) !== lastOutputToken).map(lpTokenAddress => <option value={lpTokenAddress}>{pathToken.symbols[pathToken.lpTokensAddresses.indexOf(lpTokenAddress)]}</option>)}
+                            </select>
+                        </div>
+                    </Fragment>
+                })}
                 <h6>Path</h6>
-                <PoolCheck placeholder={"Pool Address"} deleteAfterInsert={true} onClick={onAddPathToken} text={"+"}/>
+                <PoolCheck placeholder={"Pool Address"} deleteAfterInsert={true} onClick={onAddPathToken} text={"+"} />
                 <p>Insert the address of the Liquidity Pool where the swap operation will occur</p>
             </div>}
 
             {transferType && <>
-            <div className={style.CreationPageLabelF}>
-                <h6>Receivers</h6>
-                    <input type="text" value={currentReceiver} onChange={(e) => setCurrentReceiver(e.target.value)}  placeholder="Address" aria-label="Receiver" aria-describedby="button-add"/>
+                <div className={style.CreationPageLabelF}>
+                    <h6>Receivers</h6>
+                    <input type="text" value={currentReceiver} onChange={(e) => setCurrentReceiver(e.target.value)} placeholder="Address" aria-label="Receiver" aria-describedby="button-add" />
                     <a className={style.RoundedButton} onClick={() => {
-                        const exists = receivers.filter((r) => r.address === currentReceiver).length> 0
+                        const exists = receivers.filter((r) => r.address === currentReceiver).length > 0
                         if (exists) return
                         setReceivers(receivers.concat({ address: currentReceiver, percentage: receivers.length === 0 ? 100 : 0 }))
                         setCurrentReceiver("")
                     }} type="button" id="button-add">+</a>
-                     <p>Add one or more addresses as receivers from this operation.</p>
-            </div>
+                    <p>Add one or more addresses as receivers from this operation.</p>
+                </div>
                 <div>
                     {
-                    receivers.map((receiver, index) => {
-                        return (
-                            <div className={style.CreationPageLabelF} key={receiver.address}>
-                                <span>{receiver.address}</span>
-                                <a  className={style.RoundedButton} onClick={() => setReceivers(receivers.filter((_, i) => i !== index))}>X</a>
-                                {index !== receivers.length - 1 &&
-                                <div>
-                                    <input type="range" min={0} max={100} onChange={(e) => onPercentageChange(index, e.target.value)}  value={receiver.percentage}/>
-                                    <aside>{receiver.percentage}%</aside>
-                                </div>}
-                                {index === receivers.length - 1 && receivers.length !== 1 && <span>{receiver.percentage}%</span>}
-                            </div>
-                        )
-                    })
-                }
+                        receivers.map((receiver, index) => {
+                            return (
+                                <div className={style.CreationPageLabelF} key={receiver.address}>
+                                    <span>{receiver.address}</span>
+                                    <a className={style.RoundedButton} onClick={() => setReceivers(receivers.filter((_, i) => i !== index))}>X</a>
+                                    {index !== receivers.length - 1 &&
+                                        <div>
+                                            <input type="range" min={0} max={100} onChange={(e) => onPercentageChange(index, e.target.value)} value={receiver.percentage} />
+                                            <aside>{receiver.percentage}%</aside>
+                                        </div>}
+                                    {index === receivers.length - 1 && receivers.length !== 1 && <span>{receiver.percentage}%</span>}
+                                </div>
+                            )
+                        })
+                    }
                 </div>
             </>}
         </>
@@ -445,19 +504,13 @@ export default props => {
     const getThirdStep = () => {
         var disabled = (!amount && !percentage) || !transferType || receivers.length === 0 || !isValidPercentage() || (actionType === 'swap' && pathTokens.length === 0)
         return <div className={style.CreatePage}>
-            {actionType === 'transfer' ? getTransferThirdStep() : getSwapThirdStep()}
-            <div className={style.ActionBTNCreateX}>
-                <a className={style.Web3BackBTN} onClick={() => setStep(step - 1)}>Back</a>
-                <a className={style.RegularButton}
-                    onClick={() => !disabled && props.saveEditOperation(getEntry())}
-                    disabled={disabled}
-               >Add</a>
-            </div>
+            {actionType === 'transfer' ? getTransferThirdStep(disabled) : getSwapThirdStep(disabled)}
+           
         </div>
     }
 
     const getFourthStep = () => {
-        return <div/>
+        return <div />
     }
 
     return getStep()
