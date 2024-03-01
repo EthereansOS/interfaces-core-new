@@ -7,6 +7,8 @@ function resolveCID(link) {
     var key = 'eth3r34n5'
     prefix = `${key}${window.isLocal ? 'dev' : ''}.infura-ipfs.io`
     prefix = 'ipfs.io'
+    prefix = 'ethereansos.quicknode-ipfs.com'
+    prefix = window.ipfsPrefix || prefix
     return 'https://' + prefix + '/ipfs/' + cid
 }
 
