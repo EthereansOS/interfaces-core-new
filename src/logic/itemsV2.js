@@ -1020,7 +1020,13 @@ export async function loadDeckItem(data, itemId, item) {
 
     const tokenId = abi.decode(["uint256"], logs[0].topics[2])[0].toString()
 
-    const collection = dualChainId ? { imageUrl : item.image } : (await seaport.api.getAsset({ tokenAddress : originalAddress, tokenId })).collection
+    var collection = { imageUrl : item.image }
+
+    if(!dualChainId) {
+        try {
+            collection = (await seaport.api.getAsset({ tokenAddress : originalAddress, tokenId })).collection
+        } catch(e) {}
+    }
 
     item = {
         ...item,
