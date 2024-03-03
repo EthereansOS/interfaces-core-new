@@ -61,6 +61,7 @@ const AppRouter = () => {
     window.web3 = web3Data.web3 || window.web3 || new window.Web3()
     window.getRawField = window.getRawField || getRawField
     window.getLogs = window.getLogs || getLogs
+    window.resolveCID = window.resolveCID || resolveCID
     window.setAndUnlockAccount = window.setAndUnlockAccount || function setAndUnlockAccount(acc, customProvider) {
       window.sessionStorage.removeItem("unlockedAccount")
       window.sessionStorage.removeItem("customProvider")

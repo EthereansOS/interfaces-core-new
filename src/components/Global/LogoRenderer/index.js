@@ -50,7 +50,7 @@ export default ({input, figureClassName, noFigure, title, defaultImage, noDotLin
                 var result = await cache.getItem(image)
                 if(result === "null") {
                     try {
-                        result = await (await fetch(context.urlCacheResolver + encodeURIComponent(image))).text()
+                        result = await (await fetch(context.urlCacheResolver.split('?').join('?raw=true&') + encodeURIComponent(image))).text()
                         await cache.setItem(image, result = 'data:application/octet-stream;base64,' + result)
                     } catch(e) {
                         result = "false"
@@ -112,7 +112,7 @@ export default ({input, figureClassName, noFigure, title, defaultImage, noDotLin
 
     src = src ? src.split('ethereans.mypinata.cloud').join('ipfs.io') : src
 
-    src = src && src.indexOf('ipfs') !== -1 ? resolveCID(src) : src
+    src = src && src.indexOf('ipfs') !== -1 ? resolveCID(src, true) : src
 
     var img = <img title={title} style={ (finalImage === null || loading) ? {"display" : "none"} : {}} src={src} onLoad={() => setLoading(false)} onError={onLoadError}/>
 
