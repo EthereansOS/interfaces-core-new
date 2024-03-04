@@ -523,7 +523,8 @@ async function cleanItemData(data, itemData, metadata) {
         ...metadata,
         metadata,
         address : itemData.address,
-        id : itemData.id
+        id : itemData.id,
+        contract : itemData.id ? itemData.contract : (metadata.contract || itemData.contract)
     }
 }
 
