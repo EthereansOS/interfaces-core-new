@@ -269,7 +269,7 @@ const Metadata = ({ value, onChange, onNext, onPrev }) => {
   }, [value, onChange])
 
   const handleBlur = () => {
-    onChange(value) // Assicurati di aggiornare il valore dopo la validazione
+    onChange(value)
   }
 
   useEffect(() => {
@@ -383,6 +383,7 @@ const Metadata = ({ value, onChange, onNext, onPrev }) => {
                   recomended.
                 </p>
               )}
+
               {!triggerTextInput && (
                 <div className={style.imageSelectorContaine}>
                   {!selectedImage && (
@@ -553,7 +554,7 @@ const Confirmation = ({ value, onChange, onNext, onPrev, state }) => {
         }
 
         if (state.metadata.metadataType == 'metadata') {
-          const excludedKeys = ['metadataType', 'image', 'description']
+          const excludedKeys = ['metadataType', 'image', 'description', 'error']
 
           let count = 0
           for (const key in state.metadata) {
@@ -788,7 +789,7 @@ const CreateCollection = ({}) => {
       </div>
       <div className={style.WizardHeader}>
         <h3>
-          Create a new Collection <span>step {step + 1} of 3</span>
+          Create a new Collection <span>step {step + 1} of 4</span>
         </h3>
         <div
           className={style.WizardHeaderDescription}
