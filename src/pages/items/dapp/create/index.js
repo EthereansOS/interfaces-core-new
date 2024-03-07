@@ -37,7 +37,7 @@ const Create = ({}) => {
           </p>
         </div>
         <div className={style.MasCardBody}>
-          <Link className={style.NextStep} to="/items/create/item">
+          <Link className={style.NextStep} to="/items/create/item/">
             Start
           </Link>
           <a
