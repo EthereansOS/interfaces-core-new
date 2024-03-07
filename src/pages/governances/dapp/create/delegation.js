@@ -9,6 +9,7 @@ import {
 import CircularProgress from '../../../../components/Global/OurCircularProgress'
 import style from '../../../../all.module.css'
 import uploadToIPFS from 'interfaces-core/lib/web3/uploadToIPFS'
+import getFileFromBlobURL from 'interfaces-core/lib/web3/getFileFromBlobURL'
 
 const Deploy = ({ back, finalize }) => {
   const context = useEthosContext()
@@ -75,14 +76,14 @@ const Deploy = ({ back, finalize }) => {
     if (selectedImage) {
       metadata.image = await uploadToIPFS(
         { context, ipfsHttpClient },
-        selectedImage
+        await getFileFromBlobURL(selectedImage)
       )
     }
 
     if (selectedTokenImage) {
       metadata.tokenURI = await uploadToIPFS(
         { context, ipfsHttpClient },
-        selectedTokenImage
+        await getFileFromBlobURL(selectedTokenImage)
       )
     }
 

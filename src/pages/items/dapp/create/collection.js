@@ -28,6 +28,7 @@ import Select from 'react-select'
 import uploadToIPFS from 'interfaces-core/lib/web3/uploadToIPFS'
 import { create as createIpfsHttpClient } from 'ipfs-http-client'
 import CircularProgress from '../../../../components/Global/OurCircularProgress'
+import getFileFromBlobURL from 'interfaces-core/lib/web3/getFileFromBlobURL'
 
 function initializeIPFSClient(context) {
   var options = {
@@ -572,7 +573,7 @@ const Confirmation = ({ value, onChange, onNext, onPrev, state }) => {
       if (state?.metadata?.file) {
         state.metadata.image = await uploadToIPFS(
           { context, ipfsHttpClient },
-          state.metadata.file
+          await getFileFromBlobURL(state.metadata.file)
         )
       }
 
