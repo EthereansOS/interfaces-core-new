@@ -2,44 +2,55 @@ import React, { useEffect, useMemo, useState } from 'react'
 
 import { Link, useLocation } from 'react-router-dom'
 import { Style, useEthosContext, useWeb3, web3Utils } from 'interfaces-core'
-import { createDelegation, finalizeDelegation } from '../../../../logic/delegation'
+import {
+  createDelegation,
+  finalizeDelegation,
+} from '../../../../logic/delegation'
 import CircularProgress from '../../../../components/Global/OurCircularProgress'
 import style from '../../../../all.module.css'
+import uploadToIPFS from 'interfaces-core/lib/web3/uploadToIPFS'
 
 const Deploy = ({ back, finalize }) => {
-
   const context = useEthosContext()
 
   const web3Data = useWeb3()
 
-  const { getGlobalContract, newContract, chainId, dualChainId, ipfsHttpClient } = web3Data
+  const {
+    getGlobalContract,
+    newContract,
+    chainId,
+    dualChainId,
+    ipfsHttpClient,
+    web3,
+  } = web3Data
 
-  const [name, setName] = useState("")
-  const [description, setDescription] = useState("")
-  const [ticker, setTicker] = useState("")
-  const [image, setImage] = useState("")
-  const [tokenURI, setTokenURI] = useState("")
-  const [background_color, setBackground_color] = useState("")
-  const [external_url, setExternal_url] = useState("")
-  const [community_url, setCommunity_url] = useState("")
-  const [public_polls, setPublic_polls] = useState("")
-  const [news_url, setNews_url] = useState("")
-  const [blog_url, setBlog_url] = useState("")
+  const [name, setName] = useState('')
+  const [description, setDescription] = useState('')
+  const [ticker, setTicker] = useState('')
+  const [image, setImage] = useState('')
+  const [tokenURI, setTokenURI] = useState('')
+  const [background_color, setBackground_color] = useState('')
+  const [external_url, setExternal_url] = useState('')
+  const [community_url, setCommunity_url] = useState('')
+  const [public_polls, setPublic_polls] = useState('')
+  const [news_url, setNews_url] = useState('')
+  const [blog_url, setBlog_url] = useState('')
   const [selectedImage, setSelectedImage] = useState(null)
   const [triggerTextInput, setTriggerTextInput] = useState(false)
 
   const handleImageChange = (e) => {
     if (e.target.files && e.target.files[0]) {
+      setImage('')
       setSelectedImage(URL.createObjectURL(e.target.files[0]))
     }
   }
-
 
   const [selectedTokenImage, setSelectedTokenImage] = useState(null)
   const [triggerTokenTextInput, setTriggerTokenTextInput] = useState(false)
 
   const handleTokenImageChange = (e) => {
     if (e.target.files && e.target.files[0]) {
+      setTokenURI('')
       setSelectedTokenImage(URL.createObjectURL(e.target.files[0]))
     }
   }
@@ -58,17 +69,39 @@ const Deploy = ({ back, finalize }) => {
       community_url,
       public_polls,
       news_url,
-      blog_url
+      blog_url,
     }
+
+    if (selectedImage) {
+      metadata.image = await uploadToIPFS(
+        { context, ipfsHttpClient },
+        selectedImage
+      )
+    }
+
+    if (selectedTokenImage) {
+      metadata.tokenURI = await uploadToIPFS(
+        { context, ipfsHttpClient },
+        selectedTokenImage
+      )
+    }
+
     if (dualChainId) {
       return finalize(undefined, metadata)
     }
     setLoading(true)
     var errorMessage
     try {
-      finalize(await createDelegation({
-        context, ...web3Data, factoryOfFactories: getGlobalContract("factoryOfFactories")
-      }, metadata))
+      finalize(
+        await createDelegation(
+          {
+            context,
+            ...web3Data,
+            factoryOfFactories: getGlobalContract('factoryOfFactories'),
+          },
+          metadata
+        )
+      )
     } catch (e) {
       errorMessage = e.message || e
     }
@@ -76,11 +109,10 @@ const Deploy = ({ back, finalize }) => {
     errorMessage && setTimeout(() => alert(errorMessage))
   }
 
-  var step = 0;
+  var step = 0
 
   return (
     <>
-
       <div className={style.WizardStepsList}>
         <ul>
           <li className={step === 0 ? style.WizardStepsListActive : ''}>
@@ -94,7 +126,8 @@ const Deploy = ({ back, finalize }) => {
           Create a new Delegation <span>step 1 of 1</span>
         </h3>
         <div className={style.WizardHeaderDescription}>
-          An independent political party that can compete for grant funding from one or more Organizations
+          An independent political party that can compete for grant funding from
+          one or more Organizations
         </div>
         <div className={style.WizardProgress}>
           <div
@@ -112,38 +145,58 @@ const Deploy = ({ back, finalize }) => {
         <label className={style.CreationPageLabelF}>
           <h6>Name*</h6>
           <p>Choose an unique name for your Delegation</p>
-          <input type="text" value={name} onChange={e => setName(e.currentTarget.value)} />
+          <input
+            type="text"
+            value={name ?? ''}
+            onChange={(e) => setName(e.currentTarget.value)}
+          />
         </label>
         <label className={style.CreationPageLabelF}>
           <h6>Description</h6>
           <p>Enter the description of your Delegation</p>
-          <textarea value={description} onChange={e => setDescription(e.currentTarget.value)} />
+          <textarea
+            value={description ?? ''}
+            onChange={(e) => setDescription(e.currentTarget.value)}
+          />
         </label>
         <div className={style.CreationPageLabelFDivide}>
           <label className={style.CreationPageLabelF}>
             <h6>Community link</h6>
             <p>Insert Discord or Telegram link</p>
-            <input type="link" value={community_url} onChange={e => setCommunity_url(e.currentTarget.value)} />
+            <input
+              type="link"
+              value={community_url ?? ''}
+              onChange={(e) => setCommunity_url(e.currentTarget.value)}
+            />
           </label>
           <label className={style.CreationPageLabelF}>
             <h6>News link</h6>
             <p>A place to discuss your Delegation</p>
-            <input type="link" value={news_url} onChange={e => setNews_url(e.currentTarget.value)} />
-
+            <input
+              type="link"
+              value={news_url ?? ''}
+              onChange={(e) => setNews_url(e.currentTarget.value)}
+            />
           </label>
         </div>
         <div className={style.CreationPageLabelFDivide}>
           <label className={style.CreationPageLabelF}>
             <h6>Blog link</h6>
             <p>A place to discuss your Delegation</p>
-            <input type="link" value={blog_url} onChange={e => setBlog_url(e.currentTarget.value)} />
-
+            <input
+              type="link"
+              value={blog_url ?? ''}
+              onChange={(e) => setBlog_url(e.currentTarget.value)}
+            />
           </label>
           <label className={style.CreationPageLabelF}>
             <h6>Token Name</h6>
             <p>The token name of your Delegation</p>
-            <input type="text" value={ticker} onChange={e => setTicker(e.currentTarget.value)} />
-
+            <input
+              type="text"
+              value={ticker ?? ''}
+              onChange={(e) => setTicker(e.currentTarget.value)}
+            />
           </label>
         </div>
         <div className={style.CreationPageLabelFDivide}>
@@ -201,15 +254,20 @@ const Deploy = ({ back, finalize }) => {
               <input
                 type="link"
                 placeholder="Delegation Logo URL"
-                onChange={(e) => { }}
+                onChange={(e) => setImage(e.currentTarget.value)}
+                onBlur={(e) => setImage(e.currentTarget.value)}
+                value={image ?? ''}
               />
             )}
           </label>
           <label className={style.CreationPageLabelF}>
             <h6>Website</h6>
             <p>The official website of your Delegation</p>
-            <input type="link" value={external_url} onChange={e => setExternal_url(e.currentTarget.value)} />
-
+            <input
+              type="link"
+              value={external_url ?? ''}
+              onChange={(e) => setExternal_url(e.currentTarget.value)}
+            />
           </label>
         </div>
         <div className={style.CreationPageLabelFDivide}>
@@ -238,7 +296,8 @@ const Deploy = ({ back, finalize }) => {
             )}
             {triggerTokenTextInput && (
               <p>
-                A valid link for your Delegation's token logo. Square size recomended.
+                A valid link for your Delegation's token logo. Square size
+                recomended.
               </p>
             )}
             {!triggerTokenTextInput && (
@@ -267,29 +326,51 @@ const Deploy = ({ back, finalize }) => {
               <input
                 type="link"
                 placeholder="Delegation Token Logo URL"
-                onChange={(e) => { }}
+                onChange={(e) => setTokenURI(e.currentTarget.value)}
+                value={tokenURI ?? ''}
+                onBlur={(e) => setTokenURI(e.currentTarget.value)}
               />
             )}
-
           </label>
           <label className={style.CreationPageLabelF}>
             <h6>Logo Background</h6>
             <p>The background color of your Delegation’s logo</p>
-            <input type="color" value="#ffffff" style={{'width': '100%'}} onChange={e => setBackground_color(e.currentTarget.value)} />
-
+            <input
+              type="color"
+              value="#ffffff"
+              style={{ width: '100%' }}
+              onChange={(e) => setBackground_color(e.currentTarget.value)}
+            />
           </label>
         </div>
         <label className={style.CreationPageLabelF}>
           <h6>Public polls</h6>
-          <div style={{ 'textAlign': 'left' }}>
-            <input type="checkbox" style={{ 'width': 'auto', 'margin': '10px 0px' }} onChange={e => setPublic_polls(e.currentTarget.checked)} checked={public_polls} />
+          <div style={{ textAlign: 'left' }}>
+            <input
+              type="checkbox"
+              style={{ width: 'auto', margin: '10px 0px' }}
+              onChange={(e) => setPublic_polls(e.currentTarget.checked)}
+              checked={public_polls}
+            />
           </div>
-          <p>Public Polls (coming soon): If selected, all polls that involve this Delegation will appear on the Delegation’s page. If not, only polls created by the Delegation’s host will.</p>
+          <p>
+            Public Polls (coming soon): If selected, all polls that involve this
+            Delegation will appear on the Delegation’s page. If not, only polls
+            created by the Delegation’s host will.
+          </p>
         </label>
         <div className={style.WizardFooter}>
           {loading && <CircularProgress />}
-          {(!loading && step != 0) && <button className={style.WizardFooterBack} onClick={back}>Back</button>}
-          {!loading && <button className={style.WizardFooterNext} onClick={deploy}>{dualChainId ? "Next" : "Deploy"}</button>}
+          {!loading && step != 0 && (
+            <button className={style.WizardFooterBack} onClick={back}>
+              Back
+            </button>
+          )}
+          {!loading && (
+            <button className={style.WizardFooterNext} onClick={deploy}>
+              {dualChainId ? 'Next' : 'Deploy'}
+            </button>
+          )}
         </div>
       </div>
     </>
@@ -297,23 +378,31 @@ const Deploy = ({ back, finalize }) => {
 }
 
 const Duration = ({ value, onChange }) => {
-
   const context = useEthosContext()
 
-  return <select value={value} onChange={e => onChange(parseInt(e.currentTarget.value))}>
-    {Object.entries(context.timeIntervals).map(it => <option key={it[0]} value={it[1]}>{it[0]}</option>)}
-  </select>
+  return (
+    <select
+      value={value}
+      onChange={(e) => onChange(parseInt(e.currentTarget.value))}>
+      {Object.entries(context.timeIntervals).map((it) => (
+        <option key={it[0]} value={it[1]}>
+          {it[0]}
+        </option>
+      ))}
+    </select>
+  )
 }
 
 const Finalize = ({ back, success, cumulativeData }) => {
-
   const context = useEthosContext()
 
   const web3Data = useWeb3()
 
   const { getGlobalContract, newContract, chainId, dualChainId } = web3Data
 
-  const [delegationAddress, setDelegationAddress] = useState(cumulativeData?.delegationAddress)
+  const [delegationAddress, setDelegationAddress] = useState(
+    cumulativeData?.delegationAddress
+  )
   const [quorumPercentage, setQuorumPercentage] = useState(0)
   const [hardCapPercentage, setHardcapPercentage] = useState(0)
   const [blockLength, setBlockLength] = useState(0)
@@ -322,7 +411,13 @@ const Finalize = ({ back, success, cumulativeData }) => {
 
   const [loading, setLoading] = useState(false)
 
-  const showValidationBombWarning = useMemo(() => validationBomb && blockLength ? parseInt(validationBomb) <= parseInt(blockLength) : undefined, [blockLength, validationBomb])
+  const showValidationBombWarning = useMemo(
+    () =>
+      validationBomb && blockLength
+        ? parseInt(validationBomb) <= parseInt(blockLength)
+        : undefined,
+    [blockLength, validationBomb]
+  )
 
   async function finalize() {
     setLoading(true)
@@ -330,23 +425,36 @@ const Finalize = ({ back, success, cumulativeData }) => {
     try {
       var delAddr = delegationAddress
       if (delAddr) {
-        await finalizeDelegation({ context, chainId, newContract, factoryOfFactories: getGlobalContract("factoryOfFactories") },
+        await finalizeDelegation(
+          {
+            context,
+            chainId,
+            newContract,
+            factoryOfFactories: getGlobalContract('factoryOfFactories'),
+          },
           delegationAddress,
           host,
           quorumPercentage,
           validationBomb,
           blockLength,
-          hardCapPercentage)
+          hardCapPercentage
+        )
       } else {
-        delAddr = await createDelegation({
-          context, ...web3Data, factoryOfFactories: getGlobalContract("factoryOfFactories")
-        }, cumulativeData.metadata, {
-          host,
-          quorum: quorumPercentage,
-          validationBomb,
-          votePeriod: blockLength,
-          hardCap: hardCapPercentage
-        })
+        delAddr = await createDelegation(
+          {
+            context,
+            ...web3Data,
+            factoryOfFactories: getGlobalContract('factoryOfFactories'),
+          },
+          cumulativeData.metadata,
+          {
+            host,
+            quorum: quorumPercentage,
+            validationBomb,
+            votePeriod: blockLength,
+            hardCap: hardCapPercentage,
+          }
+        )
       }
 
       success(delAddr)
@@ -362,45 +470,123 @@ const Finalize = ({ back, success, cumulativeData }) => {
       <div className={style.FancyExplanationCreate}>
         <h6>Governance Rules</h6>
         <div className={style.proggressCreate}>
-          <div className={style.proggressCreatePerchLast} style={{ width: "100%" }}>Step 2 of 2</div>
+          <div
+            className={style.proggressCreatePerchLast}
+            style={{ width: '100%' }}>
+            Step 2 of 2
+          </div>
         </div>
       </div>
-      {!dualChainId && <label className={style.CreationPageLabelF}>
-        <h6>Delegation address</h6>
-        <input type="text" value={delegationAddress} onChange={e => setDelegationAddress(e.currentTarget.value)} />
-      </label>}
+      {!dualChainId && (
+        <label className={style.CreationPageLabelF}>
+          <h6>Delegation address</h6>
+          <input
+            type="text"
+            value={delegationAddress ?? ''}
+            onChange={(e) => setDelegationAddress(e.currentTarget.value)}
+          />
+        </label>
+      )}
       <label className={style.CreationPageLabelF}>
         <h6>Host</h6>
-        <input type="text" value={host} onChange={e => setHost(e.currentTarget.value)} />
-        <p>This is the address (wallet, MultiSig, Organization or contract) that manages this Delegation. The host is able to create proposals to spend funds, change metadata and change governance rules.</p>
+        <input
+          type="text"
+          value={host ?? ''}
+          onChange={(e) => setHost(e.currentTarget.value)}
+        />
+        <p>
+          This is the address (wallet, MultiSig, Organization or contract) that
+          manages this Delegation. The host is able to create proposals to spend
+          funds, change metadata and change governance rules.
+        </p>
       </label>
       <label className={style.CreationPageLabelF}>
         <h6>Survey Duration</h6>
-        {!dualChainId && <input type="number" value={blockLength} onChange={e => setBlockLength(e.currentTarget.value)} />}
-        {dualChainId && <Duration value={blockLength} onChange={value => setBlockLength(value)} />}
-        <p>The duration (in {dualChainId ? "seconds" : "blocks"}) that Proposals will be open for.</p>
+        {!dualChainId && (
+          <input
+            type="number"
+            value={blockLength}
+            onChange={(e) => setBlockLength(e.currentTarget.value)}
+          />
+        )}
+        {dualChainId && (
+          <Duration
+            value={blockLength}
+            onChange={(value) => setBlockLength(value)}
+          />
+        )}
+        <p>
+          The duration (in {dualChainId ? 'seconds' : 'blocks'}) that Proposals
+          will be open for.
+        </p>
       </label>
       <label className={style.CreationPageLabelF}>
         <h6>Validation Bomb</h6>
-        {!dualChainId && <input type="number" value={validationBomb} onChange={e => setValidationBomb(e.currentTarget.value)} />}
-        {dualChainId && <Duration value={validationBomb} onChange={value => setValidationBomb(value)} />}
-        <p>An optional duration (in {dualChainId ? "seconds" : "blocks"}) after which a passed Proposal can never be executed. If set as zero, there is no time before which a Proposal can be executed.</p>
-        {showValidationBombWarning && <h6>WARNING: Validation Bomb must be higher than Survey Duration</h6>}
+        {!dualChainId && (
+          <input
+            type="number"
+            value={validationBomb}
+            onChange={(e) => setValidationBomb(e.currentTarget.value)}
+          />
+        )}
+        {dualChainId && (
+          <Duration
+            value={validationBomb}
+            onChange={(value) => setValidationBomb(value)}
+          />
+        )}
+        <p>
+          An optional duration (in {dualChainId ? 'seconds' : 'blocks'}) after
+          which a passed Proposal can never be executed. If set as zero, there
+          is no time before which a Proposal can be executed.
+        </p>
+        {showValidationBombWarning && (
+          <h6>WARNING: Validation Bomb must be higher than Survey Duration</h6>
+        )}
       </label>
       <label className={style.CreationPageLabelF}>
-        <h6>Quorum {quorumPercentage || "0"}%</h6>
-        <input className={style.perchentageThing} type="range" min="0" max="100" value={quorumPercentage} onChange={e => setQuorumPercentage(e.currentTarget.value)} />
-        <p>A minimum amount of votes (calculated as a percentage of the Delegation token’s total supply) required for a Proposal to pass.</p>
+        <h6>Quorum {quorumPercentage || '0'}%</h6>
+        <input
+          className={style.perchentageThing}
+          type="range"
+          min="0"
+          max="100"
+          value={quorumPercentage}
+          onChange={(e) => setQuorumPercentage(e.currentTarget.value)}
+        />
+        <p>
+          A minimum amount of votes (calculated as a percentage of the
+          Delegation token’s total supply) required for a Proposal to pass.
+        </p>
       </label>
       <label className={style.CreationPageLabelF}>
-        <h6>Hard Cap {hardCapPercentage || "0"}%</h6>
-        <input className={style.perchentageThing} type="range" min="0" max="100" value={hardCapPercentage} onChange={e => setHardcapPercentage(e.currentTarget.value)} />
-        <p>An optional minimum amount of votes (calculated as a percentage of the Delegation token’s total supply) required to end a Proposal, regardless of how long it is still set to remain open.</p>
+        <h6>Hard Cap {hardCapPercentage || '0'}%</h6>
+        <input
+          className={style.perchentageThing}
+          type="range"
+          min="0"
+          max="100"
+          value={hardCapPercentage}
+          onChange={(e) => setHardcapPercentage(e.currentTarget.value)}
+        />
+        <p>
+          An optional minimum amount of votes (calculated as a percentage of the
+          Delegation token’s total supply) required to end a Proposal,
+          regardless of how long it is still set to remain open.
+        </p>
       </label>
       <div className={style.ActionDeploy}>
         {loading && <CircularProgress />}
-        {!loading && <a className={style.Web3BackBTN} onClick={back}>Back</a>}
-        {!loading && <a className={style.Web3CustomBTN} onClick={finalize}>{dualChainId ? "Deploy" : "Finalize"}</a>}
+        {!loading && (
+          <a className={style.Web3BackBTN} onClick={back}>
+            Back
+          </a>
+        )}
+        {!loading && (
+          <a className={style.Web3CustomBTN} onClick={finalize}>
+            {dualChainId ? 'Deploy' : 'Finalize'}
+          </a>
+        )}
       </div>
     </div>
   )
@@ -410,58 +596,79 @@ const Success = ({ cumulativeData }) => {
   return (
     <div>
       <h6>&#127881; &#127881; Delegation Created! &#127881; &#127881;</h6>
-      <p><b>And Now?</b></p>
+      <p>
+        <b>And Now?</b>
+      </p>
       <label className={style.CreationPageLabelF}>
-        <h6><Link to={`/organizations/delegations/${cumulativeData.delegationAddress}`}>Explore your Delegation</Link></h6>
+        <h6>
+          <Link
+            to={`/organizations/delegations/${cumulativeData.delegationAddress}`}>
+            Explore your Delegation
+          </Link>
+        </h6>
       </label>
     </div>
   )
 }
 
-const DelegationsCreate = ({ }) => {
-
+const DelegationsCreate = ({}) => {
   const { pathname } = useLocation()
 
   const [cumulativeData, setCumulativeData] = useState({
-    step: 'deploy'
+    step: 'deploy',
   })
 
   useEffect(() => {
     try {
       var delegationAddress = pathname.split('/')
       var index = delegationAddress.length - 1
-      if (delegationAddress[index] === "") {
+      if (delegationAddress[index] === '') {
         index--
       }
       delegationAddress = delegationAddress[index]
       delegationAddress = web3Utils.toChecksumAddress(delegationAddress)
-      setCumulativeData(oldValue => ({ ...oldValue, delegationAddress, step: 'finalize' }))
-    } catch (e) { }
+      setCumulativeData((oldValue) => ({
+        ...oldValue,
+        delegationAddress,
+        step: 'finalize',
+      }))
+    } catch (e) {}
   }, [pathname])
 
   var steps = {
-    deploy: () => <Deploy
-      finalize={(delegationAddress, metadata) => setCumulativeData(oldValue => ({ ...oldValue, delegationAddress, metadata, step: 'finalize' }))}
-    />,
-    finalize: () => <Finalize
-      cumulativeData={cumulativeData}
-      back={() => setCumulativeData({ step: 'deploy' })}
-      success={delegationAddress => setCumulativeData(oldValue => ({ ...oldValue, delegationAddress, step: 'success' }))}
-    />,
-    success: () => <Success
-      cumulativeData={cumulativeData}
-    />
+    deploy: () => (
+      <Deploy
+        finalize={(delegationAddress, metadata) =>
+          setCumulativeData((oldValue) => ({
+            ...oldValue,
+            delegationAddress,
+            metadata,
+            step: 'finalize',
+          }))
+        }
+      />
+    ),
+    finalize: () => (
+      <Finalize
+        cumulativeData={cumulativeData}
+        back={() => setCumulativeData({ step: 'deploy' })}
+        success={(delegationAddress) =>
+          setCumulativeData((oldValue) => ({
+            ...oldValue,
+            delegationAddress,
+            step: 'success',
+          }))
+        }
+      />
+    ),
+    success: () => <Success cumulativeData={cumulativeData} />,
   }
 
-  return (
-    <div className={style.CreatePage}>
-      {steps[cumulativeData.step]()}
-    </div>
-  )
+  return <div className={style.CreatePage}>{steps[cumulativeData.step]()}</div>
 }
 
 DelegationsCreate.menuVoice = {
-  path: '/organizations/create/delegation'
+  path: '/organizations/create/delegation',
 }
 
 export default DelegationsCreate
