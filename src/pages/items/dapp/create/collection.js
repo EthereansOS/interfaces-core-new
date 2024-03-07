@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 
 import ActionAWeb3Button from '../../../../components/Global/ActionAWeb3Button'
 
@@ -24,6 +24,21 @@ import { Link, useHistory } from 'react-router-dom'
 import getCurrentAddress from 'interfaces-core/lib/web3/getCurrentAddress'
 
 import Select from 'react-select'
+
+import uploadToIPFS from 'interfaces-core/lib/web3/uploadToIPFS'
+import { create as createIpfsHttpClient } from 'ipfs-http-client'
+import CircularProgress from '../../../../components/Global/OurCircularProgress'
+
+function initializeIPFSClient(context) {
+  var options = {
+    ...context.infuraIPFSOptions,
+    headers: {
+      authorization: 'Basic ' + context.infuraAPIKey,
+    },
+  }
+  var client = createIpfsHttpClient(options)
+  return client
+}
 
 const NameAndSymbol = ({ value, onChange, onNext, onPrev }) => {
   const [disabled, setDisabled] = useState()
@@ -223,7 +238,11 @@ function extractFile(files) {
 
 const Metadata = ({ value, onChange, onNext, onPrev }) => {
   const context = useEthosContext()
+  const ipfsHttpClient = useMemo(() => initializeIPFSClient(context), [context])
   const background_color_default = '#6f6fae'
+  const [disabled, setDisabled] = useState()
+  const [selectedImage, setSelectedImage] = useState(null)
+  const [triggerTextInput, setTriggerTextInput] = useState(false)
 
   useEffect(() => {
     if (!value?.metadataType) {
@@ -263,6 +282,7 @@ const Metadata = ({ value, onChange, onNext, onPrev }) => {
           }
         }
       }
+      value.file = selectedImage ?? null
 
       setDisabled(!checkCollectionMetadata(value))
     }
@@ -289,15 +309,23 @@ const Metadata = ({ value, onChange, onNext, onPrev }) => {
     })
   }, [value, onChange])
 
-  const [disabled, setDisabled] = useState()
-  const [selectedImage, setSelectedImage] = useState(null)
-  const [triggerTextInput, setTriggerTextInput] = useState(false)
-
-  const handleImageChange = (e) => {
+  const handleImageChange = async (e) => {
     if (e.target.files && e.target.files[0]) {
+      value.image = ''
       setSelectedImage(URL.createObjectURL(e.target.files[0]))
+      value.file = selectedImage ?? null
+      value.image = selectedImage == null ? value?.image : ''
     }
+    setDisabled(!checkCollectionMetadata(value))
   }
+
+  useEffect(() => {
+    if (value) {
+      value.file = selectedImage ?? null
+      value.image = selectedImage == null ? value?.image : ''
+    }
+    setDisabled(!checkCollectionMetadata(value))
+  }, [selectedImage, onChange])
 
   return (
     <div className={style.CreationPageLabel}>
@@ -527,7 +555,48 @@ const ColorPicker = (props) => {
 }
 
 const Confirmation = ({ value, onChange, onNext, onPrev, state }) => {
+  const context = useEthosContext()
+  const ipfsHttpClient = useMemo(() => initializeIPFSClient(context), [context])
+  const { chainId, web3 } = useWeb3()
   const [isMetadataListOdd, setIsMetadataListOdd] = useState(true)
+  const { getGlobalContract } = useWeb3()
+  const [success, setSuccess] = useState(null)
+  const [loading, setLoading] = useState(false)
+  const [collectionId, setCollectionId] = useState()
+  const history = useHistory()
+
+  const prepareDeploy = async () => {
+    setLoading(true)
+    var errorMessage
+    try {
+      if (state?.metadata?.file) {
+        state.metadata.image = await uploadToIPFS(
+          { context, ipfsHttpClient },
+          state.metadata.file
+        )
+      }
+
+      if (state?.metadata) {
+        delete state.metadata.error
+        delete state.metadata.file
+      }
+
+      const result = await deployCollection(
+        {
+          context,
+          ipfsHttpClient,
+          projectionFactory: getGlobalContract('itemProjectionFactory'),
+        },
+        state
+      )
+      setSuccess(result)
+    } catch (e) {
+      errorMessage = e.message || e
+      setSuccess(false)
+    }
+    setLoading(false)
+    errorMessage && setTimeout(() => alert(errorMessage))
+  }
 
   useEffect(
     () =>
@@ -546,7 +615,6 @@ const Confirmation = ({ value, onChange, onNext, onPrev, state }) => {
   useEffect(
     () =>
       setTimeout(async () => {
-        console.log(state)
         setIsMetadataListOdd(true)
 
         if (!state || !state.metadata) {
@@ -554,7 +622,13 @@ const Confirmation = ({ value, onChange, onNext, onPrev, state }) => {
         }
 
         if (state.metadata.metadataType == 'metadata') {
-          const excludedKeys = ['metadataType', 'image', 'description', 'error']
+          const excludedKeys = [
+            'metadataType',
+            'image',
+            'description',
+            'error',
+            'file',
+          ]
 
           let count = 0
           for (const key in state.metadata) {
@@ -568,156 +642,12 @@ const Confirmation = ({ value, onChange, onNext, onPrev, state }) => {
     [state]
   )
 
-  return (
-    <div className={style.CreationPageLabel}>
-      <div className={style.FancyExplanationCreate}>
-        <h2>Confirmation</h2>
-      </div>
-
-      <h6
-        style={{
-          textAlign: 'left',
-          paddingLeft: '20px',
-          marginBottom: '10px',
-          marginTop: '30px',
-        }}>
-        Review the settings of your collection.
-      </h6>
-      <p
-        style={{
-          fontSize: '12px',
-          textAlign: 'left',
-          paddingLeft: '20px',
-        }}>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean nec ex
-        in elit fermentum fermentum. Maecenas fermentum mauris metus, non tempus
-        odio sollicitudin a.
-      </p>
-
-      <div
-        className={style.CreationPageLabelFDivide}
-        style={{ marginTop: '30px', marginBottom: '30px' }}>
-        <label className={style.CreationPageLabelF}>
-          <h6>Name</h6>
-          <p>{state.nameandsymbol.name}</p>
-        </label>
-        <label className={style.CreationPageLabelF}>
-          <h6>Symbol</h6>
-          <p>{state.nameandsymbol.symbol}</p>
-        </label>
-        <hr className={style.hrConfirmation}></hr>
-        <label className={style.CreationPageLabelF}>
-          <h6>Mint Host</h6>
-          <p>{state.hostSection.host}</p>
-        </label>
-        <label className={style.CreationPageLabelF}>
-          <h6>Metadata Host</h6>
-          <p>{state.hostSection.metadataHost}</p>
-        </label>
-        <hr className={style.hrConfirmation}></hr>
-
-        {state.metadata.metadataType === 'metadataLink' && (
-          <>
-            <label className={style.CreationPageLabelF}>
-              <h6>Link</h6>
-              <p>{state.metadata.metadataLink}</p>
-            </label>
-          </>
-        )}
-
-        {state.metadata.metadataType === 'metadata' && (
-          <>
-            <label
-              className={style.CreationPageLabelF}
-              style={{ width: '100%', textAlign: 'left' }}>
-              <h6>Logo</h6>
-              <span style={{ width: '100%', paddingTop: '10px' }}>
-                <img
-                  style={{ paddingTop: '10px' }}
-                  src={state.metadata.image}
-                  alt="Collection's logo"
-                  width="150"
-                  height="auto"
-                />
-              </span>
-            </label>
-            <label
-              className={style.CreationPageLabelF}
-              style={{ width: '100%' }}>
-              <h6>Description</h6>
-              <span style={{ width: '100%' }}>
-                <p>{state.metadata.description}</p>
-              </span>
-            </label>
-            <div className={style.CreationPageLabelFDivide}>
-              {state.metadata.external_url && (
-                <>
-                  <label className={style.CreationPageLabelF}>
-                    <h6>Website</h6>
-                    <p>{state.metadata.external_url}</p>
-                  </label>
-                </>
-              )}
-              {state.metadata.discussion_url && (
-                <>
-                  <label className={style.CreationPageLabelF}>
-                    <h6>Discussion Link</h6>
-                    <p>{state.metadata.discussion_url}</p>
-                  </label>
-                </>
-              )}
-              {state.metadata.github_url && (
-                <>
-                  <label className={style.CreationPageLabelF}>
-                    <h6>Github Link</h6>
-                    <p>{state.metadata.github_url}</p>
-                  </label>
-                </>
-              )}
-              <label className={style.CreationPageLabelF}>
-                <h6>Background Color</h6>
-                <p>{state.metadata.background_color}</p>
-              </label>
-              {isMetadataListOdd > 0 && (
-                <>
-                  <label className={style.CreationPageLabelF}>
-                    <h6></h6>
-                    <p></p>
-                  </label>
-                </>
-              )}
-            </div>
-          </>
-        )}
-      </div>
-
-      <div className={style.WizardFooter}>
-        <button className={style.WizardFooterBack} onClick={onPrev}>
-          Back
-        </button>
-        <button
-          className={style.WizardFooterNext}
-          // onClick={onNext}
-        >
-          Deploy
-        </button>
-      </div>
-    </div>
-  )
-}
-
-const CreateSuccess = ({ success }) => {
-  const context = useEthosContext()
-
-  const history = useHistory()
-
-  const { chainId, web3 } = useWeb3()
-
-  const [collectionId, setCollectionId] = useState()
-
   useEffect(() => {
     setCollectionId()
     setTimeout(async function () {
+      if (!success) {
+        return
+      }
       const receipt = await web3.eth.getTransactionReceipt(
         success.transactionHash
       )
@@ -726,51 +656,204 @@ const CreateSuccess = ({ success }) => {
           it.topics[0] === web3Utils.sha3('Collection(address,address,bytes32)')
       )[0]
       setCollectionId(log.topics[3])
-      history.push('/items/collections/' + log.topics[3])
     })
   }, [success])
 
-  return <OurCircularProgress />
-
   return (
-    <div>
-      <h4>Operation Completed</h4>
-      <a
-        target="_blank"
-        href={`${getNetworkElement({ chainId, context }, 'etherscanURL')}/tx/${
-          success.transactionHash
-        }`}>
-        Transaction
-      </a>
-      {!collectionId && <OurCircularProgress />}
-      {collectionId && (
-        <>
-          <Link to={'/items/collections/' + collectionId}>View Collection</Link>
-          <Link to={'/items/create/item/' + collectionId}>Mint Items</Link>
-        </>
+    <>
+      {loading && <CircularProgress />}
+      {!success && !loading && (
+        <div className={style.CreationPageLabel}>
+          <div className={style.FancyExplanationCreate}>
+            <h2>Confirmation</h2>
+          </div>
+
+          <h6
+            style={{
+              textAlign: 'left',
+              paddingLeft: '20px',
+              marginBottom: '10px',
+              marginTop: '30px',
+            }}>
+            Review the settings of your collection.
+          </h6>
+          <p
+            style={{
+              fontSize: '12px',
+              textAlign: 'left',
+              paddingLeft: '20px',
+            }}>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean nec
+            ex in elit fermentum fermentum. Maecenas fermentum mauris metus, non
+            tempus odio sollicitudin a.
+          </p>
+
+          <div
+            className={style.CreationPageLabelFDivide}
+            style={{ marginTop: '30px', marginBottom: '30px' }}>
+            <label className={style.CreationPageLabelF}>
+              <h6>Name</h6>
+              <p>{state.nameandsymbol.name}</p>
+            </label>
+            <label className={style.CreationPageLabelF}>
+              <h6>Symbol</h6>
+              <p>{state.nameandsymbol.symbol}</p>
+            </label>
+            <hr className={style.hrConfirmation}></hr>
+            <label className={style.CreationPageLabelF}>
+              <h6>Mint Host</h6>
+              <p>{state.hostSection.host}</p>
+            </label>
+            <label className={style.CreationPageLabelF}>
+              <h6>Metadata Host</h6>
+              <p>{state.hostSection.metadataHost}</p>
+            </label>
+            <hr className={style.hrConfirmation}></hr>
+
+            {state.metadata.metadataType === 'metadataLink' && (
+              <>
+                <label className={style.CreationPageLabelF}>
+                  <h6>Link</h6>
+                  <p>{state.metadata.metadataLink}</p>
+                </label>
+              </>
+            )}
+
+            {state.metadata.metadataType === 'metadata' && (
+              <>
+                <label
+                  className={style.CreationPageLabelF}
+                  style={{ width: '100%', textAlign: 'left' }}>
+                  <h6>Logo</h6>
+                  <span style={{ width: '100%', paddingTop: '10px' }}>
+                    <img
+                      style={{ paddingTop: '10px' }}
+                      src={
+                        state.metadata.image == null ||
+                        state.metadata.image == ''
+                          ? state.metadata.file
+                          : state.metadata.image
+                      }
+                      alt="Collection's logo"
+                      width="150"
+                      height="auto"
+                    />
+                  </span>
+                </label>
+                <label
+                  className={style.CreationPageLabelF}
+                  style={{ width: '100%' }}>
+                  <h6>Description</h6>
+                  <span style={{ width: '100%' }}>
+                    <p>{state.metadata.description}</p>
+                  </span>
+                </label>
+                <div className={style.CreationPageLabelFDivide}>
+                  {state.metadata.external_url && (
+                    <>
+                      <label className={style.CreationPageLabelF}>
+                        <h6>Website</h6>
+                        <p>{state.metadata.external_url}</p>
+                      </label>
+                    </>
+                  )}
+                  {state.metadata.discussion_url && (
+                    <>
+                      <label className={style.CreationPageLabelF}>
+                        <h6>Discussion Link</h6>
+                        <p>{state.metadata.discussion_url}</p>
+                      </label>
+                    </>
+                  )}
+                  {state.metadata.github_url && (
+                    <>
+                      <label className={style.CreationPageLabelF}>
+                        <h6>Github Link</h6>
+                        <p>{state.metadata.github_url}</p>
+                      </label>
+                    </>
+                  )}
+                  <label className={style.CreationPageLabelF}>
+                    <h6>Background Color</h6>
+                    <p>{state.metadata.background_color}</p>
+                  </label>
+                  {isMetadataListOdd > 0 && (
+                    <>
+                      <label className={style.CreationPageLabelF}>
+                        <h6></h6>
+                        <p></p>
+                      </label>
+                    </>
+                  )}
+                </div>
+              </>
+            )}
+          </div>
+
+          <div className={style.WizardFooter}>
+            <button className={style.WizardFooterBack} onClick={onPrev}>
+              Back
+            </button>
+            <button
+              className={style.WizardFooterNext}
+              onClick={async () => await prepareDeploy()}>
+              Deploy
+            </button>
+          </div>
+        </div>
       )}
-    </div>
+      {success && (
+        <div>
+          <h6>&#127881; &#127881; Collection Created! &#127881; &#127881;</h6>
+          <p>
+            <b>And Now?</b>
+          </p>
+          <label className={style.CreationPageLabelF}>
+            <h6>
+              <a
+                target="_blank"
+                href={`${getNetworkElement(
+                  { chainId, context },
+                  'etherscanURL'
+                )}/tx/${success.transactionHash}`}>
+                Transaction
+              </a>
+            </h6>
+          </label>
+          {!collectionId && <OurCircularProgress />}
+          <label className={style.CreationPageLabelF}>
+            {collectionId && (
+              <>
+                <h6>
+                  <Link to={'/items/collections/' + collectionId}>
+                    View Collection
+                  </Link>
+                </h6>
+                <h6>
+                  <Link to={'/items/create/item/' + collectionId}>
+                    Mint Items
+                  </Link>
+                </h6>
+              </>
+            )}
+          </label>
+        </div>
+      )}
+    </>
   )
 }
 
 const CreateCollection = ({}) => {
   const context = useEthosContext()
 
-  const { ipfsHttpClient, getGlobalContract } = useWeb3()
+  const ipfsHttpClient = useMemo(() => initializeIPFSClient(context), [context])
 
   const [state, setState] = useState({})
-
-  const [success, setSuccess] = useState(null)
 
   const [step, setStep] = useState(0)
 
   return (
     <div className={style.CreatePage}>
-      {/* {success && (
-        <RegularModal>
-          <CreateSuccess success={success} />
-        </RegularModal>
-      )} */}
       <div className={style.WizardStepsList}>
         <ul>
           <li className={step === 0 ? style.WizardStepsListActive : ''}>
@@ -844,30 +927,13 @@ const CreateCollection = ({}) => {
             state={state}
           />
         )}
-      </div>
-
-      {/* <div className={style.ActionBTNCreateX}>
-        {Component.deploy && (
-          <ActionAWeb3Button
-            onSuccess={setSuccess}
-            className={
-              style.Web3CustomBTN +
-              (state?.disabled ? ' ' + style.disabled : '')
-            }
-            onClick={() =>
-              deployCollection(
-                {
-                  context,
-                  ipfsHttpClient,
-                  projectionFactory: getGlobalContract('itemProjectionFactory'),
-                },
-                state
-              )
-            }>
-            Deploy
-          </ActionAWeb3Button>
+        {step == 4 && (
+          <CreateSuccess
+            value={state?.success}
+            onChange={(value) => setState({ ...state, success: value })}
+          />
         )}
-      </div> */}
+      </div>
     </div>
   )
 }

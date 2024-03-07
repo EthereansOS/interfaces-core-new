@@ -1016,9 +1016,10 @@ export function checkCollectionMetadata(metadata, throwOnError) {
 
   if (
     metadata &&
-    (!metadata.image ||
+    (!metadata?.image ||
       ((typeof metadata.image).toLowerCase() === 'filelist' &&
-        metadata.image.length === 0))
+        metadata.image.length === 0)) &&
+    !metadata?.file
   ) {
     errors.push('Cover image is mandatory')
   }
@@ -1041,19 +1042,23 @@ export async function deployCollection(
   if (state.disabled) {
     return
   }
-  var uri =
-    state.metadataLink ||
-    (await uploadMetadata({ context, ipfsHttpClient }, state.metadata))
 
-  console.log(uri)
+  var uri =
+    state.metadata.metadataLink ||
+    (await uploadMetadata({ context, ipfsHttpClient }, state.metadata))
 
   var ops = [1, 4]
 
-  var authorized = [state.host, state.metadataHost]
+  var authorized = [state.hostSection.host, state.hostSection.metadataHost]
 
   var headerType = ['address', 'string', 'string', 'string']
 
-  var headerVal = [VOID_ETHEREUM_ADDRESS, state.name, state.symbol, uri]
+  var headerVal = [
+    VOID_ETHEREUM_ADDRESS,
+    state.nameandsymbol.name,
+    state.nameandsymbol.symbol,
+    uri,
+  ]
 
   var createItemType = [
     `tuple(${headerType.join(',')})`,
@@ -1168,8 +1173,6 @@ export async function deployItem(
   var uri =
     state.metadataLink ||
     (await uploadMetadata({ context, ipfsHttpClient }, metadataContent))
-
-  console.log(uri)
 
   const newHeader = {
     host: VOID_ETHEREUM_ADDRESS,
