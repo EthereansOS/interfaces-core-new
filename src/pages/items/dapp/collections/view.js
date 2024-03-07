@@ -39,7 +39,7 @@ const CollectionView = () => {
         {collection && <>
           <div className={style.ItemsExploreMainTitleArea}>
             <h2>Item Details</h2>
-            <p>Discover the most trending Collections in EthereanOS.</p>
+            <p>Token Information</p>
           </div>
           <div className={style.CollectionLeft}>
             <ViewCover item={collection}/>
@@ -50,8 +50,8 @@ const CollectionView = () => {
             <ViewInfoBox collection={collection}/>
           </div>
           <div className={style.ItemsExploreMainTitleArea}>
-            <h2>Collection Details</h2>
-            <p>Discover the most trending Collections in EthereanOS.</p>
+            <h2>More in this Collection</h2>
+            <p>Discover other tokens in this collection</p>
           </div>
           <SubItemsExplore collection={collection}/>
         </>}

@@ -27,11 +27,11 @@ export default props => {
                     <p className={style.BreefRecapC}>By selecting Concentrated Liquidity, you will need to manually customize the setup’s price curve. To learn more about price curves and the risk of impermanent loss, read the Uniswap Documentation: <a target="_blank" href="https://docs.uniswap.org/concepts/V3-overview/concentrated-liquidity">Uniswap Documentation</a></p>
                     <a className={style.RegularButtonDuo} onClick={() => void(setGen2SetupType("concentrated"), setEditSetup(null))}>Select</a>
                 </div>
-                <div className={style.ActionBTNCreateX}>
-                    <a className={style.Web3BackBTN} onClick={() => farmingSetups.filter(it => it.editing).length === 0  ? onCancel() : setEditSetup()}>Back</a>
+                <div className={style.WizardFooter}>
+                    <button className={style.WizardFooterBack} onClick={() => farmingSetups.filter(it => it.editing).length === 0  ? onCancel() : setEditSetup()}>Back</button>
                     {farmingSetups.filter(it => it.editing).length === 0 && <>
-                        <br/>
-                        <a className={style.PlainLink} onClick={onFinish}>Plain Deploy</a>
+                    
+                        <button className={style.RegularButton} onClick={onFinish} style={{'float': 'right'}}>Plain Deploy</button>
                     </>}
                 </div>
             </div>
@@ -73,13 +73,13 @@ export default props => {
                     {(!setup.editing || setup.lastSetup?.active || parseInt(setup.initialRenewTimes) > 0) && <a className={style.RegularButtonDuo} onClick={() => void(setEditSetup({...setup, index}))}>Edit</a>}
                 </div>
             </div>)}
-            <div>
+            <div className={style.WizardFooter}>
                 <a className={style.RoundedButton} onClick={() => setEditSetup(null)}>+</a>
                 <div className={style.ActionBTNCreateX}>
-                    {!finishButton && <a className={style.Web3BackBTN} onClick={() => {
+                    {!finishButton && <button className={style.WizardFooterBack} onClick={() => {
                         farmingSetups.forEach((_, index) => onRemoveFarmingSetup(index))
                         onCancel()
-                    }}>Back</a>}
+                    }}>Back</button>}
                     {finishButton || <a className={style.RegularButton} onClick={onFinish}>Next</a>}
                 </div>
             </div>

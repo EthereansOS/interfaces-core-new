@@ -1582,7 +1582,7 @@ export default props => {
                     <div className={style.farmInfoCurve}>
                         <p className={style.farmInfoCurveL}>
                             <p className={style.MAinTokensel}>
-                                <a onClick={() => setsecondTokenIndex(1 - (secondTokenIndex || 0))}><img src={`${process.env.PUBLIC_URL}/img/switch.png`}/></a> {setupTokens[secondTokenIndex].symbol} per {setupTokens[1 - secondTokenIndex].symbol}
+                                <a onClick={() => setsecondTokenIndex(1 - (secondTokenIndex || 0))}><svg class="svg-icon" viewBox="0 0 1024 1024" ><path d="M252 462h524c19.9 0 36-16.1 36-36s-16.1-36-36-36H339.4l59-59c14.1-14.1 14.1-36.9 0-50.9-14.1-14.1-36.9-14.1-50.9 0L230.3 397.2c-8.7 6.6-14.3 17-14.3 28.8 0 19.9 16.1 36 36 36zM802 564c-8.5-8.5-20.3-11.9-31.4-10H252c-19.9 0-36 16.1-36 36s16.1 36 36 36h437.1l-58.5 58.5c-14.1 14.1-14.1 36.9 0 50.9 7 7 16.2 10.5 25.5 10.5s18.4-3.5 25.5-10.5L802 615c14-14.1 14-36.9 0-51z"  /></svg></a> {setupTokens[secondTokenIndex].symbol} per {setupTokens[1 - secondTokenIndex].symbol}
                             </p>
                         </p>
                         {element.generation === 'gen1' && lpTokenInfo && <p className={style.farmInfoCurveR}>

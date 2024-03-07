@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-
+import { useLocation } from 'react-router'
 import style from '../../../all.module.css'
 
 const DoubleDappMenu = ({
@@ -10,6 +10,9 @@ const DoubleDappMenu = ({
   selectedSubvoice,
   setSelectedSubVoice,
 }) => {
+
+  const location = useLocation()
+
   return (
     <div className={style.DDapp_Menu}>
       <ul className={style.SectionSubMenuItems}>
@@ -55,7 +58,9 @@ const DoubleDappMenu = ({
         <h2>
           {' '}
           {voices[selected].label}
-          <Link
+          
+        </h2>
+        <Link
             to="/covenants/create"
             className={style.ItemsExploreMainCategoriesCreateElement}>
             <svg
@@ -85,8 +90,11 @@ const DoubleDappMenu = ({
             </svg>
             <span>Create</span>
           </Link>
-        </h2>
-        <p>Lorem ipsum sim dolor {voices[selected].label}</p>
+        <p>
+        {location.pathname.includes('covenants/farming') ? 
+                    'Provide liquidity to DEX’s and earn additional token rewards' : 'Routines are semi-automated periodic token transfers and/or swaps.'  
+                  }
+         </p>
       </div>
       <ul className={style.ItemsExploreMainCategories}>
         {subvoices.map((it) => (

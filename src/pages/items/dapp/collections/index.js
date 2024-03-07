@@ -27,7 +27,7 @@ const Collections = () => (
       </li>
     </ul>
     <div className={style.ItemsExploreMainTitleArea}>
-      <h2>What's trending now in Collections</h2>
+      <h2 className={style.textGradientHeading}>What's trending now in Collections</h2>
       <p>Discover the most trending Collections in EthereanOS.</p>
       <div className={style.ItemsExploreMainSearch}>
         <input placeholder="Search collection..." />

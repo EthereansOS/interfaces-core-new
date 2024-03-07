@@ -205,17 +205,7 @@ export default ({item, onTokens}) => {
         <>
             <TokenInputRegular outputValue={input ? fromDecimals(input?.value, input?.token?.decimals, true) : undefined} tokens={input?.token === item && []} selected={input?.token} onElement={onInput}/>
             <a className={style.TradeMarketBoxSwitch} onClick={switchSide}>
-                <svg fill="#fff" height="50px" width="50px" viewBox="0 0 423.755 423.755" >
-                    <g>
-                        <path d="M43.84,281.457c-18.585-44.869-18.586-94.29,0-139.159c10.649-25.709,26.678-48.152,46.86-66.135l60.86,60.86V15.099
-                            H29.635l39.88,39.88c-64.293,58.426-88.5,153.2-53.391,237.959c14.167,34.202,37.07,64.159,66.234,86.634
-                            c28.275,21.789,61.873,36.201,97.162,41.677l4.601-29.646C120.778,381.774,68.337,340.597,43.84,281.457z"/>
-                        <path d="M407.516,292.938c21.652-52.272,21.652-109.848,0-162.12c-14.167-34.202-37.071-64.159-66.234-86.633
-                            C313.007,22.395,279.409,7.983,244.12,2.507l-4.601,29.646c63.342,9.829,115.783,51.005,140.28,110.146
-                            c18.586,44.869,18.586,94.29,0,139.159c-10.649,25.709-26.678,48.152-46.859,66.135l-60.86-60.86v121.924h121.924l-39.801-39.801
-                            C377.118,348.099,395.334,322.348,407.516,292.938z"/>
-                    </g>
-                </svg>
+            <svg class="svg-icon" viewBox="0 0 1024 1024" ><path d="M252 462h524c19.9 0 36-16.1 36-36s-16.1-36-36-36H339.4l59-59c14.1-14.1 14.1-36.9 0-50.9-14.1-14.1-36.9-14.1-50.9 0L230.3 397.2c-8.7 6.6-14.3 17-14.3 28.8 0 19.9 16.1 36 36 36zM802 564c-8.5-8.5-20.3-11.9-31.4-10H252c-19.9 0-36 16.1-36 36s16.1 36 36 36h437.1l-58.5 58.5c-14.1 14.1-14.1 36.9 0 50.9 7 7 16.2 10.5 25.5 10.5s18.4-3.5 25.5-10.5L802 615c14-14.1 14-36.9 0-51z"  /></svg>
             </a>
             <TokenInputRegular outputValue={output ? fromDecimals(output?.value, output?.token?.decimals, true) : undefined} tokens={output?.token === item && []} selected={output?.token} onElement={onOutput}/>
             <div className={style.TradeInfoThings}>

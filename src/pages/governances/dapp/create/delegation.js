@@ -1,18 +1,18 @@
-import React, {useEffect, useMemo, useState} from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 
 import { Link, useLocation } from 'react-router-dom'
 import { Style, useEthosContext, useWeb3, web3Utils } from 'interfaces-core'
-import {createDelegation, finalizeDelegation} from '../../../../logic/delegation'
+import { createDelegation, finalizeDelegation } from '../../../../logic/delegation'
 import CircularProgress from '../../../../components/Global/OurCircularProgress'
 import style from '../../../../all.module.css'
 
-const Deploy = ({back, finalize}) => {
+const Deploy = ({ back, finalize }) => {
 
   const context = useEthosContext()
 
   const web3Data = useWeb3()
 
-  const {getGlobalContract, newContract, chainId, dualChainId, ipfsHttpClient} = web3Data
+  const { getGlobalContract, newContract, chainId, dualChainId, ipfsHttpClient } = web3Data
 
   const [name, setName] = useState("")
   const [description, setDescription] = useState("")
@@ -25,6 +25,24 @@ const Deploy = ({back, finalize}) => {
   const [public_polls, setPublic_polls] = useState("")
   const [news_url, setNews_url] = useState("")
   const [blog_url, setBlog_url] = useState("")
+  const [selectedImage, setSelectedImage] = useState(null)
+  const [triggerTextInput, setTriggerTextInput] = useState(false)
+
+  const handleImageChange = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      setSelectedImage(URL.createObjectURL(e.target.files[0]))
+    }
+  }
+
+
+  const [selectedTokenImage, setSelectedTokenImage] = useState(null)
+  const [triggerTokenTextInput, setTriggerTokenTextInput] = useState(false)
+
+  const handleTokenImageChange = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      setSelectedTokenImage(URL.createObjectURL(e.target.files[0]))
+    }
+  }
 
   const [loading, setLoading] = useState(false)
 
@@ -42,102 +60,252 @@ const Deploy = ({back, finalize}) => {
       news_url,
       blog_url
     }
-    if(dualChainId) {
+    if (dualChainId) {
       return finalize(undefined, metadata)
     }
     setLoading(true)
     var errorMessage
     try {
-        finalize(await createDelegation({
-          context, ...web3Data, factoryOfFactories : getGlobalContract("factoryOfFactories")
-        }, metadata))
-    } catch(e) {
+      finalize(await createDelegation({
+        context, ...web3Data, factoryOfFactories: getGlobalContract("factoryOfFactories")
+      }, metadata))
+    } catch (e) {
       errorMessage = e.message || e
     }
     setLoading(false)
     errorMessage && setTimeout(() => alert(errorMessage))
   }
 
+  var step = 0;
+
   return (
-    <div className={style.CreationPageLabel}>
-      <div className={style.FancyExplanationCreate}>
-          <h6>Basic Info</h6>
-          <div className={style.proggressCreate}>
-              <div className={style.proggressCreatePerch} style={{width: "50%"}}>Step 1 of 2</div>
+    <>
+
+      <div className={style.WizardStepsList}>
+        <ul>
+          <li className={step === 0 ? style.WizardStepsListActive : ''}>
+            Basic Info
+          </li>
+        </ul>
+      </div>
+
+      <div className={style.WizardHeader}>
+        <h3>
+          Create a new Delegation <span>step 1 of 1</span>
+        </h3>
+        <div className={style.WizardHeaderDescription}>
+          An independent political party that can compete for grant funding from one or more Organizations
+        </div>
+        <div className={style.WizardProgress}>
+          <div
+            className={style.WizardProgressBar}
+            style={{
+              width: ((100 / 2) * 0 > 0 ? (100 / 2) * 0 : 1) + '%',
+            }}></div>
+        </div>
+      </div>
+
+      <div className={style.CreationPageLabel}>
+        <div className={style.FancyExplanationCreate}>
+          <h2>Basic Info</h2>
+        </div>
+        <label className={style.CreationPageLabelF}>
+          <h6>Name*</h6>
+          <p>Choose an unique name for your Delegation</p>
+          <input type="text" value={name} onChange={e => setName(e.currentTarget.value)} />
+        </label>
+        <label className={style.CreationPageLabelF}>
+          <h6>Description</h6>
+          <p>Enter the description of your Delegation</p>
+          <textarea value={description} onChange={e => setDescription(e.currentTarget.value)} />
+        </label>
+        <div className={style.CreationPageLabelFDivide}>
+          <label className={style.CreationPageLabelF}>
+            <h6>Community link</h6>
+            <p>Insert Discord or Telegram link</p>
+            <input type="link" value={community_url} onChange={e => setCommunity_url(e.currentTarget.value)} />
+          </label>
+          <label className={style.CreationPageLabelF}>
+            <h6>News link</h6>
+            <p>A place to discuss your Delegation</p>
+            <input type="link" value={news_url} onChange={e => setNews_url(e.currentTarget.value)} />
+
+          </label>
+        </div>
+        <div className={style.CreationPageLabelFDivide}>
+          <label className={style.CreationPageLabelF}>
+            <h6>Blog link</h6>
+            <p>A place to discuss your Delegation</p>
+            <input type="link" value={blog_url} onChange={e => setBlog_url(e.currentTarget.value)} />
+
+          </label>
+          <label className={style.CreationPageLabelF}>
+            <h6>Token Name</h6>
+            <p>The token name of your Delegation</p>
+            <input type="text" value={ticker} onChange={e => setTicker(e.currentTarget.value)} />
+
+          </label>
+        </div>
+        <div className={style.CreationPageLabelFDivide}>
+          <label
+            className={style.CreationPageLabelF}
+            style={{ verticalAlign: 'bottom', Display: 'flex' }}>
+            <h6>
+              Logo*
+              {!triggerTextInput && (
+                <span
+                  className={style.CreationPageLabelFloatRight}
+                  onClick={() => setTriggerTextInput(true)}>
+                  or indicate an image URL
+                </span>
+              )}
+              {triggerTextInput && (
+                <span
+                  className={style.CreationPageLabelFloatRight}
+                  onClick={() => setTriggerTextInput(false)}>
+                  or indicate an image file
+                </span>
+              )}
+            </h6>
+            {!triggerTextInput && (
+              <p>Select an image file, square size recomended.</p>
+            )}
+            {triggerTextInput && (
+              <p>
+                A valid link for your Delegation's logo. Square size recomended.
+              </p>
+            )}
+            {!triggerTextInput && (
+              <div className={style.imageSelectorContaine}>
+                {!selectedImage && (
+                  <input
+                    type="file"
+                    onChange={handleImageChange}
+                    accept="image/*"
+                  />
+                )}
+                {selectedImage && (
+                  <div className={style.ImagePreview}>
+                    <img src={selectedImage} alt="Selected" />
+                    <div
+                      className={style.ImagePreviewLabel}
+                      onClick={() => setSelectedImage(null)}>
+                      Replace Image
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {triggerTextInput && (
+              <input
+                type="link"
+                placeholder="Delegation Logo URL"
+                onChange={(e) => { }}
+              />
+            )}
+          </label>
+          <label className={style.CreationPageLabelF}>
+            <h6>Website</h6>
+            <p>The official website of your Delegation</p>
+            <input type="link" value={external_url} onChange={e => setExternal_url(e.currentTarget.value)} />
+
+          </label>
+        </div>
+        <div className={style.CreationPageLabelFDivide}>
+          <label
+            className={style.CreationPageLabelF}
+            style={{ verticalAlign: 'bottom', Display: 'flex' }}>
+            <h6>
+              Token Logo*
+              {!triggerTokenTextInput && (
+                <span
+                  className={style.CreationPageLabelFloatRight}
+                  onClick={() => setTriggerTokenTextInput(true)}>
+                  or indicate an image URL
+                </span>
+              )}
+              {triggerTokenTextInput && (
+                <span
+                  className={style.CreationPageLabelFloatRight}
+                  onClick={() => setTriggerTokenTextInput(false)}>
+                  or indicate an image file
+                </span>
+              )}
+            </h6>
+            {!triggerTokenTextInput && (
+              <p>Select an image file, square size recomended.</p>
+            )}
+            {triggerTokenTextInput && (
+              <p>
+                A valid link for your Delegation's token logo. Square size recomended.
+              </p>
+            )}
+            {!triggerTokenTextInput && (
+              <div className={style.imageSelectorContaine}>
+                {!selectedTokenImage && (
+                  <input
+                    type="file"
+                    onChange={handleTokenImageChange}
+                    accept="image/*"
+                  />
+                )}
+                {selectedTokenImage && (
+                  <div className={style.ImagePreview}>
+                    <img src={selectedTokenImage} alt="Selected" />
+                    <div
+                      className={style.ImagePreviewLabel}
+                      onClick={() => setSelectedTokenImage(null)}>
+                      Replace Image
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {triggerTokenTextInput && (
+              <input
+                type="link"
+                placeholder="Delegation Token Logo URL"
+                onChange={(e) => { }}
+              />
+            )}
+
+          </label>
+          <label className={style.CreationPageLabelF}>
+            <h6>Logo Background</h6>
+            <p>The background color of your Delegation’s logo</p>
+            <input type="color" value="#ffffff" style={{'width': '100%'}} onChange={e => setBackground_color(e.currentTarget.value)} />
+
+          </label>
+        </div>
+        <label className={style.CreationPageLabelF}>
+          <h6>Public polls</h6>
+          <div style={{ 'textAlign': 'left' }}>
+            <input type="checkbox" style={{ 'width': 'auto', 'margin': '10px 0px' }} onChange={e => setPublic_polls(e.currentTarget.checked)} checked={public_polls} />
           </div>
+          <p>Public Polls (coming soon): If selected, all polls that involve this Delegation will appear on the Delegation’s page. If not, only polls created by the Delegation’s host will.</p>
+        </label>
+        <div className={style.WizardFooter}>
+          {loading && <CircularProgress />}
+          {(!loading && step != 0) && <button className={style.WizardFooterBack} onClick={back}>Back</button>}
+          {!loading && <button className={style.WizardFooterNext} onClick={deploy}>{dualChainId ? "Next" : "Deploy"}</button>}
+        </div>
       </div>
-      <label className={style.CreationPageLabelF}>
-        <h6>Name</h6>
-        <input type="text" value={name} onChange={e => setName(e.currentTarget.value)}/>
-      </label>
-      <label className={style.CreationPageLabelF}>
-        <h6>Description</h6>
-        <textarea value={description} onChange={e => setDescription(e.currentTarget.value)}/>
-      </label>
-      <label className={style.CreationPageLabelF}>
-        <h6>Website</h6>
-        <input type="link" value={external_url} onChange={e => setExternal_url(e.currentTarget.value)}/>
-        <p>The official website of your Delegation.</p>
-      </label>
-      <label className={style.CreationPageLabelF}>
-        <h6>Community link</h6>
-        <input type="link" value={community_url} onChange={e => setCommunity_url(e.currentTarget.value)}/>
-        <p>A place to discuss your Delegation.</p>
-      </label>
-      <label className={style.CreationPageLabelF}>
-        <h6>News link</h6>
-        <input type="link" value={news_url} onChange={e => setNews_url(e.currentTarget.value)}/>
-        <p>A place to discuss your Delegation.</p>
-      </label>
-      <label className={style.CreationPageLabelF}>
-        <h6>Blog link</h6>
-        <input type="link" value={blog_url} onChange={e => setBlog_url(e.currentTarget.value)}/>
-        <p>A place to discuss your Delegation.</p>
-      </label>
-      <label className={style.CreationPageLabelF}>
-        <h6>Token Name</h6>
-        <input type="text" value={ticker} onChange={e => setTicker(e.currentTarget.value)}/>
-        <p>The token name of your Delegation.</p>
-      </label>
-      <label className={style.CreationPageLabelF}>
-        <h6>Logo link</h6>
-        <input placeholder="ipfs//..." type="link" value={image} onChange={e => setImage(e.currentTarget.value)}/>
-        <p>Logo Link: A valid IPFS link for your Delegation’s logo. Please upload a square picture (.png, .gif or .jpg; max size 1mb) so that it fits perfectly with the EthereansOS interface style.</p>
-      </label>
-      <label className={style.CreationPageLabelF}>
-        <h6>Token Logo Link</h6>
-        <input placeholder="ipfs//..." type="link" value={tokenURI} onChange={e => setTokenURI(e.currentTarget.value)}/>
-        <p>Logo Link: A valid IPFS link for your Delegation’s token logo. Please upload a square picture (.png, .gif or .jpg; max size 1mb) so that it fits perfectly with the EthereansOS interface style.</p>
-      </label>
-      <label className={style.CreationPageLabelF}>
-        <h6>Logo Background</h6>
-        <input type="color" value="#ffffff" onChange={e => setBackground_color(e.currentTarget.value)}/>
-        <p>Logo Background: The background color of your Delegation’s logo. This color will fill any empty space that the logo leaves if it is smaller than any standard box in the interface.</p>
-      </label>
-      <label className={style.CreationPageLabelF}>
-        <h6>Public polls</h6>
-        <input type="checkbox" onChange={e => setPublic_polls(e.currentTarget.checked)} checked={public_polls}/>
-        <p>Public Polls (coming soon): If selected, all polls that involve this Delegation will appear on the Delegation’s page. If not, only polls created by the Delegation’s host will.</p>
-      </label>
-      <div className={style.ActionDeploy}>
-        {loading && <CircularProgress/>}
-        {!loading && <a className={style.Web3BackBTN} onClick={back}>Back</a>}
-        {!loading && <a className={style.Web3CustomBTN} onClick={deploy}>{dualChainId ? "Next" : "Deploy"}</a>}
-      </div>
-    </div>
+    </>
   )
 }
 
-const Duration = ({value, onChange}) => {
+const Duration = ({ value, onChange }) => {
 
   const context = useEthosContext()
 
   return <select value={value} onChange={e => onChange(parseInt(e.currentTarget.value))}>
-      {Object.entries(context.timeIntervals).map(it => <option key={it[0]} value={it[1]}>{it[0]}</option>)}
+    {Object.entries(context.timeIntervals).map(it => <option key={it[0]} value={it[1]}>{it[0]}</option>)}
   </select>
 }
 
-const Finalize = ({back, success, cumulativeData}) => {
+const Finalize = ({ back, success, cumulativeData }) => {
 
   const context = useEthosContext()
 
@@ -161,28 +329,28 @@ const Finalize = ({back, success, cumulativeData}) => {
     var errorMessage
     try {
       var delAddr = delegationAddress
-      if(delAddr) {
-        await finalizeDelegation({context, chainId, newContract, factoryOfFactories : getGlobalContract("factoryOfFactories")},
-        delegationAddress,
-        host,
-        quorumPercentage,
-        validationBomb,
-        blockLength,
-        hardCapPercentage)
+      if (delAddr) {
+        await finalizeDelegation({ context, chainId, newContract, factoryOfFactories: getGlobalContract("factoryOfFactories") },
+          delegationAddress,
+          host,
+          quorumPercentage,
+          validationBomb,
+          blockLength,
+          hardCapPercentage)
       } else {
         delAddr = await createDelegation({
-          context, ...web3Data, factoryOfFactories : getGlobalContract("factoryOfFactories")
+          context, ...web3Data, factoryOfFactories: getGlobalContract("factoryOfFactories")
         }, cumulativeData.metadata, {
           host,
-          quorum : quorumPercentage,
+          quorum: quorumPercentage,
           validationBomb,
-          votePeriod : blockLength,
-          hardCap : hardCapPercentage
+          votePeriod: blockLength,
+          hardCap: hardCapPercentage
         })
       }
 
       success(delAddr)
-    } catch(e) {
+    } catch (e) {
       errorMessage = e.message || e
     }
     setLoading(false)
@@ -192,45 +360,45 @@ const Finalize = ({back, success, cumulativeData}) => {
   return (
     <div className={style.CreationPageLabel}>
       <div className={style.FancyExplanationCreate}>
-          <h6>Governance Rules</h6>
-          <div className={style.proggressCreate}>
-              <div className={style.proggressCreatePerchLast} style={{width: "100%"}}>Step 2 of 2</div>
-          </div>
+        <h6>Governance Rules</h6>
+        <div className={style.proggressCreate}>
+          <div className={style.proggressCreatePerchLast} style={{ width: "100%" }}>Step 2 of 2</div>
+        </div>
       </div>
       {!dualChainId && <label className={style.CreationPageLabelF}>
         <h6>Delegation address</h6>
-        <input type="text" value={delegationAddress} onChange={e => setDelegationAddress(e.currentTarget.value)}/>
+        <input type="text" value={delegationAddress} onChange={e => setDelegationAddress(e.currentTarget.value)} />
       </label>}
       <label className={style.CreationPageLabelF}>
         <h6>Host</h6>
-        <input type="text" value={host} onChange={e => setHost(e.currentTarget.value)}/>
+        <input type="text" value={host} onChange={e => setHost(e.currentTarget.value)} />
         <p>This is the address (wallet, MultiSig, Organization or contract) that manages this Delegation. The host is able to create proposals to spend funds, change metadata and change governance rules.</p>
       </label>
       <label className={style.CreationPageLabelF}>
         <h6>Survey Duration</h6>
-        {!dualChainId && <input type="number" value={blockLength} onChange={e => setBlockLength(e.currentTarget.value)}/>}
-        {dualChainId && <Duration value={blockLength} onChange={value => setBlockLength(value)}/>}
+        {!dualChainId && <input type="number" value={blockLength} onChange={e => setBlockLength(e.currentTarget.value)} />}
+        {dualChainId && <Duration value={blockLength} onChange={value => setBlockLength(value)} />}
         <p>The duration (in {dualChainId ? "seconds" : "blocks"}) that Proposals will be open for.</p>
       </label>
       <label className={style.CreationPageLabelF}>
         <h6>Validation Bomb</h6>
-        {!dualChainId && <input type="number" value={validationBomb} onChange={e => setValidationBomb(e.currentTarget.value)}/>}
-        {dualChainId && <Duration value={validationBomb} onChange={value => setValidationBomb(value)}/>}
+        {!dualChainId && <input type="number" value={validationBomb} onChange={e => setValidationBomb(e.currentTarget.value)} />}
+        {dualChainId && <Duration value={validationBomb} onChange={value => setValidationBomb(value)} />}
         <p>An optional duration (in {dualChainId ? "seconds" : "blocks"}) after which a passed Proposal can never be executed. If set as zero, there is no time before which a Proposal can be executed.</p>
         {showValidationBombWarning && <h6>WARNING: Validation Bomb must be higher than Survey Duration</h6>}
       </label>
       <label className={style.CreationPageLabelF}>
         <h6>Quorum {quorumPercentage || "0"}%</h6>
-        <input className={style.perchentageThing} type="range" min="0" max="100" value={quorumPercentage} onChange={e => setQuorumPercentage(e.currentTarget.value)}/>
+        <input className={style.perchentageThing} type="range" min="0" max="100" value={quorumPercentage} onChange={e => setQuorumPercentage(e.currentTarget.value)} />
         <p>A minimum amount of votes (calculated as a percentage of the Delegation token’s total supply) required for a Proposal to pass.</p>
       </label>
       <label className={style.CreationPageLabelF}>
         <h6>Hard Cap {hardCapPercentage || "0"}%</h6>
-        <input className={style.perchentageThing} type="range" min="0" max="100" value={hardCapPercentage} onChange={e => setHardcapPercentage(e.currentTarget.value)}/>
+        <input className={style.perchentageThing} type="range" min="0" max="100" value={hardCapPercentage} onChange={e => setHardcapPercentage(e.currentTarget.value)} />
         <p>An optional minimum amount of votes (calculated as a percentage of the Delegation token’s total supply) required to end a Proposal, regardless of how long it is still set to remain open.</p>
       </label>
       <div className={style.ActionDeploy}>
-        {loading && <CircularProgress/>}
+        {loading && <CircularProgress />}
         {!loading && <a className={style.Web3BackBTN} onClick={back}>Back</a>}
         {!loading && <a className={style.Web3CustomBTN} onClick={finalize}>{dualChainId ? "Deploy" : "Finalize"}</a>}
       </div>
@@ -238,7 +406,7 @@ const Finalize = ({back, success, cumulativeData}) => {
   )
 }
 
-const Success = ({cumulativeData}) => {
+const Success = ({ cumulativeData }) => {
   return (
     <div>
       <h6>&#127881; &#127881; Delegation Created! &#127881; &#127881;</h6>
@@ -250,37 +418,37 @@ const Success = ({cumulativeData}) => {
   )
 }
 
-const DelegationsCreate = ({}) => {
+const DelegationsCreate = ({ }) => {
 
   const { pathname } = useLocation()
 
   const [cumulativeData, setCumulativeData] = useState({
-    step : 'deploy'
+    step: 'deploy'
   })
 
   useEffect(() => {
     try {
       var delegationAddress = pathname.split('/')
       var index = delegationAddress.length - 1
-      if(delegationAddress[index] === "") {
+      if (delegationAddress[index] === "") {
         index--
       }
       delegationAddress = delegationAddress[index]
       delegationAddress = web3Utils.toChecksumAddress(delegationAddress)
-      setCumulativeData(oldValue => ({...oldValue, delegationAddress, step : 'finalize'}))
-    } catch(e) {}
+      setCumulativeData(oldValue => ({ ...oldValue, delegationAddress, step: 'finalize' }))
+    } catch (e) { }
   }, [pathname])
 
   var steps = {
-    deploy : () => <Deploy
-      finalize={(delegationAddress, metadata) => setCumulativeData(oldValue => ({...oldValue, delegationAddress, metadata, step : 'finalize'}))}
+    deploy: () => <Deploy
+      finalize={(delegationAddress, metadata) => setCumulativeData(oldValue => ({ ...oldValue, delegationAddress, metadata, step: 'finalize' }))}
     />,
-    finalize : () => <Finalize
+    finalize: () => <Finalize
       cumulativeData={cumulativeData}
-      back={() => setCumulativeData({step : 'deploy'})}
-      success={delegationAddress => setCumulativeData(oldValue => ({...oldValue, delegationAddress, step: 'success'}))}
+      back={() => setCumulativeData({ step: 'deploy' })}
+      success={delegationAddress => setCumulativeData(oldValue => ({ ...oldValue, delegationAddress, step: 'success' }))}
     />,
-    success : () => <Success
+    success: () => <Success
       cumulativeData={cumulativeData}
     />
   }
@@ -293,7 +461,7 @@ const DelegationsCreate = ({}) => {
 }
 
 DelegationsCreate.menuVoice = {
-  path : '/organizations/create/delegation'
+  path: '/organizations/create/delegation'
 }
 
 export default DelegationsCreate

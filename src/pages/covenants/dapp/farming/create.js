@@ -65,9 +65,9 @@ export default props => {
     const [regularNFT, setRegularNFT] = useState(false)
 
     const genConversion = {
-        gen1 : {
-            setupInfoTypes : ["bool","uint256","uint256","uint256","uint256","uint256","uint256","address","address","address","address","bool","uint256","uint256","uint256"],
-            initTypes : [
+        gen1: {
+            setupInfoTypes: ["bool", "uint256", "uint256", "uint256", "uint256", "uint256", "uint256", "address", "address", "address", "address", "bool", "uint256", "uint256", "uint256"],
+            initTypes: [
                 "address",
                 "bytes"
             ], async parseSetup(setup) {
@@ -100,9 +100,9 @@ export default props => {
             }, getInitArray(extensionAddress, extensionInitData, rewardTokenAddress, encodedSetups) {
                 return [web3Utils.toChecksumAddress((extensionAddress ? extensionAddress : hostDeployedContract) || VOID_ETHEREUM_ADDRESS), abi.encode(["bytes", "address", "bytes"], [extensionPayload || extensionInitData || "0x", rewardTokenAddress, encodedSetups || "0x"])]
             }
-        }, gen2 : {
-            setupInfoTypes : ["uint256","uint256","uint256","uint256","uint256","address","address","bool","uint256","uint256","int24","int24"],
-            initTypes :  [
+        }, gen2: {
+            setupInfoTypes: ["uint256", "uint256", "uint256", "uint256", "uint256", "address", "address", "bool", "uint256", "uint256", "int24", "int24"],
+            initTypes: [
                 "address",
                 "bytes",
                 "address",
@@ -141,12 +141,12 @@ export default props => {
         show && hasTreasuryAddress && setTreasuryAddress(VOID_ETHEREUM_ADDRESS)
     }
 
-    useEffect(() => rewardTokenAddress && loadTokenFromAddress({ context, ...web3Data}, rewardTokenAddress).then(setSelectedRewardToken), [rewardTokenAddress])
+    useEffect(() => rewardTokenAddress && loadTokenFromAddress({ context, ...web3Data }, rewardTokenAddress).then(setSelectedRewardToken), [rewardTokenAddress])
 
     useEffect(() => setByMint(element?.byMint === true), [selectedRewardToken, element])
 
-    useEffect(() => element && setTimeout(async function() {
-        setFarmingSetups(await getFarmingSetupInfo({context, seaport, ...web3Data}, element))
+    useEffect(() => element && setTimeout(async function () {
+        setFarmingSetups(await getFarmingSetupInfo({ context, seaport, ...web3Data }, element))
         setSelectedRewardToken(element.rewardToken)
         setDeployStep(0)
         setGeneration(element.generation)
@@ -154,31 +154,31 @@ export default props => {
 
     async function edit() {
         var setupConfigurations = farmingSetups.map(info => {
-            if(info.editing === true && info.disable !== true && parseInt(info.initialRewardPerBlock) === parseInt(info.rewardPerBlock || info.originalRewardPerBlock || 0) && parseInt(info.initialRenewTimes) === parseInt(info.renewTimes)) {
+            if (info.editing === true && info.disable !== true && parseInt(info.initialRewardPerBlock) === parseInt(info.rewardPerBlock || info.originalRewardPerBlock || 0) && parseInt(info.initialRenewTimes) === parseInt(info.renewTimes)) {
                 return
             }
-            if(info.disable === true) {
+            if (info.disable === true) {
                 info.rewardPerBlock = info.initialRewardPerBlock
                 info.originalRewardPerBlock = info.initialRewardPerBlock
                 info.renewTimes = info.initialRenewTimes
             }
             return {
-                add : info.editing === true ? false : true,
-                disable : info.disable === true,
-                index : info.editing === true ? info.lastSetupIndex : 0,
-                info : {
+                add: info.editing === true ? false : true,
+                disable: info.disable === true,
+                index: info.editing === true ? info.lastSetupIndex : 0,
+                info: {
                     ...info,
-                    originalRewardPerBlock : (info.rewardPerBlock || info.originalRewardPerBlock),
-                    mainTokenAddress : info.mainTokenAddress || info.mainToken.address,
-                    liquidityPoolTokenAddress : info.liquidityPoolTokenAddress || info.liquidityPoolToken.address,
-                    setupsCount : 0,
-                    lastSetupIndex : 0,
-                    involvingETH : info.involvingETH === true
+                    originalRewardPerBlock: (info.rewardPerBlock || info.originalRewardPerBlock),
+                    mainTokenAddress: info.mainTokenAddress || info.mainToken.address,
+                    liquidityPoolTokenAddress: info.liquidityPoolTokenAddress || info.liquidityPoolToken.address,
+                    setupsCount: 0,
+                    lastSetupIndex: 0,
+                    involvingETH: info.involvingETH === true
                 }
             }
         }).filter(it => it)
 
-        if(setupConfigurations.length === 0) {
+        if (setupConfigurations.length === 0) {
             throw "Nothing to change"
         }
 
@@ -211,7 +211,7 @@ export default props => {
             const host = selectedHost !== "fromSourceCode" && web3Utils.toChecksumAddress(selectedHost === 'address' ? hostWalletAddress : hostDeployedContract)
             const hasExtension = (selectedHost === "deployedContract" && hostDeployedContract && !deployContract)
             const data = { setups: [], rewardTokenAddress: selectedRewardToken.address, byMint, deployContract, host, hasExtension, extensionInitData: extensionPayload || '', treasuryAddress }
-            if(generation === 'gen1' && !hostDeployedContract && !deployContract) {
+            if (generation === 'gen1' && !hostDeployedContract && !deployContract) {
                 data.extensionInitData = newContract(context.FarmExtensionGen1ABI).methods.init(byMint, host, treasuryAddress || VOID_ETHEREUM_ADDRESS).encodeABI()
             }
             console.log(farmingSetups)
@@ -250,18 +250,18 @@ export default props => {
         }
 
         const sequence = [{
-            label : `Deploy Farming Contract${generation === 'gen1' && !hostDeployedContract && !deployContract ? ' (cloning Default Extension)' : ''}`,
+            label: `Deploy Farming Contract${generation === 'gen1' && !hostDeployedContract && !deployContract ? ' (cloning Default Extension)' : ''}`,
             async onTransactionReceipt(transactionReceipt, state) {
 
                 const { deployData } = state
                 const { extensionInitData } = deployData
 
                 const farmFactory = await getFactory(state)
-                if(web3Utils.toChecksumAddress(transactionReceipt.to) !== web3Utils.toChecksumAddress(farmFactory.options.address)) {
+                if (web3Utils.toChecksumAddress(transactionReceipt.to) !== web3Utils.toChecksumAddress(farmFactory.options.address)) {
                     throw "Wrong transaction"
                 }
                 var farmMainContractAddress = web3.eth.abi.decodeParameter("address", transactionReceipt.logs.filter(it => it.topics[0] === web3.utils.sha3('Deployed(address,address,address,bytes)'))[0].topics[2])
-                var retrievedExtensionAddress = await getRawField({ provider : web3Data.web3.currentProvider }, farmMainContractAddress, 'host')
+                var retrievedExtensionAddress = await getRawField({ provider: web3Data.web3.currentProvider }, farmMainContractAddress, 'host')
                 retrievedExtensionAddress = abi.decode(["address"], retrievedExtensionAddress)[0].toString()
                 return { farmMainContractAddress, ...returnDeployData(state, retrievedExtensionAddress, extensionInitData) }
             },
@@ -288,19 +288,19 @@ export default props => {
         }]
 
         function returnDeployData(state, extensionAddress, extensionInitData) {
-            const deployData = {...state.deployData, extensionAddress, extensionInitData : extensionInitData || state.extensionInitData}
+            const deployData = { ...state.deployData, extensionAddress, extensionInitData: extensionInitData || state.extensionInitData }
             return { deployData }
         }
 
         !hostDeployedContract && !deployContract && generation === 'gen2' && sequence.unshift({
-            label : "Clone Default Extension",
+            label: "Clone Default Extension",
             async onTransactionReceipt(transactionReceipt, state) {
 
                 const { generation, deployData } = state
                 const { host, treasuryAddress, byMint } = deployData
 
                 const farmFactory = await getFactory(state)
-                if(web3Utils.toChecksumAddress(transactionReceipt.to) !== web3Utils.toChecksumAddress(farmFactory.options.address)) {
+                if (web3Utils.toChecksumAddress(transactionReceipt.to) !== web3Utils.toChecksumAddress(farmFactory.options.address)) {
                     throw "Wrong transaction"
                 }
                 var nonce = parseInt(await sendAsync(web3.currentProvider, "eth_getTransactionCount", farmFactory.options.address, web3Utils.toHex(parseInt(transactionReceipt.blockNumber) - 1)))
@@ -319,9 +319,9 @@ export default props => {
         })
 
         !hostDeployedContract && deployContract && sequence.unshift({
-            label : "Deploy Extension",
+            label: "Deploy Extension",
             async onTransactionReceipt(transactionReceipt, state) {
-                if(!transactionReceipt.contractAddress) {
+                if (!transactionReceipt.contractAddress) {
                     throw "Invalid transaction"
                 }
                 return returnDeployData(state, transactionReceipt.contractAddress)
@@ -338,8 +338,8 @@ export default props => {
         })
 
         setActionSequence({
-            initialState : {
-                deployData : data,
+            initialState: {
+                deployData: data,
                 regularNFT,
                 generation,
                 deployContract,
@@ -349,7 +349,7 @@ export default props => {
             onComplete(state) {
                 const { deployData, farmMainContractAddress } = state
                 const { extensionAddress, extensionInitData } = deployData
-                setDeployData({...deployData, extensionAddress, extensionInitData})
+                setDeployData({ ...deployData, extensionAddress, extensionInitData })
                 setFarmingContract(farmMainContractAddress)
             }
         })
@@ -357,7 +357,7 @@ export default props => {
 
     function copyToClipboard(address) {
         const value = `${address}`
-        if(navigator.clipboard) {
+        if (navigator.clipboard) {
             return navigator.clipboard.writeText(value)
         }
         const input = document.createElement('input')
@@ -369,7 +369,7 @@ export default props => {
         input.setSelectionRange(0, 99999)
         try {
             document.execCommand('copy')
-        } catch(e) {
+        } catch (e) {
             console.log(e)
         }
         document.body.removeChild(input)
@@ -399,8 +399,8 @@ export default props => {
             deployTransaction = await blockchainCall(farmFactory.methods.deploy, payload)
             var receipt = await web3.eth.getTransactionReceipt(deployTransaction.transactionHash)
             var farmMainContractAddress = web3.eth.abi.decodeParameter("address", receipt.logs.filter(it => it.topics[0] === web3.utils.sha3('Deployed(address,address,address,bytes)'))[0].topics[2])
-            console.log({farmMainContractAddress})
-            !extensionAddress && setDeployData({...deployData, extensionAddress : params[0]})
+            console.log({ farmMainContractAddress })
+            !extensionAddress && setDeployData({ ...deployData, extensionAddress: params[0] })
             setFarmingContract(farmMainContractAddress)
         } catch (error) {
             console.log(error)
@@ -428,13 +428,13 @@ export default props => {
                 const transaction = await blockchainCall(farmFactory.methods.cloneDefaultExtension)
                 var nonce = parseInt(await sendAsync(farmFactory.currentProvider, "eth_getTransactionCount", farmFactory.options.address, web3Utils.toHex(parseInt(transaction.blockNumber) - 1)))
                 var extensionAddress = "0x" + rlphash([farmFactory.options.address, nonce]).toString('hex').substring(24)
-                console.log({extensionAddress})
+                console.log({ extensionAddress })
 
                 /*const cloneExtensionReceipt = await web3.eth.getTransactionReceipt(cloneExtensionTransaction.transactionHash)
                 const extensionAddress = web3.eth.abi.decodeParameter("address", cloneExtensionReceipt.logs.filter(it => it.topics[0] === web3.utils.sha3('ExtensionCloned(address)'))[0].topics[1])*/
                 const farmExtension = newContract(context[generation === 'gen2' ? "FarmExtensionGen2ABI" : "FarmExtensionGen1ABI"], extensionAddress)
                 const extensionInitData = farmExtension.methods.init(byMint, host, treasuryAddress || VOID_ETHEREUM_ADDRESS).encodeABI()
-                if(!extensionAddress) {
+                if (!extensionAddress) {
                     setExtensionPayload(extensionInitData)
                     setSelectedHost('deployedContract')
                     setDeployStep(null)
@@ -515,36 +515,56 @@ export default props => {
 
     const getCreationComponent = () => {
         return <div className={style.uuuuTokenLoad}>
-            <div className={style.FancyExplanationCreate}>
-                <h6>Reward token address</h6>
-                <p className={style.BreefRecapB}>The reward token is the token chosen to reward farmers and can be one per contract.</p>
-                <div className={style.proggressCreate}>
-                    <div className={style.proggressCreatePerch} style={{width: "33%"}}>Step 1 of 3</div>
+
+            <div className={style.WizardHeader}>
+                <h3>
+                    Create a new multi-DEX farming solution <span>step 2 of 5</span>
+                </h3>
+                <div className={style.WizardHeaderDescription}>
+                    Create a multi-DEX farming solution with multiple LP setups.
+                </div>
+                <div className={style.WizardProgress}>
+                    <div
+                        className={style.WizardProgressBar}
+                        style={{
+                            width: ((100 / 5) * 1 > 0 ? (100 / 5) * 1 : 1) + '%',
+                        }}></div>
                 </div>
             </div>
-            <TokenInputRegular tokenOnly onElement={setSelectedRewardToken} selected={selectedRewardToken}/>
-            {selectedRewardToken && selectedRewardToken.address !== VOID_ETHEREUM_ADDRESS && <div>
-                <div className={style.CreationPageLabelF}>
-                    <h6>Origin of funds</h6>
-                    <select className={style.CreationSelectW} value={byMint === true ? "true" : "false"} onChange={e => setByMint(e.target.value === 'true')}>
-                        <option value="">Select method</option>
-                        <option value="true">By mint</option>
-                        <option value="false">By reserve</option>
-                    </select>
-                    <p> If “by reserve” is selected, the input token will be sent from a wallet. If “by mint” is selected, it will be minted and then sent. The logic of this action must be carefully coded into the extension! To learn more, read the <a target="_blank" href="https://docs.ethos.wiki/covenants/">Documentation</a></p>
+
+            <div className={style.CreationPageLabel}>
+
+                <div className={style.FancyExplanationCreate}>
+                    <h2>Reward token address</h2>
                 </div>
-            </div>}
-            <div className={style.ActionBTNCreateX}>
-                <a className={style.Web3BackBTN} onClick={() => setGeneration("")}>Back</a>
-                {selectedRewardToken && <a className={style.RegularButton} onClick={() => setDeployStep(0)}>Start</a>}
+                <label className={style.CreationPageLabelF}>
+                    <p>The reward token is the token chosen to reward farmers and can be one per contract.</p>
+                </label>
+                <TokenInputRegular tokenOnly onElement={setSelectedRewardToken} selected={selectedRewardToken} />
+                {selectedRewardToken && selectedRewardToken.address !== VOID_ETHEREUM_ADDRESS && <div>
+                    <div className={style.CreationPageLabelF}>
+                        <h6>Origin of funds</h6>
+                        <select className={style.CreationSelectW} value={byMint === true ? "true" : "false"} onChange={e => setByMint(e.target.value === 'true')}>
+                            <option value="">Select method</option>
+                            <option value="true">By mint</option>
+                            <option value="false">By reserve</option>
+                        </select>
+                        <p> If “by reserve” is selected, the input token will be sent from a wallet. If “by mint” is selected, it will be minted and then sent. The logic of this action must be carefully coded into the extension! To learn more, read the <a target="_blank" href="https://docs.ethos.wiki/covenants/">Documentation</a></p>
+                    </div>
+                </div>}
+                <div className={style.WizardFooter}>
+                    <button className={style.WizardFooterBack} onClick={() => setGeneration("")}>Back</button>
+                    {selectedRewardToken && <button className={style.WizardFooterNext} onClick={() => setDeployStep(0)}>Start</button>}
+                </div>
             </div>
+
         </div>
     }
 
     const getDeployComponent = () => {
 
         if (deployLoading) {
-            return <OurCircularProgress/>
+            return <OurCircularProgress />
         }
 
         if (deployStep === 1) {
@@ -576,22 +596,27 @@ export default props => {
         }
 
         return (
-            <div className={style.CreatePage}>
-                <div>
+
+            <div>
+
+
+
                 <div className={style.FancyExplanationCreate}>
-                <h6>Host</h6>
-                <p className={style.BreefRecapB}>The host is the wallet, contract, dApp or Organization with permissions to manage this Farming Contract. <a target="_blank" href="https://docs.ethos.wiki/covenants/">Technical Documentation</a>.</p>
-                <div className={style.proggressCreate}>
-                    <div className={style.proggressCreatePerchLast} style={{width: "100%"}}>Step 3 of 3</div>
+                    <h2>Host</h2>
                 </div>
-                </div>
+                <label className={style.CreationPageLabelF}>
+                    <p>The host is the wallet, contract, dApp or Organization with permissions to manage this Farming Contract. <a target="_blank" href="https://docs.ethos.wiki/covenants/">Technical Documentation</a>.</p>
+                </label>
+
+
+
                 <select className={style.CreationSelect} value={selectedHost} onChange={onHostSelection}>
                     <option value="">Host type</option>
                     <option value="address">Standard (Address, wallet)</option>
                     <option value="deployedContract">Custom (Deployed Contract)</option>
                     {/*<option value="fromSourceCode">Custom Extension (Deploy Contract)</option>*/}
                 </select>
-                </div>
+
                 {
                     selectedHost === 'address' ? <>
                         <div className={style.CreationPageLabelF}>
@@ -612,7 +637,7 @@ export default props => {
                         <div>
                         </div>
                         <div>
-                        <h6>Extension payload</h6>
+                            <h6>Extension payload</h6>
                             <div>
                                 <input type="text" value={extensionPayload || ""} onChange={(e) => setExtensionPayload(e.target.value.toString())} placeholder={"Payload"} aria-label={"Payload"} />
                             </div>
@@ -628,44 +653,66 @@ export default props => {
                         </div>
                     </> : <></>
                 }
-                <div className={style.ActionBTNCreateX}>
-                    <a className={style.Web3BackBTN} onClick={() => {
+                <div className={style.WizardFooter}>
+                    <button className={style.WizardFooterBack} onClick={() => {
                         setSelectedHost(null)
                         setIsDeploy(false)
-                    }}>Back</a>
-                    <a className={style.RegularButton} onClick={() => {
+                    }}>Back</button>
+                    <button className={style.WizardFooterNext} onClick={() => {
                         if (!canDeploy()) {
                             return
                         }
                         initializeDeployData().then(createActionSequence)
-                    }} disabled={!canDeploy()}>Deploy</a>
+                    }} style={{'float':'right'}} disabled={!canDeploy()}>Deploy</button>
                 </div>
             </div>
+
+
+
+
+
         )
     }
 
     const getFarmingContractStatus = () => {
         return (
             <div>
-                <div className={style.FancyExplanationCreate}>
-                    <h6>Manage Setups</h6>
-                    <p className={style.BreefRecapB}>Covenants farming contracts are able to manage multiple setups. Every setup can reward a single LP with a custom Reward/Block and duration.</p>
-                    {!onEditSuccess && <div className={style.proggressCreate}>
-                        <div className={style.proggressCreatePerch} style={{width: "66%"}}>Step 2 of 3</div>
-                    </div>}
+
+                <div className={style.WizardHeader}>
+                    <h3>
+                        Create a new multi-DEX farming solution <span>step 3 of 5</span>
+                    </h3>
+                    <div className={style.WizardHeaderDescription}>
+                        Create a multi-DEX farming solution with multiple LP setups.
+                    </div>
+                    <div className={style.WizardProgress}>
+                        <div
+                            className={style.WizardProgressBar}
+                            style={{
+                                width: ((100 / 5) * 2 > 0 ? (100 / 5) * 2 : 1) + '%',
+                            }}></div>
+                    </div>
                 </div>
 
-                <CreateOrEditFarmingSetups
-                    rewardToken={selectedRewardToken}
-                    farmingSetups={farmingSetups}
-                    onAddFarmingSetup={addFarmingSetup}
-                    onRemoveFarmingSetup={removeFarmingSetup}
-                    onEditFarmingSetup={editFarmingSetup}
-                    onCancel={() => setDeployStep()}
-                    onFinish={() => setIsDeploy(true)}
-                    generation={generation}
-                    finishButton={finishButton}
-                />
+                <div className={style.CreationPageLabel}>
+                    <div className={style.FancyExplanationCreate}>
+                        <h2>Manage Setups</h2>
+                    </div>
+                    <label className={style.CreationPageLabelF}>
+                        <p>Covenants farming contracts are able to manage multiple setups. Every setup can reward a single LP with a custom Reward/Block and duration.</p>
+                    </label>
+                    <CreateOrEditFarmingSetups
+                        rewardToken={selectedRewardToken}
+                        farmingSetups={farmingSetups}
+                        onAddFarmingSetup={addFarmingSetup}
+                        onRemoveFarmingSetup={removeFarmingSetup}
+                        onEditFarmingSetup={editFarmingSetup}
+                        onCancel={() => setDeployStep()}
+                        onFinish={() => setIsDeploy(true)}
+                        generation={generation}
+                        finishButton={finishButton}
+                    />
+                </div>
             </div>
         )
     }
@@ -680,12 +727,12 @@ export default props => {
 
                 {/*If choosen by wallet*/}
                 {selectedHost === 'wallet' ? <>
-                <div className={style.FancyExplanationCreate}>
-                    <p className={style.BreefRecapB}>Before attempting to activate the contract’s setups, <b>remember to send at least {fromDecimals(totalRewardToSend, selectedRewardToken?.decimals, true)} {selectedRewardToken?.symbol}</b> to the extension contract:</p>
-                    <a className={style.RegularButton} href={getNetworkElement({ context, chainId }, "etherscanURL") + "address/" + deployData?.extensionAddress} target="_blank">{deployData?.extensionAddress}</a><a onClick={()=>copyToClipboard(deployData?.extensionAddress)} className={style.RegularButton}>Copy</a>
-                    {/*Calculate total needed taking into acount repet in setups*/}
-                    <p className={style.BreefRecapB}>Taking into account all of the Renewable Setups, the total amount of tokens needed, is {fromDecimals(cumulativeRewardToSend, selectedRewardToken?.decimals, true)} {selectedRewardToken?.symbol} </p>
-                </div>
+                    <div className={style.FancyExplanationCreate}>
+                        <p className={style.BreefRecapB}>Before attempting to activate the contract’s setups, <b>remember to send at least {fromDecimals(totalRewardToSend, selectedRewardToken?.decimals, true)} {selectedRewardToken?.symbol}</b> to the extension contract:</p>
+                        <a className={style.RegularButton} href={getNetworkElement({ context, chainId }, "etherscanURL") + "address/" + deployData?.extensionAddress} target="_blank">{deployData?.extensionAddress}</a><a onClick={() => copyToClipboard(deployData?.extensionAddress)} className={style.RegularButton}>Copy</a>
+                        {/*Calculate total needed taking into acount repet in setups*/}
+                        <p className={style.BreefRecapB}>Taking into account all of the Renewable Setups, the total amount of tokens needed, is {fromDecimals(cumulativeRewardToSend, selectedRewardToken?.decimals, true)} {selectedRewardToken?.symbol} </p>
+                    </div>
                     {/*If choosen by wallet and the treasury is the Extension*/}
                     {!hasTreasuryAddress && <div className={style.FancyExplanationCreate}> <p className={style.BreefRecapB}>Unissued reward tokens will be transferred automagically to the Extension Contract once every farmed position withdraws their liquidity at the end of the setup.</p></div>}
 
@@ -701,7 +748,7 @@ export default props => {
                     <div className={style.FancyExplanationCreate}>
                         {/*If not choosen by wallet (custom extension contract)*/}
                         <p className={style.BreefRecapB}>Before attempting to activate the contract’s setups, <b>you first need to do do all of the actions needed to send at least {fromDecimals(totalRewardToSend, selectedRewardToken?.decimals, true)} {selectedRewardToken?.symbol}</b> to the extension contract:</p>
-                        <a className={style.RegularButton} href={getNetworkElement({ context, chainId }, "etherscanURL") + "address/" + deployData?.extensionAddress} target="_blank">{deployData?.extensionAddress}</a><a onClick={()=>copyToClipboard(deployData?.extensionAddress)} className={style.RegularButton}>Copy</a>
+                        <a className={style.RegularButton} href={getNetworkElement({ context, chainId }, "etherscanURL") + "address/" + deployData?.extensionAddress} target="_blank">{deployData?.extensionAddress}</a><a onClick={() => copyToClipboard(deployData?.extensionAddress)} className={style.RegularButton}>Copy</a>
                         <p className={style.BreefRecapB}>If you rule the extension via a DFO or a DAO, be sure to vote to grant permissions from its Treasury.</p>
                     </div>
                 </>}
@@ -718,33 +765,76 @@ export default props => {
         return (
             <div>
                 <div>
-                    {actionSequence && <ActionSequence {...{...actionSequence, onClose(){setActionSequence()}}}/>}
-                    {getDeployComponent()}
+                    {actionSequence && <ActionSequence {...{ ...actionSequence, onClose() { setActionSequence() } }} />}
+                    
+                    <div className={style.CreatePage}>
+                    <div className={style.WizardHeader}>
+                        <h3>
+                            Create a new multi-DEX farming solution <span>step 1 of 5</span>
+                        </h3>
+                        <div className={style.WizardHeaderDescription}>
+                            Create a multi-DEX farming solution with multiple LP setups.
+                        </div>
+                        <div className={style.WizardProgress}>
+                            <div
+                                className={style.WizardProgressBar}
+                                style={{
+                                    width: ((100 / 5) * 1 > 0 ? (100 / 5) * 1 : 1) + '%',
+                                }}></div>
+                        </div>
+                    </div>
+                        <div className={style.CreationPageLabel}>
+                            {getDeployComponent()}
+                        </div>
+                    </div>
+
                 </div>
             </div>
         )
     }
 
-    if(!generation) {
-        if(element) {
-            return <OurCircularProgress/>
+    if (!generation) {
+        if (element) {
+            return <OurCircularProgress />
         }
         return (<div className={style.CreatePage}>
-            <div className={style.SelectGenFarm}>
-                <div className={style.FancyExplanationCreate}>
-                <h6>Covenants Farming</h6>
-                <p className={style.BreefRecapB}>Build a farming contract with multiple customizable setups. Covenants farming contracts can be extended and governed by a wallet, an automated contract or an Organization.</p>
+
+            <div className={style.WizardHeader}>
+                <h3>
+                    Create a new multi-DEX farming solution <span>step 1 of 5</span>
+                </h3>
+                <div className={style.WizardHeaderDescription}>
+                    Create a multi-DEX farming solution with multiple LP setups.
                 </div>
-                {chainId !== 10 && false && <div className={style.CreateBoxDesc}>
-                    <h6>Multi AMM</h6>
-                    <p>Powered by the AMM aggregator, these contracts work with <b>Uniswap V2, Balancer V1, Mooniswap V1 and Sushiswap V1.</b></p>
-                    <a className={style.RegularButtonDuo} onClick={() => void(setGeneration("gen1"), setRegularNFT(false))}>Select</a>
-                </div>}
-                {true && <div className={style.CreateBoxDesc}>
-                    <h6>Uniswap V3</h6>
-                    <p>Designed for <b>Uniswap v3</b>, these contracts enable secure farming and customizable price curves.</p>
-                    <a className={style.RegularButtonDuo} onClick={() => void(setGeneration("gen2"), setRegularNFT(true))}>Select</a>
-                </div>}
+                <div className={style.WizardProgress}>
+                    <div
+                        className={style.WizardProgressBar}
+                        style={{
+                            width: ((100 / 5) * 0 > 0 ? (100 / 5) * 0 : 1) + '%',
+                        }}></div>
+                </div>
+            </div>
+
+            <div className={style.CreationPageLabel}>
+
+                <div className={style.SelectGenFarm}>
+                    <div className={style.FancyExplanationCreate}>
+                        <h2>Covenants Farming</h2>
+                    </div>
+                    <label className={style.CreationPageLabelF}>
+                        <p>Build a farming contract with multiple customizable setups. Covenants farming contracts can be extended and governed by a wallet, an automated contract or an Organization.</p>
+                    </label>
+                    {chainId !== 10 && false && <div className={style.CreateBoxDesc}>
+                        <h6>Multi AMM</h6>
+                        <p>Powered by the AMM aggregator, these contracts work with <b>Uniswap V2, Balancer V1, Mooniswap V1 and Sushiswap V1.</b></p>
+                        <a className={style.RegularButtonDuo} onClick={() => void (setGeneration("gen1"), setRegularNFT(false))}>Select</a>
+                    </div>}
+                    {true && <div className={style.CreateBoxDesc}>
+                        <h6>Uniswap V3</h6>
+                        <p>Designed for <b>Uniswap v3</b>, these contracts enable secure farming and customizable price curves.</p>
+                        <button className={style.footerNextButton} onClick={() => void (setGeneration("gen2"), setRegularNFT(true))}>Select</button>
+                    </div>}
+                </div>
             </div>
         </div>)
     }

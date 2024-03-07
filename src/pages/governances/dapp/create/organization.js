@@ -363,7 +363,7 @@ const Metadata = ({ value, onChange, onNext, onPrev }) => {
       </div>
       <label className={style.CreationPageLabelF}>
         <h6>Name*</h6>
-        <p>Choose an unique name for your ogranization</p>
+        <p>Choose an unique name for your Ogranization</p>
         <input
           type="text"
           value={value?.name}

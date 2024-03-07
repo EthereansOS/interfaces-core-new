@@ -222,11 +222,10 @@ export default props => {
         return <div className={style.CreatePage}>
             <div className={style.WizardHeader}>
                 <h3>
-                    Create a new Routine <span>step 3 of 5</span>
+                Routine Creation <span>step 3 of 5</span>
                 </h3>
                 <div className={style.WizardHeaderDescription}>
-                    Routine are fully decentralized DAOs with modular economic
-                    components
+                    Select the tokens, addresses, and swaps the routine will execute
                 </div>
                 <div className={style.WizardProgress}>
                     <div
@@ -268,11 +267,10 @@ export default props => {
         return <div className={style.CreatePage}>
             <div className={style.WizardHeader}>
                 <h3>
-                    Create a new Routine <span>step 3 of 5</span>
+                Routine Creation <span>step 3 of 5</span>
                 </h3>
                 <div className={style.WizardHeaderDescription}>
-                    Routine are fully decentralized DAOs with modular economic
-                    components
+                    Select the tokens, addresses, and swaps the routine will execute
                 </div>
                 <div className={style.WizardProgress}>
                     <div
@@ -316,11 +314,10 @@ export default props => {
         return <div>
             <div className={style.WizardHeader}>
                 <h3>
-                    Create a new Routine <span>step 3 of 5</span>
+                Routine Creation <span>step 3 of 5</span>
                 </h3>
                 <div className={style.WizardHeaderDescription}>
-                    Routine are fully decentralized DAOs with modular economic
-                    components
+                    Select the tokens, addresses, and swaps the routine will execute
                 </div>
                 <div className={style.WizardProgress}>
                     <div

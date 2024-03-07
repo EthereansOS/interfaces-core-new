@@ -163,11 +163,10 @@ export default props => {
             <div>
                 <div className={style.WizardHeader}>
                     <h3>
-                        Create a new Routine <span>step {step + 1} of 5</span>
+                    Routine Creation <span>step {step + 1} of 5</span>
                     </h3>
                     <div className={style.WizardHeaderDescription}>
-                        Routine are fully decentralized DAOs with modular economic
-                        components
+                    Select the tokens, addresses, and swaps the routine will execute
                     </div>
                     <div className={style.WizardProgress}>
                         <div

@@ -1,0 +1,8 @@
+svg.profileArea {
+  opacity: 0;
+  position: relative;
+  width: 70%;
+  max-height: 95%;
+  min-width: 900px;
+  margin-top: 80px;
+}

@@ -144,12 +144,15 @@ const ViewRoutine = ({ loadedElement, onBack }) => {
                 <div className={style.RutineBack}>
                     {onBack && <a className={style.BackButton} onClick={onBack}>X</a>}
                 </div>
-                <h2>{element.entry.name}</h2>
-                <div>
-                    {onBack && <a className={style.CopyBTN} onClick={() => copyToClipboard(`${window.location.href}/${element.address}`)}>Link</a>}
-                    {element.host === account && <a className={style.RegularButtonDuo} onClick={() => setEdit(true)}>Edit</a>}
-                    {element.host === account && !element.active && <ActionAWeb3Button className={style.RegularButtonDuo} onSuccess={() => getContractMetadata(true)} onClick={() => blockchainCall(element.extension.methods.setActive, true)}>Activate</ActionAWeb3Button>}
-                </div>
+                <h2>{element.entry.name}
+                    <span className={style.floatRight}>
+                        {onBack && <a className={style.CopyBTN} onClick={() => copyToClipboard(`${window.location.href}/${element.address}`)}>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" id="copy"><path fill="none" d="M0 0h48v48H0z"></path><path d="M32 2H8C5.79 2 4 3.79 4 6v28h4V6h24V2zm6 8H16c-2.21 0-4 1.79-4 4v28c0 2.21 1.79 4 4 4h22c2.21 0 4-1.79 4-4V14c0-2.21-1.79-4-4-4zm0 32H16V14h22v28z"></path></svg>
+                            </a>}
+                        {element.host === account && <a className={style.RegularButtonDuo} onClick={() => setEdit(true)}>Edit</a>}
+                        {element.host === account && !element.active && <ActionAWeb3Button className={style.RegularButtonDuo} onSuccess={() => getContractMetadata(true)} onClick={() => blockchainCall(element.extension.methods.setActive, true)}>Activate</ActionAWeb3Button>}
+                    </span>
+                </h2>
             </div>
             <div className={style.OperationsBox}>
             {element.operations.map((operation, i) => {

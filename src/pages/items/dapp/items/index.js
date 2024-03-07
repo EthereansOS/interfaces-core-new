@@ -27,7 +27,7 @@ const ItemsList = ({ wrappedOnly }) => (
       </li>
     </ul>
     <div className={style.ItemsExploreMainTitleArea}>
-      <h2>What's Trending Now</h2>
+      <h2 className={style.textGradientHeading}>What's Trending Now</h2>
       <p>Discover the most trending NFT Items in EthereanOS.</p>
       <div className={style.ItemsExploreMainSearch}>
         <input placeholder="Search items..." />
@@ -57,7 +57,7 @@ const ItemsList = ({ wrappedOnly }) => (
       <li>Document</li>
       <li>Other</li>
       <li className={style.ItemsExploreMainCategoriesCreateElement}>
-        <Link to="/items/wrap" style={{color:'white'}}>
+        <Link to="/items/create" style={{color:'white'}}>
         <svg
           width="24"
           height="24"
@@ -83,7 +83,7 @@ const ItemsList = ({ wrappedOnly }) => (
             strokeLinecap="round"
             strokeLinejoin="round"></path>
         </svg>
-        <span>Wrap</span>
+        <span>Create</span>
         </Link>
       </li>
     </ul>

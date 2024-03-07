@@ -121,7 +121,9 @@ const MenuCapableComponent = (props) => {
                   {' '}
                   {menuVoices[componentIndex] &&
                     menuVoices[componentIndex].label}
-                  <Link
+                 
+                </h2>
+                <Link
                     to="/covenants/create"
                     className={style.ItemsExploreMainCategoriesCreateElement}>
                     <svg
@@ -149,13 +151,16 @@ const MenuCapableComponent = (props) => {
                         strokeLinecap="round"
                         strokeLinejoin="round"></path>
                     </svg>
-                    <span>Create</span>
+                    <span>
+
+                   Create
+                    </span>
                   </Link>
-                </h2>
                 <p>
-                  Lorem ipsum sim dolor{' '}
-                  {menuVoices[componentIndex] &&
-                    menuVoices[componentIndex].label}
+                  {location.pathname.includes('/routine/') ? 
+                    'Routines are semi-automated periodic token transfers and/or swaps' : 'Create Farming Solution'  
+                  }
+                 
                 </p>
               </div>
             </>

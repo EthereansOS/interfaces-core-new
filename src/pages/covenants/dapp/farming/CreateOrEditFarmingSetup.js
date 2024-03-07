@@ -199,9 +199,9 @@ export default props => {
                     <p>Select the duration of the setup. The selected timeband will determinate the end block once activated</p>
                 </div>
                 <p><b>Total reward ({`${blockDuration}`} blocks): {formatMoney(fromDecimals(rewardPerBlock.ethereansosMul(blockDuration), rewardToken.decimals, true), 8)} {rewardToken.symbol}</b></p>
-                <div className={style.ActionBTNCreateX}>
-                    <a className={style.Web3BackBTN} onClick={onCancel}>Back</a>
-                    <a className={style.RegularButton} onClick={next}>{!editSetup || !editSetup.editing || parseInt(editSetup.initialRenewTimes) > 0 ? "Next" : "Edit"}</a>
+                <div className={style.WizardFooter}>
+                    <button className={style.WizardFooterBack} onClick={onCancel}>Back</button>
+                    <button className={style.footerNextButton} style={{float:'right'}} onClick={next}>{!editSetup || !editSetup.editing || parseInt(editSetup.initialRenewTimes) > 0 ? "Next" : "Edit"}</button>
                 </div>
             </div>
         )
