@@ -65,6 +65,22 @@ import { scaleOrdinal } from '@visx/scale'
 import { animated, useTransition, interpolate } from '@react-spring/web'
 
 import { Group } from '@visx/group'
+
+import { create as createIpfsHttpClient } from 'ipfs-http-client'
+import uploadToIPFS from 'interfaces-core/lib/web3/uploadToIPFS'
+import getFileFromBlobURL from 'interfaces-core/lib/web3/getFileFromBlobURL'
+
+function initializeIPFSClient(context) {
+  var options = {
+    ...context.infuraIPFSOptions,
+    headers: {
+      authorization: 'Basic ' + context.infuraAPIKey,
+    },
+  }
+  var client = createIpfsHttpClient(options)
+  return client
+}
+
 export const backgroundColor = '#da7cff'
 const axisColor = '#fff'
 const tickLabelColor = '#fff'
@@ -352,9 +368,21 @@ const Metadata = ({ value, onChange, onNext, onPrev }) => {
 
   const handleImageChange = (e) => {
     if (e.target.files && e.target.files[0]) {
+      value.image = ''
       setSelectedImage(URL.createObjectURL(e.target.files[0]))
+      value.file = selectedImage ?? null
+      value.image = selectedImage == null ? value?.image : ''
     }
   }
+
+  useEffect(() => {
+    if (value) {
+      if (value.file) setSelectedImage(value.file)
+      value.file = selectedImage ?? null
+      value.image = selectedImage == null ? value?.image : ''
+    }
+    setDisabled(!checkCollectionMetadata(value))
+  }, [selectedImage, onChange])
 
   return (
     <div className={style.CreationPageLabel}>
@@ -438,7 +466,7 @@ const Metadata = ({ value, onChange, onNext, onPrev }) => {
           {triggerTextInput && (
             <input
               type="link"
-              value={value?.image}
+              value={value?.image ?? ''}
               placeholder="Organization Logo URL"
               onChange={(e) =>
                 onChange({ ...value, image: e.currentTarget.value })
