@@ -106,7 +106,7 @@ const IndexMain = () => {
                 height="50"
                 className={style.CardLayerBannerDetailImage}
                 src="https://peerduck.com/wp-content/uploads/2022/04/imaedwed67.png"
-                srcset="https://peerduck.com/wp-content/uploads/2022/04/imaedwed67.png 80w, https://peerduck.com/wp-content/uploads/2022/04/imaedwed67-40x40.png 40w"
+                srcSet="https://peerduck.com/wp-content/uploads/2022/04/imaedwed67.png 80w, https://peerduck.com/wp-content/uploads/2022/04/imaedwed67-40x40.png 40w"
                 sizes="(max-width: 80px) 100vw, 80px"></img>
             </h1>
             <p>

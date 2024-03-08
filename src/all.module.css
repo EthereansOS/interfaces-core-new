@@ -8641,12 +8641,13 @@ input[type=range]::-ms-thumb {
 
 @media only screen and (max-device-width: 990px) {
     .RightMenu {
-        top: auto;
+        top: 0;
         bottom: 0px;
         left: 0;
         right: 0;
         text-align: center;
         padding: 5px 0;
+        height: 115px;
     }
 
     .NetworkSelect {
