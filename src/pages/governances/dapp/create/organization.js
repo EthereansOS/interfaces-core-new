@@ -381,7 +381,6 @@ const Metadata = ({ value, onChange, onNext, onPrev }) => {
       value.file = selectedImage ?? null
       value.image = selectedImage == null ? value?.image : ''
     }
-    setDisabled(!checkCollectionMetadata(value))
   }, [selectedImage, onChange])
 
   return (
