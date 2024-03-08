@@ -6817,9 +6817,7 @@ input[type=range]::-ms-thumb {
     color: #888;
 }
 
-.CardsLayerS .CardsFancy:last-child img {
-    width: 50px !important;
-}
+
 
 .MenuProfile {
     margin: 0px 0px 0px 0px;
@@ -9540,11 +9538,6 @@ input[type=range]::-ms-thumb {
 
     .AccountInfoL h4 span {
         font-size: 11px;
-    }
-
-    .CardsLayerS,
-    .CardsFancy {
-        height: 100px !important;
     }
 
     .CardsLayerS {
@@ -15801,12 +15794,12 @@ input {
     }
 
     .ItemSingle{
-        width: 225px;
+        width: 280px;
         margin: 14px;
     }
 
     .ItemSingle>a>.ItemTitleBottomZone {
-        right: -50px;
+        right: 0px0px;
     }
 
     .CollectionSingle{
@@ -15846,5 +15839,7 @@ input {
     .ExtLinkButton{
         width: fit-content!important
     }
+
+
 
 }
