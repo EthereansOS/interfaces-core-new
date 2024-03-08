@@ -25,12 +25,17 @@ import { useThemeSelector } from '../../../logic/uiUtilities'
 const Header = (props) => {
   const { themes, theme, setTheme } = useThemeSelector()
   const [isChecked, setIsChecked] = useState(false)
+  const [isMenuHidden, setIsMenuHidden] = useState(true);
 
   const context = useEthosContext()
   const web3Data = useWeb3()
   const { chainId, web3, dualChainId, account, connectionStatus } = web3Data
 
   const history = useHistory()
+
+  const toggleMenuVisibility = () => {
+    setIsMenuHidden(!isMenuHidden);
+  };
 
   const [ensData, setEnsData] = useState()
 
@@ -172,40 +177,20 @@ const Header = (props) => {
           <img src={`${process.env.PUBLIC_URL}/img/logo.png`} />
         </Link>
 
-        <div className={style.CopyRight}>
-          &copy;2024 <b>EthereansOS</b> v1.3.2 <br /> All rights reserved
-        </div>
+       
       </div>
-      <div className={style.RightMenu}>
+      <div className={style.MobileMenuIcon} onClick={toggleMenuVisibility}>
+        <svg width="30px" height="30px" viewBox="0 0 20 20" fill="none">
+          <path fill="#000000" fill-rule="evenodd" d="M19 4a1 1 0 01-1 1H2a1 1 0 010-2h16a1 1 0 011 1zm0 6a1 1 0 01-1 1H2a1 1 0 110-2h16a1 1 0 011 1zm-1 7a1 1 0 100-2H2a1 1 0 100 2h16z"/>
+        </svg>
+      </div>
+      <div className={`${style.RightMenu} ${isMenuHidden ? style.hideMenu : ''}`}>
         <Navigation
           menuName={props.menuName}
           isDapp={props.isDapp}
           selected={props.link}
+          className={style.hideMenu}
         />
-        <div className={style.ThemeSelect}>
-          <label className={style.ThemeSwitch}>
-            <input
-              type="checkbox"
-              id="toggleSwitch"
-              checked={isChecked}
-              onChange={handleToggleChange}
-            />
-            <span className={style.ThemeSlider} aria-hidden="true"></span>
-          </label>
-        </div>
-        <IconContext.Provider value={{ color: 'black', size: '1.5em' }}>
-          <Select
-            isSearchable={false}
-            className={style.NetworkSelectDropdown}
-            styles={customStyles}
-            options={options}
-            components={{
-              DropdownIndicator: () => null,
-              IndicatorSeparator: () => null,
-            }}
-          />
-        </IconContext.Provider>
-
         <div className={style.MenuProfile}>
           <Link to="/account">
             <LogoRenderer
@@ -229,6 +214,29 @@ const Header = (props) => {
               </p>
             </div>
           </Link>
+        </div>
+        <IconContext.Provider value={{ color: 'black', size: '1.5em' }}>
+          <Select
+            isSearchable={false}
+            className={style.NetworkSelectDropdown}
+            styles={customStyles}
+            options={options}
+            components={{
+              DropdownIndicator: () => null,
+              IndicatorSeparator: () => null,
+            }}
+          />
+        </IconContext.Provider>
+        <div className={style.ThemeSelect}>
+          <label className={style.ThemeSwitch}>
+            <input
+              type="checkbox"
+              id="toggleSwitch"
+              checked={isChecked}
+              onChange={handleToggleChange}
+            />
+            <span className={style.ThemeSlider} aria-hidden="true"></span>
+          </label>
         </div>
         <Web3Connect />
       </div>

@@ -27,10 +27,12 @@ const MainTemplate = ({ Component, ...props }) => {
             <Component setTemplateState={setState} {...props} />
           </Content>
         </Container>
+       
       </main>
       <div className={style.OnlyMobile}>
         <p>This interface is not mobile ready at the moment.</p>
       </div>
+     
     </>
   )
 }

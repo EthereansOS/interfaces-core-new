@@ -6,6 +6,8 @@
   display: block;
   text-align: center;
   padding-top: 60px;
+  height: fit-content;
+    min-height: 100%;
 }
 .OnlyMobile {display: none;}
 
@@ -43,7 +45,7 @@
 
 @media only screen and (max-width: 1200px) {
   .container { width: 98%; margin: 20px auto;}
-  .root { padding-top: 0px;}
+  .root { padding-top: 100px;}
 }
 @media only screen and (max-device-width: 990px) {
   .container {min-width: 99%; width: 99%;}
@@ -57,4 +59,20 @@
     left: -150px;
     z-index: 0;
     opacity: 0.1;
+}
+
+@media only screen and (max-width: 1200px) {
+  .container {
+    min-width: 100%;
+  }
+}
+
+@media only screen and (max-width: 1457px) {
+  .root { padding-top: 100px;}
+}
+
+@media only screen and (max-width: 767px) {
+  .root {
+    padding-top: 30px;
+  }
 }
