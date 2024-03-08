@@ -371,7 +371,7 @@ input::-webkit-scrollbar {
 }
 
 .textGradientHeading {
-   
+
 }
 
 .light .NavigationItem:hover {
@@ -1796,7 +1796,7 @@ input::-webkit-scrollbar {
     cursor: pointer;
     margin: 23px 5px auto 5px;
     vertical-align: top;
-       
+
 }
 
 .TradeMarketBoxSwitch svg{
@@ -8568,8 +8568,8 @@ input[type=range]::-ms-thumb {
     }
 
     .logoMain {
-       
-       
+
+
         display: inline-block;
         vertical-align: top;
     }
@@ -15325,6 +15325,13 @@ input {
     font-size: 14px;
 }
 
+.SelectLabelOptimism {
+    width: 20px;
+    height: 20px;
+    -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
+    filter: grayscale(100%);
+}
+
 .NetworkSelectDropdown>div>div {
     background: #e9ecf1;
     border-radius: 8px;
@@ -15510,7 +15517,7 @@ input {
         margin-left: 0px;
         display: inline-block;
     }
-   
+
     .RightMenu{
         display:block;
         padding-left: 0px;
@@ -15700,7 +15707,7 @@ input {
     }
 
     .NavigationItem.selected,.NavigationItem:hover {
-      
+
     }
 
     .CreationPageLabelFDivide label {
@@ -15781,7 +15788,7 @@ input {
         margin-bottom: 20px;
         display: block;
         height: 70px !important;
-        
+
     }
 
     .ViewBasics{
@@ -15839,5 +15846,5 @@ input {
     .ExtLinkButton{
         width: fit-content!important
     }
-    
+
 }

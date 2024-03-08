@@ -25,7 +25,7 @@ import { useThemeSelector } from '../../../logic/uiUtilities'
 const Header = (props) => {
   const { themes, theme, setTheme } = useThemeSelector()
   const [isChecked, setIsChecked] = useState(false)
-  const [isMenuHidden, setIsMenuHidden] = useState(true);
+  const [isMenuHidden, setIsMenuHidden] = useState(true)
 
   const context = useEthosContext()
   const web3Data = useWeb3()
@@ -34,8 +34,8 @@ const Header = (props) => {
   const history = useHistory()
 
   const toggleMenuVisibility = () => {
-    setIsMenuHidden(!isMenuHidden);
-  };
+    setIsMenuHidden(!isMenuHidden)
+  }
 
   const [ensData, setEnsData] = useState()
 
@@ -74,7 +74,11 @@ const Header = (props) => {
       value: 'optimism',
       label: (
         <div>
-          <FaEthereum /> <div className={style.SelectLabel}>Optimism</div>
+          <img
+            className={style.SelectLabelOptimism}
+            src={`${process.env.PUBLIC_URL}/img/Optimism.png`}
+          />{' '}
+          <div className={style.SelectLabel}>Optimism</div>
         </div>
       ),
     },
@@ -176,15 +180,18 @@ const Header = (props) => {
         <Link to="" className={style.logoMain}>
           <img src={`${process.env.PUBLIC_URL}/img/logo.png`} />
         </Link>
-
-       
       </div>
       <div className={style.MobileMenuIcon} onClick={toggleMenuVisibility}>
         <svg width="30px" height="30px" viewBox="0 0 20 20" fill="none">
-          <path fill="#000000" fill-rule="evenodd" d="M19 4a1 1 0 01-1 1H2a1 1 0 010-2h16a1 1 0 011 1zm0 6a1 1 0 01-1 1H2a1 1 0 110-2h16a1 1 0 011 1zm-1 7a1 1 0 100-2H2a1 1 0 100 2h16z"/>
+          <path
+            fill="#000000"
+            fill-rule="evenodd"
+            d="M19 4a1 1 0 01-1 1H2a1 1 0 010-2h16a1 1 0 011 1zm0 6a1 1 0 01-1 1H2a1 1 0 110-2h16a1 1 0 011 1zm-1 7a1 1 0 100-2H2a1 1 0 100 2h16z"
+          />
         </svg>
       </div>
-      <div className={`${style.RightMenu} ${isMenuHidden ? style.hideMenu : ''}`}>
+      <div
+        className={`${style.RightMenu} ${isMenuHidden ? style.hideMenu : ''}`}>
         <Navigation
           menuName={props.menuName}
           isDapp={props.isDapp}
