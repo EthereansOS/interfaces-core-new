@@ -283,8 +283,6 @@ const Metadata = ({ value, onChange, onNext, onPrev }) => {
           }
         }
       }
-      value.file = selectedImage ?? null
-
       setDisabled(!checkCollectionMetadata(value))
     }
   }, [value, onChange])
@@ -322,6 +320,7 @@ const Metadata = ({ value, onChange, onNext, onPrev }) => {
 
   useEffect(() => {
     if (value) {
+      if (value.file) setSelectedImage(value.file)
       value.file = selectedImage ?? null
       value.image = selectedImage == null ? value?.image : ''
     }
