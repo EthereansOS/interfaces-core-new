@@ -39,7 +39,7 @@ const TokenInputRegular = ({onElement, onlySelections, tokens, tokenOnly, noETH,
             return setBalance(null)
         }
         element && element.contract && !element.mainInterface && blockchainCall(element.contract.methods.balanceOf, account).then(setBalance)
-        element && element.contract && element.mainInterface && !element.l2Address && blockchainCall(element.contract.methods.balanceOf, account, element.id).then(setBalance)
+        element && element.id && element.contract && element.mainInterface && !element.l2Address && blockchainCall(element.contract.methods.balanceOf, account, element.id).then(setBalance)
         element && element.contract && element.mainInterface && element.l2Address && getRawField({ provider : web3.currentProvider}, element.l2Address, 'balanceOf(address)', account).then(it => setBalance(abi.decode(['uint256'], it)[0].toString()))
     }, [account, element, block, noBalance])
 
