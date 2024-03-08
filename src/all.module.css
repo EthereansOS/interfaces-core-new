@@ -480,7 +480,7 @@ input::-webkit-scrollbar {
     border-radius: 12px;
     width: 270px;
     height: 200px;
-    display: inline-block;
+    display: inline-table;
     margin: 10px;
     text-align: center;
     vertical-align: middle;
