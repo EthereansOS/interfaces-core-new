@@ -1,6 +1,6 @@
 import React, { useMemo, useState, useEffect } from 'react'
 import { Switch, Route } from 'react-router-dom'
-
+import style from './all.module.css'
 import Web3 from 'web3'
 import { getLogs, useEthosContext, usePlaceholder, resolveCID, useWeb3, abi, getNetworkElement, web3Utils, sendAsync, fromDecimals, toDecimals, blockchainCall } from 'interfaces-core'
 import { getRawField } from 'logic/generalReader'
@@ -90,6 +90,9 @@ const AppRouter = () => {
             ) : (
               <MainTemplate {...templateProps} Component={Component} />
             )}
+             <div className={style.CopyRight}>
+              &copy;2024 <b>EthereansOS</b> v1.3.2 <br /> All rights reserved
+            </div>
           </Route>
         )
       }

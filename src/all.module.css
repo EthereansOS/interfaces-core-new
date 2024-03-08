@@ -290,7 +290,7 @@ input::-webkit-scrollbar {
 
 /* Navigation Menu */
 .Header {
-    height: 100%;
+    height: 70px;
     display: inline-block;
     text-align: center;
     width: 15em;
@@ -300,6 +300,7 @@ input::-webkit-scrollbar {
     position: fixed;
     left: 0;
     z-index: 1000 !important;
+    top: 4px;
 }
 
 .Header .FixedHeader {
@@ -308,7 +309,7 @@ input::-webkit-scrollbar {
     top: 0;
     width: 15em;
     max-width: 15em;
-    height: 100%;
+    height: auto;
     z-index: 9999999;
 }
 
@@ -351,7 +352,7 @@ input::-webkit-scrollbar {
 
 .Navigation {
     display: block;
-    max-width: 15em;
+    max-width: fit-content;
     margin: 1em 0em 2em 2em;
     text-align: center;
     height: 60px;
@@ -401,7 +402,7 @@ input::-webkit-scrollbar {
 }
 
 .dark .NavigationItem:hover {
-    background-color: #3b3854 !important;
+    background-color: #403b63 !important;
 }
 
 .dark .NavigationItem:hover p {
@@ -410,7 +411,7 @@ input::-webkit-scrollbar {
 }
 
 .dark .NavigationItem.selected {
-    background-color: #3b3854 !important;
+    background-color: #403b63 !important;
 }
 
 .dark .NavigationItem.selected p {
@@ -2535,7 +2536,7 @@ input::-webkit-scrollbar {
 }
 
 .dark .CreationPageLabel {
-    background: #3A3854;
+    background: #29263e;
 }
 
 .CreationPageLabelF {
@@ -3022,7 +3023,7 @@ input::-webkit-scrollbar {
 .FarmContentInfo p>span {
     padding: 4px 8px;
     font-size: 12px;
-    margin: 2px 8px 2px 0px;
+    margin: 2px 8px 5px 0px;
     display: inline-block;
 }
 
@@ -4948,10 +4949,10 @@ input[type=range]::-ms-thumb {
 .dark .SectionSubMenuItems li.SectionSubMenuItemsActive a {
     font-weight: 600;
     color: #bebcd0;
-    background: #3b3854;
+    background: #403b63;
     padding: 5px 12px;
     border-radius: 20px;
-    border: 1px solid #3b3854;
+    border: 1px solid #403b63;
 }
 
 
@@ -5801,7 +5802,7 @@ input[type=range]::-ms-thumb {
 }
 
 .GovLeft {
-    width: 200px;
+    width: 10%;
     display: inline-block;
 }
 
@@ -6724,13 +6725,15 @@ input[type=range]::-ms-thumb {
 .CopyRight {
     font-size: 10px;
     padding: 20px;
-    position: absolute;
-    bottom: 10px;
+    position: relative;
     margin: 10%;
     width: 80%;
     margin-bottom: 0px;
     border-radius: 8px;
+    margin-top: 20px;
+    margin-bottom: 20px;
     padding: 12px;
+    text-align: center;
 }
 
 .light .CopyRight {
@@ -6822,7 +6825,7 @@ input[type=range]::-ms-thumb {
     margin: 0px 0px 0px 0px;
     padding: 5px 10px 4px 10px;
     text-align: left;
-    display: flex;
+    display: inline-block;
     flex-direction: column;
     align-items: center;
     border-radius: 6px;
@@ -7721,7 +7724,7 @@ input[type=range]::-ms-thumb {
     width: 60px;
     display: inline-block;
     text-align: left;
-    width: 100px;
+    width: 66px;
     margin-right: auto;
 }
 
@@ -7795,11 +7798,12 @@ input[type=range]::-ms-thumb {
 .RightMenu {
     width: 100%;
     text-align: right;
-    display: flex;
+    display: inline-block;
     position: fixed;
     place-content: flex-end;
     right: 0px;
     top: 0px;
+    text-align: left;
     padding-top: 0px;
     padding-right: 10px;
     padding-bottom: 0px;
@@ -7810,15 +7814,14 @@ input[type=range]::-ms-thumb {
 }
 
 .RightMenu {
-    padding-left: 270px;
+    padding-left: 230px;
 }
 
 
 .RightMenu>div {
-    justify-items: flex-end;
-    display: flex;
     margin-right: 0px;
-    margin-left: -4px;
+    margin-left: 10px;
+    float: right;
 }
 
 .ObjectsLists {
@@ -8499,11 +8502,6 @@ input[type=range]::-ms-thumb {
 
 
 @media only screen and (max-width: 990px) {
-    .NavigationItem {
-        font-size: 11px;
-        width: 20%;
-        overflow: hidden;
-    }
 
     .Navigation .Selected img {
         display: none;
@@ -8525,6 +8523,10 @@ input[type=range]::-ms-thumb {
 
     .Web3ConnectWallet p {
         width: 100px;
+    }
+
+    .NavigationItem{
+        min-width: 110px;
     }
 }
 
@@ -8548,7 +8550,7 @@ input[type=range]::-ms-thumb {
         display: block;
         text-align: left;
         width: 100%;
-        position: relative;
+        position: absolute;
         margin-bottom: 20px;
         min-height: auto;
     }
@@ -8558,7 +8560,6 @@ input[type=range]::-ms-thumb {
         left: 0;
         top: 0;
         width: auto;
-        backdrop-filter: blur(6px);
         height: 60px;
     }
 
@@ -8567,17 +8568,14 @@ input[type=range]::-ms-thumb {
     }
 
     .logoMain {
-        height: 40px;
-        width: 50px;
-        margin: 10px 0px 0px 10px;
+       
+       
         display: inline-block;
         vertical-align: top;
     }
 
     .logoMain img {
-        height: 40px;
-        width: 50px;
-        display: block;
+        width: 80%;
     }
 
     .RightMenu {
@@ -8596,44 +8594,6 @@ input[type=range]::-ms-thumb {
         border-radius: 0px 0px 12px 12px;
     }
 
-    .NavigationItem:hover {
-        margin: 5px 5px;
-    }
-
-    .NavigationItem {
-        font-size: 13px;
-        text-align: center;
-        margin: 5px 5px;
-        display: inline-block;
-        text-align: left;
-        width: 90px;
-        text-align: center;
-        border-radius: 8px;
-        font-weight: bold !important;
-    }
-
-    .NavigationItem img {
-        display: none !important;
-    }
-
-    .NavigationItem:hover img {
-        display: none !important;
-        ;
-    }
-
-    .NavigationItem img {
-        width: 10px;
-        height: 10px;
-    }
-
-    .NavigationItem:hover img {
-        display: none;
-    }
-
-    .Navigation .Selected img {
-        display: none;
-    }
-
     .Navigation .selected {
         margin: 5px 5px;
     }
@@ -8650,9 +8610,6 @@ input[type=range]::-ms-thumb {
     }
 
     .ThemeSelect {
-        width: auto;
-        display: inline-block;
-        margin: 10px auto 0px auto;
     }
 
     .ThemeSelect select {
@@ -10138,7 +10095,7 @@ input[type=range]::-ms-thumb {
 }
 
 .dark .NFTInfo {
-    background-color: #000000;
+    background-color: #29263e;
     color: #ffffff;
 }
 
@@ -10223,7 +10180,7 @@ input[type=range]::-ms-thumb {
 }
 
 .dark .BackButton {
-    background-color: #3A3854;
+    background-color: #29263e;
     color: #ffffff;
 }
 
@@ -10330,6 +10287,7 @@ input[type=range]::-ms-thumb {
     border-color: #403f830d;
     color: #999;
     background-color: #403f830d;
+    margin-bottom: 4px;
 }
 
 .biz .ExtLinkButton {
@@ -10342,6 +10300,7 @@ input[type=range]::-ms-thumb {
     border-color: #ffffff;
     color: #ffffff;
     background-color: transparent;
+    margin-bottom: 4px;
 }
 
 .sepia .ExtLinkButton {
@@ -11249,8 +11208,8 @@ input {
 }
 
 .dark .CreateBoxDesc {
-    background-color: #3b3854;
-    border-color: #3b3854;
+    background-color: #403b63;
+    border-color: #403b63;
 }
 
 .sepia .CreateBoxDesc {
@@ -11356,8 +11315,8 @@ input {
 }
 
 .dark .TradeMarketToken {
-    background-color: #3b3854;
-    border-color: #3b3854;
+    background-color: #403b63;
+    border-color: #403b63;
 }
 
 .dark .BazarExchangeArea .TradeMarketToken {
@@ -12632,8 +12591,6 @@ input {
 }
 
 .light .AndNowBox {
-    background-color: #f2f4f8;
-    border-color: #e0e2e6;
 }
 
 .biz .AndNowBox {
@@ -12642,8 +12599,6 @@ input {
 }
 
 .dark .AndNowBox {
-    background-color: #3b3854;
-    border-color: #e0e2e6;
 }
 
 .light .CreationPageLabelFS input {
@@ -13455,7 +13410,7 @@ input {
 }
 
 .dark .CollectionSingle {
-    background-color: #3b3854;
+    background-color: #403b63;
 }
 
 .sepia .CollectionSingle {
@@ -13553,14 +13508,14 @@ input {
 }
 
 .dark .ItemSingle {
-    background-color: #3b3854 !important;
+    background-color: #403b63 !important;
     /*box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);
     -webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);
     -moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);*/
 }
 
 .dark .ItemsExploreMainCategories li.ItemsExploreMainCategoriesActive {
-    background-color: #3b3854;
+    background-color: #403b63;
 }
 
 .ItemNumbersLabel {
@@ -13768,7 +13723,7 @@ input {
 }
 
 .dark .InfoBox {
-    /*background-color: #3b3854;
+    /*background-color: #403b63;
     box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);
     -webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);
     -moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);*/
@@ -13817,7 +13772,7 @@ input {
 }
 
 .dark .InfoBoxaside {
-    /*background-color: #3b3854;*/
+    /*background-color: #403b63;*/
 }
 
 .sepia .InfoBoxaside {
@@ -13954,8 +13909,8 @@ input {
 }
 
 .dark .FinalizeSequenceBoxIn {
-    background-color: #3A3854;
-    border-color: #3A3854;
+    background-color: #29263e;
+    border-color: #29263e;
 }
 
 .sepia .FinalizeSequenceBoxIn {
@@ -14130,7 +14085,7 @@ input {
     margin-bottom: 0px;
     margin-top: 16px;
     vertical-align: middle;
-    display: flex;
+    display: inline-block;
     height: 40px;
     min-width: min-content;
 }
@@ -14144,7 +14099,7 @@ input {
 
 /* Others Components */
 .NavigationItem {
-    width: 173px !important;
+    width: fit-content !important;
     max-width: fit-content;
     margin-right: 10px;
     position: relative;
@@ -14159,6 +14114,7 @@ input {
 
 .NavigationItem span {
     padding-top: 7px;
+    padding-bottom: 10px;
     display: inline-block;
 }
 
@@ -14778,8 +14734,16 @@ input {
         background: linear-gradient(-130deg, #c1befc4d, #fdf7f515 80%);
     }
 
-    .light .Navigation {
-        background-color: #ffffff6e;
+    .Navigation {
+       width: 100%;
+      display:block;
+      text-align: center;
+      margin: 0 auto;
+    }
+
+    .RightMenu{
+        margin:0px;
+        padding:0px;
     }
 
     .biz .Navigation {
@@ -14787,7 +14751,6 @@ input {
     }
 
     .dark .Navigation {
-        background-color: #1a1a1a80;
     }
 
     .matrix .Navigation {
@@ -14807,10 +14770,6 @@ input {
         background-color: transparent;
     }
 
-    .light .NavigationItem:hover,
-    .light .Navigation .selected {
-        background-color: #ffffff !important;
-    }
 
     .biz .NavigationItem:hover,
     .biz .Navigation .selected {
@@ -14819,7 +14778,7 @@ input {
 
     .dark .NavigationItem:hover,
     .dark .Navigation .selected {
-        background-color: #000000 !important;
+        background-color: #403b63 !important;
     }
 
 
@@ -15112,6 +15071,7 @@ input {
     display: inline-block;
     min-width: 130px;
     text-align: left;
+    margin-top: 7px;
 }
 
 .CreationPageLabelFloatRight {
@@ -15310,6 +15270,10 @@ input {
     font-size: 14px
 }
 
+.MobileMenuIcon{
+    display: none;
+}
+
 .dark .WizardStepsList ul li {
     color: #5d597d;
 }
@@ -15498,4 +15462,382 @@ input {
 
 .ErrorMessage {
     color: #ec3939 !important;
+}
+
+@media only screen and (max-width: 1650px) {
+    .SectionMinWidth {
+        min-width: 100%;
+    }
+    .DDapp_Menu {
+        min-width:  100%;
+    }
+    .CreatePage{
+        width: 100%;
+    }
+    .FarmContent{
+        width: 100%;
+       min-width: 100%;
+    }
+    .OrgHeadline{
+        width: 100%;
+        min-width: 100%;
+        height: fit-content;
+    }
+
+   .light .OrgHeadlineSide {
+        height: 40px;
+        display: inline-block;
+        position: relative;
+         width: auto;
+    }
+    .OrgMainThingsCard{
+        min-width: 100%;
+        width: 100%;
+    }
+    .OrgPartView {
+        min-width: 100%;
+        width: 100%;
+    }
+
+    .GovCard {
+        min-width: 100%;
+        width: 100%;
+    }
+
+    .Govright {
+        min-width: 80%;
+        width: 80%;
+        margin-left: 0px;
+        display: inline-block;
+    }
+   
+    .RightMenu{
+        display:block;
+        padding-left: 0px;
+         text-align: center;
+    }
+
+
+}
+
+
+
+@media only screen and (max-width: 1457px) {
+    .Navigation{
+        width: 100%;
+        padding:0px;
+        margin-top: 80px!important;
+
+    }
+    .InfoBox{
+        width: 100%!important;
+        max-width: 100%!important;
+    }
+
+
+
+    .SmallBoxWidth{
+        width: 100%;
+    }
+
+    .MenuProfile{
+        position: absolute;
+        top: 5px;
+        right: 20px;
+    }
+
+    .NetworkSelectDropdown{
+        position: absolute!important;
+        top: 5px;
+        right: 240px;
+    }
+    .ThemeSelect{
+        position: absolute!important;
+        top: 5px;
+        right: 390px;
+    }
+}
+
+@media only screen and (max-width: 1347px) {
+    .WizardStepsList{
+        display:none;
+    }
+}
+.ItemTitleTopZoneLikeButton{
+    display: none;
+}
+
+
+
+@media only screen and (max-width: 767px) {
+    .MobileMenuIcon{
+        z-index: 10000;
+        position: fixed;
+        display: inline-block;
+        top: 20px;
+        right:20px
+    }
+    .CardLayerBannerDetailImages {
+        position: absolute;
+        width: 800px;
+        transform: rotateZ(324deg);
+        top: -220px;
+        right: -600px;
+        opacity: 0.5;
+        z-index: 10;
+    }
+    .CardLayerBannerDetail h1{
+        font-size: 30px;
+    }
+    .CardLayerBannerDetail>div{
+       margin: 0 auto;
+    width: 100% !important;
+    display: block !important;
+    z-index: 100;
+    }
+
+    .ItemsExploreMainCategoriesCreateElement{
+        display: block;
+        width: 200px;
+        margin: 10px auto;
+        float: initial;
+    }
+
+    .CardsLayerS .CardsFancy {
+        width: 90%;
+        margin: 10px auto;
+        height: fit-content;
+    }
+
+    .CardLayerBannerDetail>div>a{
+        display: block;
+        text-align: center;
+        width: 100%;
+        z-index: 1000;
+        position: relative;
+    }
+
+    .dark .MobileMenuIcon svg path{
+        fill: #fff;
+    }
+
+    .RightMenu{
+        position: fixed;
+        top: 70px;
+        left: 0px;
+        z-index: 100;
+        background: #d3d8e4;
+        height: 100%;
+        max-height: 100%;
+    }
+
+    .dark .RightMenu{
+        background: #332e51;
+    }
+    .Navigation{
+        padding: 0px;
+        margin-left: 10%;
+        margin-right: 10%;
+        width: 80%!important;
+        max-width: 80%!important;
+        text-align: left;
+        margin-top: 130px !important;
+    }
+    .Navigation a{
+        display: block;
+        width: 100%!important;
+        max-width: 100%;
+        font-size: 30px;
+        margin-bottom: 20px !important;
+    }
+
+    .MenuProfile{
+        display: block;
+        width: 80%;
+        position: absolute;
+        margin-left: 10% !important;
+        margin-right: 10% !important;
+        top: 60px;
+        left: 5px;
+    }
+
+    .NetworkSelectDropdown{
+        width: 50%;
+        left: 9%;
+    }
+    .ThemeSelect{
+        right: 9%;
+    }
+
+    .hideMenu{
+        display: none!important;
+    }
+    .SectionSubMenuItems, .ItemsExploreMainTitleArea{
+        text-align: center;
+    }
+
+    .CollectionRight, .InfoBox h1{
+        width: 100%!important;
+    }
+
+    .CollectionLeft{
+        width: 80%;
+        margin: 0 auto;
+    }
+
+    .FilterSelect{
+        display: block;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        width: 100%;
+        margin-left: 0px;
+    }
+    .FarmContentTitle{
+        text-align: center;
+    }
+    .WizardStepsList{
+        display:none;
+    }
+
+    .NavigationItem.selected,.NavigationItem:hover {
+      
+    }
+
+    .CreationPageLabelFDivide label {
+        width: 100%;
+    }
+    .NavigationItem p{
+        font-size: 17px
+    }
+
+    .logoMain img {
+        max-width: 15em;
+        padding: 14px 10px 10px 10px;
+        display: block;
+        width: 80%;
+        margin: 0 auto;
+    }
+
+    .CardLayerTitleArea {
+        margin-left:20px;
+        margin-right:20px;
+    }
+
+    .OrgHeadline {
+       text-align: center;
+    }
+
+    .OrgLinks {
+        margin-bottom: 20px;
+    }
+
+    .OrgThingsCardPics {
+        width: 100%;
+        margin:0px;
+    }
+
+    .OrgMainThingsCardSL{
+        width: 100%;
+        margin: 0px;
+        margin-top: 20px;
+    }
+
+    .OrgPartView{
+        text-align: center;
+    }
+
+    .VotingPowersObject{
+        width: 50%;
+    }
+
+    .GovLeft{
+        text-align: center;
+        width: 80%;
+        margin: 0 auto;
+        display: block;
+    }
+
+    .Upshot {
+        width: 100%!important;
+    }
+    .CollectionRight{
+        margin-left: 0px;;
+    }
+
+    .ViewBasics {
+        width: 100%;
+    }
+
+    .CollectionRightSubtitles{
+        width: 80%;
+        margin: 0 auto;
+    }
+
+    .Header{
+        background: #f2f4f8;
+        margin-top: 0px;
+        top: 0px;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+        display: block;
+        height: 70px !important;
+        
+    }
+
+    .ViewBasics{
+        display: block !important;
+        margin: 0 auto;
+    }
+
+    .dark .Header{
+        background: #2a273f;
+    }
+
+    .ItemSingle{
+        width: 225px;
+        margin: 14px;
+    }
+
+    .ItemSingle>a>.ItemTitleBottomZone {
+        right: -50px;
+    }
+
+    .CollectionSingle{
+        bottom: -16px;
+    }
+
+    .SubCollectionInfoName {
+        width: 100%;
+    }
+
+    .ViewBasics{
+        display: block;
+        margin: 0 auto;
+        text-align: center;
+        width: 80%;
+    }
+
+    .SendToL2{
+        margin:0 auto;
+        margin-bottom: 20px!important;
+        text-align: center!important;
+        display: block!important;
+    }
+
+    .MetaBTN{
+        margin:0 auto!important;
+        margin-bottom: 20px!important;
+        text-align: center!important;
+        display: block!important;
+
+    }
+
+    .DeckMarketPlace{
+        width: 100%;
+    }
+
+    .ExtLinkButton{
+        width: fit-content!important
+    }
+    
 }
