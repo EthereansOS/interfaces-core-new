@@ -8979,10 +8979,6 @@ input[type=range]::-ms-thumb {
         font-size: 13px;
     }
 
-    .ItemSingle {
-        width: 145px;
-    }
-
     .CollectionSingle {
         width: 155px;
     }
@@ -15571,6 +15567,13 @@ input {
 
 
 @media only screen and (max-width: 767px) {
+    .ImagePreview img {
+        width: 170px;
+        height: auto;
+        margin-top: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
     .MobileMenuIcon{
         z-index: 10000;
         position: fixed;
