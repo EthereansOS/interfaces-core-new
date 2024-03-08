@@ -124,6 +124,10 @@ const Header = (props) => {
     localStorage.setItem('toggleState', toggleSwitch.checked)
   }
 
+  const handleNetworkChange = (e) => {
+    localStorage.setItem('selectedNetwork', e.value)
+  }
+
   useEffect(() => {
     let toggleSwitch = document.getElementById('toggleSwitch')
     const initialLoad = async () => {
@@ -224,6 +228,10 @@ const Header = (props) => {
         </div>
         <IconContext.Provider value={{ color: 'black', size: '1.5em' }}>
           <Select
+            defaultValue={options.find(
+              (option) =>
+                option.value === (localStorage.getItem('selectedNetwork') ?? '')
+            )}
             isSearchable={false}
             className={style.NetworkSelectDropdown}
             styles={customStyles}
@@ -232,6 +240,7 @@ const Header = (props) => {
               DropdownIndicator: () => null,
               IndicatorSeparator: () => null,
             }}
+            onChange={(e) => handleNetworkChange(e)}
           />
         </IconContext.Provider>
         <div className={style.ThemeSelect}>
