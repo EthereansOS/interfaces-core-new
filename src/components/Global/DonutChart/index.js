@@ -4,7 +4,7 @@ import style from '../../../all.module.css'
 const initialData = [
     {
         "value": 10,
-        "name": "Option 1",
+        "name": "Initial Daily inflation percentage",
         "color": "#000000"
       },
       {
@@ -77,8 +77,9 @@ const DonutAndLegend = () => {
         className={style.CreationPageLabelFDivide}
         style={{ display: 'flex' }}>
         <label className={style.CreationPageLabelF}>
-            <div className={style.DonutGraphContainer}></div>
+            <div className={style.DonutGraphContainer}>
             <SimplyDonut data={data} inset={{ color: "#fff", size: 20 }} displayScore={true} />
+            </div>
         </label>
 
         <label className={style.CreationPageLabelF}>

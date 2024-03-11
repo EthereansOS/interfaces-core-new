@@ -1782,8 +1782,23 @@ input::-webkit-scrollbar {
 }
 
 .DonutGraphContainer .chart-wrapper {
-    width: 400px !important;
-    height: 400px !important;
+    position: relative;
+    width: 300px!important;
+    height: 300px!important;
+    margin: 0 auto;
+}
+
+.DonutGraphContainer {
+    width: 300px!important;
+    height: 300px!important;
+    margin:0 auto;
+}
+
+section.chart-wrapper {
+    position: relative;
+    width: 300px;
+    height: 300px;
+    margin: 0 auto;
 }
 
 .TradeMarketBoxSwitch {
@@ -1818,6 +1833,7 @@ input::-webkit-scrollbar {
 .SimplyDonutArea {
     margin-top: 20px;
     margin-bottom: 20px;
+    padding-bottom: 20px;
 }
 
 .SimplyDonutArea .CreationPageLabelF {
@@ -2429,7 +2445,7 @@ input::-webkit-scrollbar {
     background: linear-gradient(135deg, #f1f4f8, #f1f4f8 80%);
     -webkit-backdrop-filter: blur(6px);
     backdrop-filter: blur(10px);
-    height: 100vh;
+    min-height: 100vh;
     width: 1300px;
     margin: 0 auto;
 }
@@ -2542,7 +2558,7 @@ input::-webkit-scrollbar {
 .CreationPageLabelF {
     width: 100%;
     display: inline-block;
-    border-radius: 12px;
+    border-radius: 0px;
     padding: 0px 20px;
     margin: 5px auto;
 }
@@ -15843,7 +15859,71 @@ input {
     .ExtLinkButton{
         width: fit-content!important
     }
+}
 
+.PercentageComponentPlus{
+    background: #f0f4f8;
+    padding: 10px;
+    display: inline-block;
+    border-radius: 8px;
+    font-size: 20px;
+    padding-left: 15px;
+    padding-right: 15px;
+    width: 100%;
+    border: 1px dotted #f0f4f8;
+    margin-top: 10px;
+}
+.PercentageComponentBoxArea{
+    background: #f0f4f8;
+    border-radius: 10px;
+    padding: 20px;
+    vertical-align: middle;
+    margin-bottom: 15px;
+    margin-top: 15px;
+}
+.PercentageComponentBoxAreaSelect{
+    display: inline-block;
+    padding: 5px 10px 5px 10px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+}
+.PercentageComponentBoxAreaPreview{
+    display: inline-block;
+    font-weight: bold;
+    margin-left: 10px;
+    width: 100px;
+    text-align: center;
+}
+.PercentageComponentBoxAreaInput{
+    margin-top: 0px!important;
+    margin-left: 10px;
+    width: 40%!important;
+    display: inline-block!important;
 
-
+}
+.PercentageComponentBoxAreaMinus{
+    font-size: 30px;
+    line-height: 10px;
+    margin-left: 10px;
+}
+.CreationPageLabelF .ActionInfoSection{
+    border: 2px solid #e7ecf3;
+    width: 100%;
+    background: #ffffff;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 300;
+    display: block;
+    text-align: left;
+}
+.CheckboxAlign{
+    display: block!important;
+    text-align: left!important;
+    width: fit-content!important;
+    margin: 0 !important;
+    margin-top: 10px!important;
+    margin-bottom: 20px!important;
+}
+.SliderInputElement{
+    margin-top: 10px;
 }
