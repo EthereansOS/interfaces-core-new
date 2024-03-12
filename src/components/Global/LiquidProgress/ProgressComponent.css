@@ -49,12 +49,12 @@
 .progress[data-value="100"] {
   --color-progress: #557c55;
   --color-progress-alpha: #a6cf98;
-  
+
 }
 .dark .progress[data-value="100"] {
   --color-progress: #f09243!important;
   --color-progress-alpha: #ffa65c!important;
-  
+
 }
 
 
@@ -178,9 +178,6 @@
   to, 100% {
     transform: rotate(360deg);
   }
-}
-*:not(.watermark) {
-  z-index: 2;
 }
 
 .description {
