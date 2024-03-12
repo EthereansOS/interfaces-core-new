@@ -719,7 +719,7 @@ export default props => {
 
     if (farmingContract) {
         return (
-            <div className={style.CreatePage}>
+            <div className={style.CreationPageLabel}>
                 <h3>🎉Farming Contract Deployed!🎉</h3>
                 <div className={style.AndNowBox}>
                     <h6>And Now?<br></br>👇</h6>

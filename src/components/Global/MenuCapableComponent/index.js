@@ -124,6 +124,7 @@ const MenuCapableComponent = (props) => {
                  
                 </h2>
                 <Link
+                  style={location.pathname === '/covenants' || location.pathname === '/covenants/create' || location.pathname === '/covenants/create/routine/' || location.pathname === '/covenants/create/farming/' ? { display: 'none' } : {}}
                     to="/covenants/create"
                     className={style.ItemsExploreMainCategoriesCreateElement}>
                     <svg
@@ -151,14 +152,11 @@ const MenuCapableComponent = (props) => {
                         strokeLinecap="round"
                         strokeLinejoin="round"></path>
                     </svg>
-                    <span>
-
-                   Create
-                    </span>
+                    <span>Create</span>
                   </Link>
                 <p>
-                  {location.pathname.includes('/routine/') ? 
-                    'Routines are semi-automated periodic token transfers and/or swaps' : 'Create Farming Solution'  
+                  {location.pathname == '/covenants/routines' ? 
+                    'Routines are semi-automated periodic token transfers and/or swaps' : (location.pathname == '/covenants' ? 'Token swap' : '') 
                   }
                  
                 </p>

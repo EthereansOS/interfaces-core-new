@@ -295,9 +295,9 @@ export default props => {
                     </div>}
                     <p>[Optional] You can customize a setup to automatically repeat itself after the end block.</p>
                 </div>
-                <div className={style.ActionBTNCreateX}>
-                    <a className={style.Web3BackBTN} onClick={() => editSetup?.editing && !editSetup?.lastSetup?.active ? onCancel() : setCurrentStep(gen2SetupType === 'diluted' || editSetup?.editing ? 0 : 1)}>Back</a>
-                    <a className={style.RegularButton} onClick={() => addSetup()}>{editSetup ? 'Edit' : 'Add'}</a>
+                <div className={style.WizardFooter}>
+                    <button className={style.WizardFooterBack} onClick={() => editSetup?.editing && !editSetup?.lastSetup?.active ? onCancel() : setCurrentStep(gen2SetupType === 'diluted' || editSetup?.editing ? 0 : 1)}>Back</button>
+                    <button className={style.WizardFooterNext} onClick={() => addSetup()}>{editSetup ? 'Edit' : 'Add'}</button>
                 </div>
             </div>
         )

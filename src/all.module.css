@@ -375,29 +375,26 @@ input::-webkit-scrollbar {
 }
 
 .light .NavigationItem:hover {
-    background-color: #141416 !important;
+    background-color: #eaecf2 !important;
     border-radius: 100px;
 }
 
 .light .NavigationItem:hover img {
-    filter: invert(1) !important;
 }
 
 .light .NavigationItem:hover p {
-    color: var(--text-color-tertiary) !important;
     font-weight: bold;
 }
 
 .light .NavigationItem.selected {
-    background-color: #141416 !important;
+    background-color: #eaecf2 !important;
 }
 
 .light .NavigationItem.selected img {
-    filter: invert(1);
 }
 
 .light .NavigationItem.selected p {
-    color: var(--text-color-tertiary) !important;
+    color: #000 !important;
     font-weight: bold;
 }
 
@@ -788,7 +785,7 @@ input::-webkit-scrollbar {
 
 .ActionAWeb3Buttons .ActionASide,
 .ActionAWeb3Buttons .ActionAMain {
-    background-color: #141416;
+    background-color: #f09243;
     color: #ffffff;
     font-weight: bold;
 }
@@ -2552,7 +2549,7 @@ section.chart-wrapper {
 }
 
 .dark .CreationPageLabel {
-    background: #29263e;
+    background: #403b62;
 }
 
 .CreationPageLabelF {
@@ -4820,8 +4817,16 @@ input[type=range]::-ms-thumb {
 }
 
 .ItemsExploreMainCategories li.ItemsExploreMainCategoriesActive {
-    background-color: #000;
-    color: rgb(241, 245, 249, 1);
+    background-color: #eaecf2;
+   
+}
+
+.ItemsExploreMainCategories li.ItemsExploreMainCategoriesActive a{
+    color: #000!important;
+}
+
+.dark .ItemsExploreMainCategories li.ItemsExploreMainCategoriesActive a{
+    color: #fff!important;
 }
 
 .ProfilePageDetailsAreaWrapper{
@@ -4925,7 +4930,7 @@ input[type=range]::-ms-thumb {
 
 .ItemsExploreMainCategoriesCreateElement {
     float: right;
-    background-color: #141416;
+    background-color: #f09243;
     color: #fff !important;
     font-weight: bold;
     padding-right: 26px !important;
@@ -5039,6 +5044,16 @@ input[type=range]::-ms-thumb {
     position: relative;
     margin: 0;
     padding: 70px 50px;
+}
+
+.CovenantsMainBox >.LoaderA> .loadingio_spinner_disk_hn1zpmja0x6 {
+    margin-top: 20px!important;
+}
+
+
+.CovenantsMainBox .LoaderA, .CovenantsMainBox .LoaderB{
+    padding-top: 0px!important;
+    margin-top: 0px!important;
 }
 
 .Deck {}
@@ -10485,7 +10500,7 @@ input[type=range]::-ms-thumb {
 .light .CreateBTN2,
 .light .SubCollectionInfoCover a,
 .light .PlusWallet {
-    background-color: #141416;
+    background-color: #f09243;
     color: #fff;
 }
 
@@ -10868,7 +10883,7 @@ input[type=range]::-ms-thumb {
 
 
 .light .RoundedButton {
-    background-color: #849bbd;
+    background-color: #d2d6e0;
     color: #ffffff;
 }
 
@@ -12070,6 +12085,10 @@ input {
 
 .dark .TradeOTCBoxOrdersSell .TradeOTCBoxOrder button {
     background-color: rgb(252, 98, 111);
+}
+
+.AddressesList{
+    text-align: left;
 }
 
 .light .Dapp_Menu,
@@ -13910,8 +13929,8 @@ input {
 
 .dark .generationSelectorULTRA,
 .dark .generationSelectorB {
-    background-color: #1b1b1b;
-    border-color: #212121;
+    background-color: #29263e;
+    border-color: #29263e;
 }
 
 .dark .FinalizeSequenceBoxIn {
@@ -15184,7 +15203,7 @@ input {
 }
 
 .WizardFooter .WizardFooterNext {
-    background-color: #141416;
+    background-color: #f09243;
     color: #fff;
     float: right;
 
@@ -15222,10 +15241,12 @@ input {
     color:#fff!important;
 }
 
-
+.generationSelectorULTRA{
+    display: flex!important;
+}
 
 .footerNextButton {
-    background-color: #141416;
+    background-color: #f09243;
     color: #fff!important;
 }
 

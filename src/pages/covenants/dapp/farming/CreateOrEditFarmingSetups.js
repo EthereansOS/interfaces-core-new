@@ -80,7 +80,7 @@ export default props => {
                         farmingSetups.forEach((_, index) => onRemoveFarmingSetup(index))
                         onCancel()
                     }}>Back</button>}
-                    {finishButton || <a className={style.RegularButton} onClick={onFinish}>Next</a>}
+                    {finishButton || <button className={style.WizardFooterNext} onClick={onFinish}>Next</button>}
                 </div>
             </div>
         </div>

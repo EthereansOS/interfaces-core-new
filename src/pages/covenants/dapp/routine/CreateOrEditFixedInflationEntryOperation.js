@@ -369,7 +369,7 @@ export default props => {
                         <p>Add one or more addresses as receivers from this operation.</p>
                     </div>
                     <div >
-                        {receivers.map((receiver, index) => <div className={style.CreationPageLabelF} key={receiver.address}>
+                        {receivers.map((receiver, index) => <div className={style.CreationPageLabelF + ' ' +  style.AddressesList} key={receiver.address}>
                             <span>{receiver.address}</span>
                             <a className={style.RoundedButton} onClick={() => setReceivers(receivers.filter((_, i) => i !== index))}>X</a>
                             {index !== receivers.length - 1 &&
