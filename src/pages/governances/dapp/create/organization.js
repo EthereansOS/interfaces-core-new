@@ -1250,23 +1250,14 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
   const [hardCapValue, setHardCapValue] = useState(0)
   const [quorum, setQuorum] = useState(0)
 
-  const [token, setToken] = useState(value?.token)
+  const [internalStepValue, setInternalStepValue] = useState(0)
 
   useEffect(
-    () => onChange && onChange({ token, proposalRules }),
-    [token, proposalRules]
+    () => onChange && onChange({ proposalRules }),
+    [ proposalRules]
   )
 
   const [quorumKey, setQuorumKey] = useState(0) // Add a key state for the Quorum slider
-
-  useEffect(() => {
-    setQuorum(hardCapValue)
-    setQuorumKey((prevKey) => prevKey + 1)
-  }, [hardCapValue])
-
-  useEffect(() => {
-    onChange && onChange({ token, proposalRules, hardCapValue, quorum })
-  }, [token, proposalRules, hardCapValue, quorum])
 
   useEffect(
     () =>
@@ -1363,6 +1354,9 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
 
       {value && (
         <>
+
+        { internalStepValue == 0 ? 
+        <>
           <div
             className={style.CreationPageLabelFDivide}
             style={{
@@ -1437,111 +1431,6 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
             inflationPercentage2={inflationPercentage2} inflationPercentage3={inflationPercentage3} inflationPercentage4={inflationPercentage4} inflationPercentage5={inflationPercentage5}></DonutAndLegend>
           </label>
 
-          {/* <label className={style.CreationPageLabelF}>
-            <h6>Token minter owner</h6>
-            <input
-              type="text"
-              value={tokenMinterOwner}
-              onChange={(e) => setTokenMinter(e.currentTarget.value)}
-            />
-          </label> */}
-          {/*
-          <label className={style.CreationPageLabelF}>
-            <h6>Initial Daily inflation percentage</h6>
-            <p>
-              <h8>{inflationPercentage0} %</h8>
-            </p>
-            <input
-              type="range"
-              min="0.05"
-              max="100"
-              step="0.05"
-              value={inflationPercentage0}
-              onChange={(e) =>
-                setInflationPercentage0(parseFloat(e.currentTarget.value))
-              }
-            />
-          </label>
-          <label className={style.CreationPageLabelF}>
-            <h6>Other Daily inflation percentages</h6>
-            <label>
-              <p>
-                <h8>{inflationPercentage1} %</h8>
-              </p>
-              <input
-                type="range"
-                min="0.05"
-                max="100"
-                step="0.05"
-                value={inflationPercentage1}
-                onChange={(e) =>
-                  setInflationPercentage1(parseFloat(e.currentTarget.value))
-                }
-              />
-            </label>
-            <label>
-              <p>
-                <h8>{inflationPercentage2} %</h8>
-              </p>
-              <input
-                type="range"
-                min="0.05"
-                max="100"
-                step="0.05"
-                value={inflationPercentage2}
-                onChange={(e) =>
-                  setInflationPercentage2(parseFloat(e.currentTarget.value))
-                }
-              />
-            </label>
-            <label>
-              <p>
-                <h8>{inflationPercentage3} %</h8>
-              </p>
-              <input
-                type="range"
-                min="0.05"
-                max="100"
-                step="0.05"
-                value={inflationPercentage3}
-                onChange={(e) =>
-                  setInflationPercentage3(parseFloat(e.currentTarget.value))
-                }
-              />
-            </label>
-            <label>
-              <p>
-                <h8>{inflationPercentage4} %</h8>
-              </p>
-              <input
-                type="range"
-                min="0.05"
-                max="100"
-                step="0.05"
-                value={inflationPercentage4}
-                onChange={(e) =>
-                  setInflationPercentage4(parseFloat(e.currentTarget.value))
-                }
-              />
-            </label>
-            <label>
-              <p>
-                <h8>{inflationPercentage5} %</h8>
-              </p>
-              <input
-                type="range"
-                min="0.05"
-                max="100"
-                step="0.05"
-                value={inflationPercentage5}
-                onChange={(e) =>
-                  setInflationPercentage5(parseFloat(e.currentTarget.value))
-                }
-              />
-            </label>
-          </label>
-          */}
-
           <div className={style.CreationPageLabelFDivide} style={{
             borderBottom: '1px solid rgb(231, 236, 244)',
             marginBottom: '20px',
@@ -1569,6 +1458,10 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
               />
             </label>
           </div>
+            </>
+           : 
+            <>
+          
           <label className={style.CreationPageLabelF} style={{
             borderBottom: '1px solid rgb(231, 236, 244)',
             marginBottom: '20px',
@@ -1666,7 +1559,7 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
                   }}
                 />
               </label>
-              <label className={style.CreationPageLabelF} key={quorumKey}>
+              <label className={style.CreationPageLabelF}>
                 <h6>Quorum</h6>
                 <p>Selelct the value of Quorum</p>
                 <br />
@@ -1686,9 +1579,9 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
                   progressColorFrom="#000000"
                   progressColorTo="#444444"
                   trackColor="#eeeeee"
-                  min={hardCapValue}
+                  min={0}
                   max={100}
-                  initialValue={quorum}
+                  initialValue={0}
                   onChange={(value) => {
                     setQuorum(value)
                   }}
@@ -1785,13 +1678,14 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
               </label>
             </div>
           </div>
+          </>}
         </>
       )}
       <div className={style.WizardFooter}>
-        <button className={style.WizardFooterBack} onClick={onPrev}>
+        <button className={style.WizardFooterBack} onClick={internalStepValue == 1 ? ()=>{setInternalStepValue(0)} : onPrev}>
           Back
         </button>
-        <button className={style.WizardFooterNext} onClick={onNext}>
+        <button className={style.WizardFooterNext} onClick={ internalStepValue == 0 ? ()=>{setInternalStepValue(1)} : onNext}>
           Next
         </button>
       </div>
