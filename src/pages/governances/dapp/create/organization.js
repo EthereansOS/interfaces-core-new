@@ -194,8 +194,8 @@ function Example({
           index === 0
             ? 'first'
             : index === ticks[ticks.length - 1].index
-              ? 'last'
-              : `${v}`,
+            ? 'last'
+            : `${v}`,
         label: 'linear',
       },
     ]
@@ -246,8 +246,8 @@ function Example({
             data={
               selectedAlphabetLetter
                 ? letters.filter(
-                  ({ letter }) => letter === selectedAlphabetLetter
-                )
+                    ({ letter }) => letter === selectedAlphabetLetter
+                  )
                 : letters
             }
             pieValue={frequency}
@@ -393,7 +393,7 @@ const Metadata = ({ value, onChange, onNext, onPrev }) => {
         <p>Choose an unique name for your Ogranization</p>
         <input
           type="text"
-          value={value?.name}
+          value={value?.name ?? ''}
           placeholder="Organization name"
           onChange={(e) => onChange({ ...value, name: e.currentTarget.value })}
         />
@@ -403,7 +403,7 @@ const Metadata = ({ value, onChange, onNext, onPrev }) => {
         <h6>Description*</h6>
         <p>Enter the description of your Organization</p>
         <textarea
-          value={value?.description}
+          value={value?.description ?? ''}
           onChange={(e) =>
             onChange({ ...value, description: e.currentTarget.value })
           }
@@ -479,7 +479,7 @@ const Metadata = ({ value, onChange, onNext, onPrev }) => {
           <p>The official website of your Organization</p>
           <input
             type="link"
-            value={value?.url}
+            value={value?.url ?? ''}
             placeholder="Organziation Website URL"
             onChange={(e) => onChange({ ...value, url: e.currentTarget.value })}
           />
@@ -493,7 +493,7 @@ const Metadata = ({ value, onChange, onNext, onPrev }) => {
           <p>Insert link for your organization's social</p>
           <input
             type="link"
-            value={value?.social_link}
+            value={value?.social_link ?? ''}
             placeholder="Organization Social Link"
             onChange={(e) =>
               onChange({ ...value, social_link: e.currentTarget.value })
@@ -507,7 +507,7 @@ const Metadata = ({ value, onChange, onNext, onPrev }) => {
           <p>Insert Discord or Telegram link</p>
           <input
             type="link"
-            value={value?.community_link}
+            value={value?.community_link ?? ''}
             placeholder="Community Invite Link"
             onChange={(e) =>
               onChange({ ...value, community_link: e.currentTarget.value })
@@ -526,7 +526,16 @@ const Metadata = ({ value, onChange, onNext, onPrev }) => {
   )
 }
 
-const Confirmation = ({ value, onChange, onNext, onPrev, loading, onClick, disabled }) => {
+const Confirmation = ({
+  value,
+  onChange,
+  onNext,
+  onPrev,
+  loading,
+  onClick,
+  disabled,
+  state,
+}) => {
   const [token, setToken] = useState(value?.token)
   const [proposalRules, setProposalRules] = useState(value?.proposalRules)
 
@@ -559,8 +568,8 @@ const Confirmation = ({ value, onChange, onNext, onPrev, loading, onClick, disab
         style={{
           'text-align': 'left',
           'padding-left': '20px',
-          'margin-bottom': '10px',
-          'margin-top': '30px',
+          marginBottom: '10px',
+          marginTop: '30px',
         }}>
         Confirm the Organization deploy.
       </h6>
@@ -586,20 +595,44 @@ const Confirmation = ({ value, onChange, onNext, onPrev, loading, onClick, disab
           Back
         </button>
         {loading && <CircularProgress />}
-        {!loading && <ActionAWeb3Button className={'WizardFooterNext'} onClick={onClick} disabled={disabled}>Deploy</ActionAWeb3Button>}
+        {!loading && (
+          <ActionAWeb3Button
+            className={'WizardFooterNext'}
+            onClick={onClick}
+            disabled={disabled}>
+            Deploy
+          </ActionAWeb3Button>
+        )}
       </div>
     </div>
   )
 }
 
 const VotingRules = ({ value, onChange, onNext, onPrev }) => {
-  const [proposalDuration, setProposalDuration] = useState(value?.proposalRules?.proposalDuration || 0)
-  const [hardCapPercentage, setHardCapPercentage] = useState(value?.proposalRules?.hardCapPercentage || 0)
-  const [quorumPercentage, setQuorumPercentage] = useState(value?.proposalRules?.quorumPercentage || 0)
-  const [validationBomb, setValidationBomb] = useState(value?.proposalRules?.validationBomb || 0)
+  const [proposalDuration, setProposalDuration] = useState(
+    value?.proposalRules?.proposalDuration || 0
+  )
+  const [hardCapPercentage, setHardCapPercentage] = useState(
+    value?.proposalRules?.hardCapPercentage || 0
+  )
+  const [quorumPercentage, setQuorumPercentage] = useState(
+    value?.proposalRules?.quorumPercentage || 0
+  )
+  const [validationBomb, setValidationBomb] = useState(
+    value?.proposalRules?.validationBomb || 0
+  )
 
-  useEffect(() => onChange && onChange({proposalDuration, hardCapPercentage, quorumPercentage, validationBomb}), [proposalDuration, hardCapPercentage, quorumPercentage, validationBomb])
-
+  useEffect(
+    () =>
+      onChange &&
+      onChange({
+        proposalDuration,
+        hardCapPercentage,
+        quorumPercentage,
+        validationBomb,
+      }),
+    [proposalDuration, hardCapPercentage, quorumPercentage, validationBomb]
+  )
 
   return (
     <div className={style.CreationPageLabel}>
@@ -611,8 +644,8 @@ const VotingRules = ({ value, onChange, onNext, onPrev }) => {
         style={{
           'text-align': 'left',
           'padding-left': '20px',
-          'margin-bottom': '10px',
-          'margin-top': '30px',
+          'marginBottom': '10px',
+          'marginTop': '30px',
         }}>
         Lorem ipsum sim dolor amed
       </h6>*/}
@@ -799,19 +832,26 @@ const VotingRules = ({ value, onChange, onNext, onPrev }) => {
 }
 
 const Organization = ({ value, onChange, onNext, onPrev }) => {
-  const [maxPercentagePerToken, setMaxPercentagePerToken] = useState(value?.maxPercentagePerToken || 0)
+  const [maxPercentagePerToken, setMaxPercentagePerToken] = useState(
+    value?.maxPercentagePerToken || 0
+  )
 
-  useEffect(() => onChange && onChange({ maxPercentagePerToken}), [ maxPercentagePerToken])
+  useEffect(
+    () => onChange && onChange({ maxPercentagePerToken }),
+    [maxPercentagePerToken]
+  )
 
   return (
     <div className={style.CreationPageLabel}>
       <div className={style.FancyExplanationCreate}>
         <h2>Organization Treasury</h2>
       </div>
-      <div className={style.CreationPageLabelFDivide}
+      <div
+        className={style.CreationPageLabelFDivide}
         style={{ display: 'flex' }}>
         <label className={style.CreationPageLabelF}>
-          <ProgressComponent maxPercentagePerToken={maxPercentagePerToken}></ProgressComponent>
+          <ProgressComponent
+            maxPercentagePerToken={maxPercentagePerToken}></ProgressComponent>
         </label>
 
         <label className={style.CreationPageLabelF}>
@@ -843,14 +883,39 @@ const Governance = ({ value, onChange, onNext, onPrev }) => {
 
   const [quorum, setQuorum] = useState(0)
 
-  const [host, setHost] = useState(value?.proposalRules?.host);
+  const [host, setHost] = useState(value?.proposalRules?.host)
 
-  const [proposalDuration, setProposalDuration] = useState(value?.proposalRules?.proposalDuration || 0)
-  const [hardCapPercentage, setHardCapPercentage] = useState(value?.proposalRules?.hardCapPercentage || 0)
-  const [quorumPercentage, setQuorumPercentage] = useState(value?.proposalRules?.quorumPercentage || 0)
-  const [validationBomb, setValidationBomb] = useState(value?.proposalRules?.validationBomb || 0)
+  const [proposalDuration, setProposalDuration] = useState(
+    value?.proposalRules?.proposalDuration || 0
+  )
+  const [hardCapPercentage, setHardCapPercentage] = useState(
+    value?.proposalRules?.hardCapPercentage || 0
+  )
+  const [quorumPercentage, setQuorumPercentage] = useState(
+    value?.proposalRules?.quorumPercentage || 0
+  )
+  const [validationBomb, setValidationBomb] = useState(
+    value?.proposalRules?.validationBomb || 0
+  )
 
-  useEffect(() => onChange && onChange({host, proposalDuration, hardCapPercentage, quorumPercentage, validationBomb}), [host, proposalDuration, hardCapPercentage, quorumPercentage, validationBomb])
+  useEffect(
+    () =>
+      onChange &&
+      onChange({
+        host,
+        proposalDuration,
+        hardCapPercentage,
+        quorumPercentage,
+        validationBomb,
+      }),
+    [
+      host,
+      proposalDuration,
+      hardCapPercentage,
+      quorumPercentage,
+      validationBomb,
+    ]
+  )
 
   useEffect(
     () => onChange && onChange({ token, proposalRules }),
@@ -885,9 +950,7 @@ const Governance = ({ value, onChange, onNext, onPrev }) => {
             Host address*{' '}
             <span
               className={style.CreationPageLabelFloatRight}
-              onClick={() =>
-                onChange(setHost(getCurrentAddress()))
-              }>
+              onClick={() => onChange(setHost(getCurrentAddress()))}>
               Insert your current address
             </span>
           </h6>
@@ -896,9 +959,7 @@ const Governance = ({ value, onChange, onNext, onPrev }) => {
             type="text"
             value={host}
             placeholder="The Organization host address"
-            onChange={(e) =>
-              onChange(setHost(e.currentTarget.value))
-            }
+            onChange={(e) => onChange(setHost(e.currentTarget.value))}
           />
           {value?.error?.name && <p>{value.error.name}</p>}
         </label>
@@ -1083,7 +1144,7 @@ const Duration = ({ value, onChange, from }) => {
         border: '2px solid #e7ecf4',
         padding: '10px 10px 10px 10px',
         borderRadius: '8px',
-        marginTop: '10px'
+        marginTop: '10px',
       }}
       value={value}
       onChange={(e) => onChange(parseInt(e.currentTarget.value))}>
@@ -1252,10 +1313,7 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
 
   const [internalStepValue, setInternalStepValue] = useState(0)
 
-  useEffect(
-    () => onChange && onChange({ proposalRules }),
-    [ proposalRules]
-  )
+  useEffect(() => onChange && onChange({ proposalRules }), [proposalRules])
 
   const [quorumKey, setQuorumKey] = useState(0) // Add a key state for the Quorum slider
 
@@ -1354,338 +1412,381 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
 
       {value && (
         <>
+          {internalStepValue == 0 ? (
+            <>
+              <div
+                className={style.CreationPageLabelFDivide}
+                style={{
+                  marginTop: '20px',
+                  marginBottom: '20px',
+                  display: 'flex',
+                  borderBottom: '1px solid #e7ecf4',
+                }}>
+                <label className={style.CreationPageLabelF}>
+                  <label>
+                    <h6>Give back mint permissions of the token</h6>
+                    <input
+                      type="checkbox"
+                      checked={tokenMinterOwner !== undefined}
+                      className={style.CheckboxAlign}
+                      onClick={() =>
+                        setTokenMinter(
+                          tokenMinterOwner !== undefined ? undefined : account
+                        )
+                      }
+                    />
+                  </label>
+                  {tokenMinterOwner !== undefined && (
+                    <>
+                      <label
+                        className={style.CreationPageLabelF}
+                        style={{
+                          width: '100%',
+                          margin: '0px',
+                          padding: '0px',
+                        }}>
+                        <h6>To this address</h6>
+                        <input
+                          type="text"
+                          value={tokenMinterOwner}
+                          onChange={(e) =>
+                            setTokenMinter(e.currentTarget.value)
+                          }
+                        />
+                      </label>
+                      <label
+                        className={style.CreationPageLabelF}
+                        style={{
+                          width: '100%',
+                          margin: '0px',
+                          padding: '0px',
+                        }}>
+                        <h6>After</h6>
+                        <Duration
+                          value={giveBackOwnershipSeconds}
+                          onChange={setGiveBackOwnershipSeconds}
+                          from="16"
+                        />
+                      </label>
+                    </>
+                  )}
+                  {value?.error?.name && <p>{value.error.name}</p>}
+                </label>
 
-        { internalStepValue == 0 ? 
-        <>
-          <div
-            className={style.CreationPageLabelFDivide}
-            style={{
-              marginTop: '20px',
-              marginBottom: '20px',
-              display: 'flex',
-              borderBottom: '1px solid #e7ecf4',
-            }}>
-            <label className={style.CreationPageLabelF}>
-              <label>
-                <h6>Give back mint permissions of the token</h6>
+                <label className={style.CreationPageLabelF}>
+                  <h6>First Execution</h6>
+                  <input
+                    type="datetime-local"
+                    value={firstExecution}
+                    onChange={(e) => setFirstExecution(e.currentTarget.value)}
+                  />
+                </label>
+              </div>
+
+              <label
+                className={style.CreationPageLabelF}
+                style={{
+                  borderBottom: '1px solid rgb(231, 236, 244)',
+                  marginBottom: '20px',
+                  paddingBottom: '20px',
+                }}>
+                <h6>Inflation percentages</h6>
+                <DonutAndLegend
+                  inflationPercentage0={inflationPercentage0}
+                  inflationPercentage1={inflationPercentage1}
+                  inflationPercentage2={inflationPercentage2}
+                  inflationPercentage3={inflationPercentage3}
+                  inflationPercentage4={inflationPercentage4}
+                  inflationPercentage5={inflationPercentage5}></DonutAndLegend>
+              </label>
+
+              <div
+                className={style.CreationPageLabelFDivide}
+                style={{
+                  borderBottom: '1px solid rgb(231, 236, 244)',
+                  marginBottom: '20px',
+                  paddingBottom: '20px',
+                }}>
+                <label className={style.CreationPageLabelF}>
+                  <h6>Swap for ETH AMM</h6>
+                  <ActionInfoSection
+                    settings
+                    ammsInput={amms}
+                    amm={amm}
+                    onAMM={setAMM}
+                    uniV3Pool={uniV3Pool}
+                    onUniV3Pool={setUniV3Pool}
+                  />
+                </label>
+                <label className={style.CreationPageLabelF}>
+                  <h6>Boostrap Fund wallet</h6>
+                  <input
+                    type="text"
+                    value={_bootstrapFundWalletAddress}
+                    onChange={(e) =>
+                      set_bootstrapFundWalletAddress(e.currentTarget.value)
+                    }
+                  />
+                </label>
+              </div>
+            </>
+          ) : (
+            <>
+              <label
+                className={style.CreationPageLabelF}
+                style={{
+                  borderBottom: '1px solid rgb(231, 236, 244)',
+                  marginBottom: '20px',
+                  paddingBottom: '20px',
+                }}>
+                <h6>Bootstrap Fund percentage</h6>
+                <p>
+                  <h8>{_bootstrapFundWalletPercentage} %</h8>
+                </p>
                 <input
-                  type="checkbox"
-                  checked={tokenMinterOwner !== undefined}
-                  className={style.CheckboxAlign}
-                  onClick={() =>
-                    setTokenMinter(
-                      tokenMinterOwner !== undefined ? undefined : account
+                  type="range"
+                  min="0"
+                  max="100"
+                  step="0.05"
+                  value={_bootstrapFundWalletPercentage}
+                  onChange={(e) =>
+                    set_bootstrapFundWalletPercentage(
+                      parseFloat(e.currentTarget.value)
                     )
                   }
                 />
               </label>
-              {tokenMinterOwner !== undefined && (
-                <>
-                  <label className={style.CreationPageLabelF} style={{
-                    width: '100%',
-                    margin: '0px',
-                    padding: '0px'
-                  }}>
-                    <h6>To this address</h6>
-                    <input
-                      type="text"
-                      value={tokenMinterOwner}
-                      onChange={(e) => setTokenMinter(e.currentTarget.value)}
-
+              <label
+                className={style.CreationPageLabelF}
+                style={{
+                  borderBottom: '1px solid rgb(231, 236, 244)',
+                  marginBottom: '20px',
+                  paddingBottom: '20px',
+                }}>
+                <h6>Boostrap Fund is in token?</h6>
+                <input
+                  type="checkbox"
+                  className={style.CheckboxAlign}
+                  checked={_bootstrapFundIsRaw}
+                  onChange={(e) =>
+                    set_bootstrapFundIsRaw(e.currentTarget.checked)
+                  }
+                />
+              </label>
+              <label
+                className={style.CreationPageLabelF}
+                style={{
+                  borderBottom: '1px solid rgb(231, 236, 244)',
+                  marginBottom: '20px',
+                  paddingBottom: '20px',
+                }}>
+                <h6>Components that will receive tokens</h6>
+                <ComponentPercentage
+                  value={_rawTokenComponents}
+                  onChange={set_rawTokenComponents}
+                  firstPercentage={
+                    _bootstrapFundIsRaw
+                      ? _bootstrapFundWalletPercentage || 0
+                      : 0
+                  }
+                  lastHasPercentage
+                />
+              </label>
+              <label
+                className={style.CreationPageLabelF}
+                style={{
+                  borderBottom: '1px solid rgb(231, 236, 244)',
+                  marginBottom: '20px',
+                  paddingBottom: '20px',
+                }}>
+                <h6>Components that will receive ETH</h6>
+                <ComponentPercentage
+                  value={_swappedTokenComponents}
+                  onChange={set_swappedTokenComponents}
+                  firstPercentage={
+                    _bootstrapFundIsRaw
+                      ? 0
+                      : _bootstrapFundWalletPercentage || 0
+                  }
+                />
+              </label>
+              <div
+                className={style.CreationPageLabelFDivideGroup}
+                style={{ marginTop: '20px', marginBottom: '30px' }}>
+                <div
+                  className={style.CreationPageLabelFDivide}
+                  style={{ marginTop: '30px', marginBottom: '30px' }}>
+                  <label className={style.CreationPageLabelF}>
+                    <h6>Hard cap</h6>
+                    <p>Selelct the value of Hard cap</p>
+                    <br />
+                    <br />
+                    <br />
+                    <CircularSlider
+                      label="Hard cap"
+                      labelColor="#fff"
+                      width="120"
+                      knobSize="25"
+                      progressSize="9"
+                      trackSize="14"
+                      labelFontSize="10"
+                      valueFontSize="20"
+                      knobColor="#000000"
+                      progressColorFrom="#000000"
+                      progressColorTo="#444444"
+                      appendToValue="%"
+                      trackColor="#eeeeee"
+                      min={0}
+                      max={100}
+                      onChange={(value) => {
+                        setHardCapValue(value)
+                      }}
                     />
                   </label>
-                  <label className={style.CreationPageLabelF} style={{
-                    width: '100%',
-                    margin: '0px',
-                    padding: '0px'
-                  }}>
-                    <h6>After</h6>
-                    <Duration
-                      value={giveBackOwnershipSeconds}
-                      onChange={setGiveBackOwnershipSeconds}
-                      from="16"
+                  <label className={style.CreationPageLabelF}>
+                    <h6>Quorum</h6>
+                    <p>Selelct the value of Quorum</p>
+                    <br />
+                    <br />
+                    <br />
+                    <CircularSlider
+                      label="Quorum"
+                      labelColor="#fff"
+                      knobColor="#000000"
+                      width="120"
+                      knobSize="25"
+                      progressSize="9"
+                      trackSize="14"
+                      labelFontSize="10"
+                      valueFontSize="20"
+                      appendToValue="%"
+                      progressColorFrom="#000000"
+                      progressColorTo="#444444"
+                      trackColor="#eeeeee"
+                      min={0}
+                      max={100}
+                      initialValue={0}
+                      onChange={(value) => {
+                        setQuorum(value)
+                      }}
                     />
                   </label>
-                </>
-              )}
-              {value?.error?.name && <p>{value.error.name}</p>}
-            </label>
+                </div>
 
-            <label className={style.CreationPageLabelF}>
-              <h6>First Execution</h6>
-              <input
-                type="datetime-local"
-                value={firstExecution}
-                onChange={(e) => setFirstExecution(e.currentTarget.value)}
-              />
-            </label>
-          </div>
-
-          <label className={style.CreationPageLabelF} style={{
-            borderBottom: '1px solid rgb(231, 236, 244)',
-            marginBottom: '20px',
-            paddingBottom: '20px'
-          }}>
-            <h6>Inflation percentages</h6>
-            <DonutAndLegend inflationPercentage0={inflationPercentage0} inflationPercentage1={inflationPercentage1} 
-            inflationPercentage2={inflationPercentage2} inflationPercentage3={inflationPercentage3} inflationPercentage4={inflationPercentage4} inflationPercentage5={inflationPercentage5}></DonutAndLegend>
-          </label>
-
-          <div className={style.CreationPageLabelFDivide} style={{
-            borderBottom: '1px solid rgb(231, 236, 244)',
-            marginBottom: '20px',
-            paddingBottom: '20px'
-          }}>
-            <label className={style.CreationPageLabelF}>
-              <h6>Swap for ETH AMM</h6>
-              <ActionInfoSection
-                settings
-                ammsInput={amms}
-                amm={amm}
-                onAMM={setAMM}
-                uniV3Pool={uniV3Pool}
-                onUniV3Pool={setUniV3Pool}
-              />
-            </label>
-            <label className={style.CreationPageLabelF}>
-              <h6>Boostrap Fund wallet</h6>
-              <input
-                type="text"
-                value={_bootstrapFundWalletAddress}
-                onChange={(e) =>
-                  set_bootstrapFundWalletAddress(e.currentTarget.value)
-                }
-              />
-            </label>
-          </div>
+                <div
+                  className={style.CreationPageLabelFDivide}
+                  style={{
+                    marginTop: '30px',
+                    marginBottom: '30px',
+                    borderLeft: '1px solid #e7ecf4',
+                  }}>
+                  <label className={style.CreationPageLabelF}>
+                    <h6>Proposal Duration</h6>
+                    <p>Selelct the duration of Proposal</p>
+                    <br />
+                    <br />
+                    <br />
+                    <CircularSlider
+                      progressLineCap="flat"
+                      dataIndex={0}
+                      label="Duration"
+                      data={[
+                        '30min',
+                        '6h',
+                        '12h',
+                        '1 Day',
+                        '2 Days',
+                        '3 Days',
+                        '4 Days',
+                        '5 Days',
+                        '1 Week',
+                        '1 Month',
+                        '6 Months',
+                        '1 Year',
+                        '3 Years',
+                        '5 Years',
+                      ]}
+                      labelColor="#fff"
+                      knobColor="#000000"
+                      width="120"
+                      knobSize="25"
+                      progressSize="9"
+                      trackSize="14"
+                      labelFontSize="10"
+                      valueFontSize="20"
+                      verticalOffset="1rem"
+                      progressColorFrom="#000000"
+                      progressColorTo="#444444"
+                      trackColor="#eeeeee"
+                    />
+                  </label>
+                  <label className={style.CreationPageLabelF}>
+                    <h6>Validation Bomb</h6>
+                    <p>Selelct Validation Bomb value</p>
+                    <br />
+                    <br />
+                    <br />
+                    <CircularSlider
+                      progressLineCap="flat"
+                      dataIndex={3}
+                      label="Duration"
+                      data={[
+                        '30min',
+                        '6h',
+                        '12h',
+                        '1 Day',
+                        '2 Days',
+                        '3 Days',
+                        '4 Days',
+                        '5 Days',
+                        '1 Week',
+                        '1 Month',
+                        '6 Months',
+                        '1 Year',
+                        '3 Years',
+                        '5 Years',
+                      ]}
+                      labelColor="#fff"
+                      knobColor="#000000"
+                      width="120"
+                      knobSize="25"
+                      progressSize="9"
+                      trackSize="14"
+                      labelFontSize="10"
+                      valueFontSize="20"
+                      verticalOffset="1rem"
+                      progressColorFrom="#000000"
+                      progressColorTo="#444444"
+                      trackColor="#eeeeee"
+                    />
+                  </label>
+                </div>
+              </div>
             </>
-           : 
-            <>
-          
-          <label className={style.CreationPageLabelF} style={{
-            borderBottom: '1px solid rgb(231, 236, 244)',
-            marginBottom: '20px',
-            paddingBottom: '20px'
-          }}>
-            <h6>Bootstrap Fund percentage</h6>
-            <p>
-              <h8>{_bootstrapFundWalletPercentage} %</h8>
-            </p>
-            <input
-              type="range"
-              min="0"
-              max="100"
-              step="0.05"
-              value={_bootstrapFundWalletPercentage}
-              onChange={(e) =>
-                set_bootstrapFundWalletPercentage(
-                  parseFloat(e.currentTarget.value)
-                )
-              }
-            />
-          </label>
-          <label className={style.CreationPageLabelF} style={{
-            borderBottom: '1px solid rgb(231, 236, 244)',
-            marginBottom: '20px',
-            paddingBottom: '20px'
-          }}>
-            <h6>Boostrap Fund is in token?</h6>
-            <input
-              type="checkbox"
-              className={style.CheckboxAlign}
-              checked={_bootstrapFundIsRaw}
-              onChange={(e) => set_bootstrapFundIsRaw(e.currentTarget.checked)}
-            />
-          </label>
-          <label className={style.CreationPageLabelF} style={{
-            borderBottom: '1px solid rgb(231, 236, 244)',
-            marginBottom: '20px',
-            paddingBottom: '20px'
-          }}>
-            <h6>Components that will receive tokens</h6>
-            <ComponentPercentage
-              value={_rawTokenComponents}
-              onChange={set_rawTokenComponents}
-              firstPercentage={
-                _bootstrapFundIsRaw ? _bootstrapFundWalletPercentage || 0 : 0
-              }
-              lastHasPercentage
-            />
-          </label>
-          <label className={style.CreationPageLabelF} style={{
-            borderBottom: '1px solid rgb(231, 236, 244)',
-            marginBottom: '20px',
-            paddingBottom: '20px'
-          }}>
-            <h6>Components that will receive ETH</h6>
-            <ComponentPercentage
-              value={_swappedTokenComponents}
-              onChange={set_swappedTokenComponents}
-              firstPercentage={
-                _bootstrapFundIsRaw ? 0 : _bootstrapFundWalletPercentage || 0
-              }
-            />
-          </label>
-          <div
-            className={style.CreationPageLabelFDivideGroup}
-            style={{ marginTop: '20px', marginBottom: '30px' }}>
-            <div
-              className={style.CreationPageLabelFDivide}
-              style={{ marginTop: '30px', marginBottom: '30px' }}>
-              <label className={style.CreationPageLabelF}>
-                <h6>Hard cap</h6>
-                <p>Selelct the value of Hard cap</p>
-                <br />
-                <br />
-                <br />
-                <CircularSlider
-                  label="Hard cap"
-                  labelColor="#fff"
-                  width="120"
-                  knobSize="25"
-                  progressSize="9"
-                  trackSize="14"
-                  labelFontSize="10"
-                  valueFontSize="20"
-                  knobColor="#000000"
-                  progressColorFrom="#000000"
-                  progressColorTo="#444444"
-                  appendToValue="%"
-                  trackColor="#eeeeee"
-                  min={0}
-                  max={100}
-                  onChange={(value) => {
-                    setHardCapValue(value)
-                  }}
-                />
-              </label>
-              <label className={style.CreationPageLabelF}>
-                <h6>Quorum</h6>
-                <p>Selelct the value of Quorum</p>
-                <br />
-                <br />
-                <br />
-                <CircularSlider
-                  label="Quorum"
-                  labelColor="#fff"
-                  knobColor="#000000"
-                  width="120"
-                  knobSize="25"
-                  progressSize="9"
-                  trackSize="14"
-                  labelFontSize="10"
-                  valueFontSize="20"
-                  appendToValue="%"
-                  progressColorFrom="#000000"
-                  progressColorTo="#444444"
-                  trackColor="#eeeeee"
-                  min={0}
-                  max={100}
-                  initialValue={0}
-                  onChange={(value) => {
-                    setQuorum(value)
-                  }}
-                />
-              </label>
-            </div>
-
-            <div
-              className={style.CreationPageLabelFDivide}
-              style={{
-                marginTop: '30px',
-                marginBottom: '30px',
-                borderLeft: '1px solid #e7ecf4',
-              }}>
-              <label className={style.CreationPageLabelF}>
-                <h6>Proposal Duration</h6>
-                <p>Selelct the duration of Proposal</p>
-                <br />
-                <br />
-                <br />
-                <CircularSlider
-                  progressLineCap="flat"
-                  dataIndex={0}
-                  label="Duration"
-                  data={[
-                    '30min',
-                    '6h',
-                    '12h',
-                    '1 Day',
-                    '2 Days',
-                    '3 Days',
-                    '4 Days',
-                    '5 Days',
-                    '1 Week',
-                    '1 Month',
-                    '6 Months',
-                    '1 Year',
-                    '3 Years',
-                    '5 Years',
-                  ]}
-                  labelColor="#fff"
-                  knobColor="#000000"
-                  width="120"
-                  knobSize="25"
-                  progressSize="9"
-                  trackSize="14"
-                  labelFontSize="10"
-                  valueFontSize="20"
-                  verticalOffset="1rem"
-                  progressColorFrom="#000000"
-                  progressColorTo="#444444"
-                  trackColor="#eeeeee"
-                />
-              </label>
-              <label className={style.CreationPageLabelF}>
-                <h6>Validation Bomb</h6>
-                <p>Selelct Validation Bomb value</p>
-                <br />
-                <br />
-                <br />
-                <CircularSlider
-                  progressLineCap="flat"
-                  dataIndex={3}
-                  label="Duration"
-                  data={[
-                    '30min',
-                    '6h',
-                    '12h',
-                    '1 Day',
-                    '2 Days',
-                    '3 Days',
-                    '4 Days',
-                    '5 Days',
-                    '1 Week',
-                    '1 Month',
-                    '6 Months',
-                    '1 Year',
-                    '3 Years',
-                    '5 Years',
-                  ]}
-                  labelColor="#fff"
-                  knobColor="#000000"
-                  width="120"
-                  knobSize="25"
-                  progressSize="9"
-                  trackSize="14"
-                  labelFontSize="10"
-                  valueFontSize="20"
-                  verticalOffset="1rem"
-                  progressColorFrom="#000000"
-                  progressColorTo="#444444"
-                  trackColor="#eeeeee"
-                />
-              </label>
-            </div>
-          </div>
-          </>}
+          )}
         </>
       )}
       <div className={style.WizardFooter}>
-        <button className={style.WizardFooterBack} onClick={internalStepValue == 1 ? ()=>{setInternalStepValue(0)} : onPrev}>
+        <button
+          className={style.WizardFooterBack}
+          onClick={
+            internalStepValue == 1
+              ? () => {
+                  setInternalStepValue(0)
+                }
+              : onPrev
+          }>
           Back
         </button>
-        <button className={style.WizardFooterNext} onClick={ internalStepValue == 0 ? ()=>{setInternalStepValue(1)} : onNext}>
+        <button
+          className={style.WizardFooterNext}
+          onClick={
+            internalStepValue == 0
+              ? () => {
+                  setInternalStepValue(1)
+                }
+              : onNext
+          }>
           Next
         </button>
       </div>
@@ -1704,8 +1805,8 @@ const ComponentPercentage = ({
       lastHasPercentage
         ? 0
         : 100 -
-        (firstPercentage || 0) -
-        value.reduce((acc, it) => acc + it.percentage, 0),
+          (firstPercentage || 0) -
+          value.reduce((acc, it) => acc + it.percentage, 0),
     [value, firstPercentage, lastHasPercentage]
   )
 
@@ -1720,7 +1821,9 @@ const ComponentPercentage = ({
         </a>
       </div>
       {value.map((it, i) => (
-        <div key={it.component + '_' + i} className={style.PercentageComponentBoxArea}>
+        <div
+          key={it.component + '_' + i}
+          className={style.PercentageComponentBoxArea}>
           <select
             className={style.PercentageComponentBoxAreaSelect}
             value={it.component}
@@ -1769,7 +1872,9 @@ const ComponentPercentage = ({
               }
             />
           )}
-          <a onClick={() => onChange(value.filter((_, index) => index !== i))} className={style.PercentageComponentBoxAreaMinus}>
+          <a
+            onClick={() => onChange(value.filter((_, index) => index !== i))}
+            className={style.PercentageComponentBoxAreaMinus}>
             -
           </a>
         </div>
@@ -1830,14 +1935,13 @@ const TreasurySplitterManager = ({ value, onChange, onNext, onPrev }) => {
       <div className={style.FancyExplanationCreate}>
         <h2>Treasury Splitter</h2>
         <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur at accumsan ligula. Nulla iaculis ligula tellus, eu eleifend purus pharetra vitae.
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur at
+          accumsan ligula. Nulla iaculis ligula tellus, eu eleifend purus
+          pharetra vitae.
         </p>
       </div>
 
-
       <div className={style.CreationPageLabelFDivide}>
-
-
         <label className={style.CreationPageLabelF}>
           <h6>Split interval</h6>
           <Duration value={splitInterval} onChange={setSplitInterval} />
@@ -1922,7 +2026,6 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
     ]
   )
 
-
   const [proposalDuration, setProposalDuration] = useState(
     value?.proposalRulesToBan?.proposalDuration || 0
   )
@@ -1945,12 +2048,7 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
         quorumPercentage,
         validationBomb,
       }),
-    [
-      proposalDuration,
-      hardCapPercentage,
-      quorumPercentage,
-      validationBomb,
-    ]
+    [proposalDuration, hardCapPercentage, quorumPercentage, validationBomb]
   )
 
   const [proposalDurationInsurance, setProposalDurationInsurance] = useState(
@@ -1984,26 +2082,36 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
   )
 
   return (
-
     <div className={style.CreationPageLabel}>
       <div className={style.FancyExplanationCreate}>
         <h2>Delegations Manager</h2>
         <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur at accumsan ligula. Nulla iaculis ligula tellus, eu eleifend purus pharetra vitae. Cras tristique diam in dolor ultrices, nec facilisis diam tempus. Aliquam quis mattis massa. Duis imperdiet mauris congue lectus dignis
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur at
+          accumsan ligula. Nulla iaculis ligula tellus, eu eleifend purus
+          pharetra vitae. Cras tristique diam in dolor ultrices, nec facilisis
+          diam tempus. Aliquam quis mattis massa. Duis imperdiet mauris congue
+          lectus dignis
         </p>
       </div>
 
       <label class="CreationPageLabelF">
-        <h6 style={{
-          width: '100%',
-          marginLeft: '20px',
-          textAlign: 'left',
-          marginTop: '20px'
-        }}>Proposal Rules to ban bad delegations</h6>
+        <h6
+          style={{
+            width: '100%',
+            marginLeft: '20px',
+            textAlign: 'left',
+            marginTop: '20px',
+          }}>
+          Proposal Rules to ban bad delegations
+        </h6>
       </label>
       <div
         className={style.CreationPageLabelFDivideGroup}
-        style={{ marginTop: '0px', marginBottom: '30px', borderBottom: '1px solid #e7ecf4' }}>
+        style={{
+          marginTop: '0px',
+          marginBottom: '30px',
+          borderBottom: '1px solid #e7ecf4',
+        }}>
         <div
           className={style.CreationPageLabelFDivide}
           style={{ marginTop: '30px', marginBottom: '30px' }}>
@@ -2166,7 +2274,14 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
         title="Proposal Rules to ban bad delegations"
             />*/}
 
-      <label className={style.CreationPageLabelF} style={{ marginTop: '0px', paddingBottom: '20px', marginBottom: '20px', borderBottom: '1px solid #e7ecf4' }}>
+      <label
+        className={style.CreationPageLabelF}
+        style={{
+          marginTop: '0px',
+          paddingBottom: '20px',
+          marginBottom: '20px',
+          borderBottom: '1px solid #e7ecf4',
+        }}>
         <h6>Attach Insurance</h6>
         <input
           type="number"
@@ -2174,13 +2289,20 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
           onChange={(e) => setAttachInsurance0(parseInt(e.currentTarget.value))}
         />
       </label>
-      <label className={style.CreationPageLabelF} style={{ marginTop: '0px', paddingBottom: '20px', marginBottom: '20px', borderBottom: '1px solid #e7ecf4' }}>
+      <label
+        className={style.CreationPageLabelF}
+        style={{
+          marginTop: '0px',
+          paddingBottom: '20px',
+          marginBottom: '20px',
+          borderBottom: '1px solid #e7ecf4',
+        }}>
         <h6>Other Attach Insurance values</h6>
 
-
         <div className={style.CreationPageLabelFDivide}>
-
-          <label className={style.CreationPageLabelF} style={{ padding: '0px' }}>
+          <label
+            className={style.CreationPageLabelF}
+            style={{ padding: '0px' }}>
             <input
               type="number"
               value={attachInsurance1}
@@ -2189,7 +2311,9 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
               }
             />
           </label>
-          <label className={style.CreationPageLabelF} style={{ paddingRight: '0px' }}>
+          <label
+            className={style.CreationPageLabelF}
+            style={{ paddingRight: '0px' }}>
             <input
               type="number"
               value={attachInsurance2}
@@ -2200,7 +2324,9 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
           </label>
         </div>
         <div className={style.CreationPageLabelFDivide}>
-          <label className={style.CreationPageLabelF} style={{ padding: '0px' }}>
+          <label
+            className={style.CreationPageLabelF}
+            style={{ padding: '0px' }}>
             <input
               type="number"
               value={attachInsurance3}
@@ -2209,7 +2335,9 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
               }
             />
           </label>
-          <label className={style.CreationPageLabelF} style={{ paddingRight: '0px' }}>
+          <label
+            className={style.CreationPageLabelF}
+            style={{ paddingRight: '0px' }}>
             <input
               type="number"
               value={attachInsurance4}
@@ -2231,12 +2359,15 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
       </label>
 
       <label class="CreationPageLabelF">
-        <h6 style={{
-          width: '100%',
-          marginLeft: '20px',
-          textAlign: 'left',
-          marginTop: '20px'
-        }}>Voting Rules</h6>
+        <h6
+          style={{
+            width: '100%',
+            marginLeft: '20px',
+            textAlign: 'left',
+            marginTop: '20px',
+          }}>
+          Voting Rules
+        </h6>
       </label>
       <div
         className={style.CreationPageLabelFDivideGroup}
@@ -2244,7 +2375,7 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
         <div
           className={style.CreationPageLabelFDivide}
           style={{ marginTop: '30px', marginBottom: '30px' }}>
-          <label className={style.CreationPageLabelF} >
+          <label className={style.CreationPageLabelF}>
             <h6>Quorum</h6>
             <p>Selelct the value of Quorum</p>
             <br />
@@ -2398,9 +2529,7 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
         </div>
       </div>
 
-
-
-      {/*<ProposalRules 
+      {/*<ProposalRules
         value={proposalRulesForInsurance}
         onChange={setProposalRulesForInsurance}
       />*/}
@@ -2474,43 +2603,53 @@ const InvestmentsManager = ({ amms, value, onChange, onNext, onPrev }) => {
         quorumPercentage,
         validationBomb,
       }),
-    [
-      proposalDuration,
-      hardCapPercentage,
-      quorumPercentage,
-      validationBomb,
-    ]
+    [proposalDuration, hardCapPercentage, quorumPercentage, validationBomb]
   )
 
   return (
-
     <div className={style.CreationPageLabel}>
       <div className={style.FancyExplanationCreate}>
         <h2>Investments Manager</h2>
         <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur at accumsan ligula. Nulla iaculis ligula tellus, eu eleifend purus pharetra vitae. Cras tristique diam in dolor ultrices, nec facilisis diam tempus. Aliquam quis mattis massa. Duis imperdiet mauris congue lectus dignis
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur at
+          accumsan ligula. Nulla iaculis ligula tellus, eu eleifend purus
+          pharetra vitae. Cras tristique diam in dolor ultrices, nec facilisis
+          diam tempus. Aliquam quis mattis massa. Duis imperdiet mauris congue
+          lectus dignis
         </p>
       </div>
       <div
-          className={style.CreationPageLabelFDivide}
-          style={{ marginTop: '0px', paddingBottom: '10px', marginBottom: '20px', borderBottom: '1px solid #e7ecf4' }}>
-      <label className={style.CreationPageLabelF}>
-        <h6>Swap interval</h6>
-        <Duration
-          value={swapToEtherInterval}
-          onChange={setSwapToEtherInterval}
-        />
-      </label>
-      <label className={style.CreationPageLabelF}>
-        <h6>First swap event</h6>
-        <input
-          type="datetime-local"
-          value={firstSwapToEtherEvent}
-          onChange={(e) => setFirstSwapToEtherEvent(e.currentTarget.value)}
-        />
-      </label>
+        className={style.CreationPageLabelFDivide}
+        style={{
+          marginTop: '0px',
+          paddingBottom: '10px',
+          marginBottom: '20px',
+          borderBottom: '1px solid #e7ecf4',
+        }}>
+        <label className={style.CreationPageLabelF}>
+          <h6>Swap interval</h6>
+          <Duration
+            value={swapToEtherInterval}
+            onChange={setSwapToEtherInterval}
+          />
+        </label>
+        <label className={style.CreationPageLabelF}>
+          <h6>First swap event</h6>
+          <input
+            type="datetime-local"
+            value={firstSwapToEtherEvent}
+            onChange={(e) => setFirstSwapToEtherEvent(e.currentTarget.value)}
+          />
+        </label>
       </div>
-      <label className={style.CreationPageLabelF} style={{ marginTop: '0px', paddingBottom: '10px', marginBottom: '20px', borderBottom: '1px solid #e7ecf4' }}>
+      <label
+        className={style.CreationPageLabelF}
+        style={{
+          marginTop: '0px',
+          paddingBottom: '10px',
+          marginBottom: '20px',
+          borderBottom: '1px solid #e7ecf4',
+        }}>
         <h6>Sell ETH to buy</h6>
         <InvestmentsManagerOperation
           amms={amms}
@@ -2519,7 +2658,14 @@ const InvestmentsManager = ({ amms, value, onChange, onNext, onPrev }) => {
           burn
         />
       </label>
-      <label className={style.CreationPageLabelF} style={{ marginTop: '0px', paddingBottom: '10px', marginBottom: '20px', borderBottom: '1px solid #e7ecf4' }}>
+      <label
+        className={style.CreationPageLabelF}
+        style={{
+          marginTop: '0px',
+          paddingBottom: '10px',
+          marginBottom: '20px',
+          borderBottom: '1px solid #e7ecf4',
+        }}>
         <h6>Max Percentage per Token</h6>
         <input
           type="range"
@@ -2533,7 +2679,14 @@ const InvestmentsManager = ({ amms, value, onChange, onNext, onPrev }) => {
         />
         <span>{maxPercentagePerToken} %</span>
       </label>
-      <label className={style.CreationPageLabelF} style={{ marginTop: '0px', paddingBottom: '10px', marginBottom: '20px', borderBottom: '1px solid #e7ecf4' }}>
+      <label
+        className={style.CreationPageLabelF}
+        style={{
+          marginTop: '0px',
+          paddingBottom: '10px',
+          marginBottom: '20px',
+          borderBottom: '1px solid #e7ecf4',
+        }}>
         <h6>Buy ETH selling</h6>
         <InvestmentsManagerOperation
           amms={amms}
@@ -2544,12 +2697,15 @@ const InvestmentsManager = ({ amms, value, onChange, onNext, onPrev }) => {
       </label>
 
       <label class="CreationPageLabelF">
-        <h6 style={{
-          width: '100%',
-          marginLeft: '20px',
-          textAlign: 'left',
-          marginTop: '20px'
-        }}>Voting Rules</h6>
+        <h6
+          style={{
+            width: '100%',
+            marginLeft: '20px',
+            textAlign: 'left',
+            marginTop: '20px',
+          }}>
+          Voting Rules
+        </h6>
       </label>
       <div
         className={style.CreationPageLabelFDivideGroup}
@@ -2711,7 +2867,6 @@ const InvestmentsManager = ({ amms, value, onChange, onNext, onPrev }) => {
         </div>
       </div>
 
-
       {/*<ProposalRules value={proposalRules} onChange={setProposalRules} />*/}
       <div className={style.WizardFooter}>
         <button className={style.WizardFooterBack} onClick={onPrev}>
@@ -2760,7 +2915,7 @@ const InvestmentsManagerOperation = ({
       {addMore && (
         <div>
           <a
-          className={style.PercentageComponentPlus}
+            className={style.PercentageComponentPlus}
             onClick={() =>
               onChange([
                 ...value,
@@ -2846,9 +3001,9 @@ const InvestmentsManagerOperation = ({
                       value.map((elem, index) =>
                         index === i
                           ? {
-                            ...elem,
-                            percentage: parseFloat(v.currentTarget.value),
-                          }
+                              ...elem,
+                              percentage: parseFloat(v.currentTarget.value),
+                            }
                           : elem
                       )
                     )
@@ -2859,7 +3014,7 @@ const InvestmentsManagerOperation = ({
             )}
             <div>
               <a
-               className={style.PercentageComponentPlus}
+                className={style.PercentageComponentPlus}
                 onClick={() =>
                   onChange(value.filter((_, index) => index !== i))
                 }>
@@ -2897,13 +3052,26 @@ const CreateOrganization = () => {
   )
 
   const onClick = useCallback(
-    () =>
-      !disabled &&
-      createOrganization(initialData, state).then((address) =>
-        history.push(`/organizations/${address}`)
-      ),
+    function () {
+      console.log('initialData', initialData)
+      console.log('state', JSON.stringify(state))
+      // !disabled &&
+      //   createOrganization(initialData, state).then((address) =>
+      //     history.push(`/organizations/${address}`)
+      //   )
+    },
     [disabled, state]
-  )
+  ) // Update the block number and broadcast it to the listeners
+
+  // const onClick = useCallback(
+  //   () =>
+  //     !disabled &&
+  //     createOrganization(initialData, state).then((address) =>
+  //       history.push(`/organizations/${address}`)
+  //     ),
+
+  //   [disabled, state]
+  // )
 
   useEffect(() => getAMMs({ context, ...web3Data }).then(setAMMs), [])
 
@@ -2980,7 +3148,7 @@ const CreateOrganization = () => {
         {step == 2 && (
           <Organization
             value={state?.governance}
-            onChange={(value) => setState({ ...state, governance: value })}
+            onChange={(value) => setState({ ...state, organization: value })}
             onNext={() => setStep(3)}
             onPrev={() => setStep(1)}
           />
@@ -2989,7 +3157,7 @@ const CreateOrganization = () => {
         {step == 3 && (
           <VotingRules
             value={state?.governance}
-            onChange={(value) => setState({ ...state, governance: value })}
+            onChange={(value) => setState({ ...state, votingRules: value })}
             onNext={() => setStep(4)}
             onPrev={() => setStep(2)}
           />
@@ -3005,18 +3173,37 @@ const CreateOrganization = () => {
         )}
 
         {step == 5 && (
-          <TreasurySplitterManager value={state?.treasurySplitter} onChange={value => setState({ ...state, treasurySplitter: value })} onNext={() => setStep(6)}
-            onPrev={() => setStep(4)} />
+          <TreasurySplitterManager
+            value={state?.treasurySplitter}
+            onChange={(value) =>
+              setState({ ...state, treasurySplitter: value })
+            }
+            onNext={() => setStep(6)}
+            onPrev={() => setStep(4)}
+          />
         )}
 
         {step == 6 && (
-          <DelegationsManager value={state?.delegationsManager} onChange={value => setState({ ...state, delegationsManager: value })} onNext={() => setStep(7)}
-            onPrev={() => setStep(5)} />
+          <DelegationsManager
+            value={state?.delegationsManager}
+            onChange={(value) =>
+              setState({ ...state, delegationsManager: value })
+            }
+            onNext={() => setStep(7)}
+            onPrev={() => setStep(5)}
+          />
         )}
 
         {step == 7 && (
-          <InvestmentsManager amms={amms} value={state?.investmentsManager} onChange={value => setState({ ...state, investmentsManager: value })} onNext={() => setStep(8)}
-            onPrev={() => setStep(6)} />
+          <InvestmentsManager
+            amms={amms}
+            value={state?.investmentsManager}
+            onChange={(value) =>
+              setState({ ...state, investmentsManager: value })
+            }
+            onNext={() => setStep(8)}
+            onPrev={() => setStep(6)}
+          />
         )}
 
         {step == 8 && (
@@ -3025,9 +3212,10 @@ const CreateOrganization = () => {
             loading={loading}
             onClick={onClick}
             disabled={disabled}
-            onChange={(value) => setState({ ...state, governance: value })}
+            onChange={(value) => setState({ ...state, confirmation: value })}
             onNext={() => setStep(5)}
             onPrev={() => setStep(7)}
+            state={state}
           />
         )}
       </div>
@@ -3062,7 +3250,7 @@ const CreateOrganization = () => {
         <Governance value={state?.governance} onChange={value => setState({...state, governance : value})}/>
         <TreasuryManager value={state?.treasuryManager} onChange={value => setState({...state, treasuryManager : value})}/>
         <FixedInflation amms={amms} value={state?.fixedInflation} onChange={value => setState({...state, fixedInflation : value})}/>
-       
+
         <DelegationsManager value={state?.delegationsManager} onChange={value => setState({...state, delegationsManager : value})}/>
         <InvestmentsManager amms={amms} value={state?.investmentsManager} onChange={value => setState({...state, investmentsManager : value})}/>
         <div className={style.ActionDeploy}>
