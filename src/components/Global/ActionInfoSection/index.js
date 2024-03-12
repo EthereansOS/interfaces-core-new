@@ -53,12 +53,18 @@ const ActionInfoSection = ({hideAmmStuff, settings, onSettingsToggle, amm, onAMM
                         <LogoRenderer input={amm} title={amm?.name}/>
                         <span>▼</span>
                     </a>}
-                    {amm && amm.name === 'UniswapV3' && onUniV3Pool && <div>
-                        <h4>Uniswap V3 Pools:</h4>
+                    {amm && amm.name === 'UniswapV3' && onUniV3Pool && <div style={{
+                            display: 'inline-block'
+                    }}>
+                        <h4 style={{
+                            display: 'inline-block',
+                            fontSize: '16px',
+                            marginRight: '10px'
+                        }}>Uniswap V3 Pools:</h4>
                         {Object.entries(amm.pools).map(it => <div key={it[0]} className={style.ActionInfoSectionAMMLabel}>
                             <label>
                                 <span>{it[1].label}</span>
-                                <input type="radio" checked={uniV3Pool === it[0]} onClick={e => void(e.stopPropagation(), onUniV3Pool(it[0]))}/>
+                                <input type="radio" className={style.width20} checked={uniV3Pool === it[0]} onClick={e => void(e.stopPropagation(), onUniV3Pool(it[0]))} />
                             </label>
                         </div>)}
                     </div>}

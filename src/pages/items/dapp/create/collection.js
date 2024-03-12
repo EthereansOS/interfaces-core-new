@@ -803,14 +803,18 @@ const Confirmation = ({ value, onChange, onNext, onPrev, state }) => {
         </div>
       )}
       {success && (
-        <div>
-          <h6>&#127881; &#127881; Collection Created! &#127881; &#127881;</h6>
+        <div className={style.CreationPageLabel} style={{padding:'30px', textAlign:'center'}}>
+          <h3>&#127881; &#127881; Collection Created! &#127881; &#127881;</h3>
+          <br/>
+          <br/>
           <p>
             <b>And Now?</b>
           </p>
           <label className={style.CreationPageLabelF}>
-            <h6>
+            <h6 style={{textAlign:'center', marginTop: '50px'}}>
               <a
+                className={style.RegularButton} 
+                style={{padding: '10px'}}
                 target="_blank"
                 href={`${getNetworkElement(
                   { chainId, context },
@@ -824,15 +828,15 @@ const Confirmation = ({ value, onChange, onNext, onPrev, state }) => {
           <label className={style.CreationPageLabelF}>
             {collectionId && (
               <>
-                <h6>
-                  <Link to={'/items/collections/' + collectionId}>
-                    View Collection
-                  </Link>
+                <h6 style={{textAlign:'center', marginTop: '50px'}}>
+                    <Link to={'/items/collections/' + collectionId}    style={{padding: '10px'}} className={style.RegularButton}>
+                      View Collection
+                    </Link>
                 </h6>
-                <h6>
-                  <Link to={'/items/create/item/' + collectionId}>
-                    Mint Items
-                  </Link>
+                <h6 style={{textAlign:'center', marginTop: '50px'}}> 
+                    <Link to={'/items/create/item/' + collectionId}    style={{padding: '10px'}} className={style.RegularButton}>
+                      Mint Items
+                    </Link>
                 </h6>
               </>
             )}

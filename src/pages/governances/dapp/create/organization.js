@@ -562,7 +562,7 @@ const Confirmation = ({ value, onChange, onNext, onPrev, loading, onClick, disab
           'margin-bottom': '10px',
           'margin-top': '30px',
         }}>
-        Review the settings of your fully granular Organization.
+        Confirm the Organization deploy.
       </h6>
       <p
         style={{
@@ -578,9 +578,6 @@ const Confirmation = ({ value, onChange, onNext, onPrev, loading, onClick, disab
       <div
         className={style.CreationPageLabelFDivide}
         style={{ marginTop: '30px', marginBottom: '30px' }}>
-        <label className={style.CreationPageLabelF}>
-          <Example></Example>
-        </label>
         <label className={style.CreationPageLabelF} key={quorumKey}></label>
       </div>
 
@@ -596,27 +593,13 @@ const Confirmation = ({ value, onChange, onNext, onPrev, loading, onClick, disab
 }
 
 const VotingRules = ({ value, onChange, onNext, onPrev }) => {
-  const [token, setToken] = useState(value?.token)
-  const [proposalRules, setProposalRules] = useState(value?.proposalRules)
+  const [proposalDuration, setProposalDuration] = useState(value?.proposalRules?.proposalDuration || 0)
+  const [hardCapPercentage, setHardCapPercentage] = useState(value?.proposalRules?.hardCapPercentage || 0)
+  const [quorumPercentage, setQuorumPercentage] = useState(value?.proposalRules?.quorumPercentage || 0)
+  const [validationBomb, setValidationBomb] = useState(value?.proposalRules?.validationBomb || 0)
 
-  const [hardCapValue, setHardCapValue] = useState(0)
-  const [quorum, setQuorum] = useState(0)
+  useEffect(() => onChange && onChange({proposalDuration, hardCapPercentage, quorumPercentage, validationBomb}), [proposalDuration, hardCapPercentage, quorumPercentage, validationBomb])
 
-  useEffect(
-    () => onChange && onChange({ token, proposalRules }),
-    [token, proposalRules]
-  )
-
-  const [quorumKey, setQuorumKey] = useState(0) // Add a key state for the Quorum slider
-
-  useEffect(() => {
-    setQuorum(hardCapValue)
-    setQuorumKey((prevKey) => prevKey + 1)
-  }, [hardCapValue])
-
-  useEffect(() => {
-    onChange && onChange({ token, proposalRules, hardCapValue, quorum })
-  }, [token, proposalRules, hardCapValue, quorum])
 
   return (
     <div className={style.CreationPageLabel}>
@@ -649,7 +632,7 @@ const VotingRules = ({ value, onChange, onNext, onPrev }) => {
         <div
           className={style.CreationPageLabelFDivide}
           style={{ marginTop: '30px', marginBottom: '30px' }}>
-          <label className={style.CreationPageLabelF} key={quorumKey}>
+          <label className={style.CreationPageLabelF}>
             <h6>Quorum</h6>
             <p>Selelct the value of Quorum</p>
             <br />
@@ -671,9 +654,9 @@ const VotingRules = ({ value, onChange, onNext, onPrev }) => {
               trackColor="#eeeeee"
               min={0}
               max={100}
-              initialValue={quorum}
+              initialValue={0}
               onChange={(value) => {
-                setQuorum(value)
+                setQuorumPercentage(value)
               }}
             />
           </label>
@@ -701,7 +684,7 @@ const VotingRules = ({ value, onChange, onNext, onPrev }) => {
               min={0}
               max={100}
               onChange={(value) => {
-                setHardCapValue(value)
+                setHardCapPercentage(value)
               }}
             />
           </label>
@@ -752,6 +735,9 @@ const VotingRules = ({ value, onChange, onNext, onPrev }) => {
               progressColorFrom="#000000"
               progressColorTo="#444444"
               trackColor="#eeeeee"
+              onChange={(value) => {
+                setProposalDuration(value)
+              }}
             />
           </label>
           <label className={style.CreationPageLabelF}>
@@ -792,6 +778,9 @@ const VotingRules = ({ value, onChange, onNext, onPrev }) => {
               progressColorFrom="#000000"
               progressColorTo="#444444"
               trackColor="#eeeeee"
+              onChange={(value) => {
+                setValidationBomb(value)
+              }}
             />
           </label>
         </div>
@@ -810,39 +799,19 @@ const VotingRules = ({ value, onChange, onNext, onPrev }) => {
 }
 
 const Organization = ({ value, onChange, onNext, onPrev }) => {
-  const [token, setToken] = useState(value?.token)
-  const [proposalRules, setProposalRules] = useState(value?.proposalRules)
+  const [maxPercentagePerToken, setMaxPercentagePerToken] = useState(value?.maxPercentagePerToken || 0)
 
-  const [hardCapValue, setHardCapValue] = useState(0)
-  const [quorum, setQuorum] = useState(0)
-
-  useEffect(
-    () => onChange && onChange({ token, proposalRules }),
-    [token, proposalRules]
-  )
-
-  const [quorumKey, setQuorumKey] = useState(0) // Add a key state for the Quorum slider
-
-  useEffect(() => {
-    setQuorum(hardCapValue)
-    setQuorumKey((prevKey) => prevKey + 1)
-  }, [hardCapValue])
-
-  useEffect(() => {
-    onChange && onChange({ token, proposalRules, hardCapValue, quorum })
-  }, [token, proposalRules, hardCapValue, quorum])
+  useEffect(() => onChange && onChange({ maxPercentagePerToken}), [ maxPercentagePerToken])
 
   return (
     <div className={style.CreationPageLabel}>
       <div className={style.FancyExplanationCreate}>
         <h2>Organization Treasury</h2>
       </div>
-
-      <div
-        className={style.CreationPageLabelFDivide}
+      <div className={style.CreationPageLabelFDivide}
         style={{ display: 'flex' }}>
         <label className={style.CreationPageLabelF}>
-          <ProgressComponent></ProgressComponent>
+          <ProgressComponent maxPercentagePerToken={maxPercentagePerToken}></ProgressComponent>
         </label>
 
         <label className={style.CreationPageLabelF}>
@@ -872,8 +841,16 @@ const Governance = ({ value, onChange, onNext, onPrev }) => {
   const [token, setToken] = useState(value?.token)
   const [proposalRules, setProposalRules] = useState(value?.proposalRules)
 
-  const [hardCapValue, setHardCapValue] = useState(0)
   const [quorum, setQuorum] = useState(0)
+
+  const [host, setHost] = useState(value?.proposalRules?.host);
+
+  const [proposalDuration, setProposalDuration] = useState(value?.proposalRules?.proposalDuration || 0)
+  const [hardCapPercentage, setHardCapPercentage] = useState(value?.proposalRules?.hardCapPercentage || 0)
+  const [quorumPercentage, setQuorumPercentage] = useState(value?.proposalRules?.quorumPercentage || 0)
+  const [validationBomb, setValidationBomb] = useState(value?.proposalRules?.validationBomb || 0)
+
+  useEffect(() => onChange && onChange({host, proposalDuration, hardCapPercentage, quorumPercentage, validationBomb}), [host, proposalDuration, hardCapPercentage, quorumPercentage, validationBomb])
 
   useEffect(
     () => onChange && onChange({ token, proposalRules }),
@@ -881,15 +858,6 @@ const Governance = ({ value, onChange, onNext, onPrev }) => {
   )
 
   const [quorumKey, setQuorumKey] = useState(0) // Add a key state for the Quorum slider
-
-  useEffect(() => {
-    setQuorum(hardCapValue)
-    setQuorumKey((prevKey) => prevKey + 1)
-  }, [hardCapValue])
-
-  useEffect(() => {
-    onChange && onChange({ token, proposalRules, hardCapValue, quorum })
-  }, [token, proposalRules, hardCapValue, quorum])
 
   return (
     <div className={style.CreationPageLabel}>
@@ -918,10 +886,7 @@ const Governance = ({ value, onChange, onNext, onPrev }) => {
             <span
               className={style.CreationPageLabelFloatRight}
               onClick={() =>
-                onChange({
-                  ...value,
-                  name: getCurrentAddress(),
-                })
+                onChange(setHost(getCurrentAddress()))
               }>
               Insert your current address
             </span>
@@ -929,10 +894,10 @@ const Governance = ({ value, onChange, onNext, onPrev }) => {
           <p>Insert the host Address</p>
           <input
             type="text"
-            value={value?.name}
+            value={host}
             placeholder="The Organization host address"
             onChange={(e) =>
-              onChange({ ...value, name: e.currentTarget.value })
+              onChange(setHost(e.currentTarget.value))
             }
           />
           {value?.error?.name && <p>{value.error.name}</p>}
@@ -967,9 +932,9 @@ const Governance = ({ value, onChange, onNext, onPrev }) => {
               trackColor="#eeeeee"
               min={0}
               max={100}
-              initialValue={quorum}
+              initialValue={0}
               onChange={(value) => {
-                setQuorum(value)
+                setQuorumPercentage(value)
               }}
             />
           </label>
@@ -996,7 +961,7 @@ const Governance = ({ value, onChange, onNext, onPrev }) => {
               min={0}
               max={100}
               onChange={(value) => {
-                setHardCapValue(value)
+                setHardCapPercentage(value)
               }}
             />
           </label>
@@ -1047,6 +1012,9 @@ const Governance = ({ value, onChange, onNext, onPrev }) => {
               progressColorFrom="#000000"
               progressColorTo="#444444"
               trackColor="#eeeeee"
+              onChange={(value) => {
+                setProposalDuration(value)
+              }}
             />
           </label>
           <label className={style.CreationPageLabelF}>
@@ -1057,7 +1025,7 @@ const Governance = ({ value, onChange, onNext, onPrev }) => {
             <br />
             <CircularSlider
               progressLineCap="flat"
-              dataIndex={3}
+              dataIndex={0}
               label="Duration"
               data={[
                 '30min',
@@ -1087,6 +1055,9 @@ const Governance = ({ value, onChange, onNext, onPrev }) => {
               progressColorFrom="#000000"
               progressColorTo="#444444"
               trackColor="#eeeeee"
+              onChange={(value) => {
+                setValidationBomb(value)
+              }}
             />
           </label>
         </div>
@@ -1462,7 +1433,8 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
             paddingBottom: '20px'
           }}>
             <h6>Inflation percentages</h6>
-            <DonutAndLegend></DonutAndLegend>
+            <DonutAndLegend inflationPercentage0={inflationPercentage0} inflationPercentage1={inflationPercentage1} 
+            inflationPercentage2={inflationPercentage2} inflationPercentage3={inflationPercentage3} inflationPercentage4={inflationPercentage4} inflationPercentage5={inflationPercentage5}></DonutAndLegend>
           </label>
 
           {/* <label className={style.CreationPageLabelF}>
@@ -2056,6 +2028,67 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
     ]
   )
 
+
+  const [proposalDuration, setProposalDuration] = useState(
+    value?.proposalRulesToBan?.proposalDuration || 0
+  )
+  const [hardCapPercentage, setHardCapPercentage] = useState(
+    value?.proposalRulesToBan?.hardCapPercentage || 0
+  )
+  const [quorumPercentage, setQuorumPercentage] = useState(
+    value?.proposalRulesToBan?.quorumPercentage || 0
+  )
+  const [validationBomb, setValidationBomb] = useState(
+    value?.proposalRulesToBan?.validationBomb || 0
+  )
+
+  useEffect(
+    () =>
+      onChange &&
+      onChange({
+        proposalDuration,
+        hardCapPercentage,
+        quorumPercentage,
+        validationBomb,
+      }),
+    [
+      proposalDuration,
+      hardCapPercentage,
+      quorumPercentage,
+      validationBomb,
+    ]
+  )
+
+  const [proposalDurationInsurance, setProposalDurationInsurance] = useState(
+    value?.proposalRulesForInsurance?.proposalDuration || 0
+  )
+  const [hardCapPercentageInsurance, setHardCapPercentageInsurance] = useState(
+    value?.proposalRulesForInsurance?.hardCapPercentage || 0
+  )
+  const [quorumPercentageInsurance, setQuorumPercentageInsurance] = useState(
+    value?.proposalRulesForInsurance?.quorumPercentage || 0
+  )
+  const [validationBombInsurance, setValidationBombInsurance] = useState(
+    value?.proposalRulesForInsurance?.validationBomb || 0
+  )
+
+  useEffect(
+    () =>
+      onChange &&
+      onChange({
+        proposalDurationInsurance,
+        hardCapPercentageInsurance,
+        quorumPercentageInsurance,
+        validationBombInsurance,
+      }),
+    [
+      proposalDurationInsurance,
+      hardCapPercentageInsurance,
+      quorumPercentageInsurance,
+      validationBombInsurance,
+    ]
+  )
+
   return (
 
     <div className={style.CreationPageLabel}>
@@ -2080,7 +2113,7 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
         <div
           className={style.CreationPageLabelFDivide}
           style={{ marginTop: '30px', marginBottom: '30px' }}>
-          <label className={style.CreationPageLabelF} key={quorumKey}>
+          <label className={style.CreationPageLabelF}>
             <h6>Quorum</h6>
             <p>Selelct the value of Quorum</p>
             <br />
@@ -2102,9 +2135,9 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
               trackColor="#eeeeee"
               min={0}
               max={100}
-              initialValue={quorum}
+              initialValue={0}
               onChange={(value) => {
-                setQuorum(value)
+                setQuorumPercentage(value)
               }}
             />
           </label>
@@ -2132,7 +2165,7 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
               min={0}
               max={100}
               onChange={(value) => {
-                setHardCapValue(value)
+                setHardCapPercentage(value)
               }}
             />
           </label>
@@ -2183,6 +2216,9 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
               progressColorFrom="#000000"
               progressColorTo="#444444"
               trackColor="#eeeeee"
+              onChange={(value) => {
+                setProposalDuration(value)
+              }}
             />
           </label>
           <label className={style.CreationPageLabelF}>
@@ -2223,6 +2259,9 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
               progressColorFrom="#000000"
               progressColorTo="#444444"
               trackColor="#eeeeee"
+              onChange={(value) => {
+                setValidationBomb(value)
+              }}
             />
           </label>
         </div>
@@ -2297,8 +2336,6 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
         </label>
       </label>
 
-
-
       <label class="CreationPageLabelF">
         <h6 style={{
           width: '100%',
@@ -2313,7 +2350,7 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
         <div
           className={style.CreationPageLabelFDivide}
           style={{ marginTop: '30px', marginBottom: '30px' }}>
-          <label className={style.CreationPageLabelF} key={quorumKey}>
+          <label className={style.CreationPageLabelF} >
             <h6>Quorum</h6>
             <p>Selelct the value of Quorum</p>
             <br />
@@ -2335,9 +2372,9 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
               trackColor="#eeeeee"
               min={0}
               max={100}
-              initialValue={quorum}
+              initialValue={0}
               onChange={(value) => {
-                setQuorum(value)
+                setQuorumPercentageInsurance(value)
               }}
             />
           </label>
@@ -2365,7 +2402,7 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
               min={0}
               max={100}
               onChange={(value) => {
-                setHardCapValue(value)
+                setHardCapPercentageInsurance(value)
               }}
             />
           </label>
@@ -2416,6 +2453,9 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
               progressColorFrom="#000000"
               progressColorTo="#444444"
               trackColor="#eeeeee"
+              onChange={(value) => {
+                setProposalDurationInsurance(value)
+              }}
             />
           </label>
           <label className={style.CreationPageLabelF}>
@@ -2456,6 +2496,9 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
               progressColorFrom="#000000"
               progressColorTo="#444444"
               trackColor="#eeeeee"
+              onChange={(value) => {
+                setValidationBombInsurance(value)
+              }}
             />
           </label>
         </div>
@@ -2515,9 +2558,35 @@ const InvestmentsManager = ({ amms, value, onChange, onNext, onPrev }) => {
     ]
   )
 
-  const [hardCapValue, setHardCapValue] = useState(0)
-  const [quorum, setQuorum] = useState(0)
-  const [quorumKey, setQuorumKey] = useState(0)
+  const [proposalDuration, setProposalDuration] = useState(
+    value?.proposalRules?.proposalDuration || 0
+  )
+  const [hardCapPercentage, setHardCapPercentage] = useState(
+    value?.proposalRules?.hardCapPercentage || 0
+  )
+  const [quorumPercentage, setQuorumPercentage] = useState(
+    value?.proposalRules?.quorumPercentage || 0
+  )
+  const [validationBomb, setValidationBomb] = useState(
+    value?.proposalRules?.validationBomb || 0
+  )
+
+  useEffect(
+    () =>
+      onChange &&
+      onChange({
+        proposalDuration,
+        hardCapPercentage,
+        quorumPercentage,
+        validationBomb,
+      }),
+    [
+      proposalDuration,
+      hardCapPercentage,
+      quorumPercentage,
+      validationBomb,
+    ]
+  )
 
   return (
 
@@ -2594,7 +2663,7 @@ const InvestmentsManager = ({ amms, value, onChange, onNext, onPrev }) => {
         <div
           className={style.CreationPageLabelFDivide}
           style={{ marginTop: '30px', marginBottom: '30px' }}>
-          <label className={style.CreationPageLabelF} key={quorumKey}>
+          <label className={style.CreationPageLabelF}>
             <h6>Quorum</h6>
             <p>Selelct the value of Quorum</p>
             <br />
@@ -2616,9 +2685,9 @@ const InvestmentsManager = ({ amms, value, onChange, onNext, onPrev }) => {
               trackColor="#eeeeee"
               min={0}
               max={100}
-              initialValue={quorum}
+              initialValue={0}
               onChange={(value) => {
-                setQuorum(value)
+                setQuorumPercentage(value)
               }}
             />
           </label>
@@ -2646,7 +2715,7 @@ const InvestmentsManager = ({ amms, value, onChange, onNext, onPrev }) => {
               min={0}
               max={100}
               onChange={(value) => {
-                setHardCapValue(value)
+                setHardCapPercentage(value)
               }}
             />
           </label>
@@ -2697,6 +2766,9 @@ const InvestmentsManager = ({ amms, value, onChange, onNext, onPrev }) => {
               progressColorFrom="#000000"
               progressColorTo="#444444"
               trackColor="#eeeeee"
+              onChange={(value) => {
+                setProposalDuration(value)
+              }}
             />
           </label>
           <label className={style.CreationPageLabelF}>
@@ -2737,6 +2809,9 @@ const InvestmentsManager = ({ amms, value, onChange, onNext, onPrev }) => {
               progressColorFrom="#000000"
               progressColorTo="#444444"
               trackColor="#eeeeee"
+              onChange={(value) => {
+                setValidationBomb(value)
+              }}
             />
           </label>
         </div>

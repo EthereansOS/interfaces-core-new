@@ -110,7 +110,8 @@ const Deploy = ({ back, finalize }) => {
     errorMessage && setTimeout(() => alert(errorMessage))
   }
 
-  var step = 0
+  const [step, setStep] = useState(0);
+
 
   return (
     <>
@@ -119,12 +120,15 @@ const Deploy = ({ back, finalize }) => {
           <li className={step === 0 ? style.WizardStepsListActive : ''}>
             Basic Info
           </li>
+          <li className={step === 1 ? style.WizardStepsListActive : ''}>
+            Token Details
+          </li>
         </ul>
       </div>
-
+      
       <div className={style.WizardHeader}>
         <h3>
-          Create a new Delegation <span>step 1 of 1</span>
+          Create a new Delegation <span>step {step + 1} of 2</span>
         </h3>
         <div className={style.WizardHeaderDescription}>
           An independent political party that can compete for grant funding from
@@ -134,11 +138,12 @@ const Deploy = ({ back, finalize }) => {
           <div
             className={style.WizardProgressBar}
             style={{
-              width: ((100 / 2) * 0 > 0 ? (100 / 2) * 0 : 1) + '%',
+              width: ((100 / 2) * (step + 1)  > 0 ? (100 / 2) * (step + 1) : 1) + '%',
             }}></div>
         </div>
       </div>
 
+        {step == 0 ? 
       <div className={style.CreationPageLabel}>
         <div className={style.FancyExplanationCreate}>
           <h2>Basic Info</h2>
@@ -199,6 +204,25 @@ const Deploy = ({ back, finalize }) => {
               onChange={(e) => setTicker(e.currentTarget.value)}
             />
           </label>
+        </div>
+        
+        <div className={style.WizardFooter}>
+          {loading && <CircularProgress />}
+          {!loading && step != 0 && (
+            <button className={style.WizardFooterBack} onClick={() => setStep(0)}>
+              Back
+            </button>
+          )}
+          {!loading && (
+            <button className={style.WizardFooterNext} onClick={() => setStep(1)}>
+             Next
+            </button>
+          )}
+        </div>
+      </div> : 
+      <div className={style.CreationPageLabel}>
+        <div className={style.FancyExplanationCreate}>
+          <h2>Token Details</h2>
         </div>
         <div className={style.CreationPageLabelFDivide}>
           <label
@@ -355,7 +379,7 @@ const Deploy = ({ back, finalize }) => {
             />
           </div>
           <p>
-            Public Polls (coming soon): If selected, all polls that involve this
+            <b>Public Polls (coming soon)</b><br/> If selected, all polls that involve this
             Delegation will appear on the Delegation’s page. If not, only polls
             created by the Delegation’s host will.
           </p>
@@ -363,7 +387,7 @@ const Deploy = ({ back, finalize }) => {
         <div className={style.WizardFooter}>
           {loading && <CircularProgress />}
           {!loading && step != 0 && (
-            <button className={style.WizardFooterBack} onClick={back}>
+            <button className={style.WizardFooterBack} onClick={() => setStep(0)}>
               Back
             </button>
           )}
@@ -373,7 +397,7 @@ const Deploy = ({ back, finalize }) => {
             </button>
           )}
         </div>
-      </div>
+      </div>}
     </>
   )
 }
@@ -469,15 +493,16 @@ const Finalize = ({ back, success, cumulativeData }) => {
   return (
     <div className={style.CreationPageLabel}>
       <div className={style.FancyExplanationCreate}>
-        <h6>Governance Rules</h6>
-        <div className={style.proggressCreate}>
-          <div
-            className={style.proggressCreatePerchLast}
-            style={{ width: '100%' }}>
-            Step 2 of 2
-          </div>
-        </div>
+          <h2>Host</h2>
       </div>
+
+      <div className={style.CreationPageLabelFDivide} style={{
+            marginTop: '30px',
+            display: 'flex',
+            marginBottom: '30px',
+            paddingBottom: '20px',
+            borderBottom: '1px solid #e7ecf4',
+          }}>
       {!dualChainId && (
         <label className={style.CreationPageLabelF}>
           <h6>Delegation address</h6>
@@ -501,6 +526,14 @@ const Finalize = ({ back, success, cumulativeData }) => {
           funds, change metadata and change governance rules.
         </p>
       </label>
+      </div>
+      <div className={style.CreationPageLabelFDivide} style={{
+            marginTop: '30px',
+            display: 'flex',
+            marginBottom: '30px',
+            paddingBottom: '20px',
+            borderBottom: '1px solid #e7ecf4',
+          }}>
       <label className={style.CreationPageLabelF}>
         <h6>Survey Duration</h6>
         {!dualChainId && (
@@ -521,6 +554,7 @@ const Finalize = ({ back, success, cumulativeData }) => {
           will be open for.
         </p>
       </label>
+      
       <label className={style.CreationPageLabelF}>
         <h6>Validation Bomb</h6>
         {!dualChainId && (
@@ -545,6 +579,13 @@ const Finalize = ({ back, success, cumulativeData }) => {
           <h6>WARNING: Validation Bomb must be higher than Survey Duration</h6>
         )}
       </label>
+      </div>
+      <div className={style.CreationPageLabelFDivide} style={{
+            marginTop: '30px',
+            display: 'flex',
+            marginBottom: '30px',
+            paddingBottom: '20px'
+          }}>
       <label className={style.CreationPageLabelF}>
         <h6>Quorum {quorumPercentage || '0'}%</h6>
         <input
@@ -576,17 +617,18 @@ const Finalize = ({ back, success, cumulativeData }) => {
           regardless of how long it is still set to remain open.
         </p>
       </label>
-      <div className={style.ActionDeploy}>
+      </div>
+      <div className={style.WizardFooter}>
         {loading && <CircularProgress />}
         {!loading && (
-          <a className={style.Web3BackBTN} onClick={back}>
+          <button className={style.WizardFooterBack} onClick={back}>
             Back
-          </a>
+          </button>
         )}
         {!loading && (
-          <a className={style.Web3CustomBTN} onClick={finalize}>
+          <button className={style.WizardFooterNext} onClick={finalize}>
             {dualChainId ? 'Deploy' : 'Finalize'}
-          </a>
+          </button>
         )}
       </div>
     </div>
@@ -595,15 +637,18 @@ const Finalize = ({ back, success, cumulativeData }) => {
 
 const Success = ({ cumulativeData }) => {
   return (
-    <div>
-      <h6>&#127881; &#127881; Delegation Created! &#127881; &#127881;</h6>
+    <div className={style.CreationPageLabel} style={{padding:'30px', textAlign:'center'}}>
+      <h3>&#127881; &#127881; Delegation Created! &#127881; &#127881;</h3>
+      <br/>
+      <br/>
       <p>
         <b>And Now?</b>
       </p>
       <label className={style.CreationPageLabelF}>
-        <h6>
+        <h6 style={{textAlign:'center', marginTop: '50px'}}>
           <Link
-            to={`/organizations/delegations/${cumulativeData.delegationAddress}`}>
+            style={{padding: '10px'}}
+            to={`/organizations/delegations/${cumulativeData.delegationAddress}`}  className={style.RegularButton}>
             Explore your Delegation
           </Link>
         </h6>

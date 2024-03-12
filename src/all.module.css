@@ -15250,6 +15250,10 @@ input {
     color: #fff!important;
 }
 
+.width20{
+    width: 20px!important;
+}
+
 .dark .footerNextButton {
     background-color: #141416;
     color: #fff;
@@ -15936,6 +15940,30 @@ input {
     font-weight: 300;
     display: block;
     text-align: left;
+}
+.dark .CreationPageLabelF .ActionInfoSection{
+    border: 2px solid #403b63;
+    background: #29263e;
+}
+.dark input:checked + label {
+    background-color: #29263e;
+    color: #FFF;
+    border-color:#29263e;
+}
+.dark .PercentageComponentPlus {
+    background: #403b63;
+}
+.dark .simply-donut:before, .dark  .simply-circle-progress-bar:before {
+    background-color: #29263e;
+    border: #29263e;
+}
+.dark .OrganizationToggle input+label {
+    color:#000;
+}
+.dark .CreationPageLabelF select{
+    background-color: #29263e;
+    border: 2px solid transparent!important;
+    color:#fff;
 }
 .CheckboxAlign{
     display: block!important;
