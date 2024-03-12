@@ -48,7 +48,7 @@ export default prepareAddToPlugin(
   "NFT Items",
   "/items",
   style.Web3PagesRoot,
-  10,
+  20,
   `${process.env.PUBLIC_URL}/img/items.png`,
   true
 )

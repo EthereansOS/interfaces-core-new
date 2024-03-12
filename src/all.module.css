@@ -5276,7 +5276,7 @@ input[type=range]::-ms-thumb {
 
 .InfoBox h1 {
     width: 400px;
-    font-size: 50px;
+    font-size: 30px;
     font-weight: bold;
     color: #000000;
     text-align: left;
@@ -5395,7 +5395,7 @@ input[type=range]::-ms-thumb {
 }
 
 .SubCollectionInfoName {
-    width: 470px;
+    width: 100%;
     display: inline-block;
     text-align: left;
     vertical-align: top;
@@ -15608,6 +15608,17 @@ input {
 
 
 @media only screen and (max-width: 767px) {
+
+    .WizardFooterBack, .WizardFooterNext{
+        width: 100%!important;
+        margin-bottom: 20px;
+        display: block;
+    }
+    .CreationPageLabelFDivide{
+        display: block!important;
+        text-align: center;
+        width: 100%!important;
+    }
     .ImagePreview img {
         width: 170px;
         height: auto;

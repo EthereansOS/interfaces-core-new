@@ -198,3 +198,9 @@
   color: var(--color-primary);
   align-self: start;
 }
+@media only screen and (max-width: 767px) {
+  .progress{
+    --progress-size: 300px!important;
+    margin: 0 auto
+  }
+}

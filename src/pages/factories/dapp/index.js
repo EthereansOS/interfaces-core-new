@@ -19,7 +19,7 @@ const FactoriesMain = () => {
   )
 }
 
-FactoriesMain.pluginIndex = 40
+FactoriesMain.pluginIndex = 10
 FactoriesMain.addToPlugin =
   ({ index }) =>
   ({ addElement }) => {
