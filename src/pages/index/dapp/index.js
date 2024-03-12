@@ -169,7 +169,7 @@ const IndexMain = () => {
               <figure>
                 <img src={`${process.env.PUBLIC_URL}/img/factories.png`}></img>
               </figure>
-              <p>Factories</p>
+              <p>Launch Factories</p>
               <p className={style.CardsLayerBody}>
                 Phasellus aliquet neque nec odio gravida fringilla. Aenean
                 elementum orci pulvinar.
