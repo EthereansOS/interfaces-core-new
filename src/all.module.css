@@ -15607,8 +15607,156 @@ input {
 }
 
 
+.PercentageComponentPlus{
+    background: #f0f4f8;
+    padding: 10px;
+    display: inline-block;
+    border-radius: 8px;
+    font-size: 20px;
+    padding-left: 15px;
+    padding-right: 15px;
+    width: 100%;
+    border: 1px dotted #f0f4f8;
+    margin-top: 10px;
+}
+.PercentageComponentBoxArea{
+    background: #f0f4f8;
+    border-radius: 10px;
+    padding: 20px;
+    vertical-align: middle;
+    margin-bottom: 15px;
+    margin-top: 15px;
+}
+.PercentageComponentBoxAreaSelect{
+    display: inline-block;
+    padding: 5px 10px 5px 10px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+}
+.PercentageComponentBoxAreaPreview{
+    display: inline-block;
+    font-weight: bold;
+    margin-left: 10px;
+    width: 100px;
+    text-align: center;
+}
+.PercentageComponentBoxAreaInput{
+    margin-top: 0px!important;
+    margin-left: 10px;
+    width: 40%!important;
+    display: inline-block!important;
+
+}
+.PercentageComponentBoxAreaMinus{
+    font-size: 30px;
+    line-height: 10px;
+    margin-left: 10px;
+}
+.CreationPageLabelF .ActionInfoSection{
+    border: 2px solid #e7ecf3;
+    width: 100%;
+    background: #ffffff;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 300;
+    display: block;
+    text-align: left;
+}
+.dark .CreationPageLabelF .ActionInfoSection{
+    border: 2px solid #403b63;
+    background: #29263e;
+}
+.dark input:checked + label {
+    background-color: #29263e;
+    color: #FFF;
+    border-color:#29263e;
+}
+.dark .PercentageComponentPlus {
+    background: #403b63;
+}
+.dark .simply-donut:before, .dark  .simply-circle-progress-bar:before {
+    background-color: #29263e;
+    border: #29263e;
+}
+.dark .OrganizationToggle input+label {
+    color:#000;
+}
+.dark .CreationPageLabelF select{
+    background-color: #29263e;
+    border: 2px solid transparent!important;
+    color:#fff;
+}
+.CheckboxAlign{
+    display: block!important;
+    text-align: left!important;
+    width: fit-content!important;
+    margin: 0 !important;
+    margin-top: 10px!important;
+    margin-bottom: 20px!important;
+}
+.SliderInputElement{
+    margin-top: 10px;
+}
+.FactoryCreateWrapper {
+    display: flex;
+}
+.FactoryCreateWrapper .FactoryCreateLeftRow{
+    width: 30%;
+    display: inline-block;
+}
+.FactoryCreateWrapper .FactoryCreateRightRow{
+    width: 65%;
+    display: inline-block;
+    margin-left: 5%;
+}
+.DropdownFileContainer{
+    display: block!important;
+    height: fit-content!important;
+    border-color: #ddd!important;
+    min-width: 100%!important;
+}
+.DropdownFileContainer>div, .DropdownFileContainer>div span{
+    display: block!important;
+    text-align: center;
+    width: 100%;
+    max-width: 100%!important;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+.DropdownFileContainer>svg{
+    display: none;
+    width: 100%;
+    position: relative;
+    height: 100px;
+}
+.FilePreview img{
+    width: 100%;
+    border-radius: 10px;
+}
+.DropdownFileContainer>svg path{
+    fill: #ddd;
+}
+.FilePreview{
+    margin-top: 20px;
+    border: dashed 2px #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
 
 @media only screen and (max-width: 767px) {
+    .FactoryCreateWrapper{
+        display: block!important;
+    }
+    .FactoryCreateWrapper .FactoryCreateLeftRow{
+        width: 100%!important;
+        display: block!important;
+    }
+    .FactoryCreateWrapper .FactoryCreateRightRow{
+        width: 100%!important;
+        display: block!important;
+        margin-left: 0%!important;
+    }
 
     .WizardFooterBack, .WizardFooterNext{
         width: 100%!important;
@@ -15896,140 +16044,4 @@ input {
     .ExtLinkButton{
         width: fit-content!important
     }
-}
-
-.PercentageComponentPlus{
-    background: #f0f4f8;
-    padding: 10px;
-    display: inline-block;
-    border-radius: 8px;
-    font-size: 20px;
-    padding-left: 15px;
-    padding-right: 15px;
-    width: 100%;
-    border: 1px dotted #f0f4f8;
-    margin-top: 10px;
-}
-.PercentageComponentBoxArea{
-    background: #f0f4f8;
-    border-radius: 10px;
-    padding: 20px;
-    vertical-align: middle;
-    margin-bottom: 15px;
-    margin-top: 15px;
-}
-.PercentageComponentBoxAreaSelect{
-    display: inline-block;
-    padding: 5px 10px 5px 10px;
-    border-radius: 6px;
-    border: 1px solid #ddd;
-}
-.PercentageComponentBoxAreaPreview{
-    display: inline-block;
-    font-weight: bold;
-    margin-left: 10px;
-    width: 100px;
-    text-align: center;
-}
-.PercentageComponentBoxAreaInput{
-    margin-top: 0px!important;
-    margin-left: 10px;
-    width: 40%!important;
-    display: inline-block!important;
-
-}
-.PercentageComponentBoxAreaMinus{
-    font-size: 30px;
-    line-height: 10px;
-    margin-left: 10px;
-}
-.CreationPageLabelF .ActionInfoSection{
-    border: 2px solid #e7ecf3;
-    width: 100%;
-    background: #ffffff;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 300;
-    display: block;
-    text-align: left;
-}
-.dark .CreationPageLabelF .ActionInfoSection{
-    border: 2px solid #403b63;
-    background: #29263e;
-}
-.dark input:checked + label {
-    background-color: #29263e;
-    color: #FFF;
-    border-color:#29263e;
-}
-.dark .PercentageComponentPlus {
-    background: #403b63;
-}
-.dark .simply-donut:before, .dark  .simply-circle-progress-bar:before {
-    background-color: #29263e;
-    border: #29263e;
-}
-.dark .OrganizationToggle input+label {
-    color:#000;
-}
-.dark .CreationPageLabelF select{
-    background-color: #29263e;
-    border: 2px solid transparent!important;
-    color:#fff;
-}
-.CheckboxAlign{
-    display: block!important;
-    text-align: left!important;
-    width: fit-content!important;
-    margin: 0 !important;
-    margin-top: 10px!important;
-    margin-bottom: 20px!important;
-}
-.SliderInputElement{
-    margin-top: 10px;
-}
-.FactoryCreateWrapper {
-    display: flex;
-}
-.FactoryCreateWrapper .FactoryCreateLeftRow{
-    width: 30%;
-    display: inline-block;
-}
-.FactoryCreateWrapper .FactoryCreateRightRow{
-    width: 65%;
-    display: inline-block;
-    margin-left: 5%;
-}
-.DropdownFileContainer{
-    display: block!important;
-    height: fit-content!important;
-    border-color: #ddd!important;
-}
-.DropdownFileContainer>div, .DropdownFileContainer>div span{
-    display: block!important;
-    text-align: center;
-    width: 100%;
-    max-width: 100%!important;
-    margin-top: 5px;
-    margin-bottom: 5px;
-}
-.DropdownFileContainer>svg{
-    display: none;
-    width: 100%;
-    position: relative;
-    height: 100px;
-}
-.FilePreview img{
-    width: 100%;
-    border-radius: 10px;
-}
-.DropdownFileContainer>svg path{
-    fill: #ddd;
-}
-.FilePreview{
-    margin-top: 20px;
-    border: dashed 2px #ddd;
-    border-radius: 10px;
-    padding: 20px;
-    margin-bottom: 20px;
 }
