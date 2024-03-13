@@ -16009,7 +16009,7 @@ input {
     display: block!important;
     text-align: center;
     width: 100%;
-    max-width: 100%;
+    max-width: 100%!important;
     margin-top: 5px;
     margin-bottom: 5px;
 }
