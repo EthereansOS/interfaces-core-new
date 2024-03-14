@@ -26,7 +26,7 @@ export default ({token, balance, value, other, buttonText, onClick, onPermitSign
         if(!token) {
             return setApproved(false)
         }
-        if(noApproveNeeded) {
+        if(noApproveNeeded || token.address === VOID_ETHEREUM_ADDRESS) {
             return setApproved(true)
         }
         var appr = false
