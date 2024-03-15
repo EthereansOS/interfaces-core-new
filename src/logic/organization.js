@@ -2192,7 +2192,7 @@ export function checkGovernance(metadata, throwOnError) {
     errors.push('Token is mandatory')
   }
 
-  if (metadata && !metadata.poposalRules?.host) {
+  if (metadata && !metadata.proposalRules?.host) {
     errors.push('Host is mandatory')
   }
 

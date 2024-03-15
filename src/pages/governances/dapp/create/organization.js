@@ -911,33 +911,19 @@ const Governance = ({ value, onChange, onNext, onPrev }) => {
     value?.proposalRules?.validationBomb || 0
   )
 
-  const handleBlur = () => {
-    onChange(value)
-  }
-
-  useEffect(
-    () =>
-      onChange &&
-      onChange({
-        host,
-        proposalDuration,
-        hardCapPercentage,
-        quorumPercentage,
-        validationBomb,
-      }),
-    [
-      host,
-      proposalDuration,
-      hardCapPercentage,
-      quorumPercentage,
-      validationBomb,
-    ]
-  )
-
-  useEffect(
-    () => onChange && onChange({ token, proposalRules }),
-    [token, proposalRules]
-  )
+  useEffect(() => {
+    console.log(token)
+    value = {}
+    value.token = token ?? {}
+    value.proposalRules = {}
+    value.proposalRules.host = host ?? ''
+    setDisabled(!checkGovernance(value))
+    try {
+      web3Utils.toChecksumAddress(value?.proposalRules?.host)
+    } catch (e) {
+      setDisabled(true)
+    }
+  }, [token, host])
 
   const [quorumKey, setQuorumKey] = useState(0) // Add a key state for the Quorum slider
 
@@ -967,8 +953,7 @@ const Governance = ({ value, onChange, onNext, onPrev }) => {
             Host address*{' '}
             <span
               className={style.CreationPageLabelFloatRight}
-              onClick={() => onChange(setHost(getCurrentAddress()))}
-              onBlur={handleBlur}>
+              onClick={() => onChange(setHost(getCurrentAddress()))}>
               Insert your current address
             </span>
           </h6>
