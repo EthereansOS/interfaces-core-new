@@ -35,37 +35,6 @@ const components = [
   'COMPONENT_KEY_INVESTMENTS_MANAGER',
 ]
 
-import AreaClosed from '@visx/shape/lib/shapes/AreaClosed'
-import { curveMonotoneX } from '@visx/curve'
-import {
-  scaleUtc,
-  scaleLinear,
-  scaleLog,
-  scaleBand,
-  coerceNumber,
-} from '@visx/scale'
-import { Orientation } from '@visx/axis'
-import {
-  AnimatedAxis,
-  AnimatedGridRows,
-  AnimatedGridColumns,
-} from '@visx/react-spring'
-import { LinearGradient } from '@visx/gradient'
-import { timeFormat } from 'd3-time-format'
-import { GradientPinkBlue } from '@visx/gradient'
-import Pie, { ProvidedProps, PieArcDatum } from '@visx/shape/lib/shapes/Pie'
-import letterFrequency, {
-  LetterFrequency,
-} from '@visx/mock-data/lib/mocks/letterFrequency'
-import browserUsage, {
-  BrowserUsage as Browsers,
-} from '@visx/mock-data/lib/mocks/browserUsage'
-import { scaleOrdinal } from '@visx/scale'
-
-import { animated, useTransition, interpolate } from '@react-spring/web'
-
-import { Group } from '@visx/group'
-
 import { create as createIpfsHttpClient } from 'ipfs-http-client'
 import uploadToIPFS from 'interfaces-core/lib/web3/uploadToIPFS'
 import getFileFromBlobURL from 'interfaces-core/lib/web3/getFileFromBlobURL'
@@ -82,272 +51,47 @@ function initializeIPFSClient(context) {
   return client
 }
 
+function resetValidationBomb(validationBomb, duration) {
+  const index_validation = dataTime.indexOf(validationBomb)
+  const index_duration = dataTime.indexOf(duration)
+
+  if (index_validation > index_duration) {
+    return index_validation
+  } else {
+    return index_duration + 1
+  }
+}
+
+function isValidationBombValid(validationBomb, duration) {
+  const index_validation = dataTime.indexOf(validationBomb)
+  const index_duration = dataTime.indexOf(duration)
+
+  if (index_validation > index_duration) {
+    return true
+  } else {
+    return false
+  }
+}
+
 export const backgroundColor = '#da7cff'
-const axisColor = '#fff'
-const tickLabelColor = '#fff'
 export const labelColor = '#340098'
-const gridColor = '#6e0fca'
-const margin = {
-  top: 40,
-  right: 150,
-  bottom: 20,
-  left: 50,
-}
 
-const tickLabelProps = () => ({
-  fill: tickLabelColor,
-  fontSize: 12,
-  fontFamily: 'sans-serif',
-  textAnchor: 'middle',
-})
-
-const letters = [
-  { frequency: 0.2, letter: 'SubValue 1' },
-  { frequency: 0.49, letter: 'SubValue 2' },
-  { frequency: 0.1, letter: 'SubValue 3' },
+const dataTime = [
+  '30min',
+  '6h',
+  '12h',
+  '1 Day',
+  '2 Days',
+  '3 Days',
+  '4 Days',
+  '5 Days',
+  '1 Week',
+  '1 Month',
+  '6 Months',
+  '1 Year',
+  '3 Years',
+  '5 Years',
 ]
-const browserNames = Object.keys(browserUsage[0]).filter((k) => k !== 'date')
-const browsers = [
-  {
-    label: 'Value 1',
-    usage: 0.3,
-  },
-  {
-    label: 'Value 2',
-    usage: 0.3,
-  },
-  {
-    label: 'Value 3',
-    usage: 0.3,
-  },
-]
-
-// accessor functions
-const usage = (d) => d.usage
-const frequency = (d) => d.frequency
-
-// color scales
-const getBrowserColor = scaleOrdinal({
-  domain: browserNames,
-  range: [
-    'rgba(179,33,86,0.7)',
-    'rgba(179,33,86,0.6)',
-    'rgba(151,213,244,0.6)',
-    'rgba(40,40,40,0.4)',
-    'rgba(40,40,40,0.3)',
-    'rgba(40,40,40,0.2)',
-    'rgba(40,40,40,0.1)',
-  ],
-})
-const getLetterFrequencyColor = scaleOrdinal({
-  domain: letters.map((l) => l.letter),
-  range: [
-    'rgba(231,57,197, 0.8)',
-    'rgba(121,135,228,0.8)',
-    'rgba(242,142,221,0.6)',
-    'rgba(93,30,91,0.4)',
-  ],
-})
-
-const defaultMargin = { top: 20, right: 20, bottom: 20, left: 20 }
-
-const getMinMax = (vals) => {
-  const numericVals = vals.map(coerceNumber)
-  return [(Math.min(...numericVals), Math.max(...numericVals))]
-}
-
-function Example({
-  width: outerWidth = 600,
-  height: outerHeight = 600,
-  showControls = true,
-  margin = defaultMargin,
-  animate = true,
-}) {
-  const width = outerWidth - margin.left - margin.right
-  const height = outerHeight - margin.top - margin.bottom
-
-  const [selectedBrowser, setSelectedBrowser] = useState(null)
-  const [selectedAlphabetLetter, setSelectedAlphabetLetter] = useState(null)
-
-  if (width < 10) return null
-
-  const innerWidth = width - margin.left - margin.right
-  const innerHeight = height - margin.top - margin.bottom
-  const radius = Math.min(innerWidth, innerHeight) / 2
-  const centerY = innerHeight / 2
-  const centerX = innerWidth / 2
-  const donutThickness = 50
-
-  const [dataToggle] = useState(true)
-  const [animationTrajectory] = useState('center')
-
-  const axes = useMemo(() => {
-    const linearValues = dataToggle ? [0, 2, 4, 6, 8, 10] : [6, 8, 10, 12]
-    console.log(letters)
-    return [
-      {
-        scale: scaleLinear({
-          domain: getMinMax(linearValues),
-          range: [0, width],
-        }),
-        values: linearValues,
-        tickFormat: (v, index, ticks) =>
-          index === 0
-            ? 'first'
-            : index === ticks[ticks.length - 1].index
-            ? 'last'
-            : `${v}`,
-        label: 'linear',
-      },
-    ]
-  }, [dataToggle, width])
-
-  if (width < 10) return null
-
-  const scalePadding = 40
-  const scaleHeight = height / axes.length - scalePadding
-
-  const yScale = scaleLinear({
-    domain: [100, 0],
-    range: [scaleHeight, 0],
-  })
-
-  return (
-    <>
-      <svg width={width} height={height}>
-        <rect rx={14} width={width} height={height} fill="#fff" />
-        <Group top={centerY + margin.top} left={centerX + margin.left}>
-          <Pie
-            data={
-              selectedBrowser
-                ? browsers.filter(({ label }) => label === selectedBrowser)
-                : browsers
-            }
-            pieValue={usage}
-            outerRadius={radius}
-            innerRadius={radius - donutThickness}
-            cornerRadius={3}
-            padAngle={0.005}>
-            {(pie) => (
-              <AnimatedPie
-                {...pie}
-                animate={animate}
-                getKey={(arc) => arc.data.label}
-                onClickDatum={({ data: { label } }) =>
-                  animate &&
-                  setSelectedBrowser(
-                    selectedBrowser && selectedBrowser === label ? null : label
-                  )
-                }
-                getColor={(arc) => getBrowserColor(arc.data.label)}
-              />
-            )}
-          </Pie>
-          <Pie
-            data={
-              selectedAlphabetLetter
-                ? letters.filter(
-                    ({ letter }) => letter === selectedAlphabetLetter
-                  )
-                : letters
-            }
-            pieValue={frequency}
-            pieSortValues={() => -1}
-            outerRadius={radius - donutThickness * 1.3}>
-            {(pie) => (
-              <AnimatedPie
-                {...pie}
-                animate={animate}
-                getKey={({ data: { letter } }) => letter}
-                onClickDatum={({ data: { letter } }) =>
-                  animate &&
-                  setSelectedAlphabetLetter(
-                    selectedAlphabetLetter && selectedAlphabetLetter === letter
-                      ? null
-                      : letter
-                  )
-                }
-                getColor={({ data: { letter } }) =>
-                  getLetterFrequencyColor(letter)
-                }
-              />
-            )}
-          </Pie>
-        </Group>
-        {animate && (
-          <text
-            textAnchor="end"
-            x={width - 16}
-            y={height - 16}
-            fill="white"
-            fontSize={11}
-            fontWeight={300}
-            pointerEvents="none"></text>
-        )}
-      </svg>
-    </>
-  )
-}
-
-const fromLeaveTransition = ({ endAngle }) => ({
-  // enter from 360° if end angle is > 180°
-  startAngle: endAngle > Math.PI ? 2 * Math.PI : 0,
-  endAngle: endAngle > Math.PI ? 2 * Math.PI : 0,
-  opacity: 0,
-})
-const enterUpdateTransition = ({ startAngle, endAngle }) => ({
-  startAngle,
-  endAngle,
-  opacity: 1,
-})
-
-function AnimatedPie({ animate, arcs, path, getKey, getColor, onClickDatum }) {
-  const transitions = useTransition(arcs, {
-    from: animate ? fromLeaveTransition : enterUpdateTransition,
-    enter: enterUpdateTransition,
-    update: enterUpdateTransition,
-    leave: animate ? fromLeaveTransition : enterUpdateTransition,
-    keys: getKey,
-  })
-  return transitions((props, arc, { key }) => {
-    const [centroidX, centroidY] = path.centroid(arc)
-    const hasSpaceForLabel = arc.endAngle - arc.startAngle >= 0.1
-
-    return (
-      <g key={key}>
-        <animated.path
-          // compute interpolated path d attribute from intermediate angle values
-          d={interpolate(
-            [props.startAngle, props.endAngle],
-            (startAngle, endAngle) =>
-              path({
-                ...arc,
-                startAngle,
-                endAngle,
-              })
-          )}
-          fill={getColor(arc)}
-          onClick={() => onClickDatum(arc)}
-          onTouchStart={() => onClickDatum(arc)}
-        />
-        {hasSpaceForLabel && (
-          <animated.g style={{ opacity: props.opacity }}>
-            <text
-              fill="white"
-              x={centroidX}
-              y={centroidY}
-              dy=".33em"
-              fontSize={9}
-              textAnchor="middle"
-              pointerEvents="none">
-              {getKey(arc)}
-            </text>
-          </animated.g>
-        )}
-      </g>
-    )
-  })
-}
 
 const Metadata = ({ value, onChange, onNext, onPrev }) => {
   const [disabled, setDisabled] = useState()
@@ -752,22 +496,7 @@ const VotingRules = ({ value, onChange, onNext, onPrev }) => {
               progressLineCap="flat"
               dataIndex={0}
               label="Duration"
-              data={[
-                '30min',
-                '6h',
-                '12h',
-                '1 Day',
-                '2 Days',
-                '3 Days',
-                '4 Days',
-                '5 Days',
-                '1 Week',
-                '1 Month',
-                '6 Months',
-                '1 Year',
-                '3 Years',
-                '5 Years',
-              ]}
+              data={dataTime}
               labelColor="#fff"
               knobColor="#000000"
               width="120"
@@ -793,7 +522,7 @@ const VotingRules = ({ value, onChange, onNext, onPrev }) => {
             <br />
             <CircularSlider
               progressLineCap="flat"
-              dataIndex={3}
+              dataIndex={1}
               label="Duration"
               data={[
                 '30min',
@@ -892,50 +621,38 @@ const Organization = ({ value, onChange, onNext, onPrev }) => {
 const Governance = ({ value, onChange, onNext, onPrev }) => {
   const [disabled, setDisabled] = useState(false)
   const [token, setToken] = useState(value?.token)
-  const [proposalRules, setProposalRules] = useState(value?.proposalRules)
-
-  const [quorum, setQuorum] = useState(0)
-
-  const [host, setHost] = useState(value?.proposalRules?.host)
-
-  const [proposalDuration, setProposalDuration] = useState(
-    value?.proposalRules?.proposalDuration || 0
-  )
-  const [hardCapPercentage, setHardCapPercentage] = useState(
-    value?.proposalRules?.hardCapPercentage || 0
-  )
-  const [quorumPercentage, setQuorumPercentage] = useState(
-    value?.proposalRules?.quorumPercentage || 0
-  )
-  const [validationBomb, setValidationBomb] = useState(
-    value?.proposalRules?.validationBomb || 0
-  )
 
   useEffect(() => {
-    value = {}
-    value.token = token ?? null
-    value.proposalRules = {
-      host: host ?? '',
-      proposalDuration: proposalDuration ?? 0,
-      hardCapPercentage: hardCapPercentage ?? 0,
-      quorumPercentage: quorumPercentage ?? 0,
-      validationBomb: validationBomb ?? 0,
-    }
-    setDisabled(!checkGovernance(value))
+    if (!value) return
+    value.proposalRulesHardCapPercentage =
+      value.proposalRulesHardCapPercentage ?? 0
+    value.proposalRulesQuorumPercentage =
+      value.proposalRulesQuorumPercentage ?? 0
+    value.proposalRulesValidationBomb =
+      value.proposalRulesValidationBomb ?? dataTime[1]
+    value.proposalRulesProposalDuration =
+      value.proposalRulesProposalDuration ?? dataTime[0]
+
+    value.proposalRulesValidationBomb =
+      dataTime[
+        resetValidationBomb(
+          value.proposalRulesValidationBomb,
+          value.proposalRulesProposalDuration
+        )
+      ]
     try {
-      web3Utils.toChecksumAddress(value?.proposalRules?.host)
+      web3Utils.toChecksumAddress(value?.proposalRulesHost)
+      setDisabled(!checkGovernance(value))
     } catch (e) {
       setDisabled(true)
     }
-  }, [
-    token,
-    host,
-    proposalDuration,
-    hardCapPercentage,
-    quorumPercentage,
-    validationBomb,
-    onChange,
-  ])
+  }, [value, onChange])
+
+  useEffect(() => {
+    if (value) {
+      value.token = token ?? null
+    }
+  }, [token])
 
   const [quorumKey, setQuorumKey] = useState(0) // Add a key state for the Quorum slider
 
@@ -952,7 +669,7 @@ const Governance = ({ value, onChange, onNext, onPrev }) => {
           <h6>Voting Token</h6>
           <p>Select the Voting Token</p>
           <TokenInputRegular
-            selected={token}
+            selected={token ?? value?.token}
             onElement={setToken}
             noBalance
             noETH
@@ -965,19 +682,27 @@ const Governance = ({ value, onChange, onNext, onPrev }) => {
             Host address*{' '}
             <span
               className={style.CreationPageLabelFloatRight}
-              onClick={() => onChange(setHost(getCurrentAddress()))}>
+              onClick={() =>
+                onChange({ ...value, proposalRulesHost: getCurrentAddress() })
+              }>
               Insert your current address
             </span>
           </h6>
           <p>Insert the host Address</p>
           <input
             type="text"
-            value={host ?? ''}
+            value={value?.proposalRulesHost ?? ''}
             placeholder="The Organization host address"
-            onChange={(e) => onChange(setHost(e.currentTarget.value))}
-            onBlur={(e) => onChange(setHost(e.currentTarget.value))}
+            onChange={(e) =>
+              onChange({ ...value, proposalRulesHost: e.currentTarget.value })
+            }
+            onBlur={(e) =>
+              onChange({ ...value, proposalRulesHost: e.currentTarget.value })
+            }
           />
-          {value?.error?.name && <p>{value.error.name}</p>}
+          {value?.error?.proposalRulesHost && (
+            <p>{value.error.proposalRulesHost}</p>
+          )}
         </label>
       </div>
 
@@ -995,6 +720,7 @@ const Governance = ({ value, onChange, onNext, onPrev }) => {
             <br />
             <CircularSlider
               label="Quorum"
+              dataIndex={value?.proposalRulesQuorumPercentage ?? 0}
               labelColor="#fff"
               knobColor="#000000"
               width="120"
@@ -1009,9 +735,11 @@ const Governance = ({ value, onChange, onNext, onPrev }) => {
               trackColor="#eeeeee"
               min={0}
               max={100}
-              initialValue={0}
-              onChange={(value) => {
-                setQuorumPercentage(value)
+              onChange={(e) => {
+                onChange({
+                  ...value,
+                  proposalRulesQuorumPercentage: e,
+                })
               }}
             />
           </label>
@@ -1023,6 +751,7 @@ const Governance = ({ value, onChange, onNext, onPrev }) => {
             <br />
             <CircularSlider
               label="Hard cap"
+              dataIndex={value?.proposalRulesHardCapPercentage ?? 0}
               labelColor="#fff"
               width="120"
               knobSize="25"
@@ -1037,9 +766,12 @@ const Governance = ({ value, onChange, onNext, onPrev }) => {
               trackColor="#eeeeee"
               min={0}
               max={100}
-              onChange={(value) => {
-                setHardCapPercentage(value)
-              }}
+              onChange={(e) =>
+                onChange({
+                  ...value,
+                  proposalRulesHardCapPercentage: e,
+                })
+              }
             />
           </label>
         </div>
@@ -1059,24 +791,13 @@ const Governance = ({ value, onChange, onNext, onPrev }) => {
             <br />
             <CircularSlider
               progressLineCap="flat"
-              dataIndex={0}
+              dataIndex={
+                value?.proposalRulesProposalDuration != null
+                  ? dataTime.indexOf(value?.proposalRulesProposalDuration)
+                  : 0
+              }
               label="Duration"
-              data={[
-                '30min',
-                '6h',
-                '12h',
-                '1 Day',
-                '2 Days',
-                '3 Days',
-                '4 Days',
-                '5 Days',
-                '1 Week',
-                '1 Month',
-                '6 Months',
-                '1 Year',
-                '3 Years',
-                '5 Years',
-              ]}
+              data={dataTime}
               labelColor="#fff"
               knobColor="#000000"
               width="120"
@@ -1089,9 +810,12 @@ const Governance = ({ value, onChange, onNext, onPrev }) => {
               progressColorFrom="#000000"
               progressColorTo="#444444"
               trackColor="#eeeeee"
-              onChange={(value) => {
-                setProposalDuration(value)
-              }}
+              onChange={(e) =>
+                onChange({
+                  ...value,
+                  proposalRulesProposalDuration: e,
+                })
+              }
             />
           </label>
           <label className={style.CreationPageLabelF}>
@@ -1102,24 +826,13 @@ const Governance = ({ value, onChange, onNext, onPrev }) => {
             <br />
             <CircularSlider
               progressLineCap="flat"
-              dataIndex={0}
+              dataIndex={
+                value?.proposalRulesValidationBomb != null
+                  ? dataTime.indexOf(value?.proposalRulesValidationBomb)
+                  : 1
+              }
               label="Duration"
-              data={[
-                '30min',
-                '6h',
-                '12h',
-                '1 Day',
-                '2 Days',
-                '3 Days',
-                '4 Days',
-                '5 Days',
-                '1 Week',
-                '1 Month',
-                '6 Months',
-                '1 Year',
-                '3 Years',
-                '5 Years',
-              ]}
+              data={dataTime}
               labelColor="#fff"
               knobColor="#000000"
               width="120"
@@ -1132,9 +845,12 @@ const Governance = ({ value, onChange, onNext, onPrev }) => {
               progressColorFrom="#000000"
               progressColorTo="#444444"
               trackColor="#eeeeee"
-              onChange={(value) => {
-                setValidationBomb(value)
-              }}
+              onChange={(e) =>
+                onChange({
+                  ...value,
+                  proposalRulesValidationBomb: e,
+                })
+              }
             />
           </label>
         </div>
@@ -1657,8 +1373,8 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
                       trackColor="#eeeeee"
                       min={0}
                       max={100}
-                      onChange={(value) => {
-                        setHardCapValue(value)
+                      onChange={(ex) => {
+                        setHardCapValue(ex)
                       }}
                     />
                   </label>
@@ -1685,8 +1401,8 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
                       min={0}
                       max={100}
                       initialValue={0}
-                      onChange={(value) => {
-                        setQuorum(value)
+                      onChange={(ex) => {
+                        setQuorum(ex)
                       }}
                     />
                   </label>
@@ -1709,22 +1425,7 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
                       progressLineCap="flat"
                       dataIndex={0}
                       label="Duration"
-                      data={[
-                        '30min',
-                        '6h',
-                        '12h',
-                        '1 Day',
-                        '2 Days',
-                        '3 Days',
-                        '4 Days',
-                        '5 Days',
-                        '1 Week',
-                        '1 Month',
-                        '6 Months',
-                        '1 Year',
-                        '3 Years',
-                        '5 Years',
-                      ]}
+                      data={dataTime}
                       labelColor="#fff"
                       knobColor="#000000"
                       width="120"
@@ -1747,24 +1448,9 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
                     <br />
                     <CircularSlider
                       progressLineCap="flat"
-                      dataIndex={3}
+                      dataIndex={1}
                       label="Duration"
-                      data={[
-                        '30min',
-                        '6h',
-                        '12h',
-                        '1 Day',
-                        '2 Days',
-                        '3 Days',
-                        '4 Days',
-                        '5 Days',
-                        '1 Week',
-                        '1 Month',
-                        '6 Months',
-                        '1 Year',
-                        '3 Years',
-                        '5 Years',
-                      ]}
+                      data={dataTime}
                       labelColor="#fff"
                       knobColor="#000000"
                       width="120"
@@ -2157,8 +1843,8 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
               min={0}
               max={100}
               initialValue={0}
-              onChange={(value) => {
-                setQuorumPercentage(value)
+              onChange={(ex) => {
+                setQuorumPercentage(ex)
               }}
             />
           </label>
@@ -2185,8 +1871,8 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
               trackColor="#eeeeee"
               min={0}
               max={100}
-              onChange={(value) => {
-                setHardCapPercentage(value)
+              onChange={(ex) => {
+                setHardCapPercentage(ex)
               }}
             />
           </label>
@@ -2209,22 +1895,7 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
               progressLineCap="flat"
               dataIndex={0}
               label="Duration"
-              data={[
-                '30min',
-                '6h',
-                '12h',
-                '1 Day',
-                '2 Days',
-                '3 Days',
-                '4 Days',
-                '5 Days',
-                '1 Week',
-                '1 Month',
-                '6 Months',
-                '1 Year',
-                '3 Years',
-                '5 Years',
-              ]}
+              data={dataTime}
               labelColor="#fff"
               knobColor="#000000"
               width="120"
@@ -2237,8 +1908,8 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
               progressColorFrom="#000000"
               progressColorTo="#444444"
               trackColor="#eeeeee"
-              onChange={(value) => {
-                setProposalDuration(value)
+              onChange={(ex) => {
+                setProposalDuration(ex)
               }}
             />
           </label>
@@ -2250,24 +1921,9 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
             <br />
             <CircularSlider
               progressLineCap="flat"
-              dataIndex={3}
+              dataIndex={1}
               label="Duration"
-              data={[
-                '30min',
-                '6h',
-                '12h',
-                '1 Day',
-                '2 Days',
-                '3 Days',
-                '4 Days',
-                '5 Days',
-                '1 Week',
-                '1 Month',
-                '6 Months',
-                '1 Year',
-                '3 Years',
-                '5 Years',
-              ]}
+              data={dataTime}
               labelColor="#fff"
               knobColor="#000000"
               width="120"
@@ -2280,8 +1936,8 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
               progressColorFrom="#000000"
               progressColorTo="#444444"
               trackColor="#eeeeee"
-              onChange={(value) => {
-                setValidationBomb(value)
+              onChange={(ex) => {
+                setValidationBomb(ex)
               }}
             />
           </label>
@@ -2417,8 +2073,8 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
               min={0}
               max={100}
               initialValue={0}
-              onChange={(value) => {
-                setQuorumPercentageInsurance(value)
+              onChange={(ex) => {
+                setQuorumPercentageInsurance(ex)
               }}
             />
           </label>
@@ -2445,8 +2101,8 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
               trackColor="#eeeeee"
               min={0}
               max={100}
-              onChange={(value) => {
-                setHardCapPercentageInsurance(value)
+              onChange={(ex) => {
+                setHardCapPercentageInsurance(ex)
               }}
             />
           </label>
@@ -2469,22 +2125,7 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
               progressLineCap="flat"
               dataIndex={0}
               label="Duration"
-              data={[
-                '30min',
-                '6h',
-                '12h',
-                '1 Day',
-                '2 Days',
-                '3 Days',
-                '4 Days',
-                '5 Days',
-                '1 Week',
-                '1 Month',
-                '6 Months',
-                '1 Year',
-                '3 Years',
-                '5 Years',
-              ]}
+              data={dataTime}
               labelColor="#fff"
               knobColor="#000000"
               width="120"
@@ -2497,8 +2138,8 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
               progressColorFrom="#000000"
               progressColorTo="#444444"
               trackColor="#eeeeee"
-              onChange={(value) => {
-                setProposalDurationInsurance(value)
+              onChange={(ex) => {
+                setProposalDurationInsurance(ex)
               }}
             />
           </label>
@@ -2510,24 +2151,9 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
             <br />
             <CircularSlider
               progressLineCap="flat"
-              dataIndex={3}
+              dataIndex={1}
               label="Duration"
-              data={[
-                '30min',
-                '6h',
-                '12h',
-                '1 Day',
-                '2 Days',
-                '3 Days',
-                '4 Days',
-                '5 Days',
-                '1 Week',
-                '1 Month',
-                '6 Months',
-                '1 Year',
-                '3 Years',
-                '5 Years',
-              ]}
+              data={dataTime}
               labelColor="#fff"
               knobColor="#000000"
               width="120"
@@ -2540,8 +2166,8 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
               progressColorFrom="#000000"
               progressColorTo="#444444"
               trackColor="#eeeeee"
-              onChange={(value) => {
-                setValidationBombInsurance(value)
+              onChange={(ex) => {
+                setValidationBombInsurance(ex)
               }}
             />
           </label>
@@ -2755,8 +2381,8 @@ const InvestmentsManager = ({ amms, value, onChange, onNext, onPrev }) => {
               min={0}
               max={100}
               initialValue={0}
-              onChange={(value) => {
-                setQuorumPercentage(value)
+              onChange={(ex) => {
+                setQuorumPercentage(ex)
               }}
             />
           </label>
@@ -2783,8 +2409,8 @@ const InvestmentsManager = ({ amms, value, onChange, onNext, onPrev }) => {
               trackColor="#eeeeee"
               min={0}
               max={100}
-              onChange={(value) => {
-                setHardCapPercentage(value)
+              onChange={(ex) => {
+                setHardCapPercentage(ex)
               }}
             />
           </label>
@@ -2807,22 +2433,7 @@ const InvestmentsManager = ({ amms, value, onChange, onNext, onPrev }) => {
               progressLineCap="flat"
               dataIndex={0}
               label="Duration"
-              data={[
-                '30min',
-                '6h',
-                '12h',
-                '1 Day',
-                '2 Days',
-                '3 Days',
-                '4 Days',
-                '5 Days',
-                '1 Week',
-                '1 Month',
-                '6 Months',
-                '1 Year',
-                '3 Years',
-                '5 Years',
-              ]}
+              data={dataTime}
               labelColor="#fff"
               knobColor="#000000"
               width="120"
@@ -2835,8 +2446,8 @@ const InvestmentsManager = ({ amms, value, onChange, onNext, onPrev }) => {
               progressColorFrom="#000000"
               progressColorTo="#444444"
               trackColor="#eeeeee"
-              onChange={(value) => {
-                setProposalDuration(value)
+              onChange={(ex) => {
+                setProposalDuration(ex)
               }}
             />
           </label>
@@ -2848,24 +2459,9 @@ const InvestmentsManager = ({ amms, value, onChange, onNext, onPrev }) => {
             <br />
             <CircularSlider
               progressLineCap="flat"
-              dataIndex={3}
+              dataIndex={1}
               label="Duration"
-              data={[
-                '30min',
-                '6h',
-                '12h',
-                '1 Day',
-                '2 Days',
-                '3 Days',
-                '4 Days',
-                '5 Days',
-                '1 Week',
-                '1 Month',
-                '6 Months',
-                '1 Year',
-                '3 Years',
-                '5 Years',
-              ]}
+              data={dataTime}
               labelColor="#fff"
               knobColor="#000000"
               width="120"
@@ -2878,8 +2474,8 @@ const InvestmentsManager = ({ amms, value, onChange, onNext, onPrev }) => {
               progressColorFrom="#000000"
               progressColorTo="#444444"
               trackColor="#eeeeee"
-              onChange={(value) => {
-                setValidationBomb(value)
+              onChange={(ex) => {
+                setValidationBomb(ex)
               }}
             />
           </label>
@@ -3062,7 +2658,7 @@ const CreateOrganization = () => {
 
   const [amms, setAMMs] = useState()
 
-  const [step, setStep] = useState(0)
+  const [step, setStep] = useState(1)
 
   const disabled = useMemo(
     () =>
