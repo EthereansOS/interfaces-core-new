@@ -3753,11 +3753,22 @@ input[type=range]::-ms-thumb {
     left: 0px;
 }
 
-.SetupFarmingInstructionsV3 {
-    width: 42%;
+.CollectionLeft .SetupFarmingInstructionsV3 {
+    width: 100%;
     display: inline-block;
     vertical-align: middle;
     padding: 20px;
+}
+.FarmContent .FarmSetupV3 .SetupFarmingInstructionsV3{
+    width: 36%;
+    display: inline-block;
+    padding: 20px;
+}
+.SingleContentPage .CollectionLeft .SendToL2, .SingleContentPage .CollectionLeft .MetaBTN{
+    display: block;
+    flex-wrap: wrap;
+    margin: 0 auto;
+    margin-bottom: 10px;
 }
 
 .V3PairThings {
@@ -5332,11 +5343,11 @@ input[type=range]::-ms-thumb {
 
 
 .ViewProperties {
-    width: 270px;
     display: inline-block;
     text-align: left;
     margin-top: 45px;
     text-align: left;
+    width: 100%;
 }
 
 .ViewProperties .ViewProperty {
@@ -13488,7 +13499,7 @@ input {
 }
 
 .dark .ITEMMANAGESELECTOR {
-    background-color: #383c42;
+    background-color: #29263e;
 }
 
 .light .CollectionSingle .CollectionTitle {
@@ -13496,6 +13507,17 @@ input {
     opacity: 0.7;
 }
 
+.dark .ModalBack .CreationPageLabel{
+    background: #35324c;
+    padding: 20px;
+}
+.ModalBack .WizardFooterBack, .ModalBack .WizardFooterNext {
+    width: 100%;
+    float: initial;
+    margin-bottom: 20px!important;
+    margin-left: 0px!important;
+    margin-right: 0px!important;
+}
 .biz .CollectionSingle .CollectionTitle {
     background-color: #ffffff;
     opacity: 0.7;
@@ -13655,10 +13677,8 @@ input {
 
 .light .ViewBasicsHost {
     background-color: #ffffff;
-    box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);
-    -webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);
-    -moz-box-shadow: 1px 1px 2px 1px rgba(202, 202, 202, 0.32);
-    border-color: #000000;
+    border-color: transparent;
+    width: 100%;
 }
 
 .biz .ViewBasicsHost {
@@ -13668,11 +13688,9 @@ input {
 }
 
 .dark .ViewBasicsHost {
-    background-color: #000000;
-    box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);
-    -webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);
-    -moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);
-    border-color: #ffffff;
+    border-color: transparent;
+    width: 100%;
+    background-color: #403b63;
 }
 
 .light .ViewBasics a {
@@ -13691,8 +13709,9 @@ input {
 }
 
 .light .ViewBasicsHost a {
-    background-color: #849BBD;
-    color: #ffffff;
+    background-color: #e9ebf2;
+    color: #000000;
+    border: 0px;
 }
 
 .biz .ViewBasicsHost a {
@@ -13701,7 +13720,7 @@ input {
 }
 
 .dark .ViewBasicsHost a {
-    background-color: #849BBD;
+    background-color: #403b63;
     color: #ffffff;
 }
 
@@ -13774,10 +13793,11 @@ input {
 }
 
 .dark .ViewProperties .ViewProperty {
-    background-color: #000000;
-    box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);
-    -webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);
-    -moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);
+    background-color: #403b63;
+}
+
+.ModalBack .CreationPageLabel{
+    margin-bottom: 20px;
 }
 
 .matrix .ViewProperties .ViewProperty {
@@ -14637,6 +14657,34 @@ input {
     color: #f2f4f8 !important;
     background-color: transparent !important;
 }
+.ModalBack .CreatePage{
+    background: transparent!important;
+}
+
+
+
+.ButtonsWithMargins .WizardFooterNext{
+    margin-right: 10px;
+    border-radius: 50px;
+}
+
+.ButtonsWithMargins  .WizardFooterBack{
+    border-radius: 50px;
+}
+
+
+.CreatePage .loadingio_spinner_disk_hn1zpmja0x6
+{ 
+    margin-top: 20px;
+}
+
+.CreateBTN2{
+    background-color: #f09243;
+    color: #fff;
+    padding: 15px 20px 15px 20px;
+    display: inline-block;
+    border-radius: 20px;
+}
 
 .matrix .ActionAWeb3Button button:disabled {
     background-color: transparent !important;
@@ -14645,7 +14693,17 @@ input {
     background-color: transparent !important;
 }
 
-.matrix .SubCollectionInfoCover {
+.WrapDetailBox .WrapBoxItem{
+    width: 100%;
+    height: auto;
+}
+
+.WrapDetailBox .WrapBoxItem{
+    width: 100%;
+    height: auto;
+}
+
+.matrix .UnwrapBoxItem {
     display: none;
 }
 
@@ -15128,6 +15186,12 @@ input {
     background-color: #1f1f1f;
 }
 
+.FarmContent .WizardFooter button{
+    width: 100%;
+    float: initial;
+    margin-bottom: 10px;
+}
+
 .dark .WizardProgressBar {
     background-color: #f09243;
 }
@@ -15208,6 +15272,14 @@ input {
     color: #fff;
     float: right;
 
+}
+
+.WizardFooterCentered .WizardFooterNext{
+    float: initial!important;
+}
+
+.SingleContentPage .TradeMain{
+    max-width: 100%!important;
 }
 
 .dark .WizardFooter .WizardFooterNext {
@@ -15745,6 +15817,9 @@ input {
 }
 
 @media only screen and (max-width: 767px) {
+    .ViewDescriptionL{
+        text-align: center;
+    }
     .FactoryCreateWrapper{
         display: block!important;
     }

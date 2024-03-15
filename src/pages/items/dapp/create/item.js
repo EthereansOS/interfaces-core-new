@@ -17,7 +17,7 @@ import TraitTypes from './traitTypes'
 import itemMetadataTypes from './itemMetadataTypes.json'
 import { useOpenSea } from '../../../../logic/uiUtilities'
 
-const LoadCollection = ({inputItem, mode, state, onStateEntry, setComponentIndex}) => {
+const LoadCollection = ({ inputItem, mode, state, onStateEntry, setComponentIndex }) => {
 
     const context = useEthosContext()
 
@@ -26,44 +26,44 @@ const LoadCollection = ({inputItem, mode, state, onStateEntry, setComponentIndex
     const [collection, setCollection] = useState()
 
     useEffect(() => {
-      onStateEntry('hostType')
-      onStateEntry('host')
+        onStateEntry('hostType')
+        onStateEntry('host')
     }, [])
 
     useEffect(() => {
-      setCollection(null)
-      if(!state.collectionId) {
-        return
-      }
-      setTimeout(async () => {
-          const itemProjectionFactory = getGlobalContract('itemProjectionFactory')
-          const mainInterface = newContract(context.ItemMainInterfaceABI, await blockchainCall(itemProjectionFactory.methods.mainInterface))
-          var collection = null
-          try {
-            collection = await blockchainCall(mainInterface.methods.collection, state.collectionId)
-            const multiOperatorHost = newContract(context.MultiOperatorHostABI, collection.host)
-            const mintOperator = await blockchainCall(multiOperatorHost.methods.operator, 1)
-            const metadataOperator = await blockchainCall(multiOperatorHost.methods.operator, 4)
-            if(mintOperator !== account && metadataOperator !== account) {
+        setCollection(null)
+        if (!state.collectionId) {
+            return
+        }
+        setTimeout(async () => {
+            const itemProjectionFactory = getGlobalContract('itemProjectionFactory')
+            const mainInterface = newContract(context.ItemMainInterfaceABI, await blockchainCall(itemProjectionFactory.methods.mainInterface))
+            var collection = null
+            try {
+                collection = await blockchainCall(mainInterface.methods.collection, state.collectionId)
+                const multiOperatorHost = newContract(context.MultiOperatorHostABI, collection.host)
+                const mintOperator = await blockchainCall(multiOperatorHost.methods.operator, 1)
+                const metadataOperator = await blockchainCall(multiOperatorHost.methods.operator, 4)
+                if (mintOperator !== account && metadataOperator !== account) {
+                    collection = undefined
+                } else {
+                    onStateEntry('mintOperator', mintOperator)
+                    onStateEntry('metadataOperator', metadataOperator)
+                }
+            } catch (e) {
                 collection = undefined
-            } else {
-                onStateEntry('mintOperator', mintOperator)
-                onStateEntry('metadataOperator', metadataOperator)
             }
-          } catch(e) {
-            collection = undefined
-          }
-          setCollection(collection)
-      })
+            setCollection(collection)
+        })
     }, [state.collectionId])
 
     useEffect(() => {
-      onStateEntry('disabled', collection ? undefined : true)
-      if(collection && mode) {
-        mode === 'mintNewItem' && mintNewItem()
-        mode === 'changeMintOperator' && changeMintOperator()
-        mode === 'changeMetadataOperator' && changeMetadataOperator()
-      }
+        onStateEntry('disabled', collection ? undefined : true)
+        if (collection && mode) {
+            mode === 'mintNewItem' && mintNewItem()
+            mode === 'changeMintOperator' && changeMintOperator()
+            mode === 'changeMetadataOperator' && changeMetadataOperator()
+        }
     }, [collection])
 
     function mintNewItem() {
@@ -73,7 +73,7 @@ const LoadCollection = ({inputItem, mode, state, onStateEntry, setComponentIndex
         onStateEntry('name')
         onStateEntry('symbol')
         onStateEntry('amount')
-        onStateEntry('metadata', {background_color : '#000000'})
+        onStateEntry('metadata', { background_color: '#000000' })
         onStateEntry('metadataLink')
         setComponentIndex(components.indexOf(NameAndSymbol))
     }
@@ -100,34 +100,41 @@ const LoadCollection = ({inputItem, mode, state, onStateEntry, setComponentIndex
     async function onCollectionId(e) {
         var collectionId = e.currentTarget.value
         try {
-            var rawData = await getRawField({ provider : web3.currentProvider }, rawData, 'collectionId')
+            var rawData = await getRawField({ provider: web3.currentProvider }, rawData, 'collectionId')
             rawData && rawData !== '0x' && (collectionId = abi.decode(["bytes32"], rawData)[0])
-        } catch(e) {
+        } catch (e) {
         }
         onStateEntry("collectionId", collectionId)
     }
 
     return (
-    <>
-        <div>
-            <label className={style.CreationPageLabelF}>
-                <h6>Collection address</h6>
-                <input type="text" value={state.collectionId} onChange={onCollectionId}/>
-                <p>Insert the address of the collection.</p>
-            </label>
-        </div>
-        {state.collectionId && collection === null && <OurCircularProgress/>}
-        {state.collectionId && collection && <div>
-          <p className={style.CollectionSelectedd}>{collection.name} {collection.symbol}</p>
-        </div>}
-        {collection && state.mintOperator === account && <a className={style.CreateBTN2} onClick={mintNewItem}>New Item</a>}
-        {collection && <a className={style.CreateBTN2} onClick={manageItems}>Manage Items</a>}
-        {collection && state.mintOperator === account && <a className={style.CreateBTN2} onClick={changeMintOperator}>Mint Permissions</a>}
-        {collection && state.metadataOperator === account && <a className={style.CreateBTN2} onClick={changeMetadataOperator}>Metadata Permissions</a>}
-    </>)
+        <>
+            <div className={style.CreationPageLabel}>
+                <div className={style.FancyExplanationCreate}>
+                    <h2>Collection address</h2>
+                    <p>Insert the address of the collection.</p>
+                </div>
+                <div>
+                    <label className={style.CreationPageLabelF}>
+                        <input type="text" value={state.collectionId} onChange={onCollectionId} />
+                    </label>
+                </div>
+                {state.collectionId && collection === null && <OurCircularProgress />}
+                {state.collectionId && collection && <div>
+                    <div className={style.FancyExplanationCreate}>
+                        <h2>Manage Collection: {collection.name} ({collection.symbol})</h2>
+                        <p>Actions to Create e new Item, Mint, Manager or Change Permissions</p>
+                    </div>
+                </div>}
+                {collection && state.mintOperator === account && <a className={style.CreateBTN2} onClick={mintNewItem}>New Item</a>}
+                {collection && <a className={style.CreateBTN2} onClick={manageItems}>Manage Items</a>}
+                {collection && state.mintOperator === account && <a className={style.CreateBTN2} onClick={changeMintOperator}>Mint Permissions</a>}
+                {collection && state.metadataOperator === account && <a className={style.CreateBTN2} onClick={changeMetadataOperator}>Metadata Permissions</a>}
+            </div>
+        </>)
 }
 
-const LoadItems = ({state, onStateEntry, setComponentIndex}) => {
+const LoadItems = ({ state, onStateEntry, setComponentIndex }) => {
     const context = useEthosContext()
 
     const web3Data = useWeb3()
@@ -141,22 +148,22 @@ const LoadItems = ({state, onStateEntry, setComponentIndex}) => {
         onStateEntry('item')
         onStateEntry('name')
         onStateEntry('symbol')
-        onStateEntry('metadata', {background_color : '#ffffff'})
+        onStateEntry('metadata', { background_color: '#ffffff' })
         onStateEntry('metadataLink')
         onStateEntry('amount')
-      setTimeout(async () => {
-        const itemProjectionFactory = getGlobalContract('itemProjectionFactory')
-        setItems(await loadItemsByFactories({seaport, context, ...web3Data, collectionData : await loadCollectionMetadata({context, ...web3Data, deep : true}, state.collectionId, newContract(context.ItemMainInterfaceABI, await blockchainCall(itemProjectionFactory.methods.mainInterface)))}, itemProjectionFactory))
-      })
+        setTimeout(async () => {
+            const itemProjectionFactory = getGlobalContract('itemProjectionFactory')
+            setItems(await loadItemsByFactories({ seaport, context, ...web3Data, collectionData: await loadCollectionMetadata({ context, ...web3Data, deep: true }, state.collectionId, newContract(context.ItemMainInterfaceABI, await blockchainCall(itemProjectionFactory.methods.mainInterface))) }, itemProjectionFactory))
+        })
     }, [])
 
     useEffect(() => {
-      if(!items || !state.item) {
-        return
-      }
-      if(items.filter(it => it.address === state.item) === 0) {
-          onStateEntry('item')
-      }
+        if (!items || !state.item) {
+            return
+        }
+        if (items.filter(it => it.address === state.item) === 0) {
+            onStateEntry('item')
+        }
     }, [items, state.item])
 
     const displayItems = items && [
@@ -169,12 +176,12 @@ const LoadItems = ({state, onStateEntry, setComponentIndex}) => {
             metadata : state.metadata
         },*/
         ...items.map(item => ({
-            address : item.address,
-            label : `${item.name} (${item.symbol})`,
-            name : item.name,
-            symbol : item.symbol,
-            metadataLink : item.uri,
-            metadata : item.metadata
+            address: item.address,
+            label: `${item.name} (${item.symbol})`,
+            name: item.name,
+            symbol: item.symbol,
+            metadataLink: item.uri,
+            metadata: item.metadata
         }))
     ]
 
@@ -196,20 +203,25 @@ const LoadItems = ({state, onStateEntry, setComponentIndex}) => {
     }
 
     return (
-    <>
-        <h6>Edit existing Item</h6>
-        {!items && <OurCircularProgress/>}
-        {items && <>
-            {displayItems.map(it => <div className={style.ITEMMANAGESELECTOR} key={it.address}>
-                <span>{it.label}</span>
-                {account === state.metadataOperator && <a className={style.CreateBTN2} onClick={() => changeMetadata(it)}>Edit Metadata</a>}
-                {account === state.mintOperator && <a className={style.CreateBTN2} onClick={() => mintMore(it)}>Mint</a>}
-            </div>)}
-        </>}
-    </>)
+        <>
+            <div className={style.CreationPageLabel}>
+                <div className={style.FancyExplanationCreate}>
+                    <h2>Edit existing Item</h2>
+                    <p>Insert the address of the collection.</p>
+                </div>
+                {!items && <OurCircularProgress />}
+                {items && <>
+                    {displayItems.map(it => <div className={style.ITEMMANAGESELECTOR} key={it.address}>
+                        <span>{it.label}</span>
+                        {account === state.metadataOperator && <a className={style.CreateBTN2} onClick={() => changeMetadata(it)}>Edit Metadata</a>}
+                        {account === state.mintOperator && <a className={style.CreateBTN2} onClick={() => mintMore(it)}>Mint</a>}
+                    </div>)}
+                </>}
+            </div>
+        </>)
 }
 
-const NameAndSymbol = ({state, onStateEntry}) => {
+const NameAndSymbol = ({ state, onStateEntry }) => {
 
     useEffect(() => {
         onStateEntry("name", state.name)
@@ -222,34 +234,33 @@ const NameAndSymbol = ({state, onStateEntry}) => {
 
     return (<>
         <div className={style.CreationPageLabel}>
+
             <div className={style.FancyExplanationCreate}>
-                <h6>Basic Info</h6>
-                <div className={style.proggressCreate}>
-                    <div className={style.proggressCreatePerch} style={{width: "33%"}}>Step 1 of 3</div>
-                </div>
+                <h2>Basic Info</h2>
+                <p>Lorem ipsum sim dolorem</p>
             </div>
             <label className={style.CreationPageLabelF}>
                 <h6>Name</h6>
-                <input type="text" value={state.name} onChange={e => onStateEntry("name", e.currentTarget.value)}/>
+                <input type="text" value={state.name} onChange={e => onStateEntry("name", e.currentTarget.value)} />
                 <p>Insert a name for yout Item (example: Ethereum). You can change it later, With Metadata hosting permissions.</p>
             </label>
             <label className={style.CreationPageLabelF}>
                 <h6>Symbol</h6>
-                <input type="text" value={state.symbol} onChange={e => onStateEntry("symbol", e.currentTarget.value)}/>
+                <input type="text" value={state.symbol} onChange={e => onStateEntry("symbol", e.currentTarget.value)} />
                 <p>Insert a symbol for yout Item (example: ETH). You can change it later, With Metadata hosting permissions.</p>
             </label>
-        {state.item === 'new' && <>
-            <label className={style.CreationPageLabelF}>
-                <h6>Supply</h6>
-                <input type="number" value={state.amount} onChange={e => onStateEntry("amount", e.currentTarget.value)}/>
-                <p>The amount of existing supply for this new item.</p>
-            </label>
-        </>}
+            {state.item === 'new' && <>
+                <label className={style.CreationPageLabelF}>
+                    <h6>Supply</h6>
+                    <input type="number" value={state.amount} onChange={e => onStateEntry("amount", e.currentTarget.value)} />
+                    <p>The amount of existing supply for this new item.</p>
+                </label>
+            </>}
         </div>
     </>)
 }
 
-const Mint = ({state, onStateEntry}) => {
+const Mint = ({ state, onStateEntry }) => {
 
     useEffect(() => {
         onStateEntry("disabled", state.amount && !isNaN(parseFloat(state.amount)) && parseFloat(state.amount) ? undefined : true)
@@ -257,16 +268,19 @@ const Mint = ({state, onStateEntry}) => {
 
     return (<>
         <div className={style.CreationPageLabel}>
+            <div className={style.FancyExplanationCreate}>
+                    <h2>Mint more supply</h2>
+                    <p>Select the amount of new supply to mint.</p>
+                </div>
             <label className={style.CreationPageLabelF}>
-            <h6>Mint more supply</h6>
-                <input type="number" value={state.amount} onChange={e => onStateEntry("amount", e.currentTarget.value)}/>
-                <p>Select the amount of new supply to mint.</p>
+                <h6>New Supply</h6>
+                <input type="number" value={state.amount} onChange={e => onStateEntry("amount", e.currentTarget.value)} />
             </label>
         </div>
     </>)
 }
 
-const Host = ({state, onStateEntry}) => {
+const Host = ({ state, onStateEntry }) => {
 
     useEffect(() => {
         onStateEntry("host", state.hostType === 'mint' ? state.mintOperator : state.metadataOperator)
@@ -276,61 +290,64 @@ const Host = ({state, onStateEntry}) => {
         var disabled = state.host && state.host !== VOID_ETHEREUM_ADDRESS ? undefined : true
         try {
             web3Utils.toChecksumAddress(state.host)
-        } catch(e) {
+        } catch (e) {
             disabled = true
         }
         onStateEntry("disabled", disabled)
     }, [state.host])
 
     return (<>
-        <h6>{state.hostType === 'mint' ? 'Mint' : 'Metadata'} Permissions</h6>
         <div className={style.CreationPageLabel}>
+            <div className={style.FancyExplanationCreate}>
+                <h2>{state.hostType === 'mint' ? 'Mint' : 'Metadata'} Permissions</h2>
+                <p>Lorem ipsum sim dolorem</p>
+            </div>
             <label className={style.CreationPageLabelF}>
                 <h6>Host</h6>
-                <input type="text" value={state.host} onChange={e => onStateEntry("host", e.currentTarget.value)}/>
+                <input type="text" value={state.host} onChange={e => onStateEntry("host", e.currentTarget.value)} />
                 <p>Change the address (wallet, MultiSig, Organization, or contract) that manages the hosting permissions for this function.</p>
             </label>
         </div>
     </>)
 }
 
-const MetadataField = ({state, onStateEntry, field, type, label, description, accept, mandatory}) => {
+const MetadataField = ({ state, onStateEntry, field, type, label, description, accept, mandatory }) => {
     return (
         <div className={style.CreationPageLabel}>
             <label className={style.CreationPageLabelF}>
                 <h6>{label}{mandatory && <b>*</b>}:</h6>
                 {type === 'textarea'
-                    ? <textarea onChange={e => onStateEntry('metadata', ({...state.metadata, [field] : e.currentTarget.value}))}>{state.metadata[field]}</textarea>
-                    : <input type={type || 'text'} accept={accept} ref={type !== 'file' ? undefined : ref => ref && (ref.files = state.metadata[field] instanceof FileList ? state.metadata[field] : (window.DataTransfer ? new window.DataTransfer().files : null))} value={type === 'file' ? undefined : state.metadata[field]} onChange={e => onStateEntry('metadata', ({...state.metadata, [field] : type === 'file' ? e.currentTarget.files : e.currentTarget.value}))}/>}
+                    ? <textarea onChange={e => onStateEntry('metadata', ({ ...state.metadata, [field]: e.currentTarget.value }))}>{state.metadata[field]}</textarea>
+                    : <input type={type || 'text'} accept={accept} ref={type !== 'file' ? undefined : ref => ref && (ref.files = state.metadata[field] instanceof FileList ? state.metadata[field] : (window.DataTransfer ? new window.DataTransfer().files : null))} value={type === 'file' ? undefined : state.metadata[field]} onChange={e => onStateEntry('metadata', ({ ...state.metadata, [field]: type === 'file' ? e.currentTarget.files : e.currentTarget.value }))} />}
                 {description && <p>{description}</p>}
             </label>
         </div>
     )
 }
 
-const Metadata = ({state, onStateEntry}) => {
+const Metadata = ({ state, onStateEntry }) => {
 
     const context = useEthosContext()
 
     useEffect(() => {
-        onStateEntry('metadata', state.metadata || { background_color : "#000000" })
+        onStateEntry('metadata', state.metadata || { background_color: "#000000" })
         onStateEntry('metadataLink', state.metadataLink)
         onStateEntry('metadataType', state.metadataType || 'basic')
     }, [])
 
     useEffect(() => {
-        if(!state.metadataType) {
+        if (!state.metadataType) {
             return
         }
-        onStateEntry(state.metadataType === 'metadata' ? 'metadataLink' : 'metadata', state.metadataType === 'metadata' ? undefined : { background_color : "#000000", ...state.metadata })
+        onStateEntry(state.metadataType === 'metadata' ? 'metadataLink' : 'metadata', state.metadataType === 'metadata' ? undefined : { background_color: "#000000", ...state.metadata })
     }, [state.metadataType])
 
     useEffect(() => {
-        if(!state.metadataType) {
+        if (!state.metadataType) {
             return
         }
         var ipfsRegex = 'ipfs:\/\/ipfs\/(([a-z]|[A-Z]|[0-9]){46})$'
-        if(state.metadataType === 'metadataLink') {
+        if (state.metadataType === 'metadataLink') {
             delete Metadata.next
             Metadata.deploy = true
             return onStateEntry('disabled', state.metadataLink && (new RegExp(ipfsRegex).test(state.metadataLink)) ? undefined : true)
@@ -343,15 +360,15 @@ const Metadata = ({state, onStateEntry}) => {
     }, [state.metadataType, state.metadata, state.metadataLink])
 
     useEffect(() => {
-        if(!state.metadata?.image) {
+        if (!state.metadata?.image) {
             return
         }
         setTimeout(async () => {
             try {
-                if(!await checkCoverSize({ context }, state.metadata.image, true)) {
+                if (!await checkCoverSize({ context }, state.metadata.image, true)) {
                     throw "Cover size does not match requirements"
                 }
-            } catch(e) {
+            } catch (e) {
                 var newMetadata = { ...state.metadata }
                 delete newMetadata.image
                 alert(e.message || e)
@@ -361,45 +378,49 @@ const Metadata = ({state, onStateEntry}) => {
     }, [state.metadata?.image])
 
     return (<>
-        {!state.modal &&
-         <div className={style.FancyExplanationCreate}>
-            <h6>Metadata</h6>
-            <div className={style.proggressCreate}>
-                <div className={style.proggressCreatePerch} style={{width: "66%"}}>Step 2 of 3</div>
-            </div>
-        </div>}
-        {state.modal && state.mode === 'changeMetadata' && <>
-            <h6>Name and Symbol</h6>
-            <div className={style.CreationPageLabel}>
-                <label className={style.CreationPageLabelF}>
-                    <h6>Name</h6>
-                    <input type="text" value={state.name} onChange={e => onStateEntry("name", e.currentTarget.value)}/>
-                    <p>Insert a name for yout Item (example: Ethereum). You can change it later, With Metadata hosting permissions.</p>
-                </label>
-                <label className={style.CreationPageLabelF}>
-                    <h6>Symbol</h6>
-                    <input type="text" value={state.symbol} onChange={e => onStateEntry("symbol", e.currentTarget.value)}/>
-                    <p>Insert a symbol for yout Item (example: ETH). You can change it later, With Metadata hosting permissions.</p>
-                </label>
-            </div>
-        </>}
-        {state.modal && <h6>Change Item Metadata</h6>}
-        <select className={style.CreationSelect} value={state.metadataType} onChange={e => onStateEntry('metadataType', e.currentTarget.value)}>
-            {itemMetadataTypes.map(it => <option key={it.name} value={it.name}>{it.label}</option>)}
-            <option value="metadataLink">Custom</option>
-        </select>
-        {state.metadataType === 'metadataLink' && <>
-            <div className={style.CreationPageLabel}>
-                <label className={style.CreationPageLabelF}>
-                    <h6>Link</h6>
-                    <input placeholder='ipfs://ipfs/...' type="text" value={state.metadataLink} onChange={e => onStateEntry("metadataLink", e.currentTarget.value)}/>
-                    <p>Insert the IPFS link (ipfs://ipfs/[HASH]) of the metadata Json file.</p>
-                </label>
-            </div>
-        </>}
-        {state.metadataType && state.metadataType !== 'metadataLink' && <>
-            {itemMetadataTypes.filter(it => it.name === state.metadataType)[0].fields.map(it => <MetadataField key={it.field} state={state} onStateEntry={onStateEntry} type={it.type || 'text'} field={it.field} label={it.label} description={it.description} mandatory={it.mandatory || false}/>)}
-        </>}
+        <div style={{ padding: '10px', textAlign: 'left' }}>
+
+            {!state.modal &&
+                <div className={style.FancyExplanationCreate}>
+                    <h2>Metadata
+                    <select className={style.CreationSelect} value={state.metadataType} onChange={e => onStateEntry('metadataType', e.currentTarget.value)} style={{float:'right'}}>
+                        {itemMetadataTypes.map(it => <option key={it.name} value={it.name}>{it.label}</option>)}
+                        <option value="metadataLink">Custom</option>
+                    </select>
+                    </h2>
+                    <p>Lorem ipsum sim dolorem</p>
+                </div>
+                }
+            {state.modal && state.mode === 'changeMetadata' && <>
+                <h6 className={style.CollectionRightSubtitles}>Name and Symbol</h6>
+                <div className={style.CreationPageLabel}>
+                    <label className={style.CreationPageLabelF}>
+                        <h6>Name</h6>
+                        <input type="text" value={state.name} onChange={e => onStateEntry("name", e.currentTarget.value)} />
+                        <p>Insert a name for yout Item (example: Ethereum). You can change it later, With Metadata hosting permissions.</p>
+                    </label>
+                    <label className={style.CreationPageLabelF}>
+                        <h6>Symbol</h6>
+                        <input type="text" value={state.symbol} onChange={e => onStateEntry("symbol", e.currentTarget.value)} />
+                        <p>Insert a symbol for yout Item (example: ETH). You can change it later, With Metadata hosting permissions.</p>
+                    </label>
+                </div>
+            </>}
+            {state.modal && <h6 className={style.CollectionRightSubtitles}>Change Item Metadata</h6>}
+            
+            {state.metadataType === 'metadataLink' && <>
+                <div className={style.CreationPageLabel}>
+                    <label className={style.CreationPageLabelF}>
+                        <h6>Link</h6>
+                        <input placeholder='ipfs://ipfs/...' type="text" value={state.metadataLink} onChange={e => onStateEntry("metadataLink", e.currentTarget.value)} />
+                        <p>Insert the IPFS link (ipfs://ipfs/[HASH]) of the metadata Json file.</p>
+                    </label>
+                </div>
+            </>}
+            {state.metadataType && state.metadataType !== 'metadataLink' && <>
+                {itemMetadataTypes.filter(it => it.name === state.metadataType)[0].fields.map(it => <MetadataField key={it.field} state={state} onStateEntry={onStateEntry} type={it.type || 'text'} field={it.field} label={it.label} description={it.description} mandatory={it.mandatory || false} />)}
+            </>}
+        </div>
     </>)
 }
 
@@ -431,7 +452,7 @@ const components = [
     TraitTypes
 ]
 
-const CreateSuccess = ({success, state, close}) => {
+const CreateSuccess = ({ success, state, close }) => {
 
     const context = useEthosContext()
 
@@ -440,14 +461,14 @@ const CreateSuccess = ({success, state, close}) => {
     const { chainId, web3 } = useWeb3()
 
     useEffect(() => {
-        setTimeout(async function() {
-            if(!state.item) {
+        setTimeout(async function () {
+            if (!state.item) {
                 return history.push(('/items/collections/' + state.collectionId))
             }
-            if(state.item !== 'new') {
+            if (state.item !== 'new') {
                 var urlPath = '/items/' + state.item
                 var currentURL = window.location.href.toLowerCase()
-                if(currentURL.indexOf(urlPath.toLowerCase()) === -1) {
+                if (currentURL.indexOf(urlPath.toLowerCase()) === -1) {
                     return history.push(urlPath)
                 }
                 return close && close()
@@ -459,15 +480,15 @@ const CreateSuccess = ({success, state, close}) => {
         })
     }, [success, state])
 
-    return <OurCircularProgress/>
+    return <OurCircularProgress />
 
     return (<div>
         <h4>Operation Completed</h4>
-        <a target="_blank" href={`${getNetworkElement({chainId, context}, "etherscanURL")}/tx/${success.transactionHash}`}>Transaction</a>
-      </div>)
-  }
+        <a target="_blank" href={`${getNetworkElement({ chainId, context }, "etherscanURL")}/tx/${success.transactionHash}`}>Transaction</a>
+    </div>)
+}
 
-const CreateItem = ({inputItem, mode, close}) => {
+const CreateItem = ({ inputItem, mode, close }) => {
 
     const { pathname } = useLocation()
 
@@ -483,7 +504,7 @@ const CreateItem = ({inputItem, mode, close}) => {
 
     function onStateEntry(key, value) {
         setState(oldState => {
-            var newState = {...oldState, [key] : value, mode}
+            var newState = { ...oldState, [key]: value, mode }
             value === undefined && delete newState[key]
             return newState
         })
@@ -492,60 +513,60 @@ const CreateItem = ({inputItem, mode, close}) => {
     useEffect(() => {
         var component = pathname.split('/')
         component = component[component.length - 1].trim()
-        if(!component) {
-          return setComponentIndex(0)
+        if (!component) {
+            return setComponentIndex(0)
         }
         setTimeout(async () => {
 
-          if(inputItem) {
-            onStateEntry('modal', true)
-            component.length === 42 && delete Mint.prev
-            component.length === 42 && delete Metadata.prev
-          }
-
-          const itemProjectionFactory = getGlobalContract('itemProjectionFactory')
-          const mainInterface = newContract(context.ItemMainInterfaceABI, await blockchainCall(itemProjectionFactory.methods.mainInterface))
-
-          var collectionId = component
-
-          if(component.length === 42) {
-            const itemId = abi.decode(["uint256"], abi.encode(["address"], [component]))[0].toString()
-            const item = await blockchainCall(mainInterface.methods.item, itemId)
-            collectionId = item.collectionId
-            onStateEntry('item', component)
-            onStateEntry('name', item.header.name)
-            onStateEntry('symbol', item.header.symbol)
-            onStateEntry('metadataLink', item.header.uri)
-            var metadata = inputItem
-            while(metadata.metadata) {
-                metadata = metadata.metadata
+            if (inputItem) {
+                onStateEntry('modal', true)
+                component.length === 42 && delete Mint.prev
+                component.length === 42 && delete Metadata.prev
             }
-            inputItem && mode === 'changeMetadata' && onStateEntry('metadata', metadata)
-          }
 
-          try {
-            var collection = await blockchainCall(mainInterface.methods.collection, collectionId)
-            const multiOperatorHost = newContract(context.MultiOperatorHostABI, collection.host)
-            const mintOperator = await blockchainCall(multiOperatorHost.methods.operator, 1)
-            const metadataOperator = await blockchainCall(multiOperatorHost.methods.operator, 4)
-            if(mintOperator !== account && metadataOperator !== account) {
+            const itemProjectionFactory = getGlobalContract('itemProjectionFactory')
+            const mainInterface = newContract(context.ItemMainInterfaceABI, await blockchainCall(itemProjectionFactory.methods.mainInterface))
+
+            var collectionId = component
+
+            if (component.length === 42) {
+                const itemId = abi.decode(["uint256"], abi.encode(["address"], [component]))[0].toString()
+                const item = await blockchainCall(mainInterface.methods.item, itemId)
+                collectionId = item.collectionId
+                onStateEntry('item', component)
+                onStateEntry('name', item.header.name)
+                onStateEntry('symbol', item.header.symbol)
+                onStateEntry('metadataLink', item.header.uri)
+                var metadata = inputItem
+                while (metadata.metadata) {
+                    metadata = metadata.metadata
+                }
+                inputItem && mode === 'changeMetadata' && onStateEntry('metadata', metadata)
+            }
+
+            try {
+                var collection = await blockchainCall(mainInterface.methods.collection, collectionId)
+                const multiOperatorHost = newContract(context.MultiOperatorHostABI, collection.host)
+                const mintOperator = await blockchainCall(multiOperatorHost.methods.operator, 1)
+                const metadataOperator = await blockchainCall(multiOperatorHost.methods.operator, 4)
+                if (mintOperator !== account && metadataOperator !== account) {
+                    return setComponentIndex(0)
+                } else {
+                    onStateEntry('collectionId', collectionId)
+                    onStateEntry('mintOperator', mintOperator === account)
+                    onStateEntry('metadataOperator', metadataOperator === account)
+                    setComponentIndex(components.indexOf(LoadCollection))
+                    component.length === 42 && delete NameAndSymbol.prev
+                    component.length === 42 && setComponentIndex(components.indexOf(mode === 'changeMetadata' ? Metadata : Mint))
+                }
+            } catch (e) {
                 return setComponentIndex(0)
-            } else {
-                onStateEntry('collectionId', collectionId)
-                onStateEntry('mintOperator', mintOperator === account)
-                onStateEntry('metadataOperator', metadataOperator === account)
-                setComponentIndex(components.indexOf(LoadCollection))
-                component.length === 42 && delete NameAndSymbol.prev
-                component.length === 42 && setComponentIndex(components.indexOf(mode === 'changeMetadata' ? Metadata : Mint))
             }
-          } catch(e) {
-            return setComponentIndex(0)
-          }
         })
     }, [pathname, inputItem])
 
-    if(componentIndex === undefined) {
-        return <OurCircularProgress/>
+    if (componentIndex === undefined) {
+        return <OurCircularProgress />
     }
 
     const Component = components[componentIndex]
@@ -556,21 +577,25 @@ const CreateItem = ({inputItem, mode, close}) => {
     return (
         <div className={style.CreatePage}>
             {success && <RegularModal>
-                <CreateSuccess success={success} state={state} close={close}/>
+                <CreateSuccess success={success} state={state} close={close} />
             </RegularModal>}
-            <Component state={state} inputItem={inputItem} mode={mode} onStateEntry={onStateEntry} setComponentIndex={setComponentIndex}/>
-            <div className={style.ActionDeploy}>
-                {previousComponentIndex !== -1 && <a className={style.Web3BackBTN} onClick={() => setComponentIndex(previousComponentIndex)}>Back</a>}
-                {nextComponentIndex !== -1 && <a className={style.RegularButton + (state?.disabled ? (' ' + style.disabled) : '')} onClick={() => !state.disabled && setComponentIndex(nextComponentIndex)}>Next</a>}
-                {Component.renounce && <ActionAWeb3Button onSuccess={setSuccess} className={style.Web3CustomBTN} onClick={() => deployItem({ newContract, account, context, ipfsHttpClient, projectionFactory : getGlobalContract('itemProjectionFactory') }, {...state, host : VOID_ETHEREUM_ADDRESS})}>Renounce Ownership</ActionAWeb3Button>}
-                {Component.deploy && <ActionAWeb3Button onSuccess={setSuccess} className={style.Web3CustomBTN + (state?.disabled ? (' ' + style.disabled) : '')} onClick={() => deployItem({ newContract, account, context, ipfsHttpClient, projectionFactory : getGlobalContract('itemProjectionFactory') }, state)}>Submit</ActionAWeb3Button>}
+            <div className={style.CreationPageLabel}>
+                <Component state={state} inputItem={inputItem} mode={mode} onStateEntry={onStateEntry} setComponentIndex={setComponentIndex} />
+                <div className={style.WizardFooter + ' ' + style.ButtonsWithMargins}>
+                    {previousComponentIndex !== -1 && <button className={style.WizardFooterBack} onClick={() => setComponentIndex(previousComponentIndex)}>Back</button>}
+                    {nextComponentIndex !== -1 && <button className={style.WizardFooterNext + (state?.disabled ? (' ' + style.disabled) : '')} onClick={() => !state.disabled && setComponentIndex(nextComponentIndex)}>Next</button>}
+                    {Component.renounce && <ActionAWeb3Button onSuccess={setSuccess} className={style.Web3CustomBTN}  onClick={() => deployItem({ newContract, account, context, ipfsHttpClient, projectionFactory: getGlobalContract('itemProjectionFactory') }, { ...state, host: VOID_ETHEREUM_ADDRESS })}>Renounce Ownership</ActionAWeb3Button>}
+                    {Component.deploy && <ActionAWeb3Button onSuccess={setSuccess}  className={style.Web3CustomBTN + (state?.disabled ? (' ' + style.disabled) : '')} onClick={() => deployItem({ newContract, account, context, ipfsHttpClient, projectionFactory: getGlobalContract('itemProjectionFactory') }, state)}>Submit</ActionAWeb3Button>}
+                </div>
             </div>
         </div>
+
+
     )
 }
 
 CreateItem.menuVoice = {
-  path : '/items/create/item/:id'
+    path: '/items/create/item/:id'
 }
 
 export default CreateItem
