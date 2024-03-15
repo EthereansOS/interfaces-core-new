@@ -69,6 +69,7 @@ import { Group } from '@visx/group'
 import { create as createIpfsHttpClient } from 'ipfs-http-client'
 import uploadToIPFS from 'interfaces-core/lib/web3/uploadToIPFS'
 import getFileFromBlobURL from 'interfaces-core/lib/web3/getFileFromBlobURL'
+import { checkOrganizationMetadata, checkGovernance } from 'logic/organization'
 
 function initializeIPFSClient(context) {
   var options = {
@@ -349,6 +350,10 @@ function AnimatedPie({ animate, arcs, path, getKey, getColor, onClickDatum }) {
 }
 
 const Metadata = ({ value, onChange, onNext, onPrev }) => {
+  const [disabled, setDisabled] = useState()
+  const [selectedImage, setSelectedImage] = useState(null)
+  const [triggerTextInput, setTriggerTextInput] = useState(false)
+
   useEffect(
     () =>
       setTimeout(async () => {
@@ -363,9 +368,6 @@ const Metadata = ({ value, onChange, onNext, onPrev }) => {
     [value]
   )
 
-  const [selectedImage, setSelectedImage] = useState(null)
-  const [triggerTextInput, setTriggerTextInput] = useState(false)
-
   const handleImageChange = (e) => {
     if (e.target.files && e.target.files[0]) {
       value.image = ''
@@ -373,6 +375,11 @@ const Metadata = ({ value, onChange, onNext, onPrev }) => {
       value.file = selectedImage ?? null
       value.image = selectedImage == null ? value?.image : ''
     }
+    setDisabled(!checkOrganizationMetadata(value))
+  }
+
+  const handleBlur = () => {
+    onChange(value)
   }
 
   useEffect(() => {
@@ -381,6 +388,7 @@ const Metadata = ({ value, onChange, onNext, onPrev }) => {
       value.file = selectedImage ?? null
       value.image = selectedImage == null ? value?.image : ''
     }
+    setDisabled(!checkOrganizationMetadata(value))
   }, [selectedImage, onChange])
 
   return (
@@ -470,6 +478,7 @@ const Metadata = ({ value, onChange, onNext, onPrev }) => {
               onChange={(e) =>
                 onChange({ ...value, image: e.currentTarget.value })
               }
+              onBlur={handleBlur}
             />
           )}
           {value?.error?.image && <p>{value.error.image}</p>}
@@ -480,7 +489,7 @@ const Metadata = ({ value, onChange, onNext, onPrev }) => {
           <input
             type="link"
             value={value?.url ?? ''}
-            placeholder="Organziation Website URL"
+            placeholder="Organization Website URL"
             onChange={(e) => onChange({ ...value, url: e.currentTarget.value })}
           />
 
@@ -518,7 +527,10 @@ const Metadata = ({ value, onChange, onNext, onPrev }) => {
         </label>
       </div>
       <div className={style.WizardFooter}>
-        <button className={style.WizardFooterNext} onClick={onNext}>
+        <button
+          className={style.WizardFooterNext}
+          onClick={onNext}
+          disabled={disabled}>
           Next
         </button>
       </div>
@@ -667,7 +679,7 @@ const VotingRules = ({ value, onChange, onNext, onPrev }) => {
           style={{ marginTop: '30px', marginBottom: '30px' }}>
           <label className={style.CreationPageLabelF}>
             <h6>Quorum</h6>
-            <p>Selelct the value of Quorum</p>
+            <p>Select the value of Quorum</p>
             <br />
             <br />
             <br />
@@ -696,7 +708,7 @@ const VotingRules = ({ value, onChange, onNext, onPrev }) => {
 
           <label className={style.CreationPageLabelF}>
             <h6>Hard cap</h6>
-            <p>Selelct the value of Hard cap</p>
+            <p>Select the value of Hard cap</p>
             <br />
             <br />
             <br />
@@ -732,7 +744,7 @@ const VotingRules = ({ value, onChange, onNext, onPrev }) => {
           }}>
           <label className={style.CreationPageLabelF}>
             <h6>Proposal Duration</h6>
-            <p>Selelct the duration of Proposal</p>
+            <p>Select the duration of Proposal</p>
             <br />
             <br />
             <br />
@@ -775,7 +787,7 @@ const VotingRules = ({ value, onChange, onNext, onPrev }) => {
           </label>
           <label className={style.CreationPageLabelF}>
             <h6>Validation Bomb</h6>
-            <p>Selelct Validation Bomb value</p>
+            <p>Select Validation Bomb value</p>
             <br />
             <br />
             <br />
@@ -878,6 +890,7 @@ const Organization = ({ value, onChange, onNext, onPrev }) => {
 }
 
 const Governance = ({ value, onChange, onNext, onPrev }) => {
+  const [disabled, setDisabled] = useState(false)
   const [token, setToken] = useState(value?.token)
   const [proposalRules, setProposalRules] = useState(value?.proposalRules)
 
@@ -897,6 +910,10 @@ const Governance = ({ value, onChange, onNext, onPrev }) => {
   const [validationBomb, setValidationBomb] = useState(
     value?.proposalRules?.validationBomb || 0
   )
+
+  const handleBlur = () => {
+    onChange(value)
+  }
 
   useEffect(
     () =>
@@ -950,16 +967,18 @@ const Governance = ({ value, onChange, onNext, onPrev }) => {
             Host address*{' '}
             <span
               className={style.CreationPageLabelFloatRight}
-              onClick={() => onChange(setHost(getCurrentAddress()))}>
+              onClick={() => onChange(setHost(getCurrentAddress()))}
+              onBlur={handleBlur}>
               Insert your current address
             </span>
           </h6>
           <p>Insert the host Address</p>
           <input
             type="text"
-            value={host}
+            value={host ?? ''}
             placeholder="The Organization host address"
             onChange={(e) => onChange(setHost(e.currentTarget.value))}
+            onBlur={(e) => onChange(setHost(e.currentTarget.value))}
           />
           {value?.error?.name && <p>{value.error.name}</p>}
         </label>
@@ -973,7 +992,7 @@ const Governance = ({ value, onChange, onNext, onPrev }) => {
           style={{ marginTop: '30px', marginBottom: '30px' }}>
           <label className={style.CreationPageLabelF} key={quorumKey}>
             <h6>Quorum</h6>
-            <p>Selelct the value of Quorum</p>
+            <p>Select the value of Quorum</p>
             <br />
             <br />
             <br />
@@ -1001,7 +1020,7 @@ const Governance = ({ value, onChange, onNext, onPrev }) => {
           </label>
           <label className={style.CreationPageLabelF}>
             <h6>Hard cap</h6>
-            <p>Selelct the value of Hard cap</p>
+            <p>Select the value of Hard cap</p>
             <br />
             <br />
             <br />
@@ -1037,7 +1056,7 @@ const Governance = ({ value, onChange, onNext, onPrev }) => {
           }}>
           <label className={style.CreationPageLabelF}>
             <h6>Proposal Duration</h6>
-            <p>Selelct the duration of Proposal</p>
+            <p>Select the duration of Proposal</p>
             <br />
             <br />
             <br />
@@ -1080,7 +1099,7 @@ const Governance = ({ value, onChange, onNext, onPrev }) => {
           </label>
           <label className={style.CreationPageLabelF}>
             <h6>Validation Bomb</h6>
-            <p>Selelct Validation Bomb value</p>
+            <p>Select Validation Bomb value</p>
             <br />
             <br />
             <br />
@@ -1128,7 +1147,10 @@ const Governance = ({ value, onChange, onNext, onPrev }) => {
         <button className={style.WizardFooterBack} onClick={onPrev}>
           Back
         </button>
-        <button className={style.WizardFooterNext} onClick={onNext}>
+        <button
+          className={style.WizardFooterNext}
+          onClick={onNext}
+          disabled={disabled}>
           Next
         </button>
       </div>
@@ -1618,7 +1640,7 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
                   style={{ marginTop: '30px', marginBottom: '30px' }}>
                   <label className={style.CreationPageLabelF}>
                     <h6>Hard cap</h6>
-                    <p>Selelct the value of Hard cap</p>
+                    <p>Select the value of Hard cap</p>
                     <br />
                     <br />
                     <br />
@@ -1645,7 +1667,7 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
                   </label>
                   <label className={style.CreationPageLabelF}>
                     <h6>Quorum</h6>
-                    <p>Selelct the value of Quorum</p>
+                    <p>Select the value of Quorum</p>
                     <br />
                     <br />
                     <br />
@@ -1682,7 +1704,7 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
                   }}>
                   <label className={style.CreationPageLabelF}>
                     <h6>Proposal Duration</h6>
-                    <p>Selelct the duration of Proposal</p>
+                    <p>Select the duration of Proposal</p>
                     <br />
                     <br />
                     <br />
@@ -1722,7 +1744,7 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
                   </label>
                   <label className={style.CreationPageLabelF}>
                     <h6>Validation Bomb</h6>
-                    <p>Selelct Validation Bomb value</p>
+                    <p>Select Validation Bomb value</p>
                     <br />
                     <br />
                     <br />
@@ -2117,7 +2139,7 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
           style={{ marginTop: '30px', marginBottom: '30px' }}>
           <label className={style.CreationPageLabelF}>
             <h6>Quorum</h6>
-            <p>Selelct the value of Quorum</p>
+            <p>Select the value of Quorum</p>
             <br />
             <br />
             <br />
@@ -2146,7 +2168,7 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
 
           <label className={style.CreationPageLabelF}>
             <h6>Hard cap</h6>
-            <p>Selelct the value of Hard cap</p>
+            <p>Select the value of Hard cap</p>
             <br />
             <br />
             <br />
@@ -2182,7 +2204,7 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
           }}>
           <label className={style.CreationPageLabelF}>
             <h6>Proposal Duration</h6>
-            <p>Selelct the duration of Proposal</p>
+            <p>Select the duration of Proposal</p>
             <br />
             <br />
             <br />
@@ -2225,7 +2247,7 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
           </label>
           <label className={style.CreationPageLabelF}>
             <h6>Validation Bomb</h6>
-            <p>Selelct Validation Bomb value</p>
+            <p>Select Validation Bomb value</p>
             <br />
             <br />
             <br />
@@ -2377,7 +2399,7 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
           style={{ marginTop: '30px', marginBottom: '30px' }}>
           <label className={style.CreationPageLabelF}>
             <h6>Quorum</h6>
-            <p>Selelct the value of Quorum</p>
+            <p>Select the value of Quorum</p>
             <br />
             <br />
             <br />
@@ -2406,7 +2428,7 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
 
           <label className={style.CreationPageLabelF}>
             <h6>Hard cap</h6>
-            <p>Selelct the value of Hard cap</p>
+            <p>Select the value of Hard cap</p>
             <br />
             <br />
             <br />
@@ -2442,7 +2464,7 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
           }}>
           <label className={style.CreationPageLabelF}>
             <h6>Proposal Duration</h6>
-            <p>Selelct the duration of Proposal</p>
+            <p>Select the duration of Proposal</p>
             <br />
             <br />
             <br />
@@ -2485,7 +2507,7 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
           </label>
           <label className={style.CreationPageLabelF}>
             <h6>Validation Bomb</h6>
-            <p>Selelct Validation Bomb value</p>
+            <p>Select Validation Bomb value</p>
             <br />
             <br />
             <br />
@@ -2715,7 +2737,7 @@ const InvestmentsManager = ({ amms, value, onChange, onNext, onPrev }) => {
           style={{ marginTop: '30px', marginBottom: '30px' }}>
           <label className={style.CreationPageLabelF}>
             <h6>Quorum</h6>
-            <p>Selelct the value of Quorum</p>
+            <p>Select the value of Quorum</p>
             <br />
             <br />
             <br />
@@ -2744,7 +2766,7 @@ const InvestmentsManager = ({ amms, value, onChange, onNext, onPrev }) => {
 
           <label className={style.CreationPageLabelF}>
             <h6>Hard cap</h6>
-            <p>Selelct the value of Hard cap</p>
+            <p>Select the value of Hard cap</p>
             <br />
             <br />
             <br />
@@ -2780,7 +2802,7 @@ const InvestmentsManager = ({ amms, value, onChange, onNext, onPrev }) => {
           }}>
           <label className={style.CreationPageLabelF}>
             <h6>Proposal Duration</h6>
-            <p>Selelct the duration of Proposal</p>
+            <p>Select the duration of Proposal</p>
             <br />
             <br />
             <br />
@@ -2823,7 +2845,7 @@ const InvestmentsManager = ({ amms, value, onChange, onNext, onPrev }) => {
           </label>
           <label className={style.CreationPageLabelF}>
             <h6>Validation Bomb</h6>
-            <p>Selelct Validation Bomb value</p>
+            <p>Select Validation Bomb value</p>
             <br />
             <br />
             <br />

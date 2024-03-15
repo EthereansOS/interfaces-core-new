@@ -2144,3 +2144,61 @@ export function getCheckerData(address, proposalData) {
     }
   }
 }
+
+export function checkOrganizationMetadata(metadata, throwOnError) {
+  var errors = []
+
+  console.log('checkOrganizationMetadata', metadata)
+
+  if (!metadata) {
+    errors.push('Metadata')
+  }
+
+  if (metadata && !metadata.description) {
+    errors.push('Name is mandatory')
+  }
+
+  if (metadata && !metadata.description) {
+    errors.push('Description is mandatory')
+  }
+
+  if (
+    metadata &&
+    (!metadata?.image ||
+      ((typeof metadata.image).toLowerCase() === 'filelist' &&
+        metadata.image.length === 0)) &&
+    !metadata?.file
+  ) {
+    errors.push('Cover image is mandatory')
+  }
+
+  if (errors.length > 0 && throwOnError) {
+    throw `Errors:\n${errors.join('\n')}`
+  }
+
+  return errors.length === 0
+}
+
+export function checkGovernance(metadata, throwOnError) {
+  var errors = []
+
+  console.log('checkGovernance', metadata)
+
+  if (!metadata) {
+    errors.push('Metadata')
+  }
+
+  if (metadata && !metadata.token) {
+    errors.push('Token is mandatory')
+  }
+
+  if (metadata && !metadata.poposalRules?.host) {
+    errors.push('Host is mandatory')
+  }
+
+  if (errors.length > 0 && throwOnError) {
+    throw `Errors:\n${errors.join('\n')}`
+  }
+
+  return errors.length === 0
+}
