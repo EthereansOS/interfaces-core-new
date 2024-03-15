@@ -912,18 +912,30 @@ const Governance = ({ value, onChange, onNext, onPrev }) => {
   )
 
   useEffect(() => {
-    console.log(token)
     value = {}
-    value.token = token ?? {}
-    value.proposalRules = {}
-    value.proposalRules.host = host ?? ''
+    value.token = token ?? null
+    value.proposalRules = {
+      host: host ?? '',
+      proposalDuration: proposalDuration ?? 0,
+      hardCapPercentage: hardCapPercentage ?? 0,
+      quorumPercentage: quorumPercentage ?? 0,
+      validationBomb: validationBomb ?? 0,
+    }
     setDisabled(!checkGovernance(value))
     try {
       web3Utils.toChecksumAddress(value?.proposalRules?.host)
     } catch (e) {
       setDisabled(true)
     }
-  }, [token, host])
+  }, [
+    token,
+    host,
+    proposalDuration,
+    hardCapPercentage,
+    quorumPercentage,
+    validationBomb,
+    onChange,
+  ])
 
   const [quorumKey, setQuorumKey] = useState(0) // Add a key state for the Quorum slider
 
