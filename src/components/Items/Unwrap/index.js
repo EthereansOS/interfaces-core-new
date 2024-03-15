@@ -36,7 +36,10 @@ export default ({ item, wrapper }) => {
     <div className={style.UnwrapBoxItem}>
       <p>Unwrap {item?.wrapType === 'ERC20' ? item.symbol.substring(1) : item.symbol}</p>
       <TokenInputRegular tokens={[item]} selected={element?.token} balance={element?.balance} value={element?.value} onElement={(token, balance, value) => setElement({token, balance, value})}/>
+      <div className={style.WizardFooter + ' ' + style.WizardFooterCentered }>
       <ActionAWeb3Button onClick={onClick}>Unwrap</ActionAWeb3Button>
+      </div>
+     
     </div>
   )
 }

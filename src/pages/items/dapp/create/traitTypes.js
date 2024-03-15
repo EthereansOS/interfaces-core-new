@@ -87,10 +87,7 @@ export default ({ state, onStateEntry }) => {
     return !traitTypesTemplates ? <OurCircularProgress /> : <section>
         <section>
             <div className={style.FancyExplanationCreate}>
-                <h6>Traits</h6>
-                <div className={style.proggressCreate}>
-                    <div className={style.proggressCreatePerchLast} style={{width: "100%"}}>Step 3 of 3</div>
-                </div>
+                <h2>Traits</h2>
             </div>
             {standardTraitTypes.map(it => renderTraitTypeElement(it))}
             {customTraitTypes.map(it => renderTraitTypeElement(it, true))}

@@ -1499,7 +1499,7 @@ export default props => {
                         <b>{formatMoneyUniV3(freeEstimatedReward, rewardTokenInfo.decimals)} {rewardTokenInfo.symbol}</b>
                     </p>
                 </div>)}
-                <div className={style.timeToFarm}>
+                <div className={style.WizardFooter}>
                     {tokensApprovals.some(value => !value) && approveButton}
                     <ActionAWeb3Button onSuccess={flag ? undefined : reloadData} onClick={flag ? undefined : addLiquidity} disabled={flag || tokensApprovals.some(value => !value) || tokenAmounts.some(value => value === 0)}>Add Liquidity</ActionAWeb3Button>
                 </div>

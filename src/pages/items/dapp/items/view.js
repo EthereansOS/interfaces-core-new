@@ -20,12 +20,12 @@ import { getRawField } from '../../../../logic/generalReader'
 
 const itemSubmenuVoices = [
     {
-        id : 'collection',
-        label : 'Collection'
+        id: 'collection',
+        label: 'Collection'
     },
     {
-        id : 'farming',
-        label : 'Farming'
+        id: 'farming',
+        label: 'Farming'
     }
 ]
 const ItemView = () => {
@@ -43,7 +43,7 @@ const ItemView = () => {
     const refresh = useCallback(() => {
         setItem(null)
         var itemId = pathname.split('/')
-        if(itemId[itemId.length - 1].toLowerCase().indexOf("0x") === -1 && isNaN(parseInt(itemId[itemId.length - 1]))) {
+        if (itemId[itemId.length - 1].toLowerCase().indexOf("0x") === -1 && isNaN(parseInt(itemId[itemId.length - 1]))) {
             setSubmenuSelection(itemId[itemId.length - 1])
             itemId = itemId[itemId.length - 2]
         } else {
@@ -51,8 +51,8 @@ const ItemView = () => {
         }
         try {
             itemId = itemId.toLowerCase().indexOf('0x') === 0 ? itemId : web3Utils.numberToHex(itemId)
-            loadTokenFromAddress({context, ...web3Data, seaport}, itemId).then(setItem)
-        } catch(e) {}
+            loadTokenFromAddress({ context, ...web3Data, seaport }, itemId).then(setItem)
+        } catch (e) { }
     }, [pathname])
 
     useEffect(refresh, [pathname])
@@ -69,45 +69,42 @@ const ItemView = () => {
 
     return (
         <div className={style.SingleContentPage}>
-        {item === null && <CircularProgress/>}
-        {item === undefined && <h1>No item found. 👀 Wrong network? 👀 </h1>}
-        {item && <>
-            <div className={style.CollectionLeft}>
-            <ViewCover item={item}/>
-            {!item.l2Address && <>
-                <DappSubMenu isSelected={it => it.id === submenuSelection} voices={itemSubmenuVoices.map(it => ({...it, onClick : () => submenuSelection !== it.id && setSubmenuSelection(it.id)}))}/>
-                {submenuSelection === itemSubmenuVoices[0].id && <SubCollectionExplore item={item}/>}
-                {submenuSelection === itemSubmenuVoices[1].id && <ViewFarmings rewardTokenAddress={item.address}/>}
+            {item === null && <CircularProgress />}
+            {item === undefined && <h1>No item found. 👀 Wrong network? 👀 </h1>}
+            {item && <>
+                <div className={style.CollectionLeft}>
+                    <ViewCover item={item} />
+                    {!item.l2Address && <>
+                        <DappSubMenu isSelected={it => it.id === submenuSelection} voices={itemSubmenuVoices.map(it => ({ ...it, onClick: () => submenuSelection !== it.id && setSubmenuSelection(it.id) }))} />
+                        {submenuSelection === itemSubmenuVoices[0].id && <SubCollectionExplore item={item} />}
+                        {submenuSelection === itemSubmenuVoices[1].id && <ViewFarmings rewardTokenAddress={item.address} />}
+                    </>}
+                </div>
+                <div className={style.CollectionRight}>
+                    <ViewBasics item={item} />
+                    <ViewDescription item={item} />
+                    <ViewManageItem item={item} onRefresh={refresh} />
+                    <ViewProperties item={item} />
+                    <SubTrade item={{ ...item, address: item.l2Address || item.address }} />
+                    {!item.l2Address && <>
+                        {item?.wrapper && <>
+                            <div className={style.CollectionRightSubtitles}>
+                                <h4>Wrap</h4>
+                                <p>Lorem ipsum sim dolorem</p>
+                            </div>
+                            <div className={style.WrapUnwrapBox + ' ' + style.WrapDetailBox}>
+                                <Wrap item={item} />
+                                <Unwrap item={item} wrapper={item.wrapper} />
+                            </div></>}
+                    </>}
+                </div>
             </>}
-            </div>
-            <div className={style.CollectionRight}>
-                <ViewBasics item={item}/>
-                <ViewDescription item={item}/>
-                <ViewManageItem item={item} onRefresh={refresh}/>
-                <div className={style.CollectionRightSubtitles}>
-                    <h4>Lorem ipsum sim dolorem</h4>
-                    <p>Lorem ipsum sim dolorem</p>
-                </div>
-                <ViewProperties item={item}/>
-                <SubTrade item={{...item, address : item.l2Address || item.address}}/>
-                <div className={style.CollectionRightSubtitles}>
-                    <h4>Lorem ipsum sim dolorem</h4>
-                    <p>Lorem ipsum sim dolorem</p>
-                </div>
-                {!item.l2Address && <>
-                    {item?.wrapper && <div className={style.WrapUnwrapBox}>
-                    <Wrap item={item}/>
-                    <Unwrap item={item} wrapper={item.wrapper}/>
-                    </div>}
-                </>}
-            </div>
-        </>}
         </div>
     )
 }
 
 ItemView.menuVoice = {
-    path : '/items/:id',
+    path: '/items/:id',
     exact: false
 }
 

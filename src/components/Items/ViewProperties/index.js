@@ -4,17 +4,24 @@ import { Link } from 'react-router-dom'
 
 import style from '../../../all.module.css'
 
-const ViewProperties = ({item}) => {
-  if(!item.attributes || item.attributes.length === 0) {
+const ViewProperties = ({ item }) => {
+  if (!item.attributes || item.attributes.length === 0) {
     return <></>
   }
   return (
-    <div className={style.ViewProperties}>
-      {item.attributes.map(attr => <div key={attr.name} className={style.ViewProperty}>
-        <p>{attr.trait_type}:</p>
-        <h6>{attr.value || '\u00a0'}</h6>
-      </div>)}
+    <div>
+      <div className={style.CollectionRightSubtitles}>
+        <h4>Metadata</h4>
+        <p>Lorem ipsum sim dolorem</p>
+      </div>
+      <div className={style.ViewProperties} style={{ marginTop: '10px'}}>
+        {item.attributes.map(attr => <div key={attr.name} className={style.ViewProperty}>
+          <p>{attr.trait_type}:</p>
+          <h6>{attr.value || '\u00a0'}</h6>
+        </div>)}
+      </div>
     </div>
+
   )
 }
 
