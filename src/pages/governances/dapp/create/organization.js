@@ -62,17 +62,6 @@ function resetValidationBomb(validationBomb, duration) {
   }
 }
 
-function isValidationBombValid(validationBomb, duration) {
-  const index_validation = dataTime.indexOf(validationBomb)
-  const index_duration = dataTime.indexOf(duration)
-
-  if (index_validation > index_duration) {
-    return true
-  } else {
-    return false
-  }
-}
-
 export const backgroundColor = '#da7cff'
 export const labelColor = '#340098'
 
@@ -524,22 +513,7 @@ const VotingRules = ({ value, onChange, onNext, onPrev }) => {
               progressLineCap="flat"
               dataIndex={1}
               label="Duration"
-              data={[
-                '30min',
-                '6h',
-                '12h',
-                '1 Day',
-                '2 Days',
-                '3 Days',
-                '4 Days',
-                '5 Days',
-                '1 Week',
-                '1 Month',
-                '6 Months',
-                '1 Year',
-                '3 Years',
-                '5 Years',
-              ]}
+              data={dataTime}
               labelColor="#fff"
               knobColor="#000000"
               width="120"
@@ -650,7 +624,7 @@ const Governance = ({ value, onChange, onNext, onPrev }) => {
 
   useEffect(() => {
     if (value) {
-      value.token = token ?? null
+      onChange({ ...value, token: token })
     }
   }, [token])
 
@@ -669,7 +643,7 @@ const Governance = ({ value, onChange, onNext, onPrev }) => {
           <h6>Voting Token</h6>
           <p>Select the Voting Token</p>
           <TokenInputRegular
-            selected={token ?? value?.token}
+            selected={value?.token ?? token}
             onElement={setToken}
             noBalance
             noETH
