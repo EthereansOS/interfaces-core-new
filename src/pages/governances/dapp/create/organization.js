@@ -51,14 +51,14 @@ function initializeIPFSClient(context) {
   return client
 }
 
-function resetValidationBomb(validationBomb, duration) {
+function isValidationBombValid(validationBomb, duration) {
   const index_validation = dataTime.indexOf(validationBomb)
   const index_duration = dataTime.indexOf(duration)
 
   if (index_validation > index_duration) {
-    return index_validation
+    return true
   } else {
-    return index_duration + 1
+    return false
   }
 }
 
@@ -312,7 +312,7 @@ const Confirmation = ({
       <h6
         style={{
           'text-align': 'left',
-          'padding-left': '20px',
+          paddingLeft: '20px',
           marginBottom: '10px',
           marginTop: '30px',
         }}>
@@ -322,7 +322,7 @@ const Confirmation = ({
         style={{
           fontSize: '12px',
           textAlign: 'left',
-          'padding-left': '20px',
+          paddingLeft: '20px',
         }}>
         Once you deploy, all changes will need to be made through a successful
         governance proposal and executed by holders of the governance token
@@ -354,51 +354,47 @@ const Confirmation = ({
 }
 
 const VotingRules = ({ value, onChange, onNext, onPrev }) => {
-  const [proposalDuration, setProposalDuration] = useState(
-    value?.proposalRules?.proposalDuration || 0
-  )
-  const [hardCapPercentage, setHardCapPercentage] = useState(
-    value?.proposalRules?.hardCapPercentage || 0
-  )
-  const [quorumPercentage, setQuorumPercentage] = useState(
-    value?.proposalRules?.quorumPercentage || 0
-  )
-  const [validationBomb, setValidationBomb] = useState(
-    value?.proposalRules?.validationBomb || 0
-  )
+  const [disabled, setDisabled] = useState(false)
 
-  useEffect(
-    () =>
-      onChange &&
-      onChange({
-        proposalDuration,
-        hardCapPercentage,
-        quorumPercentage,
-        validationBomb,
-      }),
-    [proposalDuration, hardCapPercentage, quorumPercentage, validationBomb]
-  )
+  useEffect(() => {
+    if (!value) return
+    value.error = {}
+    value.proposalRulesHardCapPercentage =
+      value.proposalRulesHardCapPercentage ?? 0
+    value.proposalRulesQuorumPercentage =
+      value.proposalRulesQuorumPercentage ?? 0
+    value.proposalRulesValidationBomb =
+      value.proposalRulesValidationBomb ?? dataTime[1]
+    value.proposalRulesProposalDuration =
+      value.proposalRulesProposalDuration ?? dataTime[0]
+
+    if (
+      !isValidationBombValid(
+        value.proposalRulesValidationBomb,
+        value.proposalRulesProposalDuration
+      )
+    ) {
+      value.error = {
+        proposalRulesProposalDuration:
+          'Proposal Duration must be less than the Validation Bomb',
+      }
+      setDisabled(true)
+      return
+    }
+
+    setDisabled(false)
+  }, [value, onChange])
 
   return (
     <div className={style.CreationPageLabel}>
       <div className={style.FancyExplanationCreate}>
         <h2>Voting Rules</h2>
       </div>
-      {/*
-      <h6
-        style={{
-          'text-align': 'left',
-          'padding-left': '20px',
-          'marginBottom': '10px',
-          'marginTop': '30px',
-        }}>
-        Lorem ipsum sim dolor amed
-      </h6>*/}
       <p
         style={{
           fontSize: '12px',
           textAlign: 'left',
-          'padding-left': '20px',
+          paddingLeft: '20px',
         }}>
         Set granular voting rules for how proposals are handled in the
         organization.
@@ -418,6 +414,7 @@ const VotingRules = ({ value, onChange, onNext, onPrev }) => {
             <br />
             <CircularSlider
               label="Quorum"
+              dataIndex={value?.proposalRulesQuorumPercentage ?? 0}
               labelColor="#fff"
               knobColor="#000000"
               width="120"
@@ -433,8 +430,11 @@ const VotingRules = ({ value, onChange, onNext, onPrev }) => {
               min={0}
               max={100}
               initialValue={0}
-              onChange={(value) => {
-                setQuorumPercentage(value)
+              onChange={(e) => {
+                onChange({
+                  ...value,
+                  proposalRulesQuorumPercentage: e,
+                })
               }}
             />
           </label>
@@ -447,6 +447,7 @@ const VotingRules = ({ value, onChange, onNext, onPrev }) => {
             <br />
             <CircularSlider
               label="Hard cap"
+              dataIndex={value?.proposalRulesHardCapPercentage ?? 0}
               labelColor="#fff"
               width="120"
               knobSize="25"
@@ -461,9 +462,12 @@ const VotingRules = ({ value, onChange, onNext, onPrev }) => {
               trackColor="#eeeeee"
               min={0}
               max={100}
-              onChange={(value) => {
-                setHardCapPercentage(value)
-              }}
+              onChange={(e) =>
+                onChange({
+                  ...value,
+                  proposalRulesHardCapPercentage: e,
+                })
+              }
             />
           </label>
         </div>
@@ -483,8 +487,12 @@ const VotingRules = ({ value, onChange, onNext, onPrev }) => {
             <br />
             <CircularSlider
               progressLineCap="flat"
-              dataIndex={0}
               label="Duration"
+              dataIndex={
+                value?.proposalRulesProposalDuration != null
+                  ? dataTime.indexOf(value?.proposalRulesProposalDuration)
+                  : 0
+              }
               data={dataTime}
               labelColor="#fff"
               knobColor="#000000"
@@ -498,9 +506,12 @@ const VotingRules = ({ value, onChange, onNext, onPrev }) => {
               progressColorFrom="#000000"
               progressColorTo="#444444"
               trackColor="#eeeeee"
-              onChange={(value) => {
-                setProposalDuration(value)
-              }}
+              onChange={(e) =>
+                onChange({
+                  ...value,
+                  proposalRulesProposalDuration: e,
+                })
+              }
             />
           </label>
           <label className={style.CreationPageLabelF}>
@@ -511,7 +522,11 @@ const VotingRules = ({ value, onChange, onNext, onPrev }) => {
             <br />
             <CircularSlider
               progressLineCap="flat"
-              dataIndex={1}
+              dataIndex={
+                value?.proposalRulesValidationBomb != null
+                  ? dataTime.indexOf(value?.proposalRulesValidationBomb)
+                  : 1
+              }
               label="Duration"
               data={dataTime}
               labelColor="#fff"
@@ -526,11 +541,19 @@ const VotingRules = ({ value, onChange, onNext, onPrev }) => {
               progressColorFrom="#000000"
               progressColorTo="#444444"
               trackColor="#eeeeee"
-              onChange={(value) => {
-                setValidationBomb(value)
-              }}
+              onChange={(e) =>
+                onChange({
+                  ...value,
+                  proposalRulesValidationBomb: e,
+                })
+              }
             />
           </label>
+          {value?.error?.proposalRulesProposalDuration && (
+            <p className={style.ErrorMessage}>
+              {value.error.proposalRulesProposalDuration}
+            </p>
+          )}
         </div>
       </div>
 
@@ -538,7 +561,10 @@ const VotingRules = ({ value, onChange, onNext, onPrev }) => {
         <button className={style.WizardFooterBack} onClick={onPrev}>
           Back
         </button>
-        <button className={style.WizardFooterNext} onClick={onNext}>
+        <button
+          className={style.WizardFooterNext}
+          onClick={onNext}
+          disabled={disabled}>
           Next
         </button>
       </div>
@@ -547,14 +573,12 @@ const VotingRules = ({ value, onChange, onNext, onPrev }) => {
 }
 
 const Organization = ({ value, onChange, onNext, onPrev }) => {
-  const [maxPercentagePerToken, setMaxPercentagePerToken] = useState(
-    value?.maxPercentagePerToken || 0
-  )
-
-  useEffect(
-    () => onChange && onChange({ maxPercentagePerToken }),
-    [maxPercentagePerToken]
-  )
+  function onChangeProgressComponent(progressValue) {
+    if (!value) {
+      value = {}
+    }
+    value.maxPercentagePerToken = progressValue
+  }
 
   return (
     <div className={style.CreationPageLabel}>
@@ -566,7 +590,8 @@ const Organization = ({ value, onChange, onNext, onPrev }) => {
         style={{ display: 'flex' }}>
         <label className={style.CreationPageLabelF}>
           <ProgressComponent
-            maxPercentagePerToken={maxPercentagePerToken}></ProgressComponent>
+            maxPercentagePerToken={value?.maxPercentagePerToken ?? 0}
+            onChange={(e) => onChangeProgressComponent(e)}></ProgressComponent>
         </label>
 
         <label className={style.CreationPageLabelF}>
@@ -598,6 +623,8 @@ const Governance = ({ value, onChange, onNext, onPrev }) => {
 
   useEffect(() => {
     if (!value) return
+    value.error = {}
+
     value.proposalRulesHardCapPercentage =
       value.proposalRulesHardCapPercentage ?? 0
     value.proposalRulesQuorumPercentage =
@@ -607,19 +634,31 @@ const Governance = ({ value, onChange, onNext, onPrev }) => {
     value.proposalRulesProposalDuration =
       value.proposalRulesProposalDuration ?? dataTime[0]
 
-    value.proposalRulesValidationBomb =
-      dataTime[
-        resetValidationBomb(
-          value.proposalRulesValidationBomb,
-          value.proposalRulesProposalDuration
-        )
-      ]
+    if (
+      !isValidationBombValid(
+        value.proposalRulesValidationBomb,
+        value.proposalRulesProposalDuration
+      )
+    ) {
+      value.error = {
+        proposalRulesProposalDuration:
+          'Proposal Duration must be less than the Validation Bomb',
+      }
+      setDisabled(true)
+      return
+    }
+
     try {
       web3Utils.toChecksumAddress(value?.proposalRulesHost)
-      setDisabled(!checkGovernance(value))
     } catch (e) {
+      value.error = {
+        proposalRulesHost: 'Invalid host',
+      }
       setDisabled(true)
+      return
     }
+
+    setDisabled(!checkGovernance(value))
   }, [value, onChange])
 
   useEffect(() => {
@@ -675,7 +714,9 @@ const Governance = ({ value, onChange, onNext, onPrev }) => {
             }
           />
           {value?.error?.proposalRulesHost && (
-            <p>{value.error.proposalRulesHost}</p>
+            <p className={style.ErrorMessage}>
+              {value.error.proposalRulesHost}
+            </p>
           )}
         </label>
       </div>
@@ -827,6 +868,11 @@ const Governance = ({ value, onChange, onNext, onPrev }) => {
               }
             />
           </label>
+          {value?.error?.proposalRulesProposalDuration && (
+            <p className={style.ErrorMessage}>
+              {value.error.proposalRulesProposalDuration}
+            </p>
+          )}
         </div>
       </div>
 
@@ -975,30 +1021,6 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
 
   const defaultInflationPercentage = useMemo(() => 0.05)
 
-  const [tokenMinterOwner, setTokenMinter] = useState(value?.tokenMinterOwner)
-  const [giveBackOwnershipSeconds, setGiveBackOwnershipSeconds] = useState(
-    value?.giveBackOwnershipSeconds
-  )
-  const [inflationPercentage0, setInflationPercentage0] = useState(
-    value?.inflationPercentage0 || defaultInflationPercentage
-  )
-  const [inflationPercentage1, setInflationPercentage1] = useState(
-    value?.inflationPercentage1 || defaultInflationPercentage
-  )
-  const [inflationPercentage2, setInflationPercentage2] = useState(
-    value?.inflationPercentage2 || defaultInflationPercentage
-  )
-  const [inflationPercentage3, setInflationPercentage3] = useState(
-    value?.inflationPercentage3 || defaultInflationPercentage
-  )
-  const [inflationPercentage4, setInflationPercentage4] = useState(
-    value?.inflationPercentage4 || defaultInflationPercentage
-  )
-  const [inflationPercentage5, setInflationPercentage5] = useState(
-    value?.inflationPercentage5 || defaultInflationPercentage
-  )
-  const [firstExecution, setFirstExecution] = useState(value?.firstExecution)
-
   const [amm, setAMM] = useState(value?.amm)
   const [uniV3Pool, setUniV3Pool] = useState(value?.uniV3Pool)
   const [_bootstrapFundWalletAddress, set_bootstrapFundWalletAddress] =
@@ -1024,50 +1046,7 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
 
   useEffect(() => onChange && onChange({ proposalRules }), [proposalRules])
 
-  const [quorumKey, setQuorumKey] = useState(0) // Add a key state for the Quorum slider
-
-  useEffect(
-    () =>
-      onChange &&
-      onChange({
-        tokenMinterOwner,
-        giveBackOwnershipSeconds,
-        inflationPercentage0,
-        inflationPercentage1,
-        inflationPercentage2,
-        inflationPercentage3,
-        inflationPercentage4,
-        inflationPercentage5,
-        amm,
-        uniV3Pool,
-        _bootstrapFundWalletAddress,
-        _bootstrapFundWalletPercentage,
-        _bootstrapFundIsRaw,
-        _rawTokenComponents,
-        _swappedTokenComponents,
-        firstExecution,
-        proposalRules,
-      }),
-    [
-      tokenMinterOwner,
-      giveBackOwnershipSeconds,
-      inflationPercentage0,
-      inflationPercentage1,
-      inflationPercentage2,
-      inflationPercentage3,
-      inflationPercentage4,
-      inflationPercentage5,
-      amm,
-      uniV3Pool,
-      _bootstrapFundWalletAddress,
-      _bootstrapFundWalletPercentage,
-      _bootstrapFundIsRaw,
-      _rawTokenComponents,
-      _swappedTokenComponents,
-      firstExecution,
-      proposalRules,
-    ]
-  )
+  useEffect(() => onChange && onChange(value), [value])
 
   return (
     <div className={style.CreationPageLabel}>
@@ -1086,26 +1065,7 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
             name="fixed"
             id="fixedYes"
             checked={value !== undefined && value !== null}
-            onClick={() =>
-              onChange({
-                tokenMinterOwner,
-                inflationPercentage0,
-                inflationPercentage1,
-                inflationPercentage2,
-                inflationPercentage3,
-                inflationPercentage4,
-                inflationPercentage5,
-                amm,
-                uniV3Pool,
-                _bootstrapFundWalletAddress,
-                _bootstrapFundWalletPercentage,
-                _bootstrapFundIsRaw,
-                _rawTokenComponents,
-                _swappedTokenComponents,
-                firstExecution,
-                proposalRules,
-              })
-            }
+            onClick={() => onChange(value)}
           />
           <label for="fixedYes">Yes</label>
           <input
@@ -1136,16 +1096,20 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
                     <h6>Give back mint permissions of the token</h6>
                     <input
                       type="checkbox"
-                      checked={tokenMinterOwner !== undefined}
+                      checked={value?.tokenMinterOwner !== undefined}
                       className={style.CheckboxAlign}
                       onClick={() =>
-                        setTokenMinter(
-                          tokenMinterOwner !== undefined ? undefined : account
-                        )
+                        onChange({
+                          ...value,
+                          tokenMinterOwner:
+                            value?.tokenMinterOwner !== undefined
+                              ? undefined
+                              : account,
+                        })
                       }
                     />
                   </label>
-                  {tokenMinterOwner !== undefined && (
+                  {value?.tokenMinterOwner !== undefined && (
                     <>
                       <label
                         className={style.CreationPageLabelF}
@@ -1157,9 +1121,12 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
                         <h6>To this address</h6>
                         <input
                           type="text"
-                          value={tokenMinterOwner}
+                          value={value?.tokenMinterOwner ?? ''}
                           onChange={(e) =>
-                            setTokenMinter(e.currentTarget.value)
+                            onChange({
+                              ...value,
+                              tokenMinterOwner: e,
+                            })
                           }
                         />
                       </label>
@@ -1172,8 +1139,13 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
                         }}>
                         <h6>After</h6>
                         <Duration
-                          value={giveBackOwnershipSeconds}
-                          onChange={setGiveBackOwnershipSeconds}
+                          value={value?.giveBackOwnershipSeconds}
+                          onChange={(e) =>
+                            onChange({
+                              ...value,
+                              giveBackOwnershipSeconds: e,
+                            })
+                          }
                           from="16"
                         />
                       </label>
@@ -1186,8 +1158,13 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
                   <h6>First Execution</h6>
                   <input
                     type="datetime-local"
-                    value={firstExecution}
-                    onChange={(e) => setFirstExecution(e.currentTarget.value)}
+                    value={value?.firstExecution}
+                    onChange={(e) =>
+                      onChange({
+                        ...value,
+                        firstExecution: e,
+                      })
+                    }
                   />
                 </label>
               </div>
@@ -1201,12 +1178,24 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
                 }}>
                 <h6>Inflation percentages</h6>
                 <DonutAndLegend
-                  inflationPercentage0={inflationPercentage0}
-                  inflationPercentage1={inflationPercentage1}
-                  inflationPercentage2={inflationPercentage2}
-                  inflationPercentage3={inflationPercentage3}
-                  inflationPercentage4={inflationPercentage4}
-                  inflationPercentage5={inflationPercentage5}></DonutAndLegend>
+                  inflationPercentage0={
+                    value?.inflationPercentage0 ?? defaultInflationPercentage
+                  }
+                  inflationPercentage1={
+                    value?.inflationPercentage1 ?? defaultInflationPercentage
+                  }
+                  inflationPercentage2={
+                    value?.inflationPercentage2 ?? defaultInflationPercentage
+                  }
+                  inflationPercentage3={
+                    value?.inflationPercentage3 ?? defaultInflationPercentage
+                  }
+                  inflationPercentage4={
+                    value?.inflationPercentage4 ?? defaultInflationPercentage
+                  }
+                  inflationPercentage5={
+                    value?.inflationPercentage5 ?? defaultInflationPercentage
+                  }></DonutAndLegend>
               </label>
 
               <div
@@ -2736,7 +2725,7 @@ const CreateOrganization = () => {
 
         {step == 2 && (
           <Organization
-            value={state?.governance}
+            value={state?.organization}
             onChange={(value) => setState({ ...state, organization: value })}
             onNext={() => setStep(3)}
             onPrev={() => setStep(1)}
@@ -2745,7 +2734,7 @@ const CreateOrganization = () => {
 
         {step == 3 && (
           <VotingRules
-            value={state?.governance}
+            value={state?.votingRules}
             onChange={(value) => setState({ ...state, votingRules: value })}
             onNext={() => setStep(4)}
             onPrev={() => setStep(2)}
@@ -2797,7 +2786,7 @@ const CreateOrganization = () => {
 
         {step == 8 && (
           <Confirmation
-            value={state?.governance}
+            value={state?.confirmation}
             loading={loading}
             onClick={onClick}
             disabled={disabled}
