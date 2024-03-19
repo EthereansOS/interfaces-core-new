@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 
 import { useLocation } from 'react-router'
 import { useEthosContext, useWeb3 } from 'interfaces-core'
@@ -26,17 +26,28 @@ const CollectionView = () => {
 
   useEffect(() => {
     setTimeout(async () => {
-      var collectionId = location.pathname.substring(location.pathname.lastIndexOf('/') + 1)
+      var collectionId = location.pathname.substring(
+        location.pathname.lastIndexOf('/') + 1
+      )
       setCollection(null)
-      loadCollection({seaport, context, ...web3Data, deep : true}, collectionId, getGlobalContract("itemProjectionFactory")).then(setCollection).catch(() => setCollection(undefined))
+      loadCollection(
+        { seaport, context, ...web3Data, deep: true },
+        collectionId,
+        getGlobalContract('itemProjectionFactory')
+      )
+        .then(setCollection)
+        .catch(() => setCollection(undefined))
     })
   }, [chainId, account])
 
   return (
-      <div className={style.SingleContentPage}>
-        {collection === null && <CircularProgress/>}
-        {collection === undefined && <h1>No collection found with provided Id. Maybe wrong network?</h1>}
-        {collection && <>
+    <div className={style.SingleContentPage}>
+      {collection === null && <CircularProgress />}
+      {collection === undefined && (
+        <h1>No collection found with provided Id. Maybe wrong network?</h1>
+      )}
+      {collection && (
+        <>
           <div className={style.ItemsExploreMainTitleArea}>
             <h2>Item Details</h2>
             <p>Token Information</p>
@@ -55,15 +66,16 @@ const CollectionView = () => {
             <h2>More in this Collection</h2>
             <p>Discover other tokens in this collection</p>
           </div>
-          <SubItemsExplore collection={collection}/>
-        </>}
-      </div>
+          <SubItemsExplore collection={collection} />
+        </>
+      )}
+    </div>
   )
 }
 
 CollectionView.menuVoice = {
-  path : '/items/collections/:id',
-  exact: false
+  path: '/items/collections/:id',
+  exact: false,
 }
 
 export default CollectionView
