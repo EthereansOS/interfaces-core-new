@@ -593,6 +593,7 @@ const Organization = ({ value, onChange, onNext, onPrev }) => {
       value = {}
     }
     value.maxPercentagePerToken = progressValue
+    onChange && onChange(value)
   }
 
   return (
