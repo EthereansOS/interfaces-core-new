@@ -294,7 +294,7 @@ input::-webkit-scrollbar {
     display: inline-block;
     text-align: center;
     width: 15em;
-    min-height: 500px;
+    min-height: 0px;
     vertical-align: top;
     overflow: hidden;
     position: fixed;
@@ -4971,7 +4971,7 @@ input[type=range]::-ms-thumb {
 
 .SectionSubMenuItems li a {
     font-weight: 200;
-    color: #565279;
+    color: #7c76a8;
 }
 
 .SectionSubMenuItems li.SectionSubMenuItemsActive a {
@@ -5278,7 +5278,7 @@ input[type=range]::-ms-thumb {
 
 .InfoBox {
     padding: 15px 15px 30px 15px;
-    width: 660px;
+    width: 100%;
     display: inline-block;
     border-radius: 20px;
     margin: 0px auto 30px auto;
@@ -7853,7 +7853,12 @@ input[type=range]::-ms-thumb {
     -webkit-backdrop-filter: blur(6px);
     backdrop-filter: blur(6px);
 }
-
+.light .RightMenu {
+    background: #f2f4f8;
+}
+.dark .DropdownFileContainer span{
+    color: #fff;
+}
 .RightMenu {
     padding-left: 230px;
 }
@@ -10516,6 +10521,18 @@ input[type=range]::-ms-thumb {
     color: #fff;
 }
 
+.RegularButtonDuoSplit{
+    background-color: #f09243;
+    color: #fff;
+    border: 0px;
+    padding: 10px 13px;
+    border-radius: 17px;
+    width: 100px;
+    text-align: center;
+    font-weight: bold;
+    margin-top: 8px;
+}
+
 .biz .RegularButton,
 .biz .RegularButtonDuo,
 .biz .RegularButtonDuoSmall,
@@ -11968,7 +11985,7 @@ input {
 
 .dark .pModalDesc {
     color: #ffffff;
-    background-color: #141416;
+    background-color: #35324c;
 }
 
 .sepia .pModalDesc {
@@ -12033,7 +12050,7 @@ input {
 }
 
 .dark .AMMSelector label {
-    background-color: #525252;
+    background-color: #353150;
 }
 
 .light .TradeOTCBoxOrdersBuy,
@@ -12612,8 +12629,8 @@ input {
 }
 
 .dark .CreationPageLabelFS {
-    background-color: #383c42;
-    border-color: #000000;
+    background-color: #35324c;
+    border-color: #35324c;
 }
 
 .sepia .CreationPageLabelFS {
@@ -12694,7 +12711,7 @@ input {
 }
 
 .dark .CreationPageLabelFS textarea {
-    background-color: #000;
+    background-color: #29263e;
     color: #ffffff;
 }
 
@@ -12980,7 +12997,7 @@ input {
 }
 
 .dark .TokenSelectorListProposal {
-    background-color: #383c42;
+    background-color: #35324c;
 }
 
 .sepia .TokenSelectorListProposal {
@@ -13141,6 +13158,10 @@ input {
 
 .sepia .OrgThingsInfoContent {
     background-color: #d9d2c2a3;
+}
+
+.OrgPartView{
+   text-align: center;
 }
 
 .light .OrgPartView {
@@ -15237,6 +15258,21 @@ input {
     margin-top: 20px;
 }
 
+.ViewDescriptionWrapper .ViewDescriptionL{
+    border-radius: 10px;
+    padding: 30px;
+    width: 100%;
+    background: #fff;
+}
+
+.ViewDescriptionWrapper .ViewDescriptionL p{
+    font-size: 20px!important;
+}
+
+.dark .ViewDescriptionWrapper .ViewDescriptionL{
+    background: #403b63;
+}
+
 .WizardFooter button {
     border: 0px;
     border-radius: 8px;
@@ -16120,6 +16156,40 @@ input {
         width: fit-content!important
     }
 }
+
+
+
+.BlockNews {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    z-index: 10000000000000;
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+    padding: 12px;
+    border-radius: 10px;
+    font-size: 10px;
+    font-weight: bold;
+    color: #555555;
+    background-color: #f8f8f8;
+    padding: 10px;
+    border-radius: 6px;}
+  .BlockNews p {color: #444 !important;}
+  .BlockNews a {color: #444;}
+  
+  .dark .BlockNews {
+    background-color: #403b61;
+    color:#fff;
+  }
+  .dark .BlockNews a, .dark .BlockNews p {
+    color:#fff!important;
+  }
+  
+  @media only screen and (max-device-width: 990px) {
+    
+    .BlockNews {display: none !important;}
+  
+  }
 
 @media only screen and (min-width: 1457px) and (max-width: 1651px) {
     .Navigation{

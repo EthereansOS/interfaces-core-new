@@ -44,10 +44,12 @@ const CollectionView = () => {
           <div className={style.CollectionLeft}>
             <ViewCover item={collection}/>
             <ViewManageCollection item={collection}/>
-            <ViewDescription item={collection}/>
           </div>
           <div className={style.CollectionRight}>
             <ViewInfoBox collection={collection}/>
+            <div className={style.ViewDescriptionWrapper}>
+            <ViewDescription item={collection}/>
+            </div>
           </div>
           <div className={style.ItemsExploreMainTitleArea}>
             <h2>More in this Collection</h2>
