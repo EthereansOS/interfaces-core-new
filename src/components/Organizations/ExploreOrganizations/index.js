@@ -48,15 +48,16 @@ const ExploreOrganization = ({ address, type }) => {
     })
   }, [])
 
-  useEffect(() => {
+  useEffect(async () => {
     if (!element) return
     setOrganization(null)
     var organizationAddress = element.address
     try {
-      getOrganization(
+      var organization = await getOrganization(
         { ...web3Data, context },
         web3Utils.toChecksumAddress(organizationAddress)
-      ).then(setOrganization)
+      )
+      setOrganization(organization)
     } catch (e) {}
   }, [element])
 
