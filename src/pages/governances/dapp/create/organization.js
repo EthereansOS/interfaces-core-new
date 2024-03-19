@@ -358,7 +358,7 @@ const VotingRules = ({ value, onChange, onNext, onPrev }) => {
 
   useEffect(() => {
     if (!value) return
-    value.error = {}
+    if (!value?.error) value.error = {}
     value.proposalRulesHardCapPercentage =
       value.proposalRulesHardCapPercentage ?? 0
     value.proposalRulesQuorumPercentage =
@@ -377,6 +377,16 @@ const VotingRules = ({ value, onChange, onNext, onPrev }) => {
       value.error = {
         proposalRulesProposalDuration:
           'Proposal Duration must be less than the Validation Bomb',
+      }
+      setDisabled(true)
+      return
+    }
+
+    if (
+      value.proposalRulesQuorumPercentage > value.proposalRulesHardCapPercentage
+    ) {
+      value.error = {
+        proposalRulesQuorumPercentage: 'Quorum must be less than the Hard cap',
       }
       setDisabled(true)
       return
@@ -470,6 +480,11 @@ const VotingRules = ({ value, onChange, onNext, onPrev }) => {
               }
             />
           </label>
+          {value?.error?.proposalRulesQuorumPercentage && (
+            <p className={style.ErrorMessage}>
+              {value.error.proposalRulesQuorumPercentage}
+            </p>
+          )}
         </div>
 
         <div
@@ -623,7 +638,7 @@ const Governance = ({ value, onChange, onNext, onPrev }) => {
 
   useEffect(() => {
     if (!value) return
-    value.error = {}
+    if (!value?.error) value.error = {}
 
     value.proposalRulesHardCapPercentage =
       value.proposalRulesHardCapPercentage ?? 0
@@ -648,8 +663,19 @@ const Governance = ({ value, onChange, onNext, onPrev }) => {
       return
     }
 
+    if (
+      value.proposalRulesQuorumPercentage > value.proposalRulesHardCapPercentage
+    ) {
+      value.error = {
+        proposalRulesQuorumPercentage: 'Quorum must be less than the Hard cap',
+      }
+      setDisabled(true)
+      return
+    }
+
     try {
       web3Utils.toChecksumAddress(value?.proposalRulesHost)
+      delete value.error.proposalRulesHost
     } catch (e) {
       value.error = {
         proposalRulesHost: 'Invalid host',
@@ -789,6 +815,11 @@ const Governance = ({ value, onChange, onNext, onPrev }) => {
               }
             />
           </label>
+          {value?.error?.proposalRulesQuorumPercentage && (
+            <p className={style.ErrorMessage}>
+              {value.error.proposalRulesQuorumPercentage}
+            </p>
+          )}
         </div>
 
         <div
@@ -1018,6 +1049,7 @@ const ProposalRules = ({ value, onChange, showHost, title }) => {
 
 const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
   const { account } = useWeb3()
+  const [disabled, setDisabled] = useState(false)
 
   const defaultInflationPercentage = useMemo(() => 0.05)
 
@@ -1037,16 +1069,68 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
     value?._swappedTokenComponents || []
   )
 
-  const [proposalRules, setProposalRules] = useState(value?.proposalRules)
-
-  const [hardCapValue, setHardCapValue] = useState(0)
-  const [quorum, setQuorum] = useState(0)
-
   const [internalStepValue, setInternalStepValue] = useState(0)
 
-  useEffect(() => onChange && onChange({ proposalRules }), [proposalRules])
+  useEffect(() => {
+    if (!value) return
+    value.giveBackOwnershipSeconds =
+      value?.giveBackOwnershipSeconds ?? Object.values(context.timeIntervals)[0]
 
-  useEffect(() => onChange && onChange(value), [value])
+    value.proposalRulesHardCapPercentage =
+      value.proposalRulesHardCapPercentage ?? 0
+    value.proposalRulesQuorumPercentage =
+      value.proposalRulesQuorumPercentage ?? 0
+    value.proposalRulesValidationBomb =
+      value.proposalRulesValidationBomb ?? dataTime[1]
+    value.proposalRulesProposalDuration =
+      value.proposalRulesProposalDuration ?? dataTime[0]
+
+    if (internalStepValue == 0) {
+      try {
+        web3Utils.toChecksumAddress(value?.tokenMinterOwner)
+        delete value.error.tokenMinterOwner
+      } catch (e) {
+        value.error = {
+          tokenMinterOwner: 'Invalid address',
+        }
+        setDisabled(true)
+        return
+      }
+    }
+
+    if (internalStepValue == 1) {
+      if (
+        !isValidationBombValid(
+          value.proposalRulesValidationBomb,
+          value.proposalRulesProposalDuration
+        )
+      ) {
+        value.error = {
+          proposalRulesProposalDuration:
+            'Proposal Duration must be less than the Validation Bomb',
+        }
+        setDisabled(true)
+        onChange && onChange(value)
+        return
+      }
+
+      if (
+        value.proposalRulesQuorumPercentage >
+        value.proposalRulesHardCapPercentage
+      ) {
+        value.error = {
+          proposalRulesQuorumPercentage:
+            'Quorum must be less than the Hard cap',
+        }
+        setDisabled(true)
+        onChange && onChange(value)
+        return
+      }
+    }
+
+    onChange && onChange(value)
+    setDisabled(false)
+  }, [value])
 
   return (
     <div className={style.CreationPageLabel}>
@@ -1065,7 +1149,7 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
             name="fixed"
             id="fixedYes"
             checked={value !== undefined && value !== null}
-            onClick={() => onChange(value)}
+            onClick={() => onChange({})}
           />
           <label for="fixedYes">Yes</label>
           <input
@@ -1125,10 +1209,21 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
                           onChange={(e) =>
                             onChange({
                               ...value,
-                              tokenMinterOwner: e,
+                              tokenMinterOwner: e.currentTarget.value,
+                            })
+                          }
+                          onBlur={(e) =>
+                            onChange({
+                              ...value,
+                              tokenMinterOwner: e.currentTarget.value,
                             })
                           }
                         />
+                        {value?.error?.tokenMinterOwner && (
+                          <p className={style.ErrorMessage}>
+                            {value.error.tokenMinterOwner}
+                          </p>
+                        )}
                       </label>
                       <label
                         className={style.CreationPageLabelF}
@@ -1139,7 +1234,10 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
                         }}>
                         <h6>After</h6>
                         <Duration
-                          value={value?.giveBackOwnershipSeconds}
+                          value={
+                            value?.giveBackOwnershipSeconds ??
+                            Object.values(context.timeIntervals)[0]
+                          }
                           onChange={(e) =>
                             onChange({
                               ...value,
@@ -1162,7 +1260,7 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
                     onChange={(e) =>
                       onChange({
                         ...value,
-                        firstExecution: e,
+                        firstExecution: e.currentTarget.value,
                       })
                     }
                   />
@@ -1322,6 +1420,7 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
                     <br />
                     <CircularSlider
                       label="Hard cap"
+                      dataIndex={value?.proposalRulesHardCapPercentage ?? 0}
                       labelColor="#fff"
                       width="120"
                       knobSize="25"
@@ -1336,9 +1435,12 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
                       trackColor="#eeeeee"
                       min={0}
                       max={100}
-                      onChange={(ex) => {
-                        setHardCapValue(ex)
-                      }}
+                      onChange={(e) =>
+                        onChange({
+                          ...value,
+                          proposalRulesHardCapPercentage: e,
+                        })
+                      }
                     />
                   </label>
                   <label className={style.CreationPageLabelF}>
@@ -1349,6 +1451,7 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
                     <br />
                     <CircularSlider
                       label="Quorum"
+                      dataIndex={value?.proposalRulesQuorumPercentage ?? 0}
                       labelColor="#fff"
                       knobColor="#000000"
                       width="120"
@@ -1364,11 +1467,19 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
                       min={0}
                       max={100}
                       initialValue={0}
-                      onChange={(ex) => {
-                        setQuorum(ex)
+                      onChange={(e) => {
+                        onChange({
+                          ...value,
+                          proposalRulesQuorumPercentage: e,
+                        })
                       }}
                     />
                   </label>
+                  {value?.error?.proposalRulesQuorumPercentage && (
+                    <p className={style.ErrorMessage}>
+                      {value.error.proposalRulesQuorumPercentage}
+                    </p>
+                  )}
                 </div>
 
                 <div
@@ -1386,7 +1497,13 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
                     <br />
                     <CircularSlider
                       progressLineCap="flat"
-                      dataIndex={0}
+                      dataIndex={
+                        value?.proposalRulesProposalDuration != null
+                          ? dataTime.indexOf(
+                              value?.proposalRulesProposalDuration
+                            )
+                          : 0
+                      }
                       label="Duration"
                       data={dataTime}
                       labelColor="#fff"
@@ -1401,6 +1518,12 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
                       progressColorFrom="#000000"
                       progressColorTo="#444444"
                       trackColor="#eeeeee"
+                      onChange={(e) =>
+                        onChange({
+                          ...value,
+                          proposalRulesProposalDuration: e,
+                        })
+                      }
                     />
                   </label>
                   <label className={style.CreationPageLabelF}>
@@ -1411,7 +1534,11 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
                     <br />
                     <CircularSlider
                       progressLineCap="flat"
-                      dataIndex={1}
+                      dataIndex={
+                        value?.proposalRulesValidationBomb != null
+                          ? dataTime.indexOf(value?.proposalRulesValidationBomb)
+                          : 1
+                      }
                       label="Duration"
                       data={dataTime}
                       labelColor="#fff"
@@ -1426,8 +1553,19 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
                       progressColorFrom="#000000"
                       progressColorTo="#444444"
                       trackColor="#eeeeee"
+                      onChange={(e) =>
+                        onChange({
+                          ...value,
+                          proposalRulesValidationBomb: e,
+                        })
+                      }
                     />
                   </label>
+                  {value?.error?.proposalRulesProposalDuration && (
+                    <p className={style.ErrorMessage}>
+                      {value.error.proposalRulesProposalDuration}
+                    </p>
+                  )}
                 </div>
               </div>
             </>
@@ -1454,7 +1592,8 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
                   setInternalStepValue(1)
                 }
               : onNext
-          }>
+          }
+          disabled={disabled}>
           Next
         </button>
       </div>
