@@ -6,8 +6,14 @@ import LogoRenderer from '../../Global/LogoRenderer'
 import style from '../../../all.module.css'
 import { useEffect } from 'react'
 import OurCircularProgress from 'components/Global/OurCircularProgress'
-import { useEthosContext, useWeb3 } from 'interfaces-core'
-import { getOrganizationMetadata } from 'logic/organization'
+import {
+  useEthosContext,
+  useWeb3,
+  formatNumber,
+  getEthereumPrice,
+  formatMoney,
+} from 'interfaces-core'
+import { getOrganizationMetadata, getOrganization } from 'logic/organization'
 
 const ExploreOrganizations = ({ elements, type }) => {
   return (
@@ -25,6 +31,8 @@ const ExploreOrganization = ({ address, type }) => {
   const { newContract } = web3Data
 
   const [element, setElement] = useState()
+  const [treasuryBalance, setTreasuryBalance] = useState(null)
+  const [organization, setOrganization] = useState(null)
 
   useEffect(() => {
     setTimeout(async () => {
@@ -39,6 +47,32 @@ const ExploreOrganization = ({ address, type }) => {
       ).then(setElement)
     })
   }, [])
+
+  useEffect(() => {
+    if (!element) return
+    setOrganization(null)
+    var organizationAddress = element.address
+    try {
+      getOrganization(
+        { ...web3Data, context },
+        web3Utils.toChecksumAddress(organizationAddress)
+      ).then(setOrganization)
+    } catch (e) {}
+  }, [element])
+
+  useEffect(() => {
+    if (!organization) return
+    setTimeout(async () => {
+      var val = await web3.eth.getBalance(
+        organization.components.treasuryManager.address
+      )
+      val = parseFloat(fromDecimals(val, 18, true))
+      var ethereumPrice = formatNumber(await getEthereumPrice({ context }))
+      val = ethereumPrice * val
+      val = '$ ' + formatMoney(val, 2)
+      setTreasuryBalance(val)
+    })
+  }, [organization])
 
   return (
     <div className={style.ItemSingle}>
@@ -78,7 +112,9 @@ const ExploreOrganization = ({ address, type }) => {
                   <p className={style.ItemTitleTopZoneLabel}>
                     Treasury Balance
                   </p>
-                  <p className={style.ItemTitleTopZoneValue}>1.292,92$</p>
+                  <p className={style.ItemTitleTopZoneValue}>
+                    {treasuryBalance}
+                  </p>
                 </>
               )}
             </div>
