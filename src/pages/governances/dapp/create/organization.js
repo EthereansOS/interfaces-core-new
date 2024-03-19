@@ -380,6 +380,8 @@ const VotingRules = ({ value, onChange, onNext, onPrev }) => {
       }
       setDisabled(true)
       return
+    } else {
+      delete value.error.proposalRulesProposalDuration
     }
 
     if (
@@ -390,6 +392,8 @@ const VotingRules = ({ value, onChange, onNext, onPrev }) => {
       }
       setDisabled(true)
       return
+    } else {
+      delete value.error.proposalRulesQuorumPercentage
     }
 
     setDisabled(false)
@@ -662,6 +666,8 @@ const Governance = ({ value, onChange, onNext, onPrev }) => {
       }
       setDisabled(true)
       return
+    } else {
+      delete value.error.proposalRulesProposalDuration
     }
 
     if (
@@ -672,6 +678,8 @@ const Governance = ({ value, onChange, onNext, onPrev }) => {
       }
       setDisabled(true)
       return
+    } else {
+      delete value.error.proposalRulesQuorumPercentage
     }
 
     try {
@@ -1113,6 +1121,8 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
         setDisabled(true)
         onChange && onChange(value)
         return
+      } else {
+        delete value.error.proposalRulesProposalDuration
       }
 
       if (
@@ -1126,6 +1136,8 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
         setDisabled(true)
         onChange && onChange(value)
         return
+      } else {
+        delete value.error.proposalRulesQuorumPercentage
       }
     }
 
