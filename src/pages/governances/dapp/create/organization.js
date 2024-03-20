@@ -311,7 +311,7 @@ const Confirmation = ({
 
       <h6
         style={{
-          'text-align': 'left',
+          textAlign: 'left',
           paddingLeft: '20px',
           marginBottom: '10px',
           marginTop: '30px',
@@ -381,7 +381,7 @@ const VotingRules = ({ value, onChange, onNext, onPrev }) => {
       setDisabled(true)
       return
     } else {
-      delete value.error.proposalRulesProposalDuration
+      delete value?.error?.proposalRulesProposalDuration
     }
 
     if (
@@ -393,7 +393,7 @@ const VotingRules = ({ value, onChange, onNext, onPrev }) => {
       setDisabled(true)
       return
     } else {
-      delete value.error.proposalRulesQuorumPercentage
+      delete value?.error?.proposalRulesQuorumPercentage
     }
 
     setDisabled(false)
@@ -951,108 +951,6 @@ const Duration = ({ value, onChange, from }) => {
           </option>
         ))}
     </select>
-  )
-}
-
-const ProposalRules = ({ value, onChange, showHost, title }) => {
-  const [host, setHost] = useState(value?.host)
-  const [proposalDuration, setProposalDuration] = useState(
-    value?.proposalDuration || 0
-  )
-  const [hardCapPercentage, setHardCapPercentage] = useState(
-    value?.hardCapPercentage || 0
-  )
-  const [quorumPercentage, setQuorumPercentage] = useState(
-    value?.quorumPercentage || 0
-  )
-  const [validationBomb, setValidationBomb] = useState(
-    value?.validationBomb || 0
-  )
-
-  useEffect(
-    () =>
-      onChange &&
-      onChange({
-        host,
-        proposalDuration,
-        hardCapPercentage,
-        quorumPercentage,
-        validationBomb,
-      }),
-    [
-      host,
-      proposalDuration,
-      hardCapPercentage,
-      quorumPercentage,
-      validationBomb,
-    ]
-  )
-
-  const showValidationBombWarning = useMemo(
-    () =>
-      validationBomb && proposalDuration
-        ? validationBomb <= proposalDuration
-        : undefined,
-    [proposalDuration, validationBomb]
-  )
-
-  return (
-    <div className={style.CreationPageLabel}>
-      <div className={style.FancyExplanationCreate}>
-        <h6>{title || 'Voting Rules'}</h6>
-      </div>
-      {showHost && (
-        <label className={style.CreationPageLabelF}>
-          <h6>Host address</h6>
-          <input
-            type="text"
-            value={host}
-            onChange={(e) => setHost(e.currentTarget.value)}
-          />
-        </label>
-      )}
-      <label className={style.CreationPageLabelF}>
-        <h6>Proposal duration</h6>
-        <Duration value={proposalDuration} onChange={setProposalDuration} />
-      </label>
-      <label className={style.CreationPageLabelF}>
-        <h6>Hard cap percentage</h6>
-        <p>
-          <h8>{hardCapPercentage} %</h8>
-        </p>
-        <input
-          type="range"
-          min="0"
-          max="100"
-          value={hardCapPercentage}
-          onChange={(e) =>
-            setHardCapPercentage(parseFloat(e.currentTarget.value))
-          }
-        />
-      </label>
-      <label className={style.CreationPageLabelF}>
-        <h6>Quorum</h6>
-        <p>
-          <h8>{quorumPercentage} %</h8>
-        </p>
-        <input
-          type="range"
-          min="0"
-          max="100"
-          value={quorumPercentage}
-          onChange={(e) =>
-            setQuorumPercentage(parseFloat(e.currentTarget.value))
-          }
-        />
-      </label>
-      <label className={style.CreationPageLabelF}>
-        <h6>Validation bomb</h6>
-        <Duration value={validationBomb} onChange={setValidationBomb} />
-        {showValidationBombWarning && (
-          <p>WARNING: Validation bomb must be higher than Proposal durration</p>
-        )}
-      </label>
-    </div>
   )
 }
 
@@ -1703,41 +1601,6 @@ const ComponentPercentage = ({
   )
 }
 
-const TreasuryManager = ({ value, onChange }) => {
-  const [maxPercentagePerToken, setMaxPercentagePerToken] = useState(
-    value?.maxPercentagePerToken || 0
-  )
-  const [proposalRules, setProposalRules] = useState(value?.proposalRules)
-
-  useEffect(
-    () => onChange && onChange({ proposalRules, maxPercentagePerToken }),
-    [proposalRules, maxPercentagePerToken]
-  )
-
-  return (
-    <div className={style.CreationPageLabel}>
-      <div className={style.FancyExplanationCreate}>
-        <h6>Organization Treasury</h6>
-      </div>
-      <label className={style.CreationPageLabelF}>
-        <h6>Percentage to move</h6>
-        <input
-          type="range"
-          min="0"
-          max="100"
-          step="0.05"
-          value={maxPercentagePerToken}
-          onChange={(e) =>
-            setMaxPercentagePerToken(parseFloat(e.currentTarget.value))
-          }
-        />
-        <span>{maxPercentagePerToken} %</span>
-      </label>
-      <ProposalRules value={proposalRules} onChange={setProposalRules} />
-    </div>
-  )
-}
-
 const TreasurySplitterManager = ({ value, onChange, onNext, onPrev }) => {
   const [splitInterval, setSplitInterval] = useState(value?.splitInterval || 0)
   const [firstSplitEvent, setFirstSplitEvent] = useState(
@@ -2351,65 +2214,66 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
 }
 
 const InvestmentsManager = ({ amms, value, onChange, onNext, onPrev }) => {
-  const [swapToEtherInterval, setSwapToEtherInterval] = useState(
-    value?.swapToEtherInterval || 0
-  )
-  const [firstSwapToEtherEvent, setFirstSwapToEtherEvent] = useState(
-    value?.firstSwapToEtherEvent || ''
-  )
+  const [disabled, setDisabled] = useState(true)
+
   const [fromETH, setFromETH] = useState(value?.fromETH || [])
   const [toETH, setToETH] = useState(value?.toETH || [])
-  const [maxPercentagePerToken, setMaxPercentagePerToken] = useState(
-    value?.maxPercentagePerToken || 0
-  )
 
-  const [proposalRules, setProposalRules] = useState(value?.proposalRules)
+  useEffect(() => {
+    if (value) {
+      onChange({ ...value, fromETH: fromETH })
+    }
+  }, [fromETH])
 
-  useEffect(
-    () =>
-      onChange &&
-      onChange({
-        swapToEtherInterval,
-        firstSwapToEtherEvent,
-        fromETH,
-        toETH,
-        maxPercentagePerToken,
-        proposalRules,
-      }),
-    [
-      swapToEtherInterval,
-      firstSwapToEtherEvent,
-      fromETH,
-      toETH,
-      maxPercentagePerToken,
-      proposalRules,
-    ]
-  )
+  useEffect(() => {
+    if (value) {
+      onChange({ ...value, toETH: toETH })
+    }
+  }, [toETH])
 
-  const [proposalDuration, setProposalDuration] = useState(
-    value?.proposalRules?.proposalDuration || 0
-  )
-  const [hardCapPercentage, setHardCapPercentage] = useState(
-    value?.proposalRules?.hardCapPercentage || 0
-  )
-  const [quorumPercentage, setQuorumPercentage] = useState(
-    value?.proposalRules?.quorumPercentage || 0
-  )
-  const [validationBomb, setValidationBomb] = useState(
-    value?.proposalRules?.validationBomb || 0
-  )
+  useEffect(() => {
+    if (!value) return
 
-  useEffect(
-    () =>
-      onChange &&
-      onChange({
-        proposalDuration,
-        hardCapPercentage,
-        quorumPercentage,
-        validationBomb,
-      }),
-    [proposalDuration, hardCapPercentage, quorumPercentage, validationBomb]
-  )
+    value.hardCapPercentage = value.hardCapPercentage ?? 0
+    value.quorumPercentage = value.quorumPercentage ?? 0
+    value.validationBomb = value.validationBomb ?? dataTime[1]
+    value.proposalDuration = value.proposalDuration ?? dataTime[0]
+    value.swapToEtherInterval =
+      value.swapToEtherInterval ?? Object.values(context.timeIntervals)[0]
+    value.firstSwapToEtherEvent = value.firstSwapToEtherEvent ?? ''
+    value.fromETH = value?.fromETH ?? fromETH
+    value.toETH = value?.toETH ?? toETH
+
+    if (!isValidationBombValid(value.validationBomb, value.proposalDuration)) {
+      value.error = {
+        proposalDuration:
+          'Proposal Duration must be less than the Validation Bomb',
+      }
+      setDisabled(true)
+      onChange && onChange(value)
+      return
+    } else {
+      delete value?.error?.proposalDuration
+    }
+
+    if (value.quorumPercentage > value.hardCapPercentage) {
+      value.error = {
+        quorumPercentage: 'Quorum must be less than the Hard cap',
+      }
+      setDisabled(true)
+      onChange && onChange(value)
+      return
+    } else {
+      delete value?.error?.quorumPercentage
+    }
+
+    onChange && onChange(value)
+    if (!value.firstSwapToEtherEvent) {
+      setDisabled(true)
+    } else {
+      setDisabled(false)
+    }
+  }, [value])
 
   return (
     <div className={style.CreationPageLabel}>
@@ -2434,16 +2298,29 @@ const InvestmentsManager = ({ amms, value, onChange, onNext, onPrev }) => {
         <label className={style.CreationPageLabelF}>
           <h6>Swap interval</h6>
           <Duration
-            value={swapToEtherInterval}
-            onChange={setSwapToEtherInterval}
+            value={
+              value?.swapToEtherInterval ??
+              Object.values(context.timeIntervals)[0]
+            }
+            onChange={(e) =>
+              onChange({
+                ...value,
+                swapToEtherInterval: e,
+              })
+            }
           />
         </label>
         <label className={style.CreationPageLabelF}>
           <h6>First swap event</h6>
           <input
             type="datetime-local"
-            value={firstSwapToEtherEvent}
-            onChange={(e) => setFirstSwapToEtherEvent(e.currentTarget.value)}
+            value={value?.firstSwapToEtherEvent ?? ''}
+            onChange={(e) =>
+              onChange({
+                ...value,
+                firstSwapToEtherEvent: e.currentTarget.value,
+              })
+            }
           />
         </label>
       </div>
@@ -2458,7 +2335,7 @@ const InvestmentsManager = ({ amms, value, onChange, onNext, onPrev }) => {
         <h6>Sell ETH to buy</h6>
         <InvestmentsManagerOperation
           amms={amms}
-          value={fromETH}
+          value={value?.fromETH ?? fromETH}
           onChange={setFromETH}
           burn
         />
@@ -2477,12 +2354,15 @@ const InvestmentsManager = ({ amms, value, onChange, onNext, onPrev }) => {
           min="0"
           max="100"
           step="0.05"
-          value={maxPercentagePerToken}
+          value={value?.maxPercentagePerToken ?? 0}
           onChange={(e) =>
-            setMaxPercentagePerToken(parseFloat(e.currentTarget.value))
+            onChange({
+              ...value,
+              maxPercentagePerToken: e.currentTarget.value,
+            })
           }
         />
-        <span>{maxPercentagePerToken} %</span>
+        <span>{value?.maxPercentagePerToken ?? 0} %</span>
       </label>
       <label
         className={style.CreationPageLabelF}
@@ -2495,9 +2375,9 @@ const InvestmentsManager = ({ amms, value, onChange, onNext, onPrev }) => {
         <h6>Buy ETH selling</h6>
         <InvestmentsManagerOperation
           amms={amms}
-          value={toETH}
+          value={value?.toETH ?? toETH}
           onChange={setToETH}
-          maxPercentagePerToken={maxPercentagePerToken}
+          maxPercentagePerToken={value?.maxPercentagePerToken ?? 0}
         />
       </label>
 
@@ -2526,6 +2406,7 @@ const InvestmentsManager = ({ amms, value, onChange, onNext, onPrev }) => {
             <br />
             <CircularSlider
               label="Quorum"
+              dataIndex={value?.quorumPercentage ?? 0}
               labelColor="#fff"
               knobColor="#000000"
               width="120"
@@ -2541,8 +2422,11 @@ const InvestmentsManager = ({ amms, value, onChange, onNext, onPrev }) => {
               min={0}
               max={100}
               initialValue={0}
-              onChange={(ex) => {
-                setQuorumPercentage(ex)
+              onChange={(e) => {
+                onChange({
+                  ...value,
+                  quorumPercentage: e,
+                })
               }}
             />
           </label>
@@ -2555,6 +2439,7 @@ const InvestmentsManager = ({ amms, value, onChange, onNext, onPrev }) => {
             <br />
             <CircularSlider
               label="Hard cap"
+              dataIndex={value?.hardCapPercentage ?? 0}
               labelColor="#fff"
               width="120"
               knobSize="25"
@@ -2569,11 +2454,17 @@ const InvestmentsManager = ({ amms, value, onChange, onNext, onPrev }) => {
               trackColor="#eeeeee"
               min={0}
               max={100}
-              onChange={(ex) => {
-                setHardCapPercentage(ex)
-              }}
+              onChange={(e) =>
+                onChange({
+                  ...value,
+                  hardCapPercentage: e,
+                })
+              }
             />
           </label>
+          {value?.error?.quorumPercentage && (
+            <p className={style.ErrorMessage}>{value.error.quorumPercentage}</p>
+          )}
         </div>
 
         <div
@@ -2591,7 +2482,11 @@ const InvestmentsManager = ({ amms, value, onChange, onNext, onPrev }) => {
             <br />
             <CircularSlider
               progressLineCap="flat"
-              dataIndex={0}
+              dataIndex={
+                value?.proposalDuration != null
+                  ? dataTime.indexOf(value?.proposalDuration)
+                  : 0
+              }
               label="Duration"
               data={dataTime}
               labelColor="#fff"
@@ -2606,9 +2501,12 @@ const InvestmentsManager = ({ amms, value, onChange, onNext, onPrev }) => {
               progressColorFrom="#000000"
               progressColorTo="#444444"
               trackColor="#eeeeee"
-              onChange={(ex) => {
-                setProposalDuration(ex)
-              }}
+              onChange={(e) =>
+                onChange({
+                  ...value,
+                  proposalDuration: e,
+                })
+              }
             />
           </label>
           <label className={style.CreationPageLabelF}>
@@ -2619,7 +2517,11 @@ const InvestmentsManager = ({ amms, value, onChange, onNext, onPrev }) => {
             <br />
             <CircularSlider
               progressLineCap="flat"
-              dataIndex={1}
+              dataIndex={
+                value?.validationBomb != null
+                  ? dataTime.indexOf(value?.validationBomb)
+                  : 1
+              }
               label="Duration"
               data={dataTime}
               labelColor="#fff"
@@ -2634,20 +2536,28 @@ const InvestmentsManager = ({ amms, value, onChange, onNext, onPrev }) => {
               progressColorFrom="#000000"
               progressColorTo="#444444"
               trackColor="#eeeeee"
-              onChange={(ex) => {
-                setValidationBomb(ex)
-              }}
+              onChange={(e) =>
+                onChange({
+                  ...value,
+                  validationBomb: e,
+                })
+              }
             />
           </label>
+          {value?.error?.proposalDuration && (
+            <p className={style.ErrorMessage}>{value.error.proposalDuration}</p>
+          )}
         </div>
       </div>
 
-      {/*<ProposalRules value={proposalRules} onChange={setProposalRules} />*/}
       <div className={style.WizardFooter}>
         <button className={style.WizardFooterBack} onClick={onPrev}>
           Back
         </button>
-        <button className={style.WizardFooterNext} onClick={onNext}>
+        <button
+          className={style.WizardFooterNext}
+          onClick={onNext}
+          disabled={disabled}>
           Next
         </button>
       </div>
@@ -2818,7 +2728,7 @@ const CreateOrganization = () => {
 
   const [amms, setAMMs] = useState()
 
-  const [step, setStep] = useState(1)
+  const [step, setStep] = useState(0)
 
   const disabled = useMemo(
     () =>
@@ -2829,7 +2739,7 @@ const CreateOrganization = () => {
   const onClick = useCallback(
     function () {
       console.log('initialData', initialData)
-      console.log('state', JSON.stringify(state))
+      console.log(state)
       // !disabled &&
       //   createOrganization(initialData, state).then((address) =>
       //     history.push(`/organizations/${address}`)
