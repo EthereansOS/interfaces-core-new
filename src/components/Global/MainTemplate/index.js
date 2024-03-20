@@ -3,6 +3,7 @@ import classnames from 'classnames'
 import Header from '../Header'
 import { Container } from 'interfaces-ui'
 import style from './main-template.module.css'
+import allStyle from '../../../all.module.css'
 import Content from '../Content'
 
 import { useWeb3, useEthosContext, getNetworkElement } from 'interfaces-core'
@@ -18,7 +19,7 @@ const MainTemplate = ({ Component, ...props }) => {
     <>
       <main
         className={style.root}>
-        <div className={style.BlockNews}>
+        <div className={allStyle.BlockNews}>
           <p>&#10212; <a href={getNetworkElement({context, chainId}, 'etherscanURL') + '/block/' + block} target="_blank">#{block}</a></p>
         </div>
         <Header {...props} />

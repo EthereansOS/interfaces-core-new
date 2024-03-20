@@ -200,7 +200,7 @@ export default props => {
                     <div className={style.CartBuyBoxPrice}>
                         <h4>{formatMoney(fromDecimals(selectedAmount.reduce((acc, n) => acc.ethereansosAdd(n), "0"), decimals, true), 6)} {shortenWord({ context, charsAmount : 9}, item.symbol)}</h4>
                         {mode === 'unwrap' && <p>Balance: {formatMoney(fromDecimals(balance, 18, true), 6)} {shortenWord({ context, charsAmount : 9}, item.symbol)}</p>}
-                        {mode === 'wrap' && <p><input checked={reserveAll} onChange={e => setReserveAll(e.currentTarget.checked)} type="checkbox"></input>🔒 for 10 days</p>}
+                        {mode === 'wrap' && <p style={{textAlign: 'left'}}><input  checked={reserveAll} onChange={e => setReserveAll(e.currentTarget.checked)} type="checkbox" style={{position: 'relative', top: '2px', width: 'auto', marginRight: '3px'}}></input>🔒 Reserve for 10 days</p>}
                     </div>
                     {approved && <ActionAWeb3Button onSuccess={onSuccess} onClick={() => onAction(inputType, selectedAmount, reserveAll, decimals)}>{mode === 'wrap' ? 'Wrap' : 'Unwrap'}</ActionAWeb3Button>}
                     {!approved && <ActionAWeb3Button onSuccess={checkApprove} onClick={() => blockchainCall(cart[0].contract.methods.setApprovalForAll, item.wrapper.options.address, true)}>Approve</ActionAWeb3Button>}

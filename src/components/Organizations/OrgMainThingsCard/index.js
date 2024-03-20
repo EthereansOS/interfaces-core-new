@@ -219,21 +219,7 @@ const TreasurySplitter = ({ element }) => {
         <b>Next</b>
         {nextBlock === null && <CircularProgress />}
         {nextBlock && <p>{nextBlock}</p>}
-        {enableSplitButton && (
-          <p>
-            <ActionAWeb3Button
-              onSuccess={refreshNextSplit}
-              onClick={() =>
-                blockchainCall(
-                  element.components.treasurySplitterManager.contract.methods
-                    .splitTreasury,
-                  account
-                )
-              }>
-              Split
-            </ActionAWeb3Button>
-          </p>
-        )}
+        {enableSplitButton && <p ><ActionAWeb3Button onSuccess={refreshNextSplit} onClick={() => blockchainCall(element.components.treasurySplitterManager.contract.methods.splitTreasury, account)}>Split</ActionAWeb3Button></p>}
       </div>
       {!receivers && <OurCircularProgress />}
       {receivers && receivers.length !== 0 && (

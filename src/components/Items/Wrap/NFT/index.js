@@ -76,8 +76,11 @@ export default props => {
     }
 
     return (
+        <div className={style.CreationPageLabel}>
         <div className={style.WrapSection}>
-            <p>Wrap {token ? token.symbol : `${type.split('ERC').join('ERC-')} Tokens into ${deckMode ? 'Decks' : 'Items'}`}</p>
+            <div className={style.FancyExplanationCreate}> 
+            <h2>Wrap {token ? token.symbol : `${type.split('ERC').join('ERC-')} Tokens into ${deckMode ? 'Decks' : 'Items'}`}</h2> 
+            </div>
             <TokenInputRegular tokenOnly={type.indexOf("721") !== -1} selected={data?.token} tokens={token ? [token] : undefined} onElement={onElement} onlySelections={[type.split('ERC').join('ERC-')]}/>
             {data && !data.token && <OurCircularProgress/>}
             {data && data.token && <ActionAWeb3Buttons onSuccess={onSuccess} noApproveNeeded={type.indexOf("721") === -1} token={data.token} other={wrapper} balance={data.balance} value={data.value} buttonText="Wrap" onClick={() => wrapNFT({ account }, data.token, data.balance, data.value, wrapper, originalType, reserve)}/>}
@@ -86,8 +89,8 @@ export default props => {
                 <Link to={`/items/decks/${deckAlreadyWrapped}/wrap`}>Navigate to Deck page</Link>
             </div>}
             {deckMode && <div>
-                <label className={style.SettingBLabPerch}>
-                    <p><input type="checkbox" checked={reserve} onClick={e => setReserve(e.currentTarget.checked)}/>🔒 for 10 days</p>
+                <label className={style.SettingBLabPerch} style={{textAlign: 'left'}}>
+                    <p title="Reserved NFT’s can only be unwrapped by the reserver for 10 days, after that, anyone one with a deck Item of that collection may unwrap that NFT." ><input type="checkbox" style={{position: 'relative', top: '2px', width: 'auto', marginRight: '3px'}} checked={reserve} onClick={e => setReserve(e.currentTarget.checked)}/>🔒 Reserve for 10 days</p>
                 </label>
             </div>}
             {false && data && data.token && deckMode && <>
@@ -104,6 +107,7 @@ export default props => {
                     </label>
                 </div>}
             </>}
+        </div>
         </div>
     )
 }

@@ -36,7 +36,7 @@ export default ({token, onSuccess}) => {
           <div className={style.FancyExplanationCreate}>
               <h2>Wrap ERC-20 Tokens into Items</h2>
           </div>
-          <label className={style.CreationPageLabelF}>
+          <label>
               {false && success && <RegularModal close={() => setSuccess(null)}>
                 <WrapSuccess success={success}/>
               </RegularModal>}
