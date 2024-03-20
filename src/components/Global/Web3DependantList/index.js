@@ -106,7 +106,7 @@ export default ({
                 stroke="#455A64"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                stroke-miterlimit="10"
+                strokeMiterlimit="10"
               />
               <polyline
                 fill="none"
@@ -115,7 +115,7 @@ export default ({
                 stroke="#455A64"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                stroke-miterlimit="10"
+                strokeMiterlimit="10"
               />
               <path
                 d="     M14.5,18.5c0-0.83,0.67-1.5,1.5-1.5s1.5,0.67,1.5,1.5"
@@ -124,7 +124,7 @@ export default ({
                 stroke="#455A64"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                stroke-miterlimit="10"
+                strokeMiterlimit="10"
               />
               <g id="XMLID_4068_">
                 <path
@@ -134,7 +134,7 @@ export default ({
                   stroke="#455A64"
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  stroke-miterlimit="10"
+                  strokeMiterlimit="10"
                 />
                 <path
                   d="      M11.25,15.5c0,0.41-0.34,0.75-0.75,0.75s-0.75-0.34-0.75-0.75s0.34-0.75,0.75-0.75S11.25,15.09,11.25,15.5z"
@@ -143,7 +143,7 @@ export default ({
                   stroke="#455A64"
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  stroke-miterlimit="10"
+                  strokeMiterlimit="10"
                 />
               </g>
             </g>
@@ -155,7 +155,7 @@ export default ({
                 stroke="#263238"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                stroke-miterlimit="10"
+                strokeMiterlimit="10"
               />
               <polyline
                 fill="none"
@@ -164,7 +164,7 @@ export default ({
                 stroke="#263238"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                stroke-miterlimit="10"
+                strokeMiterlimit="10"
               />
               <path
                 d="     M14.5,18.5c0-0.83,0.67-1.5,1.5-1.5s1.5,0.67,1.5,1.5"
@@ -173,7 +173,7 @@ export default ({
                 stroke="#263238"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                stroke-miterlimit="10"
+                strokeMiterlimit="10"
               />
               <g id="XMLID_4004_">
                 <path
@@ -183,7 +183,7 @@ export default ({
                   stroke="#263238"
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  stroke-miterlimit="10"
+                  strokeMiterlimit="10"
                 />
                 <path
                   d="      M11.25,15.5c0,0.41-0.34,0.75-0.75,0.75s-0.75-0.34-0.75-0.75s0.34-0.75,0.75-0.75S11.25,15.09,11.25,15.5z"
@@ -192,7 +192,7 @@ export default ({
                   stroke="#263238"
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  stroke-miterlimit="10"
+                  strokeMiterlimit="10"
                 />
               </g>
             </g>
