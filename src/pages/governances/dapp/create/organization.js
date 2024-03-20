@@ -1426,37 +1426,6 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
                   className={style.CreationPageLabelFDivide}
                   style={{ marginTop: '30px', marginBottom: '30px' }}>
                   <label className={style.CreationPageLabelF}>
-                    <h6>Hard cap</h6>
-                    <p>Select the value of Hard cap</p>
-                    <br />
-                    <br />
-                    <br />
-                    <CircularSlider
-                      label="Hard cap"
-                      dataIndex={value?.proposalRulesHardCapPercentage ?? 0}
-                      labelColor="#fff"
-                      width="120"
-                      knobSize="25"
-                      progressSize="9"
-                      trackSize="14"
-                      labelFontSize="10"
-                      valueFontSize="20"
-                      knobColor="#000000"
-                      progressColorFrom="#000000"
-                      progressColorTo="#444444"
-                      appendToValue="%"
-                      trackColor="#eeeeee"
-                      min={0}
-                      max={100}
-                      onChange={(e) =>
-                        onChange({
-                          ...value,
-                          proposalRulesHardCapPercentage: e,
-                        })
-                      }
-                    />
-                  </label>
-                  <label className={style.CreationPageLabelF}>
                     <h6>Quorum</h6>
                     <p>Select the value of Quorum</p>
                     <br />
@@ -1486,6 +1455,37 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
                           proposalRulesQuorumPercentage: e,
                         })
                       }}
+                    />
+                  </label>
+                  <label className={style.CreationPageLabelF}>
+                    <h6>Hard cap</h6>
+                    <p>Select the value of Hard cap</p>
+                    <br />
+                    <br />
+                    <br />
+                    <CircularSlider
+                      label="Hard cap"
+                      dataIndex={value?.proposalRulesHardCapPercentage ?? 0}
+                      labelColor="#fff"
+                      width="120"
+                      knobSize="25"
+                      progressSize="9"
+                      trackSize="14"
+                      labelFontSize="10"
+                      valueFontSize="20"
+                      knobColor="#000000"
+                      progressColorFrom="#000000"
+                      progressColorTo="#444444"
+                      appendToValue="%"
+                      trackColor="#eeeeee"
+                      min={0}
+                      max={100}
+                      onChange={(e) =>
+                        onChange({
+                          ...value,
+                          proposalRulesHardCapPercentage: e,
+                        })
+                      }
                     />
                   </label>
                   {value?.error?.proposalRulesQuorumPercentage && (
@@ -1792,114 +1792,83 @@ const TreasurySplitterManager = ({ value, onChange, onNext, onPrev }) => {
 }
 
 const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
-  const [proposalRulesToBan, setProposalRulesToBan] = useState(
-    value?.proposalRulesToBan
-  )
-  const [attachInsurance0, setAttachInsurance0] = useState(
-    value?.attachInsurance0 || 0
-  )
-  const [attachInsurance1, setAttachInsurance1] = useState(
-    value?.attachInsurance1 || 0
-  )
-  const [attachInsurance2, setAttachInsurance2] = useState(
-    value?.attachInsurance2 || 0
-  )
-  const [attachInsurance3, setAttachInsurance3] = useState(
-    value?.attachInsurance3 || 0
-  )
-  const [attachInsurance4, setAttachInsurance4] = useState(
-    value?.attachInsurance4 || 0
-  )
-  const [attachInsurance5, setAttachInsurance5] = useState(
-    value?.attachInsurance5 || 0
-  )
-  const [proposalRulesForInsurance, setProposalRulesForInsurance] = useState(
-    value?.proposalRulesForInsurance
-  )
+  const [disabled, setDisabled] = useState(true)
 
-  const [hardCapValue, setHardCapValue] = useState(0)
-  const [quorum, setQuorum] = useState(0)
-  const [quorumKey, setQuorumKey] = useState(0)
+  useEffect(() => {
+    if (!value) return
 
-  useEffect(
-    () =>
-      onChange &&
-      onChange({
-        proposalRulesToBan,
-        attachInsurance0,
-        attachInsurance1,
-        attachInsurance2,
-        attachInsurance3,
-        attachInsurance4,
-        attachInsurance5,
-        proposalRulesForInsurance,
-      }),
-    [
-      proposalRulesToBan,
-      attachInsurance0,
-      attachInsurance1,
-      attachInsurance2,
-      attachInsurance3,
-      attachInsurance4,
-      attachInsurance5,
-      proposalRulesForInsurance,
-    ]
-  )
+    value.hardCapPercentageBad = value.hardCapPercentageBad ?? 0
+    value.quorumPercentageBad = value.quorumPercentageBad ?? 0
+    value.validationBombBad = value.validationBombBad ?? dataTime[1]
+    value.proposalDurationBad = value.proposalDurationBad ?? dataTime[0]
+    value.attachInsurance0 = value.attachInsurance0 ?? 0
+    value.attachInsurance1 = value.attachInsurance1 ?? 0
+    value.attachInsurance2 = value.attachInsurance2 ?? 0
+    value.attachInsurance3 = value.attachInsurance3 ?? 0
+    value.attachInsurance4 = value.attachInsurance4 ?? 0
+    value.attachInsurance5 = value.attachInsurance5 ?? 0
+    value.hardCapPercentageInsurance = value.hardCapPercentageInsurance ?? 0
+    value.quorumPercentageInsurance = value.quorumPercentageInsurance ?? 0
+    value.validationBombInsurance = value.validationBombInsurance ?? dataTime[1]
+    value.proposalDurationInsurance =
+      value.proposalDurationInsurance ?? dataTime[0]
 
-  const [proposalDuration, setProposalDuration] = useState(
-    value?.proposalRulesToBan?.proposalDuration || 0
-  )
-  const [hardCapPercentage, setHardCapPercentage] = useState(
-    value?.proposalRulesToBan?.hardCapPercentage || 0
-  )
-  const [quorumPercentage, setQuorumPercentage] = useState(
-    value?.proposalRulesToBan?.quorumPercentage || 0
-  )
-  const [validationBomb, setValidationBomb] = useState(
-    value?.proposalRulesToBan?.validationBomb || 0
-  )
+    if (
+      !isValidationBombValid(value.validationBombBad, value.proposalDurationBad)
+    ) {
+      value.error = {
+        proposalDurationBad:
+          'Proposal Duration must be less than the Validation Bomb',
+      }
+      setDisabled(true)
+      onChange && onChange(value)
+      return
+    } else {
+      delete value?.error?.proposalDurationBad
+    }
 
-  useEffect(
-    () =>
-      onChange &&
-      onChange({
-        proposalDuration,
-        hardCapPercentage,
-        quorumPercentage,
-        validationBomb,
-      }),
-    [proposalDuration, hardCapPercentage, quorumPercentage, validationBomb]
-  )
+    if (value.quorumPercentageBad > value.hardCapPercentageBad) {
+      value.error = {
+        quorumPercentageBad: 'Quorum must be less than the Hard cap',
+      }
+      setDisabled(true)
+      onChange && onChange(value)
+      return
+    } else {
+      delete value?.error?.quorumPercentageBad
+    }
 
-  const [proposalDurationInsurance, setProposalDurationInsurance] = useState(
-    value?.proposalRulesForInsurance?.proposalDuration || 0
-  )
-  const [hardCapPercentageInsurance, setHardCapPercentageInsurance] = useState(
-    value?.proposalRulesForInsurance?.hardCapPercentage || 0
-  )
-  const [quorumPercentageInsurance, setQuorumPercentageInsurance] = useState(
-    value?.proposalRulesForInsurance?.quorumPercentage || 0
-  )
-  const [validationBombInsurance, setValidationBombInsurance] = useState(
-    value?.proposalRulesForInsurance?.validationBomb || 0
-  )
+    if (
+      !isValidationBombValid(
+        value.validationBombInsurance,
+        value.proposalDurationInsurance
+      )
+    ) {
+      value.error = {
+        proposalDurationBad:
+          'Proposal Duration must be less than the Validation Bomb',
+      }
+      setDisabled(true)
+      onChange && onChange(value)
+      return
+    } else {
+      delete value?.error?.proposalDurationInsurance
+    }
 
-  useEffect(
-    () =>
-      onChange &&
-      onChange({
-        proposalDurationInsurance,
-        hardCapPercentageInsurance,
-        quorumPercentageInsurance,
-        validationBombInsurance,
-      }),
-    [
-      proposalDurationInsurance,
-      hardCapPercentageInsurance,
-      quorumPercentageInsurance,
-      validationBombInsurance,
-    ]
-  )
+    if (value.quorumPercentageInsurance > value.hardCapPercentageInsurance) {
+      value.error = {
+        quorumPercentageInsurance: 'Quorum must be less than the Hard cap',
+      }
+      setDisabled(true)
+      onChange && onChange(value)
+      return
+    } else {
+      delete value?.error?.quorumPercentageInsurance
+    }
+
+    onChange && onChange(value)
+    setDisabled(false)
+  }, [value])
 
   return (
     <div className={style.CreationPageLabel}>
@@ -1914,7 +1883,7 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
         </p>
       </div>
 
-      <label class="CreationPageLabelF">
+      <label className="CreationPageLabelF">
         <h6
           style={{
             width: '100%',
@@ -1943,6 +1912,7 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
             <br />
             <CircularSlider
               label="Quorum"
+              dataIndex={value?.quorumPercentageBad ?? 0}
               labelColor="#fff"
               knobColor="#000000"
               width="120"
@@ -1958,8 +1928,11 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
               min={0}
               max={100}
               initialValue={0}
-              onChange={(ex) => {
-                setQuorumPercentage(ex)
+              onChange={(e) => {
+                onChange({
+                  ...value,
+                  quorumPercentageBad: e,
+                })
               }}
             />
           </label>
@@ -1972,6 +1945,7 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
             <br />
             <CircularSlider
               label="Hard cap"
+              dataIndex={value?.hardCapPercentageBad ?? 0}
               labelColor="#fff"
               width="120"
               knobSize="25"
@@ -1986,11 +1960,19 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
               trackColor="#eeeeee"
               min={0}
               max={100}
-              onChange={(ex) => {
-                setHardCapPercentage(ex)
-              }}
+              onChange={(e) =>
+                onChange({
+                  ...value,
+                  hardCapPercentageBad: e,
+                })
+              }
             />
           </label>
+          {value?.error?.quorumPercentageBad && (
+            <p className={style.ErrorMessage}>
+              {value.error.quorumPercentageBad}
+            </p>
+          )}
         </div>
 
         <div
@@ -2008,7 +1990,11 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
             <br />
             <CircularSlider
               progressLineCap="flat"
-              dataIndex={0}
+              dataIndex={
+                value?.proposalDuration != null
+                  ? dataTime.indexOf(value?.proposalDurationBad)
+                  : 0
+              }
               label="Duration"
               data={dataTime}
               labelColor="#fff"
@@ -2023,9 +2009,12 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
               progressColorFrom="#000000"
               progressColorTo="#444444"
               trackColor="#eeeeee"
-              onChange={(ex) => {
-                setProposalDuration(ex)
-              }}
+              onChange={(e) =>
+                onChange({
+                  ...value,
+                  proposalDurationBad: e,
+                })
+              }
             />
           </label>
           <label className={style.CreationPageLabelF}>
@@ -2036,7 +2025,11 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
             <br />
             <CircularSlider
               progressLineCap="flat"
-              dataIndex={1}
+              dataIndex={
+                value?.validationBombBad != null
+                  ? dataTime.indexOf(value?.validationBombBad)
+                  : 1
+              }
               label="Duration"
               data={dataTime}
               labelColor="#fff"
@@ -2051,18 +2044,21 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
               progressColorFrom="#000000"
               progressColorTo="#444444"
               trackColor="#eeeeee"
-              onChange={(ex) => {
-                setValidationBomb(ex)
-              }}
+              onChange={(e) =>
+                onChange({
+                  ...value,
+                  validationBombBad: e,
+                })
+              }
             />
           </label>
+          {value?.error?.proposalDurationBad && (
+            <p className={style.ErrorMessage}>
+              {value.error.proposalDurationBad}
+            </p>
+          )}
         </div>
       </div>
-      {/*<ProposalRules
-        value={proposalRulesToBan}
-        onChange={setProposalRulesToBan}
-        title="Proposal Rules to ban bad delegations"
-            />*/}
 
       <label
         className={style.CreationPageLabelF}
@@ -2075,8 +2071,13 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
         <h6>Attach Insurance</h6>
         <input
           type="number"
-          value={attachInsurance0}
-          onChange={(e) => setAttachInsurance0(parseInt(e.currentTarget.value))}
+          value={value?.attachInsurance0 ?? 0}
+          onChange={(e) =>
+            onChange({
+              ...value,
+              attachInsurance0: e.currentTarget.value,
+            })
+          }
         />
       </label>
       <label
@@ -2095,9 +2096,12 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
             style={{ padding: '0px' }}>
             <input
               type="number"
-              value={attachInsurance1}
+              value={value?.attachInsurance1 ?? 0}
               onChange={(e) =>
-                setAttachInsurance1(parseInt(e.currentTarget.value))
+                onChange({
+                  ...value,
+                  attachInsurance1: e.currentTarget.value,
+                })
               }
             />
           </label>
@@ -2106,9 +2110,12 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
             style={{ paddingRight: '0px' }}>
             <input
               type="number"
-              value={attachInsurance2}
+              value={value?.attachInsurance2 ?? 0}
               onChange={(e) =>
-                setAttachInsurance2(parseInt(e.currentTarget.value))
+                onChange({
+                  ...value,
+                  attachInsurance2: e.currentTarget.value,
+                })
               }
             />
           </label>
@@ -2119,9 +2126,12 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
             style={{ padding: '0px' }}>
             <input
               type="number"
-              value={attachInsurance3}
+              value={value?.attachInsurance3 ?? 0}
               onChange={(e) =>
-                setAttachInsurance3(parseInt(e.currentTarget.value))
+                onChange({
+                  ...value,
+                  attachInsurance3: e.currentTarget.value,
+                })
               }
             />
           </label>
@@ -2130,9 +2140,12 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
             style={{ paddingRight: '0px' }}>
             <input
               type="number"
-              value={attachInsurance4}
+              value={value?.attachInsurance4 ?? 0}
               onChange={(e) =>
-                setAttachInsurance4(parseInt(e.currentTarget.value))
+                onChange({
+                  ...value,
+                  attachInsurance4: e.currentTarget.value,
+                })
               }
             />
           </label>
@@ -2140,15 +2153,18 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
         <label>
           <input
             type="number"
-            value={attachInsurance5}
+            value={value?.attachInsurance5 ?? 0}
             onChange={(e) =>
-              setAttachInsurance5(parseInt(e.currentTarget.value))
+              onChange({
+                ...value,
+                attachInsurance5: e.currentTarget.value,
+              })
             }
           />
         </label>
       </label>
 
-      <label class="CreationPageLabelF">
+      <label className="CreationPageLabelF">
         <h6
           style={{
             width: '100%',
@@ -2173,6 +2189,7 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
             <br />
             <CircularSlider
               label="Quorum"
+              dataIndex={value?.quorumPercentageInsurance ?? 0}
               labelColor="#fff"
               knobColor="#000000"
               width="120"
@@ -2187,9 +2204,11 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
               trackColor="#eeeeee"
               min={0}
               max={100}
-              initialValue={0}
-              onChange={(ex) => {
-                setQuorumPercentageInsurance(ex)
+              onChange={(e) => {
+                onChange({
+                  ...value,
+                  quorumPercentageInsurance: e,
+                })
               }}
             />
           </label>
@@ -2202,6 +2221,7 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
             <br />
             <CircularSlider
               label="Hard cap"
+              dataIndex={value?.hardCapPercentageInsurance ?? 0}
               labelColor="#fff"
               width="120"
               knobSize="25"
@@ -2216,11 +2236,19 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
               trackColor="#eeeeee"
               min={0}
               max={100}
-              onChange={(ex) => {
-                setHardCapPercentageInsurance(ex)
-              }}
+              onChange={(e) =>
+                onChange({
+                  ...value,
+                  hardCapPercentageInsurance: e,
+                })
+              }
             />
           </label>
+          {value?.error?.quorumPercentageInsurance && (
+            <p className={style.ErrorMessage}>
+              {value.error.quorumPercentageInsurance}
+            </p>
+          )}
         </div>
 
         <div
@@ -2238,7 +2266,11 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
             <br />
             <CircularSlider
               progressLineCap="flat"
-              dataIndex={0}
+              dataIndex={
+                value?.proposalDurationInsurance != null
+                  ? dataTime.indexOf(value?.proposalDurationInsurance)
+                  : 0
+              }
               label="Duration"
               data={dataTime}
               labelColor="#fff"
@@ -2253,9 +2285,12 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
               progressColorFrom="#000000"
               progressColorTo="#444444"
               trackColor="#eeeeee"
-              onChange={(ex) => {
-                setProposalDurationInsurance(ex)
-              }}
+              onChange={(e) =>
+                onChange({
+                  ...value,
+                  proposalDurationInsurance: e,
+                })
+              }
             />
           </label>
           <label className={style.CreationPageLabelF}>
@@ -2266,7 +2301,11 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
             <br />
             <CircularSlider
               progressLineCap="flat"
-              dataIndex={1}
+              dataIndex={
+                value?.validationBombInsurance != null
+                  ? dataTime.indexOf(value?.validationBombInsurance)
+                  : 1
+              }
               label="Duration"
               data={dataTime}
               labelColor="#fff"
@@ -2281,23 +2320,29 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
               progressColorFrom="#000000"
               progressColorTo="#444444"
               trackColor="#eeeeee"
-              onChange={(ex) => {
-                setValidationBombInsurance(ex)
-              }}
+              onChange={(e) =>
+                onChange({
+                  ...value,
+                  validationBombInsurance: e,
+                })
+              }
             />
           </label>
+          {value?.error?.proposalDurationInsurance && (
+            <p className={style.ErrorMessage}>
+              {value.error.proposalDurationInsurance}
+            </p>
+          )}
         </div>
       </div>
-
-      {/*<ProposalRules
-        value={proposalRulesForInsurance}
-        onChange={setProposalRulesForInsurance}
-      />*/}
       <div className={style.WizardFooter}>
         <button className={style.WizardFooterBack} onClick={onPrev}>
           Back
         </button>
-        <button className={style.WizardFooterNext} onClick={onNext}>
+        <button
+          className={style.WizardFooterNext}
+          onClick={onNext}
+          disabled={disabled}>
           Next
         </button>
       </div>
@@ -2456,7 +2501,7 @@ const InvestmentsManager = ({ amms, value, onChange, onNext, onPrev }) => {
         />
       </label>
 
-      <label class="CreationPageLabelF">
+      <label className="CreationPageLabelF">
         <h6
           style={{
             width: '100%',
