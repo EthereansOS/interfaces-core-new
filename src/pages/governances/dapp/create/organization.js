@@ -38,7 +38,11 @@ const components = [
 import { create as createIpfsHttpClient } from 'ipfs-http-client'
 import uploadToIPFS from 'interfaces-core/lib/web3/uploadToIPFS'
 import getFileFromBlobURL from 'interfaces-core/lib/web3/getFileFromBlobURL'
-import { checkOrganizationMetadata, checkGovernance } from 'logic/organization'
+import {
+  checkOrganizationMetadata,
+  checkGovernance,
+  prepareInputData,
+} from 'logic/organization'
 
 function initializeIPFSClient(context) {
   var options = {
@@ -64,23 +68,7 @@ function isValidationBombValid(validationBomb, duration) {
 
 export const backgroundColor = '#da7cff'
 export const labelColor = '#340098'
-
-const dataTime = [
-  '30min',
-  '6h',
-  '12h',
-  '1 Day',
-  '2 Days',
-  '3 Days',
-  '4 Days',
-  '5 Days',
-  '1 Week',
-  '1 Month',
-  '6 Months',
-  '1 Year',
-  '3 Years',
-  '5 Years',
-]
+var dataTime = []
 
 const Metadata = ({ value, onChange, onNext, onPrev }) => {
   const [disabled, setDisabled] = useState()
@@ -280,6 +268,7 @@ const Confirmation = ({
   onClick,
   disabled,
   state,
+  dataTime,
 }) => {
   const [token, setToken] = useState(value?.token)
   const [proposalRules, setProposalRules] = useState(value?.proposalRules)
@@ -2716,6 +2705,7 @@ const CreateOrganization = () => {
   const context = useEthosContext()
   const web3Data = useWeb3()
   const history = useHistory()
+  const ipfsHttpClient = useMemo(() => initializeIPFSClient(context), [context])
 
   const initialData = useMemo(
     () => ({ context, ...web3Data }),
@@ -2736,27 +2726,43 @@ const CreateOrganization = () => {
     [state]
   )
 
+  dataTime = Object.keys(context.timeIntervals)
+
   const onClick = useCallback(
-    function () {
-      console.log('initialData', initialData)
-      console.log(state)
-      // !disabled &&
-      //   createOrganization(initialData, state).then((address) =>
-      //     history.push(`/organizations/${address}`)
-      //   )
+    async function () {
+      var errorMessage
+      try {
+        if (state?.metadata?.file) {
+          state.metadata.image = await uploadToIPFS(
+            { context, ipfsHttpClient },
+            await getFileFromBlobURL(state.metadata.file)
+          )
+        }
+
+        if (state?.metadata) {
+          delete state.metadata.error
+          delete state.metadata.file
+        }
+
+        var finalInputData = prepareInputData(
+          initialData.context,
+          state,
+          dataTime
+        )
+
+        !disabled &&
+          createOrganization(initialData, finalInputData).then((address) =>
+            history.push(`/organizations/${address}`)
+          )
+      } catch (e) {
+        errorMessage = e.message || e
+        setLoading(false)
+      }
+      setLoading(false)
+      errorMessage && setTimeout(() => alert(errorMessage))
     },
     [disabled, state]
   ) // Update the block number and broadcast it to the listeners
-
-  // const onClick = useCallback(
-  //   () =>
-  //     !disabled &&
-  //     createOrganization(initialData, state).then((address) =>
-  //       history.push(`/organizations/${address}`)
-  //     ),
-
-  //   [disabled, state]
-  // )
 
   useEffect(() => getAMMs({ context, ...web3Data }).then(setAMMs), [])
 
@@ -2905,44 +2911,6 @@ const CreateOrganization = () => {
         )}
       </div>
     </div>
-
-    /*<div className={style.CreatePage}>
-        <div className={style.FancyExplanationCreate}>
-            <h4>Create a new Organization (ALPHA)</h4>
-        </div>
-        <div className={style.FancyExplanationCreate}>
-            <div>
-                <h6>Disclaimer</h6>
-                <br/>
-                <div style={{"textAlign" : "justify"}}>
-                    This form for the creation of an Organization, as well as the associated Smart Contracts and this entire website, are currently in an ALPHA phase and in continuous development and experimental testing. Given the completely decentralized nature, the protocol does not guarantee in any way the absolute quality or reliability of the services offered. Users participating in this testing phase are aware of the risks and agree to act at their own risk, therefore declaring that they understand and accept the risks associated with participation in the ALPHA testing phase.
-                </div>
-            </div>
-            <br/><br/>
-            <div>
-                <h6>Warnings</h6>
-                <br/>
-                <div style={{"textAlign" : "justify"}}>
-                    Risk of loss of funds: Participation in an organization created with this form carries the risk of losing funds or digital assets due to security vulnerabilities, bugs or errors in the implementation of Smart Contracts and in the Frontend.<br/>
-                    Limitation of Liability: The developers and operators of the Protocol will not be held responsible for any loss of funds, damages or inconvenience resulting from the organizations use in this experimental ALPHA phase. The software created is released "AS IS" and no express or implicit guarantee of merchantability, suitability for a purpose or correct functioning of the same is provided.<br/>
-                    Code Review: Users are encouraged to carefully review the source code of the Created Organization and fully understand how Smart Contracts work before participating. It is advisable to consult IT security experts to assess the robustness of the Organization.<br/>
-                    No support: No official technical support is provided during this ALPHA phase.<br/>
-                    Users are responsible for independently managing their participation in the Organizations created through this form.<br/>
-                </div>
-            </div>
-        </div>
-        <Metadata value={state?.metadata} onChange={value => setState({...state, metadata : value})}/>
-        <Governance value={state?.governance} onChange={value => setState({...state, governance : value})}/>
-        <TreasuryManager value={state?.treasuryManager} onChange={value => setState({...state, treasuryManager : value})}/>
-        <FixedInflation amms={amms} value={state?.fixedInflation} onChange={value => setState({...state, fixedInflation : value})}/>
-
-        <DelegationsManager value={state?.delegationsManager} onChange={value => setState({...state, delegationsManager : value})}/>
-        <InvestmentsManager amms={amms} value={state?.investmentsManager} onChange={value => setState({...state, investmentsManager : value})}/>
-        <div className={style.ActionDeploy}>
-            {loading && <CircularProgress/>}
-            {!loading && <ActionAWeb3Button onClick={onClick} disabled={disabled}>Deploy</ActionAWeb3Button>}
-        </div>
-      </div>*/
   )
 }
 

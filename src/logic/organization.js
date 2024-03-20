@@ -2101,6 +2101,14 @@ function convertSecondsToLabel(web3Data, seconds) {
   return (timeInterval && timeInterval[0]) || `${seconds} seconds`
 }
 
+function convertLabelToSeconds(context, label) {
+  var timeInterval = Object.entries(context.timeIntervals).filter(
+    (it) => it[0] === label
+  )[1]
+
+  return parseInt(timeInterval)
+}
+
 export function getCheckerData(address, proposalData) {
   var isArray = Array.isArray(
     (proposalData.validatorsData || proposalData.terminatorsData)[0]
@@ -2148,8 +2156,6 @@ export function getCheckerData(address, proposalData) {
 export function checkOrganizationMetadata(metadata, throwOnError) {
   var errors = []
 
-  console.log('checkOrganizationMetadata', metadata)
-
   if (!metadata) {
     errors.push('Metadata')
   }
@@ -2182,8 +2188,6 @@ export function checkOrganizationMetadata(metadata, throwOnError) {
 export function checkGovernance(metadata, throwOnError) {
   var errors = []
 
-  console.log('checkGovernance', metadata)
-
   if (!metadata) {
     errors.push('Metadata')
   }
@@ -2201,4 +2205,136 @@ export function checkGovernance(metadata, throwOnError) {
   }
 
   return errors.length === 0
+}
+
+export function prepareInputData(context, inputData, proposalRulesDefaults) {
+  var finalInputData = {}
+  var proposalDurationDefault = convertLabelToSeconds(
+    context,
+    proposalRulesDefaults[0]
+  )
+  var validationBombDefault = convertLabelToSeconds(
+    context,
+    proposalRulesDefaults[1]
+  )
+
+  finalInputData.metadata = inputData.metadata
+
+  if (inputData.fixedInflation) {
+    finalInputData.fixedInflation = inputData.fixedInflation
+  }
+
+  finalInputData.governance = {
+    token: inputData.governance.token,
+    proposalRules: {
+      quorumPercentage: inputData.governance.proposalRulesQuorumPercentage ?? 0,
+      hardCapPercentage:
+        inputData.governance.proposalRulesHardCapPercentage ?? 0,
+      validationBomb:
+        convertLabelToSeconds(
+          context,
+          inputData.governance.proposalRulesValidationBomb
+        ) ?? validationBombDefault,
+      proposalDuration:
+        convertLabelToSeconds(
+          context,
+          inputData.governance.proposalRulesProposalDuration
+        ) ?? proposalDurationDefault,
+    },
+  }
+
+  finalInputData.treasuryManager = {
+    maxPercentagePerToken: inputData.organization.maxPercentagePerToken,
+    proposalRules: {
+      quorumPercentage:
+        inputData.votingRules.proposalRulesQuorumPercentage ?? 0,
+      hardCapPercentage:
+        inputData.votingRules.proposalRulesHardCapPercentage ?? 0,
+      validationBomb:
+        convertLabelToSeconds(
+          context,
+          inputData.votingRules.proposalRulesValidationBomb
+        ) ?? validationBombDefault,
+      proposalDuration:
+        convertLabelToSeconds(
+          context,
+          inputData.votingRules.proposalRulesProposalDuration
+        ) ?? proposalDurationDefault,
+    },
+  }
+
+  finalInputData.investmentsManager = {
+    swapToEtherInterval: inputData.investmentsManager.swapToEtherInterval,
+    firstSwapToEtherEvent: inputData.investmentsManager.firstSwapToEtherEvent,
+    maxPercentagePerToken: inputData.investmentsManager.maxPercentagePerToken,
+    proposalRules: {
+      quorumPercentage: inputData.investmentsManager.quorumPercentage ?? 0,
+      hardCapPercentage: inputData.investmentsManager.hardCapPercentage ?? 0,
+      proposalDuration:
+        convertLabelToSeconds(
+          context,
+          inputData.investmentsManager.proposalDuration
+        ) ?? proposalDurationDefault,
+      validationBomb:
+        convertLabelToSeconds(
+          context,
+          inputData.investmentsManager.validationBomb
+        ) ?? validationBombDefault,
+    },
+  }
+  if (inputData.investmentsManager.fromETH) {
+    finalInputData.investmentsManager.fromETH =
+      inputData.investmentsManager.fromETH
+  }
+  if (inputData.investmentsManager.toETH) {
+    finalInputData.investmentsManager.toETH =
+      inputData.investmentsManager.fromETH
+  }
+
+  finalInputData.delegationsManager = {
+    proposalRulesToBan: {
+      quorumPercentage: inputData.delegationsManager.quorumPercentageBad ?? 0,
+      hardCapPercentage: inputData.delegationsManager.hardCapPercentageBad ?? 0,
+      proposalDuration:
+        convertLabelToSeconds(
+          context,
+          inputData.delegationsManager.proposalDurationBad
+        ) ?? proposalDurationDefault,
+      validationBomb:
+        convertLabelToSeconds(
+          context,
+          inputData.delegationsManager.validationBombBad
+        ) ?? validationBombDefault,
+    },
+    proposalRulesForInsurance: {
+      quorumPercentage:
+        inputData.delegationsManager.quorumPercentageInsurance ?? 0,
+      hardCapPercentage:
+        inputData.delegationsManager.hardCapPercentageInsurance ?? 0,
+      proposalDuration:
+        convertLabelToSeconds(
+          context,
+          inputData.delegationsManager.proposalDurationInsurance
+        ) ?? proposalDurationDefault,
+      validationBomb:
+        convertLabelToSeconds(
+          context,
+          inputData.delegationsManager.validationBombInsurance
+        ) ?? validationBombDefault,
+    },
+    attachInsurance0: inputData.delegationsManager.attachInsurance0 ?? 0,
+    attachInsurance1: inputData.delegationsManager.attachInsurance1 ?? 0,
+    attachInsurance2: inputData.delegationsManager.attachInsurance2 ?? 0,
+    attachInsurance3: inputData.delegationsManager.attachInsurance3 ?? 0,
+    attachInsurance4: inputData.delegationsManager.attachInsurance4 ?? 0,
+    attachInsurance5: inputData.delegationsManager.attachInsurance5 ?? 0,
+  }
+
+  finalInputData.treasurySplitter = {
+    splitInterval: inputData.treasurySplitter.splitInterval,
+    firstSplitEvent: inputData.treasurySplitter.firstSplitEvent,
+    components: inputData.treasurySplitter.components ?? [],
+  }
+
+  return finalInputData
 }
