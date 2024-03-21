@@ -1708,6 +1708,8 @@ input::-webkit-scrollbar {
     width: 60%;
     height: 100%;
     display: inline-block;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 .TokensSelectorCategoriesList a {
@@ -7997,7 +7999,7 @@ input[type=range]::-ms-thumb {
     height: 60px;
     border-top: 2px solid;
     width: 100%;
-    display: block;
+    display: flex;
     border-radius: 0 0 20px 20px;
     position: absolute;
     left: 0;
