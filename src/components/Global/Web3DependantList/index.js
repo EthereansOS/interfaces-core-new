@@ -16,6 +16,7 @@ export default ({
   fixedList,
   sortOrder,
   filter,
+  custom,
 }) => {
   const { chainId } = useWeb3()
 
@@ -243,6 +244,25 @@ export default ({
       itemSize={100}>
       {Row}
     </FixedSizeList>
+  ) : custom && custom == 'delegation-grants' ? (
+    outputElements.map((element, i) => (
+      <div key={i}>
+        {element.organization && <div>{element.organization.name}</div>}
+        <Renderer
+          {...{ refreshElements, ...renderedProperties }}
+          key={
+            i +
+            '_' +
+            (element.key ||
+              element.id ||
+              element.index ||
+              element.hash ||
+              element.address)
+          }
+          element={element}
+        />
+      </div>
+    ))
   ) : (
     outputElements.map((element, i) => (
       <Renderer

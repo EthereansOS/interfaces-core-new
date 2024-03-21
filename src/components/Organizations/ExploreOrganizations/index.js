@@ -14,6 +14,7 @@ import {
   formatMoney,
 } from 'interfaces-core'
 import { getOrganizationMetadata, getOrganization } from 'logic/organization'
+import { getDelegation, getDelegationsManagers } from 'logic/delegation'
 
 const ExploreOrganizations = ({ elements, type }) => {
   return (
@@ -33,6 +34,11 @@ const ExploreOrganization = ({ address, type }) => {
   const [element, setElement] = useState()
   const [treasuryBalance, setTreasuryBalance] = useState(null)
   const [organization, setOrganization] = useState(null)
+
+  const [delegation, setDelegation] = useState(null)
+  const [supportersStake, setSupportersStake] = useState(null)
+
+  const { block, chainId, web3, account, getGlobalContract } = useWeb3()
 
   useEffect(() => {
     setTimeout(async () => {
@@ -58,6 +64,29 @@ const ExploreOrganization = ({ address, type }) => {
         web3Utils.toChecksumAddress(organizationAddress)
       )
       setOrganization(organization)
+    } catch (e) {}
+  }, [element])
+
+  useEffect(async () => {
+    if (!element) return
+    setDelegation(null)
+    var delegationAddress = element.address
+    try {
+      var delegation = await getDelegation(
+        { ...web3Data, context },
+        web3Utils.toChecksumAddress(delegationAddress)
+      )
+      if (delegation?.type == 'delegation') {
+        setDelegation(delegation)
+        delegation.delegationsManager.wrappedToken &&
+          setSupportersStake(
+            await blockchainCall(
+              delegation.delegationsManager.wrappedToken.mainInterface.methods
+                .totalSupply,
+              delegation.delegationsManager.wrappedToken.id
+            )
+          )
+      }
     } catch (e) {}
   }, [element])
 
@@ -106,7 +135,10 @@ const ExploreOrganization = ({ address, type }) => {
                   <p className={style.ItemTitleTopZoneLabel}>
                     Supporters stake
                   </p>
-                  <p className={style.ItemTitleTopZoneValue}>3,684.8533 OS</p>
+                  <p className={style.ItemTitleTopZoneValue}>
+                    {formatMoney(fromDecimals(supportersStake, 18, true), 4)}{' '}
+                    {delegation?.delegationsManager?.supportedToken?.symbol}
+                  </p>
                 </>
               ) : (
                 <>
