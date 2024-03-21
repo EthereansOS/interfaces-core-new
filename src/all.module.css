@@ -1668,6 +1668,7 @@ textarea{
 .ModalBox {
     width: 600px;
     height: 80%;
+    max-height: 700px;
     display: flex;
     border-radius: 20px;
     position: relative;
@@ -1702,21 +1703,7 @@ textarea{
     overflow: hidden;
 }
 
-.TokensSelectorCategories input {
-    width: 40%;
-    display: inline-block;
-    vertical-align: top;
-    height: 100%;
-    border: none;
-    border-radius: 0 0 0 20px;
-    font-size: 16px;
-    padding: 2%;
-}
-
-.TokensSelectorCategoriesList {
-    width: 60%;
-    height: 100%;
-    display: inline-block;
+.CreationPageLabelF .TokensSelectorCategoriesList {
     margin-top: 10px;
     margin-bottom: 10px;
 }
@@ -4849,7 +4836,7 @@ input[type=range]::-ms-thumb {
 
 .ItemsExploreMainCategories li.ItemsExploreMainCategoriesActive {
     background-color: #eaecf2;
-   
+
 }
 
 .ItemsExploreMainCategories li.ItemsExploreMainCategoriesActive a{
@@ -8009,7 +7996,8 @@ input[type=range]::-ms-thumb {
     display: block;
     position: relative;
     border-radius: 20px;
-    height: 700px;
+    height: 100%;
+    max-height: 700px;
 }
 
 .TokensSelectorList {
@@ -8041,9 +8029,9 @@ input[type=range]::-ms-thumb {
     height: 100%;
     border: none;
     border-radius: 0 0 0 20px;
-    font-size: 16px;
+    font-size: 14px;
     padding: 2%;
-    margin: 10px auto;
+    /* margin: 10px auto; */
 }
 
 .TokensSelectorCategoriesList {
@@ -14733,7 +14721,7 @@ input {
 
 
 .CreatePage .loadingio_spinner_disk_hn1zpmja0x6
-{ 
+{
     margin-top: 20px;
 }
 
@@ -16213,7 +16201,7 @@ input {
     border-radius: 6px;}
   .BlockNews p {color: #444 !important;}
   .BlockNews a {color: #444;}
-  
+
   .dark .BlockNews {
     background-color: #403b61;
     color:#fff;
@@ -16221,11 +16209,11 @@ input {
   .dark .BlockNews a, .dark .BlockNews p {
     color:#fff!important;
   }
-  
+
   @media only screen and (max-device-width: 990px) {
-    
+
     .BlockNews {display: none !important;}
-  
+
   }
 
 @media only screen and (min-width: 1457px) and (max-width: 1651px) {
