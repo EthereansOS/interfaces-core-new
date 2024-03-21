@@ -8,7 +8,7 @@ export default ({ item }) => {
   return (
     <>
       <div className={style.CollectionRightSubtitles}>
-        <h4>Subtrade</h4>
+        <h4>Trade</h4>
       </div>
       <div className={style.ItemsMetaMain}>
         <Trade item={item} />

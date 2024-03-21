@@ -123,7 +123,7 @@ const LoadCollection = ({ inputItem, mode, state, onStateEntry, setComponentInde
                 {state.collectionId && collection && <div>
                     <div className={style.FancyExplanationCreate}>
                         <h2>Manage Collection: {collection.name} ({collection.symbol})</h2>
-                        <p>Actions to Create e new Item, Mint, Manager or Change Permissions</p>
+                        <p>Actions to Create a new Item, Mint, Manager or Change Permissions</p>
                     </div>
                 </div>}
                 {collection && state.mintOperator === account && <a className={style.CreateBTN2} onClick={mintNewItem}>New Item</a>}

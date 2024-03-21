@@ -605,12 +605,16 @@ export default ({ element, forDelegationVote, refreshElements }) => {
       )}
 
       {((!forDelegationVote && buyOrSell !== null) || isTransfer) && (
-        <ActionAWeb3Button
+        <div  className={style.forDelegationVoteWraper}>
+          <ActionAWeb3Button
+          
           onClick={() =>
             isTransfer ? setProposalModal('Transfer') : setCreate(true)
           }>
           Create
         </ActionAWeb3Button>
+        </div>
+       
       )}
       {create && (
         <TokenBuyOrSell

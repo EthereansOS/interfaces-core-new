@@ -445,8 +445,8 @@ input::-webkit-scrollbar {
 }
 
 .light .selected {
-    background-color: #141416 !important;
-    color: rgb(232, 230, 227) !important;
+    background-color: #f3f4f8 !important;
+    color: rgb(0,0,0) !important;
 }
 
 .dark .selected {
@@ -885,12 +885,21 @@ input::-webkit-scrollbar {
     height: 30px;
     display: inline-block;
 }
+textarea{
+    resize: none;
+}
 
 .ActionInfoSection .ActionInfoSectionSettings figure img {
     width: 100%;
     height: 100%;
     display: block;
 }
+
+.light .ActionInfoSection .ActionInfoSectionSettings figure img {
+    filter: invert(1);
+}
+
+
 
 .ActionInfoSectionText {
     width: 60%;
@@ -1518,7 +1527,7 @@ input::-webkit-scrollbar {
 }
 
 .SettingBLabPerch p {
-    font-size: 12px;
+    font-size: 20px;
     display: inline-block;
 }
 
@@ -3524,6 +3533,14 @@ input[type=range]::-webkit-slider-runnable-track {
     border-radius: 10px;
     background-color: #000 !important;
 }
+.dark input[type=range]::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 5px !important;
+    cursor: pointer;
+    animate: 0.2s;
+    border-radius: 10px;
+    background-color: #7c77a5 !important;
+}
 
 input[type=range]::-webkit-slider-thumb {
     height: 20px;
@@ -4971,7 +4988,7 @@ input[type=range]::-ms-thumb {
 
 .SectionSubMenuItems li a {
     font-weight: 200;
-    color: #7c76a8;
+    color: #b7b2de;
 }
 
 .SectionSubMenuItems li.SectionSubMenuItemsActive a {
@@ -5845,8 +5862,13 @@ input[type=range]::-ms-thumb {
 }
 
 .GovLeft {
-    width: 10%;
-    display: inline-block;
+    width: 100%;
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.VotingPowersList{
+    width: fit-content;
 }
 
 .GovLeft .RegularButtonDuo {
@@ -5996,8 +6018,7 @@ input[type=range]::-ms-thumb {
 }
 
 .Govright {
-    width: 620px;
-    margin-left: 50px;
+    width: 100%;
     display: inline-block;
     vertical-align: top;
 }
@@ -6026,8 +6047,9 @@ input[type=range]::-ms-thumb {
 }
 
 .HostToolsDelegations {
-    width: 920px;
+    width: 65%;
     display: block;
+    min-width: 400px;
     padding: 60px;
     text-align: center;
     margin: 20px auto;
@@ -6056,6 +6078,10 @@ input[type=range]::-ms-thumb {
     margin: 0px auto;
     border: none;
     box-shadow: none !important;
+}
+
+.WrapSection .ModalBack, .CreationPageLabel .ModalBack{
+    position: fixed!important;
 }
 
 .medium .CreatePage .CreationPageLabelF input,
@@ -6396,7 +6422,7 @@ input[type=range]::-ms-thumb {
 }
 
 .VotingPowersList {
-    width: 100%;
+    width: 200px;
     display: inline-block;
     margin: 10px auto;
     padding: 5px;
@@ -7690,8 +7716,8 @@ input[type=range]::-ms-thumb {
 
 .BackButton {
     position: absolute;
-    top: 0px;
-    left: 0px;
+    top: 8px;
+    left: 6px;
     padding: 5px 10px;
     font-size: 13px;
     border-radius: 100% 10px 10px 0px;
@@ -8291,6 +8317,11 @@ input[type=range]::-ms-thumb {
 
 .FarmingDynamics {
     text-align: center;
+    display: flex;
+    align-content: stretch;
+    justify-content: space-around;
+    align-items: flex-start;
+    flex-wrap: wrap;
 }
 
 .FarmingDynamics .ActionInfoSection {
@@ -10208,7 +10239,7 @@ input[type=range]::-ms-thumb {
 }
 
 .light .BackButton {
-    background-color: #e4e4e4;
+    background-color: #ffffff;
     color: #6e6e6e;
 }
 
@@ -10861,7 +10892,7 @@ input[type=range]::-ms-thumb {
 }
 
 .dark .SettingFB {
-    background-color: #000000;
+    background-color: #29263f;
 }
 
 .sepia .SettingFB {
@@ -10956,7 +10987,7 @@ input[type=range]::-ms-thumb {
 }
 
 .dark .SettingBLabRegular input {
-    background-color: #525252;
+    background-color: #403b63;
 }
 
 .light .DappBannerExpl div {
@@ -11365,8 +11396,12 @@ input {
 }
 
 .dark .TradeMarketToken {
-    background-color: #403b63;
-    border-color: #403b63;
+    background-color: #514b7c;
+    border-color: #514b7c;
+}
+
+.dark .InfoAreaIcon{
+    fill: #ffffff;
 }
 
 .dark .BazarExchangeArea .TradeMarketToken {
@@ -11834,7 +11869,7 @@ input {
 
 .light .TokensSelectorCategories input {
     color: #ffffff;
-    background-color: #141416;
+    background-color: #555555;
     border: 0px;
 }
 
@@ -11844,8 +11879,8 @@ input {
 }
 
 .dark .TokensSelectorCategories input {
-    color: #525252;
-    background-color: #000000;
+    color: #fff;
+    background-color: #29263f;
 }
 
 .light .TokenSelectorListProposal>select {
@@ -11868,7 +11903,7 @@ input {
 }
 
 .light .TokensSelectorCategoriesList {
-    background-color: #F0F0F0;
+    background-color: #f2f4f8;
 }
 
 .biz .TokensSelectorCategoriesList {
@@ -11876,7 +11911,7 @@ input {
 }
 
 .dark .TokensSelectorCategoriesList {
-    background-color: #525252;
+    background-color: #35324c;
 }
 
 .light .TokensSelectorCategoriesList a {
@@ -11888,7 +11923,7 @@ input {
 }
 
 .dark .TokensSelectorCategoriesList a {
-    background-color: #525252;
+    background-color: #35324c;
 }
 
 .light .TokensSelectorCategoriesList .selected,
@@ -12604,8 +12639,8 @@ input {
 }
 
 .light .HostToolsDelegations {
-    background-color: #f7fafe;
-    border-color: #000000;
+    background-color: #ffffff;
+    border-color: #ffffff;
 }
 
 .biz .HostToolsDelegations {
@@ -12614,8 +12649,8 @@ input {
 }
 
 .dark .HostToolsDelegations {
-    background-color: #383c42;
-    border-color: #ffffff;
+    background-color: #403b63;
+    border-color: #403b63;
 }
 
 .light .CreationPageLabelFS {
@@ -12665,7 +12700,7 @@ input {
 }
 
 .dark .CreationPageLabelFS input {
-    background-color: #000;
+    background-color: #29263f;
 }
 
 .sepia .CreationPageLabelFS input {
@@ -12692,7 +12727,7 @@ input {
 }
 
 .dark .TranferETHProp .AddAReceiver input {
-    background-color: #000;
+    background-color: #524b7c;
 }
 
 .sepia .TranferETHProp .AddAReceiver input {
@@ -13266,7 +13301,7 @@ input {
 }
 
 .dark .TranferETHProp {
-    background-color: #383c42;
+    background-color: #29263e;
 }
 
 .light .InvestmentsSectionBuySell {
@@ -14253,8 +14288,8 @@ input {
 
 .dark input[type=range]::-webkit-slider-runnable-track {
     border: 0px solid #ffffff;
-    box-shadow: 0px 0px 0px #50555C;
-    background: #50555C;
+    box-shadow: 0px 0px 0px #ffffff;
+    background: #ffffff;
 
 }
 
@@ -14265,7 +14300,7 @@ input {
 }
 
 .dark input[type=range]::-webkit-slider-thumb {
-    background: #141416;
+    background: #f09243;
     box-shadow: 0px 0px 0px #ffffff;
     border: 0px solid #d9d2c2a3;
 }
@@ -14279,7 +14314,7 @@ input {
 }
 
 .dark input[type=range]:focus::-webkit-slider-runnable-track {
-    background: #50555C;
+    background: #f09243;
 }
 
 .sepia input[type=range]:focus::-webkit-slider-runnable-track {
@@ -14320,8 +14355,8 @@ input {
 }
 
 .dark input[type=range]::-moz-range-track {
-    box-shadow: 0px 0px 0px #50555C;
-    background: #849BBD;
+    box-shadow: 0px 0px 0px #fff;
+    background: #fff;
     border: 0px solid #ffffff;
     box-shadow: 0px 0px 0px #50555C;
 }
@@ -14350,7 +14385,7 @@ input {
 .dark input[type=range]::-moz-range-thumb {
     box-shadow: 0px 0px 0px #ffffff;
     border: 0px solid #ffffff;
-    background: #141416;
+    background: #28253e;
     box-shadow: 0px 0px 0px #50555C;
 }
 
@@ -14376,7 +14411,7 @@ input {
 .dark input[type=range]::-ms-thumb {
     box-shadow: 0px 0px 0px #ffffff;
     border: 0px solid #ffffff;
-    background: #141416;
+    background: #28253e;
 }
 
 .sepia input[type=range]::-ms-thumb {
@@ -14434,7 +14469,7 @@ input {
 }
 
 .dark input[type=range]:focus::-ms-fill-upper {
-    background: #849BBD;
+    background: #28253e;
 }
 
 .sepia input[type=range]:focus::-ms-fill-upper {
@@ -15382,10 +15417,9 @@ input {
     background-color: #f09243;
 }
 
-
 .WizardFooter .WizardFooterNext:disabled,
 .WizardFooter .WizardFooterNext[disabled] {
-    background-color: #717178;
+    background-color: #29263f;
     color: #fff;
     float: right;
     cursor: not-allowed;
