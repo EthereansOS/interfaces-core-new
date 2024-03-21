@@ -34,8 +34,8 @@ const ExploreCollections = ({ element }) => (
           fill="currentColor"></path>
       </svg>
       <div className={style.ItemInfoSide}>
-        <p className={style.ItemTitleTopZoneLabel}>Supply</p>
-        <p className={style.ItemTitleTopZoneValue}>100</p>
+        <p className={style.ItemTitleTopZoneLabel}>Symbol</p>
+        <p className={style.ItemTitleTopZoneValue}>{element.symbol}</p>
       </div>
       <LogoRenderer input={element} />
       <div className={style.ItemTitle}>
