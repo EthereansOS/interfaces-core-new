@@ -12,7 +12,7 @@ const FactoriesMain = () => {
     <>
       <div>
         <div className={style.ItemsExploreMainTitleArea}>
-          <h2 class={style.textGradientHeading}>Launch Factories</h2>
+          <h2 class={style.textGradientHeading}>Launch Factory</h2>
           <p>Rapid Token Deployment</p>
         </div>
         <div className={style.FactoryCreateWrapper}>

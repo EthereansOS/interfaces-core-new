@@ -5,15 +5,15 @@ import style from '../../../../all.module.css'
 const Create = ({}) => {
   return (
     <div className={style.MasCardLayer}>
-      <div className={style.MasCard}>
+      <div className={style.CreateBoxDesc}>
         <div className={style.MasCardHeader}>
           <div>New Collection</div>
         </div>
         <div className={style.MasCardBody}>
-          <p>Deploy an on-chain folder to manage and host your Items.</p>
+          <p style={{minHeight:'90px'}}>Deploy an on-chain folder to manage and host your Items.</p>
         </div>
         <div className={style.MasCardBody}>
-          <Link className={style.NextStep} to="/items/create/collection">
+          <Link className={style.footerNextButton} style={{padding: '5px 15px 6px'}} to="/items/create/collection">
             Start
           </Link>
           <a
@@ -25,19 +25,19 @@ const Create = ({}) => {
         </div>
       </div>
 
-      <div className={style.MasCard}>
+      <div className={style.CreateBoxDesc}>
         <div className={style.MasCardHeader}>
           <div>Manage Collection</div>
         </div>
         <div className={style.MasCardBody}>
-          <p>
+          <p style={{minHeight:'90px'}}>
             Manage Items in any Collection you have permission to host. You can
             create entirely new Items for the Collection, or mint more of old
             ones.
           </p>
         </div>
         <div className={style.MasCardBody}>
-          <Link className={style.NextStep} to="/items/create/item/">
+          <Link className={style.footerNextButton} style={{padding: '5px 15px 6px'}} to="/items/create/item/">
             Start
           </Link>
           <a
