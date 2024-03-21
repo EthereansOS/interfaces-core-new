@@ -35,6 +35,8 @@ const Item = ({ element, allMine, wrappedOnly }) => {
 
   const [loadedData, setLoadedData] = useState()
 
+  const [formattedTotalSupply, setFormattedTotalSupply] = useState(0)
+
   useEffect(() => {
     usdPrice(
       { ...web3Data, context, seaport },
@@ -80,6 +82,10 @@ const Item = ({ element, allMine, wrappedOnly }) => {
     () => element.decimals || loadedData?.decimals,
     [element, loadedData]
   )
+
+  useEffect(() => {
+    setFormattedTotalSupply(fromDecimals(totalSupply, decimals))
+  }, [totalSupply, decimals])
 
   function formatNumber(number) {
     if (number >= 1 && number <= 999) {
@@ -146,7 +152,7 @@ const Item = ({ element, allMine, wrappedOnly }) => {
           <div className={style.ItemInfoSide}>
             <p className={style.ItemTitleTopZoneLabel}>Supply</p>
             <p className={style.ItemTitleTopZoneValue}>
-              {formatNumber(fromDecimals(totalSupply, decimals))}
+              {formattedTotalSupply ?? 0}
             </p>
           </div>
         )}
