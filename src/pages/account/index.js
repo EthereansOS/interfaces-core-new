@@ -80,6 +80,28 @@ const Account = () => {
   return (
     <div>
       <Card ensData={ensData} chainId={chainId} account={account} triggerConnect={triggerConnect}></Card>
+     <div className={style.AccountAreaWrapper}>
+      {(!hostedDelegationList || hostedDelegationList.length > 0) && <div className={style.AccountSection}>
+            <h4>Delegations Hosted</h4>
+            <DelegationsList mine onList={setHostedDelegationList} hideHeader={true}/>
+        </div>}
+        {(!hostedItemList || hostedItemList.length > 0) && <div className={style.AccountSection}>
+            <h4>Items Hosted</h4>
+            <ExploreItems
+              provider={() => hostedItems({context, chainId, web3, account, newContract, getGlobalContract})}
+              discriminant={account}
+              onResult={setHostedItemList}
+            />
+        </div>}
+        {(!ownedItemList || ownedItemList.length > 0) && <div className={style.AccountSection}>
+            <h4>Items Owned</h4>
+            <ExploreItems allMine onResult={setOwnedItemList}/>
+        </div>}
+        {(!ownedDecksList || ownedDecksList.length > 0) && <div className={style.AccountSection}>
+            <h4>Decks Owned</h4>
+            <ExploreItems allMine wrappedOnly={'Deck'} onResult={setOwnedDecksList}/>
+        </div>}
+    </div>
     </div>
   )
 }

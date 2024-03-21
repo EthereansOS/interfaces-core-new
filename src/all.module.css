@@ -14731,8 +14731,18 @@ input {
     border-radius: 50px;
 }
 
+.AccountAreaWrapper{
+    margin-top: 30px;
+    padding-top: 30px; 
+    border-top: 1px solid #ddd;
+}
 
 .CreatePage .loadingio_spinner_disk_hn1zpmja0x6
+{ 
+    margin-top: 20px;
+}
+
+.AccountAreaWrapper .loadingio_spinner_disk_hn1zpmja0x6
 { 
     margin-top: 20px;
 }
