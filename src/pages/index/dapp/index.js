@@ -98,22 +98,12 @@ const IndexMain = () => {
           <div>
             <h3>Welcome to</h3>
             <h1 className={style.H1}>
-              ethereans<span className={style.WhiteText}>os</span>_{' '}
-              <img
-                decoding="async"
-                loading="lazy"
-                width="50"
-                height="50"
-                className={style.CardLayerBannerDetailImage}
-                src="https://peerduck.com/wp-content/uploads/2022/04/imaedwed67.png"
-                srcSet="https://peerduck.com/wp-content/uploads/2022/04/imaedwed67.png 80w, https://peerduck.com/wp-content/uploads/2022/04/imaedwed67-40x40.png 40w"
-                sizes="(max-width: 80px) 100vw, 80px"></img>
+              ethereans<span className={style.WhiteText}>os</span>_
             </h1>
             <p>
-              Donec ac vestibulum augue, eget molestie dolor. Morbi placerat
-              urna eu
-              <br />
-              dui auctor elementum. Mauris at mauris non mauris porta rutrum.
+            EthereansOS is a Layer 1+, a user interface layer that makes it simple to interact with Ethereum.
+            <br/>
+            No code, no complexity – just click and create.
             </p>
             <a className={style.BtnPrimary}>
               New <b>Collection</b>
@@ -124,23 +114,7 @@ const IndexMain = () => {
           </div>
           <div>
             <div className={style.CardLayerBannerDetailImages}>
-              <img src="https://toka.peerduck.com/wp-content/uploads/2022/05/rkgmv.png" />
-              <img src="https://toka.peerduck.com/wp-content/uploads/2022/05/colorful_lion_pop_art_portrait.png" />
-              <img src="https://toka.peerduck.com/wp-content/uploads/2022/05/cutecat.png" />
-              <img src="https://toka.peerduck.com/wp-content/uploads/2022/05/statue-bust-roman-david-sunglasses-symbol-bitcoin-innovative-money-blockchain-cryptocurrency.png" />
-              <img src="https://toka.peerduck.com/wp-content/uploads/2022/05/krvjn.png" />
-              <img src="https://toka.peerduck.com/wp-content/uploads/2022/05/colorful_lion_pop_art_portrait.png" />
-              <img src="https://toka.peerduck.com/wp-content/uploads/2022/05/colorful_lion_pop_art_portrait.png" />
-              <img src="https://toka.peerduck.com/wp-content/uploads/2022/03/z_18-2.png" />
-              <img src="https://toka.peerduck.com/wp-content/uploads/2022/05/vklef.png" />
-              <img src="https://toka.peerduck.com/wp-content/uploads/2022/05/lefn.png" />
-              <img src="https://toka.peerduck.com/wp-content/uploads/2022/03/abstract-34.png" />
-              <img src="https://toka.peerduck.com/wp-content/uploads/2022/05/colorful_lion_pop_art_portrait.png" />
-              <img src="https://toka.peerduck.com/wp-content/uploads/2022/05/colorful_lion_pop_art_portrait.png" />
-              <img src="https://toka.peerduck.com/wp-content/uploads/2022/05/colorful_lion_pop_art_portrait.png" />
-              <img src="https://toka.peerduck.com/wp-content/uploads/2022/05/colorful_lion_pop_art_portrait.png" />
-              <img src="https://toka.peerduck.com/wp-content/uploads/2022/03/Bear_Illustration.png" />
-              <img src="https://toka.peerduck.com/wp-content/uploads/2022/03/dfgh.png" />
+              <img src="https://media.discordapp.net/attachments/1195407928463724684/1220748754055991336/Illustration_governance.png?ex=661011df&is=65fd9cdf&hm=c253edcf4a79982fd213f1747bcdc0836771adafa6d5224ba73d9a134bdc6be4&=&format=webp&quality=lossless&width=1462&height=1210" />
             </div>
           </div>
         </div>
@@ -148,17 +122,11 @@ const IndexMain = () => {
 
       <div className={style.CardLayerTitleArea}>
         <div>
-          <div>CREATE</div>
+          <div style={{fontSize: '24px', fontWeight: 'bold'}}>CREATE</div>
         </div>
         <div>
           <div>
-            <h2>Want to become a creator?</h2>
-          </div>
-        </div>
-        <div>
-          <div>
-            Browse dozens of my other extraordinary art collections in the
-            world’s largest NFT marketplace.
+            <h2>Deploy tokens, NFT's, DAO's and DeFi routines with EthereansOS</h2>
           </div>
         </div>
       </div>
@@ -171,8 +139,7 @@ const IndexMain = () => {
               </figure>
               <p>Launch Factory</p>
               <p className={style.CardsLayerBody}>
-                Phasellus aliquet neque nec odio gravida fringilla. Aenean
-                elementum orci pulvinar.
+                  Rapid, secure token deployment
               </p>
             </div>
           </Link>
@@ -184,8 +151,7 @@ const IndexMain = () => {
             </figure>
             <p>Items</p>
             <p className={style.CardsLayerBody}>
-              Phasellus aliquet neque nec odio gravida fringilla. Aenean
-              elementum orci pulvinar.
+                Hybrid NFT tokens with dynamic metadata
             </p>
           </div>
         </Link>
@@ -198,8 +164,7 @@ const IndexMain = () => {
               </figure>
               <p>Organizations</p>
               <p className={style.CardsLayerBody}>
-                Phasellus aliquet neque nec odio gravida fringilla. Aenean
-                elementum orci pulvinar.
+                Modular DAO's with true onchain governance
               </p>
             </div>
           </Link>
@@ -211,8 +176,7 @@ const IndexMain = () => {
             </figure>
             <p>Covenants</p>
             <p className={style.CardsLayerBody}>
-              Phasellus aliquet neque nec odio gravida fringilla. Aenean
-              elementum orci pulvinar.
+            DeFi routines and farming contracts
             </p>
           </div>
         </Link>

@@ -12904,7 +12904,7 @@ input {
 }
 
 .light .Vote {
-    background-color: #f2f4f8;
+    background-color: #ffffff;
 }
 
 .biz .Vote {
@@ -13379,7 +13379,16 @@ input {
 }
 
 .dark .RegularVoteBoxStaked {
-    background-color: #000000;
+    background-color: #403b63;
+}
+
+.CardsLayerS .CardsLayerHeader p:nth-child(2){
+    font-size: 23px!important;
+}
+
+.CardsLayerS .CardsLayerHeader p:nth-child(3){
+    font-size: 16px!important;
+    line-height: 23px;
 }
 
 .light .Upshot span {
@@ -14735,6 +14744,17 @@ input {
     margin-top: 20px;
 }
 
+.dark .Govright{
+    border-top: 1px solid #29263f;
+    margin-top: 20px;
+    padding-top: 20px;
+}
+.light .Govright{
+    border-top: 1px solid #dee1eb;
+    margin-top: 20px;
+    padding-top: 20px;
+}
+
 .CreateBTN2{
     background-color: #f09243;
     color: #fff;
@@ -15157,16 +15177,32 @@ input {
 .CardLayerBannerDetailImages {
     position: absolute;
     width: 800px;
-    transform: rotateZ(324deg);
-    top: -220px;
-    right: -300px;
+    transform: rotateZ(0deg);
+    top: -277px;
+    right: -400px;
+}
+
+.CardLayerTitleArea{
+    padding-left: 50px;
+    position: relative;
+}
+.CardLayerTitleArea::before{
+    content: '';
+    display: inline-block;
+    background-color: #f09243;
+    position: absolute;
+    left:0px;
+    top:-10px;
+    margin-right: 10px;
+    height: 70px;
+    width: 30px;
+    border-radius: 5px !important;
 }
 
 .CardLayerBannerDetailImages img {
-    width: 100px;
+    width: 400px;
     margin: 0 0 0 auto;
     display: inline-block;
-    /* box-shadow: 0px 0px 11px 0px #99c0e7; */
     border-radius: 10px;
     margin-right: 30px;
     margin-bottom: 30px;

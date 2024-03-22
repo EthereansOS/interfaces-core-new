@@ -14,11 +14,11 @@ export default ({element, refreshElements, forDelegationVote}) => {
     {element.organization.type !== 'delegation' && <Description className={style.DescriptionBig} description={element.description} title="Summary"/>}
     <div className={style.Proposals}>
       {actives && actives.length > 0 && <>
-        <p><b>Active:</b></p>
+        <p style={{fontSize: "24px", marginBottom: '15px'}}><b>Active Proposals</b></p>
         {actives.map(it => <Proposal refreshElements={refreshElements} key={it.id} element={it} forDelegationVote={forDelegationVote}/>)}
       </>}
       {!forDelegationVote && ended && ended.length > 0 && <>
-        {!element.unique && <p><b>Ended:</b></p>}
+        {!element.unique && <p style={{fontSize: "24px", marginBottom: '15px', marginTop: '10px', borderTop: "1px solid #dee1eb", paddingTop: "20px"}} ><b>Previous Proposals</b></p>}
         {ended.map(it => <Proposal key={it.id} element={it}/>)}
       </>}
     </div>

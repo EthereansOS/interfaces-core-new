@@ -269,11 +269,12 @@ export default ({element, refreshElements, forDelegationVote}) => {
             <Upshots title="Yes" value={proposalData?.accept} total={proposalData?.accept?.ethereansosAdd(proposalData?.refuse)}/>
             <Upshots title="No" value={proposalData?.refuse} total={proposalData?.accept?.ethereansosAdd(proposalData?.refuse)}/>
           </div>}
-          {!forDelegationVote && (terminable && proposalData?.terminationBlock === '0') && <ActionAWeb3Button onSuccess={() => afterAction().then(refreshElements)} onClick={() => terminateProposal({}, element, element.proposalId)}>Terminate</ActionAWeb3Button>}
+          {!forDelegationVote && (terminable && proposalData?.terminationBlock === '0') && <ActionAWeb3Button onSuccess={() => afterAction().then(refreshElements)} onClick={() => terminateProposal({}, element, element.proposalId)}>Execute</ActionAWeb3Button>}
           {!forDelegationVote && showWithdrawButtonAfterTermination && <ActionAWeb3Button onSuccess={() => afterAction().then(refreshElements)} onClick={() => withdrawAfterDelegationVoteOriginalProposalTermination()}>Withdraw</ActionAWeb3Button>}
           {!forDelegationVote && showProposeRetireVotesButtonAfterTermination && element.organization.host === account && <ActionAWeb3Button onSuccess={() => afterAction().then(refreshElements)} onClick={() => proposeRetireVotesButtonAfterDelegationVoteOriginalProposalTermination()}>Cancel Vote</ActionAWeb3Button>}
-          <div className={style.Vote}>
+         
             {!terminable && proposalData?.terminationBlock === '0' && <>
+            <div className={style.Vote}>
               <p><b>Choose from:</b></p>
               <div className={style.VoteList}>
                 <VoteSelections
@@ -311,8 +312,9 @@ export default ({element, refreshElements, forDelegationVote}) => {
                   refresh={afterAction}
                 />}
               </div>
+              </div>
             </>}
-          </div>
+         
           {address !== null && <div className={style.OptionOpen}>
             <label>
               <p>Owner:</p>
