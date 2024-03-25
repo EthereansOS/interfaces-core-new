@@ -13,8 +13,12 @@ import {
   getEthereumPrice,
   formatMoney,
 } from 'interfaces-core'
-import { getOrganizationMetadata, getOrganization } from 'logic/organization'
-import { getDelegation, getDelegationsManagers } from 'logic/delegation'
+import {
+  getOrganizationMetadata,
+  getOrganization,
+  retrieveAllProposals,
+} from 'logic/organization'
+import { getDelegation, refreshWrappedToken } from 'logic/delegation'
 
 const ExploreOrganizations = ({ elements, type }) => {
   return (
@@ -37,6 +41,7 @@ const ExploreOrganization = ({ address, type }) => {
 
   const [delegation, setDelegation] = useState(null)
   const [supportersStake, setSupportersStake] = useState(null)
+  const [symbol, setSymbol] = useState(null)
 
   const { block, chainId, web3, account, getGlobalContract } = useWeb3()
 
@@ -78,14 +83,25 @@ const ExploreOrganization = ({ address, type }) => {
       )
       if (delegation?.type == 'delegation') {
         setDelegation(delegation)
-        delegation.delegationsManager.wrappedToken &&
-          setSupportersStake(
-            await blockchainCall(
-              delegation.delegationsManager.wrappedToken.mainInterface.methods
-                .totalSupply,
-              delegation.delegationsManager.wrappedToken.id
+        let del = await retrieveAllProposals(
+          { context, web3, account, chainId, getGlobalContract, newContract },
+          delegation
+        )
+        if (del) {
+          var firstEl = del[0]
+          firstEl.delegationsManager = (
+            await refreshWrappedToken({ context, ...web3Data }, firstEl)
+          ).delegationsManager
+          firstEl.delegationsManager?.wrappedToken &&
+            setSupportersStake(
+              await blockchainCall(
+                firstEl.delegationsManager.wrappedToken.mainInterface.methods
+                  .totalSupply,
+                firstEl.delegationsManager.wrappedToken.id
+              )
             )
-          )
+          setSymbol(firstEl.delegationsManager?.supportedToken?.symbol)
+        }
       }
     } catch (e) {}
   }, [element])
@@ -136,8 +152,17 @@ const ExploreOrganization = ({ address, type }) => {
                     Supporters stake
                   </p>
                   <p className={style.ItemTitleTopZoneValue}>
-                    {formatMoney(fromDecimals(supportersStake, 18, true), 4)}{' '}
-                    {delegation?.delegationsManager?.supportedToken?.symbol}
+                    {supportersStake && symbol ? (
+                      <>
+                        {formatMoney(
+                          fromDecimals(supportersStake, 18, true),
+                          4
+                        )}{' '}
+                        {symbol}
+                      </>
+                    ) : (
+                      <>loading...</>
+                    )}
                   </p>
                 </>
               ) : (
@@ -146,7 +171,7 @@ const ExploreOrganization = ({ address, type }) => {
                     Treasury Balance
                   </p>
                   <p className={style.ItemTitleTopZoneValue}>
-                    {treasuryBalance}
+                    {treasuryBalance ?? 'loading...'}
                   </p>
                 </>
               )}
