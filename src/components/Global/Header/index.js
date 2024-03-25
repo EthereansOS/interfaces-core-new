@@ -12,6 +12,7 @@ import {
   sendAsync,
   truncatedWord,
   web3States,
+  web3Utils,
 } from 'interfaces-core'
 
 import Select from 'react-select'
@@ -69,6 +70,7 @@ const Header = (props) => {
           <FaEthereum /> <div className={style.SelectLabel}>Ethereum</div>
         </div>
       ),
+      chainId : 1
     },
     {
       value: 'optimism',
@@ -81,7 +83,8 @@ const Header = (props) => {
           <div className={style.SelectLabel}>Optimism</div>
         </div>
       ),
-    },
+      chainId : 10
+    }
   ]
 
   const [toggled, setToggled] = React.useState(false)
@@ -125,7 +128,7 @@ const Header = (props) => {
   }
 
   const handleNetworkChange = (e) => {
-    localStorage.setItem('selectedNetwork', e.value)
+    switchToNetwork(e.chainId)
   }
 
   useEffect(() => {
@@ -162,18 +165,11 @@ const Header = (props) => {
   }, [])
 
   const switchToNetwork = useCallback(
-    () =>
+    chainIdToSet =>
       sendAsync(web3.currentProvider, 'wallet_switchEthereumChain', {
-        chainId:
-          '0x' +
-          parseInt(
-            dualChainId ||
-              Object.entries(context.dualChainId).filter(
-                (it) => parseInt(it[1]) === chainId
-              )[0][0]
-          ).toString(16),
+        chainId: web3Utils.toHex(chainIdToSet)
       }).then(() => history.push('')),
-    [chainId, dualChainId, history]
+    [web3]
   )
 
   const blockie = !ensData?.name ? makeBlockie(account) : undefined
@@ -228,10 +224,7 @@ const Header = (props) => {
         </div>
         <IconContext.Provider value={{ color: 'black', size: '1.5em' }}>
           <Select
-            defaultValue={options.find(
-              (option) =>
-                option.value === (localStorage.getItem('selectedNetwork') ?? '')
-            )}
+            defaultValue={options.find(it => it.chainId === chainId)}
             isSearchable={false}
             className={style.NetworkSelectDropdown}
             styles={customStyles}
@@ -240,7 +233,7 @@ const Header = (props) => {
               DropdownIndicator: () => null,
               IndicatorSeparator: () => null,
             }}
-            onChange={(e) => handleNetworkChange(e)}
+            onChange={handleNetworkChange}
           />
         </IconContext.Provider>
         <div className={style.ThemeSelect}>
