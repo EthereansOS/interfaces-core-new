@@ -9,6 +9,7 @@ import OurCircularProgress from 'components/Global/OurCircularProgress'
 import {
   useEthosContext,
   useWeb3,
+  shortenWord,
   formatNumber,
   getEthereumPrice,
   formatMoney,
@@ -178,7 +179,7 @@ const ExploreOrganization = ({ address, type }) => {
             </div>
             <LogoRenderer input={element} />
             <div className={style.ItemTitle}>
-              <h6>{element.name}</h6>
+              <h6>{shortenWord({ context, charsAmount: 15 }, element.name)}</h6>
               {type === 'delegations' ? (
                 <h4>Delegation</h4>
               ) : (

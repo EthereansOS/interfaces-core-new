@@ -132,10 +132,19 @@ const TokenInputRegular = ({
       isNaN(parseFloat(value)) ||
       (parseFloat(value) === 0 && value === '0')
     ) {
-      return ''
+      return '';
     }
-    return value
-  }, [value, element])
+  
+    const num = parseFloat(value);
+  
+    const numStr = num.toString();
+    if (numStr.indexOf('.') !== -1) {
+      const decimalPlaces = Math.min(numStr.split('.')[1].length, 7);
+      return num.toFixed(decimalPlaces);
+    } else {
+      return numStr;
+    }
+  }, [value, element]);
 
   return modalIsOpen ? (
     <ModalStandard close={() => setModalIsOpen(false)}>

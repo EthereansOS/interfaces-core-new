@@ -22,6 +22,7 @@ const DoubleDappMenu = ({
             <li
               key={voice.path || voice.id}
               className={
+                (voice.label == 'Create' ? style.Hide : '') + ' ' +
                 voice.label +
                 (selected === i ? ' ' + style.SectionSubMenuItemsActive : '')
               }>

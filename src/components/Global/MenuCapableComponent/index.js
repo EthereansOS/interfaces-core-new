@@ -124,7 +124,7 @@ const MenuCapableComponent = (props) => {
                  
                 </h2>
                 <Link
-                  style={location.pathname === '/covenants' || location.pathname === '/covenants/create' || location.pathname === '/covenants/create/routine/' || location.pathname === '/covenants/create/farming/' ? { display: 'none' } : {}}
+                  style={ location.pathname === '/covenants/create' || location.pathname === '/covenants/create/routine/' || location.pathname === '/covenants/create/farming/' ? { display: 'none' } : {}}
                     to="/covenants/create"
                     className={style.ItemsExploreMainCategoriesCreateElement}>
                     <svg

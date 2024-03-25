@@ -1468,8 +1468,8 @@ textarea{
 }
 
 .TradeMarketTokenAmount {
-    width: 130px;
-    display: inline-block;
+    width: 234px;
+    display: block;
     text-align: right;
 }
 
@@ -1505,9 +1505,9 @@ textarea{
 }
 
 .SettingFB {
-    width: 370px;
+    width: 516px;
     display: inline-block;
-    margin: 10px auto;
+    margin: 10px auto 10px 15px;
     padding: 30px;
     text-align: left;
     border-radius: 16px;
@@ -1520,7 +1520,7 @@ textarea{
 }
 
 .SettingBLabPerch input[type="range"] {
-    width: 150px;
+    width: 300px;
     display: inline-block;
     vertical-align: middle;
     margin-left: 15px;
@@ -1551,7 +1551,7 @@ textarea{
 }
 
 .SettingBLabRegular p {
-    font-size: 12px;
+    font-size: 20px;
     display: inline-block;
 }
 
@@ -1560,7 +1560,7 @@ textarea{
 }
 
 .SettingBLabRegular input {
-    width: 150px;
+    width: 300px;
     font-size: 12px;
     padding: 5px;
     margin: auto 2px auto 6px;
@@ -1846,6 +1846,11 @@ section.chart-wrapper {
 
 .ActionInfoSectionAMMLabel {
     display: inline-block;
+    padding-right: 10px;
+}
+
+.RewarPerBlockInput .TradeMarketTokenAmount{
+width: 100%!important;
 }
 
 .TradeMarketType {
@@ -6402,6 +6407,7 @@ input[type=range]::-ms-thumb {
     display: block;
     margin: 10px auto;
     padding: 5px;
+    text-align: center;
 }
 
 .Upshots p {
@@ -14199,6 +14205,10 @@ input {
     margin-right: 50px;
 }
 
+.SectionSubMenuItems .Hide{
+    display: none!important;
+}
+
 /* Others Components */
 .NavigationItem {
     width: fit-content !important;
@@ -14212,6 +14222,7 @@ input {
     padding-top: 0px;
     min-height: 0px;
     padding-bottom: 0px;
+    text-align: center;
 }
 
 .NavigationItem span {
@@ -15584,8 +15595,8 @@ input {
         box-sizing: border-box;
         position: relative;
         display: inline-block;
-        border: solid 1px #DDD;
-        background-color: #FFF;
+        border: solid 1px #403b63;
+        background-color: #29263f;
         font-size: 1rem;
         line-height: 140%;
         font-weight: 600;
@@ -15679,7 +15690,15 @@ input {
 }
 
 .ErrorMessage {
+    position: absolute;
+    padding: 20px;
+    font-size: 13px;
     color: #ec3939 !important;
+}
+
+.dark .ErrorMessage{
+  
+    color: #f09243 !important;
 }
 
 @media only screen and (max-width: 1650px) {
@@ -15724,7 +15743,7 @@ input {
 
     .Govright {
         min-width: 80%;
-        width: 80%;
+        width: 100%;
         margin-left: 0px;
         display: inline-block;
     }
@@ -15846,9 +15865,9 @@ input {
     background: #29263e;
 }
 .dark input:checked + label {
-    background-color: #29263e;
+    background-color: #f09243;
     color: #FFF;
-    border-color:#29263e;
+    border-color: #f09243;
 }
 .dark .PercentageComponentPlus {
     background: #403b63;
@@ -15857,9 +15876,18 @@ input {
     background-color: #29263e;
     border: #29263e;
 }
-.dark .OrganizationToggle input+label {
-    color:#000;
+.dark .OrganizationToggle input + label {
+    color: #fff!important;
 }
+.dark .OrganizationToggle input+label {
+    color:#403b63;
+}
+
+.dark .PercentageComponentBoxArea {
+    background: #29263f;
+}
+
+
 .dark .CreationPageLabelF select{
     background-color: #29263e;
     border: 2px solid transparent!important;

@@ -334,7 +334,7 @@ export default props => {
                 <label className={style.CreationPageLabelF}>
                     <p>When executed, a routine can trigger one or more operations. Each operation can involve the transfer of ETH, Items or other tokens from a single address to one or more others; or it can involve the swap of ETH, an Item or another token on an AMM for any other token, as well as the transfer of the acquired token to one or more addresses.</p>
                 </label>
-                <div className={style.CreationPageLabelF}>
+                <div className={style.CreationPageLabelF + ' ' + style.RewarPerBlockInput}>
                     <h6>Transfer</h6>
                     {!enterInETH && <select className={style.CreationSelectW} value={transferType} onChange={e => setTransferType(e.currentTarget.value)}>
                         <option value="">Select type</option>
@@ -356,7 +356,7 @@ export default props => {
                     }
                 </div>
                 {transferType && <>
-                    <div className={style.CreationPageLabelF}>
+                    <div className={style.CreationPageLabelF + ' ' + style.RewarPerBlockInput}>
                         <h6>Receivers</h6>
                         <input type="text" value={currentReceiver} onChange={(e) => setCurrentReceiver(e.target.value)} placeholder="Address" aria-label="Receiver" aria-describedby="button-add" />
                         <a className={style.RoundedButton} onClick={() => {
@@ -417,7 +417,7 @@ export default props => {
                     <div className={style.proggressCreatePerch} style={{ width: "60%" }}>Step 3 of 5</div>
                 </div>
             </div>
-            <div className={style.CreationPageLabelF}>
+            <div className={style.CreationPageLabelF + ' ' + style.RewarPerBlockInput}>
                 <h6>Swap</h6>
                 {!enterInETH && <select className={style.CreationSelectW} value={transferType} onChange={onTransferChange}>
                     <option value="">Select type</option>
