@@ -1126,6 +1126,17 @@ export function checkItemMetadata(metadata, metadataTypes, throwOnError) {
         metadata[mandatoryField.field],
         mandatoryField
       )
+      if (
+        error?.length > 0 &&
+        mandatoryField.label.toLowerCase().includes('cover')
+      ) {
+        error =
+          metadata[mandatoryField.field + '_upload'] == null ||
+          metadata[mandatoryField.field + '_upload'] == undefined ||
+          metadata[mandatoryField.field + '_upload'] == ''
+            ? `${mandatoryField.label} is empty`
+            : null
+      }
       error && errors.push(error)
     }
   }
