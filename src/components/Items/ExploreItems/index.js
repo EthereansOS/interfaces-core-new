@@ -144,7 +144,7 @@ const Item = ({ element, allMine, wrappedOnly }) => {
           <div className={style.ItemInfoSide}>
             <p className={style.ItemTitleTopZoneLabel}>Supply</p>
             <p className={style.ItemTitleTopZoneValue}>
-              {formattedTotalSupply ?? <OurCircularProgress />}
+              {formattedTotalSupply ?? <span>loading...</span>}
             </p>
           </div>
         )}
