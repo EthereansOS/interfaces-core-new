@@ -19,6 +19,7 @@ import { loadItemDynamicInfo, usdPrice } from '../../../logic/itemsV2'
 import OurCircularProgress from '../../Global/OurCircularProgress'
 import { useOpenSea } from '../../../logic/uiUtilities'
 import { getRawField } from '../../../logic/generalReader'
+import { loadTokenFromAddress } from '../../../logic/erc20'
 
 const Item = ({ element, allMine, wrappedOnly }) => {
   const context = useEthosContext()
@@ -34,8 +35,9 @@ const Item = ({ element, allMine, wrappedOnly }) => {
   const [totalSupply, setTotalSupply] = useState(element.totalSupply)
 
   const [loadedData, setLoadedData] = useState()
-
-  const [formattedTotalSupply, setFormattedTotalSupply] = useState(0)
+  const [item, setItem] = useState()
+  const [decimals, setDecimals] = useState(null)
+  const [formattedTotalSupply, setFormattedTotalSupply] = useState(null)
 
   useEffect(() => {
     usdPrice(
@@ -78,10 +80,29 @@ const Item = ({ element, allMine, wrappedOnly }) => {
     () => element.name || loadedData?.name,
     [element, loadedData]
   )
-  const decimals = useMemo(
-    () => element.decimals || loadedData?.decimals,
-    [element, loadedData]
-  )
+  useEffect(async () => {
+    let dec = null
+    if (element && element.decimals) {
+      dec = element.decimals
+    } else if (loadedData && loadedData.decimals) {
+      dec = loadedData.decimals
+    } else if (element && element.address) {
+      let current = await loadTokenFromAddress(
+        { context, ...web3Data, seaport },
+        element.address
+      )
+      setItem(current)
+      dec = current?.decimals ?? 0
+    } else if (loadedData && loadedData.address) {
+      let current = await loadTokenFromAddress(
+        { context, ...web3Data, seaport },
+        loadedData.address
+      )
+      setItem(current)
+      dec = current?.decimals ?? 0
+    }
+    setDecimals(dec)
+  }, [element, loadedData])
 
   useEffect(() => {
     setFormattedTotalSupply(fromDecimals(totalSupply, decimals))
@@ -161,7 +182,7 @@ const Item = ({ element, allMine, wrappedOnly }) => {
           <div className={style.ItemInfoSide}>
             <p className={style.ItemTitleTopZoneLabel}>Supply</p>
             <p className={style.ItemTitleTopZoneValue}>
-              {formattedTotalSupply ?? 0}
+              {formattedTotalSupply ?? <span>loading...</span>}
             </p>
           </div>
         )}
