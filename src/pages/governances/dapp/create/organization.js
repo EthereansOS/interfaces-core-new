@@ -2688,11 +2688,13 @@ const InvestmentsManagerOperation = ({
             )}
             <div>
               <a
-                className={style.PercentageComponentPlus}
+                className={style.RoundedButton}
                 onClick={() =>
                   onChange(value.filter((_, index) => index !== i))
                 }>
-                <h4>-</h4>
+                <h4>
+                X
+                </h4>
               </a>
             </div>
           </div>

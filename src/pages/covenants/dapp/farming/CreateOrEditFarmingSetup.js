@@ -185,18 +185,19 @@ export default props => {
                         </h6>}
                     </div>}
                 </div>
-                <div className={style.CreationPageLabelF}>
+                <div className={style.CreationPageLabelF + ' ' + style.RewarPerBlockInput}>
                     <h6>Reward per block</h6>
+                    <p>Imput the total ammount of reward per block split between farmers</p>
                     <TokenInputRegular outputValue={rewardToken ? fromDecimals(rewardPerBlock || '0', rewardToken.decimals, true) : '0'} disabled={editSetup?.editing && !editSetup?.lastSetup?.active} noBalance selected={rewardToken} tokens={[rewardToken]} onElement={(t, b, v) => setRewardPerBlock(v)} />
-                    <p>Imput the total ammount of reward per block splitted between farmers</p>
                 </div>
                 <div className={style.CreationPageLabelF}>
                     <h6>Duration</h6>
+                    <p>Select the duration of the setup. The selected timeband will determinate the end block once activated</p>
                     <select disabled={editSetup?.editing} className={style.CreationSelectW} value={blockDuration} onChange={e => setBlockDuration(e.target.value)}>
                         <option value={0}>Choose setup duration</option>
                         {Object.keys(context.blockIntervals).map(key => <option key={key} value={context.blockIntervals[key]}>{key}</option>)}
                     </select>
-                    <p>Select the duration of the setup. The selected timeband will determinate the end block once activated</p>
+                   
                 </div>
                 <p><b>Total reward ({`${blockDuration}`} blocks): {formatMoney(fromDecimals(rewardPerBlock.ethereansosMul(blockDuration), rewardToken.decimals, true), 8)} {rewardToken.symbol}</b></p>
                 <div className={style.WizardFooter}>

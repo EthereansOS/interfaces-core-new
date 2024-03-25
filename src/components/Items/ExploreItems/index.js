@@ -88,37 +88,46 @@ const Item = ({ element, allMine, wrappedOnly }) => {
   }, [totalSupply, decimals])
 
   function formatNumber(number) {
-    if (number >= 1 && number <= 999) {
-      return `${number}`
+    if (number >= 0 && number <= 999) {
+      return `${number}`;
     } else if (number >= 1000 && number <= 999999) {
-      return `${(number / 1000).toFixed(1)} thousand`
+      return `${(number / 1000).toFixed(1)} thousand`;
     } else if (number >= 1000000 && number <= 999999999) {
-      return `${(number / 1000000).toFixed(1)} million`
+      return `${(number / 1000000).toFixed(1)} million`;
     } else if (number >= 1000000000 && number <= 999999999999) {
-      return `${(number / 1000000000).toFixed(1)} billion`
+      return `${(number / 1000000000).toFixed(1)} billion`;
     } else if (number >= 1000000000000 && number <= 999999999999999) {
-      return `${(number / 1000000000000).toFixed(1)} trillion`
+      return `${(number / 1000000000000).toFixed(1)} trillion`;
     } else if (number >= 1000000000000000 && number <= 999999999999999999) {
-      return `${(number / 1000000000000000).toFixed(1)} quadrillion`
-    } else if (
-      number >= 1000000000000000000 &&
-      number <= 999999999999999999999
-    ) {
-      return `${(number / 1000000000000000000).toFixed(1)} quintillion`
+      return `${(number / 1000000000000000).toFixed(1)} quadrillion`;
+    } else if (number >= 1000000000000000000 && number <= 999999999999999999999) {
+      return `${(number / 1000000000000000000).toFixed(1)} quintillion`;
     } else if (number >= 1e21 && number <= 999999999999999999999999) {
-      return `${(number / 1e21).toFixed(1)} sextillion`
+      return `${(number / 1e21).toFixed(1)} sextillion`;
     } else if (number >= 1e24 && number <= 999999999999999999999999999) {
-      return `${(number / 1e24).toFixed(1)} septillion`
+      return `${(number / 1e24).toFixed(1)} septillion`;
     } else if (number >= 1e27 && number <= 999999999999999999999999999999) {
-      return `${(number / 1e27).toFixed(1)} octillion`
+      return `${(number / 1e27).toFixed(1)} octillion`;
     } else if (number >= 1e30 && number <= 999999999999999999999999999999999) {
-      return `${(number / 1e30).toFixed(1)} nonillion`
-    } else if (number >= 1e33) {
-      return `${(number / 1e33).toFixed(1)} decillion`
+      return `${(number / 1e30).toFixed(1)} nonillion`;
+    } else if (number >= 1e33 && number <= 999999999999999999999999999999999999) {
+      return `${(number / 1e33).toFixed(1)} decillion`;
+    } else if (number >= 1e36 && number <= 999999999999999999999999999999999999999) {
+      return `${(number / 1e36).toFixed(1)} undecillion`;
+    } else if (number >= 1e39 && number <= 999999999999999999999999999999999999999999) {
+      return `${(number / 1e39).toFixed(1)} duodecillion`;
+    } else if (number >= 1e42 && number <= 999999999999999999999999999999999999999999999) {
+      return `${(number / 1e42).toFixed(1)} tredecillion`;
+    } else if (number >= 1e45 && number <= 999999999999999999999999999999999999999999999999) {
+      return `${(number / 1e45).toFixed(1)} quattuordecillion`;
+    } else if (number >= 1e48 && number <= 999999999999999999999999999999999999999999999999999) {
+      return `${(number / 1e48).toFixed(1)} quindecillion`;
+    // Continue adding more cases here as needed
     } else {
-      return 'Out of range'
+      return 'Out of range';
     }
-  }
+}
+
 
   return (
     <div className={style.ItemSingle}>

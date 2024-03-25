@@ -103,7 +103,8 @@ const IndexMain = () => {
             <p>
             EthereansOS is a Layer 1+, a user interface layer that makes it simple to interact with Ethereum.
             <br/>
-            No code, no complexity – just click and create.
+            <br/>
+            No-code tools for Ethereum<br/>Click, Create, Deploy.
             </p>
             <a className={style.BtnPrimary}>
               New <b>Collection</b>
@@ -126,7 +127,7 @@ const IndexMain = () => {
         </div>
         <div>
           <div>
-            <h2>Deploy tokens, NFT's, DAO's and DeFi routines with EthereansOS</h2>
+            <h2>Deploy tokens, NFTs, DAOs and DeFi routines with EthereansOS</h2>
           </div>
         </div>
       </div>
@@ -164,7 +165,7 @@ const IndexMain = () => {
               </figure>
               <p>Organizations</p>
               <p className={style.CardsLayerBody}>
-                Modular DAO's with true onchain governance
+                Modular DAOs with true onchain governance
               </p>
             </div>
           </Link>
