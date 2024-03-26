@@ -76,7 +76,7 @@ function Card({ ensData, chainId, account, triggerConnect }) {
                   
                     <g fill="#fff" strokeLinecap="round">
                         <g clipPath="url(#txtBoxes)">
-                            <image x="45" y="110" href="http://localhost:3000/img/logo.png" style={{"filter": "brightness(0%) invert(1)"}} width="200" height="100" />
+                            <image x="45" y="110" href="/img/logo.png" style={{"filter": "brightness(0%) invert(1)"}} width="200" height="100" />
                             <text x="480" y="60" fontSize="18"><a onClick={triggerConnect}>Disconnect</a></text>
                             <text x="45" y="60" fontSize="26">Profile</text>
                             <text x="45" y="230" fontSize="19" fontWeight='bold'>Holder Name</text>

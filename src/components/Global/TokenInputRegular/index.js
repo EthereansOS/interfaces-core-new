@@ -117,6 +117,13 @@ const TokenInputRegular = ({
     {}
   )
 
+  const onKeyDown = useCallback((e) => {
+    // Prevent 'e', '+', '-', and other non-numeric characters
+    if (e.key === 'e' || e.key === '+' || e.key === '-' || e.key === 'E') {
+        e.preventDefault();
+    }
+}, []);
+
   const onValueChange = useCallback((e) => {
     var v = e.currentTarget.value
     v = v.indexOf('.') === 0 && v !== '.' ? '0' + v : v
@@ -176,6 +183,7 @@ const TokenInputRegular = ({
               onWheel={numberInputOnWheelPreventChange}
               disabled={disabled}
               type="number"
+              onKeyDown={onKeyDown}
               placeholder="0.0"
               min="0.000000000000000001"
               step="0.001"
