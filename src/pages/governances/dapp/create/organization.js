@@ -1032,6 +1032,9 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
     setDisabled(false)
   }, [value])
 
+
+  
+
   return (
     <div className={style.CreationPageLabel}>
       <div className={style.FancyExplanationCreate}>
@@ -1057,7 +1060,7 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
             name="fixed"
             id="fixedNo"
             checked={value === undefined || value === null}
-            onClick={() => onChange(null)}
+            onClick={() => { onChange(null); setDisabled(false)}}
           />
           <label for="fixedNo">No</label>
         </div>

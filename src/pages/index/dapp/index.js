@@ -106,11 +106,14 @@ const IndexMain = () => {
             <br/>
             No-code tools for Ethereum<br/>Click, Create, Deploy.
             </p>
-            <a className={style.BtnPrimary}>
+            <a className={style.BtnSecondary}  href='/#/items/create/collection' style={{marginRight:'10px'}}>
               New <b>Collection</b>
             </a>
-            <a className={style.BtnSecondary}>
+            <a className={style.BtnSecondary}  href='/#/organizations/create/organization' style={{marginRight:'10px'}}>
               New <b>Organization</b>
+            </a>
+            <a className={style.BtnSecondary} href='/#/factories' style={{marginRight:'10px'}}>
+              New <b>Token</b>
             </a>
           </div>
           <div>
