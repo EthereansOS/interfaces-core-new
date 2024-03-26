@@ -6,9 +6,10 @@ import {
   useWeb3,
   VOID_ETHEREUM_ADDRESS,
   web3Utils,
+  getNetworkElement,
 } from 'interfaces-core'
 
-import { useHistory } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 
 import ActionAWeb3Button from '../../../../components/Global/ActionAWeb3Button'
 import TokenInputRegular from '../../../../components/Global/TokenInputRegular'
@@ -267,17 +268,84 @@ const Confirmation = ({
   onChange,
   onNext,
   onPrev,
-  loading,
-  onClick,
   disabled,
   state,
   dataTime,
 }) => {
+  const context = useEthosContext()
+  const { chainId } = useWeb3()
+  const web3Data = useWeb3()
+  const initialData = useMemo(
+    () => ({ context, ...web3Data }),
+    [context, web3Data]
+  )
   const [token, setToken] = useState(value?.token)
   const [proposalRules, setProposalRules] = useState(value?.proposalRules)
+  const ipfsHttpClient = useMemo(() => initializeIPFSClient(context), [context])
 
   const [hardCapValue, setHardCapValue] = useState(0)
   const [quorum, setQuorum] = useState(0)
+
+  const [success, setSuccess] = useState(null)
+  const [address, setAddress] = useState()
+  const [loading, setLoading] = useState(false)
+
+  const onClick = useCallback(
+    async function () {
+      var errorMessage
+      try {
+        if (state?.metadata?.file) {
+          state.metadata.image = await uploadToIPFS(
+            { context, ipfsHttpClient },
+            await getFileFromBlobURL(state.metadata.file)
+          )
+        }
+
+        if (state?.metadata) {
+          delete state.metadata.error
+          delete state.metadata.file
+        }
+
+        var finalInputData = prepareInputData(
+          initialData.context,
+          state,
+          dataTime
+        )
+
+        if (!disabled) {
+          var trx = await createOrganization(initialData, finalInputData)
+          setSuccess(trx)
+        }
+      } catch (e) {
+        errorMessage = e.message || e
+        setLoading(false)
+      }
+      setLoading(false)
+      errorMessage && setTimeout(() => alert(errorMessage))
+    },
+    [disabled, state]
+  ) // Update the block number and broadcast it to the listeners
+
+  useEffect(() => {
+    setAddress()
+    setTimeout(async function () {
+      if (!success) {
+        return
+      }
+      const transaction = await web3.eth.getTransactionReceipt(
+        success.transactionHash
+      )
+      var log = transaction.logs.filter(
+        (it) =>
+          it.topics[0] ===
+          web3Utils.sha3('Deployed(address,address,address,bytes)')
+      )
+      log = log[log.length - 1]
+      var address = log.topics[2]
+      address = abi.decode(['address'], address)[0].toString()
+      setAddress(address)
+    })
+  }, [success])
 
   useEffect(
     () => onChange && onChange({ token, proposalRules }),
@@ -296,54 +364,98 @@ const Confirmation = ({
   }, [token, proposalRules, hardCapValue, quorum])
 
   return (
-    <div className={style.CreationPageLabel}>
+    <>
       <ScrollToTopOnMount />
+      {!success && (
+        <div className={style.CreationPageLabel}>
+          <div className={style.FancyExplanationCreate}>
+            <h2>Confirmation</h2>
+          </div>
 
-      <div className={style.FancyExplanationCreate}>
-        <h2>Confirmation</h2>
-      </div>
+          <h6
+            style={{
+              textAlign: 'left',
+              paddingLeft: '20px',
+              marginBottom: '10px',
+              marginTop: '30px',
+            }}>
+            Confirm the Organization deploy.
+          </h6>
+          <p
+            style={{
+              fontSize: '12px',
+              textAlign: 'left',
+              paddingLeft: '20px',
+            }}>
+            Once you deploy, all changes will need to be made through a
+            successful governance proposal and executed by holders of the
+            governance token chosen.
+          </p>
 
-      <h6
-        style={{
-          textAlign: 'left',
-          paddingLeft: '20px',
-          marginBottom: '10px',
-          marginTop: '30px',
-        }}>
-        Confirm the Organization deploy.
-      </h6>
-      <p
-        style={{
-          fontSize: '12px',
-          textAlign: 'left',
-          paddingLeft: '20px',
-        }}>
-        Once you deploy, all changes will need to be made through a successful
-        governance proposal and executed by holders of the governance token
-        chosen.
-      </p>
+          <div
+            className={style.CreationPageLabelFDivide}
+            style={{ marginTop: '30px', marginBottom: '30px' }}>
+            <label className={style.CreationPageLabelF} key={quorumKey}></label>
+          </div>
 
-      <div
-        className={style.CreationPageLabelFDivide}
-        style={{ marginTop: '30px', marginBottom: '30px' }}>
-        <label className={style.CreationPageLabelF} key={quorumKey}></label>
-      </div>
-
-      <div className={style.WizardFooter}>
-        <button className={style.WizardFooterBack} onClick={onPrev}>
-          Back
-        </button>
-        {loading && <CircularProgress />}
-        {!loading && (
-          <ActionAWeb3Button
-            className={'WizardFooterNext'}
-            onClick={onClick}
-            disabled={disabled}>
-            Deploy
-          </ActionAWeb3Button>
-        )}
-      </div>
-    </div>
+          <div className={style.WizardFooter}>
+            <button className={style.WizardFooterBack} onClick={onPrev}>
+              Back
+            </button>
+            {loading && <CircularProgress />}
+            {!loading && (
+              <ActionAWeb3Button
+                className={'WizardFooterNext'}
+                onClick={onClick}
+                disabled={disabled}>
+                Deploy
+              </ActionAWeb3Button>
+            )}
+          </div>
+        </div>
+      )}
+      {success && (
+        <div
+          className={style.CreationPageLabel}
+          style={{ padding: '30px', textAlign: 'center' }}>
+          <h3>&#127881; &#127881; Organization Created! &#127881; &#127881;</h3>
+          <br />
+          <br />
+          <p>
+            <b>And Now?</b>
+          </p>
+          <label className={style.CreationPageLabelF}>
+            <h6 style={{ textAlign: 'center', marginTop: '50px' }}>
+              <a
+                className={style.RegularButton}
+                style={{ padding: '10px' }}
+                target="_blank"
+                href={`${getNetworkElement(
+                  { chainId, context },
+                  'etherscanURL'
+                )}/tx/${success.transactionHash}`}>
+                Transaction
+              </a>
+            </h6>
+          </label>
+          {!address && <OurCircularProgress />}
+          <label className={style.CreationPageLabelF}>
+            {address && (
+              <>
+                <h6 style={{ textAlign: 'center', marginTop: '50px' }}>
+                  <Link
+                    to={'/organizations/' + address}
+                    style={{ padding: '10px' }}
+                    className={style.RegularButton}>
+                    View Organization
+                  </Link>
+                </h6>
+              </>
+            )}
+          </label>
+        </div>
+      )}
+    </>
   )
 }
 
@@ -2723,15 +2835,6 @@ const InvestmentsManagerOperation = ({
 const CreateOrganization = () => {
   const context = useEthosContext()
   const web3Data = useWeb3()
-  const history = useHistory()
-  const ipfsHttpClient = useMemo(() => initializeIPFSClient(context), [context])
-
-  const initialData = useMemo(
-    () => ({ context, ...web3Data }),
-    [context, web3Data]
-  )
-
-  const [loading, setLoading] = useState(false)
 
   const [state, setState] = useState()
 
@@ -2746,42 +2849,6 @@ const CreateOrganization = () => {
   )
 
   dataTime = Object.keys(context.timeIntervals)
-
-  const onClick = useCallback(
-    async function () {
-      var errorMessage
-      try {
-        if (state?.metadata?.file) {
-          state.metadata.image = await uploadToIPFS(
-            { context, ipfsHttpClient },
-            await getFileFromBlobURL(state.metadata.file)
-          )
-        }
-
-        if (state?.metadata) {
-          delete state.metadata.error
-          delete state.metadata.file
-        }
-
-        var finalInputData = prepareInputData(
-          initialData.context,
-          state,
-          dataTime
-        )
-
-        !disabled &&
-          createOrganization(initialData, finalInputData).then((address) =>
-            history.push(`/organizations/${address}`)
-          )
-      } catch (e) {
-        errorMessage = e.message || e
-        setLoading(false)
-      }
-      setLoading(false)
-      errorMessage && setTimeout(() => alert(errorMessage))
-    },
-    [disabled, state]
-  ) // Update the block number and broadcast it to the listeners
 
   useEffect(() => getAMMs({ context, ...web3Data }).then(setAMMs), [])
 
@@ -2921,13 +2988,12 @@ const CreateOrganization = () => {
         {step == 8 && (
           <Confirmation
             value={state?.confirmation}
-            loading={loading}
-            onClick={onClick}
             disabled={disabled}
             onChange={(value) => setState({ ...state, confirmation: value })}
             onNext={() => setStep(5)}
             onPrev={() => setStep(7)}
             state={state}
+            dataTime={dataTime}
           />
         )}
       </div>
