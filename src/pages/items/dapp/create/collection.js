@@ -29,6 +29,7 @@ import uploadToIPFS from 'interfaces-core/lib/web3/uploadToIPFS'
 import { create as createIpfsHttpClient } from 'ipfs-http-client'
 import CircularProgress from '../../../../components/Global/OurCircularProgress'
 import getFileFromBlobURL from 'interfaces-core/lib/web3/getFileFromBlobURL'
+import ScrollToTopOnMount from 'interfaces-ui/components/ScrollToTopOnMount'
 
 function initializeIPFSClient(context) {
   var options = {
@@ -63,6 +64,8 @@ const NameAndSymbol = ({ value, onChange, onNext, onPrev }) => {
 
   return (
     <div className={style.CreationPageLabel}>
+      <ScrollToTopOnMount />
+
       <div className={style.FancyExplanationCreate}>
         <h2>Basic Info</h2>
       </div>
@@ -141,6 +144,8 @@ const Host = ({ value, onChange, onNext, onPrev }) => {
 
   return (
     <div className={style.CreationPageLabel}>
+      <ScrollToTopOnMount />
+
       <div className={style.FancyExplanationCreate}>
         <h2>Host</h2>
         <p>Lorem ispums im dolor amed asid</p>
@@ -329,6 +334,8 @@ const Metadata = ({ value, onChange, onNext, onPrev }) => {
 
   return (
     <div className={style.CreationPageLabel}>
+      <ScrollToTopOnMount />
+
       <div className={style.FancyExplanationCreate}>
         <h2>Metadata</h2>
         <p>Lorem ispums im dolor amed asid</p>
@@ -661,6 +668,8 @@ const Confirmation = ({ value, onChange, onNext, onPrev, state }) => {
 
   return (
     <>
+      <ScrollToTopOnMount />
+
       {loading && <CircularProgress />}
       {!success && !loading && (
         <div className={style.CreationPageLabel}>
@@ -803,18 +812,20 @@ const Confirmation = ({ value, onChange, onNext, onPrev, state }) => {
         </div>
       )}
       {success && (
-        <div className={style.CreationPageLabel} style={{padding:'30px', textAlign:'center'}}>
+        <div
+          className={style.CreationPageLabel}
+          style={{ padding: '30px', textAlign: 'center' }}>
           <h3>&#127881; &#127881; Collection Created! &#127881; &#127881;</h3>
-          <br/>
-          <br/>
+          <br />
+          <br />
           <p>
             <b>And Now?</b>
           </p>
           <label className={style.CreationPageLabelF}>
-            <h6 style={{textAlign:'center', marginTop: '50px'}}>
+            <h6 style={{ textAlign: 'center', marginTop: '50px' }}>
               <a
-                className={style.RegularButton} 
-                style={{padding: '10px'}}
+                className={style.RegularButton}
+                style={{ padding: '10px' }}
                 target="_blank"
                 href={`${getNetworkElement(
                   { chainId, context },
@@ -828,15 +839,21 @@ const Confirmation = ({ value, onChange, onNext, onPrev, state }) => {
           <label className={style.CreationPageLabelF}>
             {collectionId && (
               <>
-                <h6 style={{textAlign:'center', marginTop: '50px'}}>
-                    <Link to={'/items/collections/' + collectionId}    style={{padding: '10px'}} className={style.RegularButton}>
-                      View Collection
-                    </Link>
+                <h6 style={{ textAlign: 'center', marginTop: '50px' }}>
+                  <Link
+                    to={'/items/collections/' + collectionId}
+                    style={{ padding: '10px' }}
+                    className={style.RegularButton}>
+                    View Collection
+                  </Link>
                 </h6>
-                <h6 style={{textAlign:'center', marginTop: '50px'}}> 
-                    <Link to={'/items/create/item/' + collectionId}    style={{padding: '10px'}} className={style.RegularButton}>
-                      Mint Items
-                    </Link>
+                <h6 style={{ textAlign: 'center', marginTop: '50px' }}>
+                  <Link
+                    to={'/items/create/item/' + collectionId}
+                    style={{ padding: '10px' }}
+                    className={style.RegularButton}>
+                    Mint Items
+                  </Link>
                 </h6>
               </>
             )}
@@ -858,6 +875,8 @@ const CreateCollection = ({}) => {
 
   return (
     <div className={style.CreatePage}>
+      <ScrollToTopOnMount />
+
       <div className={style.WizardStepsList}>
         <ul>
           <li className={step === 0 ? style.WizardStepsListActive : ''}>

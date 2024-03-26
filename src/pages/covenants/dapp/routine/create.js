@@ -30,6 +30,7 @@ import { getRawField } from '../../../../logic/generalReader'
 import { loadTokenFromAddress } from '../../../../logic/erc20'
 
 import style from '../../../../all.module.css'
+import ScrollToTopOnMount from 'interfaces-ui/components/ScrollToTopOnMount'
 
 export default (props) => {
   const { address, onSuccess } = props
@@ -726,6 +727,8 @@ export default (props) => {
       function () {
         return (
           <>
+            <ScrollToTopOnMount />
+
             <div className={style.WizardHeader}>
               <h3>
                 Routine Creation <span>step 5 of 5</span>
@@ -1026,6 +1029,8 @@ export default (props) => {
   function success() {
     return (
       <div className={style.CreatePage}>
+        <ScrollToTopOnMount />
+
         <div className={style.CreationPageLabel}>
           <h3 className={style.RoutineSuccessTitle}>
             Routine Contract Deployed!🎉

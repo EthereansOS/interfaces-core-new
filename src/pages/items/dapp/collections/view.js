@@ -14,6 +14,7 @@ import ViewManageCollection from '../../../../components/Items/ViewManageCollect
 
 import style from '../../../../all.module.css'
 import { useOpenSea } from '../../../../logic/uiUtilities'
+import ScrollToTopOnMount from 'interfaces-ui/components/ScrollToTopOnMount'
 
 const CollectionView = () => {
   const location = useLocation()
@@ -42,6 +43,7 @@ const CollectionView = () => {
 
   return (
     <div className={style.SingleContentPage}>
+      <ScrollToTopOnMount />
       {collection === null && <CircularProgress />}
       {collection === undefined && (
         <h1>No collection found with provided Id. Maybe wrong network?</h1>
@@ -53,13 +55,13 @@ const CollectionView = () => {
             <p>Token Information</p>
           </div>
           <div className={style.CollectionLeft}>
-            <ViewCover item={collection}/>
-            <ViewManageCollection item={collection}/>
+            <ViewCover item={collection} />
+            <ViewManageCollection item={collection} />
           </div>
           <div className={style.CollectionRight}>
-            <ViewInfoBox collection={collection}/>
+            <ViewInfoBox collection={collection} />
             <div className={style.ViewDescriptionWrapper}>
-            <ViewDescription item={collection}/>
+              <ViewDescription item={collection} />
             </div>
           </div>
           <div className={style.ItemsExploreMainTitleArea}>

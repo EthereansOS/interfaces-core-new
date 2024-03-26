@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import style from '../../../all.module.css'
 import Particles, { initParticlesEngine } from '@tsparticles/react'
 import { loadSlim } from '@tsparticles/slim'
+import ScrollToTopOnMount from 'interfaces-ui/components/ScrollToTopOnMount'
 
 const IndexMain = () => {
   const web3Data = useWeb3()
@@ -25,6 +26,8 @@ const IndexMain = () => {
 
   return (
     <>
+      <ScrollToTopOnMount />
+
       <Particles
         id="tsparticles"
         particlesLoaded={particlesLoaded}
@@ -101,10 +104,13 @@ const IndexMain = () => {
               ethereans<span className={style.WhiteText}>os</span>_
             </h1>
             <p>
-            EthereansOS is a Layer 1+, a user interface layer that makes it simple to interact with Ethereum.
-            <br/>
-            <br/>
-            No-code tools for Ethereum<br/>Click, Create, Deploy.
+              EthereansOS is a Layer 1+, a user interface layer that makes it
+              simple to interact with Ethereum.
+              <br />
+              <br />
+              No-code tools for Ethereum
+              <br />
+              Click, Create, Deploy.
             </p>
             <a className={style.BtnPrimary}>
               New <b>Collection</b>
@@ -123,11 +129,13 @@ const IndexMain = () => {
 
       <div className={style.CardLayerTitleArea}>
         <div>
-          <div style={{fontSize: '24px', fontWeight: 'bold'}}>CREATE</div>
+          <div style={{ fontSize: '24px', fontWeight: 'bold' }}>CREATE</div>
         </div>
         <div>
           <div>
-            <h2>Deploy tokens, NFTs, DAOs and DeFi routines with EthereansOS</h2>
+            <h2>
+              Deploy tokens, NFTs, DAOs and DeFi routines with EthereansOS
+            </h2>
           </div>
         </div>
       </div>
@@ -140,7 +148,7 @@ const IndexMain = () => {
               </figure>
               <p>Launch Factory</p>
               <p className={style.CardsLayerBody}>
-                  Rapid, secure token deployment
+                Rapid, secure token deployment
               </p>
             </div>
           </Link>
@@ -152,7 +160,7 @@ const IndexMain = () => {
             </figure>
             <p>Items</p>
             <p className={style.CardsLayerBody}>
-                Hybrid NFT tokens with dynamic metadata
+              Hybrid NFT tokens with dynamic metadata
             </p>
           </div>
         </Link>
@@ -177,7 +185,7 @@ const IndexMain = () => {
             </figure>
             <p>Covenants</p>
             <p className={style.CardsLayerBody}>
-            DeFi routines and farming contracts
+              DeFi routines and farming contracts
             </p>
           </div>
         </Link>

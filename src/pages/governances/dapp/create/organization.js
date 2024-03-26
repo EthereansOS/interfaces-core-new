@@ -27,6 +27,7 @@ import OurCircularProgress from '../../../../components/Global/OurCircularProgre
 import CircularSlider from '@fseehawer/react-circular-slider'
 
 import getCurrentAddress from 'interfaces-core/lib/web3/getCurrentAddress'
+import ScrollToTopOnMount from 'interfaces-ui/components/ScrollToTopOnMount'
 
 const components = [
   'COMPONENT_KEY_TREASURY_MANAGER',
@@ -114,6 +115,8 @@ const Metadata = ({ value, onChange, onNext, onPrev }) => {
 
   return (
     <div className={style.CreationPageLabel}>
+      <ScrollToTopOnMount />
+
       <div className={style.FancyExplanationCreate}>
         <h2>Basic Info</h2>
       </div>
@@ -294,6 +297,8 @@ const Confirmation = ({
 
   return (
     <div className={style.CreationPageLabel}>
+      <ScrollToTopOnMount />
+
       <div className={style.FancyExplanationCreate}>
         <h2>Confirmation</h2>
       </div>
@@ -390,6 +395,8 @@ const VotingRules = ({ value, onChange, onNext, onPrev }) => {
 
   return (
     <div className={style.CreationPageLabel}>
+      <ScrollToTopOnMount />
+
       <div className={style.FancyExplanationCreate}>
         <h2>Voting Rules</h2>
       </div>
@@ -591,6 +598,8 @@ const Organization = ({ value, onChange, onNext, onPrev }) => {
 
   return (
     <div className={style.CreationPageLabel}>
+      <ScrollToTopOnMount />
+
       <div className={style.FancyExplanationCreate}>
         <h2>Organization Treasury</h2>
       </div>
@@ -695,6 +704,8 @@ const Governance = ({ value, onChange, onNext, onPrev }) => {
 
   return (
     <div className={style.CreationPageLabel}>
+      <ScrollToTopOnMount />
+
       <div className={style.FancyExplanationCreate}>
         <h2>Governance Rules</h2>
       </div>
@@ -1034,6 +1045,8 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
 
   return (
     <div className={style.CreationPageLabel}>
+      <ScrollToTopOnMount />
+
       <div className={style.FancyExplanationCreate}>
         <h2>Fixed Inflation</h2>
         <p>
@@ -1604,6 +1617,8 @@ const TreasurySplitterManager = ({ value, onChange, onNext, onPrev }) => {
 
   return (
     <div className={style.CreationPageLabel}>
+      <ScrollToTopOnMount />
+
       <div className={style.FancyExplanationCreate}>
         <h2>Treasury Splitter</h2>
         <p>
@@ -1724,6 +1739,8 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
 
   return (
     <div className={style.CreationPageLabel}>
+      <ScrollToTopOnMount />
+
       <div className={style.FancyExplanationCreate}>
         <h2>Delegations Manager</h2>
         <p>
@@ -2266,6 +2283,8 @@ const InvestmentsManager = ({ amms, value, onChange, onNext, onPrev }) => {
 
   return (
     <div className={style.CreationPageLabel}>
+      <ScrollToTopOnMount />
+
       <div className={style.FancyExplanationCreate}>
         <h2>Investments Manager</h2>
         <p>
@@ -2692,9 +2711,7 @@ const InvestmentsManagerOperation = ({
                 onClick={() =>
                   onChange(value.filter((_, index) => index !== i))
                 }>
-                <h4>
-                X
-                </h4>
+                <h4>X</h4>
               </a>
             </div>
           </div>
@@ -2773,6 +2790,8 @@ const CreateOrganization = () => {
   }
   return (
     <div className={style.CreatePage}>
+      <ScrollToTopOnMount />
+
       <div className={style.WizardStepsList}>
         <ul>
           <li className={step === 0 ? style.WizardStepsListActive : ''}>

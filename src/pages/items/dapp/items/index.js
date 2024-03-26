@@ -4,9 +4,12 @@ import ExploreItems from '../../../../components/Items/ExploreItems/index.js'
 import Banners from '../../../../components/Global/banners/index.js'
 import { Link } from 'react-router-dom'
 import style from '../../../../all.module.css'
+import ScrollToTopOnMount from 'interfaces-ui/components/ScrollToTopOnMount'
 
 const ItemsList = ({ wrappedOnly }) => (
   <div className={style.SectionMinWidth}>
+    <ScrollToTopOnMount />
+
     {/*<Banners bannerA="banner1" bannerB="banner4" sizeA="40%" sizeB="50%" titleA="Overpowered Utilities" titleB="Build Overpowered Utilities!" linkA="https://docs.ethos.wiki/ethereansos-docs/items/items-learn" linkB="https://docs.ethos.wiki/ethereansos-docs/items/items" textA="Items are a new breed of Ethereum tokens. They can do everything that other tokens can do and more, more securely and in more dynamic ways." textB="Build your DApp with Items, empowering it with state of the art capabilities while making it natively interoperable with DeFi, NFTs, governance and everything else."/>*/}
     <ul className={style.SectionSubMenuItems}>
       <li className={style.SectionSubMenuItemsActive}>
@@ -56,10 +59,7 @@ const ItemsList = ({ wrappedOnly }) => (
             strokeLinecap="round"
             strokeLinejoin="round"></path>
         </svg>
-        <span>
-
-          Create
-        </span>
+        <span>Create</span>
       </Link>
       <p>Discover the most trending NFT Items in EthereanOS.</p>
       <div className={style.ItemsExploreMainSearch}>
@@ -79,9 +79,10 @@ const ItemsList = ({ wrappedOnly }) => (
             strokeLinejoin="round"></path>
         </svg>
       </div>
-      
     </div>
-    <ul className={style.ItemsExploreMainCategories} style={{ 'display': 'none' }}>
+    <ul
+      className={style.ItemsExploreMainCategories}
+      style={{ display: 'none' }}>
       <li className={style.ItemsExploreMainCategoriesActive}>All</li>
       <li>Art</li>
       <li>Video</li>

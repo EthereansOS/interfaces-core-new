@@ -35,6 +35,7 @@ import { useOpenSea } from '../../../../logic/uiUtilities'
 
 import uploadToIPFS from 'interfaces-core/lib/web3/uploadToIPFS'
 import getFileFromBlobURL from 'interfaces-core/lib/web3/getFileFromBlobURL'
+import ScrollToTopOnMount from 'interfaces-ui/components/ScrollToTopOnMount'
 
 const LoadCollection = ({
   inputItem,
@@ -153,6 +154,8 @@ const LoadCollection = ({
 
   return (
     <>
+      <ScrollToTopOnMount />
+
       <div className={style.CreationPageLabel}>
         <div className={style.FancyExplanationCreate}>
           <h2>Collection address</h2>
