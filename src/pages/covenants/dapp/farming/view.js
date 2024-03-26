@@ -1,6 +1,18 @@
 import React, { Fragment, useCallback, useEffect, useState } from 'react'
 
-import { useWeb3, useEthosContext, getNetworkElement, blockchainCall, VOID_ETHEREUM_ADDRESS, formatMoney, fromDecimals, web3Utils, abi, toDecimals, isEthereumAddress } from 'interfaces-core'
+import {
+  useWeb3,
+  useEthosContext,
+  getNetworkElement,
+  blockchainCall,
+  VOID_ETHEREUM_ADDRESS,
+  formatMoney,
+  fromDecimals,
+  web3Utils,
+  abi,
+  toDecimals,
+  isEthereumAddress,
+} from 'interfaces-core'
 
 import { useLocation } from 'react-router-dom'
 
@@ -10,36 +22,43 @@ import FarmingComponent from '../../../../components/Covenants/farming/FarmingCo
 import { getFarming } from '../../../../logic/farming'
 
 import style from '../../../../all.module.css'
+import ScrollToTopOnMount from 'interfaces-ui/components/ScrollToTopOnMount'
 
 const ViewFarming = ({}) => {
+  const context = useEthosContext()
 
-    const context = useEthosContext()
+  const web3Data = useWeb3()
 
-    const web3Data = useWeb3()
+  const { pathname } = useLocation()
 
-    const { pathname } = useLocation()
+  const [element, setElement] = useState()
 
-    const [element, setElement] = useState()
+  const refresh = useCallback(() => {
+    setElement()
+    var address = pathname.split('/')
+    address = address[address.length - 1]
+    address &&
+      isEthereumAddress(address) &&
+      getFarming({ context, ...web3Data }, address).then(setElement)
+  }, [pathname])
 
-    const refresh = useCallback(() => {
-        setElement()
-        var address = pathname.split('/')
-        address = address[address.length - 1]
-        address && isEthereumAddress(address) && getFarming({ context, ...web3Data }, address).then(setElement)
-    }, [pathname])
+  useEffect(refresh, [refresh])
 
-    useEffect(refresh, [refresh])
-
-    return (
-        <div className={style.CovenantsMainBox}>
-            {!element ? <OurCircularProgress/> : <FarmingComponent refresh={refresh} element={element}/>}
-        </div>
-    )
+  return (
+    <div className={style.CovenantsMainBox}>
+      <ScrollToTopOnMount />
+      {!element ? (
+        <OurCircularProgress />
+      ) : (
+        <FarmingComponent refresh={refresh} element={element} />
+      )}
+    </div>
+  )
 }
 
 ViewFarming.menuVoice = {
-    path : '/covenants/farming/:id',
-    exact : false
+  path: '/covenants/farming/:id',
+  exact: false,
 }
 
 export default ViewFarming

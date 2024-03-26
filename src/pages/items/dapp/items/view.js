@@ -17,6 +17,7 @@ import style from '../../../../all.module.css'
 import { useOpenSea } from '../../../../logic/uiUtilities'
 import { loadTokenFromAddress } from '../../../../logic/erc20'
 import { getRawField } from '../../../../logic/generalReader'
+import ScrollToTopOnMount from 'interfaces-ui/components/ScrollToTopOnMount'
 
 const itemSubmenuVoices = [
   {
@@ -79,6 +80,8 @@ const ItemView = () => {
 
   return (
     <div className={style.SingleContentPage}>
+      <ScrollToTopOnMount />
+
       {item === null && <CircularProgress />}
       {item === undefined && <h1>No item found. 👀 Wrong network? 👀 </h1>}
       {item && (

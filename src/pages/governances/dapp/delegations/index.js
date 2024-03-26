@@ -9,6 +9,8 @@ import { Link } from 'react-router-dom'
 
 import style from '../../../../all.module.css'
 
+import ScrollToTopOnMount from 'interfaces-ui/components/ScrollToTopOnMount'
+
 const ExploreDelegations = ({ elements }) => (
   <ExploreOrganizations elements={elements} type="delegations" />
 )
@@ -26,6 +28,8 @@ const DelegationsList = ({ mine, onList, hideHeader = false }) => {
 
   return (
     <div className={style.SectionMinWidth}>
+      <ScrollToTopOnMount />
+
       {/*<Banners bannerA="banner1" bannerB="banner2" sizeA="36%" sizeB="54%" titleA="Rule Together" titleB="Be a Player In the Game of Organizations" linkA="https://docs.ethos.wiki/ethereansos-docs/guilds/guilds-documentation/delegations/how-delegations-work" linkB="https://docs.ethos.wiki/ethereansos-docs/guilds/guilds-documentation/delegations" textA="Delegations are independent political parties that compete with each other for grant funding from one or more EthOS Organizations." textB="Create and lead a Delegation. Rally the support of an EthOS Organization’s token holders to win grant funding. Use that funding to govern your Delegation’s political economy with your supporters."/>*/}
       {hideHeader !== true && (
         <>

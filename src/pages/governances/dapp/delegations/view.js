@@ -16,6 +16,8 @@ import HostOptions from './hostOptions'
 
 import style from '../../../../all.module.css'
 
+import ScrollToTopOnMount from 'interfaces-ui/components/ScrollToTopOnMount'
+
 const DelegationView = () => {
   const [element, setElement] = useState(null)
 
@@ -47,6 +49,8 @@ const DelegationView = () => {
 
   return (
     <div className={style.SingleContentPage}>
+      <ScrollToTopOnMount />
+
       <DelegationHeadline element={element} onMetadata={setElement} />
       {!element?.host && (
         <>

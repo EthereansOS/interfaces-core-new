@@ -1,16 +1,20 @@
 import React from 'react'
-import {Typography} from 'interfaces-ui'
+import { Typography } from 'interfaces-ui'
 import { Link } from 'react-router-dom'
 
 import style from './factories-main.module.css'
+import ScrollToTopOnMount from 'interfaces-ui/components/ScrollToTopOnMount'
 
 const FactoriesMain = () => {
   return (
     <>
-      <Typography className={style.title} variant="h3" color="black">
-      </Typography>
-      <Link to="factories">
-      </Link>
+      <ScrollToTopOnMount />
+
+      <Typography
+        className={style.title}
+        variant="h3"
+        color="black"></Typography>
+      <Link to="factories"></Link>
     </>
   )
 }
