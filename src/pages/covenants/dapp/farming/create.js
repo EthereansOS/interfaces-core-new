@@ -20,7 +20,7 @@ import {
   sendAsync,
   async,
 } from 'interfaces-core'
-
+import getCurrentAddress from 'interfaces-core/lib/web3/getCurrentAddress'
 import TokenInputRegular from '../../../../components/Global/TokenInputRegular'
 import ActionAWeb3Button from '../../../../components/Global/ActionAWeb3Button'
 
@@ -1047,7 +1047,19 @@ export default (props) => {
         {selectedHost === 'address' ? (
           <>
             <div className={style.CreationPageLabelF}>
-              <h6>Host Address</h6>
+              <h6>Host Address
+              <span
+              className={style.CreationPageLabelFloatRight}
+              onClick={() =>
+                setHostWalletAddress(getCurrentAddress())
+              }>
+              Insert your current address
+            </span>
+              </h6>
+              <p>
+                The address who has hosting permissions for this contract. The
+                host can manage new setups and ending early existing setups.
+              </p>
               <input
                 type="text"
                 value={hostWalletAddress || ''}
@@ -1057,15 +1069,17 @@ export default (props) => {
                 placeholder={'Wallet address'}
                 aria-label={'Host address'}
               />
-              <p>
-                The address who has hosting permissions for this contract. The
-                host can manage new setups and ending early existing setups.
-              </p>
+             
             </div>
             <div className={style.CreationPageLabelF}>
               <h6>External Treasury</h6>
+              <p>
+                [Optional] You can choose a treasury other than the extension to
+                which unissued tokens are returned to at the end of the setups.
+              </p>
               <input
                 type="checkbox"
+                style={{float:'left', width:'fit-content', marginTop: '10px'}}
                 checked={hasTreasuryAddress}
                 onChange={onHasTreasuryAddress}
               />
@@ -1078,10 +1092,7 @@ export default (props) => {
                   aria-label={'Treasury address'}
                 />
               )}
-              <p>
-                [Optional] You can choose a treasury other than the extension to
-                which unissued tokens are returned to at the end of the setups.
-              </p>
+             
             </div>
           </>
         ) : selectedHost === 'fromSourceCode' ? (

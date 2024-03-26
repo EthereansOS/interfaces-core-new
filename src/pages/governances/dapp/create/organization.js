@@ -1827,7 +1827,7 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
       )
     ) {
       value.error = {
-        proposalDurationBad:
+        proposalDurationInsurance:
           'Proposal Duration must be less than the Validation Bomb',
       }
       setDisabled(true)
@@ -1844,6 +1844,7 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
       setDisabled(true)
       onChange && onChange(value)
       return
+      
     } else {
       delete value?.error?.quorumPercentageInsurance
     }
@@ -1884,6 +1885,7 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
           marginTop: '0px',
           marginBottom: '30px',
           borderBottom: '1px solid #e7ecf4',
+          paddingBottom: '20px',
         }}>
         <div
           className={style.CreationPageLabelFDivide}
@@ -2804,6 +2806,7 @@ const InvestmentsManagerOperation = ({
                   max={maxPercentagePerToken}
                   step="0.05"
                   checked={it.percentage}
+                  value={it.percentage}
                   onChange={(v) =>
                     onChange(
                       value.map((elem, index) =>

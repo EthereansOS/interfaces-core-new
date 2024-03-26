@@ -19,6 +19,7 @@ import {
   sendAsync,
   VOID_BYTES32,
 } from 'interfaces-core'
+import getCurrentAddress from 'interfaces-core/lib/web3/getCurrentAddress'
 
 import CreateOrEditFixedInflationEntry from './CreateOrEditFixedInflationEntry'
 import FixedInflationExtensionTemplateLocation from '../../../../logic/FixedInflationExtensionTemplateLocation.sol'
@@ -778,7 +779,15 @@ export default (props) => {
                 <div>
                   {extensionType === 'address' && (
                     <div className={style.CreationPageLabelF}>
-                      <h6>Host Address</h6>
+                      <h6>Host Address
+                      <span
+                        className={style.CreationPageLabelFloatRight}
+                        onClick={() =>
+                          setWalletAddress(getCurrentAddress())
+                        }>
+                        Insert your current address
+                      </span>
+                      </h6>
                       <input
                         type="text"
                         placeholder="Host address"
