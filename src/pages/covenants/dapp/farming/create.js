@@ -1387,7 +1387,7 @@ export default (props) => {
           <div className={style.CreatePage}>
             <div className={style.WizardHeader}>
               <h3>
-                Create a new multi-DEX farming solution <span>step 1 of 5</span>
+                Create a new multi-DEX farming solution <span>step 5 of 5</span>
               </h3>
               <div className={style.WizardHeaderDescription}>
                 Create a multi-DEX farming solution with multiple LP setups.
