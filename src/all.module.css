@@ -299,7 +299,7 @@ input::-webkit-scrollbar {
     overflow: hidden;
     position: fixed;
     left: 0;
-    z-index: 1000 !important;
+    z-index: 10000 !important;
     top: 4px;
 }
 
@@ -16057,6 +16057,8 @@ input {
         max-width: 80%!important;
         text-align: left;
         margin-top: 130px !important;
+        top: 0px;
+        position: absolute;
     }
     .Navigation a{
         display: block;
@@ -16064,6 +16066,7 @@ input {
         max-width: 100%;
         font-size: 30px;
         margin-bottom: 20px !important;
+        text-align: left;
     }
 
     .MenuProfile{
