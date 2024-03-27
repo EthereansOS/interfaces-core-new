@@ -51,8 +51,8 @@ const CollectionView = () => {
       {collection && (
         <>
           <div className={style.ItemsExploreMainTitleArea}>
-            <h2>Item Details</h2>
-            <p>Token Information</p>
+            <h2>Collection Details</h2>
+            <p>Collection Information</p>
           </div>
           <div className={style.CollectionLeft}>
             <ViewCover item={collection} />
