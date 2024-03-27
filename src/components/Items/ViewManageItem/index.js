@@ -23,7 +23,7 @@ export default ({item, onRefresh}) => {
 
     return (
     <>
-        <div className={style.CollectionRightSubtitles}>
+        <div className={style.CollectionRightSubtitles} style={{borderBottom: '0px!important'}}>
         <h4>Host Tools</h4>
       </div>
       <div className={style.ViewBasicsHost} style={{ marginTop: '10px'}}>
