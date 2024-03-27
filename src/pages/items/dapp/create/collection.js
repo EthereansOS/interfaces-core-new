@@ -7,6 +7,7 @@ import {
   web3Utils,
   useWeb3,
   getNetworkElement,
+  resolveCID,
 } from 'interfaces-core'
 
 import RegularModal from '../../../../components/Global/RegularModal'
@@ -596,6 +597,7 @@ const Confirmation = ({ value, onChange, onNext, onPrev, state }) => {
         },
         state
       )
+
       setSuccess(result)
     } catch (e) {
       errorMessage = e.message || e
@@ -741,6 +743,8 @@ const Confirmation = ({ value, onChange, onNext, onPrev, state }) => {
                         state.metadata.image == null ||
                         state.metadata.image == ''
                           ? state.metadata.file
+                          : state.metadata.image.indexOf('ipfs') !== -1
+                          ? resolveCID(state.metadata.image, true)
                           : state.metadata.image
                       }
                       alt="Collection's logo"
