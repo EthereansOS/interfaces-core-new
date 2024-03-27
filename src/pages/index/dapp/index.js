@@ -139,19 +139,17 @@ const IndexMain = () => {
         </div>
       </div>
       <div className={style.CardsLayerS}>
-        {!dualChainId && (
-          <Link to="/factories" className={style.CardsFancy}>
-            <div className={style.CardsLayerHeader}>
-              <figure>
-                <img src={`${process.env.PUBLIC_URL}/img/factories.png`}></img>
-              </figure>
-              <p>Launch Factory</p>
-              <p className={style.CardsLayerBody}>
-                Rapid, secure token deployment
-              </p>
-            </div>
-          </Link>
-        )}
+       <Link to="/factories" className={style.CardsFancy}>
+         <div className={style.CardsLayerHeader}>
+           <figure>
+             <img src={`${process.env.PUBLIC_URL}/img/factories.png`}></img>
+           </figure>
+           <p>Launch Factory</p>
+           <p className={style.CardsLayerBody}>
+             Rapid, secure token deployment
+           </p>
+         </div>
+       </Link>
         <Link to="/items" className={style.CardsFancy}>
           <div className={style.CardsLayerHeader}>
             <figure>
