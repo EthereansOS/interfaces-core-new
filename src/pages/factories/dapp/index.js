@@ -1,14 +1,52 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react'
 import { FileUploader } from 'react-drag-drop-files'
+import { useHistory } from 'react-router-dom'
 import style from '../../../all.module.css'
 import ScrollToTopOnMount from 'interfaces-ui/components/ScrollToTopOnMount'
+import ActionAWeb3Button from 'components/Global/ActionAWeb3Button'
+import { useEthosContext, useWeb3 } from 'interfaces-core'
+import { launchFactoryV1 } from 'logic/launchFactory'
+import { useEffect } from 'react'
+import OurCircularProgress from 'components/Global/OurCircularProgress'
+
+const fileTypes = ['JPG', 'PNG', 'GIF']
 
 const FactoriesMain = () => {
-  const fileTypes = ['JPG', 'PNG', 'GIF']
-  const [file, setFile] = useState(null)
-  const handleChange = (file) => {
-    setFile(file)
-  }
+
+  const context = useEthosContext()
+  const web3Data = useWeb3()
+  const history = useHistory()
+
+  const [metadata, setMetadata] = useState({})
+  const [imageFile, setImageFile] = useState(null)
+
+  const [description, setDescription] = useState('')
+
+  const onMetadataChange = useCallback((name, value) => setMetadata(oldValue => ({...oldValue, [name] : value})), [])
+
+  const launchFactory = useCallback(() => launchFactoryV1({context, ...web3Data}, metadata, imageFile).then(itemAddress => history.push('/items/' + itemAddress)), [context, web3Data, metadata, imageFile])
+
+  const [loadedImage, setLoadedImage] = useState()
+
+  useEffect(() => {
+    if(!imageFile) {
+      return setLoadedImage()
+    }
+    setLoadedImage(null)
+    const reader = new FileReader()
+    reader.readAsDataURL(imageFile)
+    reader.onload = () => {
+      console.log(reader.result)
+      setLoadedImage(reader.result)
+    }
+    reader.onerror = e => {
+      console.log(e)
+      setLoadedImage()
+    }
+  }, [imageFile])
+
+  useEffect(() => onMetadataChange('description', description), [description])
+
   return (
     <>
       <ScrollToTopOnMount />
@@ -22,16 +60,16 @@ const FactoriesMain = () => {
           <div className={style.FactoryCreateLeftRow}>
             <div className={style.CreationPageLabel}>
               <div className={style.FilePreview}>
-                <img
-                  src="https://img.freepik.com/premium-photo/3d-rendering-left-view-cryptocurrency-btc-bitcoin-black-gold-coin-with-cartoon-style_477250-141.jpg"
+                {loadedImage === null && <OurCircularProgress/>}
+                {loadedImage !== null && <img
+                  src={loadedImage || 'img/missingcoin.gif'}
                   width={'100%'}
-                />
+                />}
               </div>
               <FileUploader
                 multiple={false}
                 classes={style.DropdownFileContainer}
-                handleChange={handleChange}
-                name="file"
+                handleChange={setImageFile}
                 types={fileTypes}
               />
             </div>
@@ -48,19 +86,19 @@ const FactoriesMain = () => {
               <label className={style.CreationPageLabelF}>
                 <h6>Name*</h6>
                 <p>Insert token name</p>
-                <input type="text" placeholder="Token Name" />
+                <input type="text" placeholder="Token Name" value={metadata.name} onChange={e => onMetadataChange("name", e.currentTarget.value)}/>
               </label>
 
               <div className={style.CreationPageLabelFDivide}>
                 <label className={style.CreationPageLabelF}>
                   <h6>Symbol*</h6>
                   <p>Insert token symbol</p>
-                  <input type="text" placeholder="Token Symbol" />
+                  <input type="text" placeholder="Token Symbol" value={metadata.symbol} onChange={e => onMetadataChange("symbol", e.currentTarget.value)}/>
                 </label>
                 <label className={style.CreationPageLabelF}>
                   <h6>Supply*</h6>
                   <p>Insert token supply</p>
-                  <input type="text" placeholder="Token Supply" />
+                  <input type="number" placeholder="Token Supply" value={parseFloat(metadata.totalSupply || 0)} onChange={e => onMetadataChange("totalSupply", parseFloat(e.currentTarget.value))}/>
                 </label>
               </div>
 
@@ -71,10 +109,12 @@ const FactoriesMain = () => {
                   mandatory="true"
                   rows={2}
                   placeholder="Describe your Token"
+                  value={description}
+                  onChange={e => setDescription(e.target.value)}
                 />
               </label>
               <div className={style.WizardFooter}>
-                <button className={style.WizardFooterNext}>LAUNCH NOW!</button>
+                <ActionAWeb3Button className={style.WizardFooterNext} onClick={launchFactory}>LAUNCH NOW!</ActionAWeb3Button>
               </div>
             </div>
           </div>

@@ -114,6 +114,12 @@ export default ({input, figureClassName, noFigure, title, defaultImage, noDotLin
 
     src = src && src.indexOf('ipfs') !== -1 ? resolveCID(src, true) : src
 
+    try {
+        if(web3Utils.toChecksumAddress(input.address) === '0x899d774E0f8E14810D628Db63e65dfAcEa682343') {
+            src = 'https://raw.githubusercontent.com/Ethereans-Labs/kaiten-core/main/docs/resources/logo_200_200.png'
+        }
+    } catch(e) {}
+
     var img = <img title={title} style={ (finalImage === null || loading) ? {"display" : "none"} : {}} src={src} onLoad={() => setLoading(false)} onError={onLoadError}/>
 
     img = tryInstrumentImg(input, img, imgRef, previewRef, noFigure) || img
@@ -177,7 +183,7 @@ function tryInstrumentImg(input, img, imgRef, previewRef, noFigure) {
     }}/>
     return (<>
         <div
-        
+
             style={{
                 "position" : "relative",
                 "display" : noFigure ? "inline-block" : undefined,
