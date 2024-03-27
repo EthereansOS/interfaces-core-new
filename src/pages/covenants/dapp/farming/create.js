@@ -1225,7 +1225,7 @@ export default (props) => {
 
   if (farmingContract) {
     return (
-      <div className={style.CreationPageLabel}>
+      <div className={style.CreationPageLabel} style={{paddingTop: '20px'}}>
         <h3>🎉Farming Contract Deployed!🎉</h3>
         <div className={style.AndNowBox}>
           <h6>
@@ -1407,7 +1407,7 @@ export default (props) => {
                 <div
                   className={style.WizardProgressBar}
                   style={{
-                    width: ((100 / 5) * 1 > 0 ? (100 / 5) * 1 : 1) + '%',
+                    width: ((100 / 5) * 5 > 0 ? (100 / 5) * 5 : 1) + '%',
                   }}></div>
               </div>
             </div>
