@@ -104,10 +104,6 @@ const IndexMain = () => {
               ethereans<span className={style.WhiteText}>os</span>_
             </h1>
             <p>
-              EthereansOS is a Layer 1+, a user interface layer that makes it
-              simple to interact with Ethereum.
-              <br />
-              <br />
               No-code tools for Ethereum
               <br />
               Click, Create, Deploy.

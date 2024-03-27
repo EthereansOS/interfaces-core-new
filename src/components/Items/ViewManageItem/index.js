@@ -25,7 +25,6 @@ export default ({item, onRefresh}) => {
     <>
         <div className={style.CollectionRightSubtitles}>
         <h4>Host Tools</h4>
-        <p>Lorem ipsum sim dolorem</p>
       </div>
       <div className={style.ViewBasicsHost} style={{ marginTop: '10px'}}>
         {mode && <RegularModal close={() => setMode()}>
