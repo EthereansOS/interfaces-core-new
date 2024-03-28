@@ -1332,6 +1332,7 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
                       })
                     }
                     min={getCurrentDateTime()}
+                    step="60"
                   />
                   {dateError && (
                     <p className={style.ErrorMessage}>{dateError}</p>
@@ -1816,6 +1817,7 @@ const TreasurySplitterManager = ({ value, onChange, onNext, onPrev }) => {
               setFirstSplitEvent(e.currentTarget.value)
             }}
             min={getCurrentDateTime()}
+            step="60"
           />
           {dateError && <p className={style.ErrorMessage}>{dateError}</p>}
         </label>
@@ -2516,6 +2518,7 @@ const InvestmentsManager = ({ amms, value, onChange, onNext, onPrev }) => {
               })
             }
             min={getCurrentDateTime()}
+            step="60"
           />
           {firstToETHDateError && (
             <p className={style.ErrorMessage}>{firstToETHDateError}</p>
