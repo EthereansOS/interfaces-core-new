@@ -77,7 +77,9 @@ const FactoriesMain = () => {
           <div className={style.FactoryCreateRightRow}>
             <div className={style.CreationPageLabel}>
               <div className={style.FancyExplanationCreate}>
-                <h2>Instant Deployment</h2>
+                <h2>Instant Deployment
+                    <a href="/#/items/create/collection" style={{float: 'right'}} className={style.SectionLinkBtn}>Item Creation</a>
+                </h2>
                 <p>
                   Launch Factory is for rapid deployment, for additional options
                   check out Items Creations.

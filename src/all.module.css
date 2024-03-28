@@ -15486,6 +15486,15 @@ input {
     text-align: left;
 }
 
+.SectionLinkBtn{
+    float: right;
+    font-size: 16px;
+    border-radius: 20px;
+    color: #fff;
+    background: #f09243;
+    
+}
+
 .WizardStepsList ul {
     text-align: left;
     margin: 0px;

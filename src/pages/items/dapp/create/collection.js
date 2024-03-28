@@ -68,7 +68,9 @@ const NameAndSymbol = ({ value, onChange, onNext, onPrev }) => {
       <ScrollToTopOnMount />
 
       <div className={style.FancyExplanationCreate}>
-        <h2>Basic Info</h2>
+        <h2>Basic Info
+          <a href="/#/factories" style={{float: 'right'}} className={style.SectionLinkBtn}>Simple Deploy</a>
+        </h2>
       </div>
       <label className={style.CreationPageLabelF}>
         <h6>Name</h6>
