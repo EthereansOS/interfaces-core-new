@@ -68,6 +68,41 @@ function isValidationBombValid(validationBomb, duration) {
   }
 }
 
+const getCurrentDateTime = () => {
+  const now = new Date()
+  const year = now.getFullYear()
+  let month = now.getMonth() + 1
+  if (month < 10) {
+    month = `0${month}`
+  }
+  let day = now.getDate()
+  if (day < 10) {
+    day = `0${day}`
+  }
+  let hours = now.getHours()
+  if (hours < 10) {
+    hours = `0${hours}`
+  }
+  let minutes = now.getMinutes()
+  if (minutes < 10) {
+    minutes = `0${minutes}`
+  }
+  return `${year}-${month}-${day}T${hours}:${minutes}`
+}
+
+const isValidDateTime = (inputValue, currentDate) => {
+  const currentYear = new Date().getFullYear()
+  const year = new Date(inputValue).getFullYear()
+
+  const currentMillennium = Math.floor(currentYear / 1000)
+  const inputYearMillenium = Math.floor(year / 1000)
+  if (currentMillennium === inputYearMillenium && inputValue >= currentDate) {
+    return true
+  } else {
+    return false
+  }
+}
+
 export const backgroundColor = '#da7cff'
 export const labelColor = '#340098'
 var dataTime = []
@@ -302,8 +337,8 @@ const Confirmation = ({
         }
 
         if (state?.metadata) {
-          delete state.metadata.error
-          delete state.metadata.file
+          delete state?.metadata?.error
+          delete state?.metadata?.file
         }
 
         var finalInputData = prepareInputData(
@@ -465,6 +500,7 @@ const VotingRules = ({ value, onChange, onNext, onPrev }) => {
   useEffect(() => {
     if (!value) return
     if (!value?.error) value.error = {}
+    let disabled = false
     value.proposalRulesHardCapPercentage =
       value.proposalRulesHardCapPercentage ?? 0
     value.proposalRulesQuorumPercentage =
@@ -480,12 +516,9 @@ const VotingRules = ({ value, onChange, onNext, onPrev }) => {
         value.proposalRulesProposalDuration
       )
     ) {
-      value.error = {
-        proposalRulesProposalDuration:
-          'Proposal Duration must be less than the Validation Bomb',
-      }
-      setDisabled(true)
-      return
+      value.error.proposalRulesProposalDuration =
+        'Proposal Duration must be less than the Validation Bomb'
+      disabled = true
     } else {
       delete value?.error?.proposalRulesProposalDuration
     }
@@ -493,17 +526,17 @@ const VotingRules = ({ value, onChange, onNext, onPrev }) => {
     if (
       value.proposalRulesQuorumPercentage > value.proposalRulesHardCapPercentage
     ) {
-      value.error = {
-        proposalRulesQuorumPercentage: 'Quorum must be less than the Hard cap',
-      }
-      setDisabled(true)
-      return
+      value.error.proposalRulesQuorumPercentage =
+        'Quorum must be less than the Hard cap'
+      disabled = true
     } else {
       delete value?.error?.proposalRulesQuorumPercentage
     }
 
-    setDisabled(false)
-  }, [value, onChange])
+    onChange && onChange(value)
+
+    setDisabled(disabled)
+  }, [value])
 
   return (
     <div className={style.CreationPageLabel}>
@@ -754,6 +787,7 @@ const Governance = ({ value, onChange, onNext, onPrev }) => {
   useEffect(() => {
     if (!value) return
     if (!value?.error) value.error = {}
+    let disabled = false
 
     value.proposalRulesHardCapPercentage =
       value.proposalRulesHardCapPercentage ?? 0
@@ -770,41 +804,42 @@ const Governance = ({ value, onChange, onNext, onPrev }) => {
         value.proposalRulesProposalDuration
       )
     ) {
-      value.error = {
-        proposalRulesProposalDuration:
-          'Proposal Duration must be less than the Validation Bomb',
-      }
-      setDisabled(true)
-      return
+      value.error.proposalRulesProposalDuration =
+        'Proposal Duration must be less than the Validation Bomb'
+      disabled = true
+      onChange && onChange(value)
     } else {
-      delete value.error.proposalRulesProposalDuration
+      delete value?.error?.proposalRulesProposalDuration
     }
 
     if (
       value.proposalRulesQuorumPercentage > value.proposalRulesHardCapPercentage
     ) {
-      value.error = {
-        proposalRulesQuorumPercentage: 'Quorum must be less than the Hard cap',
-      }
-      setDisabled(true)
-      return
+      value.error.proposalRulesQuorumPercentage =
+        'Quorum must be less than the Hard cap'
+
+      disabled = true
+      onChange && onChange(value)
     } else {
-      delete value.error.proposalRulesQuorumPercentage
+      delete value?.error?.proposalRulesQuorumPercentage
     }
 
     try {
       web3Utils.toChecksumAddress(value?.proposalRulesHost)
-      delete value.error.proposalRulesHost
+      delete value?.error?.proposalRulesHost
     } catch (e) {
-      value.error = {
-        proposalRulesHost: 'Invalid host',
-      }
-      setDisabled(true)
+      value.error.proposalRulesHost = 'Invalid host'
+      disabled = true
+      onChange && onChange(value)
+    }
+
+    if (disabled) {
+      setDisabled(disabled)
       return
     }
 
     setDisabled(!checkGovernance(value))
-  }, [value, onChange])
+  }, [value])
 
   useEffect(() => {
     if (value) {
@@ -1089,9 +1124,13 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
   )
 
   const [internalStepValue, setInternalStepValue] = useState(0)
+  const [dateError, setDateError] = useState(null)
 
   useEffect(() => {
+    setDateError(null)
     if (!value) return
+    if (!value.error) value.error = {}
+    let disabled = false
     value.giveBackOwnershipSeconds =
       value?.giveBackOwnershipSeconds ?? Object.values(context.timeIntervals)[0]
 
@@ -1107,13 +1146,16 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
     if (internalStepValue == 0) {
       try {
         web3Utils.toChecksumAddress(value?.tokenMinterOwner)
-        delete value.error.tokenMinterOwner
+        delete value?.error?.tokenMinterOwner
       } catch (e) {
-        value.error = {
-          tokenMinterOwner: 'Invalid address',
-        }
-        setDisabled(true)
-        return
+        value.error.tokenMinterOwner = 'Invalid address'
+        disabled = true
+      }
+      if (!value?.firstExecution) {
+        disabled = true
+      } else if (!isValidDateTime(value.firstExecution, getCurrentDateTime())) {
+        setDateError('Invalid date')
+        disabled = true
       }
     }
 
@@ -1124,39 +1166,34 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
           value.proposalRulesProposalDuration
         )
       ) {
-        value.error = {
-          proposalRulesProposalDuration:
-            'Proposal Duration must be less than the Validation Bomb',
-        }
-        setDisabled(true)
+        value.error.proposalRulesProposalDuration =
+          'Proposal Duration must be less than the Validation Bomb'
+        disabled = true
         onChange && onChange(value)
-        return
       } else {
-        delete value.error.proposalRulesProposalDuration
+        delete value?.error?.proposalRulesProposalDuration
       }
 
       if (
         value.proposalRulesQuorumPercentage >
         value.proposalRulesHardCapPercentage
       ) {
-        value.error = {
-          proposalRulesQuorumPercentage:
-            'Quorum must be less than the Hard cap',
-        }
-        setDisabled(true)
+        value.error.proposalRulesQuorumPercentage =
+          'Quorum must be less than the Hard cap'
+        disabled = true
         onChange && onChange(value)
-        return
       } else {
-        delete value.error.proposalRulesQuorumPercentage
+        delete value?.error?.proposalRulesQuorumPercentage
       }
     }
 
+    if (!disabled) {
+      delete value.error
+    }
+
     onChange && onChange(value)
-    setDisabled(false)
+    setDisabled(disabled)
   }, [value])
-
-
-  
 
   return (
     <div className={style.CreationPageLabel}>
@@ -1179,15 +1216,18 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
             checked={value !== undefined && value !== null}
             onClick={() => onChange({})}
           />
-          <label for="fixedYes">Yes</label>
+          <label htmlFor="fixedYes">Yes</label>
           <input
             type="radio"
             name="fixed"
             id="fixedNo"
             checked={value === undefined || value === null}
-            onClick={() => { onChange(null); setDisabled(false)}}
+            onClick={() => {
+              onChange(null)
+              setDisabled(false)
+            }}
           />
-          <label for="fixedNo">No</label>
+          <label htmlFor="fixedNo">No</label>
         </div>
       </div>
 
@@ -1284,14 +1324,18 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
                   <h6>First Execution</h6>
                   <input
                     type="datetime-local"
-                    value={value?.firstExecution}
+                    value={value?.firstExecution ?? ''}
                     onChange={(e) =>
                       onChange({
                         ...value,
                         firstExecution: e.currentTarget.value,
                       })
                     }
+                    min={getCurrentDateTime()}
                   />
+                  {dateError && (
+                    <p className={style.ErrorMessage}>{dateError}</p>
+                  )}
                 </label>
               </div>
 
@@ -1724,11 +1768,26 @@ const TreasurySplitterManager = ({ value, onChange, onNext, onPrev }) => {
     value?.firstSplitEvent || ''
   )
   const [components, setComponents] = useState(value?.components || [])
+  const [disabled, setDisabled] = useState(true)
+  const [dateError, setDateError] = useState(null)
 
   useEffect(
     () => onChange && onChange({ splitInterval, firstSplitEvent, components }),
     [splitInterval, firstSplitEvent, components]
   )
+
+  useEffect(() => {
+    setDisabled(false)
+    setDateError(null)
+    if (!firstSplitEvent) {
+      setDisabled(true)
+      return
+    }
+    if (!isValidDateTime(firstSplitEvent, getCurrentDateTime())) {
+      setDateError('Invalid date')
+      setDisabled(true)
+    }
+  }, [firstSplitEvent])
 
   return (
     <div className={style.CreationPageLabel}>
@@ -1752,9 +1811,13 @@ const TreasurySplitterManager = ({ value, onChange, onNext, onPrev }) => {
           <h6>First split event</h6>
           <input
             type="datetime-local"
-            value={firstSplitEvent}
-            onChange={(e) => setFirstSplitEvent(e.currentTarget.value)}
+            value={firstSplitEvent ?? ''}
+            onChange={(e) => {
+              setFirstSplitEvent(e.currentTarget.value)
+            }}
+            min={getCurrentDateTime()}
           />
+          {dateError && <p className={style.ErrorMessage}>{dateError}</p>}
         </label>
       </div>
       <label className={style.CreationPageLabelF}>
@@ -1765,7 +1828,10 @@ const TreasurySplitterManager = ({ value, onChange, onNext, onPrev }) => {
         <button className={style.WizardFooterBack} onClick={onPrev}>
           Back
         </button>
-        <button className={style.WizardFooterNext} onClick={onNext}>
+        <button
+          className={style.WizardFooterNext}
+          onClick={onNext}
+          disabled={disabled}>
           Next
         </button>
       </div>
@@ -1778,6 +1844,8 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
 
   useEffect(() => {
     if (!value) return
+    if (!value.error) value.error = {}
+    let disabled = false
 
     value.hardCapPercentageBad = value.hardCapPercentageBad ?? 0
     value.quorumPercentageBad = value.quorumPercentageBad ?? 0
@@ -1798,24 +1866,18 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
     if (
       !isValidationBombValid(value.validationBombBad, value.proposalDurationBad)
     ) {
-      value.error = {
-        proposalDurationBad:
-          'Proposal Duration must be less than the Validation Bomb',
-      }
-      setDisabled(true)
+      value.error.proposalDurationBad =
+        'Proposal Duration must be less than the Validation Bomb'
+      disabled = true
       onChange && onChange(value)
-      return
     } else {
       delete value?.error?.proposalDurationBad
     }
 
     if (value.quorumPercentageBad > value.hardCapPercentageBad) {
-      value.error = {
-        quorumPercentageBad: 'Quorum must be less than the Hard cap',
-      }
-      setDisabled(true)
+      value.error.quorumPercentageBad = 'Quorum must be less than the Hard cap'
+      disabled = true
       onChange && onChange(value)
-      return
     } else {
       delete value?.error?.quorumPercentageBad
     }
@@ -1826,31 +1888,29 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
         value.proposalDurationInsurance
       )
     ) {
-      value.error = {
-        proposalDurationInsurance:
-          'Proposal Duration must be less than the Validation Bomb',
-      }
-      setDisabled(true)
+      value.error.proposalDurationInsurance =
+        'Proposal Duration must be less than the Validation Bomb'
+      disabled = true
       onChange && onChange(value)
-      return
     } else {
       delete value?.error?.proposalDurationInsurance
     }
 
     if (value.quorumPercentageInsurance > value.hardCapPercentageInsurance) {
-      value.error = {
-        quorumPercentageInsurance: 'Quorum must be less than the Hard cap',
-      }
-      setDisabled(true)
+      value.error.quorumPercentageInsurance =
+        'Quorum must be less than the Hard cap'
+      disabled = true
       onChange && onChange(value)
-      return
-      
     } else {
       delete value?.error?.quorumPercentageInsurance
     }
 
+    if (!disabled) {
+      delete value.error
+    }
+
     onChange && onChange(value)
-    setDisabled(false)
+    setDisabled(disabled)
   }, [value])
 
   return (
@@ -2342,6 +2402,9 @@ const InvestmentsManager = ({ amms, value, onChange, onNext, onPrev }) => {
   const [fromETH, setFromETH] = useState(value?.fromETH || [])
   const [toETH, setToETH] = useState(value?.toETH || [])
 
+  const [toETHDateError, setToETHDateError] = useState(null)
+  const [firstToETHDateError, setFirstToETHDateError] = useState(null)
+
   useEffect(() => {
     if (value) {
       onChange({ ...value, fromETH: fromETH })
@@ -2355,7 +2418,10 @@ const InvestmentsManager = ({ amms, value, onChange, onNext, onPrev }) => {
   }, [toETH])
 
   useEffect(() => {
+    setFirstToETHDateError(null)
     if (!value) return
+    if (!value.error) value.error = {}
+    let disabled = false
 
     value.hardCapPercentage = value.hardCapPercentage ?? 0
     value.quorumPercentage = value.quorumPercentage ?? 0
@@ -2368,33 +2434,36 @@ const InvestmentsManager = ({ amms, value, onChange, onNext, onPrev }) => {
     value.toETH = value?.toETH ?? toETH
 
     if (!isValidationBombValid(value.validationBomb, value.proposalDuration)) {
-      value.error = {
-        proposalDuration:
-          'Proposal Duration must be less than the Validation Bomb',
-      }
-      setDisabled(true)
+      value.error.proposalDuration =
+        'Proposal Duration must be less than the Validation Bomb'
+      disabled = true
       onChange && onChange(value)
-      return
     } else {
       delete value?.error?.proposalDuration
     }
 
     if (value.quorumPercentage > value.hardCapPercentage) {
-      value.error = {
-        quorumPercentage: 'Quorum must be less than the Hard cap',
-      }
-      setDisabled(true)
+      value.error.quorumPercentage = 'Quorum must be less than the Hard cap'
+      disabled = true
       onChange && onChange(value)
-      return
     } else {
       delete value?.error?.quorumPercentage
     }
 
     onChange && onChange(value)
+
     if (!value.firstSwapToEtherEvent) {
       setDisabled(true)
+    } else if (
+      !isValidDateTime(value.firstSwapToEtherEvent, getCurrentDateTime())
+    ) {
+      setFirstToETHDateError('Invalid date')
+      setDisabled(true)
     } else {
-      setDisabled(false)
+      setDisabled(disabled)
+      if (!disabled) {
+        delete value.error
+      }
     }
   }, [value])
 
@@ -2446,7 +2515,11 @@ const InvestmentsManager = ({ amms, value, onChange, onNext, onPrev }) => {
                 firstSwapToEtherEvent: e.currentTarget.value,
               })
             }
+            min={getCurrentDateTime()}
           />
+          {firstToETHDateError && (
+            <p className={style.ErrorMessage}>{firstToETHDateError}</p>
+          )}
         </label>
       </div>
       <label
