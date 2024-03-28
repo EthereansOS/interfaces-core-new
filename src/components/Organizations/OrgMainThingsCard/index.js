@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react'
+import React, { Fragment, useCallback, useEffect, useState, useMemo } from 'react'
 
 import ExtLinkButton from '../../Global/ExtLinkButton/index.js'
 import RegularButtonDuo from '../../Global/RegularButtonDuo/index.js'
@@ -8,7 +8,7 @@ import CircularProgress from '../../Global/OurCircularProgress'
 import ActionAWeb3Button from '../../Global/ActionAWeb3Button'
 import { Link } from 'react-router-dom'
 
-import { VOID_ETHEREUM_ADDRESS, VOID_BYTES32, fromDecimals, useWeb3, abi, useEthosContext, getNetworkElement, blockchainCall, numberToString, getEthereumPrice, formatNumber, formatMoney, formatMoneyUniV3, newContract, getTokenPriceInDollarsOnUniswapV3, web3Utils } from 'interfaces-core'
+import { VOID_ETHEREUM_ADDRESS, VOID_BYTES32, fromDecimals, useWeb3, abi, useEthosContext, getNetworkElement, blockchainCall, numberToString, getEthereumPrice, formatNumber, formatMoney, formatMoneyUniV3, newContract, getTokenPriceInDollarsOnUniswapV3, web3Utils, shortenWord, toDecimals } from 'interfaces-core'
 
 import style from '../../../all.module.css'
 import { getDelegationsOfOrganization } from '../../../logic/delegation.js'
@@ -16,6 +16,8 @@ import { getRawField } from '../../../logic/generalReader.js'
 import { decodePrestoOperations } from '../../../logic/covenants.js'
 import { getAMMs, getAmmPoolLink } from '../../../logic/amm.js'
 import OurCircularProgress from '../../Global/OurCircularProgress'
+import sendBlockchainTransaction from 'interfaces-core/lib/web3/sendBlockchainTransaction.js'
+import kaitenABIs from './kaitenABIs'
 
 const RootWallet = ({element}) => {
 
@@ -56,10 +58,23 @@ const TreasurySplitter = ({element}) => {
 
   const [value, setValue] = useState(null)
   const [nextBlock, setNextBlock] = useState(null)
+  const [enableSplitButton, setEnableSplitButton] = useState(false)
 
   const [receivers, setReceivers] = useState(null)
 
   const [splitInterval, setSplitInterval] = useState()
+
+  const refreshNextSplit = useCallback(async () => {
+    var treasurySplitterManager = element.components.treasurySplitterManager
+    var next = await getRawField({provider : web3.currentProvider}, treasurySplitterManager.address, 'nextSplitEvent')
+    next = abi.decode(["uint256"], next)[0].toString()
+    next = parseInt(next)
+    next = next * 1000
+    setEnableSplitButton(new Date().getTime() > next)
+    next = (next && new Date(next)) || new Date()
+    next = next.toISOString()
+    setNextBlock(next)
+  }, [element])
 
   useEffect(() => {
     setTimeout(async () => {
@@ -69,13 +84,7 @@ const TreasurySplitter = ({element}) => {
       var ethereumPrice = formatNumber(await getEthereumPrice({context}))
       val = ethereumPrice * val
       setValue("$ " + formatMoney(val, 2))
-      var next = await getRawField({provider : web3.currentProvider}, treasurySplitterManager.address, 'nextSplitEvent')
-      next = abi.decode(["uint256"], next)[0].toString()
-      next = parseInt(next)
-      next = next * 1000
-      next = (next && new Date(next)) || new Date()
-      next = next.toISOString()
-      setNextBlock(next)
+      await refreshNextSplit()
 
       var receiversAndPercentages = await blockchainCall(treasurySplitterManager.contract.methods.receiversAndPercentages)
 
@@ -133,6 +142,7 @@ const TreasurySplitter = ({element}) => {
         <b>Next</b>
         {nextBlock === null && <CircularProgress/>}
         {nextBlock && <p>{nextBlock}</p>}
+        {enableSplitButton && <p><ActionAWeb3Button onSuccess={refreshNextSplit} onClick={() => blockchainCall(element.components.treasurySplitterManager.contract.methods.splitTreasury, account)}>Split</ActionAWeb3Button></p>}
       </div>
       {!receivers && <OurCircularProgress/>}
       {receivers && receivers.length !== 0 && <>
@@ -152,13 +162,15 @@ const Investments = ({element}) => {
   const context = useEthosContext()
 
   const web3Data = useWeb3()
-  const { web3, newContract, chainId } = web3Data
+  const { web3, newContract, chainId, account } = web3Data
 
   const [open, setOpen] = useState(false)
 
   const [singleSwapFromETHValue, setSingleSwapFromETHValue] = useState(null)
 
   const [value, setValue] = useState(null)
+
+  const [buy, setBuy] = useState(false)
 
   const [tokensFromETH, setTokensFromETH] = useState(null)
   const [tokensFromETHToBurn, setTokensFromETHToBurn] = useState(null)
@@ -171,18 +183,45 @@ const Investments = ({element}) => {
 
   const [swapToETHInterval, setSwapToETHInterval] = useState(null)
 
-  async function calculateNextBuy() {
+  const calculateNextBuy = useCallback(async () => {
     var ethereumPrice = formatNumber(await getEthereumPrice({context}))
     var val = await web3.eth.getBalance(element.components.treasurySplitterManager.address)
     val = parseFloat(fromDecimals(val, 18, true))
-
-    setSingleSwapFromETHValue(formatMoney(val / 5, 2))
-
     val = val * 0.25
+
+    val = toDecimals(val, 18)
+
+    var internalVal = await web3.eth.getBalance(element.components.investmentsManager.address)
+
+    val = web3Utils.toBN(val).add(web3Utils.toBN(internalVal)).toString()
+
+    setBuy(internalVal != '0')
+
+    val = parseFloat(fromDecimals(val, 18, true))
+
+    setSingleSwapFromETHValue(formatMoney(val / 5, 8))
+
     val = ethereumPrice * val
 
     setValue("$ " + formatMoney(val, 2))
-  }
+  }, [element])
+
+  const performBuyFromETH = useCallback(async() => {
+
+    var amounts = tokensFromETH.map(_ => '1')
+
+    amounts = await getRawField(web3, element.components.investmentsManager.address, 'swapFromETH(uint256[],address)', amounts, account)
+
+    amounts = abi.decode(['uint256[]','uint256'], amounts)
+
+    amounts = amounts[0].map(it => it.toString())
+    amounts = amounts.map(it => web3Utils.toBN(parseInt(parseInt(it) * 0.9)).toString())
+
+    var data = web3Utils.sha3('swapFromETH(uint256[],address)').substring(0, 10)
+    data += (abi.encode(["uint256[]", 'address'], [amounts, account]).substring(2))
+    await sendBlockchainTransaction(web3.currentProvider, account, element.components.investmentsManager.address, data)
+
+  }, [tokensFromETH, element])
 
   async function getTokens() {
     setTokensFromETHAMMs()
@@ -261,6 +300,7 @@ const Investments = ({element}) => {
           <br/>
           {!value && <CircularProgress/>}
           {value && <span>{value}</span>}
+          {buy && <p><ActionAWeb3Button onClick={performBuyFromETH} onSuccess={calculateNextBuy}>Buy</ActionAWeb3Button></p>}
         </p>
       </div>
       <div className={style.OrgPartInfo}>
@@ -320,7 +360,7 @@ const Delegations = ({element}) => {
 
   const useWeb3Data = useWeb3()
 
-  const { chainId, web3 } = useWeb3Data
+  const { chainId, web3, account } = useWeb3Data
 
   const [open, setOpen] = useState()
 
@@ -328,23 +368,42 @@ const Delegations = ({element}) => {
 
   const [value, setValue] = useState()
   const [val, setVal] = useState()
+  const [canSplit, setCanSplit] = useState()
+
+  const calculateNextSplitValue = useCallback(async () => {
+    var ethereumPrice = formatNumber(await getEthereumPrice({context}))
+    var val = await web3.eth.getBalance(element.components.treasurySplitterManager.address)
+    val = parseFloat(fromDecimals(val, 18, true))
+    val = val * 0.4
+
+    val = toDecimals(val, 18)
+
+    var internalVal = await web3.eth.getBalance(element.components.delegationsManager.address)
+
+    val = web3Utils.toBN(val).add(web3Utils.toBN(internalVal)).toString()
+
+    setCanSplit(internalVal != '0')
+
+    val = parseFloat(fromDecimals(val, 18, true))
+
+    val = ethereumPrice * val
+
+    setValue("$ " + formatMoney(val, 2))
+    setVal(val)
+  }, [element])
 
   useEffect(() => {
     setTimeout(async function() {
-        var ethereumPrice = formatNumber(await getEthereumPrice({context}))
-        var val = await web3.eth.getBalance(element.components.treasurySplitterManager.address)
-        val = parseFloat(fromDecimals(val, 18, true))
-
-        val = val * 0.4
-        val = ethereumPrice * val
-        setValue("$ " + formatMoney(val, 2))
-        setVal(val)
+      await calculateNextSplitValue()
     })
     setTimeout(async function() {
-      window.delegationsManager = await element.components.delegationsManager.contract
       setList(await getDelegationsOfOrganization({...useWeb3Data, context}, element))
     })
   }, [])
+
+  const split = useCallback(async () => {
+    await blockchainCall(element.components.delegationsManager.contract.methods.split, account)
+  }, [element])
 
   var total = numberToString(1e18)
 
@@ -355,6 +414,7 @@ const Delegations = ({element}) => {
     </div>
     <div className={style.OrgPartInfo}>
       <p><b>Estimated Next grant</b><br></br>{!value ? <CircularProgress/> : value}</p>
+      {canSplit && <p><ActionAWeb3Button onSuccess={calculateNextSplitValue} onClick={split}>Split</ActionAWeb3Button></p>}
     </div>
     <div className={style.OrgPartInfo}>
       <p><b>Active Delegations</b><br></br>{!list ? <CircularProgress/> : list.length}</p>
@@ -380,7 +440,7 @@ const Delegations = ({element}) => {
 const Inflation = ({element}) => {
   const context = useEthosContext()
 
-  const { chainId } = useWeb3()
+  const { chainId, web3 } = useWeb3()
 
   const [dailyMint, setDailyMint] = useState(null)
   const [annualInflationRate, setAnnualInflationRate] = useState(null)
@@ -388,8 +448,33 @@ const Inflation = ({element}) => {
   const [rawList, setRawList] = useState()
   const [swappedList, setSwappedList] = useState()
 
+  const [tokenMinterData, setTokenMinterData] = useState()
+
   useEffect(() => {
     setTimeout(async () => {
+
+      var _tokenMinterData = await getRawField(web3, element.components.fixedInflationManager.address, "tokenInfo")
+      if(_tokenMinterData !== '0x') {
+        _tokenMinterData = abi.decode(["address", "address"], _tokenMinterData)[1].toString()
+        if(_tokenMinterData !== VOID_ETHEREUM_ADDRESS) {
+          var owner = await getRawField(web3, _tokenMinterData, "owner")
+          owner = abi.decode(["address"], owner)[0].toString()
+          var tokenOwnership = await getRawField(web3, _tokenMinterData, "tokenOwnership")
+          tokenOwnership = abi.decode(["address"], tokenOwnership)[0].toString()
+          var deadline = await getRawField(web3, _tokenMinterData, "deadline")
+          deadline = abi.decode(["uint256"], deadline)[0].toString()
+          deadline = new Date(parseInt(deadline) * 1000)
+          deadline = deadline.toISOString()
+          _tokenMinterData = {
+            address : _tokenMinterData,
+            owner,
+            tokenOwnership,
+            deadline
+          }
+          setTokenMinterData(_tokenMinterData)
+          console.log("tokenMinterData", _tokenMinterData)
+        }
+      }
 
       var percentage = await blockchainCall(element.components.fixedInflationManager.contract.methods.lastTokenPercentage)
       setAnnualInflationRate(fromDecimals(percentage, 16) + " %")
@@ -467,6 +552,29 @@ const Inflation = ({element}) => {
       <h6>{element.votingToken.name} ({element.votingToken.symbol}) Inflation</h6>
       <ExtLinkButton text="Etherscan" href={`${getNetworkElement({context, chainId}, 'etherscanURL')}/tokenholdings?a=${element.components.fixedInflationManager.address}`}/>
     </div>
+    {tokenMinterData &&
+      <div className={style.OrgThingsTitle}>
+        <h6>Token ownership status</h6>
+        <div className={style.OrgPartInfo}>
+          <p>
+            <b>Ownership can be given back to</b><br/>
+            <a target="_blank" href={`${getNetworkElement({context, chainId}, 'etherscanURL')}/address/${tokenMinterData.owner}`}>{shortenWord({context, charsAmount : 12, shortenWordSuffix : ('...' + tokenMinterData.owner.substring(30))}, tokenMinterData.owner)}</a>
+          </p>
+        </div>
+        <div className={style.OrgPartInfo}>
+          <p>
+            <b>After</b><br/>
+            {tokenMinterData.deadline}
+          </p>
+        </div>
+        {tokenMinterData.address !== tokenMinterData.tokenOwnership && <div className={style.OrgPartInfo}>
+          <p>
+            <b>WARNING</b><br/>
+            To let FixedInflation work, token mint ownership must be assigned to the address<br/>{tokenMinterData.address}
+          </p>
+        </div>}
+      </div>
+    }
     <div className={style.OrgPartInfo}>
       <p>
         <b>Annual Inflation Rate</b><br/>
@@ -509,9 +617,165 @@ const Inflation = ({element}) => {
   </div>)
 }
 
+const KaitenTBI = ({element}) => {
+
+  const web3Data = useWeb3()
+
+  const { web3, account, blockNumber } = web3Data
+
+  const revenueShareContract = useMemo(() => new web3.eth.Contract(kaitenABIs.TreasuryBootstrapRevenueShareABI, "0x60510CAf94f3001651E3E83f5e0EBDD303758aAE"), [web3])
+
+  const [vestingEnds, setVestingEnds] = useState(null)
+
+  const [positionOf, setPositionOf] = useState(null)
+
+  const [claimableReward, setClaimableReward] = useState('0')
+  const [rewardPerEvent, setRewardPerEvent] = useState('0')
+  const [nextRebalanceEvent, setNextRebalanceEvent] = useState('0')
+  const [tvl, setTVL] = useState('0')
+
+  const [liquidityPool, setLiquidityPool] = useState(['0', '0'])
+
+  const vestingFinished = useMemo(() => vestingEnds && new Date().getTime() >= vestingEnds, [vestingEnds])
+
+  const [slippage, setSlippage] = useState(0.03)
+
+  useEffect(() => {
+    setTimeout(async () => {
+      var vestingEndsDate = await revenueShareContract.methods.vestingEnds().call()
+      vestingEndsDate = parseInt(vestingEndsDate) * 1000
+      setVestingEnds(vestingEndsDate)
+    })
+  }, [])
+
+  const updateSituation = useCallback(async (reset) => {
+    reset && setPositionOf(null)
+    var position = await revenueShareContract.methods.positionOf(account).call()
+    setPositionOf(position)
+    console.log(position)
+
+    if(position.positionLiquidity !== '0' && vestingFinished) {
+      try {
+        var claimedReward = await revenueShareContract.methods.claimRewardOf(account).call()
+        claimedReward = claimedReward[0]
+        setClaimableReward(claimedReward)
+      } catch(e) {}
+      try {
+        var lp = await revenueShareContract.methods.redeemRevenueSharePositionForever(0, 0).call('latest', {from : account})
+        setLiquidityPool(lp)
+      } catch(e) {}
+    }
+  }, [account, vestingEnds, vestingFinished])
+
+  useEffect(() => {
+    updateSituation()
+  }, [updateSituation, blockNumber])
+
+  const redeemVestingResult = useCallback(async () => {
+    if(!vestingFinished) {
+      if(!confirm("Are you REALLY sure you want to redeem just 60% of your initial ETH? This action will burn your KAI tokens, forever lock your LP share, and FORFEIT all Revenue Share in ETH FOREVER.")) {
+        return;
+      }
+    }
+    return await blockchainCall(revenueShareContract.methods.redeemVestingResult);
+  }, [vestingFinished, vestingEnds])
+
+  const redeemLPForever = useCallback(async() => {
+    if(!liquidityPool || !claimableReward || !positionOf) {
+      return
+    }
+    var message = "Are you REALLY sure you want to redeem "
+    if(positionOf.vestedAmount !== '0') {
+      message += "your vested KAI tokens"
+      if(claimableReward !== '0') {
+        message += ', '
+      } else {
+        message += ' and '
+      }
+    }
+    message += "your LP portion"
+    if(claimableReward !== '0') {
+      message += ' and all your claimable Revenue Share in ETH'
+    }
+    message += '? You will FORFEIT all future revenue share by proceeding and cannot enter again.'
+    if(!confirm(message)) {
+      return;
+    }
+    var amount0 = parseFloat(fromDecimals(liquidityPool[0], 18, true))
+    var slp = 100 - slippage;
+    amount0 = amount0 * slp;
+    amount0 = toDecimals(amount0, 18)
+    var amount1 = parseFloat(fromDecimals(liquidityPool[1], 18, true))
+    amount1 = amount1 * slp;
+    amount1 = toDecimals(amount1, 18)
+    return await blockchainCall(revenueShareContract.methods.redeemRevenueSharePositionForever, amount0, amount1)
+  }, [liquidityPool, claimableReward, positionOf, slippage])
+
+  return (<div className={style.OrgMainThingsCard}>
+    <div className={style.OrgThingsTitle}>
+      <h6>The {element.votingToken.name} Treasury Bootstrap Initiative</h6>
+    </div>
+    <div className={style.OrgThingsTitle}>
+      <h6>Vesting Period:</h6>
+        <div className={style.OrgPartInfo}>
+          <p>
+            {!vestingEnds && <CircularProgress/>}
+            {vestingEnds && !vestingFinished && <h4>&#9200; ACTIVE</h4>}
+            {vestingEnds && vestingFinished && <h4>&#128994; CONCLUDED</h4>}
+            {vestingEnds && <>
+              End Date: <span>{new Date(vestingEnds).toLocaleString()}</span>
+            </>}
+          </p>
+        </div>
+    </div>
+    {!(vestingEnds && positionOf) && <OurCircularProgress/>}
+    {vestingEnds && positionOf && positionOf.positionLiquidity !== '0' && positionOf.ethAmount === '0' && <div className={style.OrgThingsTitle}>
+      <h6>You've already redeemed your vested KAI tokens</h6>
+    </div>}
+    {vestingEnds && positionOf && positionOf.ethAmount !== '0' && <div className={style.OrgThingsTitle}>
+      <h6>By redeeming now, you will obtain:</h6>
+      <div className={style.OrgPartInfo} style={{"width" : "100%"}}>
+        {!vestingFinished && <>
+          <div>{fromDecimals(positionOf.ethAmount, 18, true)} ETH <b>ONLY</b> (60% of the ETH you've put in)</div>
+          <div><b>And nothing more!</b> All your tokens will be <b>burned </b><span>&#128293;</span>, the LP amount assigned to you will be locked forever and the Revenue Share in ETH will be divided between the other participants and Kaiten's DAO treasury </div>
+        </>}
+        {vestingFinished && <>
+          <div>{fromDecimals(positionOf.vestedAmount, 18, true)} KAI (20% of your initial balance)</div>
+          <br/>
+          {claimableReward && claimableReward !== '0' && <div>{fromDecimals(claimableReward, 18, true)} ETH (your actual redeemable Revenue Share)</div>}
+        </>}
+        <ActionAWeb3Button onSuccess={updateSituation} onClick={redeemVestingResult}>Redeem {vestingFinished ? `my vested KAI Tokens${claimableReward && claimableReward !== '0' ? " and my claimable Revenue Share in ETH" : ""}` : "just 60% of my initial ETH, losing the rest"}</ActionAWeb3Button>
+      </div>
+    </div>}
+    {vestingEnds && vestingFinished && positionOf && <div className={style.OrgThingsTitle}>
+      <h6>Your position:</h6>
+      {(claimableReward === null || liquidityPool === null) && <OurCircularProgress/>}
+      {claimableReward !== null && <div className={style.OrgPartInfo} style={{"width" : "100%"}}>
+        {<span>Your Revenue Share: {fromDecimals(claimableReward, 18, true)} ETH</span>}
+        {claimableReward !== '0' && <ActionAWeb3Button onSuccess={updateSituation} onClick={() => blockchainCall(revenueShareContract.methods.claimRewardOf, account)}>Claim current Revenue Share</ActionAWeb3Button>}
+      </div>}
+      {liquidityPool && <div className={style.OrgPartInfo} style={{"width" : "100%"}}>
+        <span>Your Liquidity Pool position:</span>
+        <br/>
+        {<span>{fromDecimals(liquidityPool[0], 18, true)} KAI</span>}
+        <br/>
+        {<span>{fromDecimals(liquidityPool[1], 18, true)} ETH</span>}
+        <div>
+          <label>
+            Price slippage: {slippage}%
+            <input type="range" min="0.003" max="100" step="0.001" value={slippage} onChange={e => setSlippage(parseFloat(e.currentTarget.value))}/>
+          </label>
+        </div>
+        {(liquidityPool[0] !== '0' || liquidityPool[1] !== '0') && <ActionAWeb3Button onSuccess={updateSituation} onClick={redeemLPForever}>Claim {(positionOf.vestedAmount !== '0' ? "vested tokens" : "") + (((!claimableReward || claimableReward === '0') ? '' : (positionOf.vestedAmount !== '0' ? ', ' : "") + "current revenue share")) + (positionOf.vestedAmount !== '0' || (claimableReward && claimableReward !== '0') ? " and " : "")}LP share. THIS WILL FORFEIT ALL FUTURE REVENUE SHARE.</ActionAWeb3Button>}
+      </div>}
+    </div>}
+  </div>)
+}
+
 export default ({element}) => {
   return (<>
     <RootWallet element={element}/>
+    {web3Utils.toChecksumAddress(element.address) === "0x48B4e1493F132C49063Cea273D2a756f8D9a1759" && <KaitenTBI element={element}/>}
     {element.components.fixedInflationManager && <Inflation element={element}/>}
     {element.components.treasurySplitterManager && <TreasurySplitter element={element}/>}
     {element.components.investmentsManager && <Investments element={element}/>}

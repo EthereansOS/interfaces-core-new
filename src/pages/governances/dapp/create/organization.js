@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react'
 
-import { Style, useEthosContext, useWeb3, web3Utils } from 'interfaces-core'
+import { Style, useEthosContext, useWeb3, VOID_ETHEREUM_ADDRESS, web3Utils } from 'interfaces-core'
 
 import { useHistory } from 'react-router-dom'
 
@@ -86,12 +86,12 @@ const Governance = ({value, onChange}) => {
     )
 }
 
-const Duration = ({value, onChange}) => {
+const Duration = ({value, onChange, from}) => {
 
     const context = useEthosContext()
 
     return <select value={value} onChange={e => onChange(parseInt(e.currentTarget.value))}>
-        {Object.entries(context.timeIntervals).map(it => <option key={it[0]} value={it[1]}>{it[0]}</option>)}
+        {Object.entries(context.timeIntervals).filter((_, i) => !from || i >= parseInt(from)).map(it => <option key={it[0]} value={it[1]}>{it[0]}</option>)}
     </select>
 }
 
@@ -144,9 +144,12 @@ const ProposalRules = ({value, onChange, showHost, title}) => {
 
 const FixedInflation = ({amms, value, onChange}) => {
 
+    const { account } = useWeb3()
+
     const defaultInflationPercentage = useMemo(() => 0.05)
 
     const [tokenMinterOwner, setTokenMinter] = useState(value?.tokenMinterOwner)
+    const [giveBackOwnershipSeconds, setGiveBackOwnershipSeconds] = useState(value?.giveBackOwnershipSeconds)
     const [inflationPercentage0, setInflationPercentage0] = useState(value?.inflationPercentage0 || defaultInflationPercentage)
     const [inflationPercentage1, setInflationPercentage1] = useState(value?.inflationPercentage1 || defaultInflationPercentage)
     const [inflationPercentage2, setInflationPercentage2] = useState(value?.inflationPercentage2 || defaultInflationPercentage)
@@ -165,7 +168,7 @@ const FixedInflation = ({amms, value, onChange}) => {
 
     const [proposalRules, setProposalRules] = useState(value?.proposalRules)
 
-    useEffect(() => onChange && onChange({tokenMinterOwner, inflationPercentage0, inflationPercentage1, inflationPercentage2, inflationPercentage3, inflationPercentage4, inflationPercentage5, amm, uniV3Pool, _bootstrapFundWalletAddress, _bootstrapFundWalletPercentage, _bootstrapFundIsRaw, _rawTokenComponents, _swappedTokenComponents, firstExecution, proposalRules}), [tokenMinterOwner, inflationPercentage0, inflationPercentage1, inflationPercentage2, inflationPercentage3, inflationPercentage4, inflationPercentage5, amm, uniV3Pool, _bootstrapFundWalletAddress, _bootstrapFundWalletPercentage, _bootstrapFundIsRaw, _rawTokenComponents, _swappedTokenComponents, firstExecution, proposalRules])
+    useEffect(() => onChange && onChange({tokenMinterOwner, giveBackOwnershipSeconds, inflationPercentage0, inflationPercentage1, inflationPercentage2, inflationPercentage3, inflationPercentage4, inflationPercentage5, amm, uniV3Pool, _bootstrapFundWalletAddress, _bootstrapFundWalletPercentage, _bootstrapFundIsRaw, _rawTokenComponents, _swappedTokenComponents, firstExecution, proposalRules}), [tokenMinterOwner, giveBackOwnershipSeconds, inflationPercentage0, inflationPercentage1, inflationPercentage2, inflationPercentage3, inflationPercentage4, inflationPercentage5, amm, uniV3Pool, _bootstrapFundWalletAddress, _bootstrapFundWalletPercentage, _bootstrapFundIsRaw, _rawTokenComponents, _swappedTokenComponents, firstExecution, proposalRules])
 
     return (
       <div className={style.CreationPageLabel}>
@@ -183,8 +186,20 @@ const FixedInflation = ({amms, value, onChange}) => {
         </label>
         {value && <>
             <label className={style.CreationPageLabelF}>
-                <h6>Token minter owner</h6>
-                <input type="text" value={tokenMinterOwner} onChange={e => setTokenMinter(e.currentTarget.value)}/>
+                <label>
+                    <h6>Give back mint permissions of the token</h6>
+                    <input type="checkbox" checked={tokenMinterOwner !== undefined} onClick={() => setTokenMinter(tokenMinterOwner !== undefined ? undefined : account)}/>
+                </label>
+                {tokenMinterOwner !== undefined && <>
+                    <label className={style.CreationPageLabelF}>
+                        <h6>To this address</h6>
+                        <input type="text" value={tokenMinterOwner} onChange={e => setTokenMinter(e.currentTarget.value)}/>
+                    </label>
+                    <label className={style.CreationPageLabelF}>
+                        <h6>After</h6>
+                        <Duration value={giveBackOwnershipSeconds} onChange={setGiveBackOwnershipSeconds} from="16"/>
+                    </label>
+                </>}
             </label>
             <label className={style.CreationPageLabelF}>
                 <h6>Initial Daily inflation percentage</h6>

@@ -41,6 +41,9 @@ export async function getRawField(provider, to, fieldName) {
             break
         } catch(e) {
             var message = (e.stack || e.message || e).toLowerCase()
+            if(message.indexOf('revert ') !== -1) {
+                throw e
+            }
             if(message.indexOf("response has no error") === -1) {
                 break
             }

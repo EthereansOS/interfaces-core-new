@@ -366,7 +366,10 @@ export async function proposeTransfer({ context, ipfsHttpClient }, element, addi
         return val
     })
 
-    await propose({}, element.organization, 3, abi.encode(["string", "address", `tuple(${types.join(',')})[]`], [additionalUri, element.delegationsManager.treasuryManagerAddress, values]))
+    var presetNumber = element.organization.type === 'delegation' ? 3 : 0
+    var treasuryManagerAddress = element.delegationsManager?.treasuryManagerAddress || element.organization.components.treasuryManager.address
+
+    await propose({}, element.organization, presetNumber, abi.encode(["string", "address", `tuple(${types.join(',')})[]`], [additionalUri, treasuryManagerAddress, values]))
 }
 
 export async function proposeVote({ context, ipfsHttpClient }, element, additionalMetadata, data) {

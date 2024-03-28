@@ -1,6 +1,6 @@
 import { getLogs, abi, VOID_ETHEREUM_ADDRESS, uploadMetadata, formatLink, fromDecimals, getNetworkElement, blockchainCall, web3Utils, sendAsync, tryRetrieveMetadata, VOID_BYTES32, numberToString } from "interfaces-core"
 
-import { encodeHeader } from "./itemsV2";
+import { encodeHeader, loadItem } from "./itemsV2";
 
 import { decodeProposal, decodeProposalVotingToken, extractProposalVotingTokens, generateItemKey } from "./ballot";
 import { retrieveDelegationProposals } from "./delegation";
@@ -235,7 +235,8 @@ export async function getOrganization(web3Data, organizationAddress, host) {
     return organization
 }
 
-export async function retrieveAllProposals({ context, web3, account, chainId, getGlobalContract, newContract }, organization) {
+export async function retrieveAllProposals(web3Data, organization) {
+    const { context, web3, account, chainId, getGlobalContract, newContract } = web3Data
     if(organization.type === 'delegation') {
         return await retrieveDelegationProposals({ context, web3, account, chainId, getGlobalContract, newContract }, organization)
     }
@@ -244,7 +245,7 @@ export async function retrieveAllProposals({ context, web3, account, chainId, ge
     }
     var proposals = await getProposals({ web3, account, context, newContract }, organization)
     await Promise.all((organization.organizations || []).map(async org => proposals.push(...(await getProposals({context, newContract}, org)))))
-    proposals = proposals.map(it => {
+    proposals = organization.old ? proposals : await Promise.all(proposals.map(async it => {
         var elem = {...it}
         if(elem.label === 'TOKEN_SELL_V1') {
             elem.name = 'Investment Fund Routine Sell'
@@ -255,9 +256,43 @@ export async function retrieveAllProposals({ context, web3, account, chainId, ge
         if(elem.label === "TRANSFER_MANAGER_V1") {
             elem.name = 'Transfer assets within the Treasury Manager'
         }
+        if(proposalResolvers[elem.modelIndex]) {
+            elem.subProposals && (elem.subProposals = await Promise.all(elem.subProposals.map(async it => ({...it, ...(await proposalResolvers[elem.modelIndex](web3Data, it))}))))
+            !elem.subProposals && (elem = {...elem, ...(await proposalResolvers[elem.modelIndex](web3Data, elem))})
+        }
         return elem
-    })
+    }))
     return proposals
+}
+
+const proposalResolvers = {
+    "0" : async function(web3Data, proposalData) {
+        const { web3, context, chainId, provider, newContract, account, getGlobalContract } = web3Data
+        var entries = await getRawField({ provider : provider || web3.currentProvider }, proposalData.codeSequence[0], 'allEntries')
+
+        if(entries === '0x') {
+            entries = await getRawField({ provider : provider || web3.currentProvider }, proposalData.codeSequence[0], 'entries')
+        }
+
+        var types = [
+            "address",
+            "uint256[]",
+            "uint256[]",
+            "address",
+            "bool",
+            "bool",
+            "bool",
+            "bytes"
+        ]
+        entries = abi.decode([`tuple(${types.join(',')})[]`], entries)[0]
+
+        entries = await Promise.all(entries.map(async it => ({ ...it, token : it[1].length === 0 ? await loadTokenFromAddress({context, account, web3, newContract}, it[0]) : await loadItem({ context, chainId, account, newContract, getGlobalContract}, it[1][0].toString())})))
+
+        return {
+            name : 'Transfer assets within the Treasury Manager',
+            context : entries.map(it => `- ${fromDecimals(it[2][0], it.token.decimals, true)} ${it.token.symbol} to [${it[3]}](${getNetworkElement({context, chainId}, "etherscanURL")}tokenholdings?a=${it[3]})`).join('\n')
+        }
+    }
 }
 
 export async function getOrganizationComponents({ newContract, context }, contract) {
@@ -908,7 +943,9 @@ export async function checkSurveyStatusNew(inputData, proposal, proposalId, addr
         validatorsData: "bytes[]"
     }
 
-    var data = abi.encode([`tuple(${Object.values(Proposal).join(',')})`], [Object.values(proposalData)])
+    var proposalDataValues = Object.keys(Proposal).reduce((acc, it) => [...acc, proposalData[it]], [])
+
+    var data = abi.encode([`tuple(${Object.values(Proposal).join(',')})`], [proposalDataValues])
 
     var method = web3Utils.sha3("check(address,bytes,bytes32,bytes,address,address)").substring(0, 10)
 

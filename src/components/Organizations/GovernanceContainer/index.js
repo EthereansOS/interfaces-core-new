@@ -37,6 +37,22 @@ var SingleProposal = ({element, refreshElements, forDelegationVote}) => {
     refreshElements && refreshElements()
   }
 
+  if(element.label === 'FIXED_INFLATION_V1' && !element.organization.components.fixedInflationManager) {
+    return <></>
+  }
+
+  if(element.label === 'TRANSFER_MANAGER_V1' && !element.organization.components.treasuryManager) {
+    return <></>
+  }
+
+  if(element.label === 'DELEGATIONS_MANAGER_INSURANCE_V1' && !element.organization.components.delegationsManager) {
+    return <></>
+  }
+
+  if((element.label === 'TOKEN_BUY_V1' || element.label === 'TOKEN_SELL_V1') && !element.organization.components.investmentsManager) {
+    return <></>
+  }
+
   return (
     <div className={style[element.className || "GovCard"]}>
       <Head element={updatedElement} onToggle={setOpened} refreshElements={realRefreshElements} forDelegationVote={forDelegationVote}/>

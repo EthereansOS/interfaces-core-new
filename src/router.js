@@ -2,7 +2,7 @@ import React, { useMemo, useState, useEffect } from 'react'
 import { Switch, Route } from 'react-router-dom'
 
 import Web3 from 'web3'
-import { getLogs, useEthosContext, usePlaceholder, resolveCID, useWeb3, abi, getNetworkElement, web3Utils, sendAsync, fromDecimals, toDecimals, blockchainCall } from 'interfaces-core'
+import { getLogs, useEthosContext, usePlaceholder, resolveCID, useWeb3, abi, getNetworkElement, web3Utils, sendAsync, fromDecimals, toDecimals, blockchainCall, numberToString } from 'interfaces-core'
 import { getRawField } from 'logic/generalReader'
 import Connect from './components/Global/Connect'
 import MainTemplate from './components/Global/MainTemplate'
@@ -61,6 +61,8 @@ const AppRouter = () => {
     window.web3 = web3Data.web3 || window.web3 || new window.Web3()
     window.getRawField = window.getRawField || getRawField
     window.getLogs = window.getLogs || getLogs
+    window.resolveCID = window.resolveCID || resolveCID
+    window.numberToString = window.numberToString || numberToString
     window.setAndUnlockAccount = window.setAndUnlockAccount || function setAndUnlockAccount(acc, customProvider) {
       window.sessionStorage.removeItem("unlockedAccount")
       window.sessionStorage.removeItem("customProvider")

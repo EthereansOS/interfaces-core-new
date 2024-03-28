@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import style from '../../../all.module.css'
 import RegularButtonDuo from '../../Global/RegularButtonDuo/index.js'
 import Upshots from '../../Organizations/Upshots/index.js'
@@ -56,6 +56,15 @@ const ProposeDelegationTransfer = ({ element, setOnClick, stateProvider }) => {
 
   const [state, setState] = stateProvider
 
+  useEffect(() => {
+    var percentage
+    try {
+      percentage = numberToString(parseFloat(fromDecimals(abi.decode(["uint256"], element.presetValues[0])[0].toString(), 18)) * 100)
+    }
+    catch(e) {}
+    setState(state => ({...state, percentage}))
+  }, [element])
+
   useEffect(() => !state.token && getEthereum({web3 : useWeb3Data.web3, account : useWeb3Data.account }).then(token => setState(oldValue => ({...oldValue, token}))), [])
 
   function next() {
@@ -99,7 +108,8 @@ const ProposeDelegationTransfer = ({ element, setOnClick, stateProvider }) => {
 
   return (<>
     <h4>Transfer - 1/2</h4>
-    <p><br/><b>PLEASE NOTE</b>: for security reasons, new Delegations can move a maximum of 70% of their assets for each proposal.</p>
+    {element.organization?.type === 'delegation' && <p><br/><b>PLEASE NOTE</b>: for security reasons, new Delegations can move a maximum of 70% of their assets for each proposal.</p>}
+    {state.percentage && <p><br/><b>PLEASE NOTE</b>: this Organization can move a maximum of {state.percentage}% of their assets for each proposal.</p>}
     {state.list?.length > 0 && <div className={style.TranferETHProp}>
       {state.list.map((it, i) => <div className={style.TranferETHPropRecap} key={`${it.address}_${it.value}_${i}`}>
         <span><b>{formatMoney(fromDecimals(it.value, it.token.decimals, true), 5)} {it.token.symbol}</b> to <a href={`${getNetworkElement({context, chainId : useWeb3Data.chainId}, "etherscanURL")}address/${it.address}`} target="_blank">{it.address}</a></span>
@@ -240,6 +250,8 @@ export default ({element, forDelegationVote, refreshElements}) => {
   const [wrapWithdrawModal, setWrapWithdrawModal] = useState()
   const [proposalModal, setProposalModal] = useState()
 
+  const isTransfer = useMemo(() => element.name === 'Transfer assets within the Treasury Manager', [element.name])
+
   var proposalType = element.isSurveyless ? 'surveyless' : 'survey'
   var type = element.organization.type
 
@@ -300,7 +312,7 @@ export default ({element, forDelegationVote, refreshElements}) => {
         }}/>
       </RegularModal>}
 
-      {!forDelegationVote && buyOrSell !== null && <ActionAWeb3Button onClick={() => setCreate(true)}>Create</ActionAWeb3Button>}
+      {((!forDelegationVote && buyOrSell !== null) || isTransfer) && <ActionAWeb3Button onClick={() => isTransfer ? setProposalModal("Transfer") : setCreate(true)}>Create</ActionAWeb3Button>}
       {create && <TokenBuyOrSell {...{element, buyOrSell, close : () => setCreate(false)}}/>}
       {(proposalType === 'surveyless' || proposalType  === 'poll') && !upshots && <CircularProgress/>}
       {(proposalType === 'surveyless' || proposalType  === 'poll') && upshots &&

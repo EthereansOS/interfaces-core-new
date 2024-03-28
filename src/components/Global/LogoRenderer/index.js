@@ -50,7 +50,7 @@ export default ({input, figureClassName, noFigure, title, defaultImage, noDotLin
                 var result = await cache.getItem(image)
                 if(result === "null") {
                     try {
-                        result = await (await fetch(context.urlCacheResolver + encodeURIComponent(image))).text()
+                        result = await (await fetch(context.urlCacheResolver.split('?').join('?raw=true&') + encodeURIComponent(image))).text()
                         await cache.setItem(image, result = 'data:application/octet-stream;base64,' + result)
                     } catch(e) {
                         result = "false"
@@ -112,7 +112,13 @@ export default ({input, figureClassName, noFigure, title, defaultImage, noDotLin
 
     src = src ? src.split('ethereans.mypinata.cloud').join('ipfs.io') : src
 
-    src = src && src.indexOf('ipfs') !== -1 ? resolveCID(src) : src
+    src = src && src.indexOf('ipfs') !== -1 ? resolveCID(src, true) : src
+
+    try {
+        if(web3Utils.toChecksumAddress(input.address) === '0x899d774E0f8E14810D628Db63e65dfAcEa682343') {
+            src = 'https://raw.githubusercontent.com/Ethereans-Labs/kaiten-core/main/docs/resources/logo_200_200.png'
+        }
+    } catch(e) {}
 
     var img = <img title={title} style={ (finalImage === null || loading) ? {"display" : "none"} : {}} src={src} onLoad={() => setLoading(false)} onError={onLoadError}/>
 

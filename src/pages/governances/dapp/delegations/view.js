@@ -48,7 +48,7 @@ const DelegationView = () => {
       <DelegationHeadline element={element} onMetadata={setElement}/>
       {!element?.host && <>
         <h4>This Delegation must be finalized</h4>
-        {element.deployer === account && <Link to={`/organizations/create/${element.address}`}>Finalize Delegation</Link>}
+        {element.deployer === account && <p><br/><Link to={`/organizations/create/delegation/${element.address}`}><h5>Finalize Delegation</h5></Link></p>}
       </>}
       {element?.host === account && <HostOptions refresh={refresh} element={element}/>}
       {element?.host && <GovernanceContainer element={element}/>}
