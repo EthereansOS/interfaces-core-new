@@ -34,7 +34,7 @@ const DecksList = ({}) => (
       <h2 className={style.textGradientHeading}>
         What's trending now in Decks
       </h2>
-      <p>Discover the most trending Decks in EthereanOS.</p>
+      <p>Discover the most trending Decks in EthreansOS.</p>
       <div className={style.ItemsExploreMainSearch}>
         <input placeholder="Search decks..." />
         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

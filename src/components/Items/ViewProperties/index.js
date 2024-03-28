@@ -10,9 +10,8 @@ const ViewProperties = ({ item }) => {
   }
   return (
     <div>
-      <div className={style.CollectionRightSubtitles}>
+      <div className={style.CollectionRightSubtitles} style={{borderBottom: '0px', marginBottom: '0px'}}>
         <h4>Metadata</h4>
-        <p>Lorem ipsum sim dolorem</p>
       </div>
       <div className={style.ViewProperties} style={{ marginTop: '10px'}}>
         {item.attributes.map(attr => <div key={attr.name} className={style.ViewProperty}>

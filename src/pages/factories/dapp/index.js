@@ -98,7 +98,7 @@ const FactoriesMain = () => {
                 <label className={style.CreationPageLabelF}>
                   <h6>Supply*</h6>
                   <p>Insert token supply</p>
-                  <input type="number" placeholder="Token Supply" value={parseFloat(metadata.totalSupply || 0)} onChange={e => onMetadataChange("totalSupply", parseFloat(e.currentTarget.value))}/>
+                  <input type="number" placeholder="Token Supply" value={parseFloat(metadata.totalSupply)} onChange={e => onMetadataChange("totalSupply", parseFloat(e.currentTarget.value))}/>
                 </label>
               </div>
 

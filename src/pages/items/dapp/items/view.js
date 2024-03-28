@@ -119,9 +119,8 @@ const ItemView = () => {
               <>
                 {item?.wrapper && (
                   <>
-                    <div className={style.CollectionRightSubtitles}>
+                    <div className={style.CollectionRightSubtitles} style={{borderBottom: '0px', marginBottom: '0px'}}>
                       <h4>Wrap</h4>
-                      <p>Lorem ipsum sim dolorem</p>
                     </div>
                     <div
                       className={

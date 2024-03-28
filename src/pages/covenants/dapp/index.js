@@ -5,7 +5,7 @@ import style from '../../factories/dapp/factories-main.module.css'
 export default prepareAddToPlugin(
   require.context('./', true, /index.js$/),
   require.context('./', true, /.js$/),
-  "Covenants",
+  "DeFi Covenants",
   "/covenants",
   style.Web3PagesRoot,
   30,

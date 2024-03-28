@@ -337,9 +337,8 @@ const Metadata = ({ value, onChange, onNext, onPrev }) => {
     <div className={style.CreationPageLabel}>
       <ScrollToTopOnMount />
 
-      <div className={style.FancyExplanationCreate}>
+      <div className={style.FancyExplanationCreate} style={{borderBottom: '0px', marginBottom: '0px'}}>
         <h2>Metadata</h2>
-        <p>Lorem ispums im dolor amed asid</p>
       </div>
       <div className={style.MetadataSelection}>
         <select
