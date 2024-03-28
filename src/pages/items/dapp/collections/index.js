@@ -63,7 +63,7 @@ const Collections = () => (
         </svg>
         <span>Create</span>
       </Link>
-      <p>Discover the most trending Collections in EthereanOS.</p>
+      <p>Discover the most trending Collections in EthreansOS.</p>
       <div className={style.ItemsExploreMainSearch}>
         <input placeholder="Search collection..." />
         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

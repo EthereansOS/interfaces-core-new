@@ -11891,8 +11891,13 @@ input {
 }
 
 .dark .TokenSelectorListProposal>select {
-    background-color: #000000;
+    background-color: #29263f;
     color: #ffffff;
+    height: 40px;
+    border: 1px solid #767676;
+    width: 80px;
+    border-radius: 13px;
+    padding-left: 10px;
 }
 
 .sepia .TokenSelectorListProposal>select {
@@ -15083,6 +15088,7 @@ input {
     border-radius: 9px;
     outline: none;
     font-weight: 200;
+    white-space: nowrap;
 }
 
 .BtnPrimary b {
@@ -15480,6 +15486,15 @@ input {
     text-align: left;
 }
 
+.SectionLinkBtn{
+    float: right;
+    font-size: 16px;
+    border-radius: 20px;
+    color: #fff;
+    background: #f09243;
+    
+}
+
 .WizardStepsList ul {
     text-align: left;
     margin: 0px;
@@ -15550,8 +15565,10 @@ input {
 .SelectLabelOptimism {
     width: 20px;
     height: 20px;
-    -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
-    filter: grayscale(100%);
+}
+
+.css-1nmdiq5-menu{
+    background-color: transparent!important;
 }
 
 .NetworkSelectDropdown>div>div {
@@ -16296,5 +16313,11 @@ input {
 @media only screen and (min-width: 1457px) and (max-width: 1651px) {
     .Navigation{
         margin-left: 220px!important;
+    }
+}
+
+@media only screen and (max-width: 1064px) {
+    .CardLayerBannerDetailImages{
+        display: none;
     }
 }

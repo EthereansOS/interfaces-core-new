@@ -144,7 +144,7 @@ const IndexMain = () => {
            <figure>
              <img src={`${process.env.PUBLIC_URL}/img/factories.png`}></img>
            </figure>
-           <p>Launch Factory</p>
+           <p>Launch<br/>Factory</p>
            <p className={style.CardsLayerBody}>
              Rapid, secure token deployment
            </p>
@@ -155,7 +155,7 @@ const IndexMain = () => {
             <figure>
               <img src={`${process.env.PUBLIC_URL}/img/items.png`}></img>
             </figure>
-            <p>Items</p>
+            <p>NFT<br/>Items</p>
             <p className={style.CardsLayerBody}>
               Hybrid NFT tokens with dynamic metadata
             </p>
@@ -168,7 +168,7 @@ const IndexMain = () => {
                 <img
                   src={`${process.env.PUBLIC_URL}/img/organizations.png`}></img>
               </figure>
-              <p>Organizations</p>
+              <p>DAO<br/>Organizations</p>
               <p className={style.CardsLayerBody}>
                 Modular DAOs with true onchain governance
               </p>
@@ -180,7 +180,7 @@ const IndexMain = () => {
             <figure>
               <img src={`${process.env.PUBLIC_URL}/img/covenants.png`}></img>
             </figure>
-            <p>Covenants</p>
+            <p>DeFi<br/>Covenants</p>
             <p className={style.CardsLayerBody}>
               DeFi routines and farming contracts
             </p>

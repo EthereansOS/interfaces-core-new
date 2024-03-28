@@ -5,7 +5,7 @@ import style from '../../../all.module.css'
 export default prepareAddToPlugin(
   require.context('./', true, /index.js$/),
   require.context('./', true, /.js$/),
-  'Organizations',
+  'DAO Organizations',
   '/organizations',
   style.Web3PagesRoot,
   20,

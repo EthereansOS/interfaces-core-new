@@ -61,7 +61,7 @@ const ItemsList = ({ wrappedOnly }) => (
         </svg>
         <span>Create</span>
       </Link>
-      <p>Discover the most trending NFT Items in EthereanOS.</p>
+      <p>Discover the most trending NFT Items in EthreansOS.</p>
       <div className={style.ItemsExploreMainSearch}>
         <input placeholder="Search items..." />
         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
