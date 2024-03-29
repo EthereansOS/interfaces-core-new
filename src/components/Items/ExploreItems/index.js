@@ -39,6 +39,8 @@ const Item = ({ element, allMine, wrappedOnly }) => {
   const [decimals, setDecimals] = useState(null)
   const [formattedTotalSupply, setFormattedTotalSupply] = useState(null)
 
+  const [currentItem, setCurrentItem] = useState()
+
   useEffect(() => {
     usdPrice(
       { ...web3Data, context, seaport },
@@ -102,6 +104,20 @@ const Item = ({ element, allMine, wrappedOnly }) => {
       dec = current?.decimals ?? 0
     }
     setDecimals(dec)
+  }, [element, loadedData])
+
+  useEffect(async () => {
+    setCurrentItem(null)
+    var itemId = element.l2Address || element.address
+    try {
+      itemId =
+        itemId.toLowerCase().indexOf('0x') === 0
+          ? itemId
+          : web3Utils.numberToHex(itemId)
+      loadTokenFromAddress({ context, ...web3Data, seaport }, itemId).then(
+        setCurrentItem
+      )
+    } catch (e) {}
   }, [element, loadedData])
 
   useEffect(() => {
@@ -212,7 +228,7 @@ const Item = ({ element, allMine, wrappedOnly }) => {
         {loadedData && <ItemImage input={loadedData} />}
         <div className={style.ItemTitle}>
           <h6>{shortenWord({ context, charsAmount: 15 }, name)}</h6>
-          <h4>Collection name</h4>
+          <h4>{currentItem?.collectionData?.name ?? 'loading...'}</h4>
         </div>
         <svg
           className={style.ItemTitleBottomZone}
