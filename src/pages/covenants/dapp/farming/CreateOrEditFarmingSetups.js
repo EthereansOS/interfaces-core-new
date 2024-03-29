@@ -81,16 +81,6 @@ export default (props) => {
             }>
             Back
           </button>
-          {farmingSetups.filter((it) => it.editing).length === 0 && (
-            <>
-              <button
-                className={style.RegularButton}
-                onClick={onFinish}
-                style={{ float: 'right' }}>
-                Plain Deploy
-              </button>
-            </>
-          )}
         </div>
       </div>
     )
