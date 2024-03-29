@@ -4151,7 +4151,12 @@ input[type=range]::-ms-thumb {
     font-weight: bold;
     margin-bottom: 10px;
 }
-
+#react-select-5-listbox{
+    background: #f2f2f2;
+}
+.dark #react-select-5-listbox{
+    background: #403b61;
+}
 .generationSelector p,
 .generationSelectorB p,
 .FancyExplanationCreate p {
@@ -15607,7 +15612,7 @@ input {
     height: 20px;
 }
 
-.NetworkSelectDropdown div:last-child{
+.NetworkSelectDropdown>div:last-child{
     background-color: transparent!important;
 }
 

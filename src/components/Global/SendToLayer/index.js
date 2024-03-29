@@ -73,10 +73,15 @@ const TransferToL2 = props => {
     }
 
     if(!l2Address && !dualChainId) {
-        return (<>
+        return (<div style={{textAlign:'center'}}>
             <div>In order to find the L2 Token address</div>
-            <a onClick={switchToNetwork} className={style.SendToL2}>Switch to Optimism</a>
-        </>)
+            <a style={{display: "inline-block"}} onClick={switchToNetwork} className={style.SendToL2}>Switch to Optimism</a>
+            <p style={{textAlign:'center'}}>If this token has not been bridged before, you
+                must switch to Optimism to deploy a contract so
+                it can be bridged. The transaction will be built
+                for you once you switch chains.
+            </p>
+        </div>)
     }
 
     if(!l2Address && dualChainId) {
@@ -87,10 +92,10 @@ const TransferToL2 = props => {
     }
 
     if(l2Address && dualChainId) {
-        return (<>
+        return (<div style={{textAlign:'center'}}>
             <div>L2 Token address found!</div>
-            <a onClick={switchToNetwork} className={style.SendToL1}>Switch back to Ethereum</a>
-        </>)
+            <a style={{display: "inline-block"}} onClick={switchToNetwork} className={style.SendToL1}>Switch back to Ethereum</a>
+        </div>)
     }
 
     return (<>
