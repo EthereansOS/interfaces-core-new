@@ -53,6 +53,8 @@ const DonutAndLegend = (
   const handleSliderChange = (index, newValue) => {
     let newData = [...data]
     newData[index].value = newValue
+
+    /*
     let totalExcludingAvailable = newData.reduce(
       (acc, item) => acc + (item.isAvailableSpace ? 0 : parseFloat(item.value)),
       0
@@ -124,7 +126,7 @@ const DonutAndLegend = (
     const availableIndex = newData.findIndex((item) => item.isAvailableSpace)
     if (availableIndex !== -1) {
       newData[availableIndex].value = 100 - newTotalExcludingAvailable
-    }
+    }*/
 
     setData(newData)
   }
@@ -134,15 +136,6 @@ const DonutAndLegend = (
       <div
         className={style.CreationPageLabelFDivide}
         style={{ display: 'flex' }}>
-        <label className={style.CreationPageLabelF}>
-          <div className={style.DonutGraphContainer}>
-            <SimplyDonut
-              data={data}
-              inset={{ color: '#fff', size: 20 }}
-              displayScore={true}
-            />
-          </div>
-        </label>
 
         <label className={style.CreationPageLabelF}>
           {data.map(

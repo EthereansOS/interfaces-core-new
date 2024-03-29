@@ -689,16 +689,6 @@ const Confirmation = ({ value, onChange, onNext, onPrev, state }) => {
             }}>
             Review the settings of your collection.
           </h6>
-          <p
-            style={{
-              fontSize: '12px',
-              textAlign: 'left',
-              paddingLeft: '20px',
-            }}>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean nec
-            ex in elit fermentum fermentum. Maecenas fermentum mauris metus, non
-            tempus odio sollicitudin a.
-          </p>
 
           <div
             className={style.CreationPageLabelFDivide}
@@ -909,8 +899,8 @@ const CreateCollection = ({}) => {
             fontSize: '16px!important',
           }}>
           Items are a new ERC token super standard, combining functionalities of
-          ERC-20 tokens, ERC-721, and ERC-1155 NFT's. This gives them access to
-          the best functionalities and platforms of both normal tokens and NFT's
+          ERC-20 tokens, ERC-721, and ERC-1155 NFTs. This gives them access to
+          the best functionalities and platforms of both tokens and NFTs
         </div>
         <div className={style.WizardProgress}>
           <div

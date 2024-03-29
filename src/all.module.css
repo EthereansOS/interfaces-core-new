@@ -1468,7 +1468,7 @@ textarea{
 }
 
 .TradeMarketTokenAmount {
-    width: 234px;
+    width: 200px;
     display: block;
     text-align: right;
 }
@@ -2950,7 +2950,26 @@ width: 100%!important;
     width: 40%;
     display: inline-block;
     margin-right: 1%;
-    text-align: left;
+    text-align: center;
+}
+.SingleContentPage .CollectionLeft .CovenantsMainBox .FarmContent .FarmContentInfo{
+    position: relative;
+}
+.SingleContentPage .CollectionLeft .CovenantsMainBox .FarmContent .FarmContentTitle{
+    text-align: center;
+}
+
+.SingleContentPage .CollectionLeft .CovenantsMainBox .FarmContent .FarmContentInfo .CopyBTN{
+    position: absolute;
+    top: -50px;
+    left: -20px;
+    width: 20px !important;
+    display: inline-block;
+    height: 20px;
+}
+
+.SingleContentPage .CollectionLeft .CovenantsMainBox .FilterOnly{
+    margin-top: 20px;
 }
 
 .FarmContentTitle figure {
@@ -2979,7 +2998,6 @@ width: 100%!important;
 
 .FarmContentTitle aside {
     width: 130px;
-    margin-left: 10px;
     vertical-align: middle;
     text-align: center;
     display: inline-block;
@@ -4140,6 +4158,10 @@ input[type=range]::-ms-thumb {
     font-size: 11px;
     line-height: 1.2;
     text-align: left;
+}
+
+.FancyExplanationCreate p {
+    padding-top: 10px;
 }
 
 .generationSelector .RegularButtonDuo,
@@ -5404,7 +5426,6 @@ input[type=range]::-ms-thumb {
     width: 120px;
     height: 120px;
     display: inline-block;
-    margin: 0px 30px 0px 0px;
     text-align: center;
     border-radius: 20px;
 }
@@ -5431,6 +5452,7 @@ input[type=range]::-ms-thumb {
     display: inline-block;
     margin: 10px auto 10px auto;
     vertical-align: middle;
+    text-align: center;
 }
 
 .SubCollectionInfoName p {
@@ -13541,6 +13563,10 @@ input {
     height: auto;
 }
 
+.SubCollectionInfo{
+    text-align: center;
+}
+
 .sepia .SubCollectionInfo {
     background-color: #eee8d59c;
 }
@@ -13805,8 +13831,22 @@ input {
 
 .DetailItemAddButtonsGroup>a {
     display: inline-block;
+    text-transform: uppercase;
 }
 
+.SendToInputArea .TradeMarketTokenSelector{
+    padding: 20px !important;
+    height: 74px;
+}
+
+.SendToInputArea .TradeMarketTokenAmount{
+    display: inline-block;
+}
+
+.DetailItemAddButtonsGroup .BackButton{
+    position: absolute;
+    top: -3px;
+}
 .light .ViewDescriptionL {
     /* background-color: #ffffff;
     box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);
@@ -15567,7 +15607,7 @@ input {
     height: 20px;
 }
 
-.css-1nmdiq5-menu{
+.NetworkSelectDropdown div:last-child{
     background-color: transparent!important;
 }
 

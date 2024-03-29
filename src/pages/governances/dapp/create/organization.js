@@ -1346,8 +1346,9 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
                   borderBottom: '1px solid rgb(231, 236, 244)',
                   marginBottom: '20px',
                   paddingBottom: '20px',
+                  textAlign:'center',
                 }}>
-                <h6>Inflation percentages</h6>
+                <h6 style={{ textAlign:'center'}}>Inflation percentages</h6>
                 <DonutAndLegend
                   inflationPercentage0={
                     value?.inflationPercentage0 ?? defaultInflationPercentage
@@ -1922,11 +1923,9 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
       <div className={style.FancyExplanationCreate}>
         <h2>Delegations Manager</h2>
         <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur at
-          accumsan ligula. Nulla iaculis ligula tellus, eu eleifend purus
-          pharetra vitae. Cras tristique diam in dolor ultrices, nec facilisis
-          diam tempus. Aliquam quis mattis massa. Duis imperdiet mauris congue
-          lectus dignis
+          Delegations are subDAOs that can attach to an Organization and compete for
+          funding by providing services to an Organization in exchange for a portion of
+          the treasury split determined by holder staking.
         </p>
       </div>
 

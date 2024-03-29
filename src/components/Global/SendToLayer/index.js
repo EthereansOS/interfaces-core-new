@@ -34,7 +34,7 @@ const TransferToL1 = props => {
     const onClick = useCallback(() => blockchainCall(getGlobalContract('L2StandardBridge').methods.withdraw, element.token.address, element.value, 8_000_000, '0x'), [data, element])
 
     return (<>
-        <div>
+         <div className={style.SendToInputArea}>
         <p className={style.SubMiniBanner}><b>Please note:</b> We're using the Official Optimism Bridge. Bridging tokens back to L1 can take more than a week after the Network confirms the transaction.</p>
             <TokenInputRegular tokens={[item]} onElement={onElement} element={element} />
             <ActionAWeb3Button onClick={onClick} onSuccess={close}>Transfer</ActionAWeb3Button>
@@ -94,7 +94,7 @@ const TransferToL2 = props => {
     }
 
     return (<>
-        <div>
+        <div className={style.SendToInputArea}>
         <p className={style.SubMiniBanner}><b>Please note:</b> We're using the Official Optimism Bridge. Bridging tokens to Optimism can take up to 20 minutes after the Network confirms the transaction.</p>
             <TokenInputRegular tokens={[item]} onElement={onElement} element={element} />
             <ActionAWeb3Buttons token={element?.token} value={element?.value} balance={element?.balance} other={getNetworkElement(data, 'L1StandardBridgeAddress')} buttonText={"Bridge"} onClick={onClick} onSuccess={close}/>
