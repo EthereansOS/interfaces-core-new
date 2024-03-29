@@ -61,7 +61,8 @@ const Account = () => {
       var name
       try {
         const ethersProvider = new ethers.providers.Web3Provider(
-          web3.currentProvider
+          web3.currentProvider,
+          chainId
         )
         name = await ethersProvider.lookupAddress(address)
       } catch (e) {
