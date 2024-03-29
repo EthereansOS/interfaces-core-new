@@ -108,15 +108,24 @@ const IndexMain = () => {
               <br />
               Click, Create, Deploy.
             </p>
-            <a className={style.BtnSecondary}  href='/#/items/create/collection' style={{marginRight:'10px'}}>
+            <Link
+              to="/items/create/collection"
+              className={style.BtnSecondary}
+              style={{ marginRight: '10px' }}>
               New <b>Collection</b>
-            </a>
-            <a className={style.BtnSecondary}  href='/#/organizations/create/organization' style={{marginRight:'10px'}}>
+            </Link>
+            <Link
+              to="/organizations/create/organization"
+              className={style.BtnSecondary}
+              style={{ marginRight: '10px' }}>
               New <b>Organization</b>
-            </a>
-            <a className={style.BtnSecondary} href='/#/factories' style={{marginRight:'10px'}}>
+            </Link>
+            <Link
+              to="/factories"
+              className={style.BtnSecondary}
+              style={{ marginRight: '10px' }}>
               New <b>Token</b>
-            </a>
+            </Link>
           </div>
           <div>
             <div className={style.CardLayerBannerDetailImages}>
@@ -139,23 +148,31 @@ const IndexMain = () => {
         </div>
       </div>
       <div className={style.CardsLayerS}>
-       <Link to="/factories" className={style.CardsFancy}>
-         <div className={style.CardsLayerHeader}>
-           <figure>
-             <img src={`${process.env.PUBLIC_URL}/img/factories.png`}></img>
-           </figure>
-           <p>Launch<br/>Factory</p>
-           <p className={style.CardsLayerBody}>
-             Rapid, secure token deployment
-           </p>
-         </div>
-       </Link>
+        <Link to="/factories" className={style.CardsFancy}>
+          <div className={style.CardsLayerHeader}>
+            <figure>
+              <img src={`${process.env.PUBLIC_URL}/img/factories.png`}></img>
+            </figure>
+            <p>
+              Launch
+              <br />
+              Factory
+            </p>
+            <p className={style.CardsLayerBody}>
+              Rapid, secure token deployment
+            </p>
+          </div>
+        </Link>
         <Link to="/items" className={style.CardsFancy}>
           <div className={style.CardsLayerHeader}>
             <figure>
               <img src={`${process.env.PUBLIC_URL}/img/items.png`}></img>
             </figure>
-            <p>NFT<br/>Items</p>
+            <p>
+              NFT
+              <br />
+              Items
+            </p>
             <p className={style.CardsLayerBody}>
               Hybrid NFT tokens with dynamic metadata
             </p>
@@ -168,7 +185,11 @@ const IndexMain = () => {
                 <img
                   src={`${process.env.PUBLIC_URL}/img/organizations.png`}></img>
               </figure>
-              <p>DAO<br/>Organizations</p>
+              <p>
+                DAO
+                <br />
+                Organizations
+              </p>
               <p className={style.CardsLayerBody}>
                 Modular DAOs with true onchain governance
               </p>
@@ -180,7 +201,11 @@ const IndexMain = () => {
             <figure>
               <img src={`${process.env.PUBLIC_URL}/img/covenants.png`}></img>
             </figure>
-            <p>DeFi<br/>Covenants</p>
+            <p>
+              DeFi
+              <br />
+              Covenants
+            </p>
             <p className={style.CardsLayerBody}>
               DeFi routines and farming contracts
             </p>
