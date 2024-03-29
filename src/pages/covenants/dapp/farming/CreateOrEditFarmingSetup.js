@@ -571,13 +571,13 @@ export default (props) => {
             </a>
           </div>
         </div>
-        <div className={style.ActionBTNCreateX}>
-          <a className={style.Web3BackBTN} onClick={() => setCurrentStep(0)}>
+        <div className={style.WizardFooter}>
+          <button  className={style.WizardFooterBack} onClick={() => setCurrentStep(0)}>
             Back
-          </a>
-          <a className={style.RegularButton} onClick={next}>
+          </button>
+          <button className={style.WizardFooterNext} onClick={next}>
             Next
-          </a>
+          </button>
         </div>
       </div>
     )

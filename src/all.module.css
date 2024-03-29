@@ -14111,9 +14111,10 @@ input {
 }
 
 .dark .generationSelector {
-    background-color: #1f1f1f;
-    border-color: #333333;
+    background-color: #29263e;
+    border-color: #29263e;
 }
+
 
 .sepia .generationSelector {
     background-color: #d9d2c2a3;
@@ -14131,8 +14132,8 @@ input {
 }
 
 .dark .PriceRangeInput {
-    border-color: #000000;
-    background-color: #000000;
+    background-color: #403b63;
+    border-color: #403b63;
 }
 
 .sepia .PriceRangeInput {
@@ -14159,7 +14160,7 @@ input {
 }
 
 .dark .tickerchanger {
-    background-color: #000000;
+    background-color: #403b63;
 }
 
 .sepia .tickerchanger {
