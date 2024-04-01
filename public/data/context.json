@@ -77,7 +77,7 @@
         "erc20TokensListURLGoerli" : "https://gateway.ipfs.io/ipns/tokens.uniswap.org",
         "erc20TokensListURLOptimism" : "https://static.optimism.io/optimism.tokenlist.json",
         "itemsV1ListURL": "https://raw.githubusercontent.com/EthereansOS/ITEMS-Swap/master/src/constants/ethItemLists/dist/tokensList.json",
-        "dappVersion": "ALPHA 0.5",
+        "dappVersion": "0.8",
         "etherscanURL": "https://etherscan.io/",
         "etherscanURLRopsten": "https://ropsten.etherscan.io/",
         "etherscanURLRinkeby": "https://rinkeby.etherscan.io/",

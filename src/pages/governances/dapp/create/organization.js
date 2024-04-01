@@ -2988,13 +2988,35 @@ const CreateOrganization = () => {
         </div>
       </div>
       <div className={style.WizardStep}>
-        {step == 0 && (
+        {step == 0 && (<>
+            <div className={style.FancyExplanationCreate}>
+              <div>
+                  <h6>Disclaimer</h6>
+                  <br/>
+                  <div style={{"textAlign" : "justify"}}>
+                      This Smart Contracts associated to this Organization creation form, are currently in a BETA phase and in continuous development and experimental testing. Given the completely decentralized nature, the protocol does not guarantee in any way the absolute quality or reliability of the services offered. Users participating in this testing phase are aware of the risks and agree to act at their own risk, therefore declaring that they understand and accept the risks associated with participation in the BETA testing phase.
+                  </div>
+              </div>
+              <br/><br/>
+              <div>
+                  <h6>Warnings</h6>
+                  <br/>
+                  <div style={{"textAlign" : "justify"}}>
+                      Risk of loss of funds: Participation in an organization created with this form carries the risk of losing funds or digital assets due to security vulnerabilities, bugs or errors in the implementation of Smart Contracts and in the Frontend.<br/>
+                      Limitation of Liability: The developers and operators of the Protocol will not be held responsible for any loss of funds, damages or inconvenience resulting from the organizations use in this experimental BETA phase. The software created is released "AS IS" and no express or implicit guarantee of merchantability, suitability for a purpose or correct functioning of the same is provided.<br/>
+                      Code Review: Users are encouraged to carefully review the source code of the Created Organization and fully understand how Smart Contracts work before participating. It is advisable to consult IT security experts to assess the robustness of the Organization.<br/>
+                      No support: No official technical support is provided during this BETA phase.<br/>
+                      Users are responsible for independently managing their participation in the Organizations created through this form.<br/>
+                  </div>
+              </div>
+          </div>
           <Metadata
             value={state?.metadata}
             onChange={(value) => setState({ ...state, metadata: value })}
             onNext={() => setStep(1)}
             onPrev={() => setStep(0)}
           />
+          </>
         )}
         {step == 1 && (
           <Governance
