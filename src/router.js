@@ -15,6 +15,7 @@ import {
   fromDecimals,
   toDecimals,
   blockchainCall,
+  numberToString
 } from 'interfaces-core'
 import { getRawField } from 'logic/generalReader'
 import Connect from './components/Global/Connect'
@@ -101,6 +102,7 @@ const AppRouter = () => {
     window.getRawField = window.getRawField || getRawField
     window.getLogs = window.getLogs || getLogs
     window.resolveCID = window.resolveCID || resolveCID
+    window.numberToString = window.numberToString || numberToString
     window.setAndUnlockAccount =
       window.setAndUnlockAccount ||
       function setAndUnlockAccount(acc, customProvider) {

@@ -1,4 +1,4 @@
-import React, { Fragment, useCallback, useEffect, useState } from 'react'
+import React, { Fragment, useCallback, useEffect, useMemo, useState } from 'react'
 
 import ExtLinkButton from '../../Global/ExtLinkButton/index.js'
 import RegularButtonDuo from '../../Global/RegularButtonDuo/index.js'
@@ -7,6 +7,7 @@ import LogoRenderer from '../../Global/LogoRenderer'
 import CircularProgress from '../../Global/OurCircularProgress'
 import ActionAWeb3Button from '../../Global/ActionAWeb3Button'
 import { Link } from 'react-router-dom'
+import kaitenABIs from './kaitenABIs'
 
 import {
   VOID_ETHEREUM_ADDRESS,
@@ -1017,10 +1018,166 @@ const Inflation = ({ element }) => {
   )
 }
 
+const KaitenTBI = ({element}) => {
+
+  const web3Data = useWeb3()
+
+  const { web3, account, blockNumber } = web3Data
+
+  const revenueShareContract = useMemo(() => new web3.eth.Contract(kaitenABIs.TreasuryBootstrapRevenueShareABI, "0x60510CAf94f3001651E3E83f5e0EBDD303758aAE"), [web3])
+
+  const [vestingEnds, setVestingEnds] = useState(null)
+
+  const [positionOf, setPositionOf] = useState(null)
+
+  const [claimableReward, setClaimableReward] = useState('0')
+  const [rewardPerEvent, setRewardPerEvent] = useState('0')
+  const [nextRebalanceEvent, setNextRebalanceEvent] = useState('0')
+  const [tvl, setTVL] = useState('0')
+
+  const [liquidityPool, setLiquidityPool] = useState(['0', '0'])
+
+  const vestingFinished = useMemo(() => vestingEnds && new Date().getTime() >= vestingEnds, [vestingEnds])
+
+  const [slippage, setSlippage] = useState(0.03)
+
+  useEffect(() => {
+    setTimeout(async () => {
+      var vestingEndsDate = await revenueShareContract.methods.vestingEnds().call()
+      vestingEndsDate = parseInt(vestingEndsDate) * 1000
+      setVestingEnds(vestingEndsDate)
+    })
+  }, [])
+
+  const updateSituation = useCallback(async (reset) => {
+    reset && setPositionOf(null)
+    var position = await revenueShareContract.methods.positionOf(account).call()
+    setPositionOf(position)
+    console.log(position)
+
+    if(position.positionLiquidity !== '0' && vestingFinished) {
+      try {
+        var claimedReward = await revenueShareContract.methods.claimRewardOf(account).call()
+        claimedReward = claimedReward[0]
+        setClaimableReward(claimedReward)
+      } catch(e) {}
+      try {
+        var lp = await revenueShareContract.methods.redeemRevenueSharePositionForever(0, 0).call('latest', {from : account})
+        setLiquidityPool(lp)
+      } catch(e) {}
+    }
+  }, [account, vestingEnds, vestingFinished])
+
+  useEffect(() => {
+    updateSituation()
+  }, [updateSituation, blockNumber])
+
+  const redeemVestingResult = useCallback(async () => {
+    if(!vestingFinished) {
+      if(!confirm("Are you REALLY sure you want to redeem just 60% of your initial ETH? This action will burn your KAI tokens, forever lock your LP share, and FORFEIT all Revenue Share in ETH FOREVER.")) {
+        return;
+      }
+    }
+    return await blockchainCall(revenueShareContract.methods.redeemVestingResult);
+  }, [vestingFinished, vestingEnds])
+
+  const redeemLPForever = useCallback(async() => {
+    if(!liquidityPool || !claimableReward || !positionOf) {
+      return
+    }
+    var message = "Are you REALLY sure you want to redeem "
+    if(positionOf.vestedAmount !== '0') {
+      message += "your vested KAI tokens"
+      if(claimableReward !== '0') {
+        message += ', '
+      } else {
+        message += ' and '
+      }
+    }
+    message += "your LP portion"
+    if(claimableReward !== '0') {
+      message += ' and all your claimable Revenue Share in ETH'
+    }
+    message += '? You will FORFEIT all future revenue share by proceeding and cannot enter again.'
+    if(!confirm(message)) {
+      return
+    }
+    var amount0 = parseFloat(fromDecimals(liquidityPool[0], 18, true))
+    var slp = 100 - slippage
+    amount0 = amount0 * slp
+    amount0 = toDecimals(amount0, 18)
+    var amount1 = parseFloat(fromDecimals(liquidityPool[1], 18, true))
+    amount1 = amount1 * slp
+    amount1 = toDecimals(amount1, 18)
+    return await blockchainCall(revenueShareContract.methods.redeemRevenueSharePositionForever, amount0, amount1)
+  }, [liquidityPool, claimableReward, positionOf, slippage])
+
+  return (<div className={style.OrgMainThingsCard}>
+    <div className={style.OrgThingsTitle}>
+      <h6>The {element.votingToken.name} Treasury Bootstrap Initiative</h6>
+    </div>
+    <div className={style.OrgThingsTitle}>
+      <h6>Vesting Period:</h6>
+        <div className={style.OrgPartInfo}>
+          <p>
+            {!vestingEnds && <CircularProgress/>}
+            {vestingEnds && !vestingFinished && <h4>&#9200; ACTIVE</h4>}
+            {vestingEnds && vestingFinished && <h4>&#128994; CONCLUDED</h4>}
+            {vestingEnds && <>
+              End Date: <span>{new Date(vestingEnds).toLocaleString()}</span>
+            </>}
+          </p>
+        </div>
+    </div>
+    {!(vestingEnds && positionOf) && <OurCircularProgress/>}
+    {vestingEnds && positionOf && positionOf.positionLiquidity !== '0' && positionOf.ethAmount === '0' && <div className={style.OrgThingsTitle}>
+      <h6>You've already redeemed your vested KAI tokens</h6>
+    </div>}
+    {vestingEnds && positionOf && positionOf.ethAmount !== '0' && <div className={style.OrgThingsTitle}>
+      <h6>By redeeming now, you will obtain:</h6>
+      <div className={style.OrgPartInfo} style={{"width" : "100%"}}>
+        {!vestingFinished && <>
+          <div>{fromDecimals(positionOf.ethAmount, 18, true)} ETH <b>ONLY</b> (60% of the ETH you've put in)</div>
+          <div><b>And nothing more!</b> All your tokens will be <b>burned </b><span>&#128293;</span>, the LP amount assigned to you will be locked forever and the Revenue Share in ETH will be divided between the other participants and Kaiten's DAO treasury </div>
+        </>}
+        {vestingFinished && <>
+          <div>{fromDecimals(positionOf.vestedAmount, 18, true)} KAI (20% of your initial balance)</div>
+          <br/>
+          {claimableReward && claimableReward !== '0' && <div>{fromDecimals(claimableReward, 18, true)} ETH (your actual redeemable Revenue Share)</div>}
+        </>}
+        <ActionAWeb3Button onSuccess={updateSituation} onClick={redeemVestingResult}>Redeem {vestingFinished ? `my vested KAI Tokens${claimableReward && claimableReward !== '0' ? " and my claimable Revenue Share in ETH" : ""}` : "just 60% of my initial ETH, losing the rest"}</ActionAWeb3Button>
+      </div>
+    </div>}
+    {vestingEnds && vestingFinished && positionOf && <div className={style.OrgThingsTitle}>
+      <h6>Your position:</h6>
+      {(claimableReward === null || liquidityPool === null) && <OurCircularProgress/>}
+      {claimableReward !== null && <div className={style.OrgPartInfo} style={{"width" : "100%"}}>
+        {<span>Your Revenue Share: {fromDecimals(claimableReward, 18, true)} ETH</span>}
+        {claimableReward !== '0' && <ActionAWeb3Button onSuccess={updateSituation} onClick={() => blockchainCall(revenueShareContract.methods.claimRewardOf, account)}>Claim current Revenue Share</ActionAWeb3Button>}
+      </div>}
+      {liquidityPool && <div className={style.OrgPartInfo} style={{"width" : "100%"}}>
+        <span>Your Liquidity Pool position:</span>
+        <br/>
+        {<span>{fromDecimals(liquidityPool[0], 18, true)} KAI</span>}
+        <br/>
+        {<span>{fromDecimals(liquidityPool[1], 18, true)} ETH</span>}
+        <div>
+          <label>
+            Price slippage: {slippage}%
+            <input type="range" min="0.003" max="100" step="0.001" value={slippage} onChange={e => setSlippage(parseFloat(e.currentTarget.value))}/>
+          </label>
+        </div>
+        {(liquidityPool[0] !== '0' || liquidityPool[1] !== '0') && <ActionAWeb3Button onSuccess={updateSituation} onClick={redeemLPForever}>Claim {(positionOf.vestedAmount !== '0' ? "vested tokens" : "") + (((!claimableReward || claimableReward === '0') ? '' : (positionOf.vestedAmount !== '0' ? ', ' : "") + "current revenue share")) + (positionOf.vestedAmount !== '0' || (claimableReward && claimableReward !== '0') ? " and " : "")}LP share. THIS WILL FORFEIT ALL FUTURE REVENUE SHARE.</ActionAWeb3Button>}
+      </div>}
+    </div>}
+  </div>)
+}
+
 export default ({ element }) => {
   return (
     <>
       <RootWallet element={element} />
+      {web3Utils.toChecksumAddress(element.address) === "0x48B4e1493F132C49063Cea273D2a756f8D9a1759" && <KaitenTBI element={element}/>}
       {element.components.fixedInflationManager && (
         <Inflation element={element} />
       )}
