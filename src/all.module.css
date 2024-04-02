@@ -10022,7 +10022,7 @@ input[type=range]::-ms-thumb {
 
 .dark .ActionInfoSection {
     background-color: #29263e;
-    border: 2px solid #29263e;
+    border: 1px solid #494471;
 }
 
 
@@ -10254,6 +10254,7 @@ input[type=range]::-ms-thumb {
 .dark .ActionAWeb3ButtonSmall button:disabled {
     background-color: #353151 !important;
     color: #fff !important;
+    font-weight: bold !important;
 }
 
 .CollectionLeft .FarmContent {
@@ -11447,6 +11448,7 @@ input {
 .dark .BazarExchangeArea .TradeMarketToken {
     background-color: #29263f;
     border-color: #403b63;
+    border: 1px solid #494471;
 }
 
 .BazarExchangeArea .TradeMarketToken {
@@ -15103,7 +15105,7 @@ input {
     right: 0;
     top: 0;
     bottom: 0;
-    background: #141416;
+    background-image: linear-gradient(25deg, #2600fc, #ff00ea);
     opacity: 1;
     z-index: -1;
 }
