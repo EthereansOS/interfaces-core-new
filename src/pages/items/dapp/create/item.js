@@ -36,6 +36,7 @@ import { useOpenSea } from '../../../../logic/uiUtilities'
 import uploadToIPFS from 'interfaces-core/lib/web3/uploadToIPFS'
 import getFileFromBlobURL from 'interfaces-core/lib/web3/getFileFromBlobURL'
 import ScrollToTopOnMount from 'interfaces-ui/components/ScrollToTopOnMount'
+import { loadTokenFromAddress } from '../../../../logic/erc20'
 
 const LoadCollection = ({
   inputItem,
@@ -228,26 +229,52 @@ const LoadItems = ({ state, onStateEntry, setComponentIndex }) => {
     onStateEntry('amount')
     setTimeout(async () => {
       const itemProjectionFactory = getGlobalContract('itemProjectionFactory')
-      setItems(
-        await loadItemsByFactories(
-          {
-            seaport,
-            context,
-            ...web3Data,
-            collectionData: await loadCollectionMetadata(
-              { context, ...web3Data, deep: true },
-              state.collectionId,
-              newContract(
-                context.ItemMainInterfaceABI,
-                await blockchainCall(
-                  itemProjectionFactory.methods.mainInterface
-                )
-              )
-            ),
-          },
-          itemProjectionFactory
-        )
+      var list = await loadItemsByFactories(
+        {
+          seaport,
+          context,
+          ...web3Data,
+          collectionData: await loadCollectionMetadata(
+            { context, ...web3Data, deep: true },
+            state.collectionId,
+            newContract(
+              context.ItemMainInterfaceABI,
+              await blockchainCall(itemProjectionFactory.methods.mainInterface)
+            )
+          ),
+        },
+        itemProjectionFactory
       )
+
+      var itemsList = []
+
+      if (list) {
+        for (let i = 0; i < list.length; i++) {
+          let it = list[i]
+          var address = it.itemId
+          try {
+            address =
+              address.toLowerCase().indexOf('0x') === 0
+                ? address
+                : web3Utils.numberToHex(address)
+            var itemProperties = await loadTokenFromAddress(
+              { context, ...web3Data, seaport },
+              address
+            )
+            if (itemProperties) {
+              it.name = itemProperties.name
+              it.symbol = itemProperties.symbol
+              it.metadata = itemProperties.metadata
+              it.totalSupply = itemProperties.totalSupply
+              it.uri = itemProperties.uri
+            }
+          } catch (e) {}
+
+          itemsList.push(it)
+        }
+      }
+
+      setItems(itemsList)
     })
   }, [])
 
@@ -261,14 +288,6 @@ const LoadItems = ({ state, onStateEntry, setComponentIndex }) => {
   }, [items, state.item])
 
   const displayItems = items && [
-    /*{
-            address: 'new',
-            label : 'Create a new one',
-            name : state.name,
-            symbol : state.symbol,
-            metadataLink : state.metadataLink,
-            metadata : state.metadata
-        },*/
     ...items.map((item) => ({
       address: item.address,
       label: `${item.name} (${item.symbol})`,
