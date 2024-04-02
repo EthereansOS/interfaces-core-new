@@ -17,6 +17,8 @@ const FactoriesMain = () => {
   const web3Data = useWeb3()
   const history = useHistory()
 
+  const [disabled, setDisabled] = useState(true)
+
   const [metadata, setMetadata] = useState({})
   const [imageFile, setImageFile] = useState(null)
 
@@ -54,6 +56,25 @@ const FactoriesMain = () => {
       setLoadedImage()
     }
   }, [imageFile])
+
+  useEffect(() => {
+    if (!metadata) {
+      setDisabled(true)
+      return
+    }
+
+    if (!imageFile) {
+      setDisabled(true)
+      return
+    }
+
+    setDisabled(
+      !metadata.name ||
+        !metadata.symbol ||
+        !metadata.totalSupply ||
+        metadata.totalSupply <= 0
+    )
+  }, [metadata, imageFile])
 
   useEffect(() => onMetadataChange('description', description), [description])
 
@@ -160,7 +181,8 @@ const FactoriesMain = () => {
               <div className={style.WizardFooter}>
                 <ActionAWeb3Button
                   className={style.WizardFooterNext}
-                  onClick={launchFactory}>
+                  onClick={launchFactory}
+                  disabled={disabled}>
                   LAUNCH NOW!
                 </ActionAWeb3Button>
               </div>
