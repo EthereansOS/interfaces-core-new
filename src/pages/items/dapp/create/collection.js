@@ -68,8 +68,14 @@ const NameAndSymbol = ({ value, onChange, onNext, onPrev }) => {
       <ScrollToTopOnMount />
 
       <div className={style.FancyExplanationCreate}>
-        <h2>Basic Info
-          <a href="/#/factories" style={{float: 'right'}} className={style.SectionLinkBtn}>Simple Deploy</a>
+        <h2>
+          Basic Info
+          <Link
+            to="/factories"
+            className={style.SectionLinkBtn}
+            style={{ float: 'right' }}>
+            Simple Deploy
+          </Link>
         </h2>
       </div>
       <label className={style.CreationPageLabelF}>
@@ -339,7 +345,9 @@ const Metadata = ({ value, onChange, onNext, onPrev }) => {
     <div className={style.CreationPageLabel}>
       <ScrollToTopOnMount />
 
-      <div className={style.FancyExplanationCreate} style={{borderBottom: '0px', marginBottom: '0px'}}>
+      <div
+        className={style.FancyExplanationCreate}
+        style={{ borderBottom: '0px', marginBottom: '0px' }}>
         <h2>Metadata</h2>
       </div>
       <div className={style.MetadataSelection}>

@@ -12,7 +12,6 @@ import OurCircularProgress from 'components/Global/OurCircularProgress'
 const fileTypes = ['JPG', 'PNG', 'GIF']
 
 const FactoriesMain = () => {
-
   const context = useEthosContext()
   const web3Data = useWeb3()
   const history = useHistory()
@@ -22,14 +21,24 @@ const FactoriesMain = () => {
 
   const [description, setDescription] = useState('')
 
-  const onMetadataChange = useCallback((name, value) => setMetadata(oldValue => ({...oldValue, [name] : value})), [])
+  const onMetadataChange = useCallback(
+    (name, value) =>
+      setMetadata((oldValue) => ({ ...oldValue, [name]: value })),
+    []
+  )
 
-  const launchFactory = useCallback(() => launchFactoryV1({context, ...web3Data}, metadata, imageFile).then(itemAddress => history.push('/items/' + itemAddress)), [context, web3Data, metadata, imageFile])
+  const launchFactory = useCallback(
+    () =>
+      launchFactoryV1({ context, ...web3Data }, metadata, imageFile).then(
+        (itemAddress) => history.push('/items/' + itemAddress)
+      ),
+    [context, web3Data, metadata, imageFile]
+  )
 
   const [loadedImage, setLoadedImage] = useState()
 
   useEffect(() => {
-    if(!imageFile) {
+    if (!imageFile) {
       return setLoadedImage()
     }
     setLoadedImage(null)
@@ -39,7 +48,7 @@ const FactoriesMain = () => {
       console.log(reader.result)
       setLoadedImage(reader.result)
     }
-    reader.onerror = e => {
+    reader.onerror = (e) => {
       console.log(e)
       setLoadedImage()
     }
@@ -60,11 +69,13 @@ const FactoriesMain = () => {
           <div className={style.FactoryCreateLeftRow}>
             <div className={style.CreationPageLabel}>
               <div className={style.FilePreview}>
-                {loadedImage === null && <OurCircularProgress/>}
-                {loadedImage !== null && <img
-                  src={loadedImage || 'img/missingcoin.gif'}
-                  width={'100%'}
-                />}
+                {loadedImage === null && <OurCircularProgress />}
+                {loadedImage !== null && (
+                  <img
+                    src={loadedImage || 'img/missingcoin.gif'}
+                    width={'100%'}
+                  />
+                )}
               </div>
               <FileUploader
                 multiple={false}
@@ -77,8 +88,14 @@ const FactoriesMain = () => {
           <div className={style.FactoryCreateRightRow}>
             <div className={style.CreationPageLabel}>
               <div className={style.FancyExplanationCreate}>
-                <h2>Instant Deployment
-                    <a href="/#/items/create/collection" style={{float: 'right'}} className={style.SectionLinkBtn}>Item Creation</a>
+                <h2>
+                  Instant Deployment
+                  <Link
+                    to="/items/create/collection"
+                    className={style.SectionLinkBtn}
+                    style={{ float: 'right' }}>
+                    Item Creation
+                  </Link>
                 </h2>
                 <p>
                   Launch Factory is for rapid deployment, for additional options
@@ -88,19 +105,43 @@ const FactoriesMain = () => {
               <label className={style.CreationPageLabelF}>
                 <h6>Name*</h6>
                 <p>Insert token name</p>
-                <input type="text" placeholder="Token Name" value={metadata.name} onChange={e => onMetadataChange("name", e.currentTarget.value)}/>
+                <input
+                  type="text"
+                  placeholder="Token Name"
+                  value={metadata.name}
+                  onChange={(e) =>
+                    onMetadataChange('name', e.currentTarget.value)
+                  }
+                />
               </label>
 
               <div className={style.CreationPageLabelFDivide}>
                 <label className={style.CreationPageLabelF}>
                   <h6>Symbol*</h6>
                   <p>Insert token symbol</p>
-                  <input type="text" placeholder="Token Symbol" value={metadata.symbol} onChange={e => onMetadataChange("symbol", e.currentTarget.value)}/>
+                  <input
+                    type="text"
+                    placeholder="Token Symbol"
+                    value={metadata.symbol}
+                    onChange={(e) =>
+                      onMetadataChange('symbol', e.currentTarget.value)
+                    }
+                  />
                 </label>
                 <label className={style.CreationPageLabelF}>
                   <h6>Supply*</h6>
                   <p>Insert token supply</p>
-                  <input type="number" placeholder="Token Supply" value={parseFloat(metadata.totalSupply)} onChange={e => onMetadataChange("totalSupply", parseFloat(e.currentTarget.value))}/>
+                  <input
+                    type="number"
+                    placeholder="Token Supply"
+                    value={parseFloat(metadata.totalSupply)}
+                    onChange={(e) =>
+                      onMetadataChange(
+                        'totalSupply',
+                        parseFloat(e.currentTarget.value)
+                      )
+                    }
+                  />
                 </label>
               </div>
 
@@ -112,11 +153,15 @@ const FactoriesMain = () => {
                   rows={2}
                   placeholder="Describe your Token"
                   value={description}
-                  onChange={e => setDescription(e.target.value)}
+                  onChange={(e) => setDescription(e.target.value)}
                 />
               </label>
               <div className={style.WizardFooter}>
-                <ActionAWeb3Button className={style.WizardFooterNext} onClick={launchFactory}>LAUNCH NOW!</ActionAWeb3Button>
+                <ActionAWeb3Button
+                  className={style.WizardFooterNext}
+                  onClick={launchFactory}>
+                  LAUNCH NOW!
+                </ActionAWeb3Button>
               </div>
             </div>
           </div>
