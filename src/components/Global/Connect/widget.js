@@ -39,7 +39,7 @@ export default ({
         </Typography>
         <br />
         {connectionStatus === web3States.CONNECTED && <div>Connected</div>}
-        {!errorMessage && connectionStatus === web3States.CONNECTING && <div>Connecting to {activeConnector.buttonText} <OurCircularProgress/></div>}
+        {!errorMessage && connectionStatus === web3States.CONNECTING && <div>Connecting to Browser Wallet <OurCircularProgress/></div>}
         {connectionStatus === web3States.NOT_CONNECTED &&
           <p> Connect to Ethereum to use this Dapp</p>}
           <br/>

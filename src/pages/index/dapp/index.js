@@ -99,14 +99,13 @@ const IndexMain = () => {
       <div className={style.CardLayerBanner}>
         <div className={style.CardLayerBannerDetail}>
           <div>
-            <h3>Welcome to</h3>
             <h1 className={style.H1}>
-              ethereans<span className={style.WhiteText}>os</span>_
+              <img src="/img/logo.png" className={style.HomeBannerLogo}/>
             </h1>
             <p>
-              No-code tools for Ethereum
+              No-code tools for Ethereum.
               <br />
-              Click, Create, Deploy.
+              Click. Create. Deploy.
             </p>
             <Link
               to="/items/create/collection"

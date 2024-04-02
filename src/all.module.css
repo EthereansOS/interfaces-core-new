@@ -331,13 +331,11 @@ input::-webkit-scrollbar {
 
 .logoMain {
     background: transparent;
-    filter: brightness(0%);
 }
 
 
 .dark .logoMain {
     background: transparent;
-    filter: brightness(0%) invert(1);
 }
 
 
@@ -8414,6 +8412,12 @@ input[type=range]::-ms-thumb {
     line-height: 1.2;
 }
 
+.HomeBannerLogo{
+    width:100%;
+    max-width: 350px;
+    filter: brightness(0%) invert(1);
+}
+
 .FinalizeSequenceBoxIn .Hand {
     position: absolute;
     top: 45%;
@@ -9105,8 +9109,8 @@ input[type=range]::-ms-thumb {
     }
 
     .CreationPageLabelF {
-        width: 95%;
-        padding: 2%;
+        width: 100%;
+        padding: 0%;
     }
 
     .CreationPageLabelF input,

@@ -82,7 +82,7 @@ const ConnectWidget = ({
           <>
             {wallet.status === 'connecting' && (
               <Typography variant="body1">
-                Connecting to {activeConnector.label} <CircularProgress />
+                Connecting to Browser Wallet <CircularProgress />
               </Typography>
             )}
             {wallet.status === 'error' && (
