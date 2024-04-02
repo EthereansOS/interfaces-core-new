@@ -13266,8 +13266,11 @@ input {
 }
 
 .light .OrgPartInfo {
-    background-color: #eaecf2;
+    background-color: #f2f4f8;
+    padding-top:10px;
+    margin-top: 10px;
 }
+
 
 .biz .OrgPartInfo {
     background-color: transparent;
@@ -15954,6 +15957,15 @@ input {
     font-weight: 300;
     display: block;
     text-align: left;
+}
+.OrgThingsTitle .RegularButtonDuoSplit{
+    width: 500px;
+    display: block;
+    margin: 20px auto;
+}
+.OrgThingsTitle input[type=range] {
+    margin-top: 20px;
+    margin-bottom:20px;
 }
 .dark .CreationPageLabelF .ActionInfoSection{
     border: 2px solid #403b63;

@@ -29,7 +29,8 @@ import CircularSlider from '@fseehawer/react-circular-slider'
 
 import getCurrentAddress from 'interfaces-core/lib/web3/getCurrentAddress'
 import ScrollToTopOnMount from 'interfaces-ui/components/ScrollToTopOnMount'
-
+import Tooltip from '@mui/material/Tooltip';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 const components = [
   'COMPONENT_KEY_TREASURY_MANAGER',
   'COMPONENT_KEY_TREASURY_SPLITTER_MANAGER',
@@ -562,8 +563,12 @@ const VotingRules = ({ value, onChange, onNext, onPrev }) => {
           className={style.CreationPageLabelFDivide}
           style={{ marginTop: '30px', marginBottom: '30px' }}>
           <label className={style.CreationPageLabelF}>
-            <h6>Quorum</h6>
-            <p>Select the value of Quorum</p>
+            <h6>Quorum <Tooltip placement="top" title="Quorum is the minimum percentage of
+              tokens that needs to be staked for a
+              proposal to pass at the end of the Proposal
+              Duration. This checks the total supply of the
+              token, not just the circulating supply." arrow><InfoOutlinedIcon sx={{ fontSize: 14 }}/></Tooltip></h6>
+            <p>Select the value of Quorum  </p>
             <br />
             <br />
             <br />
@@ -595,7 +600,12 @@ const VotingRules = ({ value, onChange, onNext, onPrev }) => {
           </label>
 
           <label className={style.CreationPageLabelF}>
-            <h6>Hard cap</h6>
+            <h6>Hard cap <Tooltip placement="top" title="Hard Cap is the minimum percentage of
+              tokens that needs to be staked for a
+              proposal to pass immediately (requires a
+              transaction to execute still). This checks the
+              total supply of the token, not just the
+              circulating supply." arrow><InfoOutlinedIcon sx={{ fontSize: 14 }}/></Tooltip></h6>
             <p>Select the value of Hard cap</p>
             <br />
             <br />
@@ -640,7 +650,9 @@ const VotingRules = ({ value, onChange, onNext, onPrev }) => {
             borderLeft: '1px solid #e7ecf4',
           }}>
           <label className={style.CreationPageLabelF}>
-            <h6>Proposal Duration</h6>
+            <h6>Proposal Duration <Tooltip placement="top" title="Proposal Duration is the length that voting
+              tokens can be staked in support or against a
+              proposal." arrow><InfoOutlinedIcon sx={{ fontSize: 14 }}/></Tooltip></h6>
             <p>Select the duration of Proposal</p>
             <br />
             <br />
@@ -675,7 +687,11 @@ const VotingRules = ({ value, onChange, onNext, onPrev }) => {
             />
           </label>
           <label className={style.CreationPageLabelF}>
-            <h6>Validation Bomb</h6>
+            <h6>Validation Bomb <Tooltip placement="top" title="Validation Bomb is the period of time that
+              a passed proposal can be executed. This
+              countdown begins when the proposal is
+              published, not when it has reached Quorum
+              or the Hard Cap." arrow><InfoOutlinedIcon sx={{ fontSize: 14 }}/></Tooltip></h6>
             <p>Select Validation Bomb value</p>
             <br />
             <br />
@@ -861,7 +877,9 @@ const Governance = ({ value, onChange, onNext, onPrev }) => {
         className={style.CreationPageLabelFDivide}
         style={{ display: 'flex' }}>
         <label className={style.CreationPageLabelF}>
-          <h6>Voting Token</h6>
+          <h6>Voting Token <Tooltip placement="top" title="This is the token that governs the
+            Organization and is staked to vote in
+            proposals." arrow><InfoOutlinedIcon sx={{ fontSize: 14 }}/></Tooltip></h6>
           <p>Select the Voting Token</p>
           <TokenInputRegular
             selected={value?.token ?? token}
@@ -874,7 +892,9 @@ const Governance = ({ value, onChange, onNext, onPrev }) => {
 
         <label className={style.CreationPageLabelF}>
           <h6>
-            Host address*{' '}
+            Host address*{' '} <Tooltip placement="top" title="This is the address that can manage
+              metadata for the organization and issue root
+              proposals." arrow><InfoOutlinedIcon sx={{ fontSize: 14 }}/></Tooltip>
             <span
               className={style.CreationPageLabelFloatRight}
               onClick={() =>
@@ -910,7 +930,11 @@ const Governance = ({ value, onChange, onNext, onPrev }) => {
           className={style.CreationPageLabelFDivide}
           style={{ marginTop: '30px', marginBottom: '30px' }}>
           <label className={style.CreationPageLabelF} key={quorumKey}>
-            <h6>Quorum</h6>
+            <h6>Quorum <Tooltip placement="top" title="Quorum is the minimum percentage of
+              tokens that needs to be staked for a
+              proposal to pass at the end of the Proposal
+              Duration. This checks the total supply of the
+              token, not just the circulating supply." arrow><InfoOutlinedIcon sx={{ fontSize: 14 }}/></Tooltip></h6>
             <p>Select the value of Quorum</p>
             <br />
             <br />
@@ -941,7 +965,12 @@ const Governance = ({ value, onChange, onNext, onPrev }) => {
             />
           </label>
           <label className={style.CreationPageLabelF}>
-            <h6>Hard cap</h6>
+            <h6>Hard cap  <Tooltip placement="top" title="Hard Cap is the minimum percentage of
+              tokens that needs to be staked for a
+              proposal to pass immediately (requires a
+              transaction to execute still). This checks the
+              total supply of the token, not just the
+              circulating supply." arrow><InfoOutlinedIcon sx={{ fontSize: 14 }}/></Tooltip></h6>
             <p>Select the value of Hard cap</p>
             <br />
             <br />
@@ -986,7 +1015,9 @@ const Governance = ({ value, onChange, onNext, onPrev }) => {
             borderLeft: '1px solid #e7ecf4',
           }}>
           <label className={style.CreationPageLabelF}>
-            <h6>Proposal Duration</h6>
+            <h6>Proposal Duration <Tooltip placement="top" title="Proposal Duration is the length that voting
+              tokens can be staked in support or against a
+              proposal." arrow><InfoOutlinedIcon sx={{ fontSize: 14 }}/></Tooltip></h6>
             <p>Select the duration of Proposal</p>
             <br />
             <br />
@@ -1021,7 +1052,11 @@ const Governance = ({ value, onChange, onNext, onPrev }) => {
             />
           </label>
           <label className={style.CreationPageLabelF}>
-            <h6>Validation Bomb</h6>
+            <h6>Validation Bomb <Tooltip placement="top" title="Validation Bomb is the period of time that
+              a passed proposal can be executed. This
+              countdown begins when the proposal is
+              published, not when it has reached Quorum
+              or the Hard Cap." arrow><InfoOutlinedIcon sx={{ fontSize: 14 }}/></Tooltip></h6>
             <p>Select Validation Bomb value</p>
             <br />
             <br />
@@ -1245,7 +1280,15 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
                 }}>
                 <label className={style.CreationPageLabelF}>
                   <label>
-                    <h6>Give back mint permissions of the token</h6>
+                    <h6>Give back mint permissions of the token <Tooltip placement="top" title="This gives the option of being able to call
+                        mint permissions of the inflating token back
+                        to an owner. If selected, choose the wallet
+                        that will receive the mint permissions and
+                        how long they will have to wait after
+                        requesting them abc from the contract.
+                        Calling mint permissions back to the owner
+                        will display a warning on the dapp when
+                        viewing the organization." arrow><InfoOutlinedIcon sx={{ fontSize: 14 }}/></Tooltip></h6>
                     <input
                       type="checkbox"
                       checked={value?.tokenMinterOwner !== undefined}
@@ -1300,7 +1343,9 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
                           margin: '0px',
                           padding: '0px',
                         }}>
-                        <h6>After</h6>
+                        <h6>After <Tooltip placement="top" title="Time period between requesting mint
+                          permissions back from the Fixed Inflation
+                          contract and them returning to the owner." arrow><InfoOutlinedIcon sx={{ fontSize: 14 }}/></Tooltip></h6>
                         <Duration
                           value={
                             value?.giveBackOwnershipSeconds ??
@@ -1348,7 +1393,11 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
                   paddingBottom: '20px',
                   textAlign:'center',
                 }}>
-                <h6 style={{ textAlign:'center'}}>Inflation percentages</h6>
+                <h6 style={{ textAlign:'center'}}>Inflation percentages <Tooltip placement="top" title="Inflation per year of the token governed
+                    by Fixed Inflation. The first value will be the
+                    starting value, the other 5 options will be
+                    votable via a surveyless proposal by token
+                    holders." arrow><InfoOutlinedIcon sx={{ fontSize: 14 }}/></Tooltip></h6>
                 <DonutAndLegend
                   inflationPercentage0={
                     value?.inflationPercentage0 ?? defaultInflationPercentage
@@ -1389,7 +1438,9 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
                   />
                 </label>
                 <label className={style.CreationPageLabelF}>
-                  <h6>Boostrap Fund wallet</h6>
+                  <h6>Boostrap Fund wallet <Tooltip placement="top" title=" Bootstrap Fund Wallet is the wallet that
+                      will receive a portion of the ETH from the
+                      swapped inflated tokens." arrow><InfoOutlinedIcon sx={{ fontSize: 14 }}/></Tooltip></h6>
                   <input
                     type="text"
                     value={_bootstrapFundWalletAddress}
@@ -1409,7 +1460,9 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
                   marginBottom: '20px',
                   paddingBottom: '20px',
                 }}>
-                <h6>Bootstrap Fund percentage</h6>
+                <h6>Bootstrap Fund percentage <Tooltip placement="top" title="This is the percentage of the ETH or
+                  tokens that the bootstrap wallet will receive
+                  with each inflation event." arrow><InfoOutlinedIcon sx={{ fontSize: 14 }}/></Tooltip></h6>
                 <p>
                   <h8>{_bootstrapFundWalletPercentage} %</h8>
                 </p>
@@ -1433,7 +1486,13 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
                   marginBottom: '20px',
                   paddingBottom: '20px',
                 }}>
-                <h6>Boostrap Fund is in token?</h6>
+                <h6>Boostrap Fund is in token? <Tooltip placement="top" title="Check this only if you want the bootstrap
+                  wallet to receive the inflating token rather
+                  than having it swapped to ETH. (In general,
+                  the bootstrap should receive ETH, since the
+                  design of Fixed Inflation is to spread sell
+                  pressure of the native token over time in a
+                  predictable manner)." arrow><InfoOutlinedIcon sx={{ fontSize: 14 }}/></Tooltip></h6>
                 <input
                   type="checkbox"
                   className={style.CheckboxAlign}
@@ -1450,7 +1509,10 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
                   marginBottom: '20px',
                   paddingBottom: '20px',
                 }}>
-                <h6>Components that will receive tokens</h6>
+                <h6>Components that will receive tokens <Tooltip placement="top" title="Select the components that will receive
+                  tokens from each inflation event. This is best
+                  used for farming setups, most components
+                  should receive funds in ETH." arrow><InfoOutlinedIcon sx={{ fontSize: 14 }}/></Tooltip></h6>
                 <ComponentPercentage
                   value={_rawTokenComponents}
                   onChange={set_rawTokenComponents}
@@ -1469,7 +1531,10 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
                   marginBottom: '20px',
                   paddingBottom: '20px',
                 }}>
-                <h6>Components that will receive ETH</h6>
+                <h6>Components that will receive ETH <Tooltip placement="top" title="Select the components that will receive
+                  ETH from each inflation event. This is best
+                  used for investments, delegations, and
+                  dividends farming." arrow><InfoOutlinedIcon sx={{ fontSize: 14 }}/></Tooltip></h6>
                 <ComponentPercentage
                   value={_swappedTokenComponents}
                   onChange={set_swappedTokenComponents}
@@ -1487,7 +1552,11 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
                   className={style.CreationPageLabelFDivide}
                   style={{ marginTop: '30px', marginBottom: '30px' }}>
                   <label className={style.CreationPageLabelF}>
-                    <h6>Quorum</h6>
+                    <h6>Quorum <Tooltip placement="top" title="Quorum is the minimum percentage of
+                        tokens that needs to be staked for a
+                        proposal to pass at the end of the Proposal
+                        Duration. This checks the total supply of the
+                        token, not just the circulating supply." arrow><InfoOutlinedIcon sx={{ fontSize: 14 }}/></Tooltip></h6>
                     <p>Select the value of Quorum</p>
                     <br />
                     <br />
@@ -1519,7 +1588,12 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
                     />
                   </label>
                   <label className={style.CreationPageLabelF}>
-                    <h6>Hard cap</h6>
+                    <h6>Hard cap  <Tooltip placement="top" title="Hard Cap is the minimum percentage of
+                      tokens that needs to be staked for a
+                      proposal to pass immediately (requires a
+                      transaction to execute still). This checks the
+                      total supply of the token, not just the
+                      circulating supply." arrow><InfoOutlinedIcon sx={{ fontSize: 14 }}/></Tooltip></h6>
                     <p>Select the value of Hard cap</p>
                     <br />
                     <br />
@@ -1564,7 +1638,9 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
                     borderLeft: '1px solid #e7ecf4',
                   }}>
                   <label className={style.CreationPageLabelF}>
-                    <h6>Proposal Duration</h6>
+                    <h6>Proposal Duration <Tooltip placement="top" title="Proposal Duration is the length that voting
+                      tokens can be staked in support or against a
+                      proposal." arrow><InfoOutlinedIcon sx={{ fontSize: 14 }}/></Tooltip></h6>
                     <p>Select the duration of Proposal</p>
                     <br />
                     <br />
@@ -1601,7 +1677,11 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
                     />
                   </label>
                   <label className={style.CreationPageLabelF}>
-                    <h6>Validation Bomb</h6>
+                    <h6>Validation Bomb <Tooltip placement="top" title="Validation Bomb is the period of time that
+                      a passed proposal can be executed. This
+                      countdown begins when the proposal is
+                      published, not when it has reached Quorum
+                      or the Hard Cap." arrow><InfoOutlinedIcon sx={{ fontSize: 14 }}/></Tooltip></h6>
                     <p>Select Validation Bomb value</p>
                     <br />
                     <br />
@@ -1952,7 +2032,11 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
           className={style.CreationPageLabelFDivide}
           style={{ marginTop: '30px', marginBottom: '30px' }}>
           <label className={style.CreationPageLabelF}>
-            <h6>Quorum</h6>
+            <h6>Quorum <Tooltip placement="top" title="Quorum is the minimum percentage of
+              tokens that needs to be staked for a
+              proposal to pass at the end of the Proposal
+              Duration. This checks the total supply of the
+              token, not just the circulating supply." arrow><InfoOutlinedIcon sx={{ fontSize: 14 }}/></Tooltip></h6>
             <p>Select the value of Quorum</p>
             <br />
             <br />
@@ -1985,7 +2069,12 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
           </label>
 
           <label className={style.CreationPageLabelF}>
-            <h6>Hard cap</h6>
+            <h6>Hard cap  <Tooltip placement="top" title="Hard Cap is the minimum percentage of
+              tokens that needs to be staked for a
+              proposal to pass immediately (requires a
+              transaction to execute still). This checks the
+              total supply of the token, not just the
+              circulating supply." arrow><InfoOutlinedIcon sx={{ fontSize: 14 }}/></Tooltip></h6>
             <p>Select the value of Hard cap</p>
             <br />
             <br />
@@ -2030,7 +2119,9 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
             borderLeft: '1px solid #e7ecf4',
           }}>
           <label className={style.CreationPageLabelF}>
-            <h6>Proposal Duration</h6>
+            <h6>Proposal Duration <Tooltip placement="top" title="Proposal Duration is the length that voting
+              tokens can be staked in support or against a
+              proposal." arrow><InfoOutlinedIcon sx={{ fontSize: 14 }}/></Tooltip></h6>
             <p>Select the duration of Proposal</p>
             <br />
             <br />
@@ -2065,7 +2156,11 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
             />
           </label>
           <label className={style.CreationPageLabelF}>
-            <h6>Validation Bomb</h6>
+            <h6>Validation Bomb <Tooltip placement="top" title="Validation Bomb is the period of time that
+              a passed proposal can be executed. This
+              countdown begins when the proposal is
+              published, not when it has reached Quorum
+              or the Hard Cap." arrow><InfoOutlinedIcon sx={{ fontSize: 14 }}/></Tooltip></h6>
             <p>Select Validation Bomb value</p>
             <br />
             <br />
@@ -2229,7 +2324,11 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
           className={style.CreationPageLabelFDivide}
           style={{ marginTop: '30px', marginBottom: '30px' }}>
           <label className={style.CreationPageLabelF}>
-            <h6>Quorum</h6>
+            <h6>Quorum <Tooltip placement="top" title="Quorum is the minimum percentage of
+              tokens that needs to be staked for a
+              proposal to pass at the end of the Proposal
+              Duration. This checks the total supply of the
+              token, not just the circulating supply." arrow><InfoOutlinedIcon sx={{ fontSize: 14 }}/></Tooltip></h6>
             <p>Select the value of Quorum</p>
             <br />
             <br />
@@ -2261,7 +2360,12 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
           </label>
 
           <label className={style.CreationPageLabelF}>
-            <h6>Hard cap</h6>
+            <h6>Hard cap  <Tooltip placement="top" title="Hard Cap is the minimum percentage of
+              tokens that needs to be staked for a
+              proposal to pass immediately (requires a
+              transaction to execute still). This checks the
+              total supply of the token, not just the
+              circulating supply." arrow><InfoOutlinedIcon sx={{ fontSize: 14 }}/></Tooltip></h6>
             <p>Select the value of Hard cap</p>
             <br />
             <br />
@@ -2306,7 +2410,9 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
             borderLeft: '1px solid #e7ecf4',
           }}>
           <label className={style.CreationPageLabelF}>
-            <h6>Proposal Duration</h6>
+            <h6>Proposal Duration <Tooltip placement="top" title="Proposal Duration is the length that voting
+              tokens can be staked in support or against a
+              proposal." arrow><InfoOutlinedIcon sx={{ fontSize: 14 }}/></Tooltip></h6>
             <p>Select the duration of Proposal</p>
             <br />
             <br />
@@ -2341,7 +2447,11 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
             />
           </label>
           <label className={style.CreationPageLabelF}>
-            <h6>Validation Bomb</h6>
+            <h6>Validation Bomb <Tooltip placement="top" title="Validation Bomb is the period of time that
+              a passed proposal can be executed. This
+              countdown begins when the proposal is
+              published, not when it has reached Quorum
+              or the Hard Cap." arrow><InfoOutlinedIcon sx={{ fontSize: 14 }}/></Tooltip></h6>
             <p>Select Validation Bomb value</p>
             <br />
             <br />
@@ -2599,7 +2709,11 @@ const InvestmentsManager = ({ amms, value, onChange, onNext, onPrev }) => {
           className={style.CreationPageLabelFDivide}
           style={{ marginTop: '30px', marginBottom: '30px' }}>
           <label className={style.CreationPageLabelF}>
-            <h6>Quorum</h6>
+            <h6>Quorum <Tooltip placement="top" title="Quorum is the minimum percentage of
+              tokens that needs to be staked for a
+              proposal to pass at the end of the Proposal
+              Duration. This checks the total supply of the
+              token, not just the circulating supply." arrow><InfoOutlinedIcon sx={{ fontSize: 14 }}/></Tooltip></h6>
             <p>Select the value of Quorum</p>
             <br />
             <br />
@@ -2632,7 +2746,12 @@ const InvestmentsManager = ({ amms, value, onChange, onNext, onPrev }) => {
           </label>
 
           <label className={style.CreationPageLabelF}>
-            <h6>Hard cap</h6>
+            <h6>Hard cap  <Tooltip placement="top" title="Hard Cap is the minimum percentage of
+              tokens that needs to be staked for a
+              proposal to pass immediately (requires a
+              transaction to execute still). This checks the
+              total supply of the token, not just the
+              circulating supply." arrow><InfoOutlinedIcon sx={{ fontSize: 14 }}/></Tooltip></h6>
             <p>Select the value of Hard cap</p>
             <br />
             <br />
@@ -2675,7 +2794,9 @@ const InvestmentsManager = ({ amms, value, onChange, onNext, onPrev }) => {
             borderLeft: '1px solid #e7ecf4',
           }}>
           <label className={style.CreationPageLabelF}>
-            <h6>Proposal Duration</h6>
+            <h6>Proposal Duration <Tooltip placement="top" title="Proposal Duration is the length that voting
+              tokens can be staked in support or against a
+              proposal." arrow><InfoOutlinedIcon sx={{ fontSize: 14 }}/></Tooltip></h6>
             <p>Select the duration of Proposal</p>
             <br />
             <br />
@@ -2710,7 +2831,11 @@ const InvestmentsManager = ({ amms, value, onChange, onNext, onPrev }) => {
             />
           </label>
           <label className={style.CreationPageLabelF}>
-            <h6>Validation Bomb</h6>
+            <h6>Validation Bomb <Tooltip placement="top" title="Validation Bomb is the period of time that
+              a passed proposal can be executed. This
+              countdown begins when the proposal is
+              published, not when it has reached Quorum
+              or the Hard Cap." arrow><InfoOutlinedIcon sx={{ fontSize: 14 }}/></Tooltip></h6>
             <p>Select Validation Bomb value</p>
             <br />
             <br />
@@ -2921,7 +3046,7 @@ const CreateOrganization = () => {
 
   const [amms, setAMMs] = useState()
 
-  const [step, setStep] = useState(0)
+  const [step, setStep] = useState(-1)
 
   const disabled = useMemo(
     () =>
@@ -2942,6 +3067,9 @@ const CreateOrganization = () => {
 
       <div className={style.WizardStepsList}>
         <ul>
+          <li className={step === -1 ? style.WizardStepsListActive : ''}>
+            Disclaimer
+          </li>
           <li className={step === 0 ? style.WizardStepsListActive : ''}>
             Basic Info
           </li>
@@ -2988,7 +3116,7 @@ const CreateOrganization = () => {
         </div>
       </div>
       <div className={style.WizardStep}>
-        {step == 0 && (<>
+      {step == -1 && (<>
             <div className={style.FancyExplanationCreate}>
               <div>
                   <h6>Disclaimer</h6>
@@ -3009,7 +3137,18 @@ const CreateOrganization = () => {
                       Users are responsible for independently managing their participation in the Organizations created through this form.<br/>
                   </div>
               </div>
+              
           </div>
+          <div className={style.WizardFooter}>
+                <button
+                  className={style.WizardFooterNext}
+                  onClick={() => setStep(0)}>
+                  Accept and Proceed
+                </button>
+              </div>
+          </>
+        )}
+        {step == 0 && (<>
           <Metadata
             value={state?.metadata}
             onChange={(value) => setState({ ...state, metadata: value })}
