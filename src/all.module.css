@@ -15820,9 +15820,15 @@ input {
 
 }
 
+@media only screen and (max-width: 1322px) and (min-width: 1201px) {
+    .CardLayerBannerDetailImages {
+        right: -500px;
+    }
+}
 
 
-@media only screen and (max-width: 1457px) {
+
+@media only screen and (max-width: 1530px) {
     .Navigation{
         width: 100%;
         padding:0px;
@@ -16065,7 +16071,7 @@ input {
         z-index: 10;
     }
     .CardLayerBannerDetail h1{
-        font-size: 30px;
+        font-size: 22px;
     }
     .CardLayerBannerDetail>div{
        margin: 0 auto;
@@ -16366,4 +16372,139 @@ input {
     .CardLayerBannerDetailImages{
         display: none;
     }
+}
+
+@media only screen and (max-width: 550px) {
+    .FancyExplanationCreate a {
+        float: initial!important;
+        display: block;
+        text-align: center;
+        width: 200px;
+        margin: 10px auto;
+    }
+    .FancyExplanationCreate h2 {
+        text-align: center;
+    }
+    .CreationPageLabelF {
+        width: 100%!important;
+        padding: 0%!important;
+    }
+
+    .SectionSubMenuItems li {
+        display: inline-block;
+        margin-right: 0px;
+        width: 40%;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .DetailSupply {
+        display: block;
+        width: 100%;
+        text-align: center;
+        margin: 10px auto;
+    }
+
+    .FarmContent .FarmSetupV3 .SetupFarmingInstructionsV3 {
+        width: 100%;
+    }
+    .FarmToken {
+        margin: 0px 10px!important;
+    }
+    .FarmToken .TradeMarketTokenAmount {
+        width: 100px;
+        display: inline-block;
+    }
+    .FarmingDynamics .TradeMarketToken .TradeMarketTokenSelector > span {
+        display: none;
+    }
+    .FarmingDynamics .FarmToken{
+        width: 100%;
+        margin: 0px !important;
+        padding: 0px;
+    }
+    .BazarExchangeArea .SettingBLabPerch input {
+        width: 86%;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+    .SettingBLabPerch input[type="range"] {
+        width: 93%;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        display: inline-block;
+        vertical-align: middle;
+        margin-left: auto;
+    }
+    .MetadataSelection{
+        position: relative;
+        text-align: center;
+        margin: 0 auto;
+        left: 0px;
+    }
+
+    .GuildTagO, .GuildTagD {
+       position: relative!important;
+    }
+
+    .TranferETHProp .AddAReceiver input {
+        margin: 0 auto;
+    }
+    .TradeMarketToken .TradeMarketTokenSelector {
+        width: 100% !important;
+    }
+    .UpshotBar{
+        width: 92%!important;
+    }
+    .ItemSingle {
+        width: 260px;
+    }
+    .DDapp_Menu a {
+        font-size: 16px !important;
+        padding: 10px !important;
+    }
+    .ItemsExploreMainCategories{
+        text-align: center;
+    }
+    .FarmContentInfo .CopyBTN{
+        position: absolute;
+        top: -7px;
+        right: -8px;
+        left: auto;
+    }
+    .SettingBLabRegular input{
+        width: 90%;
+        margin-top: 20px ;
+    }
+    .CreationPageLabelFDivideGroup .CreationPageLabelFDivide{
+        border-left:0px!important;
+    }
+    .OrganizationToggle {
+        position: relative !important;
+        margin: 10px auto;
+        width: fit-content;
+        left: 0px;
+    }
+    .CreationPageLabelF h6, .CreationPageLabelF p {
+        text-align: center!important;
+    }
+    .dark .RoutineOperation {
+        background-color: #29263f;
+    }
+    input[type=range] {
+        width: 100%;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+    .TranferETHPropRecap a {
+        word-wrap: break-word;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        width: 100%;
+    }
+    .TradeMarketBox h5 {
+         display: inline-block
+    }
+    
 }
