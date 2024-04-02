@@ -15637,7 +15637,7 @@ input {
 
 .OrganizationToggle {
     position: absolute;
-    top: 10px;
+    top: 0px;
     right: 50px;
     margin: 10px auto;
     padding-top: 2%;
@@ -15690,9 +15690,27 @@ input {
     }
 
     input:checked+label {
-        background-color: black;
+        background-color: #f09243;
         color: #FFF;
-        border-color: black;
+        border-color: #f09243;
+        z-index: 1;
+    }
+}
+
+.light .OrganizationToggle {
+    input+label {
+        color:#7d9cbd!important;
+        border: solid 1px #f2f4f8;
+        background-color: #f2f4f8;
+    }
+    input:hover+label {
+        border-color: black
+    }
+
+    input:checked+label {
+        background-color: #f09243;
+        color: #FFF!important;
+        border-color: #f09243;
         z-index: 1;
     }
 }
