@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react'
 
-import { useWeb3 } from 'interfaces-core'
+import { useWeb3, useEthosContext } from 'interfaces-core'
 import { FixedSizeList } from 'react-window'
 import OurCircularProgress from '../OurCircularProgress'
 import style from '../../../all.module.css'
@@ -19,6 +19,7 @@ export default ({
   custom,
 }) => {
   const { chainId } = useWeb3()
+  const context = useEthosContext()
 
   const [elements, setElements] = useState(null)
 
@@ -56,6 +57,40 @@ export default ({
     [provider]
   )
 
+  const sortListWithPriorities = (list) => {
+    console.log(list)
+    const prioritySymbols = context.sortOrderTokenList?.symbols ?? []
+
+    if (prioritySymbols.length > 0) {
+      const priorityToken = []
+      const others = []
+
+      list.forEach((obj) => {
+        if (obj && obj.symbol && prioritySymbols.includes(obj.symbol)) {
+          priorityToken.push(obj)
+        } else {
+          others.push(obj)
+        }
+      })
+
+      priorityToken.sort((a, b) => {
+        if (!a || !a.symbol || !b || !b.symbol) return 0
+        return (
+          prioritySymbols.indexOf(a.symbol) - prioritySymbols.indexOf(b.symbol)
+        )
+      })
+
+      others.sort((a, b) => {
+        if (!a || !a.name || !b || !b.name) return 0
+        return a.name?.localeCompare(b.name)
+      })
+
+      return priorityToken.concat(others)
+    } else {
+      return list
+    }
+  }
+
   var outputElements = elements
 
   searchText &&
@@ -73,6 +108,10 @@ export default ({
   sortOrder &&
     outputElements &&
     (outputElements = outputElements.sort(sortOrder))
+
+  !sortOrder &&
+    outputElements &&
+    (outputElements = sortListWithPriorities(outputElements))
 
   var message = error ? (
     <h2>{error}</h2>
