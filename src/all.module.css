@@ -8556,6 +8556,10 @@ input[type=range]::-ms-thumb {
     display: inline-block;
 }
 
+.light .FancyExplanationCreate a {
+    color:#fff;
+}
+
 .TokenSelectorListProposal .ActionInfoSectionAMM figure img {
     width: 40px;
     height: 40px;

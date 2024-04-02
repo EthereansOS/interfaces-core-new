@@ -127,7 +127,7 @@ const themes = [
 export const ThemeSelectorContextProvider = ({ children }) => {
   const { pathname } = useLocation()
 
-  var currentTheme = themes[0].value
+  var currentTheme = themes[1].value
 
   try {
     currentTheme = window.localStorage.theme || currentTheme

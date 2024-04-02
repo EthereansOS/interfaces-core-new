@@ -145,6 +145,8 @@ const Header = (props) => {
             setIsChecked(savedToggleState)
             setTheme(savedToggleState ? 'dark' : 'light')
           } else {
+            localStorage.setItem('toggleState', true)
+            setIsChecked(true)
             handleToggleChange()
           }
           resolve()
