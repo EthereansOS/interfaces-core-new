@@ -774,7 +774,7 @@ input::-webkit-scrollbar {
     margin: 0 3%;
     text-align: center;
     font-size: 12px;
-    border-radius: 20px;
+    border-radius: 9px;
     border: none !important;
     cursor: pointer;
     padding: 15px 10px 15px 10px;
@@ -791,7 +791,7 @@ input::-webkit-scrollbar {
 .dark .ActionAWeb3Buttons .ActionASide,
 .dark .ActionAWeb3Buttons .ActionAMain {
     background-color: #f09243;
-    color: #ffffff;
+    color: #29263e;
     font-weight: bold;
 }
 
@@ -1122,7 +1122,7 @@ textarea{
 .RegularButtonDuo {
     display: inline-block;
     padding: 10px 13px;
-    border-radius: 17px;
+    border-radius: 9px;
     font-size: 14px;
     font-weight: 700;
     cursor: pointer;
@@ -1802,7 +1802,7 @@ section.chart-wrapper {
     font-weight: bold;
     border-radius: 100%;
     cursor: pointer;
-    margin: 23px 5px auto 5px;
+    margin: 9px 5px auto 5px;
     vertical-align: top;
 
 }
@@ -1818,7 +1818,7 @@ section.chart-wrapper {
 .TradeMarketBoxSwitch svg{
     fill: #fff;
     transform: rotate(90deg);
-    border-radius: 10px;
+    border-radius: 3px;
 }
 
 
@@ -3948,8 +3948,8 @@ input[type=range]::-ms-thumb {
 
 .BazarExchangeArea .TradeMarketBoxSwitch {
     background-color: transparent !important;
-    width: 50px;
-    height: 78px;
+    width: 34px;
+    height: 50px;
 }
 
 .dark .BazarExchangeArea .TradeMarketTokenSelector {
@@ -4979,7 +4979,7 @@ input[type=range]::-ms-thumb {
 .ItemsExploreMainCategoriesCreateElement {
     float: right;
     background-color: #f09243;
-    color: #fff !important;
+    color: #28263C !important;
     font-weight: bold;
     padding-right: 26px !important;
     position: relative;
@@ -4988,7 +4988,7 @@ input[type=range]::-ms-thumb {
     padding-bottom: 0.65rem;
     padding-left: 1.5rem;
     padding-right: 1.5rem;
-    border-radius: 9999px;
+    border-radius: 9px;
 }
 
 .dark .ItemsExploreMainCategoriesCreateElement {
@@ -5026,7 +5026,7 @@ input[type=range]::-ms-thumb {
 
 
 .ItemsExploreMainCategoriesCreateElement span {
-    color: #fff !important;
+    color: #28263C !important;
     position: relative;
     top: -6px;
     left: 6px;
@@ -5215,7 +5215,7 @@ input[type=range]::-ms-thumb {
 
 .ViewBasics a {
     border: 2px solid;
-    border-radius: 30px;
+    border-radius: 9px;
     width: 80px;
     margin: 5px;
     font-size: 12px;
@@ -10205,6 +10205,14 @@ input[type=range]::-ms-thumb {
     color: #5E594E;
 }
 
+.light .ItemsExploreMainCategoriesCreateElement span {
+    color: #fff !important;
+}
+
+.light .ItemsExploreMainCategoriesCreateElement{
+    color: #fff !important;
+}
+
 .matrix .NFTInfo {
     background-color: #000000;
 }
@@ -15061,7 +15069,7 @@ input {
 }
 
 .CardLayerBanner {
-    padding: 35px 50px 50px 50px;
+    padding: 45px 50px 60px 50px;
     border-radius: 16px;
     margin-bottom: 30px;
     margin-top: 30px;
@@ -15135,7 +15143,7 @@ input {
 }
 
 .BtnSecondary {
-    color: #fff !important;
+    color: #29263e !important;
     background-color: #f09243;
     border: 1px solid #f09243 !important;
     padding: 12px 30px;
@@ -15146,6 +15154,10 @@ input {
     outline: none;
     font-weight: 200;
     white-space: nowrap;
+}
+
+.BtnSecondary:hover {
+    color: #fff !important;
 }
 
 .BtnPrimary b {
@@ -15159,8 +15171,12 @@ input {
 
 
 .BtnSecondary b {
-    color: #fff;
+    color: #28263C;
     font-weight: 700;
+}
+
+.BtnSecondary:hover b {
+    color: #fff;
 }
 
 .BtnSecondary:hover {
@@ -15252,7 +15268,7 @@ input {
     position: absolute;
     width: 800px;
     transform: rotateZ(0deg);
-    top: -277px;
+    top: -258px;
     right: -400px;
 }
 
@@ -15274,7 +15290,7 @@ input {
 }
 
 .CardLayerBannerDetailImages img {
-    width: 400px;
+    width: 373px;
     margin: 0 0 0 auto;
     display: inline-block;
     border-radius: 10px;
@@ -15423,9 +15439,13 @@ input {
     border: 0px;
     border-radius: 8px;
     padding: 10px;
-    width: 200px;
+    width: fit-content;
     font-weight: bold;
     cursor: pointer;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    padding-left: 40px;
+    padding-right: 40px;
 }
 
 
