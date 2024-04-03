@@ -20,9 +20,7 @@ const IndexMain = () => {
     })
   }, [])
 
-  const particlesLoaded = (container) => {
-    console.log(container)
-  }
+  const particlesLoaded = (container) => {}
 
   return (
     <>
@@ -99,8 +97,10 @@ const IndexMain = () => {
       <div className={style.CardLayerBanner}>
         <div className={style.CardLayerBannerDetail}>
           <div>
-            <h1 className={style.H1} style={{paddingTop: '0px', marginTop: '0px'}}>
-              <img src="/img/logo.png" className={style.HomeBannerLogo}/>
+            <h1
+              className={style.H1}
+              style={{ paddingTop: '0px', marginTop: '0px' }}>
+              <img src="/img/logo.png" className={style.HomeBannerLogo} />
             </h1>
             <p>
               No-code tools for Ethereum.

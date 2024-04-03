@@ -39,7 +39,7 @@ const Item = ({ element, allMine, wrappedOnly }) => {
   const [decimals, setDecimals] = useState(null)
   const [formattedTotalSupply, setFormattedTotalSupply] = useState(null)
 
-  const [currentItem, setCurrentItem] = useState()
+  const [currentItem, setCurrentItem] = useState(null)
 
   useEffect(() => {
     usdPrice(
@@ -107,7 +107,7 @@ const Item = ({ element, allMine, wrappedOnly }) => {
   }, [element, loadedData])
 
   useEffect(async () => {
-    setCurrentItem(null)
+    if (currentItem) return
     var itemId = element.l2Address || element.address
     try {
       itemId =
@@ -115,7 +115,11 @@ const Item = ({ element, allMine, wrappedOnly }) => {
           ? itemId
           : web3Utils.numberToHex(itemId)
       loadTokenFromAddress({ context, ...web3Data, seaport }, itemId).then(
-        setCurrentItem
+        (result) => {
+          if (result?.collectionData) {
+            setCurrentItem(result)
+          }
+        }
       )
     } catch (e) {}
   }, [element, loadedData])

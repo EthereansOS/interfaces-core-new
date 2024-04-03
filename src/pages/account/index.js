@@ -133,8 +133,8 @@ const Account = () => {
         triggerConnect={triggerConnect}></Card>
       <div className={style.AccountAreaWrapper}>
         {(!hostedDelegationList || hostedDelegationList.length > 0) && (
-          <div className={style.AccountSection}>
-            <h4>Delegations Hosted</h4>
+          <div>
+            <h4 style={{ textAlign: 'left' }}>Delegations Hosted</h4>
             <DelegationsList
               mine
               onList={setHostedDelegationList}
@@ -143,8 +143,8 @@ const Account = () => {
           </div>
         )}
         {(!hostedItemList || hostedItemList.length > 0) && (
-          <div className={style.AccountSection}>
-            <h4>Items Hosted</h4>
+          <div>
+            <h4 style={{ textAlign: 'left' }}>Items Hosted</h4>
             <ExploreItems
               provider={() =>
                 hostedItems({
@@ -162,14 +162,14 @@ const Account = () => {
           </div>
         )}
         {(!ownedItemList || ownedItemList.length > 0) && (
-          <div className={style.AccountSection}>
-            <h4>Items Owned</h4>
+          <div>
+            <h4 style={{ textAlign: 'left' }}>Items Owned</h4>
             <ExploreItems allMine onResult={setOwnedItemList} />
           </div>
         )}
         {(!ownedDecksList || ownedDecksList.length > 0) && (
-          <div className={style.AccountSection}>
-            <h4>Decks Owned</h4>
+          <div>
+            <h4 style={{ textAlign: 'left' }}>Decks Owned</h4>
             <ExploreItems
               allMine
               wrappedOnly={'Deck'}

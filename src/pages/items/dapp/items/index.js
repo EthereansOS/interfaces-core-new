@@ -19,14 +19,10 @@ const ItemsList = ({ wrappedOnly }) => (
         <Link to="/items/decks">Decks</Link>
       </li>
       <li>
-        <Link to="/items/collections">
-          <a href="#">Collections</a>
-        </Link>
+        <Link to="/items/collections">Collections</Link>
       </li>
       <li>
-        <Link to="/items/wrap">
-          <a href="#">Wrap</a>
-        </Link>
+        <Link to="/items/wrap">Wrap</Link>
       </li>
     </ul>
     <div className={style.ItemsExploreMainTitleArea}>
