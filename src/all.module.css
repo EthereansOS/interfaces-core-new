@@ -38,6 +38,10 @@ body {
     font-family: "EthOSregular", "Overpass Mono", monospace !important;
 }
 
+div[id="tsparticles"] {
+    visibility: hidden;
+}
+
 .ModalBack {
     z-index: 99999998 !important;
     top: 0;
@@ -14821,7 +14825,7 @@ input {
 
 .AccountAreaWrapper{
     margin-top: 30px;
-    padding-top: 30px; 
+    padding-top: 30px;
     border-top: 1px solid #ddd;
 }
 
@@ -14831,7 +14835,7 @@ input {
 }
 
 .AccountAreaWrapper .loadingio_spinner_disk_hn1zpmja0x6
-{ 
+{
     margin-top: 20px;
 }
 
@@ -15598,7 +15602,7 @@ input {
     padding-left: 30px !important;
     padding-right: 30px !important;
     font-weight: bold;
-    
+
 }
 .light .SectionLinkBtn{
     color: #fff !important;
@@ -15841,7 +15845,7 @@ input {
 }
 
 .dark .ErrorMessage{
-  
+
     color: #f09243 !important;
 }
 
@@ -16596,5 +16600,5 @@ input {
     .TradeMarketBox h5 {
          display: inline-block
     }
-    
+
 }
