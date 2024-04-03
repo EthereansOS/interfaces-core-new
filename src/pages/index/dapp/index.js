@@ -30,7 +30,7 @@ const IndexMain = () => {
             <h1
               className={style.H1}
               style={{ paddingTop: '0px', marginTop: '0px' }}>
-              <img src="/img/logo.png" className={style.HomeBannerLogo} />
+              <img src={`${process.env.PUBLIC_URL}/img/logo.png`} className={style.HomeBannerLogo} />
             </h1>
             <p>
               No-code tools for Ethereum.
