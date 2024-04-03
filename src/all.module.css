@@ -2503,14 +2503,19 @@ width: 100%!important;
 
 .ExtLinkButtonAlpha {
     width: auto;
-    padding: 5px 12px;
     text-align: center;
     font-size: 14px;
-    border-radius: 5px;
+    border-radius: 9px!important;
     cursor: pointer;
     box-shadow: none;
     margin: 5px !important;
     border: 1px solid !important;
+    font-size: 15px;
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+    padding-left: 30px !important;
+    padding-right: 30px !important;
+    font-weight: bold!important;
 }
 
 .NextStep {
@@ -10598,11 +10603,14 @@ input[type=range]::-ms-thumb {
     color: #fff;
     border: 0px;
     padding: 10px 13px;
-    border-radius: 17px;
+    border-radius: 9px;
     width: 100px;
     text-align: center;
     font-weight: bold;
     margin-top: 8px;
+}
+.dark .RegularButtonDuoSplit{
+    color:#29263e;
 }
 
 .biz .RegularButton,
@@ -15478,6 +15486,10 @@ input {
 
 }
 
+.dark .WizardFooter .WizardFooterNext {
+    color:#29263e;
+}
+
 .WizardFooterCentered .WizardFooterNext{
     float: initial!important;
 }
@@ -15524,8 +15536,13 @@ input {
 
 .footerNextButton {
     background-color: #f09243;
+    color: #29263e!important;
+}
+
+.light .footerNextButton {
     color: #fff!important;
 }
+
 
 .width20{
     width: 20px!important;
@@ -15538,12 +15555,16 @@ input {
 
  .footerNextButton {
     border: 0px;
-    border-radius: 18px;
+    border-radius: 9px;
     padding: 12px;
     width: 200px;
-    font-weight: normal;
+    font-weight: bold;
     cursor: pointer;
     font-size: 15px;
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+    padding-left: 30px !important;
+    padding-right: 30px !important;
 }
 
 .dark .footerNextButton {
@@ -15568,10 +15589,19 @@ input {
 .SectionLinkBtn{
     float: right;
     font-size: 16px;
-    border-radius: 20px;
-    color: #fff;
+    border-radius: 9px;
+    color: #29263e !important;
     background: #f09243;
+    font-size: 15px;
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+    padding-left: 30px !important;
+    padding-right: 30px !important;
+    font-weight: bold;
     
+}
+.light .SectionLinkBtn{
+    color: #fff !important;
 }
 
 .WizardStepsList ul {

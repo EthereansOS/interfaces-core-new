@@ -126,10 +126,10 @@ function Card({ ensData, chainId, account, triggerConnect }) {
           </clipPath>
         </defs>
         <g mask="url(#cardMask)">
-          <rect className="bg" fill="#080808" width="100%" height="100%" />
+          <rect className="bg" fill="#403b61" width="100%" height="100%" />
           <g
             fill="none"
-            stroke="#555"
+            stroke="#f09243"
             strokeWidth="40"
             strokeDasharray="6 2 4 2.5 4 3 3.5 3">
             <path
