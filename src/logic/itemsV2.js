@@ -241,7 +241,7 @@ export async function loadItemsByFactories(data, factories) {
       itemIds = itemIds.filter((it) => keys.indexOf(it.itemId) !== -1)
     }
 
-    if (allMine && !originalWeb3) {
+    if (allMine) {
       const args = {
         address: itemIds
           .map(
@@ -260,7 +260,13 @@ export async function loadItemsByFactories(data, factories) {
           ) || '0x0',
         toBlock: 'latest',
       }
-      var logs = await getLogs(web3.currentProvider, args)
+      var logs
+      if (!originalWeb3) {
+        logs = await getLogs(web3.currentProvider, args)
+      } else {
+        logs = await getLogs(originalWeb3.currentProvider, args)
+      }
+
       logs = logs
         .map((it) => it.address)
         .filter((it, index, arr) => arr.indexOf(it) === index)
@@ -2568,6 +2574,10 @@ const sleepMillis = 350
 var coigeckoSemaphore
 
 export async function usdPrice(data, tokenAddress) {
+  if (!data) {
+    return
+  }
+
   const { seaport } = data
 
   if (!seaport) {
@@ -2580,48 +2590,50 @@ export async function usdPrice(data, tokenAddress) {
 
   coigeckoSemaphore = true
 
-  var tkAddr = await resolveToken(
-    data,
-    (tokenAddress = web3Utils.toChecksumAddress(tokenAddress))
-  )
-  var dataInput =
-    tkAddr !== tokenAddress ? await dualChainAsMainChain(data) : data
-  var decimals = await getRawField(
-    { provider: dataInput.web3.currentProvider },
-    tkAddr,
-    'decimals'
-  )
-
-  if (decimals === '0x') {
-    dataInput = await dualChainAsMainChain(data)
-    decimals = await getRawField(
+  try {
+    var tkAddr = await resolveToken(
+      data,
+      (tokenAddress = web3Utils.toChecksumAddress(tokenAddress))
+    )
+    var dataInput =
+      tkAddr !== tokenAddress ? await dualChainAsMainChain(data) : data
+    var decimals = await getRawField(
       { provider: dataInput.web3.currentProvider },
       tkAddr,
       'decimals'
     )
-  }
 
-  decimals = abi.decode(['uint256'], decimals)[0].toString()
-
-  while (true) {
-    try {
-      var result = await Promise.all([
-        getTokenPriceInDollarsOnUniswapV3(dataInput, tkAddr, decimals),
-        getTokenPriceInDollarsOnUniswap(dataInput, tkAddr, decimals),
-        getTokenPriceInDollarsOnSushiSwap(dataInput, tkAddr, decimals),
-      ]).then((prices) => Math.max.apply(window, prices))
-      coigeckoSemaphore = false
-      return result
-    } catch (e) {
-      var message = (e.stack || e.message || e.toString()).toLowerCase()
-      if (
-        message.indexOf('404') !== -1 ||
-        message.indexOf('did you run out of gas')
-      ) {
-        coigeckoSemaphore = false
-        return
-      }
-      await new Promise((ok) => setTimeout(ok, sleepMillis))
+    if (decimals === '0x') {
+      dataInput = await dualChainAsMainChain(data)
+      decimals = await getRawField(
+        { provider: dataInput.web3.currentProvider },
+        tkAddr,
+        'decimals'
+      )
     }
-  }
+
+    decimals = abi.decode(['uint256'], decimals)[0].toString()
+
+    while (true) {
+      try {
+        var result = await Promise.all([
+          getTokenPriceInDollarsOnUniswapV3(dataInput, tkAddr, decimals),
+          getTokenPriceInDollarsOnUniswap(dataInput, tkAddr, decimals),
+          getTokenPriceInDollarsOnSushiSwap(dataInput, tkAddr, decimals),
+        ]).then((prices) => Math.max.apply(window, prices))
+        coigeckoSemaphore = false
+        return result
+      } catch (e) {
+        var message = (e.stack || e.message || e.toString()).toLowerCase()
+        if (
+          message.indexOf('404') !== -1 ||
+          message.indexOf('did you run out of gas')
+        ) {
+          coigeckoSemaphore = false
+          return
+        }
+        await new Promise((ok) => setTimeout(ok, sleepMillis))
+      }
+    }
+  } catch (e) {}
 }

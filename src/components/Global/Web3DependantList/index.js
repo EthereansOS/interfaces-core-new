@@ -91,6 +91,13 @@ export default ({
     }
   }
 
+  useEffect(() => {
+    return () => {
+      refreshElements(false)
+      setElements([])
+    }
+  }, [])
+
   var outputElements = elements
 
   searchText &&
