@@ -3,6 +3,18 @@ import { dualChainAsMainChain, resolveToken } from "./dualChain"
 import { getRawField } from "./generalReader"
 import { cleanUri, loadItem, loadItemDynamicInfo } from "./itemsV2"
 
+export function sortByPriority(initialData, list) {
+    const { context } = initialData
+    const prioritySymbols = context.sortOrderTokenList?.symbols ?? []
+    if(prioritySymbols.length === 0) {
+        return list
+    }
+    var l = list.filter(it => prioritySymbols.indexOf(it.symbol) !== -1)
+    l = l.sort((a, b) => prioritySymbols.indexOf(a.symbol) - prioritySymbols.indexOf(b.symbol))
+    l.push(...list.filter(it => prioritySymbols.indexOf(it.symbol) === -1))
+    return l
+}
+
 export async function getTokenBasicInfo(web3Data, tokenAddress) {
 
     if(tokenAddress === VOID_ETHEREUM_ADDRESS) {
@@ -126,6 +138,8 @@ export async function loadTokens({ context, chainId, web3, account, newContract,
         }), chunkSize)*/
 
         //tokens = await Promise.all(tokens.map(async token => ({...token, balance : await blockchainCall(token.contract.methods.balanceOf, account)})))
+
+        tokens = sortByPriority({context}, tokens)
 
         return tokens
     } catch(e) {

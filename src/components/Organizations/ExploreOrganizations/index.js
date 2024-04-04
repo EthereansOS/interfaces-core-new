@@ -15,11 +15,9 @@ import {
   formatMoney,
 } from 'interfaces-core'
 import {
-  getOrganizationMetadata,
-  getOrganization,
-  retrieveAllProposals,
+  getOrganizationMetadata
 } from 'logic/organization'
-import { getDelegation, refreshWrappedToken } from 'logic/delegation'
+import { getRawField } from 'logic/generalReader'
 
 const ExploreOrganizations = ({ elements, type }) => {
   return (
@@ -34,20 +32,13 @@ const ExploreOrganizations = ({ elements, type }) => {
 const ExploreOrganization = ({ address, type }) => {
   const web3Data = useWeb3()
   const context = useEthosContext()
-  const { newContract } = web3Data
+  const { web3, newContract } = web3Data
 
   const [element, setElement] = useState()
-  const [treasuryBalance, setTreasuryBalance] = useState(null)
-  const [organization, setOrganization] = useState(null)
-
-  const [delegation, setDelegation] = useState(null)
-  const [supportersStake, setSupportersStake] = useState(null)
-  const [symbol, setSymbol] = useState(null)
-
-  const { block, chainId, web3, account, getGlobalContract } = useWeb3()
+  const [treasuryBalance, setTreasuryBalance] = useState(0)
 
   useEffect(() => {
-    setTimeout(async () => {
+    setTimeout(() => {
       getOrganizationMetadata(
         { context },
         {
@@ -57,69 +48,24 @@ const ExploreOrganization = ({ address, type }) => {
         },
         true
       ).then(setElement)
+      if(type && type !== 'organizations') {
+        return
+      }
+      if(!type || type === 'organizations') {
+        getRawField(web3.currentProvider, address, 'get(bytes32)', context.grimoire.COMPONENT_KEY_TREASURY_MANAGER).then(async addr => {
+          addr = abi.decode(["address"], addr)[0]
+          var val = await web3.eth.getBalance(
+            addr
+          )
+          val = parseFloat(fromDecimals(val, 18, true))
+          var ethereumPrice = formatNumber(await getEthereumPrice({ context }))
+          val = ethereumPrice * val
+          val = '$ ' + formatMoney(val, 2)
+          setTreasuryBalance(val)
+        })
+      }
     })
   }, [])
-
-  useEffect(async () => {
-    if (!element) return
-    setOrganization(null)
-    var organizationAddress = element.address
-    try {
-      var organization = await getOrganization(
-        { ...web3Data, context },
-        web3Utils.toChecksumAddress(organizationAddress)
-      )
-      setOrganization(organization)
-    } catch (e) {}
-  }, [element])
-
-  useEffect(async () => {
-    if (!element) return
-    setDelegation(null)
-    var delegationAddress = element.address
-    try {
-      var delegation = await getDelegation(
-        { ...web3Data, context },
-        web3Utils.toChecksumAddress(delegationAddress)
-      )
-      if (delegation?.type == 'delegation') {
-        setDelegation(delegation)
-        let del = await retrieveAllProposals(
-          { context, web3, account, chainId, getGlobalContract, newContract },
-          delegation
-        )
-        if (del) {
-          var firstEl = del[0]
-          firstEl.delegationsManager = (
-            await refreshWrappedToken({ context, ...web3Data }, firstEl)
-          ).delegationsManager
-          firstEl.delegationsManager?.wrappedToken &&
-            setSupportersStake(
-              await blockchainCall(
-                firstEl.delegationsManager.wrappedToken.mainInterface.methods
-                  .totalSupply,
-                firstEl.delegationsManager.wrappedToken.id
-              )
-            )
-          setSymbol(firstEl.delegationsManager?.supportedToken?.symbol)
-        }
-      }
-    } catch (e) {}
-  }, [element])
-
-  useEffect(() => {
-    if (!organization) return
-    setTimeout(async () => {
-      var val = await web3.eth.getBalance(
-        organization.components.treasuryManager.address
-      )
-      val = parseFloat(fromDecimals(val, 18, true))
-      var ethereumPrice = formatNumber(await getEthereumPrice({ context }))
-      val = ethereumPrice * val
-      val = '$ ' + formatMoney(val, 2)
-      setTreasuryBalance(val)
-    })
-  }, [organization])
 
   return (
     <div className={style.ItemSingle}>
@@ -137,46 +83,25 @@ const ExploreOrganization = ({ address, type }) => {
                   strokeLinejoin="round"></path>
               </svg>
             </button>
-            <svg
-              className={style.ItemTitleTopZone}
-              viewBox="0 0 196 55"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg">
-              <path
-                d="M196 55V0H0.5V1H4.05286C12.4067 1 20.1595 5.34387 24.5214 12.4685L43.5393 43.5315C47.9012 50.6561 55.654 55 64.0078 55H196Z"
-                fill="currentColor"></path>
-            </svg>
-            <div className={style.ItemInfoSide}>
-              {type === 'delegations' ? (
-                <>
-                  <p className={style.ItemTitleTopZoneLabel}>
-                    Supporters stake
-                  </p>
-                  <p className={style.ItemTitleTopZoneValue}>
-                    {supportersStake && symbol ? (
-                      <>
-                        {formatMoney(
-                          fromDecimals(supportersStake, 18, true),
-                          4
-                        )}{' '}
-                        {symbol}
-                      </>
-                    ) : (
-                      <>loading...</>
-                    )}
-                  </p>
-                </>
-              ) : (
-                <>
-                  <p className={style.ItemTitleTopZoneLabel}>
-                    Treasury Balance
-                  </p>
-                  <p className={style.ItemTitleTopZoneValue}>
-                    {treasuryBalance ?? 'loading...'}
-                  </p>
-                </>
-              )}
-            </div>
+            {(!type || type === 'organizations') && <>
+              <svg
+                className={style.ItemTitleTopZone}
+                viewBox="0 0 196 55"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M196 55V0H0.5V1H4.05286C12.4067 1 20.1595 5.34387 24.5214 12.4685L43.5393 43.5315C47.9012 50.6561 55.654 55 64.0078 55H196Z"
+                  fill="currentColor"></path>
+              </svg>
+              <div className={style.ItemInfoSide}>
+                <p className={style.ItemTitleTopZoneLabel}>
+                  Treasury Balance
+                </p>
+                <p className={style.ItemTitleTopZoneValue}>
+                  {treasuryBalance ?? 'loading...'}
+                </p>
+              </div>
+            </>}
             <LogoRenderer input={element} />
             <div className={style.ItemTitle}>
               <h6>{shortenWord({ context, charsAmount: 15 }, element.name)}</h6>

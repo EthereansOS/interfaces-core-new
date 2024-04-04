@@ -57,40 +57,6 @@ export default ({
     [provider]
   )
 
-  const sortListWithPriorities = (list) => {
-    console.log(list)
-    const prioritySymbols = context.sortOrderTokenList?.symbols ?? []
-
-    if (prioritySymbols.length > 0) {
-      const priorityToken = []
-      const others = []
-
-      list.forEach((obj) => {
-        if (obj && obj.symbol && prioritySymbols.includes(obj.symbol)) {
-          priorityToken.push(obj)
-        } else {
-          others.push(obj)
-        }
-      })
-
-      priorityToken.sort((a, b) => {
-        if (!a || !a.symbol || !b || !b.symbol) return 0
-        return (
-          prioritySymbols.indexOf(a.symbol) - prioritySymbols.indexOf(b.symbol)
-        )
-      })
-
-      others.sort((a, b) => {
-        if (!a || !a.name || !b || !b.name) return 0
-        return a.name?.localeCompare(b.name)
-      })
-
-      return priorityToken.concat(others)
-    } else {
-      return list
-    }
-  }
-
   useEffect(() => {
     return () => {
       refreshElements(false)
@@ -115,10 +81,6 @@ export default ({
   sortOrder &&
     outputElements &&
     (outputElements = outputElements.sort(sortOrder))
-
-  !sortOrder &&
-    outputElements &&
-    (outputElements = sortListWithPriorities(outputElements))
 
   var message = error ? (
     <h2>{error}</h2>
