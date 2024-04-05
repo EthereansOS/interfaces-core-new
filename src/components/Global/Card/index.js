@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import gsap from 'gsap'
 import { MotionPathPlugin } from 'gsap/MotionPathPlugin'
 import './card.component.css'
+import { getNetworkElement } from 'interfaces-core'
 
 gsap.registerPlugin(MotionPathPlugin)
 
