@@ -19,6 +19,8 @@ import makeBlockie from 'ethereum-blockies-base64'
 
 import style from '../../../all.module.css'
 
+import { lookupAddressDualChain } from 'logic/dualChain'
+
 const Web3Connect = () => {
   const context = useEthosContext()
 
@@ -29,6 +31,8 @@ const Web3Connect = () => {
     setConnector,
     web3,
     newContract,
+    dualChainId,
+    dualChainWeb3,
   } = useWeb3()
 
   const [ensData, setEnsData] = useState()
@@ -45,10 +49,13 @@ const Web3Connect = () => {
       }
       var name
       try {
-        const ethersProvider = new ethers.providers.Web3Provider(
-          web3.currentProvider
-        )
-        name = await ethersProvider.lookupAddress(address)
+        name = await lookupAddressDualChain({
+          chainId,
+          dualChainId,
+          web3,
+          dualChainWeb3,
+          address,
+        })
       } catch (e) {
         var index = e.message.split('\n')[0].indexOf('value="')
         if (index !== -1) {

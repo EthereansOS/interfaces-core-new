@@ -23,6 +23,8 @@ import Toggle from '../../../components/Toggle'
 
 import { useThemeSelector } from '../../../logic/uiUtilities'
 
+import { lookupAddressDualChain } from 'logic/dualChain'
+
 const Header = (props) => {
   const { themes, theme, setTheme } = useThemeSelector()
   const [isChecked, setIsChecked] = useState(false)
@@ -30,7 +32,14 @@ const Header = (props) => {
 
   const context = useEthosContext()
   const web3Data = useWeb3()
-  const { chainId, web3, dualChainId, account, connectionStatus } = web3Data
+  const {
+    chainId,
+    web3,
+    dualChainId,
+    dualChainWeb3,
+    account,
+    connectionStatus,
+  } = web3Data
 
   const history = useHistory()
 
@@ -70,7 +79,7 @@ const Header = (props) => {
           <FaEthereum /> <div className={style.SelectLabel}>Ethereum</div>
         </div>
       ),
-      chainId : 1
+      chainId: 1,
     },
     {
       value: 'optimism',
@@ -83,8 +92,8 @@ const Header = (props) => {
           <div className={style.SelectLabel}>Optimism</div>
         </div>
       ),
-      chainId : 10
-    }
+      chainId: 10,
+    },
   ]
 
   const [toggled, setToggled] = React.useState(false)
@@ -104,10 +113,13 @@ const Header = (props) => {
       }
       var name
       try {
-        const ethersProvider = new ethers.providers.Web3Provider(
-          web3.currentProvider
-        )
-        name = await ethersProvider.lookupAddress(address)
+        name = await lookupAddressDualChain({
+          chainId,
+          dualChainId,
+          web3,
+          dualChainWeb3,
+          address,
+        })
       } catch (e) {
         var index = e.message.split('\n')[0].indexOf('value="')
         if (index !== -1) {
@@ -167,9 +179,9 @@ const Header = (props) => {
   }, [])
 
   const switchToNetwork = useCallback(
-    chainIdToSet =>
+    (chainIdToSet) =>
       sendAsync(web3.currentProvider, 'wallet_switchEthereumChain', {
-        chainId: web3Utils.toHex(chainIdToSet)
+        chainId: web3Utils.toHex(chainIdToSet),
       }).then(() => history.push('')),
     [web3]
   )
@@ -226,7 +238,7 @@ const Header = (props) => {
         </div>
         <IconContext.Provider value={{ color: 'black', size: '1.5em' }}>
           <Select
-            defaultValue={options.find(it => it.chainId === chainId)}
+            defaultValue={options.find((it) => it.chainId === chainId)}
             isSearchable={false}
             className={style.NetworkSelectDropdown}
             styles={customStyles}

@@ -25,6 +25,7 @@ import { hostedItems } from '../../logic/itemsV2'
 
 import style from '../../all.module.css'
 import ScrollToTopOnMount from 'interfaces-ui/components/ScrollToTopOnMount'
+import { lookupAddressDualChain } from 'logic/dualChain'
 
 const Account = () => {
   const context = useEthosContext()
@@ -39,6 +40,8 @@ const Account = () => {
     web3,
     newContract,
     getGlobalContract,
+    dualChainId,
+    dualChainWeb3,
   } = useWeb3()
 
   const [ensData, setEnsData] = useState()
@@ -60,11 +63,13 @@ const Account = () => {
       }
       var name
       try {
-        const ethersProvider = new ethers.providers.Web3Provider(
-          web3.currentProvider,
-          chainId
-        )
-        name = await ethersProvider.lookupAddress(address)
+        name = await lookupAddressDualChain({
+          chainId,
+          dualChainId,
+          web3,
+          dualChainWeb3,
+          address,
+        })
       } catch (e) {
         var index = e.message.split('\n')[0].indexOf('value="')
         if (index !== -1) {

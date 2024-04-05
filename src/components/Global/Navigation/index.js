@@ -18,6 +18,8 @@ import makeBlockie from 'ethereum-blockies-base64'
 
 import style from '../../../all.module.css'
 
+import { lookupAddressDualChain } from 'logic/dualChain'
+
 const Navigation = ({ menuName, isDapp, selected }) => {
   const context = useEthosContext()
   const web3Data = useWeb3()
@@ -34,6 +36,7 @@ const Navigation = ({ menuName, isDapp, selected }) => {
     setConnector,
     web3,
     newContract,
+    dualChainWeb3,
   } = useWeb3()
 
   const [ensData, setEnsData] = useState()
@@ -50,10 +53,13 @@ const Navigation = ({ menuName, isDapp, selected }) => {
       }
       var name
       try {
-        const ethersProvider = new ethers.providers.Web3Provider(
-          web3.currentProvider
-        )
-        name = await ethersProvider.lookupAddress(address)
+        name = await lookupAddressDualChain({
+          chainId,
+          dualChainId,
+          web3,
+          dualChainWeb3,
+          address,
+        })
       } catch (e) {
         var index = e.message.split('\n')[0].indexOf('value="')
         if (index !== -1) {
@@ -84,11 +90,9 @@ const Navigation = ({ menuName, isDapp, selected }) => {
 
   return (
     <nav className={style.Navigation}>
-     <Link
-     to="/"
-        className={`${style.NavigationItem}`}>
+      <Link to="/" className={`${style.NavigationItem}`}>
         <span>
-          <img src='./img/dashboard.png'></img> <p>Dashboard</p>
+          <img src="./img/dashboard.png"></img> <p>Dashboard</p>
         </span>
       </Link>
       {menuItems.map((item) => navItem(item))}
