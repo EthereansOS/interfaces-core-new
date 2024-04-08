@@ -157,7 +157,6 @@ const Host = ({ value, onChange, onNext, onPrev }) => {
 
       <div className={style.FancyExplanationCreate}>
         <h2>Host</h2>
-        <p>Lorem ispums im dolor amed asid</p>
       </div>
       <label className={style.CreationPageLabelF}>
         <h6>
@@ -420,12 +419,12 @@ const Metadata = ({ value, onChange, onNext, onPrev }) => {
                 )}
               </h6>
               {!triggerTextInput && (
-                <p>Select an image file, square size recomended.</p>
+                <p>Select an image file, square size recommended.</p>
               )}
               {triggerTextInput && (
                 <p>
                   A valid link for your collection's logo. Square size
-                  recomended.
+                  recommended.
                 </p>
               )}
 

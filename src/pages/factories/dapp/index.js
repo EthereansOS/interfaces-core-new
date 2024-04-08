@@ -121,7 +121,7 @@ const FactoriesMain = () => {
                 </h2>
                 <p>
                   Launch Factory is for rapid deployment, for additional options
-                  check out Items Creations.
+                  check out Item Creation.
                 </p>
               </div>
               <label className={style.CreationPageLabelF}>

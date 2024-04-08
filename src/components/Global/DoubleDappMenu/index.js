@@ -93,7 +93,7 @@ const DoubleDappMenu = ({
           </Link>
         <p>
         {location.pathname.includes('covenants/farming') ? 
-                    'Provide liquidity to DEX’s and earn additional token rewards' : 'Routines are semi-automated periodic token transfers and/or swaps.'  
+                    'Provide liquidity to DEXs and earn additional token rewards' : 'Routines are semi-automated periodic token transfers and/or swaps.'  
                   }
          </p>
       </div>

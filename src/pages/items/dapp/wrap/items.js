@@ -51,7 +51,7 @@ const WrapItems = () => {
       </ul>
       <div className={style.ItemsExploreMainTitleArea}>
         <h2>Wrap Items</h2>
-        <p>Discover the most trending Decks in EthreansOS.</p>
+        <p>Discover the most trending Decks in EthereansOS.</p>
       </div>
       <Wrap.Wrap voices={wrapVoices} />
     </>

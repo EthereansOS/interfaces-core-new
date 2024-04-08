@@ -254,12 +254,12 @@ const Deploy = ({ back, finalize }) => {
                 )}
               </h6>
               {!triggerTextInput && (
-                <p>Select an image file, square size recomended.</p>
+                <p>Select an image file, square size recommended.</p>
               )}
               {triggerTextInput && (
                 <p>
                   A valid link for your Delegation's logo. Square size
-                  recomended.
+                  recommended.
                 </p>
               )}
               {!triggerTextInput && (
@@ -326,12 +326,12 @@ const Deploy = ({ back, finalize }) => {
                 )}
               </h6>
               {!triggerTokenTextInput && (
-                <p>Select an image file, square size recomended.</p>
+                <p>Select an image file, square size recommended.</p>
               )}
               {triggerTokenTextInput && (
                 <p>
                   A valid link for your Delegation's token logo. Square size
-                  recomended.
+                  recommended.
                 </p>
               )}
               {!triggerTokenTextInput && (

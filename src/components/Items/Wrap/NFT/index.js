@@ -90,7 +90,7 @@ export default props => {
                 </div>}
                 {deckMode && <div>
                     <label className={style.SettingBLabPerch} style={{ textAlign: 'left' }}>
-                        <p title="Reserved NFT’s can only be unwrapped by the reserver for 10 days, after that, anyone one with a deck Item of that collection may unwrap that NFT." ><input type="checkbox" style={{ position: 'relative', top: '2px', width: 'auto', marginRight: '3px' }} checked={reserve} onClick={e => setReserve(e.currentTarget.checked)} /> Reserve for 10 days
+                        <p title="Reserved NFTs can only be unwrapped by the reserver for 10 days, after that, anyone one with a deck Item of that collection may unwrap that NFT." ><input type="checkbox" style={{ position: 'relative', top: '2px', width: 'auto', marginRight: '3px' }} checked={reserve} onClick={e => setReserve(e.currentTarget.checked)} /> Reserve for 10 days
                             <svg className={style.InfoAreaIcon} version="1.1" id="Capa_1"
                                 width="20px" height="20px" viewBox="0 0 93.936 93.936"
                                 >

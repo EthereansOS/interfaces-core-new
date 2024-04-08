@@ -159,7 +159,7 @@ const Metadata = ({ value, onChange, onNext, onPrev }) => {
       </div>
       <label className={style.CreationPageLabelF}>
         <h6>Name*</h6>
-        <p>Choose an unique name for your Ogranization</p>
+        <p>Choose an unique name for your Organization</p>
         <input
           type="text"
           value={value?.name ?? ''}
@@ -202,11 +202,11 @@ const Metadata = ({ value, onChange, onNext, onPrev }) => {
             )}
           </h6>
           {!triggerTextInput && (
-            <p>Select an image file, square size recomended.</p>
+            <p>Select an image file, square size recommended.</p>
           )}
           {triggerTextInput && (
             <p>
-              A valid link for your Organization's logo. Square size recomended.
+              A valid link for your Organization's logo. Square size recommended.
             </p>
           )}
           {!triggerTextInput && (
@@ -1877,11 +1877,6 @@ const TreasurySplitterManager = ({ value, onChange, onNext, onPrev }) => {
 
       <div className={style.FancyExplanationCreate}>
         <h2>Treasury Splitter</h2>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur at
-          accumsan ligula. Nulla iaculis ligula tellus, eu eleifend purus
-          pharetra vitae.
-        </p>
       </div>
 
       <div className={style.CreationPageLabelFDivide}>
@@ -2584,13 +2579,6 @@ const InvestmentsManager = ({ amms, value, onChange, onNext, onPrev }) => {
 
       <div className={style.FancyExplanationCreate}>
         <h2>Investments Manager</h2>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur at
-          accumsan ligula. Nulla iaculis ligula tellus, eu eleifend purus
-          pharetra vitae. Cras tristique diam in dolor ultrices, nec facilisis
-          diam tempus. Aliquam quis mattis massa. Duis imperdiet mauris congue
-          lectus dignis
-        </p>
       </div>
       <div
         className={style.CreationPageLabelFDivide}

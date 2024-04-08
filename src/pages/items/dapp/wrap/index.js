@@ -51,7 +51,7 @@ const WrapIndex = ({}) => {
         </ul>
         <div className={style.ItemsExploreMainTitleArea}>
           <h2>Wrap Items or Decks</h2>
-          <p>Discover the most trending Decks in EthreansOS.</p>
+          <p>Discover the most trending Decks in EthereansOS.</p>
         </div>
         <div className={style.CreateBoxDesc}>
           <h6>Items</h6>

@@ -210,7 +210,7 @@ const Farming = ({ selectedSubvoice, rewardTokenAddress }) => {
                 <input
                   type="text"
                   className={style.FilterMenuSearch}
-                  placeholder="Sort by token address.."
+                  placeholder="Sort by token address."
                   value={address}
                   onChange={(e) => setAddress(e.currentTarget.value)}></input>
               )}

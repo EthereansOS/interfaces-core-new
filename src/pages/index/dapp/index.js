@@ -58,7 +58,7 @@ const IndexMain = () => {
           </div>
           <div>
             <div className={style.CardLayerBannerDetailImages}>
-              <img src="https://media.discordapp.net/attachments/1195407928463724684/1220748754055991336/Illustration_governance.png?ex=661011df&is=65fd9cdf&hm=c253edcf4a79982fd213f1747bcdc0836771adafa6d5224ba73d9a134bdc6be4&=&format=webp&quality=lossless&width=1462&height=1210" />
+              <img src={`${process.env.PUBLIC_URL}/img/illustration_governance.webp`} />
             </div>
           </div>
         </div>
