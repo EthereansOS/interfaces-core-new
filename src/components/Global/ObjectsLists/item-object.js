@@ -42,7 +42,7 @@ export default ({onResult, provider, discriminant, allMine, forCollection, exclu
     Renderer={element}
     renderedProperties={{...renderedProperties, wrappedOnly, allMine}}
     provider={() => (tokenAddress ? loadTokenFromAddress({ context, ...web3Data, forceItem : true }, tokenAddress) : provider ? provider() : hardCabledList ? loadTokens({context, chainId, web3, account, newContract, alsoETH : false, listName : hardCabledList}) : loadItemsByFactories({seaport, context, ...web3Data, collectionData : forCollection, excluding, wrappedOnly, allMine}, getGlobalContract("itemProjectionFactory"))).then(async r => {
-      if(!tokenAddress && searchText) {
+      if(!tokenAddress) {
         r = await Promise.all(r.map(async it => {
           var elem = {...it}
           if(!elem.name || !elem.symbol) {
@@ -54,6 +54,7 @@ export default ({onResult, provider, discriminant, allMine, forCollection, exclu
       onResult && onResult(r)
       return r
     }) }
+    searchText={tokenAddress ? '' : searchText}
     sortOrder={sortOrder}
     emptyMessage={tokenAddress ? `No Item found for address ${tokenAddress}` : ''}
     discriminant={discriminant || tokenAddress ? tokenAddress : allMine ? account : hardCabledList}
