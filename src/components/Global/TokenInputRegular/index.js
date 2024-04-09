@@ -120,38 +120,41 @@ const TokenInputRegular = ({
   const onKeyDown = useCallback((e) => {
     // Prevent 'e', '+', '-', and other non-numeric characters
     if (e.key === 'e' || e.key === '+' || e.key === '-' || e.key === 'E') {
-        e.preventDefault();
+      e.preventDefault()
     }
-}, []);
+  }, [])
 
   const onValueChange = useCallback((e) => {
     var v = e.currentTarget.value
     v = v.indexOf('.') === 0 && v !== '.' ? '0' + v : v
-    if (v !== '0.' && !v.endsWith('0')) {
-      v = numberToString(parseFloat(v))
+    if (v !== '0.') {
+      v = v.toString()
     }
     setValue(v)
   }, [])
 
   const valueInput = useMemo(() => {
+    if (!element || isNaN(parseFloat(value))) {
+      return ''
+    }
     if (
-      !element ||
-      isNaN(parseFloat(value)) ||
-      (parseFloat(value) === 0 && value === '0')
+      value &&
+      value.length >= 1 &&
+      (value[value.length - 1] == '.' || value[value.length - 1] == '0')
     ) {
-      return '';
+      return value
     }
-  
-    const num = parseFloat(value);
-  
-    const numStr = num.toString();
+
+    const num = parseFloat(value)
+
+    const numStr = num.toString()
     if (numStr.indexOf('.') !== -1) {
-      const decimalPlaces = Math.min(numStr.split('.')[1].length, 7);
-      return num.toFixed(decimalPlaces);
+      const decimalPlaces = Math.min(numStr.split('.')[1].length, 7)
+      return num.toFixed(decimalPlaces)
     } else {
-      return numStr;
+      return numStr
     }
-  }, [value, element]);
+  }, [value, element])
 
   return modalIsOpen ? (
     <ModalStandard close={() => setModalIsOpen(false)}>
