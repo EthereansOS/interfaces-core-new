@@ -2589,8 +2589,8 @@ width: 100%!important;
 }
 
 .CreationPageLabelF input[type="color"] {
-    width: 90px;
-    height: 40px;
+    width: 100%;
+    height: 45px;
 }
 
 .CreationPageLabelF textarea {

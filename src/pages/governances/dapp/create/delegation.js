@@ -112,6 +112,7 @@ const Deploy = ({ back, finalize }) => {
   }
 
   const [step, setStep] = useState(0)
+  const background_color_default = '#ffffff'
 
   return (
     <>
@@ -371,7 +372,7 @@ const Deploy = ({ back, finalize }) => {
               <p>The background color of your Delegation’s logo</p>
               <input
                 type="color"
-                value="#ffffff"
+                value={background_color ?? background_color_default}
                 style={{ width: '100%' }}
                 onChange={(e) => setBackground_color(e.currentTarget.value)}
               />
