@@ -38,19 +38,27 @@ export default ({onResult, provider, discriminant, allMine, forCollection, exclu
 
   const filter = useCallback(it => !tokenAddress && searchText ? it.name?.toLowerCase().indexOf(searchText.toLowerCase()) !== -1 || it.symbol?.toLowerCase().indexOf(searchText.toLowerCase()) !== -1 : it, [tokenAddress, searchText])
 
+  const setTokenForSearch = useCallback(async it => {
+    var elem = {...it}
+    var key = `basicInfo-${web3Utils.toChecksumAddress(elem.address)}`
+    try {
+      elem = {...elem, ...JSON.parse(sessionStorage.getItem(key))}
+    } catch(e) {}
+    if(!elem.name || !elem.symbol) {
+      elem = {...elem, ...(await getTokenBasicInfo(web3Data, elem.address))}
+      sessionStorage.setItem(key, JSON.stringify({
+        name : elem.name,
+        symbol : elem.symbol
+      }))
+    }
+    return elem
+  }, [web3Data])
+
   return <Web3DependantList
     Renderer={element}
     renderedProperties={{...renderedProperties, wrappedOnly, allMine}}
     provider={() => (tokenAddress ? loadTokenFromAddress({ context, ...web3Data, forceItem : true }, tokenAddress) : provider ? provider() : hardCabledList ? loadTokens({context, chainId, web3, account, newContract, alsoETH : false, listName : hardCabledList}) : loadItemsByFactories({seaport, context, ...web3Data, collectionData : forCollection, excluding, wrappedOnly, allMine}, getGlobalContract("itemProjectionFactory"))).then(async r => {
-      if(!tokenAddress) {
-        r = await Promise.all(r.map(async it => {
-          var elem = {...it}
-          if(!elem.name || !elem.symbol) {
-            elem = {...elem, ...(await getTokenBasicInfo(web3Data, elem.address))}
-          }
-          return elem
-        }))
-      }
+      r = tokenAddress ? r : await Promise.all(r.map(setTokenForSearch))
       onResult && onResult(r)
       return r
     }) }
