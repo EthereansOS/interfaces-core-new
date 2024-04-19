@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useMemo } from 'react'
 
 import ActionAWeb3Button from '../../../../components/Global/ActionAWeb3Button'
-
+import Tooltip from '@mui/material/Tooltip';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import {
   useEthosContext,
   web3Utils,
@@ -64,6 +65,7 @@ const NameAndSymbol = ({ value, onChange, onNext, onPrev }) => {
   }, [value])
 
   return (
+    <>
     <div className={style.CreationPageLabel}>
       <ScrollToTopOnMount />
 
@@ -106,15 +108,17 @@ const NameAndSymbol = ({ value, onChange, onNext, onPrev }) => {
           <p className={style.ErrorMessage}>{value.error.symbol}</p>
         )}
       </label>
-      <div className={style.WizardFooter}>
-        <button
-          className={style.WizardFooterNext}
-          disabled={disabled}
-          onClick={onNext}>
-          Next
-        </button>
-      </div>
+      
     </div>
+    <div className={style.WizardFooter}>
+    <button
+      className={style.WizardFooterNext}
+      disabled={disabled}
+      onClick={onNext}>
+      Next
+    </button>
+  </div>
+  </>
   )
 }
 
@@ -152,6 +156,7 @@ const Host = ({ value, onChange, onNext, onPrev }) => {
   }, [value])
 
   return (
+    <>
     <div className={style.CreationPageLabel}>
       <ScrollToTopOnMount />
 
@@ -214,7 +219,9 @@ const Host = ({ value, onChange, onNext, onPrev }) => {
           }
         />
       </label>
-      <div className={style.WizardFooter}>
+     
+    </div>
+    <div className={style.WizardFooter}>
         <button className={style.WizardFooterBack} onClick={onPrev}>
           Back
         </button>
@@ -225,7 +232,7 @@ const Host = ({ value, onChange, onNext, onPrev }) => {
           Next
         </button>
       </div>
-    </div>
+    </>
   )
 }
 
@@ -341,6 +348,7 @@ const Metadata = ({ value, onChange, onNext, onPrev }) => {
   }, [selectedImage, onChange])
 
   return (
+    <>
     <div className={style.CreationPageLabel}>
       <ScrollToTopOnMount />
 
@@ -546,7 +554,9 @@ const Metadata = ({ value, onChange, onNext, onPrev }) => {
           </div>
         </>
       )}
-      <div className={style.WizardFooter}>
+      
+    </div>
+    <div className={style.WizardFooter}>
         <button className={style.WizardFooterBack} onClick={onPrev}>
           Back
         </button>
@@ -557,7 +567,7 @@ const Metadata = ({ value, onChange, onNext, onPrev }) => {
           Next
         </button>
       </div>
-    </div>
+    </>
   )
 }
 
@@ -682,6 +692,7 @@ const Confirmation = ({ value, onChange, onNext, onPrev, state }) => {
 
       {loading && <CircularProgress />}
       {!success && !loading && (
+        <>
         <div className={style.CreationPageLabel}>
           <div className={style.FancyExplanationCreate}>
             <h2>Confirmation</h2>
@@ -801,17 +812,19 @@ const Confirmation = ({ value, onChange, onNext, onPrev, state }) => {
             )}
           </div>
 
-          <div className={style.WizardFooter}>
-            <button className={style.WizardFooterBack} onClick={onPrev}>
-              Back
-            </button>
-            <button
-              className={style.WizardFooterNext}
-              onClick={async () => await prepareDeploy()}>
-              Deploy
-            </button>
-          </div>
+          
         </div>
+        <div className={style.WizardFooter}>
+        <button className={style.WizardFooterBack} onClick={onPrev}>
+          Back
+        </button>
+        <button
+          className={style.WizardFooterNext}
+          onClick={async () => await prepareDeploy()}>
+          Deploy
+        </button>
+      </div>
+      </>
       )}
       {success && (
         <div
@@ -897,7 +910,9 @@ const CreateCollection = ({}) => {
       </div>
       <div className={style.WizardHeader}>
         <h3>
-          Create a new Collection <span>step {step + 1} of 4</span>
+          Create a new Collection <Tooltip placement="bottom" title="Items are a new ERC token super standard, combining functionalities of
+          ERC-20 tokens, ERC-721, and ERC-1155 NFTs. This gives them access to
+          the best functionalities and platforms of both tokens and NFTs" arrow><InfoOutlinedIcon sx={{ fontSize: 20, position:'relative', top:'3px' }}/></Tooltip> 
         </h3>
         <div
           className={style.WizardHeaderDescription}
@@ -905,17 +920,26 @@ const CreateCollection = ({}) => {
             margin: '20px 0px 20px 0px!important',
             fontSize: '16px!important',
           }}>
-          Items are a new ERC token super standard, combining functionalities of
-          ERC-20 tokens, ERC-721, and ERC-1155 NFTs. This gives them access to
-          the best functionalities and platforms of both tokens and NFTs
+          
         </div>
+
         <div className={style.WizardProgress}>
-          <div
-            className={style.WizardProgressBar}
-            style={{
-              width: ((100 / 3) * step > 0 ? (100 / 3) * step : 1) + '%',
-            }}></div>
+          {Array.from({ length: 3 }, (_, index) => (
+            <div
+              key={index}
+              className={style.WizardProgressStep + ' ' + (index < step ? style.WizardProgressStepCompleted : style.WizardProgressStepToComplete)}
+              style={{
+                width: `calc(100% / ${3} - 50px)`, // Adjust the subtraction value based on the desired spacing between steps
+                marginRight: '20px', // Half of the subtracted value for even spacing; adjust as needed
+                display: 'inline-block',
+                height: '15px', // Example height, adjust as needed
+                borderRadius: '10px',
+              }}
+            ></div>
+          ))}
+          <span style={{position:'relative', top:'-3px'}}>step {step + 1} of 4</span>
         </div>
+
       </div>
       <div className={style.WizardStep}>
         {step == 0 && (

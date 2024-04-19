@@ -3,7 +3,8 @@ import { useParams } from 'react-router'
 import { Link } from 'react-router-dom'
 
 import { rlphash } from 'ethereumjs-util'
-
+import Tooltip from '@mui/material/Tooltip';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import {
   abi,
   useEthosContext,
@@ -895,18 +896,27 @@ export default (props) => {
 
         <div className={style.WizardHeader}>
           <h3>
-            Create a new multi-DEX farming solution <span>step 2 of 5</span>
+            Create a new multi-DEX farming solution <Tooltip placement="bottom" title="Create a multi-DEX farming solution with multiple LP setups." arrow><InfoOutlinedIcon sx={{ fontSize: 20 }}/></Tooltip>
           </h3>
           <div className={style.WizardHeaderDescription}>
-            Create a multi-DEX farming solution with multiple LP setups.
+            
           </div>
           <div className={style.WizardProgress}>
-            <div
-              className={style.WizardProgressBar}
-              style={{
-                width: ((100 / 5) * 1 > 0 ? (100 / 5) * 1 : 1) + '%',
-              }}></div>
-          </div>
+                {Array.from({ length: 5 }, (_, index) => (
+                  <div
+                    key={index}
+                    className={style.WizardProgressStep + ' ' + (index < 2 ? style.WizardProgressStepCompleted : style.WizardProgressStepToComplete)}
+                    style={{
+                      width: `calc(100% / ${5} - 40px)`, // Adjust the subtraction value based on the desired spacing between steps
+                      marginRight: '20px', // Half of the subtracted value for even spacing; adjust as needed
+                      display: 'inline-block',
+                      height: '15px', // Example height, adjust as needed
+                      borderRadius: '10px',
+                    }}
+                  ></div>
+                ))}
+                <span style={{position:'relative', top:'-3px'}}>step 2 of 5</span>
+              </div>
         </div>
 
         <div className={style.CreationPageLabel}>
@@ -952,7 +962,9 @@ export default (props) => {
                 </div>
               </div>
             )}
-          <div className={style.WizardFooter}>
+         
+        </div>
+        <div className={style.WizardFooter}>
             <button
               className={style.WizardFooterBack}
               onClick={() => setGeneration('')}>
@@ -966,7 +978,6 @@ export default (props) => {
               </button>
             )}
           </div>
-        </div>
       </div>
     )
   }
@@ -1019,6 +1030,7 @@ export default (props) => {
     }
 
     return (
+      <>
       <div>
         <div className={style.FancyExplanationCreate}>
           <h2>Host</h2>
@@ -1149,29 +1161,31 @@ export default (props) => {
         ) : (
           <></>
         )}
-        <div className={style.WizardFooter}>
-          <button
-            className={style.WizardFooterBack}
-            onClick={() => {
-              setSelectedHost(null)
-              setIsDeploy(false)
-            }}>
-            Back
-          </button>
-          <button
-            className={style.WizardFooterNext}
-            onClick={() => {
-              if (!canDeploy()) {
-                return
-              }
-              initializeDeployData().then(createActionSequence)
-            }}
-            style={{ float: 'right' }}
-            disabled={!canDeploy()}>
-            Deploy
-          </button>
-        </div>
+       
       </div>
+       <div className={style.WizardFooter}>
+       <button
+         className={style.WizardFooterBack}
+         onClick={() => {
+           setSelectedHost(null)
+           setIsDeploy(false)
+         }}>
+         Back
+       </button>
+       <button
+         className={style.WizardFooterNext}
+         onClick={() => {
+           if (!canDeploy()) {
+             return
+           }
+           initializeDeployData().then(createActionSequence)
+         }}
+         style={{ float: 'right' }}
+         disabled={!canDeploy()}>
+         Deploy
+       </button>
+     </div>
+     </>
     )
   }
 
@@ -1182,18 +1196,26 @@ export default (props) => {
 
         <div className={style.WizardHeader}>
           <h3>
-            Create a new multi-DEX farming solution <span>step 3 of 5</span>
+            Create a new multi-DEX farming solution <Tooltip placement="bottom" title="Create a multi-DEX farming solution with multiple LP setups." arrow><InfoOutlinedIcon sx={{ fontSize: 20 }}/></Tooltip>
           </h3>
           <div className={style.WizardHeaderDescription}>
-            Create a multi-DEX farming solution with multiple LP setups.
           </div>
           <div className={style.WizardProgress}>
-            <div
-              className={style.WizardProgressBar}
-              style={{
-                width: ((100 / 5) * 2 > 0 ? (100 / 5) * 2 : 1) + '%',
-              }}></div>
-          </div>
+                {Array.from({ length: 5 }, (_, index) => (
+                  <div
+                    key={index}
+                    className={style.WizardProgressStep + ' ' + (index < 3 ? style.WizardProgressStepCompleted : style.WizardProgressStepToComplete)}
+                    style={{
+                      width: `calc(100% / ${5} - 40px)`, // Adjust the subtraction value based on the desired spacing between steps
+                      marginRight: '20px', // Half of the subtracted value for even spacing; adjust as needed
+                      display: 'inline-block',
+                      height: '15px', // Example height, adjust as needed
+                      borderRadius: '10px',
+                    }}
+                  ></div>
+                ))}
+                <span style={{position:'relative', top:'-3px'}}>step 3 of 5</span>
+              </div>
         </div>
 
         <div className={style.CreationPageLabel}>
@@ -1207,7 +1229,9 @@ export default (props) => {
               duration.
             </p>
           </label>
-          <CreateOrEditFarmingSetups
+         
+        </div>
+        <CreateOrEditFarmingSetups
             rewardToken={selectedRewardToken}
             farmingSetups={farmingSetups}
             onAddFarmingSetup={addFarmingSetup}
@@ -1218,7 +1242,6 @@ export default (props) => {
             generation={generation}
             finishButton={finishButton}
           />
-        </div>
       </div>
     )
   }
@@ -1398,17 +1421,25 @@ export default (props) => {
           <div className={style.CreatePage}>
             <div className={style.WizardHeader}>
               <h3>
-                Create a new multi-DEX farming solution <span>step 5 of 5</span>
+                Create a new multi-DEX farming solution <Tooltip placement="bottom" title="Create a multi-DEX farming solution with multiple LP setups." arrow><InfoOutlinedIcon sx={{ fontSize: 20 }}/></Tooltip>
               </h3>
               <div className={style.WizardHeaderDescription}>
-                Create a multi-DEX farming solution with multiple LP setups.
               </div>
               <div className={style.WizardProgress}>
-                <div
-                  className={style.WizardProgressBar}
-                  style={{
-                    width: ((100 / 5) * 5 > 0 ? (100 / 5) * 5 : 1) + '%',
-                  }}></div>
+                {Array.from({ length: 5 }, (_, index) => (
+                  <div
+                    key={index}
+                    className={style.WizardProgressStep + ' ' + (index < 5 ? style.WizardProgressStepCompleted : style.WizardProgressStepToComplete)}
+                    style={{
+                      width: `calc(100% / ${5} - 40px)`, // Adjust the subtraction value based on the desired spacing between steps
+                      marginRight: '20px', // Half of the subtracted value for even spacing; adjust as needed
+                      display: 'inline-block',
+                      height: '15px', // Example height, adjust as needed
+                      borderRadius: '10px',
+                    }}
+                  ></div>
+                ))}
+                <span style={{position:'relative', top:'-3px'}}>step 5 of 5</span>
               </div>
             </div>
             <div className={style.CreationPageLabel}>
@@ -1430,18 +1461,29 @@ export default (props) => {
 
         <div className={style.WizardHeader}>
           <h3>
-            Create a new multi-DEX farming solution <span>step 1 of 5</span>
+            Create a new multi-DEX farming solution <Tooltip placement="bottom" title="Create a multi-DEX farming solution with multiple LP setups." arrow><InfoOutlinedIcon sx={{ fontSize: 20 }}/></Tooltip>
           </h3>
           <div className={style.WizardHeaderDescription}>
-            Create a multi-DEX farming solution with multiple LP setups.
           </div>
+      
+
           <div className={style.WizardProgress}>
-            <div
-              className={style.WizardProgressBar}
-              style={{
-                width: ((100 / 5) * 0 > 0 ? (100 / 5) * 0 : 1) + '%',
-              }}></div>
-          </div>
+                {Array.from({ length: 5 }, (_, index) => (
+                  <div
+                    key={index}
+                    className={style.WizardProgressStep + ' ' + (index < 1 ? style.WizardProgressStepCompleted : style.WizardProgressStepToComplete)}
+                    style={{
+                      width: `calc(100% / ${5} - 40px)`, // Adjust the subtraction value based on the desired spacing between steps
+                      marginRight: '20px', // Half of the subtracted value for even spacing; adjust as needed
+                      display: 'inline-block',
+                      height: '15px', // Example height, adjust as needed
+                      borderRadius: '10px',
+                    }}
+                  ></div>
+                ))}
+                <span style={{position:'relative', top:'-3px'}}>step 1 of 5</span>
+              </div>
+
         </div>
 
         <div className={style.CreationPageLabel}>

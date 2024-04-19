@@ -22,7 +22,8 @@ import { getRawField } from '../../../../logic/generalReader'
 import style from '../../../../all.module.css'
 import { useOpenSea } from '../../../../logic/uiUtilities'
 import ScrollToTopOnMount from 'interfaces-ui/components/ScrollToTopOnMount'
-
+import Tooltip from '@mui/material/Tooltip';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 export default (props) => {
   const { entry, onCancel, onFinish, operation } = props
 
@@ -326,18 +327,28 @@ export default (props) => {
 
         <div className={style.WizardHeader}>
           <h3>
-            Routine Creation <span>step 3 of 5</span>
+            Routine Creation <Tooltip placement="bottom" title="Select the tokens, addresses, and swaps the routine will execute" arrow><InfoOutlinedIcon sx={{ fontSize: 20 }}/></Tooltip>
           </h3>
           <div className={style.WizardHeaderDescription}>
-            Select the tokens, addresses, and swaps the routine will execute
           </div>
+
           <div className={style.WizardProgress}>
-            <div
-              className={style.WizardProgressBar}
-              style={{
-                width: ((100 / 5) * 3 > 0 ? (100 / 5) * 3 : 1) + '%',
-              }}></div>
-          </div>
+                {Array.from({ length: 5 }, (_, index) => (
+                  <div
+                    key={index}
+                    className={style.WizardProgressStep + ' ' + (index < 2 ? style.WizardProgressStepCompleted : style.WizardProgressStepToComplete)}
+                    style={{
+                      width: `calc(100% / ${5} - 40px)`, // Adjust the subtraction value based on the desired spacing between steps
+                      marginRight: '20px', // Half of the subtracted value for even spacing; adjust as needed
+                      display: 'inline-block',
+                      height: '15px', // Example height, adjust as needed
+                      borderRadius: '10px',
+                    }}
+                  ></div>
+                ))}
+                <span style={{position:'relative', top:'-3px'}}>step 3 of 5</span>
+              </div>
+              
         </div>
         <div className={style.CreationPageLabel}>
           <div className={style.FancyExplanationCreate}>
@@ -371,7 +382,9 @@ export default (props) => {
               the acquired token to one or more addresses.
             </p>
           </div>
-          <div className={style.WizardFooter}>
+        </div>
+
+        <div className={style.WizardFooter}>
             <button
               className={style.WizardFooterBack}
               onClick={() => {
@@ -387,7 +400,6 @@ export default (props) => {
               Next
             </button>
           </div>
-        </div>
       </div>
     )
   }
@@ -400,18 +412,26 @@ export default (props) => {
 
         <div className={style.WizardHeader}>
           <h3>
-            Routine Creation <span>step 3 of 5</span>
+            Routine Creation  <Tooltip placement="bottom" title="Select the tokens, addresses, and swaps the routine will execute" arrow><InfoOutlinedIcon sx={{ fontSize: 20 }}/></Tooltip>
           </h3>
           <div className={style.WizardHeaderDescription}>
-            Select the tokens, addresses, and swaps the routine will execute
           </div>
           <div className={style.WizardProgress}>
-            <div
-              className={style.WizardProgressBar}
-              style={{
-                width: ((100 / 5) * 3 > 0 ? (100 / 5) * 3 : 1) + '%',
-              }}></div>
-          </div>
+                {Array.from({ length: 5 }, (_, index) => (
+                  <div
+                    key={index}
+                    className={style.WizardProgressStep + ' ' + (index < 2 ? style.WizardProgressStepCompleted : style.WizardProgressStepToComplete)}
+                    style={{
+                      width: `calc(100% / ${5} - 40px)`, // Adjust the subtraction value based on the desired spacing between steps
+                      marginRight: '20px', // Half of the subtracted value for even spacing; adjust as needed
+                      display: 'inline-block',
+                      height: '15px', // Example height, adjust as needed
+                      borderRadius: '10px',
+                    }}
+                  ></div>
+                ))}
+                <span style={{position:'relative', top:'-3px'}}>step 3 of 5</span>
+              </div>
         </div>
         <div className={style.CreationPageLabel}>
           <div className={style.FancyExplanationCreate}>
@@ -465,7 +485,9 @@ export default (props) => {
             </>
           )}
           <div className={style.mtop30}></div>
-          <div className={style.WizardFooter}>
+          
+        </div>
+        <div className={style.WizardFooter}>
             <button
               className={style.WizardFooterBack}
               onClick={() => setStep(step - 1)}>
@@ -478,7 +500,6 @@ export default (props) => {
               Next
             </button>
           </div>
-        </div>
       </div>
     )
   }
@@ -490,18 +511,27 @@ export default (props) => {
 
         <div className={style.WizardHeader}>
           <h3>
-            Routine Creation <span>step 3 of 5</span>
+            Routine Creation <Tooltip placement="bottom" title="Select the tokens, addresses, and swaps the routine will execute" arrow><InfoOutlinedIcon sx={{ fontSize: 20 }}/></Tooltip>
           </h3>
           <div className={style.WizardHeaderDescription}>
-            Select the tokens, addresses, and swaps the routine will execute
+            
           </div>
           <div className={style.WizardProgress}>
-            <div
-              className={style.WizardProgressBar}
-              style={{
-                width: ((100 / 5) * 3 > 0 ? (100 / 5) * 3 : 1) + '%',
-              }}></div>
-          </div>
+                {Array.from({ length: 5 }, (_, index) => (
+                  <div
+                    key={index}
+                    className={style.WizardProgressStep + ' ' + (index < 2 ? style.WizardProgressStepCompleted : style.WizardProgressStepToComplete)}
+                    style={{
+                      width: `calc(100% / ${5} - 40px)`, // Adjust the subtraction value based on the desired spacing between steps
+                      marginRight: '20px', // Half of the subtracted value for even spacing; adjust as needed
+                      display: 'inline-block',
+                      height: '15px', // Example height, adjust as needed
+                      borderRadius: '10px',
+                    }}
+                  ></div>
+                ))}
+                <span style={{position:'relative', top:'-3px'}}>step 3 of 5</span>
+              </div>
         </div>
         <div className={style.CreationPageLabel}>
           <div className={style.FancyExplanationCreate}>
@@ -642,7 +672,9 @@ export default (props) => {
               </div>
             </>
           )}
-          <div className={style.WizardFooter}>
+         
+        </div>
+        <div className={style.WizardFooter}>
             <button
               className={style.WizardFooterBack}
               onClick={() => setStep(step - 1)}>
@@ -655,7 +687,6 @@ export default (props) => {
               Add
             </button>
           </div>
-        </div>
       </div>
     )
   }

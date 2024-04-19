@@ -2,7 +2,8 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 
 import { rlphash } from 'ethereumjs-util'
-
+import Tooltip from '@mui/material/Tooltip';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import {
   getNetworkElement,
   abi,
@@ -732,17 +733,26 @@ export default (props) => {
 
             <div className={style.WizardHeader}>
               <h3>
-                Routine Creation <span>step 5 of 5</span>
+                Routine Creation <Tooltip placement="bottom" title="Select the tokens, addresses, and swaps the routine will execute" arrow><InfoOutlinedIcon sx={{ fontSize: 20 }}/></Tooltip> 
               </h3>
               <div className={style.WizardHeaderDescription}>
-                Select the tokens, addresses, and swaps the routine will execute
+                
               </div>
               <div className={style.WizardProgress}>
-                <div
-                  className={style.WizardProgressBar}
-                  style={{
-                    width: ((100 / 5) * 3 > 0 ? (100 / 5) * 3 : 1) + '%',
-                  }}></div>
+                {Array.from({ length: 5 }, (_, index) => (
+                  <div
+                    key={index}
+                    className={style.WizardProgressStep + ' ' + (index < 5 ? style.WizardProgressStepCompleted : style.WizardProgressStepToComplete)}
+                    style={{
+                      width: `calc(100% / ${5} - 40px)`, // Adjust the subtraction value based on the desired spacing between steps
+                      marginRight: '20px', // Half of the subtracted value for even spacing; adjust as needed
+                      display: 'inline-block',
+                      height: '15px', // Example height, adjust as needed
+                      borderRadius: '10px',
+                    }}
+                  ></div>
+                ))}
+                <span style={{position:'relative', top:'-3px'}}>step 5 of 5</span>
               </div>
             </div>
             <div className={style.CreationPageLabel}>

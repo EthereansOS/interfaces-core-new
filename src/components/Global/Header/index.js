@@ -188,11 +188,11 @@ const Header = (props) => {
 
   const blockie = !ensData?.name ? makeBlockie(account) : undefined
 
-  return (
+  return (<>
     <header className={style.Header}>
       <div className={style.FixedHeader}>
         <Link to="" className={style.logoMain}>
-          <img src={`${process.env.PUBLIC_URL}/img/logo.png`} />
+        <img src={theme === 'dark' ? `${process.env.PUBLIC_URL}/img/logo.png` : `${process.env.PUBLIC_URL}/img/logo-black.png`} alt="logo" />
         </Link>
       </div>
       <div className={style.MobileMenuIcon} onClick={toggleMenuVisibility}>
@@ -251,20 +251,22 @@ const Header = (props) => {
           />
         </IconContext.Provider>
         <div className={style.ThemeSelect}>
-          <label className={style.ThemeSwitch}>
-            <input
-              type="checkbox"
-              id="toggleSwitch"
-              checked={isChecked}
-              onChange={handleToggleChange}
-            />
-            <span className={style.ThemeSlider} aria-hidden="true"></span>
-          </label>
-        </div>
+    <label className={style.ThemeSwitch}>
+      <input
+        type="checkbox"
+        id="toggleSwitch"
+        checked={isChecked}
+        onChange={handleToggleChange}
+      />
+      <span className={style.ThemeSlider} aria-hidden="true"></span>
+    </label>
+  </div>
         <Web3Connect />
       </div>
       <div className={style.BlurHeader}></div>
     </header>
+    
+  </>
   )
 }
 //

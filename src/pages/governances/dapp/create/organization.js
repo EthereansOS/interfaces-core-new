@@ -151,6 +151,7 @@ const Metadata = ({ value, onChange, onNext, onPrev }) => {
   }, [selectedImage, onChange])
 
   return (
+    <>
     <div className={style.CreationPageLabel}>
       <ScrollToTopOnMount />
 
@@ -287,15 +288,17 @@ const Metadata = ({ value, onChange, onNext, onPrev }) => {
           {value?.error?.community_link && <p>{value.error.community_link}</p>}
         </label>
       </div>
-      <div className={style.WizardFooter}>
-        <button
-          className={style.WizardFooterNext}
-          onClick={onNext}
-          disabled={disabled}>
-          Next
-        </button>
-      </div>
+      
     </div>
+    <div className={style.WizardFooter}>
+      <button
+        className={style.WizardFooterNext}
+        onClick={onNext}
+        disabled={disabled}>
+        Next
+      </button>
+    </div>
+    </>
   )
 }
 
@@ -403,6 +406,7 @@ const Confirmation = ({
     <>
       <ScrollToTopOnMount />
       {!success && (
+        <>
         <div className={style.CreationPageLabel}>
           <div className={style.FancyExplanationCreate}>
             <h2>Confirmation</h2>
@@ -434,21 +438,23 @@ const Confirmation = ({
             <label className={style.CreationPageLabelF} key={quorumKey}></label>
           </div>
 
-          <div className={style.WizardFooter}>
-            <button className={style.WizardFooterBack} onClick={onPrev}>
-              Back
-            </button>
-            {loading && <CircularProgress />}
-            {!loading && (
-              <ActionAWeb3Button
-                className={'WizardFooterNext'}
-                onClick={onClick}
-                disabled={disabled}>
-                Deploy
-              </ActionAWeb3Button>
-            )}
-          </div>
+          
         </div>
+        <div className={style.WizardFooter}>
+        <button className={style.WizardFooterBack} onClick={onPrev}>
+          Back
+        </button>
+        {loading && <CircularProgress />}
+        {!loading && (
+          <ActionAWeb3Button
+            className={'WizardFooterNext'}
+            onClick={onClick}
+            disabled={disabled}>
+            Deploy
+          </ActionAWeb3Button>
+        )}
+      </div>
+        </>
       )}
       {success && (
         <div
@@ -540,6 +546,7 @@ const VotingRules = ({ value, onChange, onNext, onPrev }) => {
   }, [value])
 
   return (
+    <>
     <div className={style.CreationPageLabel}>
       <ScrollToTopOnMount />
 
@@ -733,7 +740,9 @@ const VotingRules = ({ value, onChange, onNext, onPrev }) => {
         </div>
       </div>
 
-      <div className={style.WizardFooter}>
+      
+    </div>
+    <div className={style.WizardFooter}>
         <button className={style.WizardFooterBack} onClick={onPrev}>
           Back
         </button>
@@ -744,7 +753,7 @@ const VotingRules = ({ value, onChange, onNext, onPrev }) => {
           Next
         </button>
       </div>
-    </div>
+    </>
   )
 }
 
@@ -758,6 +767,7 @@ const Organization = ({ value, onChange, onNext, onPrev }) => {
   }
 
   return (
+    <>
     <div className={style.CreationPageLabel}>
       <ScrollToTopOnMount />
 
@@ -784,7 +794,9 @@ const Organization = ({ value, onChange, onNext, onPrev }) => {
         </label>
       </div>
 
-      <div className={style.WizardFooter}>
+      
+    </div>
+    <div className={style.WizardFooter}>
         <button className={style.WizardFooterBack} onClick={onPrev}>
           Back
         </button>
@@ -792,7 +804,7 @@ const Organization = ({ value, onChange, onNext, onPrev }) => {
           Next
         </button>
       </div>
-    </div>
+    </>
   )
 }
 
@@ -866,6 +878,7 @@ const Governance = ({ value, onChange, onNext, onPrev }) => {
   const [quorumKey, setQuorumKey] = useState(0) // Add a key state for the Quorum slider
 
   return (
+    <>
     <div className={style.CreationPageLabel}>
       <ScrollToTopOnMount />
 
@@ -1098,18 +1111,20 @@ const Governance = ({ value, onChange, onNext, onPrev }) => {
         </div>
       </div>
 
-      <div className={style.WizardFooter}>
-        <button className={style.WizardFooterBack} onClick={onPrev}>
-          Back
-        </button>
-        <button
-          className={style.WizardFooterNext}
-          onClick={onNext}
-          disabled={disabled}>
-          Next
-        </button>
-      </div>
+     
     </div>
+     <div className={style.WizardFooter}>
+     <button className={style.WizardFooterBack} onClick={onPrev}>
+       Back
+     </button>
+     <button
+       className={style.WizardFooterNext}
+       onClick={onNext}
+       disabled={disabled}>
+       Next
+     </button>
+   </div>
+    </>
   )
 }
 
@@ -1231,6 +1246,7 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
   }, [value])
 
   return (
+    <>
     <div className={style.CreationPageLabel}>
       <ScrollToTopOnMount />
 
@@ -1726,7 +1742,9 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
           )}
         </>
       )}
-      <div className={style.WizardFooter}>
+     
+    </div>
+    <div className={style.WizardFooter}>
         <button
           className={style.WizardFooterBack}
           onClick={
@@ -1751,7 +1769,7 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
           Next
         </button>
       </div>
-    </div>
+    </>
   )
 }
 
@@ -1872,6 +1890,7 @@ const TreasurySplitterManager = ({ value, onChange, onNext, onPrev }) => {
   }, [firstSplitEvent])
 
   return (
+    <>
     <div className={style.CreationPageLabel}>
       <ScrollToTopOnMount />
 
@@ -1902,7 +1921,8 @@ const TreasurySplitterManager = ({ value, onChange, onNext, onPrev }) => {
         <h6>Components</h6>
         <ComponentPercentage value={components} onChange={setComponents} />
       </label>
-      <div className={style.WizardFooter}>
+    </div>
+    <div className={style.WizardFooter}>
         <button className={style.WizardFooterBack} onClick={onPrev}>
           Back
         </button>
@@ -1913,7 +1933,7 @@ const TreasurySplitterManager = ({ value, onChange, onNext, onPrev }) => {
           Next
         </button>
       </div>
-    </div>
+    </>
   )
 }
 
@@ -1992,6 +2012,7 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
   }, [value])
 
   return (
+    <>
     <div className={style.CreationPageLabel}>
       <ScrollToTopOnMount />
 
@@ -2487,6 +2508,7 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
           )}
         </div>
       </div>
+    </div>
       <div className={style.WizardFooter}>
         <button className={style.WizardFooterBack} onClick={onPrev}>
           Back
@@ -2498,7 +2520,7 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
           Next
         </button>
       </div>
-    </div>
+    </>
   )
 }
 
@@ -2574,6 +2596,7 @@ const InvestmentsManager = ({ amms, value, onChange, onNext, onPrev }) => {
   }, [value])
 
   return (
+    <>
     <div className={style.CreationPageLabel}>
       <ScrollToTopOnMount />
 
@@ -2862,8 +2885,8 @@ const InvestmentsManager = ({ amms, value, onChange, onNext, onPrev }) => {
           )}
         </div>
       </div>
-
-      <div className={style.WizardFooter}>
+    </div>
+    <div className={style.WizardFooter}>
         <button className={style.WizardFooterBack} onClick={onPrev}>
           Back
         </button>
@@ -2874,7 +2897,7 @@ const InvestmentsManager = ({ amms, value, onChange, onNext, onPrev }) => {
           Next
         </button>
       </div>
-    </div>
+    </>
   )
 }
 
@@ -3089,19 +3112,31 @@ const CreateOrganization = () => {
       </div>
       <div className={style.WizardHeader}>
         <h3>
-          Create a new Organization <span>step {step + 1} of 9</span>
+          Create a new Organization <Tooltip placement="bottom" title="Organizations are fully decentralized DAOs with modular economic
+          components" arrow><InfoOutlinedIcon sx={{ fontSize: 20 }}/></Tooltip>
         </h3>
         <div className={style.WizardHeaderDescription}>
-          Organizations are fully decentralized DAOs with modular economic
-          components
+          
         </div>
+
+
         <div className={style.WizardProgress}>
-          <div
-            className={style.WizardProgressBar}
-            style={{
-              width: ((100 / 8) * step > 0 ? (100 / 8) * step : 1) + '%',
-            }}></div>
+          {Array.from({ length: 8 }, (_, index) => (
+            <div
+              key={index}
+              className={style.WizardProgressStep + ' ' + (index < step ? style.WizardProgressStepCompleted : style.WizardProgressStepToComplete)}
+              style={{
+                width: `calc(100% / ${8} - 25px)`, // Adjust the subtraction value based on the desired spacing between steps
+                marginRight: '10px', // Half of the subtracted value for even spacing; adjust as needed
+                display: 'inline-block',
+                height: '15px', // Example height, adjust as needed
+                borderRadius: '10px',
+              }}
+            ></div>
+          ))}
+          <span style={{position:'relative', top:'-3px'}}>step {step + 1} of 9</span>
         </div>
+
       </div>
       <div className={style.WizardStep}>
       {step == -1 && (<>

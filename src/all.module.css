@@ -59,15 +59,15 @@ div[id="tsparticles"] {
     position: absolute;
     margin: 0 auto;
 }
-
 /* Toggle switch */
 .ThemeSwitch {
     position: relative;
     display: inline-block;
     width: 64px;
-    height: 41px;
+    height: 34px;
     margin: auto;
     margin-top: 10px;
+    top: 5px;
 }
 
 .ThemeSwitch input {
@@ -86,7 +86,7 @@ div[id="tsparticles"] {
     background-color: #fff;
     -webkit-transition: .4s;
     transition: .4s;
-    border-radius: 6px;
+    border-radius: 60px;
     border: 1px solid #d2d6e0;
 }
 
@@ -96,20 +96,26 @@ div[id="tsparticles"] {
 
 .ThemeSlider:before {
     position: absolute;
-    content: "";
-    height: 31px;
-    width: 30px;
+    height: 24px;
+    width: 24px;
     top: 4px;
     left: 4px;
     bottom: 4px;
     background-color: #d2d6e0;
-    -webkit-transition: .4s;
     transition: .4s;
-    border-radius: 20%;
+    border-radius: 40px;
+    content: "\2600";
+    text-align: center;
+    line-height: 25px;
+    font-size: 18px;
+    color: #000;
 }
+
 
 .dark .ThemeSlider:before {
     background-color: #403b62 !important;
+    content: "\263D";
+    color:#fff;
 }
 
 .light input:checked+.ThemeSlider {
@@ -1084,7 +1090,7 @@ textarea{
     display: inline-block;
     min-width: 70px;
     margin: 5px;
-    font-size: 11px;
+    font-size: 13px;
     padding: 3px 15px;
     text-align: center;
     cursor: pointer;
@@ -6924,7 +6930,7 @@ input[type=range]::-ms-thumb {
     display: inline-block;
     flex-direction: column;
     align-items: center;
-    border-radius: 6px;
+    border-radius: 100px;
 }
 
 .MenuProfile {
@@ -15369,10 +15375,15 @@ input {
 
 .WizardProgress {
     width: 100%;
-    background-color: #fff;
+    background-color: transparent;
     overflow: hidden;
     padding: 5px;
     border-radius: 10px;
+    padding-left: 0px;
+}
+
+.GovCardOpened .ModalBack{
+    max-height: 520px;
 }
 
 .WizardProgressBar {
@@ -15406,6 +15417,18 @@ input {
     font-weight: bold;
 }
 
+.WizardProgressStepCompleted{
+    background-color: #f09243;
+}
+.dark .WizardProgressStepCompleted{
+    background-color: #f09243;
+}
+.WizardProgressStepToComplete{
+    background-color: #ffffff;
+}
+.dark .WizardProgressStepToComplete{
+    background-color: #403b63;
+}
 .WizardHeader>h3>span {
     float: right;
     font-size: 14px;
@@ -15464,7 +15487,7 @@ input {
 
 
 .dark .WizardProgress {
-    background-color: #35324c !important;
+    background-color: transparent !important;
 }
 
 
@@ -15475,7 +15498,7 @@ input {
 }
 
 .dark .WizardFooter .WizardFooterBack {
-    background-color: #29263e;
+    background-color: #353150;
     color: #615c8d;
 }
 
@@ -15686,11 +15709,14 @@ input {
 
 .NetworkSelectDropdown>div>div {
     background: #e9ecf1;
-    border-radius: 8px;
     padding-top: 7px;
     padding-bottom: 8px;
     position: relative;
     top: 2px;
+}
+
+.NetworkSelectDropdown>div:nth-child(3)>div {
+    border-radius: 100px;
 }
 
 .dark .NetworkSelectDropdown>div>div {

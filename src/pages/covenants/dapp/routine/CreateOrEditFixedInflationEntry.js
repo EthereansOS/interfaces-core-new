@@ -4,6 +4,8 @@ import { useEthosContext, fromDecimals } from 'interfaces-core'
 import CreateOrEditFixedInflationEntryOperation from './CreateOrEditFixedInflationEntryOperation'
 import style from '../../../../all.module.css'
 import ScrollToTopOnMount from 'interfaces-ui/components/ScrollToTopOnMount'
+import Tooltip from '@mui/material/Tooltip';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
 export default (props) => {
   const context = useEthosContext()
@@ -284,29 +286,44 @@ export default (props) => {
       saveEditOperation={saveEditOperation}
     />
   ) : (
+    <>    
     <div className={style.CreatePage}>
       <ScrollToTopOnMount />
 
       <div>
         <div className={style.WizardHeader}>
           <h3>
-            Routine Creation <span>step {step + 1} of 5</span>
+            Routine Creation <Tooltip placement="bottom" title="Select the tokens, addresses, and swaps the routine will execute" arrow><InfoOutlinedIcon sx={{ fontSize: 20 }}/></Tooltip>
           </h3>
           <div className={style.WizardHeaderDescription}>
-            Select the tokens, addresses, and swaps the routine will execute
+            
           </div>
+
           <div className={style.WizardProgress}>
-            <div
-              className={style.WizardProgressBar}
-              style={{
-                width: ((100 / 5) * step > 0 ? (100 / 5) * step : 1) + '%',
-              }}></div>
-          </div>
+                {Array.from({ length: 5 }, (_, index) => (
+                  <div
+                    key={index}
+                    className={style.WizardProgressStep + ' ' + (index < step ? style.WizardProgressStepCompleted : style.WizardProgressStepToComplete)}
+                    style={{
+                      width: `calc(100% / ${5} - 40px)`, // Adjust the subtraction value based on the desired spacing between steps
+                      marginRight: '20px', // Half of the subtracted value for even spacing; adjust as needed
+                      display: 'inline-block',
+                      height: '15px', // Example height, adjust as needed
+                      borderRadius: '10px',
+                    }}
+                  ></div>
+                ))}
+                <span style={{position:'relative', top:'-3px'}}>step {step + 1} of 5</span>
+              </div>
         </div>
-        <div className={style.mtop30}>
+        
+      </div>
+      <div className={style.mtop30}>
           <div className={style.CreationPageLabel}>
             {steps[step][0]()}
-            <div className={style.WizardFooter}>
+            
+          </div>
+          <div className={style.WizardFooter}>
               {step !== 0 && (
                 <button
                   className={style.WizardFooterBack}
@@ -340,9 +357,10 @@ export default (props) => {
                 </button>
               )}
             </div>
-          </div>
+
         </div>
-      </div>
     </div>
+    </>
+    
   )
 }

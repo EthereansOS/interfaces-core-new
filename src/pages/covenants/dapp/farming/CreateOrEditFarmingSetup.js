@@ -320,7 +320,8 @@ export default (props) => {
 
   function getFirstStep() {
     return (
-      <div>
+      <>
+      <div className={style.CreationPageLabel}>
         <ScrollToTopOnMount />
 
         <div className={style.CreationPageLabelF}>
@@ -432,7 +433,9 @@ export default (props) => {
             {rewardToken.symbol}
           </b>
         </p>
-        <div className={style.WizardFooter}>
+       
+      </div>
+      <div className={style.WizardFooter}>
           <button className={style.WizardFooterBack} onClick={onCancel}>
             Back
           </button>
@@ -447,13 +450,14 @@ export default (props) => {
               : 'Edit'}
           </button>
         </div>
-      </div>
+      </>
     )
   }
 
   function choosetick() {
     return (
-      <div>
+      <>
+     <div className={style.CreationPageLabel}>
         <ScrollToTopOnMount />
 
         <div className={style.FancyExplanationCreate}>
@@ -571,7 +575,9 @@ export default (props) => {
             </a>
           </div>
         </div>
-        <div className={style.WizardFooter}>
+      
+      </div>
+      <div className={style.WizardFooter}>
           <button  className={style.WizardFooterBack} onClick={() => setCurrentStep(0)}>
             Back
           </button>
@@ -579,13 +585,14 @@ export default (props) => {
             Next
           </button>
         </div>
-      </div>
+      </>
     )
   }
 
   function getSecondStep() {
     return (
-      <div>
+      <>
+      <div className={style.CreationPageLabel}>
         <ScrollToTopOnMount />
 
         <div className={style.CreationPageLabelF}>
@@ -689,7 +696,9 @@ export default (props) => {
             after the end block.
           </p>
         </div>
-        <div className={style.WizardFooter}>
+       
+      </div>
+      <div className={style.WizardFooter}>
           <button
             className={style.WizardFooterBack}
             onClick={() =>
@@ -705,7 +714,7 @@ export default (props) => {
             {editSetup ? 'Edit' : 'Add'}
           </button>
         </div>
-      </div>
+        </>
     )
   }
 

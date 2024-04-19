@@ -11,6 +11,8 @@ import style from '../../../../all.module.css'
 import uploadToIPFS from 'interfaces-core/lib/web3/uploadToIPFS'
 import getFileFromBlobURL from 'interfaces-core/lib/web3/getFileFromBlobURL'
 import ScrollToTopOnMount from 'interfaces-ui/components/ScrollToTopOnMount'
+import Tooltip from '@mui/material/Tooltip';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
 const Deploy = ({ back, finalize }) => {
   const context = useEthosContext()
@@ -131,23 +133,29 @@ const Deploy = ({ back, finalize }) => {
 
       <div className={style.WizardHeader}>
         <h3>
-          Create a new Delegation <span>step {step + 1} of 2</span>
+          Create a new Delegation <Tooltip placement="bottom" title="An independent political party that can compete for grant funding from
+          one or more Organizations" arrow><InfoOutlinedIcon sx={{ fontSize: 20, position:'relative', top:'3px' }}/></Tooltip>
         </h3>
-        <div className={style.WizardHeaderDescription}>
-          An independent political party that can compete for grant funding from
-          one or more Organizations
-        </div>
         <div className={style.WizardProgress}>
-          <div
-            className={style.WizardProgressBar}
-            style={{
-              width:
-                ((100 / 2) * (step + 1) > 0 ? (100 / 2) * (step + 1) : 1) + '%',
-            }}></div>
+          {Array.from({ length: 2 }, (_, index) => (
+            <div
+              key={index}
+              className={style.WizardProgressStep + ' ' + (index  < step +1  ? style.WizardProgressStepCompleted : style.WizardProgressStepToComplete)}
+              style={{
+                width: `calc(100% / ${2} - 65px)`, // Adjust the subtraction value based on the desired spacing between steps
+                marginRight: '20px', // Half of the subtracted value for even spacing; adjust as needed
+                display: 'inline-block',
+                height: '15px', // Example height, adjust as needed
+                borderRadius: '10px',
+              }}
+            ></div>
+          ))}
+          <span style={{position:'relative', top:'-3px'}}>step {step + 1} of 2</span>
         </div>
       </div>
 
       {step == 0 ? (
+        <>
         <div className={style.CreationPageLabel}>
           <div className={style.FancyExplanationCreate}>
             <h2>Basic Info</h2>
@@ -209,26 +217,27 @@ const Deploy = ({ back, finalize }) => {
               />
             </label>
           </div>
-
-          <div className={style.WizardFooter}>
-            {loading && <CircularProgress />}
-            {!loading && step != 0 && (
-              <button
-                className={style.WizardFooterBack}
-                onClick={() => setStep(0)}>
-                Back
-              </button>
-            )}
-            {!loading && (
-              <button
-                className={style.WizardFooterNext}
-                onClick={() => setStep(1)}>
-                Next
-              </button>
-            )}
-          </div>
         </div>
+        <div className={style.WizardFooter}>
+        {loading && <CircularProgress />}
+        {!loading && step != 0 && (
+          <button
+            className={style.WizardFooterBack}
+            onClick={() => setStep(0)}>
+            Back
+          </button>
+        )}
+        {!loading && (
+          <button
+            className={style.WizardFooterNext}
+            onClick={() => setStep(1)}>
+            Next
+          </button>
+        )}
+      </div>
+      </>
       ) : (
+        <>
         <div className={style.CreationPageLabel}>
           <div className={style.FancyExplanationCreate}>
             <h2>Token Details</h2>
@@ -395,7 +404,9 @@ const Deploy = ({ back, finalize }) => {
               Delegation’s host will.
             </p>
           </label>
-          <div className={style.WizardFooter}>
+          
+        </div>
+        <div className={style.WizardFooter}>
             {loading && <CircularProgress />}
             {!loading && step != 0 && (
               <button
@@ -410,7 +421,7 @@ const Deploy = ({ back, finalize }) => {
               </button>
             )}
           </div>
-        </div>
+        </>
       )}
     </>
   )
@@ -505,6 +516,7 @@ const Finalize = ({ back, success, cumulativeData }) => {
   }
 
   return (
+    <>
     <div className={style.CreationPageLabel}>
       <ScrollToTopOnMount />
 
@@ -642,7 +654,9 @@ const Finalize = ({ back, success, cumulativeData }) => {
           </p>
         </label>
       </div>
-      <div className={style.WizardFooter}>
+      
+    </div>
+    <div className={style.WizardFooter}>
         {loading && <CircularProgress />}
         {!loading && (
           <button className={style.WizardFooterBack} onClick={back}>
@@ -655,7 +669,7 @@ const Finalize = ({ back, success, cumulativeData }) => {
           </button>
         )}
       </div>
-    </div>
+    </>
   )
 }
 

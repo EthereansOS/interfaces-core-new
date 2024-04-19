@@ -31,6 +31,8 @@ export default (props) => {
     (farmingSetups.length === 0 || editSetup === null)
   ) {
     return (
+      <>
+      <div className={style.CreationPageLabel}>
       <div className={style.generationBoh}>
         <ScrollToTopOnMount />
 
@@ -59,7 +61,8 @@ export default (props) => {
             and the risk of impermanent loss, read the Uniswap Documentation:{' '}
             <a
               target="_blank"
-              href="https://docs.uniswap.org/concepts/V3-overview/concentrated-liquidity">
+              style={{textDecoration:'underline'}}
+              href="https://docs.uniswap.org/concepts/protocol/concentrated-liquidity">
               Uniswap Documentation
             </a>
           </p>
@@ -71,18 +74,22 @@ export default (props) => {
             Select
           </a>
         </div>
-        <div className={style.WizardFooter}>
-          <button
-            className={style.WizardFooterBack}
-            onClick={() =>
-              farmingSetups.filter((it) => it.editing).length === 0
-                ? onCancel()
-                : setEditSetup()
-            }>
-            Back
-          </button>
-        </div>
+       
       </div>
+     
+      </div>
+       <div className={style.WizardFooter}>
+       <button
+         className={style.WizardFooterBack}
+         onClick={() =>
+           farmingSetups.filter((it) => it.editing).length === 0
+             ? onCancel()
+             : setEditSetup()
+         }>
+         Back
+       </button>
+     </div>
+      </>
     )
   }
 
@@ -118,7 +125,8 @@ export default (props) => {
   }
 
   return (
-    <div>
+    <>
+    <div className={style.CreationPageLabel}>
       <ScrollToTopOnMount />
       {farmingSetups.map((setup, index) => (
         <div key={index} className={style.generationSelectorULTRA}>
@@ -223,28 +231,30 @@ export default (props) => {
           </div>
         </div>
       ))}
-      <div className={style.WizardFooter}>
-        <a className={style.RoundedButton} onClick={() => setEditSetup(null)}>
-          +
-        </a>
-        <div className={style.ActionBTNCreateX}>
-          {!finishButton && (
-            <button
-              className={style.WizardFooterBack}
-              onClick={() => {
-                farmingSetups.forEach((_, index) => onRemoveFarmingSetup(index))
-                onCancel()
-              }}>
-              Back
-            </button>
-          )}
-          {finishButton || (
-            <button className={style.WizardFooterNext} onClick={onFinish}>
-              Next
-            </button>
-          )}
-        </div>
-      </div>
+     
     </div>
+     <div className={style.WizardFooter}>
+     <a className={style.RoundedButton} onClick={() => setEditSetup(null)}>
+       +
+     </a>
+     <div className={style.ActionBTNCreateX}>
+       {!finishButton && (
+         <button
+           className={style.WizardFooterBack}
+           onClick={() => {
+             farmingSetups.forEach((_, index) => onRemoveFarmingSetup(index))
+             onCancel()
+           }}>
+           Back
+         </button>
+       )}
+       {finishButton || (
+         <button className={style.WizardFooterNext} onClick={onFinish}>
+           Next
+         </button>
+       )}
+     </div>
+   </div>
+    </>
   )
 }
