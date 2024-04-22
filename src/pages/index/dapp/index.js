@@ -38,10 +38,10 @@ const IndexMain = () => {
               Click. Create. Deploy.
             </p>
             <Link
-              to="/items/create/collection"
+              to="/covenants/create/farming/"
               className={style.BtnSecondary}
               style={{ marginRight: '10px' }}>
-              New <b>Collection</b>
+              New <b>Farm</b>
             </Link>
             <Link
               to="/organizations/create/organization"
