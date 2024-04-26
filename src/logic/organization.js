@@ -1333,7 +1333,7 @@ export async function checkSurveyStatus(
 ) {
   var { account, newContract, context, chainId } = inputData
   if (
-    chainId === 10 ||
+    chainId !== 1 ||
     (proposal.organization &&
       !proposal.organization.old &&
       proposal.organization.type !== 'delegation')

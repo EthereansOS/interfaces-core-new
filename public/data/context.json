@@ -5,22 +5,25 @@
             "5" : "Goerli",
             "42" : "Kovan",
             "10" : "Optimism",
-            "69" : "OptimismKovan"
+            "69" : "OptimismKovan",
+            "8453" : "Base"
         },
         "dualChainId" : {
             "10" : 1,
-            "69" : 42
+            "69" : 42,
+            "8453" : 1
         },
         "chainProvider" : {
             "1" : "https://eth-mainnet.g.alchemy.com/v2/Zd4dCIEp-LHNZHX4ni2vJ67c58gYsB18",
-            "10" : "https://opt-mainnet.g.alchemy.com/v2/n7RB1WD8al75IGI-5d15ttII4vNBOCEO"
+            "10" : "https://opt-mainnet.g.alchemy.com/v2/n7RB1WD8al75IGI-5d15ttII4vNBOCEO",
+            "8453" : "https://base-mainnet.g.alchemy.com/v2/x9T-X5rlqCB5_5S_HMexpu49HvF_CSSo"
         },
         "useWalletSettings": [
             {
               "id": "injected",
               "buttonText": "Metamask",
               "settings" : {
-                "chainId" : [1,4,5,10]
+                "chainId" : [1,4,5,10,8453]
               }
             }
         ],
@@ -29,7 +32,7 @@
               "id": "injected",
               "buttonText": "Metamask",
               "settings" : {
-                "chainId" : [1,4,5,10]
+                "chainId" : [1,4,5,10,8453]
               }
             },
             {
@@ -58,6 +61,12 @@
                 "0x4200000000000000000000000000000000000006" : {
                     "1" : "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
                 }
+            },
+            "8453" : {
+                "0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1" : "0x50c5725949A6F0c72E6C4a641F24049A917DB0Cb",
+                "0x4200000000000000000000000000000000000006" : {
+                    "1" : "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
+                }
             }
         },
         "providerInstrumentableMethods" : [
@@ -76,6 +85,7 @@
         "erc20TokensListURLRinkeby" : "https://gateway.ipfs.io/ipns/tokens.uniswap.org",
         "erc20TokensListURLGoerli" : "https://gateway.ipfs.io/ipns/tokens.uniswap.org",
         "erc20TokensListURLOptimism" : "https://static.optimism.io/optimism.tokenlist.json",
+        "erc20TokensListURLBase" : "https://static.optimism.io/optimism.tokenlist.json",
         "itemsV1ListURL": "https://raw.githubusercontent.com/EthereansOS/ITEMS-Swap/master/src/constants/ethItemLists/dist/tokensList.json",
         "dappVersion": "0.8",
         "etherscanURL": "https://etherscan.io/",
@@ -83,6 +93,7 @@
         "etherscanURLRinkeby": "https://rinkeby.etherscan.io/",
         "etherscanURLGoerli": "https://goerli.etherscan.io/",
         "etherscanURLOptimism": "https://optimistic.etherscan.io/",
+        "etherscanURLBase": "https://basescan.org/",
         "covenantsURLplain": "https://covenants.eth.link/",
         "uniSwapInfoURL": "https://uniswap.info/token/",
         "uniSwapSwapURLTemplate": "https://app.uniswap.org/#/swap?inputCurrency={0}&outputCurrency={1}",
@@ -108,6 +119,7 @@
         "daiTokenAddressRinkeby": "0xc7ad46e0b8a400bb3c915120d284aafba8fc4735",
         "daiTokenAddressGoerli": "0xdc31Ee1784292379Fbb2964b3B9C4124D8F89C60",
         "daiTokenAddressOptimism": "0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1",
+        "daiTokenAddressBase": "0x50c5725949A6F0c72E6C4a641F24049A917DB0Cb",
         "osTokenAddress" : "0x6100dd79fCAA88420750DceE3F735d168aBcB771",
         "osTokenAddressRinkeby" : "0x6100dd79fCAA88420750DceE3F735d168aBcB771",
         "osTokenAddressGoerli" : "0xF9Fe4373F953A4cDBf77813AB2313D669fC1B42e",
@@ -136,6 +148,7 @@
         "deploySearchStartRinkeby": 9567013,
         "deploySearchStartGoerli": 7801984,
         "deploySearchStartOptimism": 13897200,
+        "deploySearchStartBase": 13661376,
         "blockSearchSection": 0,
         "transactionConfirmations": 0,
         "transactionConfirmationsTimeoutMillis": 1500,
@@ -151,8 +164,11 @@
         "factoryOfFactoriesAddressRinkeby": "0xff6bd9dfAA47f51Bb7bfDd95F8bBB3C020166eEA",
         "factoryOfFactoriesAddressGoerli": "0xCC98784D2cF8423FD876270Aec675c683a780EFa",
         "factoryOfFactoriesAddressOptimism": "0x241c5FAd7e3Dc73a0c8303F37a3Ecf43f9f4e1E9",
+        "factoryOfFactoriesAddressBase": "0x39877710b5B66CD9A20E3b87ac78A2ee8485bCDc",
         "L2StandardTokenFactoryAddressOptimism" : "0x4200000000000000000000000000000000000012",
         "L2StandardBridgeAddressOptimism" : "0x4200000000000000000000000000000000000010",
+        "L2StandardTokenFactoryAddressBase" : "0x4200000000000000000000000000000000000012",
+        "L2StandardBridgeAddressBase" : "0x4200000000000000000000000000000000000010",
         "L1StandardBridgeAddress" : "0x99C9fc46f92E8a1c0deC1b1747d010903E884bE1",
         "factoryIndices": {
             "dfo": 0,
@@ -186,6 +202,13 @@
             "proposalRules": 3,
             "organization": 4,
             "delegation": 5
+        },
+        "factoryIndicesBase": {
+            "farming": "0",
+            "fixedInflation": "1",
+            "proposalRules": 2,
+            "organization": 3,
+            "delegation": 4
         },
         "grimoire": {
             "COMPONENT_KEY_PROPOSALS_MANAGER": "0xa504406933af7ca120d20b97dfc79ea9788beb3c4d3ac1ff9a2c292b2c28e0cc",
@@ -417,6 +440,7 @@
         "wethTokenAddressRinkeby" : "0xc778417e063141139fce010982780140aa0cd5ab",
         "wethTokenAddressGoerli" : "0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6",
         "wethTokenAddressOptimism" : "0x4200000000000000000000000000000000000006",
+        "wethTokenAddressBase" : "0x4200000000000000000000000000000000000006",
         "buidlTokenAddress": "0x7b123f53421b1bf8533339bfbdc7c98aa94163db",
         "usdcTokenAddress": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
         "usdtTokenAddress": "0xdAC17F958D2ee523a2206206994597C13D831ec7",
@@ -431,6 +455,7 @@
         "WUSDFarmMainAddress": "0xaB1f7013Ae40Ffd2628B8450cCa4B7b81b70d5a3",
         "prestoAddress": "0x3660c73E030C497cccbE8aaabdc7431fAEB6E495",
         "prestoAddressOptimism": "0x80B448c22535A336Be43183da9dd4e7e74a22dC7",
+        "prestoAddressBase": "0xfa987b1D45ae8c583e8f9ebE3134497d30ECf677",
         "prestoAddressRopsten": "0x091b8Af4F3728506c8BcA29D38C41253286B802b",
         "farmingPrestoAddressOld": "0x8c41e3d4eafd8fe623e4d4325f7c0a4db1ae4f65",
         "farmingPrestoAddress": "0xE3eFf2b5e9B13910ECb4332c478380C485c37757",
@@ -534,6 +559,7 @@
         "ammAggregatorAddressRinkeby": "0x6BAD2Db0aEf60986a31eb9cC1180564e3d660f86",
         "ammAggregatorAddressGoerli": "0x88DF7efe56238052c6653e0efB982D76ADe4E1Ec",
         "ammAggregatorAddressOptimism": "0x6fD896b5F8DA1e371e6bba1366b4C14506D4C418",
+        "ammAggregatorAddressBase": "0x1ABac6b07b154C6772358248BD26A3F0356BF3CB",
         "fixedInflationFactoryAddress": "0x285427916a9d2e991039A8F1611F575D0a6cf237",
         "fixedInflationFactoryAddressRopsten": "0x614D37ce2152B55Db86208E30BBe607B024510d0",
         "liquidityMiningFactoryAddress": "0x9df4e915D093f03169270857CF9a0A5d1ef26388",
@@ -552,22 +578,27 @@
         "uniswapV3SwapRouterAddressRinkeby": "0xE592427A0AEce92De3Edee1F18E0157C05861564",
         "uniswapV3SwapRouterAddressGoerli": "0xE592427A0AEce92De3Edee1F18E0157C05861564",
         "uniswapV3SwapRouterAddressOptimism": "0xE592427A0AEce92De3Edee1F18E0157C05861564",
+        "uniswapV3SwapRouterAddressBase": "0x2626664c2603336E57B271c5C0b26F421741e481",
         "uniswapV3FactoryAddress": "0x1F98431c8aD98523631AE4a59f267346ea31F984",
         "uniswapV3FactoryAddressRinkeby": "0x1F98431c8aD98523631AE4a59f267346ea31F984",
         "uniswapV3FactoryAddressGoerli": "0x1F98431c8aD98523631AE4a59f267346ea31F984",
         "uniswapV3FactoryAddressOptimism": "0x1F98431c8aD98523631AE4a59f267346ea31F984",
+        "uniswapV3FactoryAddressBase": "0x33128a8fC17869897dcE68Ed026d694621f6FDfD",
         "uniswapV3NonfungiblePositionManagerAddress": "0xc36442b4a4522e871399cd717abdd847ab11fe88",
         "uniswapV3NonfungiblePositionManagerAddressRinkeby": "0xC36442b4a4522E871399CD717aBDD847Ab11FE88",
         "uniswapV3NonfungiblePositionManagerAddressGoerli": "0xC36442b4a4522E871399CD717aBDD847Ab11FE88",
         "uniswapV3NonfungiblePositionManagerAddressOptimism": "0xC36442b4a4522E871399CD717aBDD847Ab11FE88",
+        "uniswapV3NonfungiblePositionManagerAddressBase": "0x03a520b32C04BF3bEEf7BEb72E919cf822Ed34f1",
         "uniswapV3QuoterAddress": "0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6",
         "uniswapV3QuoterAddressRinkeby": "0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6",
         "uniswapV3QuoterAddressGoerli": "0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6",
         "uniswapV3QuoterAddressOptimism": "0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6",
+        "uniswapV3QuoterAddressBase": "0x3d4e44Eb1374240CE5F1B871ab261CD16335B76a",
         "itemProjectionFactoryAddress" : "0xd95eaf5591961e304e33b52730963c1cfaa09b7c",
         "itemProjectionFactoryAddressRinkeby" : "0x62E6c6a30De230f3b58000250124121e62ebB28d",
         "itemProjectionFactoryAddressGoerli" : "0x90C79e8c6479ACd032f23FF7367241A4e968BEF6",
         "itemProjectionFactoryAddressOptimism" : "0xA9a88Fc8339016bb5033fD1Ac7b5364F6b5d9DEd",
+        "itemProjectionFactoryAddressBase" : "0x07bfacBF49467acB86562B350AE9855b2B26910c",
         "eRC20WrapperAddress" : "0xa4592324d22e960dF199f6Eec1497fAE1f806e31",
         "eRC721WrapperAddress" : "0xCD221D6365b3465407ca9770211bfdEb0DEf8Fed",
         "eRC1155WrapperAddress" : "0xdE4DAF2d947A8069d6c47bD1157fd2529F0De746",
@@ -580,6 +611,9 @@
         "eRC20WrapperAddressOptimism" : "0x32d32f0965a50168cfbe4E4bcC781fdaC1CC04d2",
         "eRC721WrapperAddressOptimism" : "0xBa273b447420E8127B91040C2Ad10164248f2260",
         "eRC1155WrapperAddressOptimism" : "0x8E66008cB3b9E0F003f27e67b0D9C061a9C8A71B",
+        "eRC20WrapperAddressBase" : "0x5E58B81513B4d09b9aC6f7C7789aecd4fb6a200A",
+        "eRC721WrapperAddressBase" : "0xfbd688104fc785532422D9cA745B223162fb4931",
+        "eRC1155WrapperAddressBase" : "0xbB07Cff77bD58319FE7BA1708Cb11fC2768eA538",
         "eRC721WrapperDeckAddress" : "0xA2052212075483D80cF268905203edC89A75bB29",
         "eRC1155WrapperDeckAddress" : "0xB447eB30Dcc3E21c74F3F42Cb78F6553A64A9c52",
         "eRC721WrapperDeckAddressRinkeby" : "0xC56B256564a9780cAA19AC7E3dB1d018fCd2438e",
@@ -588,6 +622,8 @@
         "eRC1155WrapperDeckAddressGoerli" : "0x26B1bc6Ad6c40e26475691B0D6170e1aF350C081",
         "eRC721WrapperDeckAddressOptimism" : "0x18aFd644BA51b4D112A18D6baf0a745D92Ee3207",
         "eRC1155WrapperDeckAddressOptimism" : "0x506cC9dEA8aA4361012da9A940a16E2F4AdB8a30",
+        "eRC721WrapperDeckAddressBase" : "0x952014D0E9e8360ae90192081BD77D7a0B2cAA6B",
+        "eRC1155WrapperDeckAddressBase" : "0xC25A841175886Bc8a8294d4e67d6cbA856a1a77A",
         "ensRegistrarAddress" : "0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e",
         "farmGen2FactoryAddressRegular" : "0xaC4a84996784E5B1b0D03026047A9B53Fa5B1e74",
         "farmGen2FactoryAddressRegularRopsten": "0x75687cb2A21F7c596DC973193f26D01c597F2e75",
@@ -597,6 +633,7 @@
         "deckPrestoAddressGoerli" : "0x9C61332A625A6D59AF82aca94293712Ff289816f",
         "deckPrestoAddressRinkeby2" : "0x45c0B7cA2B0ECcdbb6e8f164D2aCcba35Ca78B95",
         "deckPrestoAddressOptimism" : "0xb4F0DbF6e8eC9e55E4be88e96350975B211E8713",
+        "deckPrestoAddressBase" : "0x0F552BDf84FE8aF0909E7389aCDc4Ab25BCDcD0C",
         "ammPoolLinkTemplates" : {
             "UniswapV3" : "https://info.uniswap.org/#/pools/{0}",
             "UniswapV2" : "https://v2.info.uniswap.org/pair/{0}",

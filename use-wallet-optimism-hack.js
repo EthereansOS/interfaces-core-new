@@ -1681,6 +1681,14 @@ var CHAIN_INFORMATION = /*#__PURE__*/new Map([[1, {
   shortName: 'Optimism Kovan',
   explorerUrl: 'https://kovan-optimistic.etherscan.io',
   testnet: true
+}], [8453, {
+  id: 8453,
+  nativeCurrency: ETH,
+  type: 'main',
+  fullName: 'Base Mainnet',
+  shortName: 'Base',
+  explorerUrl: 'https://basescan.org',
+  testnet: false
 }]]);
 /**
  * This method checks whether a particular chain id is known.

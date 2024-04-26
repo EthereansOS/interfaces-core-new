@@ -94,6 +94,19 @@ const Header = (props) => {
       ),
       chainId: 10,
     },
+    {
+      value: 'base',
+      label: (
+        <div>
+          <img
+            className={style.SelectLabelOptimism}
+            src={`${process.env.PUBLIC_URL}/img/logo_base.png`}
+          />{' '}
+          <div className={style.SelectLabel}>Base</div>
+        </div>
+      ),
+      chainId: 8453,
+    },
   ]
 
   const [toggled, setToggled] = React.useState(false)
@@ -146,7 +159,6 @@ const Header = (props) => {
   useEffect(() => {
     let toggleSwitch = document.getElementById('toggleSwitch')
     const initialLoad = async () => {
-      // Utilizza un'operazione asincrona per ripristinare lo stato della checkbox da localStorage
       await new Promise((resolve) => {
         setTimeout(() => {
           const savedToggleState = JSON.parse(
@@ -265,7 +277,7 @@ const Header = (props) => {
       </div>
       <div className={style.BlurHeader}></div>
     </header>
-    
+
   </>
   )
 }
