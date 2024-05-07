@@ -57,7 +57,7 @@ const WrapWithdrawModal = ({
 
   return (
     <RegularModal close={close}>
-      <h4>
+      <h4 style={{marginBottom: '10px'}}>
         {title} {tokenSymbol}
       </h4>
       <TokenInputRegular

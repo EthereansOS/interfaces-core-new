@@ -1432,6 +1432,8 @@ textarea{
     border-radius: 16px;
     text-align: left;
     border: 2px solid;
+    padding: 0px;
+    border: 0px;
 }
 
 .TradeMarketToken .TradeMarketTokenSelector {
@@ -7704,8 +7706,16 @@ input[type=range]::-ms-thumb {
     margin-top: 10px !important;
 }
 
+.Govright .loadingio_spinner_disk_hn1zpmja0x6, .GovCardOpened .loadingio_spinner_disk_hn1zpmja0x6, .DeckMarketPlace .loadingio_spinner_disk_hn1zpmja0x6{
+    margin-top: 0%!important;
+}
 
-
+.TranferETHProp .AddAReceiver input{
+    width: 304px!important;
+    padding-top: 5px!important;
+    padding-bottom: 5px!important;
+    min-height: 36px;
+}
 
 .medium {
     width: 500px;
@@ -7751,14 +7761,14 @@ input[type=range]::-ms-thumb {
 
 .BackButton {
     position: absolute;
-    top: 8px;
-    left: 6px;
+    top: 0px;
+    left: 0px;
     padding: 5px 10px;
     font-size: 13px;
     border-radius: 100% 10px 10px 0px;
     background-color: tomato;
     color: #ffffff;
-    z-index: 999999999;
+    z-index: 1000;
 }
 
 .Web3Connect {
@@ -15721,6 +15731,15 @@ input {
 
 .dark .NetworkSelectDropdown>div>div {
     background: #403b61;
+}
+
+.ErrorMessageInLine{
+    float: right;
+    display: inline-block;
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    padding: 0px !important;
 }
 
 

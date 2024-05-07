@@ -407,53 +407,59 @@ const Confirmation = ({
       <ScrollToTopOnMount />
       {!success && (
         <>
-        <div className={style.CreationPageLabel}>
-          <div className={style.FancyExplanationCreate}>
-            <h2>Confirmation</h2>
+          {!loading && (
+        <div>
+          <div className={style.CreationPageLabel}>
+            <div className={style.FancyExplanationCreate}>
+              <h2>Confirmation</h2>
+            </div>
+
+            <h6
+              style={{
+                textAlign: 'left',
+                paddingLeft: '20px',
+                marginBottom: '10px',
+                marginTop: '30px',
+              }}>
+              Confirm the Organization deploy.
+            </h6>
+            <p
+              style={{
+                fontSize: '12px',
+                textAlign: 'left',
+                paddingLeft: '20px',
+              }}>
+              Once you deploy, all changes will need to be made through a
+              successful governance proposal and executed by holders of the
+              governance token chosen.
+            </p>
+
+            <div
+              className={style.CreationPageLabelFDivide}
+              style={{ marginTop: '30px', marginBottom: '30px' }}>
+              <label className={style.CreationPageLabelF} key={quorumKey}></label>
+            </div>
+
+            
+            </div>
+            <div className={style.WizardFooter}>
+              <button className={style.WizardFooterBack} onClick={onPrev}>
+                Back
+              </button>
+             
+            
+                <ActionAWeb3Button
+                  className={'WizardFooterNext'}
+                  onClick={onClick}
+                  disabled={disabled}>
+                  Deploy
+                </ActionAWeb3Button>
+             
+            </div>
           </div>
+           )}
 
-          <h6
-            style={{
-              textAlign: 'left',
-              paddingLeft: '20px',
-              marginBottom: '10px',
-              marginTop: '30px',
-            }}>
-            Confirm the Organization deploy.
-          </h6>
-          <p
-            style={{
-              fontSize: '12px',
-              textAlign: 'left',
-              paddingLeft: '20px',
-            }}>
-            Once you deploy, all changes will need to be made through a
-            successful governance proposal and executed by holders of the
-            governance token chosen.
-          </p>
-
-          <div
-            className={style.CreationPageLabelFDivide}
-            style={{ marginTop: '30px', marginBottom: '30px' }}>
-            <label className={style.CreationPageLabelF} key={quorumKey}></label>
-          </div>
-
-          
-        </div>
-        <div className={style.WizardFooter}>
-        <button className={style.WizardFooterBack} onClick={onPrev}>
-          Back
-        </button>
-        {loading && <CircularProgress />}
-        {!loading && (
-          <ActionAWeb3Button
-            className={'WizardFooterNext'}
-            onClick={onClick}
-            disabled={disabled}>
-            Deploy
-          </ActionAWeb3Button>
-        )}
-      </div>
+          <div> {loading && <CircularProgress />}</div>
         </>
       )}
       {success && (
@@ -1292,7 +1298,7 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
                   marginTop: '20px',
                   marginBottom: '20px',
                   display: 'flex',
-                  borderBottom: '1px solid #e7ecf4',
+                  borderBottom: (value?.tokenMinterOwner !== undefined ? '1px solid rgb(90 84 135)' : '1px solid transparent') ,
                 }}>
                 <label className={style.CreationPageLabelF}>
                   <label>
@@ -1320,6 +1326,36 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
                       }
                     />
                   </label>
+                </label>
+
+                <label className={style.CreationPageLabelF}>
+                  <h6 style={{position: 'relative'}}>First Execution  {dateError && (
+                    <span className={style.ErrorMessage + ' ' + style.ErrorMessageInLine}>{dateError}</span>
+                  )}</h6>
+                  <input
+                    type="datetime-local"
+                    value={value?.firstExecution ?? ''}
+                    onChange={(e) =>
+                      onChange({
+                        ...value,
+                        firstExecution: e.currentTarget.value,
+                      })
+                    }
+                    min={getCurrentDateTime()}
+                    step="60"
+                  />
+                 
+                </label>
+              </div>
+              <div
+                className={style.CreationPageLabelFDivide}
+                style={{
+                  marginTop: '20px',
+                  marginBottom: '20px',
+                  display: 'flex',
+                  borderBottom: '1px solid #e7ecf4',
+                }}>
+                <label className={style.CreationPageLabelF}>
                   {value?.tokenMinterOwner !== undefined && (
                     <>
                       <label
@@ -1352,6 +1388,14 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
                           </p>
                         )}
                       </label>
+                    </>
+                  )}
+                  {value?.error?.name && <p>{value.error.name}</p>}
+                </label>
+
+                <label className={style.CreationPageLabelF}>
+                {value?.tokenMinterOwner !== undefined && (
+                    <>
                       <label
                         className={style.CreationPageLabelF}
                         style={{
@@ -1379,25 +1423,6 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
                     </>
                   )}
                   {value?.error?.name && <p>{value.error.name}</p>}
-                </label>
-
-                <label className={style.CreationPageLabelF}>
-                  <h6>First Execution</h6>
-                  <input
-                    type="datetime-local"
-                    value={value?.firstExecution ?? ''}
-                    onChange={(e) =>
-                      onChange({
-                        ...value,
-                        firstExecution: e.currentTarget.value,
-                      })
-                    }
-                    min={getCurrentDateTime()}
-                    step="60"
-                  />
-                  {dateError && (
-                    <p className={style.ErrorMessage}>{dateError}</p>
-                  )}
                 </label>
               </div>
 
@@ -1456,7 +1481,15 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
                 <label className={style.CreationPageLabelF}>
                   <h6>Boostrap Fund wallet <Tooltip placement="top" title=" Bootstrap Fund Wallet is the wallet that
                       will receive a portion of the ETH from the
-                      swapped inflated tokens." arrow><InfoOutlinedIcon sx={{ fontSize: 14 }}/></Tooltip></h6>
+                      swapped inflated tokens." arrow><InfoOutlinedIcon sx={{ fontSize: 14 }}/></Tooltip>
+                      <span
+                      className={style.CreationPageLabelFloatRight}
+                      onClick={() =>
+                        set_bootstrapFundWalletAddress( getCurrentAddress() )
+                      }>
+                      Insert your current address
+                    </span>
+                      </h6>
                   <input
                     type="text"
                     value={_bootstrapFundWalletAddress}
