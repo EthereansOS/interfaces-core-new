@@ -331,6 +331,7 @@ const Confirmation = ({
 
   const onClick = useCallback(
     async function () {
+      setLoading(true)
       var errorMessage
       try {
         if (state?.metadata?.file) {
@@ -446,14 +447,13 @@ const Confirmation = ({
               <button className={style.WizardFooterBack} onClick={onPrev}>
                 Back
               </button>
+
+              <button disabled={disabled} className={ style.WizardFooterNext} onClick={onClick}>
+              Deploy
+              </button>
              
             
-                <ActionAWeb3Button
-                  className={'WizardFooterNext'}
-                  onClick={onClick}
-                  disabled={disabled}>
-                  Deploy
-                </ActionAWeb3Button>
+              
              
             </div>
           </div>
