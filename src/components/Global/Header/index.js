@@ -251,6 +251,7 @@ const Header = (props) => {
         <IconContext.Provider value={{ color: 'black', size: '1.5em' }}>
           <Select
             defaultValue={options.find((it) => it.chainId === chainId)}
+            value={options.find((it) => it.chainId === chainId)}
             isSearchable={false}
             className={style.NetworkSelectDropdown}
             styles={customStyles}

@@ -7,7 +7,7 @@ import React, {
 } from 'react'
 import T from 'prop-types'
 import { create as createIpfsHttpClient } from 'ipfs-http-client'
-import { UseWalletProvider, useWallet } from 'use-wallet'
+import { WalletProvider, getWallet } from './Web3OnboardWalletProvider'
 import Web3 from 'web3'
 import web3Utils from 'web3-utils'
 import { utils } from 'ethers'
@@ -46,9 +46,9 @@ export const Web3ContextProvider = (props) => {
   )
 
   return (
-    <UseWalletProvider connectors={connectors}>
+    <WalletProvider connectors={connectors}>
       <Web3ContextInitializer {...props} />
-    </UseWalletProvider>
+    </WalletProvider>
   )
 }
 
@@ -76,7 +76,7 @@ const Web3ContextInitializer = ({
 
   const ipfsHttpClient = useMemo(() => initializeIPFSClient(context), [context])
 
-  const wallet = useWallet()
+  const wallet = getWallet()
   const [connectionStatus, setConnectionStatus] = useState(NOT_CONNECTED)
   const [web3Instance, setWeb3Instance] = useState(null)
   const [chainId, setChainId] = useState(null)
@@ -205,8 +205,8 @@ const Web3ContextInitializer = ({
 
   const setConnector = (connector) => {
     setConnectionStatus(connector ? CONNECTING : NOT_CONNECTED)
-    wallet && connector && wallet.connect(connector.id)
-    wallet && !connector && wallet.reset()
+    wallet && connector && wallet.connect && wallet.connect(connector.id)
+    wallet && !connector && wallet.reset && wallet.reset()
   }
 
   const newContract = (abi, address) => {
@@ -291,7 +291,7 @@ const Web3ContextInitializer = ({
   const value = {
     connectionStatus,
     setConnector,
-    connectors: Object.entries(wallet.connectors)
+    connectors: !wallet || !wallet.connectors ? [] : Object.entries(wallet.connectors)
       .filter((it) => it[1][1])
       .map((it) => ({ id: it[0], ...it[1][1] })),
     ipfsHttpClient,
