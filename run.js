@@ -44,6 +44,14 @@ async function run() {
         fs.writeFileSync(unstorageDistPath, unstorageDist);
     } catch(e) {}
 
+    try {
+        var safeEventEmitterPath = path.resolve(__dirname, 'node_modules/@coinbase/wallet-sdk/node_modules/@metamask/safe-event-emitter/dist/esm/index.mjs');
+        var safeEventEmitter = fs.readFileSync(safeEventEmitterPath, 'utf-8');
+        safeEventEmitter = safeEventEmitter.split("import { EventEmitter } from 'events';").join("import evt from 'events';var EventEmitter = evt.EventEmitter;");
+        fs.unlinkSync(safeEventEmitterPath);
+        fs.writeFileSync(safeEventEmitterPath, safeEventEmitter);
+    } catch(e) {}
+
     var isWindows = os.type().toLowerCase().indexOf("windows") !== -1;
     var mode = process.argv[process.argv.length - 1];
 

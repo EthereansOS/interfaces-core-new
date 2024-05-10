@@ -23,6 +23,7 @@
     "@visx/react-spring": "^3.8.0",
     "@visx/scale": "^3.5.0",
     "@visx/shape": "^3.5.0",
+    "@web3-onboard/coinbase": "^2.2.7",
     "@web3-onboard/injected-wallets": "^2.10.16",
     "@web3-onboard/react": "^2.8.17",
     "@web3-onboard/walletconnect": "^2.5.5",

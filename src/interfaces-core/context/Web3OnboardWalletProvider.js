@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useMemo } from 'react'
 import { init, useConnectWallet  } from '@web3-onboard/react'
 import injectedModule from '@web3-onboard/injected-wallets'
 import walletConnectModule from '@web3-onboard/walletconnect'
+import coinbaseWalletModule from '@web3-onboard/coinbase'
 
 init({
   wallets: [
@@ -10,6 +11,11 @@ init({
       projectId : "8e0fdbb0c3598b0639f3a959769f0272",
       requiredChains : [1, 10, 8453],
       dappUrl : "https://ethereanslabs.com"
+    }),
+    coinbaseWalletModule({ 
+      darkMode: true,
+      enableMobileWalletLink : true,
+      reloadOnDisconnect : true
     })
   ],
   chains: [
