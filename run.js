@@ -54,22 +54,17 @@ async function run() {
 
     var isWindows = os.type().toLowerCase().indexOf("windows") !== -1;
     var mode = process.argv[process.argv.length - 1];
-
-    var command = `${isWindows ? 'set' : 'export'} NODE_OPTIONS=--openssl-legacy-provider`;
-    if(mode === 'build') {
-        command += ` && react-scripts build`;
-    } else {
-        command += ` && ${isWindows ? 'env ' : ''}HOST=127.0.0.1 && react-scripts start`;
-    }
-    console.log('Executing:', command, "on", os.type());
-    var child = spawn(isWindows ? 'cmd' : 'bash', isWindows ? ['/k', command + " && exit"] : ['eval', command]);
+    var env = {
+        ...process.env,
+        NODE_OPTIONS : '--openssl-legacy-provider'
+    };
+    mode !== 'build' && (env.HOST = '127.0.0.1');
+    var command = isWindows ? 'cmd' : 'react-scripts';
+    var args = [mode === 'build' ? 'build' : 'start'];
+    isWindows && (args = ['/k', `react-scripts ${args[0]} && exit`]);
+    var child = spawn(command, args, { env });
     child.stdout.on("data", data => console.log(data.toString()));
     child.stderr.on("data", data => console.error(data.toString()));
-    child.on('close', () => {
-        if(mode === 'build') {
-            postBuild();
-        }
-        process.exit();
-    });
+    child.on('close', () => void(mode === 'build' && postBuild(), process.exit()));
 }
 run().catch(console.error);
