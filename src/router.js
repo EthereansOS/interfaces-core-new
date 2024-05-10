@@ -131,7 +131,7 @@ const AppRouter = () => {
 
   const routes = usePlaceholder('router')
 
-  const [banner, setBanner] = useState(false)
+  const [banner, setBanner] = useState(window.sessionStorage.alphaBanner === 'true')
 
   const memoedRoutes = useMemo(() => {
     return routes.map(
@@ -140,7 +140,7 @@ const AppRouter = () => {
           <Route key={path} path={path} exact={exact}>
             {requireConnection ? (
               <Connect>
-                {!banner && <AlphaBanner close={() => setBanner(true)} />}
+                {!banner && <AlphaBanner close={() => void(window.sessionStorage.setItem('alphaBanner', 'true'), setBanner(true))} />}
                 <MainTemplate {...templateProps} Component={Component} />
               </Connect>
             ) : (

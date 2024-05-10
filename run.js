@@ -39,7 +39,7 @@ async function run() {
     try {
         var unstorageDistPath = path.resolve(__dirname, 'node_modules/unstorage/dist/index.mjs');
         var unstorageDist = fs.readFileSync(unstorageDistPath, 'utf-8');
-        unstorageDist = unstorageDist.split("import destr from 'destr'").join("var destr = JSON.parse");
+        unstorageDist = unstorageDist.split("import destr from 'destr'").join("function destr(value) {try{return JSON.parse(value);}catch(e){return value;}}");
         fs.unlinkSync(unstorageDistPath);
         fs.writeFileSync(unstorageDistPath, unstorageDist);
     } catch(e) {}
