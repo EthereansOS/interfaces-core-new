@@ -8,6 +8,12 @@ const defaultInstrumentableMethods = ['eth_getLogs']
 
 const instrumentedProviders = []
 
+const forceCodes = [
+  -32005,
+  -32701,
+  -32001
+]
+
 async function instrumentProvider(provider, method, force) {
   var instrumentableMethods = [...defaultInstrumentableMethods]
 
@@ -61,7 +67,7 @@ async function instrumentProvider(provider, method, force) {
 async function _sendAsync(provider, method, params) {
   return await new Promise(async function (ok, ko) {
     try {
-      await (provider.sendAsync || provider.send || provider.request).call(
+      var resp = (provider.sendAsync || provider.send || provider.request).call(
         provider,
         {
           jsonrpc: '2.0',
@@ -75,6 +81,9 @@ async function _sendAsync(provider, method, params) {
             : ok(response && response.result)
         }
       )
+      if(!provider.sendAsync && !provider.send) {
+        return ok(await resp)
+      }
     } catch (e) {
       return ko(e)
     }
@@ -139,7 +148,7 @@ const sendAsync = async function sendAsync(provider, method) {
     } catch (e) {
       if (e.code === 429) {
         await sleep(1500)
-      } else if (e.code === -32005) {
+      } else if (forceCodes.indexOf(e.code) !== -1) {
         force = true
       } else {
         error = e
