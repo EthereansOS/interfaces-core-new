@@ -54,8 +54,8 @@ init({
   },
   appMetadata : {
     name : "Ethereans Protocol",
-    icon : '/os_logo.png',
-    logo : '/img/logo_wallet.png',
+    icon : 'os_logo.png',
+    logo : 'img/logo_wallet.png',
     explore : 'https://ethereans.app',
     description : "Ethereans Protocol. Made by Ethereans for Ethereans"
   }
