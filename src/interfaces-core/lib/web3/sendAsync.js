@@ -11,7 +11,8 @@ const instrumentedProviders = []
 const forceCodes = [
   -32005,
   -32701,
-  -32001
+  -32001,
+  -32000
 ]
 
 async function instrumentProvider(provider, method, force) {

@@ -7,16 +7,16 @@ import coinbaseWalletModule from '@web3-onboard/coinbase'
 init({
   wallets: [
     injectedModule(),
-    walletConnectModule({
-      projectId : "8e0fdbb0c3598b0639f3a959769f0272",
-      requiredChains : [1, 10, 8453],
-      dappUrl : "https://ethereanslabs.com"
-    }),
     coinbaseWalletModule({ 
       darkMode: true,
       enableMobileWalletLink : true,
       reloadOnDisconnect : true
-    })
+    }),
+    ...(window.location.href.toLowerCase().indexOf('/ipfs/') !== -1 ? [] : [walletConnectModule({
+      projectId : "8e0fdbb0c3598b0639f3a959769f0272",
+      requiredChains : [1, 10, 8453],
+      dappUrl : "https://ethereanslabs.com"
+    })])
   ],
   chains: [
     {
