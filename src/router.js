@@ -38,36 +38,38 @@ const AppRouter = () => {
       ].map((it) => it.toLowerCase())
       window.originalFetch = window.fetch
       window.fetch = function instrumentedFetch() {
-        var url = arguments[0].toLowerCase()
-        if (url.indexOf('myuri') !== -1 || url.indexOf('real_uri') !== -1) {
-          return (window.localFetch =
-            window.localFetch ||
-            new Promise((ok) =>
-              ok({
-                text: () =>
+        var originalArguments = arguments
+        try {
+          var url = arguments[0].toLowerCase()
+          if (url.indexOf('myuri') !== -1 || url.indexOf('real_uri') !== -1) {
+            return (window.localFetch =
+              window.localFetch ||
+              new Promise((ok) =>
+                ok({
+                  text: () =>
                   (window.localFetch2 =
                     window.localFetch2 || new Promise((ok2) => ok2('{}'))),
-                json: () =>
+                  json: () =>
                   (window.localFetch3 =
                     window.localFetch3 || new Promise((ok3) => ok3({}))),
-              })
-            ))
-        }
-        var args = [...arguments]
-        if (
-          url.indexOf('//') !== -1 &&
-          urlCacheResolverExluded.filter((it) => url.indexOf(it) !== -1)
-            .length === 0
-        ) {
-          //(args[0] = context.urlCacheResolver + encodeURIComponent(args[0])) && console.log(arguments[0], args[0])
-        }
-        var result = window.originalFetch.apply(window, [
-          resolveCID(args[0]),
-          ...args.filter((_, i) => i !== 0),
-        ])
-        return args[0] === arguments[0]
-          ? result
-          : result.then((response) => {
+                })
+              ))
+          }
+          var args = [...arguments]
+          if (
+            url.indexOf('//') !== -1 &&
+            urlCacheResolverExluded.filter((it) => url.indexOf(it) !== -1)
+              .length === 0
+          ) {
+            //(args[0] = context.urlCacheResolver + encodeURIComponent(args[0])) && console.log(arguments[0], args[0])
+          }
+          var result = window.originalFetch.apply(window, [
+            resolveCID(args[0]),
+            ...args.filter((_, i) => i !== 0),
+          ])
+          return args[0] === arguments[0]
+            ? result
+            : result.then((response) => {
               var originalJson = response.json
               response.json = new Promise(async (ok) => {
                 try {
@@ -78,6 +80,11 @@ const AppRouter = () => {
               })
               return response
             })
+        } catch (e) {
+          console.log('Instrumented fetch error');
+          console.log(e);
+          return window.originalFetch.apply(window, originalArguments)
+        }
       }
     }
     window.isLocal =
@@ -140,7 +147,7 @@ const AppRouter = () => {
           <Route key={path} path={path} exact={exact}>
             {requireConnection ? (
               <Connect>
-                {!banner && <AlphaBanner close={() => void(window.sessionStorage.setItem('alphaBanner', 'true'), setBanner(true))} />}
+                {!banner && <AlphaBanner close={() => void (window.sessionStorage.setItem('alphaBanner', 'true'), setBanner(true))} />}
                 <MainTemplate {...templateProps} Component={Component} />
               </Connect>
             ) : (
