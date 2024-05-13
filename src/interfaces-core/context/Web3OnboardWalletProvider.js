@@ -12,11 +12,11 @@ init({
       enableMobileWalletLink : true,
       reloadOnDisconnect : true
     }),
-    ...(window.location.href.toLowerCase().indexOf('/ipfs/') !== -1 ? [] : [walletConnectModule({
+    ...(window.isLocal || window.location.href.toLowerCase().indexOf('explore.ethereans.app') !== -1 ? [walletConnectModule({
       projectId : "8e0fdbb0c3598b0639f3a959769f0272",
       requiredChains : [1, 10, 8453],
-      dappUrl : "https://ethereanslabs.com"
-    })])
+      dappUrl : "https://explore.ethereans.app"
+    })] : [])
   ],
   chains: [
     {
