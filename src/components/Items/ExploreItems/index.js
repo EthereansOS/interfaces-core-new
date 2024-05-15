@@ -39,23 +39,21 @@ const Item = ({ element, allMine, wrappedOnly }) => {
   const [decimals, setDecimals] = useState(null)
   const [formattedTotalSupply, setFormattedTotalSupply] = useState(null)
 
-  const [currentItem, setCurrentItem] = useState(null)
+  const realAddress = useMemo(() => element?.l2Address || element?.address, [element])
 
   useEffect(() => {
-    usdPrice(
+    /*usdPrice(
       { ...web3Data, context, seaport },
-      element.l2Address || element.address
-    ).then(setPrice)
-    loadItemDynamicInfo({ ...web3Data, context, seaport }, element).then(
-      setLoadedData
-    )
-  }, [])
+      realAddress
+    ).then(setPrice)*/
+    loadItemDynamicInfo({ ...web3Data, context, seaport }, element).then(it => void(setLoadedData(it), setDecimals(it.decimals)))
+  }, [realAddress])
 
   useEffect(() => {
     !allMine &&
       getRawField(
         { provider: web3.currentProvider },
-        element.l2Address || element.address,
+        realAddress,
         'totalSupply'
       ).then(
         (val) =>
@@ -65,14 +63,14 @@ const Item = ({ element, allMine, wrappedOnly }) => {
     allMine &&
       getRawField(
         { provider: web3.currentProvider },
-        element.l2Address || element.address,
+        realAddress,
         'balanceOf(address)',
         account
       ).then(
         (val) =>
           val !== '0x' && setBalance(abi.decode(['uint256'], val)[0].toString())
       )
-  }, [element, account, allMine])
+  }, [realAddress, account, allMine])
 
   const isDeck = useMemo(
     () => element.isDeck || loadedData?.isDeck,
@@ -82,47 +80,6 @@ const Item = ({ element, allMine, wrappedOnly }) => {
     () => element.name || loadedData?.name,
     [element, loadedData]
   )
-  useEffect(async () => {
-    let dec = null
-    if (element && element.decimals) {
-      dec = element.decimals
-    } else if (loadedData && loadedData.decimals) {
-      dec = loadedData.decimals
-    } else if (element && element.address) {
-      let current = await loadTokenFromAddress(
-        { context, ...web3Data, seaport },
-        element.address
-      )
-      setItem(current)
-      dec = current?.decimals ?? 0
-    } else if (loadedData && loadedData.address) {
-      let current = await loadTokenFromAddress(
-        { context, ...web3Data, seaport },
-        loadedData.address
-      )
-      setItem(current)
-      dec = current?.decimals ?? 0
-    }
-    setDecimals(dec)
-  }, [element, loadedData])
-
-  useEffect(async () => {
-    if (currentItem) return
-    var itemId = element.l2Address || element.address
-    try {
-      itemId =
-        itemId.toLowerCase().indexOf('0x') === 0
-          ? itemId
-          : web3Utils.numberToHex(itemId)
-      loadTokenFromAddress({ context, ...web3Data, seaport }, itemId).then(
-        (result) => {
-          if (result?.collectionData) {
-            setCurrentItem(result)
-          }
-        }
-      )
-    } catch (e) {}
-  }, [element, loadedData])
 
   useEffect(() => {
     setFormattedTotalSupply(null)
@@ -232,7 +189,7 @@ const Item = ({ element, allMine, wrappedOnly }) => {
         {loadedData && <ItemImage input={loadedData} />}
         <div className={style.ItemTitle}>
           <h6>{shortenWord({ context, charsAmount: 15 }, name)}</h6>
-          <h4>{currentItem?.collectionData?.name ?? 'loading...'}</h4>
+          <h4>{loadedData?.collectionData?.name ?? 'loading...'}</h4>
         </div>
         <svg
           className={style.ItemTitleBottomZone}

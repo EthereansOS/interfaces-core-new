@@ -1,10 +1,11 @@
 import Web3 from 'web3'
 
-import { VOID_BYTES32, VOID_ETHEREUM_ADDRESS } from '../constants'
+import { VOID_ETHEREUM_ADDRESS } from '../constants'
 
 import sendBlockchainTransaction from './sendBlockchainTransaction'
 import sendAsync from './sendAsync'
-import { abi, web3Utils } from 'interfaces-core'
+import { web3Utils } from 'interfaces-core'
+import decodeCallResponse from './decodeCallResponse'
 
 async function blockchainCall() {
   var method = arguments[0]
@@ -95,27 +96,15 @@ async function blockchainCall() {
 
 export default blockchainCall
 
-
 async function callMethod(method, from, value, blockNumber) {
-  var response
-  /*response = await method.call({from, value},blockNumber)*/
+  /*return await method.call({from, value},blockNumber)*/
   try {
-    response = await sendAsync(method._parent.currentProvider, 'eth_call', {
+    return decodeCallResponse(await sendAsync(method._parent.currentProvider, 'eth_call', {
       from,
       to : method._parent.options.address,
       value : web3Utils.numberToHex(value),
       data : method.encodeABI()
-    }, blockNumber && !isNaN(parseInt(blockNumber)) ? web3Utils.numberToHex(blockNumber) : blockNumber || 'latest')
-    var types = recursiveOutput(method._method.outputs)
-    if(response === '0x') {
-      return types.length !== 1 ? null : types[0].toLowerCase().indexOf('[]') !== -1 ? [] : types[0].toLowerCase().indexOf('tuple') !== -1 ? null : types[0].toLowerCase() === 'bytes' ? '0x' : types[0].toLowerCase() === 'string' ? '' : types[0].toLowerCase() === 'bool' ? false : types[0].toLowerCase() === 'address' ? VOID_ETHEREUM_ADDRESS  : types[0].toLowerCase() === 'bytes32' ? VOID_BYTES32 : "0"
-    }
-    response = abi.decode(types, response)
-    response = toStringRecursive(response)
-    response = reduceRecursive(response, method._method.outputs)
-    if(method._method.outputs.length === 1) {
-      response = response[0]
-    }
+    }, blockNumber && !isNaN(parseInt(blockNumber)) ? web3Utils.numberToHex(blockNumber) : blockNumber || 'latest'), method._method.outputs)
   } catch(e) {
     var message = e.message
     while(message.message) {
@@ -123,17 +112,4 @@ async function callMethod(method, from, value, blockNumber) {
     }
     throw new Error(message)
   }
-  return response
-}
-
-function recursiveOutput(outputs) {
-  return outputs.map(it => it.components ? `tuple(${recursiveOutput(it.components).join(',')})`: it.type)
-}
-
-function toStringRecursive(outputs) {
-  return outputs.map(it => Array.isArray(it) ? toStringRecursive(it) : it.toString())
-}
-
-function reduceRecursive(result, metadata) {
-  return result.reduce((acc, it, i) => ({...acc, [i] : metadata[i].components ? reduceRecursive(it, metadata[i].components) : it, [metadata[i].name || i] : metadata[i].components ? reduceRecursive(it, metadata[i].components) : it}), {})
 }

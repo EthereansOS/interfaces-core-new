@@ -744,7 +744,7 @@ async function cleanItemData(data, itemData, metadata) {
       data.context.ItemInteroperableInterfaceABI,
       itemData.l2Address
     )
-    return {
+    return loadCollectionMetadataByItem(data, {
       address: itemData.l2Address,
       contract: l2Contract,
       l2Address: itemData.l2Address,
@@ -756,10 +756,10 @@ async function cleanItemData(data, itemData, metadata) {
       decimals: '18',
       collectionData: itemData.collectionData,
       l1Data: itemData,
-    }
+    })
   }
 
-  return {
+  return await loadCollectionMetadataByItem(data, {
     ...itemData,
     ...metadata,
     metadata,
@@ -768,7 +768,7 @@ async function cleanItemData(data, itemData, metadata) {
     contract: itemData.id
       ? itemData.contract
       : metadata.contract || itemData.contract,
-  }
+  })
 }
 
 function cleanMetadataUris(dataInput, metadata) {
@@ -793,6 +793,31 @@ function cleanMetadataUris(dataInput, metadata) {
     metadata[key] = value
   }
   return metadata
+}
+
+async function loadCollectionMetadataByItem(dataInput, element) {
+  if(element.collectionData || element.l1Data?.collectionData) {
+    return {
+      ...element,
+      collectionData : element.collectionData || element.l1Data?.collectionData
+    }
+  }
+  const { web3, dualChainWeb3, context }  = dataInput
+  const theWeb3 = dualChainWeb3 || web3
+  const elementAddress = element.l1Address || element.address
+  const elementId = abi.decode(['uint256'], abi.encode(["address"], [elementAddress]))[0].toString()
+  var mainInterfaceAddress = element.l1Data?.mainInterfaceAddress || element.mainInterfaceAddress
+  if(!mainInterfaceAddress) {
+    mainInterfaceAddress = await getRawField(theWeb3.currentProvider, elementAddress, 'mainInterface')
+    mainInterfaceAddress = abi.decode(["address"], mainInterfaceAddress)[0].toString()
+  }
+  var mainInterface = new theWeb3.eth.Contract(context.ItemMainInterfaceABI, mainInterfaceAddress)
+  var collectionId = await blockchainCall(mainInterface.methods.item, elementId)
+  collectionId = collectionId[0]
+  return {
+    ...element,
+    collectionData : await loadCollectionMetadata(dataInput, collectionId, mainInterface)
+  }
 }
 
 export async function loadCollectionMetadata(

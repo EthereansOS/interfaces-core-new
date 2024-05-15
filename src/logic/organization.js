@@ -12,6 +12,7 @@ import {
   tryRetrieveMetadata,
   VOID_BYTES32,
   numberToString,
+  decodeCallResponse,
 } from 'interfaces-core'
 
 import { encodeHeader, loadItem } from './itemsV2'
@@ -548,7 +549,7 @@ export async function getOrganizationComponents(
   }, {})
 }
 
-async function retrieveProposalModels(contract) {
+export async function retrieveProposalModels(contract) {
   contract = contract.contract || contract
   var result = []
   try {
@@ -573,7 +574,8 @@ async function retrieveProposalModels(contract) {
       contract.options.address,
       'proposalModels'
     )
-    result = abi.decode(
+    result = decodeCallResponse(result, [{type : 'tuple[]', components : Object.entries(SubDAOProposalModel).map(it => ({ name : it[0], type : it[1]}))}])
+    /*result = abi.decode(
       [`tuple(${Object.values(SubDAOProposalModel)})[]`],
       result
     )[0]
@@ -590,9 +592,10 @@ async function retrieveProposalModels(contract) {
         }),
         {}
       )
-    )
+    )*/
   } catch (e) {
-    result = [...(await blockchainCall(contract.methods.proposalModels))]
+    result = decodeCallResponse(result, contract.methods.proposalModels()._method.outputs)
+    //result = [...(await blockchainCall(contract.methods.proposalModels))]
   }
   result = await Promise.all(
     result.map(async (it) => ({

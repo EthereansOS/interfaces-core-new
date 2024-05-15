@@ -21,6 +21,7 @@ import {
   wellknownPresets,
   retrieveProposals,
   getOrganizationMetadata,
+  retrieveProposalModels,
 } from './organization'
 
 import { decodeProposalVotingToken } from './ballot'
@@ -447,7 +448,7 @@ export async function all(
     delegations = await Promise.all(
       delegations.map(async (it) => {
         try {
-          var proposalModels = await blockchainCall(it.methods.proposalModels)
+          var proposalModels = await retrieveProposalModels(it)
           var host = abi
             .decode(
               ['address'],
