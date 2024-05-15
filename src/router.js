@@ -39,6 +39,9 @@ const AppRouter = () => {
       window.originalFetch = window.fetch
       window.fetch = function instrumentedFetch() {
         var originalArguments = arguments
+        if(!originalArguments[0].toLowerCase) {
+          return window.originalFetch.apply(window, originalArguments)
+        }
         try {
           var url = arguments[0].toLowerCase()
           if (url.indexOf('myuri') !== -1 || url.indexOf('real_uri') !== -1) {

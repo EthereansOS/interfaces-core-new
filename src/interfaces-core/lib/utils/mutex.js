@@ -1,15 +1,15 @@
-import sleep from "./sleep"
-
-export default function Mutex(permissions, sleepMillis) {
+export default function Mutex(permissions) {
     const context = this
 
     var enqueued = 0
 
+    var waiters = []
+
     context.lock = async function lock() {
-        while(enqueued === (permissions || 1)) {
-            await sleep(sleepMillis)
-        }
         enqueued++
+        if(enqueued > (permissions || 1)) {
+            return await new Promise(ok => waiters.push(ok))
+        }
     }
 
     context.release = function release() {
@@ -17,6 +17,9 @@ export default function Mutex(permissions, sleepMillis) {
             enqueued = 0
         } else {
             enqueued--
+        }
+        if(waiters.length !== 0) {
+            return waiters.shift()()
         }
     }
 

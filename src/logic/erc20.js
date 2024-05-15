@@ -78,7 +78,10 @@ export async function getEthereum(data) {
                             currentProvider : web3.currentProvider
                         },
                         _method : {
-                            stateMutability : 'view'
+                            stateMutability : 'view',
+                            outputs : [{
+                                type : 'uint256'
+                            }]
                         },
                         encodeABI() {
                             return web3Utils.sha3('balanceOf(address)').substring(0, 10) + (web3.eth.abi.encodeParameter('address', subject).substring(2))
@@ -97,7 +100,10 @@ export async function getEthereum(data) {
                             currentProvider : web3.currentProvider
                         },
                         _method : {
-                            stateMutability : 'view'
+                            stateMutability : 'view',
+                            outputs : [{
+                                type : 'uint256'
+                            }]
                         },
                         encodeABI() {
                             return web3Utils.sha3('allowance(address,address)').substring(0, 10) + (web3.eth.abi.encodeParameters(['address', 'address'], [owner, spender || VOID_ETHEREUM_ADDRESS]).substring(2))
@@ -105,8 +111,7 @@ export async function getEthereum(data) {
                     }
                 }
             }
-        },
-        balance : await web3.eth.getBalance(account)
+        }
     }
 }
 
