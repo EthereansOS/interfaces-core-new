@@ -46,7 +46,7 @@ const Item = ({ element, allMine, wrappedOnly }) => {
       { ...web3Data, context, seaport },
       realAddress
     ).then(setPrice)*/
-    loadItemDynamicInfo({ ...web3Data, context, seaport }, element).then(it => void(setLoadedData(it), setDecimals(it.decimals)))
+    loadItemDynamicInfo({ ...web3Data, context, seaport }, element, 'lightweight').then(it => void(setLoadedData(it), setDecimals(it.decimals)))
   }, [realAddress])
 
   useEffect(() => {

@@ -10,7 +10,7 @@ import blockchainCall from './blockchainCall'
 import sendGeneratedProposal from './sendGeneratedProposal'
 import { newContract } from './contracts'
 import loadTokenInfos from './loadTokenInfos'
-
+import sendAsync from './sendAsync'
 /**
  * Transfer
  *
@@ -105,7 +105,7 @@ async function transfer(
   )
   var balanceOf =
     symbol === 'ETH'
-      ? await web3.eth.getBalance(walletAddress)
+      ? await sendAsync(web3, 'eth_getBalance', walletAddress, 'latest')
       : await blockchainCall(
           { web3, context },
           newContract({ web3 }, context.votingTokenAbi, tokenAddress).methods

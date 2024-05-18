@@ -22,7 +22,7 @@ export default ({element, onClick, noBalance}) => {
   const [loadedData, setLoadedData] = useState()
 
   useEffect(() => {
-    loadItemDynamicInfo({...web3Data, context, seaport}, element).then(result => setLoadedData({...element, ...result}))
+    loadItemDynamicInfo({...web3Data, context, seaport}, element, 'noCollection').then(result => setLoadedData({...element, ...result}))
   }, [element])
 
   if(!loadedData) {

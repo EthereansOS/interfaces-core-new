@@ -8,6 +8,24 @@ import ItemObjectElement from './element/item-object-element'
 import Web3DependantList from '../Web3DependantList'
 import { useOpenSea } from '../../../logic/uiUtilities'
 import { getTokenBasicInfo } from '../../../logic/erc20'
+import { useInView } from 'react-intersection-observer'
+import OurCircularProgress from '../OurCircularProgress'
+
+const LazyComponent = (prps) => {
+  const { ref, inView } = useInView({
+    triggerOnce: true,
+    threshold: 0.7
+  })
+
+  const {Elem, props} = prps
+
+  const elementProps = {...prps, ...props}
+  delete elementProps.Elem
+
+  return <span ref={ref}>
+    {!inView ? <OurCircularProgress/> : <Elem {...elementProps}/>}
+  </span>
+}
 
 export default ({onResult, provider, discriminant, allMine, forCollection, excluding, element = ItemObjectElement, wrappedOnly, renderedProperties, hardCabledList, searchText}) => {
 
@@ -55,10 +73,10 @@ export default ({onResult, provider, discriminant, allMine, forCollection, exclu
   }, [web3Data])
 
   return <Web3DependantList
-    Renderer={element}
-    renderedProperties={{...renderedProperties, wrappedOnly, allMine}}
+    Renderer={LazyComponent}
+    renderedProperties={{Elem : element, props : {...renderedProperties, wrappedOnly, allMine}}}
     provider={() => (tokenAddress ? loadTokenFromAddress({ context, ...web3Data, forceItem : true }, tokenAddress) : provider ? provider() : hardCabledList ? loadTokens({context, chainId, web3, account, newContract, alsoETH : false, listName : hardCabledList}) : loadItemsByFactories({seaport, context, ...web3Data, collectionData : forCollection, excluding, wrappedOnly, allMine}, getGlobalContract("itemProjectionFactory"))).then(async r => {
-      r = tokenAddress ? r : await Promise.all(r.map(setTokenForSearch))
+      r = searchText !== undefined && searchText !== null && !tokenAddress ? await Promise.all(r.map(setTokenForSearch)) : r
       onResult && onResult(r)
       return r
     }) }

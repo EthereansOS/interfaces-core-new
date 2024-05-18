@@ -4,7 +4,7 @@ import RegularButtonDuo from '../../Global/RegularButtonDuo/index.js'
 import ExtLinkButton from '../../Global/ExtLinkButton/index.js'
 import LogoRenderer from '../../Global/LogoRenderer'
 import { InflationRateActiveSelection, HeaderStateManagerVariable, DelegationsManagerInsurance } from './verticalizations'
-import { useEthosContext, useWeb3, getNetworkElement, fromDecimals, blockchainCall, formatMoney } from 'interfaces-core'
+import { useEthosContext, useWeb3, getNetworkElement, fromDecimals, blockchainCall, formatMoney, sendAsync } from 'interfaces-core'
 
 const names = {
   'FIXED_INFLATION_V1' : element => `${element?.organization?.votingToken?.symbol || ''} Inflation Rate`.trim(),
@@ -34,7 +34,7 @@ export default ({element, onToggle}) => {
     if(type !== 'delegation' || !element.delegationsManager) {
       return
     }
-    setGrantSize(await web3.eth.getBalance(element.delegationsManager.treasuryManagerAddress))
+    setGrantSize(await sendAsync(web3, 'eth_getBalance', element.delegationsManager.treasuryManagerAddress, 'latest'))
     element.delegationsManager.wrappedToken && setSupportersStake(await blockchainCall(element.delegationsManager.wrappedToken.mainInterface.methods.totalSupply, element.delegationsManager.wrappedToken.id))
   }
 

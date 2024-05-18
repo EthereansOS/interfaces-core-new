@@ -1,4 +1,4 @@
-import { blockchainCall, web3Utils, abi, getNetworkElement, numberToString, VOID_ETHEREUM_ADDRESS, formatLink, cache } from "interfaces-core"
+import { sendAsync, blockchainCall, web3Utils, abi, getNetworkElement, numberToString, VOID_ETHEREUM_ADDRESS, formatLink, cache } from "interfaces-core"
 import { dualChainAsMainChain, resolveToken } from "./dualChain"
 import { getRawField } from "./generalReader"
 import { cleanUri, loadItem, loadItemDynamicInfo } from "./itemsV2"
@@ -69,7 +69,7 @@ export async function getEthereum(data) {
                 balanceOf(subject) {
                     return {
                         call(_, blockNumber) {
-                            return web3.eth.getBalance(subject, blockNumber || null)
+                            return sendAsync(web3, 'eth_getBalance', subject, blockNumber || null)
                         },
                         _parent : {
                             options : {

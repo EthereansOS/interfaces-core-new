@@ -8,11 +8,23 @@ const defaultInstrumentableMethods = ['eth_getLogs']
 
 const instrumentedProviders = []
 
-const forceCodes = [
+const sleepCodes = [
+  429
+]
+
+const sleepText = [
+  'Network request failed'
+].map(it => it.toLowerCase())
+
+const forceInstrumentationCodes = [
   -32005,
   -32701,
   -32001
 ]
+
+const forceInstrumentationText = [
+  sleepText[0]
+].map(it => it.toLowerCase())
 
 async function instrumentProvider(provider, method, force) {
   var instrumentableMethods = [...defaultInstrumentableMethods]
@@ -28,7 +40,7 @@ async function instrumentProvider(provider, method, force) {
     .map((it) => it.toLowerCase())
     .filter((it, i, arr) => arr.indexOf(it) === i)
 
-  if (instrumentableMethods.indexOf(method.toLowerCase()) === -1) {
+  if (!force && instrumentableMethods.indexOf(method.toLowerCase()) === -1) {
     return provider
   }
 
@@ -90,12 +102,33 @@ async function _sendAsync(provider, method, params) {
   })
 }
 
-const mutex = new Mutex(5)
+const permissions = 5
+const mutex = new Mutex(permissions)
 const chainIds = []
 const blockNumbers = []
 const l1BlockNumbers = []
+const sleepLock = new Mutex()
 
-const sendAsync = async function sendAsync(provider, method) {
+async function waitForSleepLock() {
+  if(sleepLock.queue() > 0) {
+    await sleepLock.lock()
+  }
+}
+
+var lockId
+function enqueueSleepLock(noLock) {
+  var sleepTime = sendAsync.sleepTime || 1500
+  !noLock && sleepLock.lock()
+  clearTimeout(lockId)
+  lockId = setTimeout(() => {
+    var oldNumber = sleepLock.queue()
+    sleepLock.release(oldNumber < permissions ? oldNumber : permissions)
+    oldNumber > permissions && enqueueSleepLock(true)
+  }, sleepTime)
+}
+
+const sendAsync = async function sendAsync(prv, method) {
+  const provider = prv.provider || prv.currentProvider || prv
   var params = [...arguments].slice(2) || []
 
   await mutex.lock()
@@ -129,16 +162,17 @@ const sendAsync = async function sendAsync(provider, method) {
   }
 
   var released = false
-  const releaseId =
-    method === 'eth_getLogs'
+  const releaseId = undefined
+    /*method === 'eth_getLogs'
       ? undefined
-      : setTimeout(() => void (mutex.release(), (released = true)), 3500)
+      : setTimeout(() => void (mutex.release(), (released = true)), 3500)*/
 
   var response
   var error
   var force
   while (!response && !error) {
     try {
+      await waitForSleepLock()
       response = await _sendAsync(
         await instrumentProvider(provider, method, force),
         method,
@@ -146,12 +180,16 @@ const sendAsync = async function sendAsync(provider, method) {
       )
       break
     } catch (e) {
-      if (e.code === 429) {
-        await sleep(1500)
-      } else if (forceCodes.indexOf(e.code) !== -1) {
+      error = e
+      var message = (e.message || e).toString().toLowerCase()
+      if (sleepCodes.indexOf(e.code) !== -1 || sleepText.indexOf(message) !== -1) {
+        error = undefined
+        //await sleep(1500)
+        enqueueSleepLock()
+      }
+      if (forceInstrumentationCodes.indexOf(e.code) !== -1 || forceInstrumentationText.indexOf(message) !== -1) {
+        error = undefined
         force = true
-      } else {
-        error = e
       }
     }
   }

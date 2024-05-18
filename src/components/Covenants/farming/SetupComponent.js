@@ -1665,7 +1665,7 @@ export default (props) => {
       }
       const balance =
         setupTokens[index].address === VOID_ETHEREUM_ADDRESS
-          ? await web3.eth.getBalance(account)
+          ? await sendAsync(web3, 'eth_getBalance', account, 'latest')
           : await blockchainCall(
               setupTokens[index].contract.methods.balanceOf,
               account
@@ -2189,7 +2189,7 @@ export default (props) => {
 
   const onInputTypeChange = async (e) => {
     setInputType(e.target.value)
-    const ethBalance = await web3.eth.getBalance(account)
+    const ethBalance = await sendAsync(web3, 'eth_getBalance', account, 'latest')
     setEthBalanceOf(ethBalance)
     setPrestoData(null)
     setShowPrestoError(false)

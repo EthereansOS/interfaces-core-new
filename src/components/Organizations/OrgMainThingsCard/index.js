@@ -28,6 +28,7 @@ import {
   web3Utils,
   shortenWord,
   toDecimals,
+  sendAsync
 } from 'interfaces-core'
 
 import style from '../../../all.module.css'
@@ -47,8 +48,8 @@ const RootWallet = ({ element }) => {
 
   useEffect(() => {
     setTimeout(async () => {
-      var val = await web3.eth.getBalance(
-        element.components.treasuryManager.address
+      var val = await sendAsync(web3, 'eth_getBalance', 
+        element.components.treasuryManager.address, 'latest'
       )
       val = parseFloat(fromDecimals(val, 18, true))
       var ethereumPrice = formatNumber(await getEthereumPrice({ context }))
@@ -116,7 +117,7 @@ const TreasurySplitter = ({ element }) => {
   useEffect(() => {
     setTimeout(async () => {
       var treasurySplitterManager = element.components.treasurySplitterManager
-      var val = await web3.eth.getBalance(treasurySplitterManager.address)
+      var val = await sendAsync(web3, 'eth_getBalance', treasurySplitterManager.address, 'latest')
       val = parseFloat(fromDecimals(val, 18, true))
       var ethereumPrice = formatNumber(await getEthereumPrice({ context }))
       val = ethereumPrice * val
@@ -276,16 +277,16 @@ const Investments = ({ element }) => {
 
   const calculateNextBuy = useCallback(async () => {
     var ethereumPrice = formatNumber(await getEthereumPrice({ context }))
-    var val = await web3.eth.getBalance(
-      element.components.treasurySplitterManager.address
+    var val = await sendAsync(web3, 'eth_getBalance', 
+      element.components.treasurySplitterManager.address, 'latest'
     )
     val = parseFloat(fromDecimals(val, 18, true))
     val = val * 0.25
 
     val = toDecimals(val, 18)
 
-    var internalVal = await web3.eth.getBalance(
-      element.components.investmentsManager.address
+    var internalVal = await sendAsync(web3, 'eth_getBalance', 
+      element.components.investmentsManager.address, 'latest'
     )
 
     val = web3Utils.toBN(val).add(web3Utils.toBN(internalVal)).toString()
@@ -590,16 +591,16 @@ const Delegations = ({ element }) => {
 
   const calculateNextSplitValue = useCallback(async () => {
     var ethereumPrice = formatNumber(await getEthereumPrice({ context }))
-    var val = await web3.eth.getBalance(
-      element.components.treasurySplitterManager.address
+    var val = await sendAsync(web3, 'eth_getBalance', 
+      element.components.treasurySplitterManager.address, 'latest'
     )
     val = parseFloat(fromDecimals(val, 18, true))
     val = val * 0.4
 
     val = toDecimals(val, 18)
 
-    var internalVal = await web3.eth.getBalance(
-      element.components.delegationsManager.address
+    var internalVal = await sendAsync(web3, 'eth_getBalance', 
+      element.components.delegationsManager.address, 'latest'
     )
 
     val = web3Utils.toBN(val).add(web3Utils.toBN(internalVal)).toString()

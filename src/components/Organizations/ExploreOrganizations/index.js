@@ -13,6 +13,7 @@ import {
   formatNumber,
   getEthereumPrice,
   formatMoney,
+  sendAsync
 } from 'interfaces-core'
 import {
   getOrganizationMetadata
@@ -54,8 +55,8 @@ const ExploreOrganization = ({ address, type }) => {
       if(!type || type === 'organizations') {
         getRawField(web3.currentProvider, address, 'get(bytes32)', context.grimoire.COMPONENT_KEY_TREASURY_MANAGER).then(async addr => {
           addr = abi.decode(["address"], addr)[0]
-          var val = await web3.eth.getBalance(
-            addr
+          var val = await sendAsync(web3, 'eth_getBalance', 
+            addr, 'latest'
           )
           val = parseFloat(fromDecimals(val, 18, true))
           var ethereumPrice = formatNumber(await getEthereumPrice({ context }))

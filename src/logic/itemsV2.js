@@ -678,7 +678,7 @@ export function cleanUri(data, uri, id) {
   return uri
 }
 
-export async function loadItemDynamicInfo(data, itemData) {
+export async function loadItemDynamicInfo(data, itemData, collectionMode) {
   if (typeof itemData === 'string') {
     return await loadItem({ ...data, lightweight: false }, itemData)
   }
@@ -691,7 +691,7 @@ export async function loadItemDynamicInfo(data, itemData) {
   var metadata = JSON.parse(await cache.getItem(key))
 
   if (metadata) {
-    return await cleanItemData(data, itemData, metadata)
+    return await cleanItemData(data, itemData, metadata, collectionMode)
   }
 
   if (!itemData.id || (itemData.l2Address && data.dualChainId)) {
@@ -733,10 +733,10 @@ export async function loadItemDynamicInfo(data, itemData) {
 
   metadata && (await cache.setItem(key, JSON.stringify(metadata)))
 
-  return await cleanItemData(data, itemData, metadata)
+  return await cleanItemData(data, itemData, metadata, collectionMode)
 }
 
-async function cleanItemData(data, itemData, metadata) {
+async function cleanItemData(data, itemData, metadata, collectionMode) {
   if (itemData.l2Address) {
     var l2Contract = (
       data.dualChainId ? data : await dualChainAsMainChain(data)
@@ -756,7 +756,7 @@ async function cleanItemData(data, itemData, metadata) {
       decimals: '18',
       collectionData: itemData.collectionData,
       l1Data: itemData,
-    })
+    }, collectionMode)
   }
 
   return await loadCollectionMetadataByItem(data, {
@@ -768,7 +768,7 @@ async function cleanItemData(data, itemData, metadata) {
     contract: itemData.id
       ? itemData.contract
       : metadata.contract || itemData.contract,
-  })
+  }, collectionMode)
 }
 
 function cleanMetadataUris(dataInput, metadata) {
@@ -795,8 +795,8 @@ function cleanMetadataUris(dataInput, metadata) {
   return metadata
 }
 
-async function loadCollectionMetadataByItem(dataInput, element) {
-  if(element.collectionData || element.l1Data?.collectionData) {
+async function loadCollectionMetadataByItem(dataInput, element, collectionMode) {
+  if(element.collectionData || element.l1Data?.collectionData || collectionMode === 'noCollection') {
     return {
       ...element,
       collectionData : element.collectionData || element.l1Data?.collectionData
@@ -816,14 +816,15 @@ async function loadCollectionMetadataByItem(dataInput, element) {
   collectionId = collectionId[0]
   return {
     ...element,
-    collectionData : await loadCollectionMetadata(dataInput, collectionId, mainInterface)
+    collectionData : await loadCollectionMetadata(dataInput, collectionId, mainInterface, collectionMode)
   }
 }
 
 export async function loadCollectionMetadata(
   dataInput,
   collectionId,
-  mainInterface
+  mainInterface,
+  collectionMode
 ) {
   var { context, newContract } = dataInput
 
@@ -848,6 +849,18 @@ export async function loadCollectionMetadata(
     metadata && (await cache.setItem(key, JSON.stringify(metadata)))
   }
 
+  if (
+    collectionId ===
+    '0xc8ae2302153c696a508f505d7a046ff5fa78dcf79478eea09c682d0101f02252'
+  ) {
+    metadata.image =
+      'https://ipfs.io/ipfs/QmYpYpHVNtvPYJsuDcjfGEXc9y5FozERzQ92JaRcAcfq3h'
+  }
+
+  if(collectionMode === 'lightweight') {
+    return metadata
+  }
+
   metadata.hostContract = newContract(
     context.MultiOperatorHostABI,
     metadata.host
@@ -867,13 +880,6 @@ export async function loadCollectionMetadata(
     ...metadata,
     mainInterface,
     metadata,
-  }
-  if (
-    collectionId ===
-    '0xc8ae2302153c696a508f505d7a046ff5fa78dcf79478eea09c682d0101f02252'
-  ) {
-    metadata.image =
-      'https://ipfs.io/ipfs/QmYpYpHVNtvPYJsuDcjfGEXc9y5FozERzQ92JaRcAcfq3h'
   }
   var index = (await loadWrappedCollectionIds(dataInput)).indexOf(collectionId)
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react'
 
-import { web3Utils, abi, blockchainCall, formatMoney, fromDecimals, numberToString, useWeb3, toDecimals, shortenWord, useEthosContext } from 'interfaces-core'
+import { sendAsync, web3Utils, abi, blockchainCall, formatMoney, fromDecimals, numberToString, useWeb3, toDecimals, shortenWord, useEthosContext } from 'interfaces-core'
 
 import { getEthereum } from '../../../logic/erc20'
 import { calculateSwapOutput, calculateSwapInput } from '../../../logic/amm'
@@ -73,7 +73,7 @@ export default props => {
     useEffect(() => setTimeout(async function() {
         checkApprove()
         setBalance(await blockchainCall(item.mainInterface.methods.balanceOf, account, item.id))
-        setBalanceETH(await web3.eth.getBalance(account))
+        setBalanceETH(await sendAsync(web3, 'eth_getBalance', account, 'latest'))
     }), [checkApprove])
 
     useEffect(() => setTimeout(async function() {

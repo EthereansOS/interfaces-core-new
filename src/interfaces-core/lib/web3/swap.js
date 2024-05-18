@@ -7,7 +7,7 @@ import toDecimals from '../utils/toDecimals'
 import sendGeneratedProposal from './sendGeneratedProposal'
 import blockchainCall from './blockchainCall'
 import { newContract } from './contracts'
-
+import sendAsync from './sendAsync'
 /**
  * Swap
  *
@@ -68,7 +68,7 @@ async function swap({ web3, context }, organization, amount, from, to) {
     parseInt(amount) >
     parseInt(
       await (!from
-        ? web3.eth.getBalance(organization.walletAddress)
+        ? sendAsync(web3, 'eth_getBalance', organization.walletAddress, 'latest')
         : blockchainCall(
             { web3, context },
             newContract({ web3 }, context.votingTokenAbi, from).methods

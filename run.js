@@ -27,6 +27,16 @@ function postBuild() {
         fs.writeFileSync(version, new Date().getTime().toString(), 'UTF-8');
         console.log('new version installed');
     } catch(e) {}
+
+    processLocalEnv();
+}
+
+function processLocalEnv(disable) {
+    try {
+        var original = path.resolve(__dirname, '.env.local');
+        var backup = path.resolve(__dirname, 'envLocalBackup.txt');
+        fs.renameSync(disable ? original : backup, disable ? backup : original);
+    } catch(e){}
 }
 
 async function run() {
@@ -54,6 +64,7 @@ async function run() {
 
     var isWindows = os.type().toLowerCase().indexOf("windows") !== -1;
     var mode = process.argv[process.argv.length - 1];
+    mode === 'build' && processLocalEnv(true);
     var env = {
         ...process.env,
         NODE_OPTIONS : '--openssl-legacy-provider'

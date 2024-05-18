@@ -4,7 +4,7 @@ import formatMoney from '../utils/formatMoney'
 
 import getEthereumPrice from './getEthereumPrice'
 import blockchainCall from './blockchainCall'
-
+import sendAsync from './sendAsync'
 /**
  * Refresh balances
  *
@@ -49,7 +49,7 @@ async function refreshBalances(
     .sub(web3.utils.toBN(element.communityTokens))
     .toString()
   element.unlockedMarketCapDollar = 0
-  element.walletETH = await web3.eth.getBalance(element.walletAddress)
+  element.walletETH = await sendAsync(web3, 'eth_getBalance', element.walletAddress, 'latest')
   element.walletETHDollar = ethereumPrice
   element.walletBUIDL = await blockchainCall(
     { web3, context },

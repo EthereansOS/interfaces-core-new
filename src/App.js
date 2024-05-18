@@ -2,6 +2,7 @@ import { HashRouter } from 'react-router-dom'
 import React, { useEffect, useCallback, useState } from 'react'
 import Particles, { initParticlesEngine } from '@tsparticles/react'
 import { loadSlim } from '@tsparticles/slim'
+import envToContext from 'interfaces-core/lib/utils/envToContext'
 import 'interfaces-ui/dist/index.cjs.css'
 import style from './all.module.css'
 import colors from './colors.css'
@@ -128,6 +129,10 @@ const App = () => {
             const localContext = await response.json()
             context = { ...context, ...localContext, localContext }
           } catch (e) {}
+
+          try {
+            context = {...context, ...envToContext}
+          } catch(e) {}
 
           try {
             var version = await (

@@ -12,14 +12,17 @@ export default function Mutex(permissions) {
         }
     }
 
-    context.release = function release() {
-        if(enqueued <= 0) {
-            enqueued = 0
-        } else {
-            enqueued--
-        }
-        if(waiters.length !== 0) {
-            return waiters.shift()()
+    context.release = function release(howMany) {
+        howMany = howMany || 1
+        for(var i = 0; i < howMany; i++) {
+            if(enqueued <= 0) {
+                enqueued = 0
+            } else {
+                enqueued--
+            }
+            if(waiters.length !== 0) {
+                waiters.shift()()
+            }
         }
     }
 

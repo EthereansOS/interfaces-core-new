@@ -3,6 +3,9 @@ import { init, useConnectWallet  } from '@web3-onboard/react'
 import injectedModule from '@web3-onboard/injected-wallets'
 import walletConnectModule from '@web3-onboard/walletconnect'
 import coinbaseWalletModule from '@web3-onboard/coinbase'
+import envToContext from '../lib/utils/envToContext'
+import web3Utils from 'web3-utils'
+import sendAsync from '../lib/web3/sendAsync'
 
 init({
   wallets: [
@@ -12,28 +15,14 @@ init({
       enableMobileWalletLink : true,
       reloadOnDisconnect : true
     }),
-    ...(window.isLocal || window.location.href.toLowerCase().indexOf('explore.ethereans.app') !== -1 ? [walletConnectModule({
+    walletConnectModule({
       projectId : "8e0fdbb0c3598b0639f3a959769f0272",
-      requiredChains : [1, 10, 8453],
-      dappUrl : "https://explore.ethereans.app"
-    })] : [])
+      requiredChains : Object.keys(envToContext.chainInfo).map(it => parseInt(it)),
+      dappUrl : "https://ethereans.mypinata.cloud"
+    })
   ],
   chains: [
-    {
-      id: '0x1',
-      token: 'ETH',
-      label: 'Ethereum Mainnet'
-    },
-    {
-      id: '0xa',
-      token: 'ETH',
-      label: 'Optimism'
-    },
-    {
-      id: '0x2105',
-      token: 'ETH',
-      label: 'Base'
-    }
+    ...Object.entries(envToContext.chainInfo).map(it => ({...it[1], id : web3Utils.numberToHex(it[0])}))
   ],
   accountCenter: {
     desktop: {
