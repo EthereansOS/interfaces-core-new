@@ -15,8 +15,8 @@ const Bazar = () => {
 
 Bazar.menuVoice = {
   label: 'Token Swap',
-  path: '/covenants',
-  index: 0,
+  path: '/covenants/swap',
+  index: 2,
 }
 
 export default Bazar
