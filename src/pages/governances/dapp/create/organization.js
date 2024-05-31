@@ -31,6 +31,8 @@ import getCurrentAddress from 'interfaces-core/lib/web3/getCurrentAddress'
 import ScrollToTopOnMount from 'interfaces-ui/components/ScrollToTopOnMount'
 import Tooltip from '@mui/material/Tooltip';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+
 const components = [
   'COMPONENT_KEY_TREASURY_MANAGER',
   'COMPONENT_KEY_TREASURY_SPLITTER_MANAGER',
@@ -46,6 +48,7 @@ import {
   checkGovernance,
   prepareInputData,
 } from 'logic/organization'
+import { DeleteForeverRounded } from '@mui/icons-material'
 
 function initializeIPFSClient(context) {
   var options = {
@@ -1551,6 +1554,12 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
                   }
                 />
               </label>
+              <div className={style.FancyExplanationCreate}>
+        <h2>Components that will receive tokens <Tooltip placement="top" title="Select the components that will receive
+                  tokens from each inflation event. This is best
+                  used for farming setups, most components
+                  should receive funds in ETH." arrow><InfoOutlinedIcon sx={{ fontSize: 14 }}/></Tooltip></h2>
+      </div>
               <label
                 className={style.CreationPageLabelF}
                 style={{
@@ -1558,10 +1567,6 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
                   marginBottom: '20px',
                   paddingBottom: '20px',
                 }}>
-                <h6>Components that will receive tokens <Tooltip placement="top" title="Select the components that will receive
-                  tokens from each inflation event. This is best
-                  used for farming setups, most components
-                  should receive funds in ETH." arrow><InfoOutlinedIcon sx={{ fontSize: 14 }}/></Tooltip></h6>
                 <ComponentPercentage
                   value={_rawTokenComponents}
                   onChange={set_rawTokenComponents}
@@ -1573,6 +1578,13 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
                   lastHasPercentage
                 />
               </label>
+
+              <div className={style.FancyExplanationCreate}>
+        <h2>Components that will receive ETH <Tooltip placement="top" title="Select the components that will receive
+                  ETH from each inflation event. This is best
+                  used for investments, delegations, and
+                  dividends farming." arrow><InfoOutlinedIcon sx={{ fontSize: 14 }}/></Tooltip></h2>
+      </div>
               <label
                 className={style.CreationPageLabelF}
                 style={{
@@ -1580,10 +1592,6 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
                   marginBottom: '20px',
                   paddingBottom: '20px',
                 }}>
-                <h6>Components that will receive ETH <Tooltip placement="top" title="Select the components that will receive
-                  ETH from each inflation event. This is best
-                  used for investments, delegations, and
-                  dividends farming." arrow><InfoOutlinedIcon sx={{ fontSize: 14 }}/></Tooltip></h6>
                 <ComponentPercentage
                   value={_swappedTokenComponents}
                   onChange={set_swappedTokenComponents}
@@ -1823,76 +1831,81 @@ const ComponentPercentage = ({
   )
 
   return (
-    <div>
-      <div>
-        <a
-          onClick={() =>
-            onChange([...value, { component: '', percentage: 0 }])
-          }>
-          <span className={style.PercentageComponentPlus}>+</span>
-        </a>
+    <div className={style.ComponentsArea}>
+      <div className={style.ComponentsAreaAdd}>
+        <div>
+          <a onClick={() => onChange([...value, { component: '', percentage: 0 }])}>
+            <span className={style.PercentageComponentPlus}>+</span>
+          </a>
+        </div>
       </div>
-      {value.map((it, i) => (
-        <div
-          key={it.component + '_' + i}
-          className={style.PercentageComponentBoxArea}>
-          <select
-            className={style.PercentageComponentBoxAreaSelect}
-            value={it.component}
-            onChange={(e) =>
-              onChange(
-                value.map((elem, index) => ({
-                  ...elem,
-                  component:
-                    i === index ? e.currentTarget.value : elem.component,
-                }))
-              )
-            }>
-            <option value={''}>=== SELECT COMPONENT ===</option>
-            {components.map((it) => (
-              <option key={it} value={it}>
-                {it.split('COMPONENT_KEY_').join('').split('_').join(' ')}
-              </option>
-            ))}
-          </select>
-          <div className={style.PercentageComponentBoxAreaPreview}>
-            <h8>
-              {lastHasPercentage || i < value.length - 1
-                ? it.percentage
-                : lastPercentage}{' '}
-              %
-            </h8>
-          </div>
-          {(lastHasPercentage || i < value.length - 1) && (
-            <input
-              type="range"
-              min="0"
-              max="100"
-              step="0.05"
-              className={style.PercentageComponentBoxAreaInput}
-              value={it.percentage}
+       
+      {value.length === 0 ? (
+        <p>No selected components</p>
+      ) : (
+        value.map((it, i) => (
+          <div
+            key={it.component + '_' + i}
+            className={style.PercentageComponentBoxArea}>
+            <div className={style.PercentageComponentBoxAreaPreview}>
+              <p>
+                {lastHasPercentage || i < value.length - 1
+                  ? it.percentage
+                  : lastPercentage}{' '}
+                %
+              </p>
+            </div>
+            <select
+              className={style.PercentageComponentBoxAreaSelect}
+              value={it.component}
               onChange={(e) =>
                 onChange(
                   value.map((elem, index) => ({
                     ...elem,
-                    percentage:
-                      i === index
-                        ? parseFloat(e.currentTarget.value)
-                        : elem.percentage,
+                    component:
+                      i === index ? e.currentTarget.value : elem.component,
                   }))
                 )
-              }
-            />
-          )}
-          <a
-            onClick={() => onChange(value.filter((_, index) => index !== i))}
-            className={style.PercentageComponentBoxAreaMinus}>
-            -
-          </a>
-        </div>
-      ))}
+              }>
+              <option value={''}>Select Component</option>
+              {components.map((it) => (
+                <option key={it} value={it}>
+                  {it.split('COMPONENT_KEY_').join('').split('_').join(' ')}
+                </option>
+              ))}
+            </select>
+            
+            {(lastHasPercentage || i < value.length - 1) && (
+              <input
+                type="range"
+                min="0"
+                max="100"
+                step="0.05"
+                className={style.PercentageComponentBoxAreaInput}
+                value={it.percentage}
+                onChange={(e) =>
+                  onChange(
+                    value.map((elem, index) => ({
+                      ...elem,
+                      percentage:
+                        i === index
+                          ? parseFloat(e.currentTarget.value)
+                          : elem.percentage,
+                    }))
+                  )
+                }
+              />
+            )}
+            <a
+              onClick={() => onChange(value.filter((_, index) => index !== i))}
+              className={style.PercentageComponentBoxAreaMinus}>
+              <DeleteOutlineIcon sx={{ fontSize: 26 }}></DeleteOutlineIcon>
+            </a>
+          </div>
+        ))
+      )}
     </div>
-  )
+  )  
 }
 
 const TreasurySplitterManager = ({ value, onChange, onNext, onPrev }) => {
@@ -1950,8 +1963,10 @@ const TreasurySplitterManager = ({ value, onChange, onNext, onPrev }) => {
           {dateError && <p className={style.ErrorMessage}>{dateError}</p>}
         </label>
       </div>
+      <div className={style.FancyExplanationCreate}>
+        <h2>Components</h2>
+      </div>
       <label className={style.CreationPageLabelF}>
-        <h6>Components</h6>
         <ComponentPercentage value={components} onChange={setComponents} />
       </label>
     </div>

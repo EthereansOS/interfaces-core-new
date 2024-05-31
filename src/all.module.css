@@ -16026,9 +16026,10 @@ input {
 }
 .PercentageComponentBoxAreaSelect{
     display: inline-block;
-    padding: 5px 10px 5px 10px;
+    padding: 12px 10px 12px 10px;
     border-radius: 6px;
     border: 1px solid #ddd;
+    border-radius: 6px;
 }
 .PercentageComponentBoxAreaPreview{
     display: inline-block;
@@ -16048,6 +16049,9 @@ input {
     font-size: 30px;
     line-height: 10px;
     margin-left: 10px;
+    position: relative;
+    top: 6px;
+    color: #9c9c9c;
 }
 .CreationPageLabelF .ActionInfoSection{
     border: 2px solid #e7ecf3;
@@ -16094,6 +16098,65 @@ input {
 .dark .PercentageComponentBoxArea {
     background: #29263f;
 }
+.ComponentsArea{
+    position: relative;
+}
+.ComponentsArea .PercentageComponentBoxAreaInput{
+    width: 53% !important;
+}
+
+.dark .ComponentsArea .PercentageComponentBoxArea {
+    background: #363253;
+    margin: 0 auto;
+    margin-bottom: 10px;
+    border: 1px solid #4c4769;
+}
+.ComponentsArea  .PercentageComponentBoxAreaPreview{
+    width: 45px;
+    background: #f09243;
+    height: 44px;
+    text-align: center;
+    vertical-align: middle;
+    justify-content: center;
+    align-items: center;
+    border-radius: 6px;
+    margin-right: 10px;
+}
+
+.ComponentsArea  .PercentageComponentBoxAreaPreview p{
+    position: relative;
+    top: 13px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 10px;
+}
+.light .ComponentsArea  .PercentageComponentBoxAreaPreview p{
+    color:#fff;
+}
+.ComponentsAreaAdd{
+    text-align: right;
+    position: absolute;
+    top: -90px;
+    right: 5px;
+}
+.ComponentsAreaAdd>div{
+    display: inline-block;
+}
+.ComponentsArea .PercentageComponentBoxAreaInput{
+    padding: 20px 21px 21px 21px!important;
+    background: #fff!important;
+    vertical-align: middle!important;
+    border: 1px solid #ddd!important;
+    border-radius: 6px!important;
+    margin-left: 20px!important;
+}
+
+.dark .ComponentsArea .PercentageComponentBoxAreaInput {
+    padding: 20px 21px 21px 21px !important;
+    background: #29263f !important;
+    border: 1px solid #29263e !important;
+}
+
 
 
 .dark .CreationPageLabelF select{
