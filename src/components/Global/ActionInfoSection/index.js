@@ -54,10 +54,10 @@ const ActionInfoSection = ({hideAmmStuff, settings, onSettingsToggle, amm, onAMM
                         <span>▼</span>
                     </a>}
                     {amm && amm.name === 'UniswapV3' && onUniV3Pool && <div style={{
-                            display: 'inline-block'
+                            display: 'block'
                     }}>
                         <h4 style={{
-                            display: 'inline-block',
+                            display: 'block',
                             fontSize: '16px',
                             marginRight: '10px'
                         }}>Uniswap V3 Pools:</h4>
