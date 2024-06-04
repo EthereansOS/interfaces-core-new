@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { SimplyDonut, SimplyLegend } from 'react-simply-donut'
 import style from '../../../all.module.css'
+import Slider from '../../../components/Global/Slider'
+
 const initialData = [
   {
     value: 10,
@@ -137,7 +139,7 @@ const DonutAndLegend = (
         className={style.CreationPageLabelFDivide}
         style={{ display: 'flex' }}>
 
-        <label className={style.CreationPageLabelF}>
+        <label className={style.CreationPageLabelF} style={{width: '100%'}}>
           {data.map(
             (item, index) =>
               !item.isAvailableSpace && (
@@ -148,11 +150,12 @@ const DonutAndLegend = (
                       {item.value.toFixed(0)}%
                     </span>
                   </label>
-                  <input
-                    type="range"
-                    value={item.value}
+
+                  <Slider
                     min="0"
                     max="100"
+                    className=''
+                    value={item.value}
                     onChange={(e) =>
                       handleSliderChange(index, parseFloat(e.target.value))
                     }

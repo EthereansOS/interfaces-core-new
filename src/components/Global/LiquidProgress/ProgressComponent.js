@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import './ProgressComponent.css' // Make sure to create this CSS file based on the provided CSS
+import Slider from '../../../components/Global/Slider'
 
 const ProgressComponent = ({ maxPercentagePerToken, onChange }) => {
   const [progressValue, setProgressValue] = useState(maxPercentagePerToken)
@@ -32,14 +33,13 @@ const ProgressComponent = ({ maxPercentagePerToken, onChange }) => {
       </div>
       <div className="description">
         <div>Select Percentage </div>
-        <input
-          type="range"
-          min="0"
-          max="100"
-          step="1"
-          value={progressValue}
-          onChange={handleInputChange}
-        />
+        <Slider
+                min="0"
+                max="100"
+                step="1"
+                value={progressValue}
+                onChange={handleInputChange}
+            />
       </div>
     </div>
   )
