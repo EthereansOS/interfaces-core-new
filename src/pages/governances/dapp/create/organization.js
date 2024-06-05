@@ -511,7 +511,11 @@ const Confirmation = ({
   )
 }
 
-const VotingRules = ({ value, onChange, onNext, onPrev }) => {
+
+const Organization = ({ value, onChange, onNext, onPrev }) => {
+
+
+
   const [disabled, setDisabled] = useState(false)
 
   useEffect(() => {
@@ -555,219 +559,6 @@ const VotingRules = ({ value, onChange, onNext, onPrev }) => {
     setDisabled(disabled)
   }, [value])
 
-  return (
-    <>
-      <div className={style.CreationPageLabel}>
-        <ScrollToTopOnMount />
-
-        <div className={style.FancyExplanationCreate}>
-          <h2>Voting Rules</h2>
-        </div>
-        <p
-          style={{
-            fontSize: '12px',
-            textAlign: 'left',
-            paddingLeft: '20px',
-          }}>
-          Set granular voting rules for how proposals are handled in the
-          organization.
-        </p>
-
-        <div
-          className={style.CreationPageLabelFDivideGroup}
-          style={{ marginTop: '20px', marginBottom: '30px' }}>
-          <div
-            className={style.CreationPageLabelFDivide}
-            style={{ marginTop: '30px', marginBottom: '30px' }}>
-            <label className={style.CreationPageLabelF}>
-              <h6>Quorum <Tooltip placement="top" title="Quorum is the minimum percentage of
-              tokens that needs to be staked for a
-              proposal to pass at the end of the Proposal
-              Duration. This checks the total supply of the
-              token, not just the circulating supply." arrow><InfoOutlinedIcon sx={{ fontSize: 14 }} /></Tooltip></h6>
-              <p>Select the value of Quorum  </p>
-              <br />
-              <br />
-              <br />
-              <CircularSlider
-                label="Quorum"
-                dataIndex={value?.proposalRulesQuorumPercentage ?? 0}
-                labelColor="#fff"
-                knobColor="#000000"
-                width="120"
-                knobSize="25"
-                progressSize="9"
-                trackSize="14"
-                labelFontSize="10"
-                valueFontSize="20"
-                appendToValue="%"
-                progressColorFrom="#000000"
-                progressColorTo="#444444"
-                trackColor="#eeeeee"
-                min={0}
-                max={100}
-                initialValue={0}
-                onChange={(e) => {
-                  onChange({
-                    ...value,
-                    proposalRulesQuorumPercentage: e,
-                  })
-                }}
-              />
-            </label>
-
-            <label className={style.CreationPageLabelF}>
-              <h6>Hard cap <Tooltip placement="top" title="Hard Cap is the minimum percentage of
-              tokens that needs to be staked for a
-              proposal to pass immediately (requires a
-              transaction to execute still). This checks the
-              total supply of the token, not just the
-              circulating supply." arrow><InfoOutlinedIcon sx={{ fontSize: 14 }} /></Tooltip></h6>
-              <p>Select the value of Hard cap</p>
-              <br />
-              <br />
-              <br />
-              <CircularSlider
-                label="Hard cap"
-                dataIndex={value?.proposalRulesHardCapPercentage ?? 0}
-                labelColor="#fff"
-                width="120"
-                knobSize="25"
-                progressSize="9"
-                trackSize="14"
-                labelFontSize="10"
-                valueFontSize="20"
-                knobColor="#000000"
-                progressColorFrom="#000000"
-                progressColorTo="#444444"
-                appendToValue="%"
-                trackColor="#eeeeee"
-                min={0}
-                max={100}
-                onChange={(e) =>
-                  onChange({
-                    ...value,
-                    proposalRulesHardCapPercentage: e,
-                  })
-                }
-              />
-            </label>
-            {value?.error?.proposalRulesQuorumPercentage && (
-              <p className={style.ErrorMessage}>
-                {value.error.proposalRulesQuorumPercentage}
-              </p>
-            )}
-          </div>
-
-          <div
-            className={style.CreationPageLabelFDivide}
-            style={{
-              marginTop: '30px',
-              marginBottom: '30px',
-              borderLeft: '1px solid #e7ecf4',
-            }}>
-            <label className={style.CreationPageLabelF}>
-              <h6>Proposal Duration <Tooltip placement="top" title="Proposal Duration is the length that voting
-              tokens can be staked in support or against a
-              proposal." arrow><InfoOutlinedIcon sx={{ fontSize: 14 }} /></Tooltip></h6>
-              <p>Select the duration of Proposal</p>
-              <br />
-              <br />
-              <br />
-              <CircularSlider
-                progressLineCap="flat"
-                label="Duration"
-                dataIndex={
-                  value?.proposalRulesProposalDuration != null
-                    ? dataTime.indexOf(value?.proposalRulesProposalDuration)
-                    : 0
-                }
-                data={dataTime}
-                labelColor="#fff"
-                knobColor="#000000"
-                width="120"
-                knobSize="25"
-                progressSize="9"
-                trackSize="14"
-                labelFontSize="10"
-                valueFontSize="20"
-                verticalOffset="1rem"
-                progressColorFrom="#000000"
-                progressColorTo="#444444"
-                trackColor="#eeeeee"
-                onChange={(e) =>
-                  onChange({
-                    ...value,
-                    proposalRulesProposalDuration: e,
-                  })
-                }
-              />
-            </label>
-            <label className={style.CreationPageLabelF}>
-              <h6>Validation Bomb <Tooltip placement="top" title="Validation Bomb is the period of time that
-              a passed proposal can be executed. This
-              countdown begins when the proposal is
-              published, not when it has reached Quorum
-              or the Hard Cap." arrow><InfoOutlinedIcon sx={{ fontSize: 14 }} /></Tooltip></h6>
-              <p>Select Validation Bomb value</p>
-              <br />
-              <br />
-              <br />
-              <CircularSlider
-                progressLineCap="flat"
-                dataIndex={
-                  value?.proposalRulesValidationBomb != null
-                    ? dataTime.indexOf(value?.proposalRulesValidationBomb)
-                    : 1
-                }
-                label="Duration"
-                data={dataTime}
-                labelColor="#fff"
-                knobColor="#000000"
-                width="120"
-                knobSize="25"
-                progressSize="9"
-                trackSize="14"
-                labelFontSize="10"
-                valueFontSize="20"
-                verticalOffset="1rem"
-                progressColorFrom="#000000"
-                progressColorTo="#444444"
-                trackColor="#eeeeee"
-                onChange={(e) =>
-                  onChange({
-                    ...value,
-                    proposalRulesValidationBomb: e,
-                  })
-                }
-              />
-            </label>
-            {value?.error?.proposalRulesProposalDuration && (
-              <p className={style.ErrorMessage}>
-                {value.error.proposalRulesProposalDuration}
-              </p>
-            )}
-          </div>
-        </div>
-
-
-      </div>
-      <div className={style.WizardFooter}>
-        <button className={style.WizardFooterBack} onClick={onPrev}>
-          Back
-        </button>
-        <button
-          className={style.WizardFooterNext}
-          onClick={onNext}
-          disabled={disabled}>
-          Next
-        </button>
-      </div>
-    </>
-  )
-}
-
-const Organization = ({ value, onChange, onNext, onPrev }) => {
   function onChangeProgressComponent(progressValue) {
     if (!value) {
       value = {}
@@ -778,34 +569,236 @@ const Organization = ({ value, onChange, onNext, onPrev }) => {
 
   return (
     <>
-      <div className={style.CreationPageLabel}>
+      <div className={style.CreationPageLabel} style={{ paddingBottom: '0px' }}>
         <ScrollToTopOnMount />
 
-        <div className={style.FancyExplanationCreate}>
+        <div className={style.FancyExplanationCreate} style={{display: 'none'}}>
           <h2>Organization Treasury</h2>
         </div>
         <div
           className={style.CreationPageLabelFDivide}
-          style={{ display: 'flex' }}>
-          <label className={style.CreationPageLabelF}>
+          style={{ display: 'flex', flexDirection: 'column-reverse', alignItems: 'center' }}>
+          <div>
             <ProgressComponent
               maxPercentagePerToken={value?.maxPercentagePerToken ?? 0}
               onChange={(e) => onChangeProgressComponent(e)}></ProgressComponent>
-          </label>
-
-          <label className={style.CreationPageLabelF}>
-            <h4 style={{ textAlign: 'left' }}>Percentage to move </h4>
-            <p>
+          </div>
+          <div style={{ textAlign: 'left', marginLeft: '0px' }}>
+            <div className={style.FancyExplanationCreate}>
+              <h2>Percentage to move</h2>
+            </div>
+            <p
+              style={{
+                fontSize: '12px',
+                textAlign: 'left',
+                paddingLeft: '20px',
+              }}>
               This limits the percentage of the treasury that can be transferred
               in a single proposal. It serves as an anti rug feature, ensuring
               that the entire treasury cannot be moved at once.
             </p>
             <br />
-          </label>
+          </div>
         </div>
-
-
       </div>
+      <>
+        <div className={style.CreationPageLabel}>
+          <ScrollToTopOnMount />
+
+          <div className={style.FancyExplanationCreate}>
+            <h2>Voting Rules</h2>
+          </div>
+          <p
+            style={{
+              fontSize: '12px',
+              textAlign: 'left',
+              paddingLeft: '20px',
+            }}>
+            Set granular voting rules for how proposals are handled in the
+            organization.
+          </p>
+
+          <div
+            className={style.CreationPageLabelFDivideGroup}
+            style={{ marginTop: '20px', marginBottom: '30px' }}>
+            <div
+              className={style.CreationPageLabelFDivide}
+              style={{ marginTop: '30px', marginBottom: '30px' }}>
+              <label className={style.CreationPageLabelF}>
+                <h6>Quorum <Tooltip placement="top" title="Quorum is the minimum percentage of
+              tokens that needs to be staked for a
+              proposal to pass at the end of the Proposal
+              Duration. This checks the total supply of the
+              token, not just the circulating supply." arrow><InfoOutlinedIcon sx={{ fontSize: 14 }} /></Tooltip></h6>
+                <p>Select the value of Quorum  </p>
+                <br />
+                <br />
+                <br />
+                <CircularSlider
+                  label="Quorum"
+                  dataIndex={value?.proposalRulesQuorumPercentage ?? 0}
+                  labelColor="#fff"
+                  knobColor="#000000"
+                  width="120"
+                  knobSize="25"
+                  progressSize="9"
+                  trackSize="14"
+                  labelFontSize="10"
+                  valueFontSize="20"
+                  appendToValue="%"
+                  progressColorFrom="#000000"
+                  progressColorTo="#444444"
+                  trackColor="#eeeeee"
+                  min={0}
+                  max={100}
+                  initialValue={0}
+                  onChange={(e) => {
+                    onChange({
+                      ...value,
+                      proposalRulesQuorumPercentage: e,
+                    })
+                  }}
+                />
+              </label>
+
+              <label className={style.CreationPageLabelF}>
+                <h6>Hard cap <Tooltip placement="top" title="Hard Cap is the minimum percentage of
+              tokens that needs to be staked for a
+              proposal to pass immediately (requires a
+              transaction to execute still). This checks the
+              total supply of the token, not just the
+              circulating supply." arrow><InfoOutlinedIcon sx={{ fontSize: 14 }} /></Tooltip></h6>
+                <p>Select the value of Hard cap</p>
+                <br />
+                <br />
+                <br />
+                <CircularSlider
+                  label="Hard cap"
+                  dataIndex={value?.proposalRulesHardCapPercentage ?? 0}
+                  labelColor="#fff"
+                  width="120"
+                  knobSize="25"
+                  progressSize="9"
+                  trackSize="14"
+                  labelFontSize="10"
+                  valueFontSize="20"
+                  knobColor="#000000"
+                  progressColorFrom="#000000"
+                  progressColorTo="#444444"
+                  appendToValue="%"
+                  trackColor="#eeeeee"
+                  min={0}
+                  max={100}
+                  onChange={(e) =>
+                    onChange({
+                      ...value,
+                      proposalRulesHardCapPercentage: e,
+                    })
+                  }
+                />
+              </label>
+              {value?.error?.proposalRulesQuorumPercentage && (
+                <p className={style.ErrorMessage}>
+                  {value.error.proposalRulesQuorumPercentage}
+                </p>
+              )}
+            </div>
+
+            <div
+              className={style.CreationPageLabelFDivide}
+              style={{
+                marginTop: '30px',
+                marginBottom: '30px',
+                borderLeft: '1px solid #e7ecf4',
+              }}>
+              <label className={style.CreationPageLabelF}>
+                <h6>Proposal Duration <Tooltip placement="top" title="Proposal Duration is the length that voting
+              tokens can be staked in support or against a
+              proposal." arrow><InfoOutlinedIcon sx={{ fontSize: 14 }} /></Tooltip></h6>
+                <p>Select the duration of Proposal</p>
+                <br />
+                <br />
+                <br />
+                <CircularSlider
+                  progressLineCap="flat"
+                  label="Duration"
+                  dataIndex={
+                    value?.proposalRulesProposalDuration != null
+                      ? dataTime.indexOf(value?.proposalRulesProposalDuration)
+                      : 0
+                  }
+                  data={dataTime}
+                  labelColor="#fff"
+                  knobColor="#000000"
+                  width="120"
+                  knobSize="25"
+                  progressSize="9"
+                  trackSize="14"
+                  labelFontSize="10"
+                  valueFontSize="20"
+                  verticalOffset="1rem"
+                  progressColorFrom="#000000"
+                  progressColorTo="#444444"
+                  trackColor="#eeeeee"
+                  onChange={(e) =>
+                    onChange({
+                      ...value,
+                      proposalRulesProposalDuration: e,
+                    })
+                  }
+                />
+              </label>
+              <label className={style.CreationPageLabelF}>
+                <h6>Validation Bomb <Tooltip placement="top" title="Validation Bomb is the period of time that
+              a passed proposal can be executed. This
+              countdown begins when the proposal is
+              published, not when it has reached Quorum
+              or the Hard Cap." arrow><InfoOutlinedIcon sx={{ fontSize: 14 }} /></Tooltip></h6>
+                <p>Select Validation Bomb value</p>
+                <br />
+                <br />
+                <br />
+                <CircularSlider
+                  progressLineCap="flat"
+                  dataIndex={
+                    value?.proposalRulesValidationBomb != null
+                      ? dataTime.indexOf(value?.proposalRulesValidationBomb)
+                      : 1
+                  }
+                  label="Duration"
+                  data={dataTime}
+                  labelColor="#fff"
+                  knobColor="#000000"
+                  width="120"
+                  knobSize="25"
+                  progressSize="9"
+                  trackSize="14"
+                  labelFontSize="10"
+                  valueFontSize="20"
+                  verticalOffset="1rem"
+                  progressColorFrom="#000000"
+                  progressColorTo="#444444"
+                  trackColor="#eeeeee"
+                  onChange={(e) =>
+                    onChange({
+                      ...value,
+                      proposalRulesValidationBomb: e,
+                    })
+                  }
+                />
+              </label>
+              {value?.error?.proposalRulesProposalDuration && (
+                <p className={style.ErrorMessage}>
+                  {value.error.proposalRulesProposalDuration}
+                </p>
+              )}
+            </div>
+          </div>
+
+
+        </div>
+      </>
+
       <div className={style.WizardFooter}>
         <button className={style.WizardFooterBack} onClick={onPrev}>
           Back
@@ -1352,8 +1345,8 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
                   </label>
                 </div>
                 <div
-                  className={style.CreationPageLabelFDivide +' ' + style.TokenMintOwnerArea}
-                 >
+                  className={style.CreationPageLabelFDivide + ' ' + style.TokenMintOwnerArea}
+                >
                   <label className={style.CreationPageLabelF}>
                     {value?.tokenMinterOwner !== undefined && (
                       <>
@@ -1424,7 +1417,7 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
                     {value?.error?.name && <p>{value.error.name}</p>}
                   </label>
                 </div>
-                <h2 style={{textAlign: 'left', borderBottom: '1px solid #e7ecf4', paddingBottom: '19px', paddingLeft: '20px', borderTop: '1px solid #e7ecf4', paddingTop: '19px'}}>Inflation percentages <Tooltip placement="top" title="Inflation per year of the token governed
+                <h2 style={{ textAlign: 'left', borderBottom: '1px solid #e7ecf4', paddingBottom: '19px', paddingLeft: '20px', borderTop: '1px solid #e7ecf4', paddingTop: '19px' }}>Inflation percentages <Tooltip placement="top" title="Inflation per year of the token governed
                     by Fixed Inflation. The first value will be the
                     starting value, the other 5 options will be
                     votable via a surveyless proposal by token
@@ -1515,15 +1508,15 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
                     <h8>{_bootstrapFundWalletPercentage} %</h8>
                   </p>
                   <Slider
-                      min="0"
-                      max="100"
-                      step="0.05"
-                      value={_bootstrapFundWalletPercentage}
-                      onChange={(e) =>
-                        set_bootstrapFundWalletPercentage(
-                              parseFloat(e.currentTarget.value)
-                          )
-                      }
+                    min="0"
+                    max="100"
+                    step="0.05"
+                    value={_bootstrapFundWalletPercentage}
+                    onChange={(e) =>
+                      set_bootstrapFundWalletPercentage(
+                        parseFloat(e.currentTarget.value)
+                      )
+                    }
                   />
                 </label>
                 <label
@@ -2715,17 +2708,17 @@ const InvestmentsManager = ({ amms, value, onChange, onNext, onPrev }) => {
           }}>
           <h6>Max Percentage per Token</h6>
           <Slider
-                min="0"
-                max="100"
-                step="0.05"
-                value={value?.maxPercentagePerToken ?? 0}
-                onChange={(e) =>
-                  onChange({
-                    ...value,
-                    maxPercentagePerToken: e.currentTarget.value,
-                  })
-                }
-            />
+            min="0"
+            max="100"
+            step="0.05"
+            value={value?.maxPercentagePerToken ?? 0}
+            onChange={(e) =>
+              onChange({
+                ...value,
+                maxPercentagePerToken: e.currentTarget.value,
+              })
+            }
+          />
           <span>{value?.maxPercentagePerToken ?? 0} %</span>
         </label>
         <div className={style.FancyExplanationCreate}>
@@ -2997,7 +2990,7 @@ const InvestmentsManagerOperation = ({
           </a>
         </div>
       )}
-      {value &&
+      {value && value.length > 0 ? (
         value.map((it, i) => (
           <div key={`${i}_${it.token?.address}_${it.amm?.address}`} className={style.OperationsContentAreaBlock}>
             <TokenInputRegular
@@ -3057,23 +3050,23 @@ const InvestmentsManagerOperation = ({
               <label>
                 <span>Percentage</span>
                 <Slider
-                min="0"
-                max={maxPercentagePerToken}
-                step="0.05"
-                value={it.percentage}
-                onChange={(v) =>
-                  onChange(
-                    value.map((elem, index) =>
-                      index === i
-                        ? {
-                          ...elem,
-                          percentage: parseFloat(v.currentTarget.value),
-                        }
-                        : elem
+                  min="0"
+                  max={maxPercentagePerToken}
+                  step="0.05"
+                  value={it.percentage}
+                  onChange={(v) =>
+                    onChange(
+                      value.map((elem, index) =>
+                        index === i
+                          ? {
+                            ...elem,
+                            percentage: parseFloat(v.currentTarget.value),
+                          }
+                          : elem
+                      )
                     )
-                  )
-                }
-            />
+                  }
+                />
                 <span>{it.percentage} %</span>
               </label>
             )}
@@ -3087,10 +3080,16 @@ const InvestmentsManagerOperation = ({
               </a>
             </div>
           </div>
-        ))}
+        ))
+      ) : (
+        <div className={style.NoElementsMessage}>
+          <h4>No elements added.</h4>
+        </div>
+      )}
     </div>
   )
 }
+
 
 const CreateOrganization = () => {
   const context = useEthosContext()
@@ -3134,21 +3133,18 @@ const CreateOrganization = () => {
             Organization Treasury
           </li>
           <li className={step === 3 ? style.WizardStepsListActive : ''}>
-            Voting Rules
-          </li>
-          <li className={step === 4 ? style.WizardStepsListActive : ''}>
             Fixed Inflation
           </li>
-          <li className={step === 5 ? style.WizardStepsListActive : ''}>
+          <li className={step === 4 ? style.WizardStepsListActive : ''}>
             Treasury Splitter
           </li>
-          <li className={step === 6 ? style.WizardStepsListActive : ''}>
+          <li className={step === 5 ? style.WizardStepsListActive : ''}>
             Delegations Manager
           </li>
-          <li className={step === 7 ? style.WizardStepsListActive : ''}>
+          <li className={step === 6 ? style.WizardStepsListActive : ''}>
             Investments Manager
           </li>
-          <li className={step === 8 ? style.WizardStepsListActive : ''}>
+          <li className={step === 7 ? style.WizardStepsListActive : ''}>
             Confirmation
           </li>
         </ul>
@@ -3242,28 +3238,30 @@ const CreateOrganization = () => {
         )}
 
         {step == 3 && (
-          <VotingRules
-            value={state?.votingRules}
-            onChange={(value) => setState({ ...state, votingRules: value })}
+          <FixedInflation
+            value={state?.fixedInflation}
+            onChange={(value) => setState({ ...state, fixedInflation: value })}
             onNext={() => setStep(4)}
             onPrev={() => setStep(2)}
           />
         )}
 
         {step == 4 && (
-          <FixedInflation
-            value={state?.fixedInflation}
-            onChange={(value) => setState({ ...state, fixedInflation: value })}
+          <TreasurySplitterManager
+            value={state?.treasurySplitter}
+            onChange={(value) =>
+              setState({ ...state, treasurySplitter: value })
+            }
             onNext={() => setStep(5)}
             onPrev={() => setStep(3)}
           />
         )}
 
         {step == 5 && (
-          <TreasurySplitterManager
-            value={state?.treasurySplitter}
+          <DelegationsManager
+            value={state?.delegationsManager}
             onChange={(value) =>
-              setState({ ...state, treasurySplitter: value })
+              setState({ ...state, delegationsManager: value })
             }
             onNext={() => setStep(6)}
             onPrev={() => setStep(4)}
@@ -3271,10 +3269,11 @@ const CreateOrganization = () => {
         )}
 
         {step == 6 && (
-          <DelegationsManager
-            value={state?.delegationsManager}
+          <InvestmentsManager
+            amms={amms}
+            value={state?.investmentsManager}
             onChange={(value) =>
-              setState({ ...state, delegationsManager: value })
+              setState({ ...state, investmentsManager: value })
             }
             onNext={() => setStep(7)}
             onPrev={() => setStep(5)}
@@ -3282,24 +3281,12 @@ const CreateOrganization = () => {
         )}
 
         {step == 7 && (
-          <InvestmentsManager
-            amms={amms}
-            value={state?.investmentsManager}
-            onChange={(value) =>
-              setState({ ...state, investmentsManager: value })
-            }
-            onNext={() => setStep(8)}
-            onPrev={() => setStep(6)}
-          />
-        )}
-
-        {step == 8 && (
           <Confirmation
             value={state?.confirmation}
             disabled={disabled}
             onChange={(value) => setState({ ...state, confirmation: value })}
-            onNext={() => setStep(5)}
-            onPrev={() => setStep(7)}
+            onNext={() => setStep(4)}
+            onPrev={() => setStep(6)}
             state={state}
             dataTime={dataTime}
           />
