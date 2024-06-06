@@ -17,9 +17,8 @@ const ProgressComponent = ({ maxPercentagePerToken, onChange }) => {
   return (
     <div>
       <div
-        className={`progress ${
-          progressValue > 50 ? 'progress--upper-half-value' : ''
-        }`}
+        className={`progress ${progressValue > 50 ? 'progress--upper-half-value' : ''
+          }`}
         data-value={progressValue}
         style={{ '--progress-value': progressValue }}>
         <div className="progress-inner">
@@ -34,12 +33,12 @@ const ProgressComponent = ({ maxPercentagePerToken, onChange }) => {
       <div className="description">
         <div>Select Percentage </div>
         <Slider
-                min="0"
-                max="100"
-                step="1"
-                value={progressValue}
-                onChange={handleInputChange}
-            />
+          min="0"
+          max="100"
+          step="1"
+          value={progressValue}
+          onChange={handleInputChange}
+        />
       </div>
     </div>
   )

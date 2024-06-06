@@ -512,7 +512,7 @@ const Confirmation = ({
 }
 
 
-const Organization = ({ value, onChange, onNext, onPrev }) => {
+const Organization = ({ value, governanceValue, onChange, onNext, onPrev }) => {
 
 
 
@@ -572,7 +572,7 @@ const Organization = ({ value, onChange, onNext, onPrev }) => {
       <div className={style.CreationPageLabel} style={{ paddingBottom: '0px' }}>
         <ScrollToTopOnMount />
 
-        <div className={style.FancyExplanationCreate} style={{display: 'none'}}>
+        <div className={style.FancyExplanationCreate} style={{ display: 'none' }}>
           <h2>Organization Treasury</h2>
         </div>
         <div
@@ -636,7 +636,7 @@ const Organization = ({ value, onChange, onNext, onPrev }) => {
                 <br />
                 <CircularSlider
                   label="Quorum"
-                  dataIndex={value?.proposalRulesQuorumPercentage ?? 0}
+                  dataIndex={value?.proposalRulesQuorumPercentage != 0 ? value?.proposalRulesQuorumPercentage : governanceValue?.proposalRulesQuorumPercentage}
                   labelColor="#fff"
                   knobColor="#000000"
                   width="120"
@@ -651,7 +651,7 @@ const Organization = ({ value, onChange, onNext, onPrev }) => {
                   trackColor="#eeeeee"
                   min={0}
                   max={100}
-                  initialValue={0}
+                  initialValue={governanceValue?.proposalRulesQuorumPercentage}
                   onChange={(e) => {
                     onChange({
                       ...value,
@@ -674,7 +674,7 @@ const Organization = ({ value, onChange, onNext, onPrev }) => {
                 <br />
                 <CircularSlider
                   label="Hard cap"
-                  dataIndex={value?.proposalRulesHardCapPercentage ?? 0}
+                  dataIndex={value?.proposalRulesHardCapPercentage != 0 ? value?.proposalRulesHardCapPercentage : governanceValue?.proposalRulesHardCapPercentage}
                   labelColor="#fff"
                   width="120"
                   knobSize="25"
@@ -689,6 +689,7 @@ const Organization = ({ value, onChange, onNext, onPrev }) => {
                   trackColor="#eeeeee"
                   min={0}
                   max={100}
+                  initialValue={governanceValue?.proposalRulesHardCapPercentage}
                   onChange={(e) =>
                     onChange({
                       ...value,
@@ -722,11 +723,7 @@ const Organization = ({ value, onChange, onNext, onPrev }) => {
                 <CircularSlider
                   progressLineCap="flat"
                   label="Duration"
-                  dataIndex={
-                    value?.proposalRulesProposalDuration != null
-                      ? dataTime.indexOf(value?.proposalRulesProposalDuration)
-                      : 0
-                  }
+                  dataIndex={value?.proposalRulesProposalDuration != dataTime[0] ? dataTime.indexOf(value?.proposalRulesProposalDuration) : dataTime.indexOf(governanceValue?.proposalRulesProposalDuration)}
                   data={dataTime}
                   labelColor="#fff"
                   knobColor="#000000"
@@ -740,6 +737,7 @@ const Organization = ({ value, onChange, onNext, onPrev }) => {
                   progressColorFrom="#000000"
                   progressColorTo="#444444"
                   trackColor="#eeeeee"
+                  initialValue={governanceValue?.proposalRulesProposalDuration}
                   onChange={(e) =>
                     onChange({
                       ...value,
@@ -760,11 +758,7 @@ const Organization = ({ value, onChange, onNext, onPrev }) => {
                 <br />
                 <CircularSlider
                   progressLineCap="flat"
-                  dataIndex={
-                    value?.proposalRulesValidationBomb != null
-                      ? dataTime.indexOf(value?.proposalRulesValidationBomb)
-                      : 1
-                  }
+                  dataIndex={value?.proposalRulesValidationBomb != dataTime[1] ? dataTime.indexOf(value?.proposalRulesValidationBomb) : dataTime.indexOf(governanceValue?.proposalRulesValidationBomb)}
                   label="Duration"
                   data={dataTime}
                   labelColor="#fff"
@@ -779,6 +773,7 @@ const Organization = ({ value, onChange, onNext, onPrev }) => {
                   progressColorFrom="#000000"
                   progressColorTo="#444444"
                   trackColor="#eeeeee"
+                  initialValue={governanceValue?.proposalRulesValidationBomb}
                   onChange={(e) =>
                     onChange({
                       ...value,
@@ -1154,7 +1149,7 @@ const Duration = ({ value, onChange, from }) => {
   )
 }
 
-const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
+const FixedInflation = ({ amms, value, governanceValue, onChange, onNext, onPrev }) => {
   const { account } = useWeb3()
   const [disabled, setDisabled] = useState(false)
 
@@ -1608,7 +1603,7 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
                       <br />
                       <CircularSlider
                         label="Quorum"
-                        dataIndex={value?.proposalRulesQuorumPercentage ?? 0}
+                        dataIndex={value?.proposalRulesQuorumPercentage != 0 ? value?.proposalRulesQuorumPercentage : governanceValue?.proposalRulesQuorumPercentage}
                         labelColor="#fff"
                         knobColor="#000000"
                         width="120"
@@ -1623,7 +1618,7 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
                         trackColor="#eeeeee"
                         min={0}
                         max={100}
-                        initialValue={0}
+                        initialValue={governanceValue?.proposalRulesQuorumPercentage}
                         onChange={(e) => {
                           onChange({
                             ...value,
@@ -1645,7 +1640,7 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
                       <br />
                       <CircularSlider
                         label="Hard cap"
-                        dataIndex={value?.proposalRulesHardCapPercentage ?? 0}
+                        dataIndex={value?.proposalRulesHardCapPercentage != 0 ? value?.proposalRulesHardCapPercentage : governanceValue?.proposalRulesHardCapPercentage}
                         labelColor="#fff"
                         width="120"
                         knobSize="25"
@@ -1660,6 +1655,7 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
                         trackColor="#eeeeee"
                         min={0}
                         max={100}
+                        initialValue={governanceValue?.proposalRulesHardCapPercentage}
                         onChange={(e) =>
                           onChange({
                             ...value,
@@ -1692,13 +1688,7 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
                       <br />
                       <CircularSlider
                         progressLineCap="flat"
-                        dataIndex={
-                          value?.proposalRulesProposalDuration != null
-                            ? dataTime.indexOf(
-                              value?.proposalRulesProposalDuration
-                            )
-                            : 0
-                        }
+                        dataIndex={value?.proposalRulesProposalDuration != dataTime[0] ? dataTime.indexOf(value?.proposalRulesProposalDuration) : dataTime.indexOf(governanceValue?.proposalRulesProposalDuration)}
                         label="Duration"
                         data={dataTime}
                         labelColor="#fff"
@@ -1713,6 +1703,7 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
                         progressColorFrom="#000000"
                         progressColorTo="#444444"
                         trackColor="#eeeeee"
+                        initialValue={dataTime.indexOf(governanceValue?.proposalRulesProposalDuration)}
                         onChange={(e) =>
                           onChange({
                             ...value,
@@ -1733,11 +1724,7 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
                       <br />
                       <CircularSlider
                         progressLineCap="flat"
-                        dataIndex={
-                          value?.proposalRulesValidationBomb != null
-                            ? dataTime.indexOf(value?.proposalRulesValidationBomb)
-                            : 1
-                        }
+                        dataIndex={value?.proposalRulesValidationBomb != dataTime[1] ? dataTime.indexOf(value?.proposalRulesValidationBomb) : dataTime.indexOf(governanceValue?.proposalRulesValidationBomb)}
                         label="Duration"
                         data={dataTime}
                         labelColor="#fff"
@@ -1752,6 +1739,7 @@ const FixedInflation = ({ amms, value, onChange, onNext, onPrev }) => {
                         progressColorFrom="#000000"
                         progressColorTo="#444444"
                         trackColor="#eeeeee"
+                        initialValue={dataTime.indexOf(governanceValue?.proposalRulesValidationBomb)}
                         onChange={(e) =>
                           onChange({
                             ...value,
@@ -1972,7 +1960,7 @@ const TreasurySplitterManager = ({ value, onChange, onNext, onPrev }) => {
   )
 }
 
-const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
+const DelegationsManager = ({ value, governanceValue, onChange, onNext, onPrev }) => {
   const [disabled, setDisabled] = useState(true)
 
   useEffect(() => {
@@ -2094,7 +2082,7 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
               <br />
               <CircularSlider
                 label="Quorum"
-                dataIndex={value?.quorumPercentageBad ?? 0}
+                dataIndex={value?.quorumPercentageBad != 0 ? value?.quorumPercentageBad : governanceValue?.proposalRulesQuorumPercentage}
                 labelColor="#fff"
                 knobColor="#000000"
                 width="120"
@@ -2109,7 +2097,7 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
                 trackColor="#eeeeee"
                 min={0}
                 max={100}
-                initialValue={0}
+                initialValue={governanceValue?.proposalRulesQuorumPercentage}
                 onChange={(e) => {
                   onChange({
                     ...value,
@@ -2132,7 +2120,7 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
               <br />
               <CircularSlider
                 label="Hard cap"
-                dataIndex={value?.hardCapPercentageBad ?? 0}
+                dataIndex={value?.hardCapPercentageBad != 0 ? value?.hardCapPercentageBad : governanceValue?.proposalRulesHardCapPercentage}
                 labelColor="#fff"
                 width="120"
                 knobSize="25"
@@ -2147,6 +2135,7 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
                 trackColor="#eeeeee"
                 min={0}
                 max={100}
+                initialValue={governanceValue?.proposalRulesHardCapPercentage}
                 onChange={(e) =>
                   onChange({
                     ...value,
@@ -2179,11 +2168,7 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
               <br />
               <CircularSlider
                 progressLineCap="flat"
-                dataIndex={
-                  value?.proposalDuration != null
-                    ? dataTime.indexOf(value?.proposalDurationBad)
-                    : 0
-                }
+                dataIndex={value?.proposalDurationBad != dataTime[0] ? dataTime.indexOf(value?.proposalDurationBad) : dataTime.indexOf(governanceValue?.proposalRulesProposalDuration)}
                 label="Duration"
                 data={dataTime}
                 labelColor="#fff"
@@ -2198,6 +2183,7 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
                 progressColorFrom="#000000"
                 progressColorTo="#444444"
                 trackColor="#eeeeee"
+                initialValue={dataTime.indexOf(governanceValue?.proposalRulesProposalDuration)}
                 onChange={(e) =>
                   onChange({
                     ...value,
@@ -2218,11 +2204,7 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
               <br />
               <CircularSlider
                 progressLineCap="flat"
-                dataIndex={
-                  value?.validationBombBad != null
-                    ? dataTime.indexOf(value?.validationBombBad)
-                    : 1
-                }
+                dataIndex={value?.validationBombBad != dataTime[1] ? dataTime.indexOf(value?.validationBombBad) : dataTime.indexOf(governanceValue?.proposalRulesValidationBomb)}
                 label="Duration"
                 data={dataTime}
                 labelColor="#fff"
@@ -2237,6 +2219,7 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
                 progressColorFrom="#000000"
                 progressColorTo="#444444"
                 trackColor="#eeeeee"
+                initialValue={dataTime.indexOf(governanceValue?.proposalRulesValidationBomb)}
                 onChange={(e) =>
                   onChange({
                     ...value,
@@ -2386,7 +2369,7 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
               <br />
               <CircularSlider
                 label="Quorum"
-                dataIndex={value?.quorumPercentageInsurance ?? 0}
+                dataIndex={value?.quorumPercentageInsurance != 0 ? value?.quorumPercentageInsurance : governanceValue?.proposalRulesQuorumPercentage}
                 labelColor="#fff"
                 knobColor="#000000"
                 width="120"
@@ -2401,6 +2384,7 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
                 trackColor="#eeeeee"
                 min={0}
                 max={100}
+                initialValue={governanceValue?.proposalRulesQuorumPercentage}
                 onChange={(e) => {
                   onChange({
                     ...value,
@@ -2423,7 +2407,7 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
               <br />
               <CircularSlider
                 label="Hard cap"
-                dataIndex={value?.hardCapPercentageInsurance ?? 0}
+                dataIndex={value?.hardCapPercentageInsurance != 0 ? value?.hardCapPercentageInsurance : governanceValue?.proposalRulesHardCapPercentage}
                 labelColor="#fff"
                 width="120"
                 knobSize="25"
@@ -2438,6 +2422,7 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
                 trackColor="#eeeeee"
                 min={0}
                 max={100}
+                initialValue={governanceValue?.proposalRulesHardCapPercentage}
                 onChange={(e) =>
                   onChange({
                     ...value,
@@ -2470,11 +2455,7 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
               <br />
               <CircularSlider
                 progressLineCap="flat"
-                dataIndex={
-                  value?.proposalDurationInsurance != null
-                    ? dataTime.indexOf(value?.proposalDurationInsurance)
-                    : 0
-                }
+                dataIndex={value?.proposalDurationInsurance != dataTime[0] ? dataTime.indexOf(value?.proposalDurationInsurance) : dataTime.indexOf(governanceValue?.proposalRulesProposalDuration)}
                 label="Duration"
                 data={dataTime}
                 labelColor="#fff"
@@ -2489,6 +2470,7 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
                 progressColorFrom="#000000"
                 progressColorTo="#444444"
                 trackColor="#eeeeee"
+                initialValue={dataTime.indexOf(governanceValue?.proposalRulesProposalDuration)}
                 onChange={(e) =>
                   onChange({
                     ...value,
@@ -2509,11 +2491,7 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
               <br />
               <CircularSlider
                 progressLineCap="flat"
-                dataIndex={
-                  value?.validationBombInsurance != null
-                    ? dataTime.indexOf(value?.validationBombInsurance)
-                    : 1
-                }
+                dataIndex={value?.validationBombInsurance != dataTime[1] ? dataTime.indexOf(value?.validationBombInsurance) : dataTime.indexOf(governanceValue?.proposalRulesValidationBomb)}
                 label="Duration"
                 data={dataTime}
                 labelColor="#fff"
@@ -2528,10 +2506,38 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
                 progressColorFrom="#000000"
                 progressColorTo="#444444"
                 trackColor="#eeeeee"
+                initialValue={dataTime.indexOf(governanceValue?.proposalRulesValidationBomb)}
                 onChange={(e) =>
                   onChange({
                     ...value,
                     validationBombInsurance: e,
+                  })
+                }
+              />
+
+
+              <CircularSlider
+                progressLineCap="flat"
+                dataIndex={value?.validationBombBad != dataTime[1] ? dataTime.indexOf(value?.validationBombBad) : dataTime.indexOf(governanceValue?.proposalRulesValidationBomb)}
+                label="Duration"
+                data={dataTime}
+                labelColor="#fff"
+                knobColor="#000000"
+                width="120"
+                knobSize="25"
+                progressSize="9"
+                trackSize="14"
+                labelFontSize="10"
+                valueFontSize="20"
+                verticalOffset="1rem"
+                progressColorFrom="#000000"
+                progressColorTo="#444444"
+                trackColor="#eeeeee"
+                initialValue={dataTime.indexOf(governanceValue?.proposalRulesValidationBomb)}
+                onChange={(e) =>
+                  onChange({
+                    ...value,
+                    validationBombBad: e,
                   })
                 }
               />
@@ -2559,7 +2565,7 @@ const DelegationsManager = ({ value, onChange, onNext, onPrev }) => {
   )
 }
 
-const InvestmentsManager = ({ amms, value, onChange, onNext, onPrev }) => {
+const InvestmentsManager = ({ amms, value, governanceValue, onChange, onNext, onPrev }) => {
   const [disabled, setDisabled] = useState(true)
 
   const [fromETH, setFromETH] = useState(value?.fromETH || [])
@@ -2769,7 +2775,7 @@ const InvestmentsManager = ({ amms, value, onChange, onNext, onPrev }) => {
               <br />
               <CircularSlider
                 label="Quorum"
-                dataIndex={value?.quorumPercentage ?? 0}
+                dataIndex={value?.quorumPercentage != 0 ? value?.quorumPercentage : governanceValue?.proposalRulesQuorumPercentage}
                 labelColor="#fff"
                 knobColor="#000000"
                 width="120"
@@ -2784,7 +2790,7 @@ const InvestmentsManager = ({ amms, value, onChange, onNext, onPrev }) => {
                 trackColor="#eeeeee"
                 min={0}
                 max={100}
-                initialValue={0}
+                initialValue={governanceValue?.proposalRulesQuorumPercentage}
                 onChange={(e) => {
                   onChange({
                     ...value,
@@ -2807,7 +2813,7 @@ const InvestmentsManager = ({ amms, value, onChange, onNext, onPrev }) => {
               <br />
               <CircularSlider
                 label="Hard cap"
-                dataIndex={value?.hardCapPercentage ?? 0}
+                dataIndex={value?.hardCapPercentage != 0 ? value?.hardCapPercentage : governanceValue?.proposalRulesHardCapPercentage}
                 labelColor="#fff"
                 width="120"
                 knobSize="25"
@@ -2822,6 +2828,7 @@ const InvestmentsManager = ({ amms, value, onChange, onNext, onPrev }) => {
                 trackColor="#eeeeee"
                 min={0}
                 max={100}
+                initialValue={governanceValue?.proposalRulesHardCapPercentage}
                 onChange={(e) =>
                   onChange({
                     ...value,
@@ -2852,11 +2859,7 @@ const InvestmentsManager = ({ amms, value, onChange, onNext, onPrev }) => {
               <br />
               <CircularSlider
                 progressLineCap="flat"
-                dataIndex={
-                  value?.proposalDuration != null
-                    ? dataTime.indexOf(value?.proposalDuration)
-                    : 0
-                }
+                dataIndex={value?.proposalDuration != dataTime[0] ? dataTime.indexOf(value?.proposalDuration) : dataTime.indexOf(governanceValue?.proposalRulesProposalDuration)}
                 label="Duration"
                 data={dataTime}
                 labelColor="#fff"
@@ -2871,6 +2874,7 @@ const InvestmentsManager = ({ amms, value, onChange, onNext, onPrev }) => {
                 progressColorFrom="#000000"
                 progressColorTo="#444444"
                 trackColor="#eeeeee"
+                initialValue={governanceValue?.proposalDuration}
                 onChange={(e) =>
                   onChange({
                     ...value,
@@ -2891,11 +2895,7 @@ const InvestmentsManager = ({ amms, value, onChange, onNext, onPrev }) => {
               <br />
               <CircularSlider
                 progressLineCap="flat"
-                dataIndex={
-                  value?.validationBomb != null
-                    ? dataTime.indexOf(value?.validationBomb)
-                    : 1
-                }
+                dataIndex={value?.validationBomb != dataTime[1] ? dataTime.indexOf(value?.validationBomb) : dataTime.indexOf(governanceValue?.proposalRulesValidationBomb)}
                 label="Duration"
                 data={dataTime}
                 labelColor="#fff"
@@ -2910,6 +2910,7 @@ const InvestmentsManager = ({ amms, value, onChange, onNext, onPrev }) => {
                 progressColorFrom="#000000"
                 progressColorTo="#444444"
                 trackColor="#eeeeee"
+                initialValue={governanceValue?.proposalRulesValidationBomb}
                 onChange={(e) =>
                   onChange({
                     ...value,
@@ -3231,6 +3232,7 @@ const CreateOrganization = () => {
         {step == 2 && (
           <Organization
             value={state?.organization}
+            governanceValue={state?.governance}
             onChange={(value) => setState({ ...state, organization: value })}
             onNext={() => setStep(3)}
             onPrev={() => setStep(1)}
@@ -3240,6 +3242,7 @@ const CreateOrganization = () => {
         {step == 3 && (
           <FixedInflation
             value={state?.fixedInflation}
+            governanceValue={state?.governance}
             onChange={(value) => setState({ ...state, fixedInflation: value })}
             onNext={() => setStep(4)}
             onPrev={() => setStep(2)}
@@ -3260,6 +3263,7 @@ const CreateOrganization = () => {
         {step == 5 && (
           <DelegationsManager
             value={state?.delegationsManager}
+            governanceValue={state?.governance}
             onChange={(value) =>
               setState({ ...state, delegationsManager: value })
             }
@@ -3272,6 +3276,7 @@ const CreateOrganization = () => {
           <InvestmentsManager
             amms={amms}
             value={state?.investmentsManager}
+            governanceValue={state?.governance}
             onChange={(value) =>
               setState({ ...state, investmentsManager: value })
             }
