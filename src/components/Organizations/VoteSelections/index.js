@@ -18,7 +18,7 @@ const VoteSelections = ({element, discriminator, value, votes, label, checked, p
   const [terminable, setTerminable] = useState(false)
 
   async function refreshPositionInfo() {
-    setTerminable(element.isSurveyless ? await surveylessIsTerminable({...web3Data, context}, element, proposalId) : await surveyIsTerminable({account, newContract, context}, element, proposalId))
+    setTerminable(element.isSurveyless ? await surveylessIsTerminable({...web3Data, context}, element, proposalId) : await surveyIsTerminable({...web3Data, context}, element, proposalId))
   }
 
   useEffect(() => {

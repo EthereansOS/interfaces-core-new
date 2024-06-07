@@ -672,7 +672,7 @@ export async function proposeTransfer(
     return val
   })
 
-  var presetNumber = element.organization.type === 'delegation' ? 3 : 0
+  var presetNumber = element.organization.old ? 8 : element.organization.type === 'delegation' ? 3 : 0
   var treasuryManagerAddress =
     element.delegationsManager?.treasuryManagerAddress ||
     element.organization.components.treasuryManager.address

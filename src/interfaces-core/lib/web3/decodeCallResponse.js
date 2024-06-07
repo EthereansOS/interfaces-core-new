@@ -7,7 +7,7 @@ export default function decodeCallResponse(response, outputs) {
       return types.length !== 1 ? null : types[0].toLowerCase().indexOf('[]') !== -1 ? [] : types[0].toLowerCase().indexOf('tuple') !== -1 ? null : types[0].toLowerCase() === 'bytes' ? '0x' : types[0].toLowerCase() === 'string' ? '' : types[0].toLowerCase() === 'bool' ? false : types[0].toLowerCase() === 'address' ? VOID_ETHEREUM_ADDRESS  : types[0].toLowerCase() === 'bytes32' ? VOID_BYTES32 : "0"
     }
     response = abi.decode(types, response)
-    response = toStringRecursive(response)
+    response = toValueRecursive(response)
     response = reduceRecursive(response, outputs)
     if(outputs.length === 1) {
       response = response[0]
@@ -19,8 +19,8 @@ export default function decodeCallResponse(response, outputs) {
     return outputs.map(it => it.components ? `tuple(${recursiveOutput(it.components).join(',')})${it.type.indexOf('[]') !== -1 ? '[]' : ''}`: it.type)
   }
   
-  function toStringRecursive(outputs) {
-    return outputs.map(it => Array.isArray(it) ? toStringRecursive(it) : it.toString())
+  function toValueRecursive(outputs) {
+    return outputs.map(it => Array.isArray(it) ? toValueRecursive(it) : it.toString() === 'true' ? true : it.toString() === 'false' ? false : it.toString())
   }
   
   function reduceRecursive(result, metadata) {

@@ -47,6 +47,7 @@ export default ({element, onToggle}) => {
   element.name === 'Covenants Farming Fee (Transaction)' && (Component = <HeaderStateManagerVariable element={element} name="farmingFeePercentageTransacted" decimals="16" suffix=" %"/>)
   element.name === 'Covenants Farming Fee (Burn)' && (Component = <HeaderStateManagerVariable element={element} name="farmingFeeBurnOS" decimals="18" suffix=" OS"/>)
   element.name === 'Covenants Routine Fee (Transaction)' && (Component = <HeaderStateManagerVariable element={element} name="inflationFeePercentageTransacted" decimals="16" suffix=" %"/>)
+  element.name === 'OS Burn Fee (DAO Creation)' && (Component = <HeaderStateManagerVariable element={element} name="daoFactoryOSAmountToBurnAtCreation" decimals="18" suffix=" OS"/>)
   if(element.name === 'Delegations Grants Insurance' || element.name === 'Change Delegation Attachment Tax') {
     (Component = <HeaderStateManagerVariable element={element} name="delegationsAttachInsurance" decimals="18" suffix=" OS"/>)
   }

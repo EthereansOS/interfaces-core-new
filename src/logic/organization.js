@@ -999,6 +999,9 @@ export var wellknownPresets = {
   QmUMFxQjd3zj7oVGpDPGDom6ogYu1b9o6CnKAYFSaCsmuU: {
     presetValues: ['0.05 OS', '0.1 OS', '1 OS', '5 OS', '10 OS', '100 OS'],
   },
+  QmNLiDxDZEPvnCEak9kBakF7MWn3YBaAgFXYcWks7MosBp : {
+    presetValues: ['2 OS', '4 OS', '6 OS', '10 OS', '13 OS', '15 OS']
+  }
 }
 
 async function getSurveysByModels({ context, chainId }, organization) {
