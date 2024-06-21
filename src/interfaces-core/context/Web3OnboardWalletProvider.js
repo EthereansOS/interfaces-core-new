@@ -5,7 +5,6 @@ import walletConnectModule from '@web3-onboard/walletconnect'
 import coinbaseWalletModule from '@web3-onboard/coinbase'
 import envToContext from '../lib/utils/envToContext'
 import web3Utils from 'web3-utils'
-import sendAsync from '../lib/web3/sendAsync'
 
 init({
   wallets: [
@@ -61,7 +60,7 @@ export const WalletProvider = props => {
   useEffect(() => !wallet && connect(), [wallet])
 
   const value = useMemo(() => !wallet || !wallet.accounts[0] ? null : {
-    account : wallet.accounts[0].address,
+    account : web3Utils.toChecksumAddress(wallet.accounts[0].address),
     chainId : parseInt(wallet.chains[0].id),
     networkName : wallet.chains[0].namespace,
     ethereum : wallet.provider
