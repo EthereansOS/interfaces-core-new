@@ -458,8 +458,8 @@ input::-webkit-scrollbar {
 }
 
 .dark .selected {
-    background-color: #403b63 !important;
     color: rgb(232, 230, 227) !important;
+    background-image: linear-gradient(25deg, #f09243, #f200ff);
 }
 
 .CollectionLeft .exploreBanners {
@@ -1084,8 +1084,23 @@ textarea{
     width: 30%;
 }
 
+.light .DetailsLabelCreated{
+    background-color: #ffffff!important;
+}
+.light .OrganizationOverviewGroup {
+    background-color: #ffffff!important;
+}
+
+.light .ExtLinkButton {
+    color: #000!important;
+}
+.light .OrgPartView .OrgPartTitle button {
+    background-image: linear-gradient(25deg, #f09243, #f043d7);
+    color:#fff!important;
+}
+
 .ExtLinkButton {
-    border: 1px solid;
+    border: 0px;
     border-radius: 5px;
     display: inline-block;
     min-width: 70px;
@@ -1101,7 +1116,7 @@ textarea{
     border-bottom: 1px solid #ddd;
     padding-bottom: 14px;
     margin-bottom: 10px;
-    text-align: center;
+    text-align: left;
 }
 
 .ItemLinkButton {
@@ -1140,6 +1155,7 @@ textarea{
     border: none;
     width: 90%;
     margin: 0 auto;
+    max-width: 200px;
 }
 
 .RegularButtonDuoBack {
@@ -1775,7 +1791,7 @@ textarea{
     display: flex;
     align-items: flex-start;
     background-color: #fff;
-    margin-top: 10px;
+    margin-top: 0px;
     border-radius: 10px;
 }
 
@@ -2173,6 +2189,25 @@ width: 100%!important;
     width: auto;
     border-radius: 20px;
     border: 2px solid;
+    text-align: right;
+}
+.overviewSection{
+    float: right;
+}
+.overviewSection .DappSubMenu{
+    padding: 0px;
+    margin: 0px;
+    vertical-align: middle;
+    display: flex!important;
+    align-content: center;
+    justify-content: flex-end;
+    align-items: center;
+}
+.overviewSection .DappSubMenu li{
+    display: flex;
+}
+.overviewSection .DappSubMenu a{
+    line-height: 22px;
 }
 
 
@@ -5003,18 +5038,82 @@ input[type=range]::-ms-thumb {
 .ItemsExploreMainTitleArea {
     position: relative;
     text-align: left;
-    width: 97%;
+    width: 100%;
     margin: 0 auto;
     margin-top: 40px;
     border-bottom: 1px solid #ddd;
-    padding-bottom: 35px;
+    padding-bottom: 15px;
     margin-bottom: 25px;
 }
 
+.DetailHeaderAreaImage figure img{
+    position: absolute!important;
+    left: 25%!important;
+    top: 0px!important;
+}
+.DetailHeaderAreaImage figure div{
+    height: 200px!important;
+}
+
+.OrganizationOverviewGroup{
+    background-color: #403b63;
+    border-radius: 10px;
+    text-align: left;
+    padding: 20px 20px;
+}
+
+.OrganizationOverviewGroup h6{
+    text-align: left;
+}
+
+.OrganizationOverviewGroup .OrgThingsTitle h6{
+    text-align: left;
+    font-size: 21px;
+    border-left: 4px solid #f15a8c;
+    padding-left: 5px;
+    margin-top: 6px;
+    padding-bottom: 5px;
+    padding-top: 5px;
+}
+
+.OrganizationOverviewGroup .OrgThingsRegularTitle h6{
+    text-align: left;
+    font-size: 21px;
+    border-left: 4px solid #f15a8c;
+    padding-left: 5px;
+    margin-top: 6px;
+    padding-bottom: 5px;
+    padding-top: 5px;
+}
 
 .dark .ItemsExploreMainTitleArea {
     border-bottom: 1px solid #403b63;
 }
+
+.OrganizationOverviewGroup .OrgThingsTitle{
+    padding: 8px 5px;
+}
+
+.OrgPartView{
+    display: flex!important;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.OrgPartView .OrgPartTitle{
+    text-align: center;
+}
+
+.OrgPartView .OrgPartTitle h6{
+    display: inline;
+}
+.OrgPartView .OrgPartTitle button{
+    background-image: linear-gradient(25deg, #7b57ff, #f200ff);
+}
+.OrgPartView  .OrgPartInfoB{
+    padding: 0px;
+}
+
 
 .ItemsExploreMainTitleArea h2 {
     margin-bottom: 5px;
@@ -5327,23 +5426,23 @@ input[type=range]::-ms-thumb {
 }
 
 .CollectionLeft {
-    width: 470px;
+    width: 30%;
     display: inline-block;
     text-align: center;
     vertical-align: top;
+    padding: 50px 50px 50px 80px;
 }
 
 .CollectionRight {
-    width: 600px;
     display: inline-block;
     text-align: center;
-    margin-left: 30px;
     vertical-align: top;
+    width: 100%;
 }
 
 .CollectionRight .CovenantsMainBox {
     padding: 10px;
-    width: 650px;
+    width: 100%;
 }
 
 .CollectionRight .CovenantsMainBox .FilterMenu {
@@ -5354,7 +5453,7 @@ input[type=range]::-ms-thumb {
     width: 100%;
     display: block;
     padding: 0px;
-    border-radius: 20px;
+    border-radius: 8px;
     background: #fff;
 }
 
@@ -5370,15 +5469,15 @@ input[type=range]::-ms-thumb {
     vertical-align: top;
     height: 250px;
     border-radius: 20px;
+    padding-top: 20px;
 }
 
 .UnwrapBoxItem {
-    width: 49%;
+    width: 83%;
     padding: 5px;
-    margin: auto 0% auto 1%;
+    margin: 0px 0% 20px 1%;
     display: inline-block;
     vertical-align: top;
-    height: 250px;
     border-radius: 20px;
 }
 
@@ -5431,7 +5530,6 @@ input[type=range]::-ms-thumb {
     font-weight: 600;
     margin: 5px auto 15px auto;
     width: 100%;
-    border-bottom: 1px solid #e0e2ed;
     padding-bottom: 20px;
 }
 
@@ -5481,9 +5579,10 @@ input[type=range]::-ms-thumb {
     overflow: hidden;
     vertical-align: middle;
     position: relative;
-    background-color: #fff;
     padding: 20px;
     border-radius: 30px;
+    padding: 50px;
+    padding-top: 10px;
 }
 
 .ICViewCover img {
@@ -5658,7 +5757,8 @@ input[type=range]::-ms-thumb {
 
 .SubCollectionInfoName p {
     font-size: 12px;
-    line-height: 1.2
+    line-height: 1.2;
+    text-align: center;
 }
 
 .CollectionSelectedd {
@@ -5932,8 +6032,12 @@ input[type=range]::-ms-thumb {
     text-align: center;
 }
 
+.SubCollectionInfoName h2{
+    padding:20px;
+    text-align: center;
+}
 .GovCard {
-    width: 920px;
+    width: 100%;
     margin: 25px;
     display: inline-block;
     border-radius: 20px;
@@ -5947,8 +6051,8 @@ input[type=range]::-ms-thumb {
 }
 
 .GovCardS {
-    width: 450px;
-    margin: 25px 10px;
+    width: 100%;
+    margin: 25px 0px;
     display: inline-block;
     border-radius: 20px;
     text-align: center;
@@ -5964,6 +6068,15 @@ input[type=range]::-ms-thumb {
     display: inline-block;
     text-align: left;
     padding: 25px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.GovCardHeadFlex {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
 }
 
 .GovCardHeadDelegation figure {
@@ -6156,6 +6269,7 @@ input[type=range]::-ms-thumb {
     vertical-align: middle;
     display: inline-block;
     margin-top: 0px;
+    max-width: 200px;
 }
 
 .GovCardS .GovernanceCardInfoOpen {
@@ -6184,7 +6298,7 @@ input[type=range]::-ms-thumb {
 
 .GovCardS .Govright {
     margin-left: 0px !important;
-    width: 400px;
+    width: 100%;
 }
 
 .GovCardS .ProposalVotesCount {
@@ -6742,7 +6856,7 @@ input[type=range]::-ms-thumb {
     text-align: center;
     border-radius: 20px;
     margin: 10px auto;
-    width: 450px;
+    max-width: 450px;
 }
 
 .Vote {
@@ -7212,7 +7326,7 @@ input[type=range]::-ms-thumb {
 }
 
 .OrgHeadline {
-    width: 920px;
+    width: 100%;
     display: block;
     height: 200px;
     border-radius: 20px;
@@ -7260,10 +7374,12 @@ input[type=range]::-ms-thumb {
 .OrgHeadlineSide p {
     text-decoration: none;
 }
-
+.CollectionRightWrapTradeAreaWrap{
+    padding: 10px;
+    width: 100%;
+}
 .OrgTitle {
-    width: 450px;
-    height: 160px;
+    width: 70%;
     overflow: hidden;
     display: inline-block;
     padding: 10px 15px;
@@ -7288,16 +7404,21 @@ input[type=range]::-ms-thumb {
 
 .OrgTitle p:hover {}
 
+
+.displayBlock{
+    display: block!important;
+}
+
 .OrgLinks {
-    width: 250px;
+    width: fit-content;
     display: inline-block;
     text-align: center;
     vertical-align: top;
-    padding: 30px 30px;
+    padding: 0px 0px;
 }
 
 .OrgMainThingsCard {
-    width: 940px;
+    width: 100%;
     margin: 25px auto;
     display: inline-block;
     border-radius: 20px;
@@ -7323,10 +7444,10 @@ input[type=range]::-ms-thumb {
 }
 
 .OrgThingsInfoContent {
-    width: 22%;
+    width: 32%;
     display: inline-block;
     margin: 10px 0.5%;
-    padding: 15px 10px;
+    padding: 5px 10px;
     text-align: center;
     border-radius: 12px;
 }
@@ -7336,7 +7457,6 @@ input[type=range]::-ms-thumb {
     font-weight: bold;
     margin: 5px auto;
     display: inline-block;
-    width: 100%;
     text-align: center;
 }
 
@@ -7360,7 +7480,7 @@ input[type=range]::-ms-thumb {
 }
 
 .OrgPartView {
-    width: 940px;
+    width: 100%;
     margin: 20px auto;
     display: inline-block;
     border-radius: 20px;
@@ -7371,7 +7491,7 @@ input[type=range]::-ms-thumb {
 }
 
 .OrgPartTitle {
-    width: 200px;
+    width: -webkit-fill-available;
     display: inline-block;
     margin: 5px 30px 15px 5px;
     padding: 10px;
@@ -7387,7 +7507,7 @@ input[type=range]::-ms-thumb {
 }
 
 .OrgPartInfo {
-    width: 200px;
+    width: -webkit-fill-available;
     display: inline-block;
     padding: 10px;
     margin: 5px;
@@ -7408,7 +7528,7 @@ input[type=range]::-ms-thumb {
 }
 
 .OrgPartInfoB {
-    width: 200px;
+    width: -webkit-fill-available;
     display: inline-block;
     vertical-align: middle;
     padding: 10px 30px;
@@ -7418,22 +7538,34 @@ input[type=range]::-ms-thumb {
 }
 
 .DelegationsSection {
-    border-top: 1px solid;
-    padding: 20px 20px 20px 15px;
+    padding: 0px 20px 0px 15px;
     margin: 10px auto;
     width: 100%;
     display: inline-block;
     text-align: left;
 }
 
+.OrgPartViewGrantChartWrapper{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
 .DelegationsSectionOne {
-    width: 280px;
+    width: fit-content;
     display: inline-block;
     margin: 5px;
-    border-radius: 16px;
+    border-radius: 8px;
     border: 1px solid;
     text-align: left;
     overflow: hidden;
+}
+
+.DelecationSectionGrantChart{
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 18px;
 }
 
 .DelegationsSectionOne>figure {
@@ -7449,9 +7581,7 @@ input[type=range]::-ms-thumb {
 }
 
 .OrgMainThingsCardSL {
-    width: 450px;
-    margin: 15px;
-    height: 220px;
+    width: auto;
     display: inline-block;
     border-radius: 20px;
     text-align: center;
@@ -7464,13 +7594,11 @@ input[type=range]::-ms-thumb {
     width: 200px;
     display: inline-block;
     margin: 30px 0.5%;
-    padding: 15px 10px;
     text-align: center;
     border-radius: 12px;
 }
 
 .InvestmentsSection {
-    border-top: 1px solid;
     padding: 20px 20px 20px 20px;
     margin: 10px auto;
     width: 100%;
@@ -7479,13 +7607,13 @@ input[type=range]::-ms-thumb {
 }
 
 .InvestmentsSectionBuySell {
-    width: 410px;
-    display: inline-block;
     text-align: left;
     padding: 20px;
     border-radius: 12px;
     margin: 10px;
     vertical-align: middle;
+    display: flex;
+    width: 100%;
 }
 
 .InvestmentsSectionBuySell p {
@@ -7533,6 +7661,14 @@ input[type=range]::-ms-thumb {
     text-align: left;
     padding: 20px;
     border-radius: 16px;
+}
+
+.OrgMainThingsCardFlex{
+    display: flex;
+    align-items: center;
+    align-content: center;
+    flex-wrap: nowrap;
+    justify-content: space-evenly;
 }
 
 .OrgPartFarm a {
@@ -7678,14 +7814,14 @@ input[type=range]::-ms-thumb {
     width: 100%;
     display: inline-block;
     padding: 5px;
-    border-radius: 16px;
+    border-radius: 7px;
 }
 
 .UpshotBar figure {
     width: 10%;
     display: inline-block;
     padding: 5px;
-    border-radius: 16px;
+    border-radius: 5px;
     font-size: 12px;
     max-width: 100%;
 }
@@ -8494,6 +8630,10 @@ input[type=range]::-ms-thumb {
 
 .generationBoh {
     margin-top: 15px;
+}
+
+.CollectionRightWrapTradeArea{
+    display: flex;
 }
 
 .PlainLink {
@@ -10633,7 +10773,7 @@ input[type=range]::-ms-thumb {
 }
 
 .light .MetaBTN {
-    border-color: #403f830d !important;
+    border-color: #e9ebf2 !important;
     color: #999 !important;
     background-color: #403f830d;
 }
@@ -11581,8 +11721,8 @@ input {
 
 .DetailSupply {
     background: #e9ebf2;
-    border: 1px solid #e0e2ed;
-    border-radius: 40px;
+    border: 1px solid #e9ebf2;
+    border-radius: 8px;
     font-weight: bold;
     padding: 8px 20px 8px 20px;
     float: right;
@@ -11691,21 +11831,20 @@ input {
     text-align: left;
     padding-left: 8px;
     padding: 6px;
-    border: 2px solid #e7ecf4;
+    border: 2px solid #e7ecf42b;
     border-radius: 8px;
 }
 
 .CollectionRightSubtitles {
     padding: 0px 7px 0px 7px;
-    border-top: 1px solid #ddd;
     padding-top: 10px;
     border-bottom: 1px solid #ddd;
     padding-bottom: 12px;
     text-align: left;
-    margin-bottom: 20px;
-    margin-top: 20px;
-    padding-top: 20px;
-    padding-bottom: 20px;
+    margin-bottom: 0px;
+    margin-top: 0px;
+    padding-top: 0px;
+    padding-bottom: 20px !important;
 }
 
 .CollectionRightSubtitles h4 {
@@ -11963,11 +12102,21 @@ input {
     background-color: #d9d2c2a3;
 }
 
+ .UnwrapBoxItem {
+    padding-top: 30px;
+}
+.ItemsExploreMainTitleArea .DappSubMenu{
+    float: right;
+    position: relative;
+    top: -20px;
+}
+
 .light .UnwrapBoxItem {
     /* background-color: #f2f4f8;
     box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);
     -webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);
     -moz-box-shadow: 1px 1px 2px 1px rgba(202, 202, 202, 0.32);*/
+   
 }
 
 .biz .UnwrapBoxItem {
@@ -12874,7 +13023,6 @@ input {
 
 .dark .GovCardOpened {
     background-color: #403b63;
-    border-top: 1px solid #29263e;
 }
 
 .sepia .GovCardOpened {
@@ -13313,9 +13461,17 @@ input {
 .sepia .Rule {
     background-color: #d9d2c2a3;
 }
+.OrgHeadlineDelegation{
+    width: 30%;
+    display: inline-block;
+}
+.OrgHeadlineDelegation figure{
+    position: relative!important;
+    margin: 0 auto!important;
+    display: block!important;
+}
 
 .light .OrgHeadline {
-    background-color: #ffffff;
     /*box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);
     -webkit-box-shadow: 1px 1px 2px 1px rgb(202 202 202 / 32%);
     -moz-box-shadow: 1px 1px 2px 1px rgba(202, 202, 202, 0.32);*/
@@ -13327,7 +13483,6 @@ input {
 }
 
 .dark .OrgHeadline {
-    background-color: #403b62;
     /*box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);
     -webkit-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);
     -moz-box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 32%);*/
@@ -14064,7 +14219,6 @@ input {
 .biz .ICViewCover {}
 
 .dark .ICViewCover {
-    background-color: #403b63;
 }
 
 .DetailItemAddButtonsGroup>a {
@@ -15034,7 +15188,6 @@ input[type=range]::-moz-range-thumb {
 }
 
 .dark .Govright{
-    border-top: 1px solid #29263f;
     margin-top: 20px;
     padding-top: 20px;
 }
@@ -15134,6 +15287,8 @@ input[type=range]::-moz-range-thumb {
     color: #000;
     border-radius: 0;
 }
+
+
 
 .matrix .SettingBLabRegular input {
     background-color: #f2f4f8;
@@ -16388,6 +16543,42 @@ input[type=range]::-moz-range-thumb {
     width: 30%;
     display: inline-block;
 }
+.DetailHeaderAreaImage {
+   display: inline-block;
+   width: 30%;
+}
+.DetailHeaderAreaDescription {
+    width: 65%;
+    display: inline-block;
+    text-align: left;
+}
+.DetailHeaderAreaImage img {
+    width: 200px;
+}
+
+.DetailsLabelCreated{
+    font-size: 12px;
+    background-color: #403b63;
+    display: inline-block;
+    border-radius: 6px;
+    padding: 5px 15px 5px 15px;
+    margin-top: 10px;
+}
+
+.DetailHeaderArea {
+    display: flex;
+    align-content: center;
+    justify-content: space-evenly;
+    align-items: center;
+    margin-bottom: 50px;
+}
+
+.DetailsLabelDescription{
+    max-width: 600px;
+    line-height: 18px;
+    font-size: 14px;
+}
+
 .FactoryCreateWrapper .FactoryCreateRightRow{
     width: 65%;
     display: inline-block;
@@ -16736,7 +16927,21 @@ input[type=range]::-moz-range-thumb {
     }
 }
 
+.OrganizationOveriewArea{
+   display: flex;
+}
 
+.GovCardHeadWrapper{
+    width: 100%;
+}
+
+.GovCardHeadWrapper>div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    justify-content: space-between;
+}
 
 .BlockNews {
     position: fixed;
@@ -16916,4 +17121,69 @@ input[type=range]::-moz-range-thumb {
          display: inline-block
     }
 
+}
+
+@media only screen and (max-width: 810px) {
+    .SingleContentPage{
+        display:block!important;
+    }
+    .SingleContentPage .CollectionLeft{
+       width: 100%;
+    }
+    
+    .CollectionRightWrapTradeArea{
+        display: block;
+        text-align: center;
+    }
+
+    .CollectionRightWrapTradeAreaWrap{
+        max-width: 500px;
+        margin:30px auto 20px auto;
+    }
+    .SendToL2{
+        display: block !important;
+        margin: 0 auto !important;
+        margin-bottom: 20px !important;
+    }
+
+    .OrgHeadlineDelegation{
+        width: 100%;
+    }
+    .CreatedDelegationLabel{
+        text-align: center;
+    }
+    .HideMobile{
+        display: none!important;
+    }
+    .DetailHeaderAreaImage{
+        width: 100%;
+    }
+    .DetailHeaderArea{
+        display: block;
+    }
+    .DetailHeaderAreaImage figure img {
+       
+       left:30vw!important;
+    }
+    .DetailHeaderAreaDescription{
+        text-align: center;
+    }
+    .OrganizationOveriewArea{
+        display: block;
+     }
+     .OrganizationOverviewGroup {
+        width: 93%;
+        margin: 0 auto;
+    }
+    .OrgPartView{
+        width: 94% !important;
+        display: block !important;
+        min-width: auto !important;
+    }
+    .DappSubMenu{
+        width: 100%;
+        display: block !important;
+        float: initial !important;
+        top: 0px !important;
+    }
 }

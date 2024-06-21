@@ -558,7 +558,7 @@ export default ({ element, forDelegationVote, refreshElements }) => {
   }, [useWeb3Data.block, element?.isSurveyless])
 
   return (
-    <div className={style.GovLeft}>
+    <div className={style.GovLeft} style={{alignItems: 'baseline'}}>
       {wrapWithdrawModal && (
         <WrapWithdrawModal
           close={() => setWrapWithdrawModal()}

@@ -4,7 +4,7 @@ import style from '../../../../all.module.css'
 import OrgHeadline from '../../../../components/Organizations/OrgHeadline'
 import MainSectionView from '../SubSections/main-section-view.js'
 import GovernanceSectionView from '../SubSections/governance-section-view.js'
-import DappSubMenu from '../../../../components/Global/DappSubMenu/index.js'
+
 import GovernanceContainer from '../../../../components/Organizations/GovernanceContainer'
 import { useLocation } from 'react-router'
 import CircularProgress from '../../../../components/Global/OurCircularProgress'
@@ -70,14 +70,8 @@ const SubDAOView = () => {
       <ScrollToTopOnMount />
 
       <div className={style.SingleContentPage}>
-        <OrgHeadline element={organization} onMetadata={setOrganization} />
-        <DappSubMenu
-          isSelected={(it) => it.view === currentView}
-          voices={menuVoices.map((it) => ({
-            ...it,
-            onClick: () => it.view && setCurrentView(it.view),
-          }))}
-        />
+        <OrgHeadline element={organization} onMetadata={setOrganization}  currentView={currentView} menuVoices={menuVoices} onSetCurrentView={setCurrentView} />
+       
         <Component element={organization} />
       </div>
     </>

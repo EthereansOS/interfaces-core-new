@@ -73,6 +73,7 @@ export default ({ item }) => {
 
   return (
     <div className={style.ViewBasics}>
+      <div class={style.ItemsExploreMainTitleArea} style={{margin: '0px 0px 10px', paddingBottom: '5px'}}><h2>NFT Item</h2></div>
       {farming && (
         <RegularModal close={() => setFarming()}>
           <ViewFarmings rewardTokenAddress={item.address} />
