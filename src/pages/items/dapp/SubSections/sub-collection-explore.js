@@ -17,7 +17,7 @@ const SubCollectionExplore = ({item}) => {
         <Link to={`/items/collections/${item.collectionId}`} className={style.SubCollectionInfo}>
           <LogoRenderer input={item.collectionData} figureClassName={style.SubCollectionInfoCover}/>
           <div className={style.SubCollectionInfoName}>
-            <h5>More From {item.collectionData.name} Collection</h5>
+            <h2>More From {item.collectionData.name} Collection</h2>
             <p>{shortenWord({ context, charsAmount : '260', shortenWordSuffix : '...' }, item.collectionData.description)}</p>
           </div>
         </Link>

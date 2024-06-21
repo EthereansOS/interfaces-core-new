@@ -53,12 +53,12 @@ export default ({element, onToggle}) => {
   }
 
   return (
-    <div className={style.GovCardHead}>
+    <div className={style.GovCardHead + ' ' + style.GovCardHeadWrapper }>
       {type === 'delegation' ? <>
         <div className={style.GovCardHeadDelegation}>
           {element.delegationsManager && <LogoRenderer input={element}/>}
           <span>{element.name}</span>
-          {element.delegationsManager && <p><b>Supporters stake:</b><br></br> {formatMoney(fromDecimals(supportersStake, 18, true), 4)} {element.delegationsManager.supportedToken.symbol}</p>}
+          {element.delegationsManager && <p className={style.HideMobile}><b>Supporters stake:</b><br></br> {formatMoney(fromDecimals(supportersStake, 18, true), 4)} {element.delegationsManager.supportedToken.symbol}</p>}
           <div className={style.DelegationWalletsCardBTN}>
             <RegularButtonDuo onClick={() => setOpened(!opened)}>{opened ? 'Close' : 'Open'}</RegularButtonDuo>
           </div>
@@ -73,6 +73,8 @@ export default ({element, onToggle}) => {
           </div>
           <div className={style.GovCardHeadOrganizationInfo}>
               <p><b>Type:</b><br></br> {element.isSurveyless ? "Surveyless" : type === 'organization' ? "Survey" : "Poll"}</p>
+          </div>
+          <div className={style.GovCardHeadOrganizationInfo}>
               {Component && <p><b>Active Selection:</b><br/> {Component}</p>}
           </div>
           <div className={style.GovernanceCardInfoOpen}>

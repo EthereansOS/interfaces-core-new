@@ -61,7 +61,7 @@ const RootWallet = ({ element }) => {
 
   return (
     <div className={style.OrgMainThingsCardSL}>
-      <div className={style.OrgThingsRegularTitle}>
+       <div className={style.OrgThingsTitle}>
         <h6>Treasury Manager</h6>
       </div>
       <div className={style.OrgThingsInfoContent}>
@@ -74,9 +74,8 @@ const RootWallet = ({ element }) => {
               href={`${getNetworkElement(
                 { context, chainId },
                 'etherscanURL'
-              )}/tokenholdings?a=${
-                element.components.treasuryManager.address
-              }`}>
+              )}/tokenholdings?a=${element.components.treasuryManager.address
+                }`}>
               {value}
             </a>
           </p>
@@ -190,7 +189,10 @@ const TreasurySplitter = ({ element }) => {
   }
 
   return (
-    <div className={style.OrgMainThingsCard}>
+    <div className={style.OrgMainThingsCard + " " + style.OrgMainThingsCardFlex}>
+      <RootWallet element={element} />
+      {web3Utils.toChecksumAddress(element.address) === "0x48B4e1493F132C49063Cea273D2a756f8D9a1759" && <KaitenTBI element={element} />}
+      <div>
       <div className={style.OrgThingsTitle}>
         <h6>Treasury Splitter</h6>
       </div>
@@ -204,9 +206,8 @@ const TreasurySplitter = ({ element }) => {
               href={`${getNetworkElement(
                 { context, chainId },
                 'etherscanURL'
-              )}/tokenholdings?a=${
-                element.components.treasurySplitterManager.address
-              }`}>
+              )}/tokenholdings?a=${element.components.treasurySplitterManager.address
+                }`}>
               {value}
             </a>
           </p>
@@ -223,8 +224,11 @@ const TreasurySplitter = ({ element }) => {
         {nextBlock && <p>{nextBlock}</p>}
         {enableSplitButton && <p ><ActionAWeb3Button onSuccess={refreshNextSplit} onClick={() => blockchainCall(element.components.treasurySplitterManager.contract.methods.splitTreasury, account)}>Split</ActionAWeb3Button></p>}
       </div>
+      </div>
+     
       {!receivers && <OurCircularProgress />}
       {receivers && receivers.length !== 0 && (
+         <div>
         <>
           <div className={style.OrgThingsTitle}>
             <h6>Distribution</h6>
@@ -245,6 +249,7 @@ const TreasurySplitter = ({ element }) => {
             </div>
           ))}
         </>
+        </div>
       )}
     </div>
   )
@@ -457,6 +462,7 @@ const Investments = ({ element }) => {
   }, [open])
 
   return (
+    <>
     <div className={style.OrgPartView}>
       <div className={style.OrgPartTitle}>
         <h6>Investments Fund</h6>
@@ -498,79 +504,10 @@ const Investments = ({ element }) => {
           {open ? 'Close' : 'Open'}
         </RegularButtonDuo>
       </div>
-      {open && (
-        <div className={style.InvestmentsSection}>
-          <div className={style.InvestmentsSectionBuySell}>
-            {!tokensFromETH && <CircularProgress />}
-            {tokensFromETH && (
-              <p>
-                Estimated <b>{singleSwapFromETHValue}</b>
-                <a>
-                  <img src={`${process.env.PUBLIC_URL}/img/eth_logo.png`}></img>
-                </a>{' '}
-                swap for
-                {tokensFromETH.map((it, i) => (
-                  <Fragment key={it}>
-                    <a>
-                      <LogoRenderer noFigure input={it} />
-                      {tokensFromETHToBurn[i] && <span>&#128293;</span>}
-                    </a>
-                    {tokensFromETHAMMs && tokensFromETHAMMPoolLinks && (
-                      <>
-                        on
-                        <a
-                          target="_blank"
-                          href={getAmmPoolLink(
-                            { context, ...web3Data },
-                            tokensFromETHAMMs[i],
-                            tokensFromETHAMMPoolLinks[i]
-                          )}>
-                          <LogoRenderer noFigure input={tokensFromETHAMMs[i]} />
-                        </a>
-                      </>
-                    )}
-                  </Fragment>
-                ))}
-              </p>
-            )}
-          </div>
-          <div className={style.InvestmentsSectionBuySell}>
-            {!tokensToETH && <CircularProgress />}
-            {tokensToETH && (
-              <p>
-                <b>Swap:</b>
-                {tokensToETH.map((it, i) => (
-                  <Fragment key={it}>
-                    <a>
-                      <LogoRenderer noFigure input={it} />
-                    </a>
-                    {tokensToETHAMMs && tokensToETHAMMPoolLinks && (
-                      <>
-                        on
-                        <a
-                          target="_blank"
-                          href={getAmmPoolLink(
-                            { context, ...web3Data },
-                            tokensToETHAMMs[i],
-                            tokensToETHAMMPoolLinks[i]
-                          )}>
-                          <LogoRenderer noFigure input={tokensToETHAMMs[i]} />
-                        </a>
-                      </>
-                    )}
-                  </Fragment>
-                ))}
-                for{' '}
-                <a>
-                  <img src={`${process.env.PUBLIC_URL}/img/eth_logo.png`}></img>
-                </a>
-              </p>
-            )}
-            {swapToETHInterval && <p>Every {swapToETHInterval}</p>}
-          </div>
-        </div>
-      )}
+      
     </div>
+    
+    </>
   )
 }
 
@@ -636,6 +573,7 @@ const Delegations = ({ element }) => {
   var total = numberToString(1e18)
 
   return (
+    <>
     <div className={style.OrgPartView}>
       <div className={style.OrgPartTitle}>
         <h6>Delegations grants</h6>
@@ -675,7 +613,9 @@ const Delegations = ({ element }) => {
           {open ? 'Close' : 'Open'}
         </RegularButtonDuo>
       </div>
-      {open && (
+      
+    </div>
+    {open && (<div>
         <div className={style.DelegationsSection}>
           <h6>Grant chart</h6>
           {!list && <CircularProgress />}
@@ -698,7 +638,7 @@ const Delegations = ({ element }) => {
                       {'$ ' +
                         formatMoney(
                           val *
-                            parseFloat(fromDecimals(it.percentage, 18, true)),
+                          parseFloat(fromDecimals(it.percentage, 18, true)),
                           2
                         )}
                     </span>
@@ -707,8 +647,9 @@ const Delegations = ({ element }) => {
               </Link>
             ))}
         </div>
-      )}
-    </div>
+      
+    </div>)}
+    </>
   )
 }
 
@@ -808,7 +749,7 @@ const Inflation = ({ element }) => {
         (bootstrapFund.bootstrapFundWalletAddress !== VOID_ETHEREUM_ADDRESS ||
           bootstrapFund.defaultBootstrapFundComponentKey !== VOID_BYTES32)
       ) {
-        ;(bootstrapFund.bootstrapFundIsRaw ? raw : swapped).push({
+        ; (bootstrapFund.bootstrapFundIsRaw ? raw : swapped).push({
           key:
             bootstrapFund.bootstrapFundWalletAddress !== VOID_ETHEREUM_ADDRESS
               ? 'Bootstrap Fund'
@@ -890,9 +831,8 @@ const Inflation = ({ element }) => {
           href={`${getNetworkElement(
             { context, chainId },
             'etherscanURL'
-          )}/tokenholdings?a=${
-            element.components.fixedInflationManager.address
-          }`}
+          )}/tokenholdings?a=${element.components.fixedInflationManager.address
+            }`}
         />
       </div>
       {tokenMinterData && (
@@ -1019,7 +959,7 @@ const Inflation = ({ element }) => {
   )
 }
 
-const KaitenTBI = ({element}) => {
+const KaitenTBI = ({ element }) => {
 
   const web3Data = useWeb3()
 
@@ -1056,16 +996,16 @@ const KaitenTBI = ({element}) => {
     setPositionOf(position)
     console.log(position)
 
-    if(position.positionLiquidity !== '0' && vestingFinished) {
+    if (position.positionLiquidity !== '0' && vestingFinished) {
       try {
         var claimedReward = await revenueShareContract.methods.claimRewardOf(account).call()
         claimedReward = claimedReward[0]
         setClaimableReward(claimedReward)
-      } catch(e) {}
+      } catch (e) { }
       try {
-        var lp = await revenueShareContract.methods.redeemRevenueSharePositionForever(0, 0).call('latest', {from : account})
+        var lp = await revenueShareContract.methods.redeemRevenueSharePositionForever(0, 0).call('latest', { from: account })
         setLiquidityPool(lp)
-      } catch(e) {}
+      } catch (e) { }
     }
   }, [account, vestingEnds, vestingFinished])
 
@@ -1074,33 +1014,33 @@ const KaitenTBI = ({element}) => {
   }, [updateSituation, blockNumber])
 
   const redeemVestingResult = useCallback(async () => {
-    if(!vestingFinished) {
-      if(!confirm("Are you REALLY sure you want to redeem just 60% of your initial ETH? This action will burn your KAI tokens, forever lock your LP share, and FORFEIT all Revenue Share in ETH FOREVER.")) {
+    if (!vestingFinished) {
+      if (!confirm("Are you REALLY sure you want to redeem just 60% of your initial ETH? This action will burn your KAI tokens, forever lock your LP share, and FORFEIT all Revenue Share in ETH FOREVER.")) {
         return;
       }
     }
     return await blockchainCall(revenueShareContract.methods.redeemVestingResult);
   }, [vestingFinished, vestingEnds])
 
-  const redeemLPForever = useCallback(async() => {
-    if(!liquidityPool || !claimableReward || !positionOf) {
+  const redeemLPForever = useCallback(async () => {
+    if (!liquidityPool || !claimableReward || !positionOf) {
       return
     }
     var message = "Are you REALLY sure you want to redeem "
-    if(positionOf.vestedAmount !== '0') {
+    if (positionOf.vestedAmount !== '0') {
       message += "your vested KAI tokens"
-      if(claimableReward !== '0') {
+      if (claimableReward !== '0') {
         message += ', '
       } else {
         message += ' and '
       }
     }
     message += "your LP portion"
-    if(claimableReward !== '0') {
+    if (claimableReward !== '0') {
       message += ' and all your claimable Revenue Share in ETH'
     }
     message += '? You will FORFEIT all future revenue share by proceeding and cannot enter again.'
-    if(!confirm(message)) {
+    if (!confirm(message)) {
       return
     }
     var amount0 = parseFloat(fromDecimals(liquidityPool[0], 18, true))
@@ -1119,31 +1059,31 @@ const KaitenTBI = ({element}) => {
     </div>
     <div className={style.OrgThingsTitle}>
       <h6>Vesting Period:</h6>
-        <div className={style.OrgPartInfo}>
-          <p>
-            {!vestingEnds && <CircularProgress/>}
-            {vestingEnds && !vestingFinished && <h4>&#9200; ACTIVE</h4>}
-            {vestingEnds && vestingFinished && <h4>&#128994; CONCLUDED</h4>}
-            {vestingEnds && <>
-              End Date: <span>{new Date(vestingEnds).toLocaleString()}</span>
-            </>}
-          </p>
-        </div>
+      <div className={style.OrgPartInfo}>
+        <p>
+          {!vestingEnds && <CircularProgress />}
+          {vestingEnds && !vestingFinished && <h4>&#9200; ACTIVE</h4>}
+          {vestingEnds && vestingFinished && <h4>&#128994; CONCLUDED</h4>}
+          {vestingEnds && <>
+            End Date: <span>{new Date(vestingEnds).toLocaleString()}</span>
+          </>}
+        </p>
+      </div>
     </div>
-    {!(vestingEnds && positionOf) && <OurCircularProgress/>}
+    {!(vestingEnds && positionOf) && <OurCircularProgress />}
     {vestingEnds && positionOf && positionOf.positionLiquidity !== '0' && positionOf.ethAmount === '0' && <div className={style.OrgThingsTitle}>
       <h6>You've already redeemed your vested KAI tokens</h6>
     </div>}
     {vestingEnds && positionOf && positionOf.ethAmount !== '0' && <div className={style.OrgThingsTitle}>
       <h6>By redeeming now, you will obtain:</h6>
-      <div className={style.OrgPartInfo} style={{"width" : "100%"}}>
+      <div className={style.OrgPartInfo} style={{ "width": "100%" }}>
         {!vestingFinished && <>
           <div>{fromDecimals(positionOf.ethAmount, 18, true)} ETH <b>ONLY</b> (60% of the ETH you've put in)</div>
           <div><b>And nothing more!</b> All your tokens will be <b>burned </b><span>&#128293;</span>, the LP amount assigned to you will be locked forever and the Revenue Share in ETH will be divided between the other participants and Kaiten's DAO treasury </div>
         </>}
         {vestingFinished && <>
           <div>{fromDecimals(positionOf.vestedAmount, 18, true)} KAI (20% of your initial balance)</div>
-          <br/>
+          <br />
           {claimableReward && claimableReward !== '0' && <div>{fromDecimals(claimableReward, 18, true)} ETH (your actual redeemable Revenue Share)</div>}
         </>}
         <ActionAWeb3Button onSuccess={updateSituation} onClick={redeemVestingResult}>Redeem {vestingFinished ? `my vested KAI Tokens${claimableReward && claimableReward !== '0' ? " and my claimable Revenue Share in ETH" : ""}` : "just 60% of my initial ETH, losing the rest"}</ActionAWeb3Button>
@@ -1151,21 +1091,21 @@ const KaitenTBI = ({element}) => {
     </div>}
     {vestingEnds && vestingFinished && positionOf && <div className={style.OrgThingsTitle}>
       <h6>Your position:</h6>
-      {(claimableReward === null || liquidityPool === null) && <OurCircularProgress/>}
-      {claimableReward !== null && <div className={style.OrgPartInfo} style={{"width" : "100%"}}>
+      {(claimableReward === null || liquidityPool === null) && <OurCircularProgress />}
+      {claimableReward !== null && <div className={style.OrgPartInfo} style={{ "width": "100%" }}>
         {<span>Your Revenue Share: {fromDecimals(claimableReward, 18, true)} ETH</span>}
         {claimableReward !== '0' && <ActionAWeb3Button onSuccess={updateSituation} onClick={() => blockchainCall(revenueShareContract.methods.claimRewardOf, account)}>Claim current Revenue Share</ActionAWeb3Button>}
       </div>}
-      {liquidityPool && <div className={style.OrgPartInfo} style={{"width" : "100%"}}>
+      {liquidityPool && <div className={style.OrgPartInfo} style={{ "width": "100%" }}>
         <span>Your Liquidity Pool position:</span>
-        <br/>
+        <br />
         {<span>{fromDecimals(liquidityPool[0], 18, true)} KAI</span>}
-        <br/>
+        <br />
         {<span>{fromDecimals(liquidityPool[1], 18, true)} ETH</span>}
         <div>
           <label>
             Price slippage: {slippage}%
-            <input type="range" min="0.003" max="100" step="0.001" value={slippage} onChange={e => setSlippage(parseFloat(e.currentTarget.value))}/>
+            <input type="range" min="0.003" max="100" step="0.001" value={slippage} onChange={e => setSlippage(parseFloat(e.currentTarget.value))} />
           </label>
         </div>
         {(liquidityPool[0] !== '0' || liquidityPool[1] !== '0') && <ActionAWeb3Button onSuccess={updateSituation} onClick={redeemLPForever}>Claim {(positionOf.vestedAmount !== '0' ? "vested tokens" : "") + (((!claimableReward || claimableReward === '0') ? '' : (positionOf.vestedAmount !== '0' ? ', ' : "") + "current revenue share")) + (positionOf.vestedAmount !== '0' || (claimableReward && claimableReward !== '0') ? " and " : "")}LP share. THIS WILL FORFEIT ALL FUTURE REVENUE SHARE.</ActionAWeb3Button>}
@@ -1177,8 +1117,7 @@ const KaitenTBI = ({element}) => {
 export default ({ element }) => {
   return (
     <>
-      <RootWallet element={element} />
-      {web3Utils.toChecksumAddress(element.address) === "0x48B4e1493F132C49063Cea273D2a756f8D9a1759" && <KaitenTBI element={element}/>}
+      
       {element.components.fixedInflationManager && (
         <Inflation element={element} />
       )}
