@@ -97,7 +97,9 @@ async function blockchainCall() {
 export default blockchainCall
 
 async function callMethod(method, from, value, blockNumber) {
-  /*return await method.call({from, value},blockNumber)*/
+  if(method._parent.options.address === VOID_ETHEREUM_ADDRESS) {
+    return await method.call({from, value}, blockNumber)
+  }
   try {
     return decodeCallResponse(await sendAsync(method._parent.currentProvider, 'eth_call', {
       from,

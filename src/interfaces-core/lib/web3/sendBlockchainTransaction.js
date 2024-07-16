@@ -63,7 +63,7 @@ function sendBlockchainTransaction(
             .gasLimit
       )
 
-      if (provider === window.customProvider) {
+      if (window.customProvider && window.customProvider.host === provider.host) {
         return ok(
           await sendAsync(
             provider,

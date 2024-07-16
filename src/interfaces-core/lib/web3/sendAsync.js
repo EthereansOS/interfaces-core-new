@@ -27,6 +27,9 @@ const forceInstrumentationText = [
 ].map(it => it.toLowerCase())
 
 async function instrumentProvider(provider, method, force) {
+  if(window.customProvider) {
+    return window.customProvider
+  }
   var instrumentableMethods = [...defaultInstrumentableMethods]
 
   try {

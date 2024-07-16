@@ -69,7 +69,7 @@ export async function getEthereum(data) {
                 balanceOf(subject) {
                     return {
                         call(_, blockNumber) {
-                            return sendAsync(web3, 'eth_getBalance', subject, blockNumber || null)
+                            return sendAsync(web3, 'eth_getBalance', subject, blockNumber || 'latest')
                         },
                         _parent : {
                             options : {

@@ -50,7 +50,7 @@ const TokenInputRegular = ({
   const [value, setValue] = useState(outputValue)
 
   useEffect(() => {
-    outputValue && setValue(outputValue)
+    //outputValue && setValue(outputValue)
   }, [outputValue])
 
   useEffect(() => {
@@ -126,6 +126,7 @@ const TokenInputRegular = ({
 
   const onValueChange = useCallback((e) => {
     var v = e.currentTarget.value
+    v = numberToString(v)
     v = v.indexOf('.') === 0 && v !== '.' ? '0' + v : v
     if (v !== '0.') {
       v = v.toString()
@@ -147,7 +148,7 @@ const TokenInputRegular = ({
 
     const num = parseFloat(value)
 
-    const numStr = num.toString()
+    const numStr = numberToString(num)
     if (numStr.indexOf('.') !== -1) {
       const decimalPlaces = Math.min(numStr.split('.')[1].length, 7)
       return num.toFixed(decimalPlaces)

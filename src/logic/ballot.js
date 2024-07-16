@@ -147,7 +147,7 @@ export async function decodeToken({ account, web3, context, newContract }, addr,
         address,
         contract: mainInterface || contract,
         mainInterface,
-        interoperableInterface,
+        interoperableInterface : interoperableInterface || contract,
         id: itemId || (addr !== VOID_ETHEREUM_ADDRESS && objectId),
         passedAsERC20: addr === VOID_ETHEREUM_ADDRESS,
         hasPermit

@@ -466,11 +466,11 @@ const proposalResolvers = {
         token:
           it[1].length === 0
             ? await loadTokenFromAddress(
-                { context, account, web3, newContract },
+                web3Data,
                 it[0]
               )
             : await loadItem(
-                { context, chainId, account, newContract, getGlobalContract },
+                web3Data,
                 it[1][0].toString()
               ),
       }))
