@@ -6,9 +6,9 @@ const normalizeAnchors = async function(a) {
   a.target = '_blank'
   var href = a.href
   href = href.split('.eth')
-  var lastIndex = href.length -1
+  var lastIndex = href.length - 1
   var lastElement = href[lastIndex]
-  if(lastElement.indexOf('.') !== 0) {
+  if(href.length !== 1 && lastElement.indexOf('.') !== 0) {
     lastElement = '.limo' + lastElement
   }
   href[lastIndex] = lastElement

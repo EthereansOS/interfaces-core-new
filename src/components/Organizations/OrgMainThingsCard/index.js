@@ -190,8 +190,6 @@ const TreasurySplitter = ({ element }) => {
 
   return (
     <div className={style.OrgMainThingsCard + " " + style.OrgMainThingsCardFlex}>
-      <RootWallet element={element} />
-      {web3Utils.toChecksumAddress(element.address) === "0x48B4e1493F132C49063Cea273D2a756f8D9a1759" && <KaitenTBI element={element} />}
       <div>
       <div className={style.OrgThingsTitle}>
         <h6>Treasury Splitter</h6>
@@ -1117,7 +1115,8 @@ const KaitenTBI = ({ element }) => {
 export default ({ element }) => {
   return (
     <>
-      
+      <RootWallet element={element} />
+      {web3Utils.toChecksumAddress(element.address) === "0x48B4e1493F132C49063Cea273D2a756f8D9a1759" && <KaitenTBI element={element}/>}
       {element.components.fixedInflationManager && (
         <Inflation element={element} />
       )}
