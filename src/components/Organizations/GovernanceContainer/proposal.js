@@ -125,9 +125,11 @@ export default ({element, refreshElements, forDelegationVote}) => {
           additionalUri = abi.decode(["string"], additionalUri)[0]
           additionalUri = formatLink({ context }, additionalUri)
           addM = await (await fetch(additionalUri)).json()*/
-          addM = await getMetadataByCodeSequence({ provider : element.proposalsManager.currentProvider, context }, proposalData[1][0])
+          addM = await getMetadataByCodeSequence({ provider : element.proposalsManager.currentProvider, context }, (proposalData[1] || proposalData.codeSequence)[0])
         }
-      } catch(e) {}
+      } catch(e) {
+        console.log(e)
+      }
       if(!element.isSurveyless && !buyOrSell) {
         addM = {...element, ...element.metadata, ...element.additionalMetadata, ...addM}
       }
